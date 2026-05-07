@@ -55,6 +55,11 @@ function main(): void {
   const sync = createThreeRefreshEntitySync(filesystem);
   const camera = new PerspectiveCamera(90, 1, 0.1, 1000);
   sync.attachToCamera(camera);
+  let sampledOrigin: [number, number, number] | null = null;
+  sync.setAliasLightSampler((origin) => {
+    sampledOrigin = [origin[0], origin[1], origin[2]];
+    return [0.25, 0.5, 1];
+  });
 
   const firstFrame = createWeaponRefreshFrame();
   const firstStats = sync.apply(runtime, firstFrame);
@@ -72,11 +77,28 @@ function main(): void {
 
   const firstMesh = firstRoot.children[0] as Mesh;
   const firstMaterialMap = ((firstMesh.material as { map?: unknown }).map ?? null);
+  const firstTextureData = readTextureData(firstMaterialMap);
+  assert.equal(firstTextureData[0], 255, "weapon skin intensity red mismatch");
+  assert.equal(firstTextureData[1], 64, "weapon skin intensity green mismatch");
+  assert.equal(firstTextureData[2], 32, "weapon skin intensity blue mismatch");
+  assert.deepEqual(sampledOrigin, [11, 22, 35], "weapon alias light sampler origin mismatch");
   assert.equal((firstMesh.material as { depthTest?: boolean }).depthTest, false, "weapon depthhack depthTest mismatch");
   assert.equal((firstMesh.material as { depthWrite?: boolean }).depthWrite, false, "weapon depthhack depthWrite mismatch");
   assert.equal(firstMesh.renderOrder, 1000, "weapon depthhack renderOrder mismatch");
   const firstPositions = readPositions(firstMesh);
   assert.deepEqual(firstPositions, [0, 0, 0, 8, 0, 0, 0, 8, 0], "weapon frame-0 geometry mismatch");
+  const firstColors = readColors(firstMesh);
+  assert.equal(firstColors[0] > 0, true, "weapon sampled shadelight should affect vertex colors");
+  assert.ok(Math.abs(firstColors[1] - firstColors[0] * 2) < 0.0001, "weapon sampled shadelight green ratio mismatch");
+  assert.ok(Math.abs(firstColors[2] - firstColors[0] * 4) < 0.0001, "weapon sampled shadelight blue ratio mismatch");
+
+  sync.setTextureLighting({ intensity: 3, gamma: 1 });
+  sync.apply(runtime, firstFrame);
+  const relitMesh = sync.viewWeaponRoot.children[0].children[0] as Mesh;
+  const relitTextureData = readTextureData((relitMesh.material as { map?: unknown }).map ?? null);
+  assert.equal(relitTextureData[0], 255, "weapon dynamic intensity red mismatch");
+  assert.equal(relitTextureData[1], 96, "weapon dynamic intensity green mismatch");
+  assert.equal(relitTextureData[2], 48, "weapon dynamic intensity blue mismatch");
 
   const animatedStats = sync.apply(runtime, createWeaponRefreshFrame({
     frame: 1,
@@ -166,6 +188,17 @@ function createWeaponRefreshFrame(overrides: Partial<ClientRefreshFrame["entitie
 function readPositions(mesh: Mesh): number[] {
   const position = mesh.geometry.getAttribute("position") as BufferAttribute;
   return Array.from(position.array as Float32Array);
+}
+
+function readColors(mesh: Mesh): number[] {
+  const color = mesh.geometry.getAttribute("color") as BufferAttribute;
+  return Array.from(color.array as Float32Array);
+}
+
+function readTextureData(map: unknown): Uint8Array {
+  const data = (map as { image?: { data?: unknown } } | null)?.image?.data;
+  assert.ok(data instanceof Uint8Array, "weapon skin texture data missing");
+  return data;
 }
 
 function createAliasBuffer(

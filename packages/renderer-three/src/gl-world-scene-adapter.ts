@@ -40,6 +40,7 @@ import type { GlModelRuntime } from "./gl-model-loader.js";
 import { Mod_ForName, Mod_Init, Mod_PointInLeaf, createGlModelRuntime } from "./gl-model-loader.js";
 import type { GlRsurfRuntime } from "./gl_rsurf.js";
 import {
+  R_LightPoint,
   R_PushDlights,
   createGlLightRsurfHooks,
   createGlLightRuntime,
@@ -71,6 +72,13 @@ import {
 } from "./gl_rsurf.js";
 import { buildNoTextureRgba } from "./gl_rmisc.js";
 import {
+  ORIGINAL_DEFAULT_INVERSE_INTENSITY,
+  applyOriginalTextureIntensity,
+  normalizeQuakeTextureLightingSettings,
+  quakeTextureLightingKey,
+  type QuakeTextureLightingSettings
+} from "./quake-texture-intensity.js";
+import {
   EmitWaterPolys,
   GL_SubdivideSurface,
   R_AddSkySurface,
@@ -90,6 +98,7 @@ interface ThreeGlImageHandle {
   width: number;
   height: number;
   texture: Texture;
+  sourceRgba: Uint8Array | null;
   registration_sequence: number;
   texturechain: msurface_t | null;
 }
@@ -140,16 +149,15 @@ export interface ThreeGlWorldSceneAdapter {
   glModelRuntime: GlModelRuntime;
   glRsurfRuntime: GlRsurfRuntime;
   readonly skyFaces: readonly GlWarpSkyFace[];
+  setTextureLighting: (settings: Partial<QuakeTextureLightingSettings>) => void;
   update: (
     timeSeconds: number,
     vieworg?: readonly [number, number, number],
     brushModels?: readonly BrushModelSnapshot[],
     refreshFrame?: ClientRefreshFrame | null
   ) => void;
+  sampleLightPoint: (origin: readonly [number, number, number]) => [number, number, number];
 }
-
-const ORIGINAL_DEFAULT_TEXTURE_INTENSITY = 2;
-const ORIGINAL_DEFAULT_INVERSE_INTENSITY = 1 / ORIGINAL_DEFAULT_TEXTURE_INTENSITY;
 
 /**
  * Category: New
@@ -177,6 +185,8 @@ export function createThreeGlWorldSceneAdapter(
   const inlineModelsByModel = new Map<model_t, InlineModelBinding>();
   const skyState: SkyState = { queuedSurfaceCount: 0, faces: [] };
   const alphaDrawState: AlphaDrawState = { nextRenderOrder: 1000 };
+  let textureLighting = normalizeQuakeTextureLightingSettings();
+  let textureLightingKey = quakeTextureLightingKey(textureLighting);
   const sharedPalette = loadSharedPalette(filesystem);
   const whiteLightmapTexture = createSolidTexture(255, 255, 255, 255, false);
   const notextureImage = createCheckerImageHandle();
@@ -328,7 +338,7 @@ export function createThreeGlWorldSceneAdapter(
     freeFile: () => {
       // Mounted files are immutable views and do not require explicit release.
     },
-    findImage: (name) => resolveImage(filesystem, name, sharedPalette, imageCache),
+    findImage: (name) => resolveImage(filesystem, name, sharedPalette, imageCache, textureLighting),
     notextureImage,
     print: () => {
       // The web adapter currently suppresses renderer console chatter.
@@ -376,6 +386,31 @@ export function createThreeGlWorldSceneAdapter(
     glRsurfRuntime,
     get skyFaces() {
       return skyState.faces;
+    },
+    setTextureLighting: (settings) => {
+      const next = normalizeQuakeTextureLightingSettings(settings);
+      const nextKey = quakeTextureLightingKey(next);
+      if (nextKey === textureLightingKey) {
+        return;
+      }
+
+      textureLighting = next;
+      textureLightingKey = nextKey;
+      for (const handle of imageCache.values()) {
+        if (handle) {
+          updateThreeGlImageTexture(handle, textureLighting);
+        }
+      }
+      for (const binding of surfaceMeshes.values()) {
+        if (binding.warp) {
+          binding.mesh.material.color.setScalar(1 / textureLighting.intensity);
+        }
+      }
+    },
+    sampleLightPoint: (origin) => {
+      const color: [number, number, number] = [0, 0, 0];
+      R_LightPoint(glLightRuntime, [origin[0], origin[1], origin[2]], color);
+      return color;
     },
     update: (timeSeconds, vieworg, brushModels, refreshFrame) => {
       const scroll = computeFlowingScroll(timeSeconds);
@@ -731,7 +766,8 @@ function resolveImage(
   filesystem: VirtualFilesystem,
   name: string,
   sharedPalette: Uint8Array | null,
-  cache: Map<string, ThreeGlImageHandle | null>
+  cache: Map<string, ThreeGlImageHandle | null>,
+  textureLighting: QuakeTextureLightingSettings
 ): ThreeGlImageHandle | null {
   if (cache.has(name)) {
     return cache.get(name) ?? null;
@@ -739,16 +775,21 @@ function resolveImage(
 
   let image: ThreeGlImageHandle | null = null;
   if (name.endsWith(".wal") && sharedPalette) {
-    image = loadWalImage(filesystem, name, sharedPalette);
+    image = loadWalImage(filesystem, name, sharedPalette, textureLighting);
   } else if (name.endsWith(".pcx")) {
-    image = loadPcxImage(filesystem, name);
+    image = loadPcxImage(filesystem, name, textureLighting);
   }
 
   cache.set(name, image);
   return image;
 }
 
-function loadWalImage(filesystem: VirtualFilesystem, path: string, paletteRgb: Uint8Array): ThreeGlImageHandle | null {
+function loadWalImage(
+  filesystem: VirtualFilesystem,
+  path: string,
+  paletteRgb: Uint8Array,
+  textureLighting: QuakeTextureLightingSettings
+): ThreeGlImageHandle | null {
   const file = readMountedFile(filesystem, path);
   if (!file) {
     return null;
@@ -756,11 +797,13 @@ function loadWalImage(filesystem: VirtualFilesystem, path: string, paletteRgb: U
 
   try {
     const wal = parseWal(file.bytes, file.path);
-    const texture = createIndexedTexture(wal.header.width, wal.header.height, wal.mipmaps[0], paletteRgb, true);
+    const sourceRgba = buildIndexedRgba(wal.header.width, wal.header.height, wal.mipmaps[0], paletteRgb);
+    const texture = createRgbaTexture(sourceRgba, wal.header.width, wal.header.height, true, textureLighting);
     return {
       width: wal.header.width,
       height: wal.header.height,
       texture,
+      sourceRgba,
       registration_sequence: 0,
       texturechain: null
     };
@@ -769,7 +812,11 @@ function loadWalImage(filesystem: VirtualFilesystem, path: string, paletteRgb: U
   }
 }
 
-function loadPcxImage(filesystem: VirtualFilesystem, path: string): ThreeGlImageHandle | null {
+function loadPcxImage(
+  filesystem: VirtualFilesystem,
+  path: string,
+  textureLighting: QuakeTextureLightingSettings
+): ThreeGlImageHandle | null {
   const file = readMountedFile(filesystem, path);
   if (!file) {
     return null;
@@ -777,22 +824,13 @@ function loadPcxImage(filesystem: VirtualFilesystem, path: string): ThreeGlImage
 
   try {
     const image = parsePcx(file.bytes, file.path);
-    const texture = new DataTexture(
-      applyOriginalTextureIntensity(image.rgba.slice()),
-      image.width,
-      image.height,
-      RGBAFormat,
-      UnsignedByteType
-    );
-    texture.wrapS = RepeatWrapping;
-    texture.wrapT = RepeatWrapping;
-    texture.flipY = false;
-    texture.colorSpace = SRGBColorSpace;
-    texture.needsUpdate = true;
+    const sourceRgba = image.rgba.slice();
+    const texture = createRgbaTexture(sourceRgba, image.width, image.height, true, textureLighting);
     return {
       width: image.width,
       height: image.height,
       texture,
+      sourceRgba,
       registration_sequence: 0,
       texturechain: null
     };
@@ -801,24 +839,38 @@ function loadPcxImage(filesystem: VirtualFilesystem, path: string): ThreeGlImage
   }
 }
 
-function createIndexedTexture(
+function buildIndexedRgba(
   width: number,
   height: number,
   indices: Uint8Array,
-  paletteRgb: Uint8Array,
-  repeating: boolean
-): DataTexture {
+  paletteRgb: Uint8Array
+): Uint8Array {
   const rgba = new Uint8Array(width * height * 4);
   for (let index = 0; index < indices.length; index += 1) {
     const paletteIndex = indices[index] * 3;
     const rgbaIndex = index * 4;
-    rgba[rgbaIndex] = applyOriginalTextureIntensityChannel(paletteRgb[paletteIndex] ?? 0);
-    rgba[rgbaIndex + 1] = applyOriginalTextureIntensityChannel(paletteRgb[paletteIndex + 1] ?? 0);
-    rgba[rgbaIndex + 2] = applyOriginalTextureIntensityChannel(paletteRgb[paletteIndex + 2] ?? 0);
+    rgba[rgbaIndex] = paletteRgb[paletteIndex] ?? 0;
+    rgba[rgbaIndex + 1] = paletteRgb[paletteIndex + 1] ?? 0;
+    rgba[rgbaIndex + 2] = paletteRgb[paletteIndex + 2] ?? 0;
     rgba[rgbaIndex + 3] = 255;
   }
+  return rgba;
+}
 
-  const texture = new DataTexture(rgba, width, height, RGBAFormat, UnsignedByteType);
+function createRgbaTexture(
+  sourceRgba: Uint8Array,
+  width: number,
+  height: number,
+  repeating: boolean,
+  textureLighting: QuakeTextureLightingSettings
+): DataTexture {
+  const texture = new DataTexture(
+    applyOriginalTextureIntensity(sourceRgba.slice(), textureLighting),
+    width,
+    height,
+    RGBAFormat,
+    UnsignedByteType
+  );
   texture.wrapS = repeating ? RepeatWrapping : ClampToEdgeWrapping;
   texture.wrapT = repeating ? RepeatWrapping : ClampToEdgeWrapping;
   texture.magFilter = LinearFilter;
@@ -830,17 +882,21 @@ function createIndexedTexture(
   return texture;
 }
 
-function applyOriginalTextureIntensity(rgba: Uint8Array): Uint8Array {
-  for (let offset = 0; offset < rgba.length; offset += 4) {
-    rgba[offset] = applyOriginalTextureIntensityChannel(rgba[offset] ?? 0);
-    rgba[offset + 1] = applyOriginalTextureIntensityChannel(rgba[offset + 1] ?? 0);
-    rgba[offset + 2] = applyOriginalTextureIntensityChannel(rgba[offset + 2] ?? 0);
+function updateThreeGlImageTexture(
+  handle: ThreeGlImageHandle,
+  textureLighting: QuakeTextureLightingSettings
+): void {
+  if (!handle.sourceRgba) {
+    return;
   }
-  return rgba;
-}
 
-function applyOriginalTextureIntensityChannel(value: number): number {
-  return Math.min(255, Math.trunc(value * ORIGINAL_DEFAULT_TEXTURE_INTENSITY));
+  const data = (handle.texture.image as { data?: unknown }).data;
+  if (!(data instanceof Uint8Array)) {
+    return;
+  }
+
+  data.set(applyOriginalTextureIntensity(handle.sourceRgba.slice(), textureLighting));
+  handle.texture.needsUpdate = true;
 }
 
 function loadSharedPalette(filesystem: VirtualFilesystem): Uint8Array | null {
@@ -862,6 +918,7 @@ function createCheckerImageHandle(): ThreeGlImageHandle {
     width: 8,
     height: 8,
     texture,
+    sourceRgba: null,
     registration_sequence: 0,
     texturechain: null
   };

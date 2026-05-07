@@ -221,6 +221,7 @@ async function bootstrap(): Promise<void> {
     const group = glWorldAdapter.root;
     const skyAdapter = createThreeSkySceneAdapter(skyResolver);
     const refreshEntitySync = createThreeRefreshEntitySync(filesystem);
+    refreshEntitySync.setAliasLightSampler(glWorldAdapter.sampleLightPoint);
     const particleSync = createThreeParticleSync(filesystem);
     const beamSync = createThreeBeamSync(filesystem);
     const dlightSync = createThreeDlightSync();

@@ -13,6 +13,7 @@
 
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import { parseMd2, parsePcx, type Md2Model } from "../../formats/src/index.js";
+import { applyOriginalTextureIntensity, type QuakeTextureLightingSettings } from "./quake-texture-intensity.js";
 import {
   AngleVectors,
   DotProduct,
@@ -64,6 +65,7 @@ export interface Md2MeshInstance {
 export interface Md2MeshBuildOptions {
   skinPath?: string;
   skinTexture?: Texture | null;
+  textureLighting?: Partial<QuakeTextureLightingSettings>;
 }
 
 /**
@@ -101,7 +103,7 @@ export function buildMd2Mesh(
   const skinTexture = options.skinTexture !== undefined
     ? options.skinTexture
     : skinPath
-      ? loadMd2SkinTexture(filesystem, skinPath)
+      ? loadMd2SkinTexture(filesystem, skinPath, options.textureLighting)
       : null;
   const material = skinTexture
     ? new MeshBasicMaterial({
@@ -464,7 +466,11 @@ function decodeMd2GlFloat(value: number): number {
  * Constraints:
  * - Must return null when the skin asset is missing or invalid.
  */
-export function loadMd2SkinTexture(filesystem: VirtualFilesystem, path: string): Texture | null {
+export function loadMd2SkinTexture(
+  filesystem: VirtualFilesystem,
+  path: string,
+  textureLighting: Partial<QuakeTextureLightingSettings> = {}
+): Texture | null {
   const file = readMountedFile(filesystem, path);
   if (!file) {
     return null;
@@ -472,7 +478,13 @@ export function loadMd2SkinTexture(filesystem: VirtualFilesystem, path: string):
 
   try {
     const image = parsePcx(file.bytes, file.path);
-    const texture = new DataTexture(image.rgba, image.width, image.height, RGBAFormat, UnsignedByteType);
+    const texture = new DataTexture(
+      applyOriginalTextureIntensity(image.rgba.slice(), textureLighting),
+      image.width,
+      image.height,
+      RGBAFormat,
+      UnsignedByteType
+    );
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
     texture.magFilter = LinearFilter;

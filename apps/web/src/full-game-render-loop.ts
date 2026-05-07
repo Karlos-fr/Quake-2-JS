@@ -220,6 +220,12 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
       syncLocalLoopSounds(source, filesystem, audio, camera);
     }
 
+    const textureLighting = {
+      intensity: resolveTextureIntensity(source),
+      gamma: resolveTextureGamma(source)
+    };
+    glWorldAdapter.setTextureLighting(textureLighting);
+    refreshEntitySync.setTextureLighting(textureLighting);
     glWorldAdapter.update(elapsedSeconds, [
       camera.position.x,
       camera.position.y,
@@ -314,6 +320,16 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
   };
 
   return { resize, renderFrame, renderOverlay, renderCanvasOverlay, dispose };
+}
+
+function resolveTextureIntensity(source: FullGameRenderSource): number {
+  const value = source.getCvarValue("intensity");
+  return Number.isFinite(value) && value > 1 ? value : 2;
+}
+
+function resolveTextureGamma(source: FullGameRenderSource): number {
+  const value = source.getCvarValue("vid_gamma");
+  return Number.isFinite(value) && value > 0 ? value : 1;
 }
 
 /**

@@ -1321,6 +1321,7 @@ function seedMenuCvars(cvar: ReturnType<typeof createCvarRuntime>): void {
   Cvar_Get(cvar, "vid_ref", "gl", 1);
   Cvar_Get(cvar, "vid_fullscreen", "0", 1);
   Cvar_Get(cvar, "vid_gamma", "1", 1);
+  Cvar_Get(cvar, "intensity", "2", 0);
   Cvar_Get(cvar, "viewsize", "100", 1);
   Cvar_Get(cvar, "gl_driver", "opengl32", 0);
   Cvar_Get(cvar, "gl_picmip", "0", 0);
@@ -1707,6 +1708,7 @@ async function createFullGameThreeRenderer(
   scene.add(glWorldAdapter.root);
   scene.add(skyAdapter.root);
   const refreshEntitySync = createThreeRefreshEntitySync(runtime.filesystem);
+  refreshEntitySync.setAliasLightSampler(glWorldAdapter.sampleLightPoint);
   const particleSync = createThreeParticleSync(runtime.filesystem);
   const beamSync = createThreeBeamSync(runtime.filesystem);
   const dlightSync = createThreeDlightSync();

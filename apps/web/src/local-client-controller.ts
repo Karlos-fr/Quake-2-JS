@@ -120,6 +120,8 @@ export function createLocalClientController(
   const viewContext = createClientViewContext(runtime, cmdRuntime, cvarRuntime);
   V_Init(viewContext);
   Cvar_SetValue(cvarRuntime, "crosshair", 1);
+  Cvar_Get(cvarRuntime, "vid_gamma", "1", CVAR_ARCHIVE);
+  Cvar_Get(cvarRuntime, "intensity", "2", 0);
   Cvar_Get(cvarRuntime, "gl_polyblend", "1", 0);
   Cvar_Get(cvarRuntime, "gl_shadows", "0", CVAR_ARCHIVE);
 

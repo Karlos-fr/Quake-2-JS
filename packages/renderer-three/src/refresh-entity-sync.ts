@@ -65,9 +65,16 @@ import {
   computeAliasShadeLight,
   sanitizeAliasFramePair
 } from "./gl_mesh.js";
+import {
+  applyOriginalTextureIntensity,
+  normalizeQuakeTextureLightingSettings,
+  quakeTextureLightingKey,
+  type QuakeTextureLightingSettings
+} from "./quake-texture-intensity.js";
 
 const MD2_MODEL_EXTENSION = ".md2";
 const SPRITE_MODEL_EXTENSION = ".sp2";
+type AliasLightSampler = (origin: readonly [number, number, number]) => [number, number, number];
 /**
  * Category: New
  * Purpose: Hold one renderable MD2 instance bound to a client refresh entity key.
@@ -125,6 +132,7 @@ interface RefreshEntityDrawContext {
   shadowReceiverRoot: Object3D | null;
   shadowRaycaster: Raycaster;
   attachedCamera: Camera | null;
+  aliasLightSampler: AliasLightSampler | null;
 }
 
 /**
@@ -153,6 +161,8 @@ export interface ThreeRefreshEntitySync {
   viewWeaponRoot: Group;
   attachToCamera: (camera: Camera) => void;
   setAliasShadowsEnabled: (enabled: boolean) => void;
+  setAliasLightSampler: (sampler: AliasLightSampler | null) => void;
+  setTextureLighting: (settings: Partial<QuakeTextureLightingSettings>) => void;
   setShadowReceiverRoot: (root: Object3D | null) => void;
   apply: (runtime: ClientRuntime, refreshFrame: ClientRefreshFrame | null) => RefreshEntitySyncStats;
   dispose: () => void;
@@ -174,6 +184,9 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
   viewWeaponRoot.name = "refresh-view-weapon";
   let attachedCamera: Camera | null = null;
   let aliasShadowsEnabled = false;
+  let aliasLightSampler: AliasLightSampler | null = null;
+  let textureLighting = normalizeQuakeTextureLightingSettings();
+  let textureLightingKey = quakeTextureLightingKey(textureLighting);
   let shadowReceiverRoot: Object3D | null = null;
   const shadowRaycaster = new Raycaster();
 
@@ -196,7 +209,8 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
         context.aliasShadowsEnabled,
         context.shadowReceiverRoot,
         context.shadowRaycaster,
-        context.attachedCamera
+        context.attachedCamera,
+        context.aliasLightSampler
       );
     },
     drawBrushModel: (entity) => {
@@ -241,6 +255,31 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
     },
     setAliasShadowsEnabled: (enabled) => {
       aliasShadowsEnabled = enabled;
+    },
+    setAliasLightSampler: (sampler) => {
+      aliasLightSampler = sampler;
+    },
+    setTextureLighting: (settings) => {
+      const next = normalizeQuakeTextureLightingSettings(settings);
+      const nextKey = quakeTextureLightingKey(next);
+      if (nextKey === textureLightingKey) {
+        return;
+      }
+
+      textureLighting = next;
+      textureLightingKey = nextKey;
+      for (const [key] of instances) {
+        removeRefreshEntityInstance(instances, key);
+      }
+      for (const texture of md2SkinTextureCache.values()) {
+        texture?.dispose();
+      }
+      for (const texture of spriteTextureCache.values()) {
+        texture?.dispose();
+      }
+      md2SkinTextureCache.clear();
+      spriteCache.clear();
+      spriteTextureCache.clear();
     },
     setShadowReceiverRoot: (rootNode) => {
       shadowReceiverRoot = rootNode;
@@ -293,7 +332,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
         }
 
         if (!instance) {
-          instance = createRefreshEntityInstance(filesystem, modelCache, md2SkinTextureCache, spriteCache, spriteTextureCache, key, modelPath, entity.skinnum);
+          instance = createRefreshEntityInstance(filesystem, modelCache, md2SkinTextureCache, spriteCache, spriteTextureCache, textureLighting, key, modelPath, entity.skinnum);
           if (!instance) {
             missingMd2AssetCount += 1;
             continue;
@@ -338,7 +377,8 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
         aliasShadowsEnabled,
         shadowReceiverRoot,
         shadowRaycaster,
-        attachedCamera
+        attachedCamera,
+        aliasLightSampler
       };
       const refdef = createRefDef();
       refdef.num_entities = drawEntities.length;
@@ -555,6 +595,7 @@ function createRefreshEntityInstance(
   md2SkinTextureCache: Map<string, Texture | null>,
   spriteCache: Map<string, model_t | null>,
   spriteTextureCache: Map<string, Texture | null>,
+  textureLighting: QuakeTextureLightingSettings,
   key: string,
   modelPath: string,
   skinnum: number
@@ -564,7 +605,7 @@ function createRefreshEntityInstance(
   }
 
   if (modelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
-    return createRefreshSpriteInstance(filesystem, spriteCache, spriteTextureCache, key, modelPath, skinnum);
+    return createRefreshSpriteInstance(filesystem, spriteCache, spriteTextureCache, textureLighting, key, modelPath, skinnum);
   }
 
   let model = modelCache.get(modelPath);
@@ -579,10 +620,10 @@ function createRefreshEntityInstance(
 
   const skinPath = resolveMd2SkinPath(model, skinnum);
   const skinTexture = skinPath
-    ? getCachedMd2SkinTexture(filesystem, md2SkinTextureCache, skinPath)
+    ? getCachedMd2SkinTexture(filesystem, md2SkinTextureCache, skinPath, textureLighting)
     : null;
   const md2 = skinPath
-    ? buildMd2Mesh(filesystem, model, { skinPath, skinTexture })
+    ? buildMd2Mesh(filesystem, model, { skinPath, skinTexture, textureLighting })
     : buildMd2Mesh(filesystem, model);
   const shadowMesh = createMd2ShadowMesh(md2);
   const root = new Group();
@@ -615,7 +656,8 @@ function updateRefreshEntityInstance(
   aliasShadowsEnabled: boolean,
   shadowReceiverRoot: Object3D | null,
   shadowRaycaster: Raycaster,
-  attachedCamera: Camera | null
+  attachedCamera: Camera | null,
+  aliasLightSampler: AliasLightSampler | null
 ): void {
   if (instance.kind === "inline-brush") {
     updateRefreshInlineBrushInstance(instance, entity);
@@ -665,7 +707,7 @@ function updateRefreshEntityInstance(
     flags: entity.flags,
     rdflags: runtime.cl.frame.playerstate.rdflags,
     timeSeconds: runtime.cl.time / 1000,
-    baseShadeLight: computeRefreshAliasLight(refreshFrame, entity.origin)
+    baseShadeLight: computeRefreshAliasLight(refreshFrame, entity.origin, aliasLightSampler)
   });
   if (shell) {
     if (instance.md2.mesh.material.vertexColors !== false) {
@@ -731,8 +773,13 @@ function updateRefreshInlineBrushInstance(
 
 function computeRefreshAliasLight(
   refreshFrame: ClientRefreshFrame | null,
-  origin: readonly [number, number, number]
+  origin: readonly [number, number, number],
+  aliasLightSampler: AliasLightSampler | null
 ): [number, number, number] {
+  if (aliasLightSampler) {
+    return aliasLightSampler(origin);
+  }
+
   const shadelight: [number, number, number] = [1, 1, 1];
   if (!refreshFrame) {
     return shadelight;
@@ -829,14 +876,15 @@ function resolveMd2SkinPath(
 function getCachedMd2SkinTexture(
   filesystem: VirtualFilesystem,
   cache: Map<string, Texture | null>,
-  skinPath: string
+  skinPath: string,
+  textureLighting: QuakeTextureLightingSettings
 ): Texture | null {
   const cached = cache.get(skinPath);
   if (cached !== undefined) {
     return cached;
   }
 
-  const texture = loadMd2SkinTexture(filesystem, skinPath);
+  const texture = loadMd2SkinTexture(filesystem, skinPath, textureLighting);
   cache.set(skinPath, texture);
   return texture;
 }
@@ -860,13 +908,14 @@ function createRefreshSpriteInstance(
   filesystem: VirtualFilesystem,
   spriteCache: Map<string, model_t | null>,
   spriteTextureCache: Map<string, Texture | null>,
+  textureLighting: QuakeTextureLightingSettings,
   key: string,
   modelPath: string,
   skinnum: number
 ): RefreshEntitySpriteInstance | null {
   let model = spriteCache.get(modelPath);
   if (model === undefined) {
-    model = loadSpriteModel(filesystem, modelPath, spriteTextureCache);
+    model = loadSpriteModel(filesystem, modelPath, spriteTextureCache, textureLighting);
     spriteCache.set(modelPath, model);
   }
 
@@ -976,7 +1025,8 @@ function applySpriteQuad(
 function loadSpriteModel(
   filesystem: VirtualFilesystem,
   modelPath: string,
-  spriteTextureCache: Map<string, Texture | null>
+  spriteTextureCache: Map<string, Texture | null>,
+  textureLighting: QuakeTextureLightingSettings
 ): model_t | null {
   const file = readMountedFile(filesystem, modelPath);
   if (!file) {
@@ -990,7 +1040,7 @@ function loadSpriteModel(
     model.type = modtype_t.mod_sprite;
     model.extradata = sprite;
     model.skins = sprite.frames.map((frame) => {
-      const texture = loadSpriteTexture(filesystem, frame.name, spriteTextureCache);
+      const texture = loadSpriteTexture(filesystem, frame.name, spriteTextureCache, textureLighting);
       return texture ? ({ texture } as ThreeSpriteImageHandle as image_t) : null;
     });
     return model;
@@ -1002,7 +1052,8 @@ function loadSpriteModel(
 function loadSpriteTexture(
   filesystem: VirtualFilesystem,
   path: string,
-  spriteTextureCache: Map<string, Texture | null>
+  spriteTextureCache: Map<string, Texture | null>,
+  textureLighting: QuakeTextureLightingSettings
 ): Texture | null {
   const cached = spriteTextureCache.get(path);
   if (cached !== undefined) {
@@ -1017,7 +1068,13 @@ function loadSpriteTexture(
 
   try {
     const image = parsePcx(file.bytes, file.path);
-    const texture = new DataTexture(image.rgba, image.width, image.height, RGBAFormat, UnsignedByteType);
+    const texture = new DataTexture(
+      applyOriginalTextureIntensity(image.rgba.slice(), textureLighting),
+      image.width,
+      image.height,
+      RGBAFormat,
+      UnsignedByteType
+    );
     texture.flipY = false;
     texture.colorSpace = SRGBColorSpace;
     texture.needsUpdate = true;
