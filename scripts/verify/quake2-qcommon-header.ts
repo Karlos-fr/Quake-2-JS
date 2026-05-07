@@ -213,6 +213,19 @@ import {
 } from "../../packages/qcommon/src/messages.js";
 import { PM_AirAccelerate, Pmove, createPmoveContext } from "../../packages/qcommon/src/pmove.js";
 import {
+  FS_ExecAutoexec,
+  FS_FreeFile,
+  FS_Gamedir,
+  FS_InitFilesystem,
+  FS_LoadFile,
+  FS_NextPath,
+  FS_Read,
+  FS_SetGamedir,
+  createVirtualFilesystem,
+  mountDirectory,
+  readMountedFile
+} from "../../packages/filesystem/src/index.js";
+import {
   BASEDIRNAME,
   DEFAULT_SOUND_PACKET_ATTENUATION,
   DEFAULT_SOUND_PACKET_VOLUME,
@@ -403,6 +416,94 @@ assert.equal(U_OLDORIGIN, 1 << 24, "U_OLDORIGIN mismatch");
 assert.equal(U_SKIN16, 1 << 25, "U_SKIN16 mismatch");
 assert.equal(U_SOUND, 1 << 26, "U_SOUND mismatch");
 assert.equal(U_SOLID, 1 << 27, "U_SOLID mismatch");
+const C_U_ORIGIN1 = 0x00000001;
+const C_U_ORIGIN2 = 0x00000002;
+const C_U_ANGLE2 = 0x00000004;
+const C_U_ANGLE3 = 0x00000008;
+const C_U_FRAME8 = 0x00000010;
+const C_U_EVENT = 0x00000020;
+const C_U_REMOVE = 0x00000040;
+const C_U_MOREBITS1 = 0x00000080;
+const C_U_NUMBER16 = 0x00000100;
+const C_U_ORIGIN3 = 0x00000200;
+const C_U_ANGLE1 = 0x00000400;
+const C_U_MODEL = 0x00000800;
+const C_U_RENDERFX8 = 0x00001000;
+const C_U_EFFECTS8 = 0x00004000;
+const C_U_MOREBITS2 = 0x00008000;
+const C_U_SKIN8 = 0x00010000;
+const C_U_FRAME16 = 0x00020000;
+const C_U_RENDERFX16 = 0x00040000;
+const C_U_EFFECTS16 = 0x00080000;
+const C_U_MODEL2 = 0x00100000;
+const C_U_MODEL3 = 0x00200000;
+const C_U_MODEL4 = 0x00400000;
+const C_U_MOREBITS3 = 0x00800000;
+const C_U_OLDORIGIN = 0x01000000;
+const C_U_SKIN16 = 0x02000000;
+const C_U_SOUND = 0x04000000;
+const C_U_SOLID = 0x08000000;
+assert.deepEqual(
+  [
+    U_ORIGIN1,
+    U_ORIGIN2,
+    U_ANGLE2,
+    U_ANGLE3,
+    U_FRAME8,
+    U_EVENT,
+    U_REMOVE,
+    U_MOREBITS1,
+    U_NUMBER16,
+    U_ORIGIN3,
+    U_ANGLE1,
+    U_MODEL,
+    U_RENDERFX8,
+    U_EFFECTS8,
+    U_MOREBITS2,
+    U_SKIN8,
+    U_FRAME16,
+    U_RENDERFX16,
+    U_EFFECTS16,
+    U_MODEL2,
+    U_MODEL3,
+    U_MODEL4,
+    U_MOREBITS3,
+    U_OLDORIGIN,
+    U_SKIN16,
+    U_SOUND,
+    U_SOLID
+  ],
+  [
+    C_U_ORIGIN1,
+    C_U_ORIGIN2,
+    C_U_ANGLE2,
+    C_U_ANGLE3,
+    C_U_FRAME8,
+    C_U_EVENT,
+    C_U_REMOVE,
+    C_U_MOREBITS1,
+    C_U_NUMBER16,
+    C_U_ORIGIN3,
+    C_U_ANGLE1,
+    C_U_MODEL,
+    C_U_RENDERFX8,
+    C_U_EFFECTS8,
+    C_U_MOREBITS2,
+    C_U_SKIN8,
+    C_U_FRAME16,
+    C_U_RENDERFX16,
+    C_U_EFFECTS16,
+    C_U_MODEL2,
+    C_U_MODEL3,
+    C_U_MODEL4,
+    C_U_MOREBITS3,
+    C_U_OLDORIGIN,
+    C_U_SKIN16,
+    C_U_SOUND,
+    C_U_SOLID
+  ],
+  "U_* numeric values must match qcommon.h"
+);
 assert.equal(BUILDSTRING, "TypeScript", "BUILDSTRING mismatch");
 assert.equal(CPUSTRING, "portable", "CPUSTRING mismatch");
 assert.equal(BASEDIRNAME, "baseq2", "BASEDIRNAME mismatch");
@@ -470,6 +571,64 @@ assert.equal(headerPmoveContext.pml.velocity[1], 0, "PM_AirAccelerate lateral ve
 Pmove(headerPmoveContext, { allowSnapPosition: false });
 assert.equal(headerPmove.viewheight, -2, "Pmove ducked viewheight mismatch");
 assert.equal(headerPmove.s.pm_flags & PMF_ON_GROUND, PMF_ON_GROUND, "Pmove ground flag mismatch");
+
+const headerFilesystem = createVirtualFilesystem();
+mountDirectory(headerFilesystem, "baseq2", {
+  "autoexec.cfg": new Uint8Array([101, 99, 104, 111]),
+  "maps/base1.bsp": new Uint8Array([1, 2, 3])
+});
+assert.equal(FS_Gamedir(headerFilesystem), "baseq2", "FS_Gamedir header mismatch");
+assert.equal(readMountedFile(headerFilesystem, "maps/base1.bsp")?.bytes.byteLength, 3, "FS_FOpenFile/readMountedFile header mismatch");
+const headerLoadedFile = FS_LoadFile(headerFilesystem, "maps/base1.bsp");
+assert.deepEqual(Array.from(headerLoadedFile ?? new Uint8Array()), [1, 2, 3], "FS_LoadFile header mismatch");
+if (headerLoadedFile) {
+  headerLoadedFile[0] = 9;
+}
+assert.deepEqual(
+  Array.from(readMountedFile(headerFilesystem, "maps/base1.bsp")?.bytes ?? new Uint8Array()),
+  [1, 2, 3],
+  "FS_LoadFile ownership header mismatch"
+);
+const headerReadTarget = new Uint8Array(3);
+FS_Read(headerReadTarget, 3, new Uint8Array([4, 5, 6]));
+assert.deepEqual(Array.from(headerReadTarget), [4, 5, 6], "FS_Read header mismatch");
+FS_FreeFile(headerReadTarget);
+assert.equal(FS_ExecAutoexec(headerFilesystem), true, "FS_ExecAutoexec header mismatch");
+assert.equal(FS_SetGamedir(headerFilesystem, "rogue", { "maps/rogue1.bsp": new Uint8Array([7]) }), true, "FS_SetGamedir header mismatch");
+assert.equal(FS_Gamedir(headerFilesystem), "rogue", "FS_SetGamedir gamedir header mismatch");
+assert.equal(FS_NextPath(headerFilesystem, null), "rogue", "FS_NextPath first header mismatch");
+assert.equal(FS_NextPath(headerFilesystem, "rogue"), "baseq2", "FS_NextPath second header mismatch");
+
+const headerInitializedFilesystem = createVirtualFilesystem();
+const headerRegisteredCommands: string[] = [];
+const headerCvars: Array<{ name: string; value: string; flags: number }> = [];
+FS_InitFilesystem(headerInitializedFilesystem, {
+  commands: {
+    addCommand: (name) => {
+      headerRegisteredCommands.push(name);
+    }
+  },
+  cvars: {
+    get: (name, value, flags) => {
+      headerCvars.push({ name, value, flags });
+      return { string: name === "game" ? "xatrix" : value };
+    }
+  },
+  resolveDirectoryFiles: (path) => (
+    path === "baseq2"
+      ? { "maps/base1.bsp": new Uint8Array([8]) }
+      : path === "xatrix"
+        ? { "maps/base1.bsp": new Uint8Array([9]) }
+        : undefined
+  )
+});
+assert.deepEqual(headerRegisteredCommands.sort(), ["dir", "link", "path"], "FS_InitFilesystem command header mismatch");
+assert.deepEqual(headerCvars, [
+  { name: "basedir", value: ".", flags: 8 },
+  { name: "cddir", value: "", flags: 8 },
+  { name: "game", value: "", flags: 20 }
+], "FS_InitFilesystem cvar header mismatch");
+assert.equal(FS_Gamedir(headerInitializedFilesystem), "xatrix", "FS_InitFilesystem game header mismatch");
 
 const initializedStorage = new Uint8Array([1, 2, 3, 4]);
 const initializedBuffer = createSizeBuffer(1, true);
@@ -985,6 +1144,47 @@ const invalidDirBuffer = createSizeBuffer(new Uint8Array([255]));
 invalidDirBuffer.cursize = 1;
 assert.throws(() => MSG_ReadDir(invalidDirBuffer), /out of range/, "MSG_ReadDir invalid index mismatch");
 
+const C_ENTITY_DELTA_HEADER =
+  C_U_NUMBER16 |
+  C_U_MODEL |
+  C_U_FRAME8 |
+  C_U_SKIN8 |
+  C_U_ORIGIN1 |
+  C_U_RENDERFX8 |
+  C_U_SOUND |
+  C_U_EVENT |
+  C_U_OLDORIGIN |
+  C_U_MOREBITS1 |
+  C_U_MOREBITS2 |
+  C_U_MOREBITS3;
+assert.equal(C_ENTITY_DELTA_HEADER, 0x058199b1, "C MSG_WriteDeltaEntity representative header expectation mismatch");
+const C_ENTITY_DELTA_FULL_HEADER =
+  C_U_MODEL |
+  C_U_MODEL2 |
+  C_U_MODEL3 |
+  C_U_MODEL4 |
+  C_U_FRAME16 |
+  C_U_SKIN8 |
+  C_U_SKIN16 |
+  C_U_EFFECTS8 |
+  C_U_EFFECTS16 |
+  C_U_RENDERFX8 |
+  C_U_RENDERFX16 |
+  C_U_ORIGIN1 |
+  C_U_ORIGIN2 |
+  C_U_ORIGIN3 |
+  C_U_ANGLE1 |
+  C_U_ANGLE2 |
+  C_U_ANGLE3 |
+  C_U_OLDORIGIN |
+  C_U_SOUND |
+  C_U_EVENT |
+  C_U_SOLID |
+  C_U_MOREBITS1 |
+  C_U_MOREBITS2 |
+  C_U_MOREBITS3;
+assert.equal(C_ENTITY_DELTA_FULL_HEADER, 0x0fffdeaf, "C MSG_WriteDeltaEntity full header expectation mismatch");
+
 const baseEntity = createEntityState();
 baseEntity.number = 300;
 const deltaEntity = createEntityState();
@@ -1001,7 +1201,7 @@ const entityBuffer = createSizeBuffer(128);
 MSG_WriteDeltaEntity(baseEntity, deltaEntity, entityBuffer, false, true);
 assert.deepEqual(
   Array.from(entityBuffer.data.subarray(0, 4)),
-  [177, 153, 129, 5],
+  [C_ENTITY_DELTA_HEADER & 255, (C_ENTITY_DELTA_HEADER >> 8) & 255, (C_ENTITY_DELTA_HEADER >> 16) & 255, (C_ENTITY_DELTA_HEADER >> 24) & 255],
   "MSG delta entity header bytes mismatch"
 );
 entityBuffer.readcount = 0;
@@ -1012,18 +1212,7 @@ const entityBits =
   (MSG_ReadByte(entityBuffer) << 24);
 assert.equal(
   entityBits,
-  U_NUMBER16 |
-    U_MODEL |
-    U_FRAME8 |
-    U_SKIN8 |
-    U_ORIGIN1 |
-    U_RENDERFX8 |
-    U_SOUND |
-    U_EVENT |
-    U_OLDORIGIN |
-    U_MOREBITS1 |
-    U_MOREBITS2 |
-    U_MOREBITS3,
+  C_ENTITY_DELTA_HEADER,
   "MSG delta entity bits mismatch"
 );
 assert.equal(MSG_ReadShort(entityBuffer), 300, "MSG delta entity number mismatch");
@@ -1070,7 +1259,7 @@ const fullBuffer = createSizeBuffer(128);
 MSG_WriteDeltaEntity(fullBase, fullDelta, fullBuffer, false, true);
 assert.deepEqual(
   Array.from(fullBuffer.data.subarray(0, 4)),
-  [175, 222, 255, 15],
+  [C_ENTITY_DELTA_FULL_HEADER & 255, (C_ENTITY_DELTA_FULL_HEADER >> 8) & 255, (C_ENTITY_DELTA_FULL_HEADER >> 16) & 255, (C_ENTITY_DELTA_FULL_HEADER >> 24) & 255],
   "MSG delta entity full header bytes mismatch"
 );
 fullBuffer.readcount = 0;
@@ -1081,30 +1270,7 @@ const fullBits =
   (MSG_ReadByte(fullBuffer) << 24);
 assert.equal(
   fullBits,
-  U_MODEL |
-    U_MODEL2 |
-    U_MODEL3 |
-    U_MODEL4 |
-    U_FRAME16 |
-    U_SKIN8 |
-    U_SKIN16 |
-    U_EFFECTS8 |
-    U_EFFECTS16 |
-    U_RENDERFX8 |
-    U_RENDERFX16 |
-    U_ORIGIN1 |
-    U_ORIGIN2 |
-    U_ORIGIN3 |
-    U_ANGLE1 |
-    U_ANGLE2 |
-    U_ANGLE3 |
-    U_OLDORIGIN |
-    U_SOUND |
-    U_EVENT |
-    U_SOLID |
-    U_MOREBITS1 |
-    U_MOREBITS2 |
-    U_MOREBITS3,
+  C_ENTITY_DELTA_FULL_HEADER,
   "MSG delta entity full bits mismatch"
 );
 assert.equal(MSG_ReadByte(fullBuffer), 12, "MSG delta entity full number mismatch");

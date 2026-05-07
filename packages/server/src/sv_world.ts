@@ -87,6 +87,15 @@ interface areanode_t {
   solid_edicts: link_t;
 }
 
+/**
+ * Original name: moveclip_t
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Carries the swept bbox extents, trace accumulator and entity filtering state for `SV_Trace`.
+ */
 interface moveclip_t {
   boxmins: vec3_t;
   boxmaxs: vec3_t;
@@ -698,6 +707,16 @@ function SV_HullForEntity(ent: edict_t, context: ServerWorldContext): number {
   return CM_HeadnodeForBox(context.collisionWorld, ent.mins, ent.maxs);
 }
 
+/**
+ * Original name: SV_ClipMoveToEntities
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clips the current move against linked solid edicts and preserves the earliest/startsolid trace.
+ * - Applies the original `passedict`, owner and dead-monster contentmask filters.
+ */
 function SV_ClipMoveToEntities(
   clip: moveclip_t,
   context: ServerWorldContext,
@@ -776,6 +795,15 @@ function SV_ClipMoveToEntities(
   }
 }
 
+/**
+ * Original name: SV_TraceBounds
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the expanded query bounds enclosing the whole swept box move.
+ */
 function SV_TraceBounds(
   start: vec3_t,
   mins: vec3_t,

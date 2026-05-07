@@ -29,6 +29,8 @@ import type { refexport_t } from "./ref.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (renderer-facing adapter shape)
  * Category: New
  * Purpose: Describe one active cinematic frame ready for a renderer adapter.
  *
@@ -45,6 +47,8 @@ export interface ClientCinematicSnapshot {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (host callback adapter shape)
  * Category: New
  * Purpose: Describe the host callbacks needed by the current cinematic port.
  *
@@ -66,6 +70,8 @@ export interface ClientScreenHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (screen bridge adapter shape)
  * Category: New
  * Purpose: Describe the minimal screen callbacks the cinematic port needs from `screen.ts`.
  *
@@ -376,6 +382,8 @@ export function SCR_PlayCinematic(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (typed-array stream helper)
  * Category: New
  * Purpose: Read one little-endian 32-bit value from the loaded cinematic stream and advance the cursor.
  *
@@ -399,6 +407,8 @@ function readCinematicLong(runtime: ClientRuntime): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (typed-array stream helper)
  * Category: New
  * Purpose: Read one byte range from the loaded cinematic stream and advance the cursor.
  *
@@ -512,6 +522,7 @@ function Huff1TableInit(runtime: ClientRuntime): void {
  * - Decompresses one order-1 Huffman cinematic frame into indexed pixels.
  *
  * Porting notes:
+ * - The original `cblock_t` is represented by the compressed input and returned `Uint8Array`.
  * - Replaces the original pointer arithmetic with explicit typed-array offsets.
  */
 function Huff1Decompress(runtime: ClientRuntime, input: Uint8Array): Uint8Array {
@@ -620,6 +631,8 @@ function SCR_ReadNextFrame(runtime: ClientRuntime, hooks: ClientScreenHooks = {}
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (renderer snapshot adapter)
  * Category: New
  * Purpose: Build a renderer-neutral snapshot for the current cinematic frame.
  *

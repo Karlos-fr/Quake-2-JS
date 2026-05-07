@@ -18,6 +18,9 @@ import { join } from "node:path";
 import {
   CL_ParseConfigString,
   CL_ParseDownload,
+  CL_ParseDelta,
+  CL_ParseEntityBits,
+  CL_ParseFrame,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
   CL_ParseServerData,
@@ -34,10 +37,12 @@ import {
   CS_PLAYERSKINS,
   CS_SOUNDS,
   MSG_WriteByte,
+  MSG_WriteCoord,
   MSG_WriteLong,
   MSG_WritePos,
   MSG_WriteShort,
   MSG_WriteString,
+  MSG_WriteAngle,
   MZ_BLASTER,
   MZ_SILENCED,
   MAX_EDICTS,
@@ -47,7 +52,29 @@ import {
   SND_OFFSET,
   SND_POS,
   SND_VOLUME,
-  svc_ops_e
+  svc_ops_e,
+  U_ANGLE1,
+  U_ANGLE2,
+  U_ANGLE3,
+  U_EFFECTS8,
+  U_EVENT,
+  U_FRAME16,
+  U_MODEL,
+  U_MODEL2,
+  U_MOREBITS1,
+  U_MOREBITS2,
+  U_MOREBITS3,
+  U_NUMBER16,
+  U_OLDORIGIN,
+  U_ORIGIN1,
+  U_ORIGIN2,
+  U_ORIGIN3,
+  U_REMOVE,
+  U_SKIN16,
+  U_SKIN8,
+  U_SOLID,
+  createEntityState,
+  entity_event_t
 } from "../../packages/qcommon/src/index.js";
 
 function resetIncoming(runtime: ReturnType<typeof createClientRuntime>): void {
@@ -371,5 +398,103 @@ assert.equal(executedBuffer, 1, "CL_ParseServerMessage command-buffer execution 
 assert.equal(serverDataName, "Map Unit", "CL_ParseServerMessage serverdata handoff mismatch");
 assert.equal(wroteDemo, 1, "CL_ParseServerMessage demo write mismatch");
 assert.equal(runtime.cl.screen.graph_current, 1, "CL_ParseServerMessage should add one netgraph ping sample");
+
+const entityBitsRuntime = createClientRuntime();
+const extendedBits = U_MOREBITS1 | U_MOREBITS2 | U_MOREBITS3 | U_NUMBER16 | U_MODEL | U_MODEL2 | U_SOLID;
+MSG_WriteByte(entityBitsRuntime.net_message, extendedBits & 0xff);
+MSG_WriteByte(entityBitsRuntime.net_message, (extendedBits >> 8) & 0xff);
+MSG_WriteByte(entityBitsRuntime.net_message, (extendedBits >> 16) & 0xff);
+MSG_WriteByte(entityBitsRuntime.net_message, (extendedBits >> 24) & 0xff);
+MSG_WriteShort(entityBitsRuntime.net_message, 513);
+entityBitsRuntime.net_message.readcount = 0;
+assert.deepEqual(
+  CL_ParseEntityBits(entityBitsRuntime),
+  { bits: extendedBits, number: 513 },
+  "CL_ParseEntityBits should preserve extended bit headers and 16-bit entity numbers"
+);
+
+const deltaRuntime = createClientRuntime();
+const deltaFrom = createEntityState();
+deltaFrom.origin = [1, 2, 3];
+deltaFrom.angles = [4, 5, 6];
+deltaFrom.modelindex = 9;
+deltaFrom.frame = 1;
+const deltaTo = createEntityState();
+const deltaBits = U_MODEL | U_FRAME16 | U_SKIN8 | U_SKIN16 | U_EFFECTS8 | U_ORIGIN1 | U_ORIGIN2 | U_ORIGIN3 | U_ANGLE1 | U_ANGLE2 | U_ANGLE3 | U_OLDORIGIN | U_EVENT | U_SOLID;
+MSG_WriteByte(deltaRuntime.net_message, 17);
+MSG_WriteShort(deltaRuntime.net_message, 321);
+MSG_WriteLong(deltaRuntime.net_message, 0x11223344);
+MSG_WriteByte(deltaRuntime.net_message, 0x7f);
+MSG_WriteCoord(deltaRuntime.net_message, 12.25);
+MSG_WriteCoord(deltaRuntime.net_message, -8.5);
+MSG_WriteCoord(deltaRuntime.net_message, 0.125);
+MSG_WriteAngle(deltaRuntime.net_message, 90);
+MSG_WriteAngle(deltaRuntime.net_message, 180);
+MSG_WriteAngle(deltaRuntime.net_message, 270);
+MSG_WritePos(deltaRuntime.net_message, [5, 6, 7]);
+MSG_WriteByte(deltaRuntime.net_message, entity_event_t.EV_OTHER_TELEPORT);
+MSG_WriteShort(deltaRuntime.net_message, 0x1234);
+deltaRuntime.net_message.readcount = 0;
+CL_ParseDelta(deltaRuntime, deltaFrom, deltaTo, 42, deltaBits);
+assert.equal(deltaTo.number, 42, "CL_ParseDelta should stamp the new entity number");
+assert.equal(deltaTo.modelindex, 17, "CL_ParseDelta should parse modelindex");
+assert.equal(deltaTo.frame, 321, "CL_ParseDelta should parse 16-bit frame");
+assert.equal(deltaTo.skinnum, 0x11223344, "CL_ParseDelta should parse combined 32-bit skinnum");
+assert.equal(deltaTo.effects, 0x7f, "CL_ParseDelta should parse 8-bit effects");
+assert.deepEqual(deltaTo.origin, [12.25, -8.5, 0.125], "CL_ParseDelta should parse coordinates");
+assert.deepEqual(deltaTo.old_origin, [5, 6, 7], "CL_ParseDelta should parse explicit old_origin");
+assert.equal(deltaTo.event, entity_event_t.EV_OTHER_TELEPORT, "CL_ParseDelta should parse events");
+assert.equal(deltaTo.solid, 0x1234, "CL_ParseDelta should parse solid");
+
+const frameRuntime = createClientRuntime();
+frameRuntime.cls.serverProtocol = 34;
+frameRuntime.cl.time = 400;
+frameRuntime.cl_entities[5].baseline.modelindex = 2;
+frameRuntime.cl_entities[5].baseline.origin = [10, 20, 30];
+frameRuntime.cl_entities[5].baseline.old_origin = [9, 19, 29];
+frameRuntime.cl_parse_entities[0].number = 3;
+frameRuntime.cl_parse_entities[0].modelindex = 8;
+frameRuntime.cl_parse_entities[0].origin = [1, 1, 1];
+frameRuntime.cl_parse_entities[0].old_origin = [0, 0, 0];
+frameRuntime.cl_parse_entities[1].number = 7;
+frameRuntime.cl_parse_entities[1].modelindex = 9;
+frameRuntime.cl_parse_entities[1].origin = [2, 2, 2];
+frameRuntime.cl_parse_entities[1].old_origin = [1, 1, 1];
+frameRuntime.cl.parse_entities = 2;
+const oldFrame = frameRuntime.cl.frames[4];
+oldFrame.valid = true;
+oldFrame.serverframe = 4;
+oldFrame.parse_entities = 0;
+oldFrame.num_entities = 2;
+
+MSG_WriteLong(frameRuntime.net_message, 5);
+MSG_WriteLong(frameRuntime.net_message, 4);
+MSG_WriteByte(frameRuntime.net_message, 0);
+MSG_WriteByte(frameRuntime.net_message, 2);
+MSG_WriteByte(frameRuntime.net_message, 0xaa);
+MSG_WriteByte(frameRuntime.net_message, 0x55);
+MSG_WriteByte(frameRuntime.net_message, svc_ops_e.svc_playerinfo);
+MSG_WriteShort(frameRuntime.net_message, 0);
+MSG_WriteLong(frameRuntime.net_message, 0);
+MSG_WriteByte(frameRuntime.net_message, svc_ops_e.svc_packetentities);
+MSG_WriteByte(frameRuntime.net_message, U_MOREBITS1);
+MSG_WriteByte(frameRuntime.net_message, (U_MODEL >> 8) & 0xff);
+MSG_WriteByte(frameRuntime.net_message, 5);
+MSG_WriteByte(frameRuntime.net_message, 11);
+MSG_WriteByte(frameRuntime.net_message, U_REMOVE);
+MSG_WriteByte(frameRuntime.net_message, 7);
+MSG_WriteByte(frameRuntime.net_message, 0);
+MSG_WriteByte(frameRuntime.net_message, 0);
+frameRuntime.net_message.readcount = 0;
+CL_ParseFrame(frameRuntime);
+assert.equal(frameRuntime.cl.frame.valid, true, "CL_ParseFrame should accept a valid delta frame");
+assert.equal(frameRuntime.cl.frame.parse_entities, 2, "CL_ParsePacketEntities should append after the previous parse ring");
+assert.equal(frameRuntime.cl.frame.num_entities, 2, "CL_ParsePacketEntities should include unchanged and baseline entities but not removed ones");
+assert.equal(frameRuntime.cl_parse_entities[2].number, 3, "CL_ParsePacketEntities should carry unchanged old entities before new baselines");
+assert.equal(frameRuntime.cl_parse_entities[3].number, 5, "CL_ParsePacketEntities should parse new baseline entities");
+assert.equal(frameRuntime.cl_parse_entities[3].modelindex, 11, "CL_DeltaEntity should apply packet bits over the baseline");
+assert.equal(frameRuntime.cl_entities[5].serverframe, 5, "CL_DeltaEntity should update centity serverframe");
+assert.equal(frameRuntime.cl_entities[5].trailcount, 1024, "CL_DeltaEntity should reset trailcount for newly linked entities");
+assert.deepEqual(frameRuntime.cl.frame.areabits.subarray(0, 2), new Uint8Array([0xaa, 0x55]), "CL_ParseFrame should preserve areabits for renderer visibility");
 
 console.log("quake2-cl-parse: ok");

@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: `MSG_WriteDeltaEntity()` uniquement
-- Prochain lot recommande: reprendre la matrice autour de `MSG_WriteDeltaEntity()` sous consigne separee; ne pas elargir automatiquement aux temporaires locaux si la regle super admin reste active.
+- Dernier lot valide: constantes `U_*` relues pour l'impact `MSG_WriteDeltaEntity()`, `MSG_WriteDeltaEntity()` et son local `bits`
+- Prochain lot recommande: primitives de lecture message `MSG_BeginReading`, `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, puis locaux associes si le lot reste coherent.
 
 ## Preuves session
 
@@ -66,3 +66,15 @@
 - Correction non appliquee dans cette mission: modifier `packages/qcommon/src/protocol.ts` releve de la matrice `qcommon_qcommon.h.md`, pas du port proprietaire `packages/qcommon/src/messages.ts` autorise ici.
 - Prochain lot recommande: corriger/valider les masques `U_*` dans `Quake-2-master/qcommon/qcommon.h` / `packages/qcommon/src/protocol.ts`, ajuster les tests avec valeurs numeriques C, puis revalider `MSG_WriteDeltaEntity()`.
 - `AVANCEMENT_GLOBAL.md`: non modifie; le coordinateur doit mettre la ligne `qcommon/common.c` en `A revoir` ou `Partiel/Non conforme` selon sa politique globale.
+
+## Revalidation session - 2026-05-07
+
+- Lot traite: conflit d'ownership `U_*`/`qcommon.h` signale et limite aux corrections/tests necessaires pour `qcommon/common.c`; revalidation de `MSG_WriteDeltaEntity()` et de son local genere `bits`.
+- Source C/H relue: `common.c` calcule les flags delta et encode les octets `U_MOREBITS*`; `qcommon.h` definit les masques C stricts, notamment `U_EFFECTS8 = 0x00004000`, `U_MOREBITS2 = 0x00008000`, `U_SKIN8 = 0x00010000`, `U_OLDORIGIN = 0x01000000`, `U_SKIN16 = 0x02000000`, `U_SOUND = 0x04000000`, `U_SOLID = 0x08000000`.
+- Cible TS relue: `packages/qcommon/src/protocol.ts` expose maintenant les valeurs C strictes; `packages/qcommon/src/messages.ts` conserve l'ownership attendu pour `MSG_WriteDeltaEntity`, le commentaire d'en-tete requis, les gardes `!number`/`MAX_EDICTS`, les branches de flags et l'ordre d'ecriture C.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` compare les `U_*` a des valeurs numeriques C independantes et verifie les en-tetes delta `0x058199b1` et `0x0fffdeaf`; `scripts/verify/quake2-cl-parse.ts` ecrit le test packetentities avec `U_MOREBITS1` + second octet, conforme au protocole C.
+- Runtime verifie: `MSG_WriteDeltaEntity` est appelee depuis `SV_EmitPacketEntities`, baselines serveur/client et messages demo; la consommation client passe par `CL_ParseServerMessage` -> `CL_ParseFrame` -> `CL_ParsePacketEntities` -> `CL_DeltaEntity`/`CL_ParseDelta`.
+- apps/web verifie: `full-game-server-host.ts` declenche `SV_WriteFrameToClient`, recopie le message dans `client.net_message` et appelle le parsing client porte sans encodeur delta parallele.
+- renderer-three verifie: les sorties visibles attendues des deltas (entites, modeles, frames, skins, renderfx, beams, dlights, particules, areabits, camera/scene) alimentent `ClientRefreshFrame` puis les adapters renderer.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-parse`, `npm run verify:server:ents`, `npm run verify:full-game:server-host`, `npm run verify:full-game:server-snapshots`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
+- Matrice mise a jour: `MSG_WriteDeltaEntity` passe `Valide`; le `bits` local associe passe `Non applicable`.

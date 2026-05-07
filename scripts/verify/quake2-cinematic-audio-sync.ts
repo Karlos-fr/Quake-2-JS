@@ -116,7 +116,10 @@ assert.equal(firstDraw.cinematic?.pixels[0], 7, "first cinematic image should be
 SCR_RunCinematic(client, { currentTimeMs: 70, keyDest: "game" }, hooks);
 assert.equal(rawChunks.length, 1, "cinematic should not queue audio before the next 14 Hz frame boundary");
 
-SCR_RunCinematic(client, { currentTimeMs: 144, keyDest: "game" }, hooks);
+SCR_RunCinematic(client, { currentTimeMs: 144, keyDest: "menu" }, hooks);
+assert.equal(rawChunks.length, 1, "cinematic should pause without queueing audio when key_dest is not game");
+
+SCR_RunCinematic(client, { currentTimeMs: 216, keyDest: "game" }, hooks);
 assert.equal(rawChunks.length, 2, "cinematic should queue the next audio slice at the next 14 Hz frame boundary");
 assert.deepEqual(rawChunks[1], {
   count: 1000,
@@ -124,9 +127,9 @@ assert.deepEqual(rawChunks[1], {
   sampleWidth: 1,
   channels: 1,
   firstSample: 22
-}, "second cinematic frame audio slice mismatch");
+}, "second cinematic frame audio slice mismatch after pause");
 
-SCR_RunCinematic(client, { currentTimeMs: 286, keyDest: "game" }, hooks);
+SCR_RunCinematic(client, { currentTimeMs: 358, keyDest: "game" }, hooks);
 assert.equal(client.cl.cinematic.cinematictime, 0, "cinematic should stop after the stream terminator");
 assert.deepEqual(restarts, [14, undefined], "cinematic completion should restore the previous sound backend rate");
 

@@ -364,6 +364,20 @@ assert.equal(client.cl.cinematic.kind, "none", "SCR_StopCinematic kind mismatch"
 assert.equal(client.cl.cinematic.name, "", "SCR_StopCinematic name mismatch");
 assert.equal(client.cl.cinematic.file, null, "SCR_StopCinematic file mismatch");
 
+const missingClient = createClientRuntime();
+let missingCdStops = 0;
+const missingOffset = missingClient.net_message.cursize;
+const playedMissingVideo = SCR_PlayCinematic(missingClient, "missing.cin", {
+  loadBinaryFile: () => null,
+  onCDAudioStop: () => {
+    missingCdStops += 1;
+  }
+});
+assert.equal(playedMissingVideo, false, "SCR_PlayCinematic missing video result mismatch");
+assert.equal(missingCdStops, 1, "SCR_PlayCinematic missing video CDAudio stop mismatch");
+assert.equal(missingClient.cl.cinematic.cinematictime, 0, "SCR_PlayCinematic missing video time mismatch");
+assert.ok(missingClient.net_message.cursize > missingOffset, "SCR_PlayCinematic missing video should queue nextserver");
+
 const rawAudio: number[] = [];
 const soundRestarts: Array<number | undefined> = [];
 const playedVideo = SCR_PlayCinematic(client, "intro.cin", {

@@ -388,11 +388,17 @@ export interface client_sky_t {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the client-side cinematic state visible from `cl_cin.c` and `cl_scrn.c`.
+ * Original name: cinematics_t
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must keep static-image and future streamed-cinematic states explicit.
+ * Behavior:
+ * - Preserves the active cinematic decoder, palette, image and audio stream state.
+ *
+ * Porting notes:
+ * - Stores the original global `cin` block inside explicit client runtime state.
+ * - Uses typed arrays and a loaded byte buffer instead of C-owned file pointers.
  */
 export interface client_cinematic_t {
   cinematictime: number;

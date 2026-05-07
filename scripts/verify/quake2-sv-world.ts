@@ -21,8 +21,15 @@ import {
   createServerWorldProcedures
 } from "../../packages/server/src/index.js";
 import { createCollisionWorld } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_MONSTER } from "../../packages/qcommon/src/q_shared.js";
-import { createRuntimeEntity, SOLID_BBOX, AREA_SOLID, type game_export_t } from "../../packages/game/src/index.js";
+import { CONTENTS_DEADMONSTER, CONTENTS_MONSTER } from "../../packages/qcommon/src/q_shared.js";
+import {
+  createRuntimeEntity,
+  SOLID_BBOX,
+  AREA_SOLID,
+  SVF_DEADMONSTER,
+  type edict_t,
+  type game_export_t
+} from "../../packages/game/src/index.js";
 
 const DEFAULT_PAK_PATH = path.join(process.cwd(), "Quake 2", "baseq2", "pak0.pak");
 const MAP_PATH = "maps/base1.bsp";
@@ -56,14 +63,20 @@ function main(): void {
   worldspawn.inuse = true;
 
   const box = createRuntimeEntity({}, 1);
-  box.inuse = true;
-  box.solid = SOLID_BBOX;
-  box.mins = [-16, -16, -16];
-  box.maxs = [16, 16, 16];
-  box.s.origin = [0, 0, 32];
-  box.s.angles = [0, 0, 0];
+  configureBoxEntity(box, [0, 0, 32]);
 
-  const ge = createGameExports([worldspawn, box]);
+  const owner = createRuntimeEntity({}, 2);
+  configureBoxEntity(owner, [0, 80, 32]);
+
+  const missile = createRuntimeEntity({}, 3);
+  configureBoxEntity(missile, [0, 120, 32]);
+  missile.owner = owner;
+
+  const deadMonster = createRuntimeEntity({}, 4);
+  configureBoxEntity(deadMonster, [0, 160, 32]);
+  deadMonster.svflags = SVF_DEADMONSTER;
+
+  const ge = createGameExports([worldspawn, box, owner, missile, deadMonster]);
   const world = createServerWorldProcedures({
     sv,
     ge,
@@ -72,6 +85,9 @@ function main(): void {
 
   world.SV_ClearWorld();
   world.SV_LinkEdict(box);
+  world.SV_LinkEdict(owner);
+  world.SV_LinkEdict(missile);
+  world.SV_LinkEdict(deadMonster);
 
   assert.equal(box.linkcount, 1, "SV_LinkEdict should increment linkcount");
   assert.ok(box.s.solid > 0, "SV_LinkEdict should encode bbox solid value");
@@ -88,6 +104,35 @@ function main(): void {
   assert.ok(trace.fraction < 1, "SV_Trace should hit linked box entity");
   assert.equal(trace.ent, box, "SV_Trace should report linked box as hit entity");
 
+  const passedictTrace = world.SV_Trace([-64, 0, 32], [0, 0, 0], [0, 0, 0], [64, 0, 32], box, CONTENTS_MONSTER);
+  assert.equal(passedictTrace.ent, worldspawn, "SV_Trace should ignore the passedict itself");
+
+  const ownerTrace = world.SV_Trace([-64, 80, 32], [0, 0, 0], [0, 0, 0], [64, 80, 32], missile, CONTENTS_MONSTER);
+  assert.equal(ownerTrace.ent, worldspawn, "SV_Trace should ignore the owner of the passedict");
+
+  const missileTrace = world.SV_Trace([-64, 120, 32], [0, 0, 0], [0, 0, 0], [64, 120, 32], owner, CONTENTS_MONSTER);
+  assert.equal(missileTrace.ent, worldspawn, "SV_Trace should ignore edicts owned by the passedict");
+
+  const deadMonsterFilteredTrace = world.SV_Trace(
+    [-64, 160, 32],
+    [0, 0, 0],
+    [0, 0, 0],
+    [64, 160, 32],
+    null,
+    CONTENTS_MONSTER
+  );
+  assert.equal(deadMonsterFilteredTrace.ent, worldspawn, "SV_Trace should skip dead monsters unless the mask includes them");
+
+  const deadMonsterTrace = world.SV_Trace(
+    [-64, 160, 32],
+    [0, 0, 0],
+    [0, 0, 0],
+    [64, 160, 32],
+    null,
+    CONTENTS_MONSTER | CONTENTS_DEADMONSTER
+  );
+  assert.equal(deadMonsterTrace.ent, deadMonster, "SV_Trace should include dead monsters when CONTENTS_DEADMONSTER is set");
+
   world.SV_UnlinkEdict(box);
   const areaCountAfterUnlink = world.SV_AreaEdicts([-32, -32, 0], [32, 32, 64], touch, touch.length, AREA_SOLID);
   assert.equal(areaCountAfterUnlink, 0, "SV_UnlinkEdict should remove entity from area query");
@@ -95,7 +140,16 @@ function main(): void {
   console.log("quake2-sv-world: ok");
 }
 
-function createGameExports(edicts: ReturnType<typeof createRuntimeEntity>[]): game_export_t {
+function configureBoxEntity(entity: edict_t, origin: [number, number, number]): void {
+  entity.inuse = true;
+  entity.solid = SOLID_BBOX;
+  entity.mins = [-16, -16, -16];
+  entity.maxs = [16, 16, 16];
+  entity.s.origin = [...origin];
+  entity.s.angles = [0, 0, 0];
+}
+
+function createGameExports(edicts: edict_t[]): game_export_t {
   return {
     apiversion: 3,
     Init: () => {},

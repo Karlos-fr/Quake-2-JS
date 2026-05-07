@@ -2,14 +2,14 @@
 
 ## Dernier lot valide
 
-- Lot traite: boucle frame serveur `SV_CalcPings`, `SV_GiveMsec`, `SV_ReadPackets`, `SV_CheckTimeouts`, `SV_PrepWorldFrame`, `SV_RunGameFrame`, `SV_Frame`, plus locaux C generes associes (`i`, `qport`, `droppoint`, `zombiepoint`, `ent`).
-- Source C comparee: definitions dans `Quake-2-master/server/sv_main.c`, de `SV_CalcPings` a `SV_Frame`.
-- Cible TS comparee: `packages/server/src/sv_main.ts`, avec integration runtime dans `packages/server/src/runtime.ts`, bridge top-level `packages/server/src/host.ts`, appel `qcommon` `SV_Frame`, adapter navigateur `apps/web/src/full-game-server-host.ts`, et consommation renderer via snapshots/refresh frames.
-- Corrections appliquees: `SV_Frame` appelle maintenant `context.randomInt?.()` apres l'avance realtime pour conserver l'effet C `rand()` par frame active; le reset `time_before_game`/`time_after_game` est effectue avant le retour serveur non initialise comme dans le C; le harness `quake2-sv-main.ts` verifie l'appel random.
-- Commentaires d'en-tete verifies: `SV_CalcPings`, `SV_GiveMsec`, `SV_ReadPackets`, `SV_CheckTimeouts`, `SV_PrepWorldFrame`, `SV_RunGameFrame`, `SV_Frame`.
-- Branchement runtime: valide via `createServerRuntimeFacade`, `createServerHostBindings`, `packages/server/src/host.ts`, et `packages/qcommon/src/qcommon.ts`; `SV_Frame` atteint les fonctions du lot et le flux `SV_ReadPackets`/`SV_ExecuteClientMessage`, `SV_SendClientMessages`, `SV_RecordDemoMessage`.
-- `apps/web`: valide via `createFullGameServerHost.frame()`, qui appelle le runtime serveur porte; le web delegue les packets, frames, snapshots et map state au runtime sans remplacer la logique serveur.
-- `renderer-three`: valide pour la consommation attendue; le lot produit indirectement les sorties visibles via `SV_RunGameFrame`, `SV_SendClientMessages`, snapshots/full-game frames, puis le renderer consomme camera, entites, areabits, dlights/particles/beams par le flux full-game verifie. Aucune integration directe `renderer-three` n'est attendue dans `sv_main.ts`.
+- Lot traite: heartbeat/shutdown master `HEARTBEAT_SECONDS`, `Master_Heartbeat`, `Master_Shutdown`, plus locaux C generes associes (`string`, `i`).
+- Source C comparee: definitions dans `Quake-2-master/server/sv_main.c`, de `HEARTBEAT_SECONDS` a `Master_Shutdown`.
+- Cible TS comparee: `packages/server/src/sv_main.ts`, avec integration runtime dans `SV_Frame` et `SV_Shutdown`, facade runtime `packages/server/src/runtime.ts`, bridge top-level `packages/server/src/host.ts`, appel `qcommon` serveur, et adapter navigateur `apps/web/src/full-game-server-host.ts`.
+- Corrections appliquees: restauration du nom source `HEARTBEAT_SECONDS` dans `sv_main.ts` et utilisation via `HEARTBEAT_MSEC`; le harness `quake2-sv-main.ts` verifie le seuil 300s, le throttle, le wraparound, les branches dedicated/public et les paquets master shutdown.
+- Commentaires d'en-tete verifies: `Master_Heartbeat`, `Master_Shutdown`.
+- Branchement runtime: valide; `SV_Frame` appelle `Master_Heartbeat` apres l'envoi client/demo, et `SV_Shutdown` appelle `Master_Shutdown` avant `SV_ShutdownGameProgs`.
+- `apps/web`: valide via `createFullGameServerHost.frame()` et `shutdown()`, qui deleguent au runtime serveur porte sans logique parallele.
+- `renderer-three`: aucune integration directe attendue; ce lot ne produit pas de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene. Les tests full-game snapshots/three-renderer confirment que le flux serveur visible reste intact.
 
 ## Tests lances
 
@@ -28,7 +28,8 @@
 - `SVC_RemoteCommand` reste `Close`: le redirect C global `Com_BeginRedirect`/`Com_EndRedirect` est modele par le callback `executeRconCommand` et une reponse out-of-band `print`.
 - `SV_ReadPackets` expose un retour `number` TS pour le harness, alors que le C est `void`; ce retour ne change pas les effets runtime.
 - `SV_Frame` reste `Close`: l'appel C `rand()` est modele par le callback optionnel `randomInt` du contexte runtime.
+- `Master_Heartbeat`/`Master_Shutdown` restent `Close`: le format varargs C `Netchan_OutOfBandPrint(..., "heartbeat\n%s", string)` est modele par interpolation de chaine TS, avec le meme payload OOB.
 
 ## Prochain lot recommande
 
-- Continuer apres la boucle frame serveur: `HEARTBEAT_SECONDS`, `Master_Heartbeat`, locaux associes (`string`, `i`), puis revalidation de la definition `Master_Shutdown` si le lot reste coherent.
+- Continuer avec `SV_UserinfoChanged` et locaux associes (`val`, `i`), puis `SV_Init` si le lot reste coherent.

@@ -263,17 +263,17 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_airaccelerate` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:pmove`, `verify:cl-pred`, `verify:server:init`, `verify:full-game:three-renderer`, `typecheck`; global C porte via contexte explicite. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Pmove` | `packages/qcommon/src/pmove.ts` | `Pmove` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:pmove`, `verify:client:pmove:viewheight`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`. |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_InitFilesystem` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_Gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_NextPath` | `packages/filesystem/src/files.ts` | `FS_NextPath` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_ExecAutoexec` | `packages/filesystem/src/files.ts` | `FS_ExecAutoexec` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FOpenFile` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FCloseFile` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_LoadFile` | `packages/filesystem/src/files.ts` | `FS_LoadFile` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_Read` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FreeFile` | `packages/filesystem/src/files.ts` | `FS_FreeFile` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_CreatePath` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_InitFilesystem` | `packages/filesystem/src/files.ts` | `FS_InitFilesystem` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_Gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_NextPath` | `packages/filesystem/src/files.ts` | `FS_NextPath` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_ExecAutoexec` | `packages/filesystem/src/files.ts` | `FS_ExecAutoexec` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FOpenFile` | `packages/filesystem/src/files.ts` | `readMountedFile` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FCloseFile` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Pas de `FILE *` ouvert dans le VFS in-memory; fermeture couverte par ownership `FS_LoadFile`/`FS_FreeFile`. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_LoadFile` | `packages/filesystem/src/files.ts` | `FS_LoadFile` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_Read` | `packages/filesystem/src/files.ts` | `FS_Read` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FreeFile` | `packages/filesystem/src/files.ts` | `FS_FreeFile` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_CreatePath` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Creation de repertoires host remplacee par montages VFS et stockage web; aucune sortie runtime/renderer visible directe. |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_FATAL` | `packages/qcommon/src/qcommon.ts` | `ERR_FATAL` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_DROP` | `packages/qcommon/src/qcommon.ts` | `ERR_DROP` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_QUIT` | `packages/qcommon/src/qcommon.ts` | `ERR_QUIT` | A verifier | A redecouper |  |

@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: gros lot netchan + cmodel header: `OLD_AVG`, `MAX_LATENT`, `netchan_t` et champs generes, `net_message`/`net_message_buffer`, `Netchan_*`, puis les prototypes `CM_*` de `CM_LoadMap` a `CM_ReadPortalState`.
+- Dernier lot valide: bloc filesystem header `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `FS_NextPath`, `FS_ExecAutoexec`, `FS_FOpenFile`, `FS_FCloseFile`, `FS_LoadFile`, `FS_Read`, `FS_FreeFile`, `FS_CreatePath`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc filesystem header dans `packages/filesystem/src/files.ts`: `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `FS_NextPath`, `FS_ExecAutoexec`, `FS_FOpenFile` via `readMountedFile`, `FS_FCloseFile`, `FS_LoadFile`, `FS_Read`, `FS_FreeFile`, `FS_CreatePath`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementation proprietaire `Quake-2-master/qcommon/files.c`.
+- Cible comparee: `packages/filesystem/src/files.ts`, export public `packages/filesystem/src/index.ts`, usages `packages/client`, `packages/server`, `apps/web`, `packages/renderer-three`, et harnais `scripts/verify/quake2-files.ts` / `scripts/verify/quake2-qcommon-header.ts`.
+- Decision: portage valide pour 9 entrees de matrice et 2 entrees `Non applicable`. Les prototypes `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `FS_NextPath`, `FS_ExecAutoexec`, `FS_LoadFile`, `FS_Read`, `FS_FreeFile` pointent vers le module proprietaire filesystem. `FS_FOpenFile` est valide comme `readMountedFile`, l'equivalent VFS qui resout liens, directories et PAKs sans `FILE *`. `FS_FCloseFile` est non applicable faute de handles `FILE *` dans le VFS in-memory. `FS_CreatePath` est non applicable: la creation de repertoires host est remplacee par montages VFS et stockage web.
+- Runtime: attendu et verifie. `FS_InitFilesystem` enregistre `path`/`link`/`dir`, cree `basedir`/`cddir`/`game`, monte `baseq2` et applique le game override; les lectures `FS_LoadFile`/`readMountedFile` alimentent assets/configs client, serveur, son et renderer host; `FS_SetGamedir` est atteint via le hook de cvar `game`.
+- apps/web: attendu et verifie. `apps/web/src/full-game.ts` appelle `FS_SetGamedir`, expose `onFS_LoadFile`/`onFS_FreeFile`, fournit `FS_Gamedir` aux hosts client/serveur/save/config, et ne remplace pas la logique VFS.
+- renderer-three: attendu indirectement pour les assets visibles. Le renderer consomme `FS_LoadFile`/`FS_FreeFile` via `refImport` pour images, modeles, frames, scene BSP et screenshots via `FS_Gamedir`; le flux three renderer a ete verifie. `FS_FCloseFile` et `FS_CreatePath` ne produisent pas directement modeles, images, particules, beams, dlights, temp entities, areabits, camera ou scene.
+- Commentaires: en-tetes `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `readMountedFile` (`Original name: FS_FOpenFile`), `FS_LoadFile`, `FS_Read`, `FS_FreeFile`, `FS_ExecAutoexec`, `FS_NextPath` verifies; les deux exclusions sont justifiees dans la matrice.
+- Corrections: ajout de preuves ciblees dans `scripts/verify/quake2-qcommon-header.ts`; correction d'ownership dans la matrice header pour `FS_InitFilesystem`, `FS_FOpenFile`, `FS_FCloseFile`, `FS_Read`, `FS_CreatePath`.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:files`, `npm run verify:web-config-gamedir`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc pmove header dans `packages/qcommon/src/pmove.ts`: `pm_airaccelerate` / `PmoveContext.pm_airaccelerate`, `PM_AirAccelerate` et `Pmove`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` (`extern float pm_airaccelerate`, prototype `Pmove`) et implementation proprietaire `Quake-2-master/qcommon/pmove.c`.
@@ -163,7 +176,7 @@
 
 ## Prochain lot recommande
 
-- Bloc filesystem `FS_*`: commencer par `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `FS_NextPath`, `FS_ExecAutoexec`, puis elargir a `FS_FOpenFile`/`FS_FCloseFile`/`FS_LoadFile` si le lot reste coherent.
+- Bloc misc/erreurs: `ERR_FATAL`, `ERR_DROP`, `ERR_QUIT`, `PRINT_ALL`, `PRINT_DEVELOPER`, puis `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Com_DPrintf`, `Com_Error`, `Com_Quit` si le lot reste coherent.
 
 ## Blocages
 

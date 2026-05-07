@@ -45,16 +45,16 @@
 | `Quake-2-master/server/sv_world.c` | function | `SV_PointContents` | `packages/server/src/sv_world.ts` | `SV_PointContents` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts` | `headnode` | Non applicable | A redecouper | Variable locale de `SV_PointContents`. |
 | `Quake-2-master/server/sv_world.c` | global | `angles` | `packages/server/src/sv_world.ts` | `angles` | Non applicable | A redecouper | Variable locale de `SV_PointContents`. |
-| `Quake-2-master/server/sv_world.c` | struct | `moveclip_t` | `packages/server/src/sv_world.ts` | `moveclip_t` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `passedict` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `contentmask` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_HullForEntity` | `packages/server/src/sv_world.ts` | `SV_HullForEntity` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_ClipMoveToEntities` | `packages/server/src/sv_world.ts` | `SV_ClipMoveToEntities` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts` | `headnode` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `angles` | `packages/server/src/sv_world.ts` | `angles` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_TraceBounds` | `packages/server/src/sv_world.ts` | `SV_TraceBounds` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `i` | `packages/server/src/sv_world.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_Trace` | `packages/server/src/sv_world.ts` | `SV_Trace` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | struct | `moveclip_t` | `packages/server/src/sv_world.ts` | `moveclip_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | Non applicable | A redecouper | Champ de `moveclip_t`, valide avec le struct et `SV_Trace`. |
+| `Quake-2-master/server/sv_world.c` | global | `passedict` | `packages/server/src/sv_world.ts` |  | Non applicable | A redecouper | Champ de `moveclip_t`, valide avec le struct et `SV_Trace`. |
+| `Quake-2-master/server/sv_world.c` | global | `contentmask` | `packages/server/src/sv_world.ts` |  | Non applicable | A redecouper | Champ de `moveclip_t`, valide avec le struct et `SV_Trace`. |
+| `Quake-2-master/server/sv_world.c` | function | `SV_HullForEntity` | `packages/server/src/sv_world.ts` | `SV_HullForEntity` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_ClipMoveToEntities` | `packages/server/src/sv_world.ts` | `SV_ClipMoveToEntities` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | Non applicable | A redecouper | Variable locale de `SV_ClipMoveToEntities`. |
+| `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts` | `headnode` | Non applicable | A redecouper | Variable locale de `SV_ClipMoveToEntities`. |
+| `Quake-2-master/server/sv_world.c` | global | `angles` | `packages/server/src/sv_world.ts` | `angles` | Non applicable | A redecouper | Variable locale de `SV_ClipMoveToEntities`. |
+| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | Non applicable | A redecouper | Accumulateur local de `SV_Trace`. |
+| `Quake-2-master/server/sv_world.c` | function | `SV_TraceBounds` | `packages/server/src/sv_world.ts` | `SV_TraceBounds` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `i` | `packages/server/src/sv_world.ts` | `i` | Non applicable | A redecouper | Variable locale de `SV_TraceBounds`. |
+| `Quake-2-master/server/sv_world.c` | function | `SV_Trace` | `packages/server/src/sv_world.ts` | `SV_Trace` | Valide | A redecouper |  |

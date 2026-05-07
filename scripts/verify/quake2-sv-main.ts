@@ -79,6 +79,8 @@ svs.clients = [client, freeClient];
 const hostname = Cvar_Get(cvarRuntime, "hostname", "quake2js", 0);
 const rcon_password = Cvar_Get(cvarRuntime, "rcon_password", "secret", 0);
 const sv_reconnect_limit = Cvar_Get(cvarRuntime, "sv_reconnect_limit", "3", 0);
+const serverDedicated = cvar("dedicated", 1);
+const serverPublic = cvar("public", 1);
 
 const main = createServerMainProcedures({
   sv,
@@ -97,8 +99,8 @@ const main = createServerMainProcedures({
   sv_showclamp: cvar("showclamp", 0),
   host_speeds: cvar("host_speeds", 1),
   sv_reconnect_limit,
-  dedicated: cvar("dedicated", 1),
-  public_server: cvar("public", 1),
+  dedicated: serverDedicated,
+  public_server: serverPublic,
   master_adr: [createMasterAdr(27910), createMasterAdr(27911)],
   SV_BroadcastPrintf: (_level, fmt, ...args) => {
     frameEvents.push(`broadcast:${fmt}:${args.join(",")}`);
@@ -209,14 +211,7 @@ client.state = client_state_t.cs_connected;
 main.SV_FinalMessage("Server restarting", true);
 assert.ok(transmitted.length >= 2, "SV_FinalMessage should transmit two passes to connected clients");
 
-transmitted.length = 0;
-svs.realtime = HEARTBEAT_BASE_TIME;
-svs.last_heartbeat = 0;
-main.Master_Heartbeat();
-assert.ok(transmitted.length >= 2, "Master_Heartbeat should send one packet per configured master");
-const afterFirstHeartbeat = transmitted.length;
-main.Master_Heartbeat();
-assert.equal(transmitted.length, afterFirstHeartbeat, "Master_Heartbeat should throttle until next interval");
+verifyMasterHeartbeat();
 
 verifyConnectionlessPing();
 verifyConnectionlessAck();
@@ -243,6 +238,54 @@ function verifyServerInit(): void {
   assert.equal(qnet.net_message.cursize, 0, "SV_Init should clear the shared net_message write cursor");
   assert.equal(qnet.net_message.readcount, 0, "SV_Init should reset the shared net_message read cursor");
   assert.equal(qnet.net_message.overflowed, false, "SV_Init should clear net_message overflow state");
+}
+
+function verifyMasterHeartbeat(): void {
+  transmitted.length = 0;
+  printed.length = 0;
+  serverDedicated.value = 1;
+  serverPublic.value = 1;
+  svs.realtime = HEARTBEAT_BASE_TIME;
+  svs.last_heartbeat = 0;
+
+  main.Master_Heartbeat();
+
+  assert.equal(transmitted.length, 2, "Master_Heartbeat should send one packet per configured master");
+  assert.equal(decodePacketPayload(transmitted[0]?.data ?? new Uint8Array()), "heartbeat\n\\hostname\\quake2js\n0 0 \"\"\n");
+  assert.equal(transmitted[0]?.to.port, 27910, "Master_Heartbeat should target the first configured master");
+  assert.equal(transmitted[1]?.to.port, 27911, "Master_Heartbeat should target the second configured master");
+  assert.equal(svs.last_heartbeat, HEARTBEAT_BASE_TIME, "Master_Heartbeat should stamp last_heartbeat after sending");
+  assert.equal(printed.filter((line) => line.startsWith("Sending heartbeat to")).length, 2);
+
+  main.Master_Heartbeat();
+  assert.equal(transmitted.length, 2, "Master_Heartbeat should throttle until the 300 second interval elapses");
+
+  svs.realtime = HEARTBEAT_BASE_TIME + 299_999;
+  main.Master_Heartbeat();
+  assert.equal(transmitted.length, 2, "Master_Heartbeat should keep throttling just before the C interval boundary");
+
+  svs.realtime = HEARTBEAT_BASE_TIME + 300_000;
+  main.Master_Heartbeat();
+  assert.equal(transmitted.length, 4, "Master_Heartbeat should send again at HEARTBEAT_SECONDS * 1000");
+
+  svs.last_heartbeat = HEARTBEAT_BASE_TIME + 10_000;
+  svs.realtime = HEARTBEAT_BASE_TIME + 5_000;
+  main.Master_Heartbeat();
+  assert.equal(svs.last_heartbeat, svs.realtime, "Master_Heartbeat should clamp last_heartbeat on realtime wraparound");
+
+  transmitted.length = 0;
+  svs.realtime = HEARTBEAT_BASE_TIME + 700_000;
+  svs.last_heartbeat = 0;
+  serverDedicated.value = 0;
+  main.Master_Heartbeat();
+  assert.equal(transmitted.length, 0, "Master_Heartbeat should ignore non-dedicated servers");
+
+  serverDedicated.value = 1;
+  serverPublic.value = 0;
+  main.Master_Heartbeat();
+  assert.equal(transmitted.length, 0, "Master_Heartbeat should ignore private dedicated servers");
+
+  serverPublic.value = 1;
 }
 
 function verifyConnectionlessPing(): void {
@@ -444,9 +487,12 @@ function verifyTimeoutsPingsMsecPrepAndFrame(): void {
 
 function verifyShutdownLifecycle(): void {
   transmitted.length = 0;
+  printed.length = 0;
   shutdownGameProgsCalls = 0;
   closedDemoHandles.length = 0;
   serverStates.length = 0;
+  serverDedicated.value = 1;
+  serverPublic.value = 1;
 
   client.state = client_state_t.cs_connected;
   client.download = new Uint8Array([9, 8, 7]);
@@ -469,6 +515,16 @@ function verifyShutdownLifecycle(): void {
   main.SV_Shutdown("Server quitting", false);
 
   assert.ok(transmitted.length >= 4, "SV_Shutdown should send final client and master shutdown packets");
+  assert.equal(
+    transmitted.filter((packet) => decodePacketPayload(packet.data) === "shutdown").length,
+    2,
+    "Master_Shutdown should send one shutdown packet per configured master"
+  );
+  assert.equal(
+    printed.filter((line) => line.startsWith("Sending heartbeat to")).length,
+    1,
+    "Master_Shutdown should preserve the C logging quirk that skips master slot zero"
+  );
   assert.equal(shutdownGameProgsCalls, 1, "SV_Shutdown should shut down game progs exactly once");
   assert.equal(closedDemoHandles.length, 2, "SV_Shutdown should close both active demo handles");
   assert.equal(serverStates.at(-1), 0, "SV_Shutdown should publish the dead server state");
@@ -481,6 +537,16 @@ function verifyShutdownLifecycle(): void {
   assert.equal(client.download, null, "SV_Shutdown should clear client download buffers");
   assert.equal(freeClient.state, client_state_t.cs_free, "SV_Shutdown should free every connected client slot");
   assert.equal(svs.challenges[0]!.challenge, 0, "SV_Shutdown should clear saved challenge numbers");
+
+  transmitted.length = 0;
+  serverPublic.value = 0;
+  main.SV_Shutdown("Private shutdown", false);
+  assert.equal(
+    transmitted.some((packet) => decodePacketPayload(packet.data) === "shutdown"),
+    false,
+    "Master_Shutdown should not notify masters for private dedicated servers"
+  );
+  serverPublic.value = 1;
 }
 
 function queueConnectionlessPacket(from: ReturnType<typeof createNetAdr>, text: string): void {

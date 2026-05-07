@@ -11,18 +11,18 @@
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/client/cl_ents.c` | global | `vidref_val` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `bitcounts` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_ParseEntityBits` | `packages/client/src/cl_parse.ts` | `CL_ParseEntityBits` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `number` | `packages/client/src/cl_parse.ts` | `number` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `number` | `packages/client/src/cl_parse.ts` | `number` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_ParseDelta` | `packages/client/src/cl_parse.ts` | `CL_ParseDelta` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_DeltaEntity` | `packages/client/src/cl_parse.ts` | `CL_DeltaEntity` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `state` | `packages/client/src/cl_ents.ts` | `state` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_ParsePacketEntities` | `packages/client/src/cl_parse.ts` | `CL_ParsePacketEntities` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `newnum` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `bits` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `oldstate` | `packages/client/src/cl_parse.ts` | `oldstate` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `bitcounts` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Compteur C de profiling protocole uniquement, sans sortie runtime/web/renderer attendue. |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_ParseEntityBits` | `packages/client/src/cl_parse.ts` | `CL_ParseEntityBits` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C generee par la matrice. |
+| `Quake-2-master/client/cl_ents.c` | global | `number` | `packages/client/src/cl_parse.ts` | `number` | Non applicable | A redecouper | Variable locale C retournee dans l'objet TS de `CL_ParseEntityBits`. |
+| `Quake-2-master/client/cl_ents.c` | global | `number` | `packages/client/src/cl_parse.ts` | `number` | Non applicable | A redecouper | Doublon de variable locale C genere par la matrice. |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_ParseDelta` | `packages/client/src/cl_parse.ts` | `CL_ParseDelta` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_DeltaEntity` | `packages/client/src/cl_parse.ts` | `CL_DeltaEntity` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `state` | `packages/client/src/cl_ents.ts` | `state` | Non applicable | A redecouper | Variable locale C de `CL_DeltaEntity`, stockee dans le ring `cl_parse_entities`. |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_ParsePacketEntities` | `packages/client/src/cl_parse.ts` | `CL_ParsePacketEntities` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `newnum` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C generee par la matrice. |
+| `Quake-2-master/client/cl_ents.c` | global | `bits` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C generee par la matrice. |
+| `Quake-2-master/client/cl_ents.c` | global | `oldstate` | `packages/client/src/cl_parse.ts` | `oldstate` | Non applicable | A redecouper | Variable locale C de fusion avec l'ancien frame. |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_ParsePlayerstate` | `packages/client/src/cl_parse.ts` | `CL_ParsePlayerstate` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `flags` | `packages/client/src/cl_ents.ts` | `flags` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `state` | `packages/client/src/cl_ents.ts` | `state` | A verifier | A redecouper |  |
