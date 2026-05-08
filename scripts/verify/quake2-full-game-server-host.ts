@@ -13,7 +13,8 @@ import { join } from "node:path";
 import {
   SCR_Init,
   createClientRuntime,
-  createClientScreenContext
+  createClientScreenContext,
+  connstate_t
 } from "../../packages/client/src/index.js";
 import {
   createVirtualFilesystem,
@@ -80,6 +81,7 @@ registerFullGameCommandBridge(cmd, cvar, client, bridge, {
 
 assert.equal(Cmd_Exists(cmd, "newgame"), true, "command bridge should still register newgame");
 
+client.cls.state = connstate_t.ca_connected;
 client.cl.screen.scr_draw_loading = 0;
 Cbuf_AddText(cmd, "loading ; killserver ; wait ; newgame\n");
 

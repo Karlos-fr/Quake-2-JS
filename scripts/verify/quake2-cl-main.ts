@@ -31,6 +31,7 @@ import {
   CL_FixUpGender,
   CL_Init,
   CL_InitLocal,
+  CL_Precache_f,
   CL_Packet_f,
   CL_PingServers_f,
   CL_ParseStatusMessage,
@@ -38,6 +39,7 @@ import {
   CL_ReadPackets,
   CL_Record_f,
   CL_Reconnect_f,
+  CL_RequestNextDownload,
   CL_Rcon_f,
   CL_Skins_f,
   CL_SendConnectPacket,
@@ -55,7 +57,12 @@ import {
   createClientSendCmdBridge,
   createClientMainContext,
   createClientKeyContext,
-  createClientRuntime
+  createClientRuntime,
+  connstate_t,
+  ENV_CNT,
+  PLAYER_MULT,
+  TEXTURE_CNT,
+  env_suf
 } from "../../packages/client/src/index.js";
 import {
   Cbuf_AddText,
@@ -63,13 +70,19 @@ import {
   Cmd_Exists,
   Cmd_ExecuteString,
   Cmd_TokenizeString,
+  CS_IMAGES,
+  CS_MAPCHECKSUM,
   CS_MAXCLIENTS,
+  CS_MODELS,
   CS_PLAYERSKINS,
+  CS_SKY,
+  CS_SOUNDS,
   CVAR_ARCHIVE,
   CVAR_USERINFO,
   Cvar_FindVar,
   Cvar_Set,
   Cvar_VariableString,
+  MAX_CLIENTS,
   MSG_BeginReading,
   MSG_ReadByte,
   MSG_ReadString,
@@ -246,6 +259,95 @@ assert.deepEqual(soundRestartOrder, [
   "end-registration",
   "register-sounds"
 ], "CL_Snd_Restart_f should restart sound then run the CL_RegisterSounds path");
+
+assert.equal(PLAYER_MULT, 5, "PLAYER_MULT should match the source precache stride");
+assert.equal(ENV_CNT, CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT, "ENV_CNT should match the source formula");
+assert.equal(TEXTURE_CNT, ENV_CNT + 13, "TEXTURE_CNT should match the source formula");
+assert.deepEqual([...env_suf], ["rt", "bk", "lf", "ft", "up", "dn"], "env_suf should preserve the source sky suffix order");
+
+const fullPrecacheClient = createClientRuntime();
+const fullPrecacheCmd = createCommandRuntime();
+fullPrecacheClient.cls.state = connstate_t.ca_connected;
+fullPrecacheClient.cl.configstrings[CS_MODELS + 1] = "maps/unit1.bsp";
+fullPrecacheClient.cl.configstrings[CS_MAPCHECKSUM] = "12345";
+fullPrecacheClient.cl.configstrings[CS_SOUNDS + 1] = "world/amb10.wav";
+fullPrecacheClient.cl.configstrings[CS_IMAGES + 1] = "i_health";
+fullPrecacheClient.cl.configstrings[CS_PLAYERSKINS] = "Player\\male/grunt";
+fullPrecacheClient.cl.configstrings[CS_SKY] = "unit1_";
+const fullPrecacheEvents: string[] = [];
+const fullPrecachePaths: string[] = [];
+Cmd_TokenizeString(fullPrecacheCmd, "precache 42", false);
+CL_Precache_f(fullPrecacheClient, fullPrecacheCmd, {
+  fileExists: (path) => {
+    fullPrecachePaths.push(path);
+    return true;
+  },
+  getMapInfo: (path) => {
+    fullPrecacheEvents.push(`map:${path}`);
+    return { checksum: 12345, textureNames: ["e1u1/wall1", "e1u1/wall2"] };
+  },
+  onRegisterSounds: () => fullPrecacheEvents.push("register-sounds"),
+  onPrepRefresh: () => fullPrecacheEvents.push("prep-refresh"),
+  onBegin: (spawncount) => fullPrecacheEvents.push(`begin:${spawncount}`)
+});
+assert.equal(fullPrecacheClient.cls.precache.precache_check, TEXTURE_CNT + 999, "CL_Precache_f should advance through the full source precache traversal");
+assert.equal(fullPrecacheClient.cls.precache.precache_spawncount, 42, "CL_Precache_f should store the source spawncount argument");
+assert.equal(fullPrecacheClient.cls.precache.precache_tex, 2, "CL_RequestNextDownload should walk every map texture name");
+assert.deepEqual(fullPrecacheEvents, [
+  "map:maps/unit1.bsp",
+  "register-sounds",
+  "prep-refresh",
+  "begin:42"
+], "CL_RequestNextDownload should load the map, register sounds, prep refresh and send begin in source order");
+assert.equal(fullPrecachePaths.includes("maps/unit1.bsp"), true, "CL_RequestNextDownload should confirm the map download target");
+assert.equal(fullPrecachePaths.includes("sound/world/amb10.wav"), true, "CL_RequestNextDownload should confirm configured sounds");
+assert.equal(fullPrecachePaths.includes("pics/i_health.pcx"), true, "CL_RequestNextDownload should confirm configured images");
+assert.equal(fullPrecachePaths.includes("players/male/tris.md2"), true, "CL_RequestNextDownload should confirm player model downloads");
+assert.equal(fullPrecachePaths.includes("players/male/grunt_i.pcx"), true, "CL_RequestNextDownload should confirm player skin icon downloads");
+assert.equal(fullPrecachePaths.includes("env/unit1_rt.tga"), true, "CL_RequestNextDownload should confirm sky tga faces");
+assert.equal(fullPrecachePaths.includes("env/unit1_dn.pcx"), true, "CL_RequestNextDownload should confirm sky pcx faces");
+assert.equal(fullPrecachePaths.includes("textures/e1u1/wall2.wal"), true, "CL_RequestNextDownload should confirm BSP surface textures");
+assert.equal(
+  String.fromCharCode(...fullPrecacheClient.cls.netchan.message.data.subarray(0, fullPrecacheClient.cls.netchan.message.cursize)).includes("begin 42\n"),
+  true,
+  "CL_RequestNextDownload should queue the source begin command"
+);
+
+const pausedModelClient = createClientRuntime();
+pausedModelClient.cls.state = connstate_t.ca_connected;
+pausedModelClient.cl.configstrings[CS_MODELS + 1] = "maps/unit1.bsp";
+pausedModelClient.cl.configstrings[CS_MODELS + 2] = "models/items/armor/tris.md2";
+pausedModelClient.cls.precache.precache_check = CS_MODELS;
+CL_RequestNextDownload(pausedModelClient, {
+  fileExists: (path) => path !== "models/items/armor/tris.md2"
+});
+assert.equal(pausedModelClient.cls.downloadname, "models/items/armor/tris.md2", "CL_RequestNextDownload should pause on a missing model");
+assert.equal(pausedModelClient.cls.precache.precache_model_skin, 1, "CL_RequestNextDownload should resume missing model checks at the skin phase");
+assert.equal(
+  String.fromCharCode(...pausedModelClient.cls.netchan.message.data.subarray(0, pausedModelClient.cls.netchan.message.cursize)).includes("download models/items/armor/tris.md2"),
+  true,
+  "CL_RequestNextDownload should queue exactly one missing model download"
+);
+
+const oldDemoClient = createClientRuntime();
+const oldDemoCmd = createCommandRuntime();
+oldDemoClient.cl.configstrings[CS_MODELS + 1] = "maps/old-demo.bsp";
+const oldDemoEvents: string[] = [];
+Cmd_TokenizeString(oldDemoCmd, "precache", false);
+CL_Precache_f(oldDemoClient, oldDemoCmd, {
+  getMapInfo: (path) => {
+    oldDemoEvents.push(`map:${path}`);
+    return { checksum: 0, textureNames: [] };
+  },
+  onRegisterSounds: () => oldDemoEvents.push("register-sounds"),
+  onPrepRefresh: () => oldDemoEvents.push("prep-refresh")
+});
+assert.deepEqual(oldDemoEvents, [
+  "map:maps/old-demo.bsp",
+  "register-sounds",
+  "prep-refresh"
+], "CL_Precache_f old-demo branch should preserve the source map/sound/refresh path");
+assert.equal(oldDemoClient.cls.netchan.message.cursize, 0, "CL_Precache_f old-demo branch should not send a begin command");
 
 context.gender!.modified = true;
 Cvar_Set(cvar, "gender", "female");

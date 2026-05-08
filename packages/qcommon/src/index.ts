@@ -151,6 +151,7 @@ export {
   Z_Free,
   Z_FreeTags,
   Z_Malloc,
+  Z_Stats_f,
   Z_TagMalloc
 } from "./qcommon.js";
 export {

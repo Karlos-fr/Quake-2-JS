@@ -25,6 +25,7 @@ import {
 } from "../../packages/client/src/index.js";
 import {
   CM_HeadnodeForBox,
+  PMF_NO_PREDICTION,
   PMF_ON_GROUND,
   createCollisionWorld,
   createEntityState,
@@ -105,6 +106,7 @@ function main(): void {
   });
 
   verifyPredictionErrorSmoothing();
+  verifyPredictionErrorDisabledBranches();
   verifyPredictionErrorTeleportReset();
   verifyNoPredictionBranch();
   verifyPredictedMovementLoop();
@@ -120,6 +122,7 @@ function main(): void {
   assert((bmodelContents & CONTENTS_MONSTER) !== 0, "bmodel point contents should include transformed box contents");
   assert(bboxTrace.fraction < 1, "encoded bbox should clip prediction trace");
   assert(bboxTrace.ent === bbox, "encoded bbox trace should report the clipped entity");
+  verifyCollisionEntityFilters(world, runtime, bmodel, bbox);
 
   console.log("Verification cl_pred: OK");
 }
@@ -146,6 +149,34 @@ function verifyPredictionErrorSmoothing(): void {
   assertVector(runtime.cl.predicted_origins[3], [88, 176, 264], "prediction error should refresh stored origin");
   assertEqual(messages.length, 1, "prediction miss message count mismatch");
   assertEqual(messages[0], "prediction miss on 42: 48", "prediction miss message mismatch");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that `CL_CheckPredictionError` preserves state when prediction is disabled or server flags forbid it.
+ */
+function verifyPredictionErrorDisabledBranches(): void {
+  const runtime = createClientRuntime();
+  runtime.cl.predicted_origins[5] = [80, 160, 240];
+  runtime.cl.frame.playerstate.pmove.origin = [88, 176, 264];
+  runtime.cl.prediction_error = [9, 9, 9];
+
+  CL_CheckPredictionError(runtime, {
+    predictMovement: false,
+    incomingAcknowledged: 5
+  });
+
+  assertVector(runtime.cl.prediction_error, [9, 9, 9], "disabled prediction should keep prior error");
+  assertVector(runtime.cl.predicted_origins[5], [80, 160, 240], "disabled prediction should keep predicted origin");
+
+  runtime.cl.frame.playerstate.pmove.pm_flags = PMF_NO_PREDICTION;
+  CL_CheckPredictionError(runtime, {
+    predictMovement: true,
+    incomingAcknowledged: 5
+  });
+
+  assertVector(runtime.cl.prediction_error, [9, 9, 9], "PMF_NO_PREDICTION should keep prior error");
+  assertVector(runtime.cl.predicted_origins[5], [80, 160, 240], "PMF_NO_PREDICTION should keep predicted origin");
 }
 
 /**
@@ -264,6 +295,48 @@ function verifyCmdBackupGuard(): void {
   assertVector(runtime.cl.predicted_angles, [1, 2, 3], "CMD_BACKUP guard should freeze predicted angles");
   assertEqual(messages.length, 1, "CMD_BACKUP debug message count mismatch");
   assertEqual(messages[0], "exceeded CMD_BACKUP", "CMD_BACKUP debug message mismatch");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert the packet-entity filters from `CL_ClipMoveToEntities` and `CL_PMpointcontents`.
+ */
+function verifyCollisionEntityFilters(
+  world: ReturnType<typeof createCollisionWorld>,
+  runtime: ReturnType<typeof createClientRuntime>,
+  bmodel: ReturnType<typeof createEntityState>,
+  bbox: ReturnType<typeof createEntityState>
+): void {
+  const modelClip = runtime.cl.model_clip as Array<cmodel_t | null>;
+  const selfBmodel = { ...bmodel, number: runtime.cl.playernum + 1 };
+  const selfTrace = CL_PMTrace([32, 0, 0], [0, 0, 0], [0, 0, 0], [96, 0, 0], {
+    world,
+    entities: [selfBmodel],
+    modelClip,
+    playernum: runtime.cl.playernum
+  });
+  const missingModelTrace = CL_PMTrace([32, 0, 0], [0, 0, 0], [0, 0, 0], [96, 0, 0], {
+    world,
+    entities: [{ ...bmodel, modelindex: 99 }],
+    modelClip,
+    playernum: runtime.cl.playernum
+  });
+  const worldOnlyContents = CL_PMpointcontents([128, 0, 0], {
+    world,
+    entities: [],
+    modelClip,
+    playernum: runtime.cl.playernum
+  });
+  const bboxContents = CL_PMpointcontents([128, 0, 0], {
+    world,
+    entities: [bbox],
+    modelClip,
+    playernum: runtime.cl.playernum
+  });
+
+  assertEqual(selfTrace.fraction, 1, "prediction trace should skip the local player entity");
+  assertEqual(missingModelTrace.fraction, 1, "prediction trace should skip missing clip models");
+  assertEqual(bboxContents, worldOnlyContents, "pointcontents should ignore encoded bbox solids");
 }
 
 /**

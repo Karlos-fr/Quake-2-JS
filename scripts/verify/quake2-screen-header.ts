@@ -155,6 +155,7 @@ assert.equal(client.cl.screen.crosshair_pic, "ch2", "SCR_TouchPics crosshair sta
 assert.equal(client.cl.screen.crosshair_width, 24, "SCR_TouchPics crosshair width mismatch");
 assert.equal(client.cl.screen.crosshair_height, 24, "SCR_TouchPics crosshair height mismatch");
 
+client.cls.state = connstate_t.ca_active;
 SCR_BeginLoadingPlaque(client);
 assert.equal(client.cl.screen.scr_draw_loading, 1, "SCR_BeginLoadingPlaque draw flag mismatch");
 assert.equal(client.cls.disable_servercount, client.cl.servercount, "SCR_BeginLoadingPlaque servercount mismatch");

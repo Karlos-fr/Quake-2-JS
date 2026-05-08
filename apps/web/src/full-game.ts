@@ -12,7 +12,7 @@
  * - packages/qcommon
  */
 
-import { parsePcx, type PcxImage } from "../../../packages/formats/src/index.js";
+import { parseBsp, parsePcx, type PcxImage } from "../../../packages/formats/src/index.js";
 import { Scene } from "three";
 import {
   createVirtualFilesystem,
@@ -43,6 +43,7 @@ import {
   Cvar_SetValue as QcommonCvar_SetValue,
   Cvar_VariableValue,
   CS_ITEMS,
+  Com_BlockChecksum,
   MAX_ITEMS,
   PRINT_ALL,
   Qcommon_Frame,
@@ -316,6 +317,7 @@ interface FullGameRuntime {
   finishConfigBootstrap: () => void;
   captureClipboardText: (text: string) => void;
   beginAuthoritativeConnection: (mapRequest: string) => void;
+  isAuthoritativeLevelLoading: () => boolean;
   shouldPumpAuthoritativeFrame: () => boolean;
   pumpAuthoritativeFrame: (milliseconds: number) => void;
   authoritativeGameReady: () => boolean;
@@ -704,6 +706,18 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   });
   const fileExists = (path: string): boolean => readMountedFile(filesystem, path) !== undefined;
   const loadBinaryFile = (path: string): Uint8Array | null => readMountedFile(filesystem, path)?.bytes ?? null;
+  const getMapInfo = (path: string): { checksum: number | null; textureNames: string[] } | null => {
+    const file = readMountedFile(filesystem, path);
+    if (!file) {
+      return null;
+    }
+
+    const map = parseBsp(file.bytes, file.path);
+    return {
+      checksum: Com_BlockChecksum(file.bytes, file.bytes.length),
+      textureNames: map.texinfo.map((texinfo) => texinfo.texture)
+    };
+  };
   const prepClientRefresh = (): void => {
     const options = {
       ref,
@@ -878,6 +892,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     allowDownload: false,
     fileExists,
     loadBinaryFile,
+    getMapInfo,
     onPrepRefresh: prepClientRefresh,
     onRegisterSounds: registerAuthoritativeSounds,
     onBegin: () => {
@@ -887,6 +902,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onDisconnect: () => printToConsole("Disconnected."),
     onQuit: () => printToConsole("Quit demande."),
     onBeginLoadingPlaque: () => {
+      authoritativeLevelLoading = true;
       client.cl.screen.scr_draw_loading = 1;
       forceGameInputForLevelLoad();
     },
@@ -927,11 +943,13 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   SCR_Init(screenContext);
   const gameBridge = createFullGameCommandBridgeState();
   let pendingAuthoritativeMapRequest: string | null = null;
+  let authoritativeLevelLoading = false;
   const beginAuthoritativeConnection = (mapRequest: string): void => {
     if (pendingAuthoritativeMapRequest === mapRequest) {
       return;
     }
 
+    authoritativeLevelLoading = true;
     pendingAuthoritativeMapRequest = mapRequest;
     localTransport.clear();
     client.cls.state = connstate_t.ca_disconnected;
@@ -947,6 +965,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     qnet: localTransport.serverQnet,
     onPrint: printToConsole,
     onBeginLoading: () => {
+      authoritativeLevelLoading = true;
       client.cl.screen.scr_draw_loading = 1;
       forceGameInputForLevelLoad();
     }
@@ -1040,6 +1059,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     && client.cl.refresh_prepped
   );
   const markAuthoritativeGameActive = (): void => {
+    authoritativeLevelLoading = false;
     client.cl.screen.scr_draw_loading = 0;
     if (keys.state.key_dest !== keydest_t.key_console
       && keys.state.key_dest !== keydest_t.key_message
@@ -1057,6 +1077,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       client.cl.screen.scr_draw_loading = 1;
     },
     onKillServer: () => {
+      authoritativeLevelLoading = false;
       pendingAuthoritativeMapRequest = null;
       localTransport.clear();
       client.cls.state = connstate_t.ca_disconnected;
@@ -1066,7 +1087,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       beginAuthoritativeConnection(map);
     }
   });
-  Qcommon_Init(qcommon);
+  Qcommon_Init(qcommon, cmd);
 
   consoleContext = createClientConsoleContext({
     client,
@@ -1247,6 +1268,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     finishConfigBootstrap,
     captureClipboardText,
     beginAuthoritativeConnection,
+    isAuthoritativeLevelLoading: () => authoritativeLevelLoading,
     shouldPumpAuthoritativeFrame,
     pumpAuthoritativeFrame,
     authoritativeGameReady,
@@ -1563,7 +1585,9 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
 
   clearCanvas(page);
 
-  if (runtime.mode === "cinematic") {
+  if (shouldDrawFullGameLoadingFrame(runtime)) {
+    drawLoadingFrame(runtime, page);
+  } else if (runtime.mode === "cinematic") {
     drawCinematicFrame(runtime, page);
   } else if (runtime.mode === "game") {
     drawGameFrame(runtime, page, delta / 1000);
@@ -1583,6 +1607,15 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
   requestAnimationFrame((nextTime) => frame(nextTime, runtime, page));
 }
 
+function shouldDrawFullGameLoadingFrame(runtime: FullGameRuntime): boolean {
+  if (runtime.menu.keys.state.key_dest === keydest_t.key_console) {
+    return false;
+  }
+
+  return runtime.isAuthoritativeLevelLoading()
+    || runtime.client.cl.screen.scr_draw_loading !== 0;
+}
+
 function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePage): void {
   Cbuf_Execute(runtime.menu.cmd);
   runtime.finishConfigBootstrap();
@@ -1597,6 +1630,13 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
   });
   runtime.flushClientOutput();
   runtime.updateClientAudio();
+
+  if (runtime.isAuthoritativeLevelLoading() && !runtime.authoritativeGameReady()) {
+    runtime.mode = "loading";
+    page.status.textContent = "Chargement du niveau...";
+    page.status.style.display = "block";
+    return;
+  }
 
   if (runtime.gameBridge.requestedMap) {
     const requestedMap = runtime.gameBridge.requestedMap;

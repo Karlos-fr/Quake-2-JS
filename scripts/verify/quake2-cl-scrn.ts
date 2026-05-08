@@ -60,9 +60,26 @@ client.cl.cinematic.cinematictime = 1;
 client.cl.screen.scr_draw_loading = 0;
 client.cls.disable_screen = 0;
 client.cls.realtime = 2000;
-SCR_BeginLoadingPlaque(client);
+let stoppedSounds = 0;
+let stoppedCd = 0;
+let flushedScreen = 0;
+SCR_BeginLoadingPlaque(client, {
+  onStopAllSounds: () => {
+    stoppedSounds += 1;
+  },
+  onCDAudioStop: () => {
+    stoppedCd += 1;
+  },
+  onUpdateScreen: () => {
+    flushedScreen += 1;
+  }
+});
 assert.equal(client.cl.screen.scr_draw_loading, 2, "SCR_BeginLoadingPlaque cinematic draw flag mismatch");
 assert.equal(client.cls.disable_screen, 2000, "SCR_BeginLoadingPlaque cinematic disable_screen mismatch");
+assert.equal(client.cl.sound_prepped, false, "SCR_BeginLoadingPlaque should suppress ambient sounds");
+assert.equal(stoppedSounds, 1, "SCR_BeginLoadingPlaque should stop sounds before drawing");
+assert.equal(stoppedCd, 1, "SCR_BeginLoadingPlaque should stop CDAudio before drawing");
+assert.equal(flushedScreen, 1, "SCR_BeginLoadingPlaque should flush one loading frame before disabling");
 
 const loadingFrame = SCR_UpdateScreen(context, {
   viewportWidth: 640,
@@ -90,6 +107,22 @@ const blockedFrame = SCR_UpdateScreen(context, {
   currentTimeMs: 2001
 });
 assert.equal(blockedFrame, null, "SCR_UpdateScreen should remain blocked while disable_screen is active");
+
+client.cls.disable_screen = 0;
+client.cl.screen.scr_draw_loading = 0;
+client.cls.state = connstate_t.ca_disconnected;
+client.cl.sound_prepped = true;
+SCR_BeginLoadingPlaque(client);
+assert.equal(client.cl.sound_prepped, false, "SCR_BeginLoadingPlaque should stop sounds even when disconnected");
+assert.equal(client.cl.screen.scr_draw_loading, 0, "SCR_BeginLoadingPlaque should not draw while disconnected");
+assert.equal(client.cls.disable_screen, 0, "SCR_BeginLoadingPlaque should not disable screen while disconnected");
+
+client.cls.state = connstate_t.ca_active;
+SCR_BeginLoadingPlaque(client, { keyDest: "console" });
+assert.equal(client.cl.screen.scr_draw_loading, 0, "SCR_BeginLoadingPlaque should not draw over console");
+
+SCR_BeginLoadingPlaque(client, { developer: true });
+assert.equal(client.cl.screen.scr_draw_loading, 0, "SCR_BeginLoadingPlaque should respect developer guard");
 
 client.cl.screen.graph_current = 0;
 client.cls.netchan.dropped = 2;

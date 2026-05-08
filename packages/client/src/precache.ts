@@ -37,10 +37,10 @@ import { CL_CheckOrDownloadFile, type ClientDownloadHooks } from "./download.js"
 import { CL_WriteStringCmd } from "./cl_parse.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
-const PLAYER_MULT = 5;
-const ENV_CNT = CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT;
-const TEXTURE_CNT = ENV_CNT + 13;
-const ENV_SUFFIXES = ["rt", "bk", "lf", "ft", "up", "dn"] as const;
+export const PLAYER_MULT = 5;
+export const ENV_CNT = CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT;
+export const TEXTURE_CNT = ENV_CNT + 13;
+export const env_suf = ["rt", "bk", "lf", "ft", "up", "dn"] as const;
 
 /**
  * Category: New
@@ -86,6 +86,7 @@ export function CL_RequestNextDownload(runtime: ClientRuntime, hooks: ClientPrec
   const allowDownloadPlayers = hooks.allowDownloadPlayers ?? true;
   const allowDownloadSounds = hooks.allowDownloadSounds ?? true;
   const precache = runtime.cls.precache;
+  let loadedMapInfo: { checksum: number | null; textureNames: string[] } | null | undefined;
 
   if (!allowDownload && precache.precache_check < ENV_CNT) {
     precache.precache_check = ENV_CNT;
@@ -242,6 +243,7 @@ export function CL_RequestNextDownload(runtime: ClientRuntime, hooks: ClientPrec
 
     const mapPath = runtime.cl.configstrings[CS_MODELS + 1];
     const mapInfo = hooks.getMapInfo?.(mapPath) ?? null;
+    loadedMapInfo = mapInfo;
     const expectedChecksum = Number.parseInt(runtime.cl.configstrings[CS_MAPCHECKSUM] ?? "", 10);
     if (
       mapInfo !== null &&
@@ -258,7 +260,7 @@ export function CL_RequestNextDownload(runtime: ClientRuntime, hooks: ClientPrec
       while (precache.precache_check < TEXTURE_CNT) {
         const index = precache.precache_check - ENV_CNT - 1;
         precache.precache_check += 1;
-        const suffix = ENV_SUFFIXES[Math.floor(index / 2)];
+        const suffix = env_suf[Math.floor(index / 2)];
         const extension = (index & 1) !== 0 ? "pcx" : "tga";
         const envPath = `env/${runtime.cl.configstrings[CS_SKY]}${suffix}.${extension}`;
         if (!CL_CheckOrDownloadFile(runtime, envPath, hooks)) {
@@ -277,7 +279,7 @@ export function CL_RequestNextDownload(runtime: ClientRuntime, hooks: ClientPrec
 
   if (precache.precache_check === TEXTURE_CNT + 1) {
     const mapPath = runtime.cl.configstrings[CS_MODELS + 1];
-    const mapInfo = hooks.getMapInfo?.(mapPath) ?? null;
+    const mapInfo = loadedMapInfo ?? hooks.getMapInfo?.(mapPath) ?? null;
     const textureNames = mapInfo?.textureNames ?? [];
 
     if (allowDownload && allowDownloadMaps) {
@@ -318,6 +320,7 @@ export function CL_Precache_f(
   hooks: ClientPrecacheHooks = {}
 ): void {
   if (Cmd_Argc(cmd) < 2) {
+    hooks.getMapInfo?.(runtime.cl.configstrings[CS_MODELS + 1]);
     hooks.onRegisterSounds?.();
     hooks.onPrepRefresh?.();
     return;

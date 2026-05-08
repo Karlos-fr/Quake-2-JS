@@ -279,8 +279,12 @@ export {
   CL_DownloadFileName
 } from "./download.js";
 export {
+  ENV_CNT,
   CL_Precache_f,
-  CL_RequestNextDownload
+  CL_RequestNextDownload,
+  PLAYER_MULT,
+  TEXTURE_CNT,
+  env_suf
 } from "./precache.js";
 export {
   CL_RegisterSounds

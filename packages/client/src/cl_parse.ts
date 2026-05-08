@@ -158,6 +158,8 @@ export interface ClientParseHooks {
   onWriteDemoMessage?: () => void;
   onEntityEvent?: (event: ClientEntityEvent) => void;
   onFrameParsed?: (frame: frame_t) => void;
+  getShownet?: () => number;
+  onNetDebugPrint?: (line: string) => void;
   registerModel?: (path: string) => unknown;
   registerSkin?: (path: string) => unknown;
   registerPic?: (path: string) => unknown;
@@ -597,6 +599,24 @@ export function CL_ParseStartSoundPacket(runtime: ClientRuntime, hooks: ClientPa
     hooks.onStartSound?.(pos, ent, channel, sound, volume, attenuation, ofs);
   }
   return packet;
+}
+
+/**
+ * Original name: SHOWNET
+ * Source: client/cl_parse.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits one parser trace line when `cl_shownet` is at least 2.
+ *
+ * Porting notes:
+ * - Reads `cl_shownet` through a hook because `cl_parse.c` is ported against an explicit client runtime, not file-static cvars.
+ */
+export function SHOWNET(runtime: ClientRuntime, text: string, hooks: ClientParseHooks = {}): void {
+  if ((hooks.getShownet?.() ?? 0) >= 2) {
+    hooks.onNetDebugPrint?.(`${(runtime.net_message.readcount - 1).toString().padStart(3, " ")}:${text}\n`);
+  }
 }
 
 /**
@@ -1412,6 +1432,13 @@ export function CL_ParseFrame(runtime: ClientRuntime, hooks: ClientParseHooks = 
  * - Leaves unsupported command bodies to hooks so parsing can advance incrementally.
  */
 export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParseHooks = {}): void {
+  const shownet = hooks.getShownet?.() ?? 0;
+  if (shownet === 1) {
+    hooks.onNetDebugPrint?.(`${runtime.net_message.cursize} `);
+  } else if (shownet >= 2) {
+    hooks.onNetDebugPrint?.("------------------\n");
+  }
+
   while (true) {
     if (runtime.net_message.readcount > runtime.net_message.cursize) {
       throw new Error("CL_ParseServerMessage: Bad server message");
@@ -1419,7 +1446,17 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
 
     const command = MSG_ReadByte(runtime.net_message);
     if (command === -1) {
+      SHOWNET(runtime, "END OF MESSAGE", hooks);
       break;
+    }
+
+    if (shownet >= 2) {
+      const label = svc_strings[command];
+      if (label) {
+        SHOWNET(runtime, label, hooks);
+      } else {
+        hooks.onNetDebugPrint?.(`${(runtime.net_message.readcount - 1).toString().padStart(3, " ")}:BAD CMD ${command}\n`);
+      }
     }
 
     switch (command) {
@@ -1429,6 +1466,7 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
         hooks.onDisconnect?.("Server disconnected");
         throw new Error("Server disconnected");
       case svc_ops_e.svc_reconnect:
+        runtime.cls.download = null;
         runtime.cls.downloadpercent = 0;
         runtime.cls.state = connstate_t.ca_connecting;
         runtime.cls.connect_time = -99999;

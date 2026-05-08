@@ -207,6 +207,21 @@ export interface ClientLoadingOverlayState {
 
 /**
  * Category: New
+ * Purpose: Carry host state and callbacks needed by the ported loading-plaque entrypoint.
+ *
+ * Constraints:
+ * - Must keep `SCR_BeginLoadingPlaque` ownership in `cl_scrn.c` while external systems own keys, audio and frame flushing.
+ */
+export interface ClientLoadingPlaqueOptions {
+  developer?: boolean;
+  keyDest?: "game" | "console" | "message" | "menu";
+  onStopAllSounds?: () => void;
+  onCDAudioStop?: () => void;
+  onUpdateScreen?: () => void;
+}
+
+/**
+ * Category: New
  * Purpose: Describe the pause-overlay state exposed by the client screen layer.
  *
  * Constraints:
@@ -1382,18 +1397,31 @@ export function SCR_CheckDrawCenterString(runtime: ClientRuntime): ClientCenterP
  * Fidelity level: Close
  *
  * Behavior:
- * - Flags the loading plaque as active and suppresses prepared sound state.
+ * - Stops transient audio, applies the original early-out guards, then flags the loading plaque as active.
  *
  * Porting notes:
- * - Keeps only the client state mutations needed by current screen adapters.
+ * - Receives `developer`, key destination and host callbacks explicitly because those globals live in other TS modules.
  */
-export function SCR_BeginLoadingPlaque(runtime: ClientRuntime): void {
+export function SCR_BeginLoadingPlaque(runtime: ClientRuntime, options: ClientLoadingPlaqueOptions = {}): void {
+  options.onStopAllSounds?.();
   runtime.cl.sound_prepped = false;
+  options.onCDAudioStop?.();
+
   if (runtime.cls.disable_screen !== 0) {
+    return;
+  }
+  if (options.developer === true) {
+    return;
+  }
+  if (runtime.cls.state === connstate_t.ca_disconnected) {
+    return;
+  }
+  if (options.keyDest === "console") {
     return;
   }
 
   runtime.cl.screen.scr_draw_loading = runtime.cl.cinematic.cinematictime > 0 ? 2 : 1;
+  options.onUpdateScreen?.();
   runtime.cls.disable_screen = Math.max(1, runtime.cls.realtime);
   runtime.cls.disable_servercount = runtime.cl.servercount;
 }

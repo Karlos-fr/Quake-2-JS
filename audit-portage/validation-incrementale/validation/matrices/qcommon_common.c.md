@@ -123,26 +123,26 @@
 | `Quake-2-master/qcommon/common.c` | function | `COM_AddParm` | `packages/qcommon/src/common.ts` | `COM_AddParm` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `memsearch` | `packages/qcommon/src/common.ts` | `memsearch` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `memsearch`; couverte avec la fonction. |
-| `Quake-2-master/qcommon/common.c` | function | `CopyString` | `packages/qcommon/src/qcommon.ts` | `CopyString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `out` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Info_Print` | `packages/qcommon/src/common.ts` | `Info_Print` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `key` | `packages/qcommon/src/common.ts` | `key` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `value` | `packages/qcommon/src/common.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `o` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `l` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `o` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | macro | `Z_MAGIC` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | struct | `zhead_s` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `magic` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `tag` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `size` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `z_chain` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Z_Free` | `packages/qcommon/src/qcommon.ts` | `Z_Free` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Z_Stats_f` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Z_FreeTags` | `packages/qcommon/src/qcommon.ts` | `Z_FreeTags` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Z_Malloc` | `packages/qcommon/src/qcommon.ts` | `Z_Malloc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `CopyString` | `packages/qcommon/src/qcommon.ts` | `CopyString` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `out` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local C de `CopyString`; remplace par string JS owned-copy. |
+| `Quake-2-master/qcommon/common.c` | function | `Info_Print` | `packages/qcommon/src/common.ts` | `Info_Print` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `key` | `packages/qcommon/src/common.ts` | `key` | Non applicable | A redecouper | Buffer local C de `Info_Print`; remplace par string JS bornee par parsing. |
+| `Quake-2-master/qcommon/common.c` | global | `value` | `packages/qcommon/src/common.ts` | `value` | Non applicable | A redecouper | Buffer local C de `Info_Print`; remplace par string JS bornee par parsing. |
+| `Quake-2-master/qcommon/common.c` | global | `o` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Pointeur local C de `Info_Print`; remplace par index/string slices. |
+| `Quake-2-master/qcommon/common.c` | global | `l` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Longueur locale C de `Info_Print`; couverte par le padding TS. |
+| `Quake-2-master/qcommon/common.c` | global | `o` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Pointeur local C de `Info_Print`; remplace par index/string slices. |
+| `Quake-2-master/qcommon/common.c` | macro | `Z_MAGIC` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Garde pointeur C remplace par identite `Map` des allocations TS. |
+| `Quake-2-master/qcommon/common.c` | struct | `zhead_s` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Header malloc C remplace par metadata `zone_allocations`. |
+| `Quake-2-master/qcommon/common.c` | global | `magic` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Champ `zhead_s` remplace par verification de reference `Map`. |
+| `Quake-2-master/qcommon/common.c` | global | `tag` | `packages/qcommon/src/qcommon.ts` | `tag` | Non applicable | A redecouper | Champ metadata de zone couvert par `Z_TagMalloc`/`Z_FreeTags`. |
+| `Quake-2-master/qcommon/common.c` | global | `size` | `packages/qcommon/src/qcommon.ts` | `size` | Non applicable | A redecouper | Champ metadata de zone couvert par `Z_TagMalloc`/`Z_Stats_f`. |
+| `Quake-2-master/qcommon/common.c` | global | `z_chain` | `packages/qcommon/src/qcommon.ts` | `zone_allocations` | Non applicable | A redecouper | Liste chainee C remplacee par `Map` d'allocations. |
+| `Quake-2-master/qcommon/common.c` | function | `Z_Free` | `packages/qcommon/src/qcommon.ts` | `Z_Free` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Z_Stats_f` | `packages/qcommon/src/qcommon.ts` | `Z_Stats_f` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Z_FreeTags` | `packages/qcommon/src/qcommon.ts` | `Z_FreeTags` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Z_Malloc` | `packages/qcommon/src/qcommon.ts` | `Z_Malloc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCheckByte` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `chktbl` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCRCByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCRCByte` | A verifier | A redecouper |  |

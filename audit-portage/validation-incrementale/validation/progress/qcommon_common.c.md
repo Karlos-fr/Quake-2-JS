@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: bloc arguments `MAX_NUM_ARGVS`, `com_argc`, `com_argv`, `COM_CheckParm`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_InitArgv`, `COM_AddParm`, locaux associes, plus `memsearch`.
-- Prochain lot recommande: `CopyString`, puis `Info_Print` et ses locaux `key`/`value`/`o`/`l` si le lot reste coherent.
+- Dernier lot valide: `CopyString`, `Info_Print`, locaux associes, puis bloc zone memory `Z_MAGIC`/`zhead_s`/`z_chain`, `Z_Free`, `Z_Stats_f`, `Z_FreeTags`, `Z_TagMalloc`, `Z_Malloc` et doublon matriciel `Z_TagMalloc`.
+- Prochain lot recommande: `COM_BlockSequenceCheckByte`, table `chktbl`, `COM_BlockSequenceCRCByte` et locaux `n`/`p`/`x`/`chkb`/`crc`, puis `frand`/`crand` si le lot reste coherent.
 
 ## Preuves session
 
@@ -24,6 +24,20 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-08 - CopyString, Info_Print et zone memory Z_*
+
+- Lot traite: `CopyString`, son local `out`, `Info_Print`, ses locaux `key`/`value`/`o`/`l`/`o`, puis le bloc zone memory `Z_MAGIC`, `zhead_s`, champs `magic`/`tag`/`size`, `z_chain`, `Z_Free`, `Z_Stats_f`, `Z_FreeTags`, `Z_TagMalloc`, `Z_Malloc` et le doublon matriciel `Z_TagMalloc`.
+- Source C relue: `CopyString` alloue via `Z_Malloc(strlen+1)` puis `strcpy`; `Info_Print` ignore un `\` initial, padde les cles a 20 colonnes, imprime `MISSING VALUE` sur valeur absente et conserve les cles longues sans padding; la zone C utilise un `zhead_t` chainee avec `Z_MAGIC`, compte bytes/blocs, libere par reference, par tag, et expose `z_stats`.
+- Cible TS relue/corrigee: `CopyString` reste dans `packages/qcommon/src/qcommon.ts` avec source d'en-tete precisee vers `qcommon/common.c` / `qcommon.h`; `Info_Print` reste owner dans `packages/qcommon/src/common.ts`; `Z_Stats_f` a ete ajoute dans `packages/qcommon/src/qcommon.ts` et exporte via `packages/qcommon/src/index.ts`; `Qcommon_Init` peut maintenant enregistrer `z_stats` quand un `CommandRuntime` est fourni.
+- Ecarts documentes: `CopyString` retourne une string JS owned-value; `Info_Print` retourne des lignes au lieu d'appeler directement `Com_Printf`; la zone memory remplace le header C et la liste chainee par `zone_allocations: Map<Uint8Array, { tag, size }>` et `Z_Stats_f` compte les payload bytes JS, pas `sizeof(zhead_t)`.
+- Ownership/doublons: aucun doublon proprietaire trouve pour `CopyString`, `Info_Print` ou `Z_*`; le doublon matriciel `Z_TagMalloc` couvre la meme fonction; les locaux et champs C de structure/liste sont marques `Non applicable` avec justification de remplacement TS.
+- Runtime verifie: `CopyString` reste expose et consomme par les ports qcommon/cvar/cmd selon les besoins de copie; `Info_Print` est appele par `CL_Userinfo_f`, `SV_Serverinfo_f`, `SV_DumpUser_f` et `SV_ShowServerinfo_f`; `Z_*` est atteint via les APIs exportees, `Z_FreeTags` agit sur les allocations taggees, et `z_stats` est branche par `Qcommon_Init(runtime, cmd)` puis executable via `Cmd_ExecuteString`.
+- apps/web verifie/corrige: `apps/web/src/full-game.ts` appelle maintenant `Qcommon_Init(qcommon, cmd)` afin que la commande runtime `z_stats` soit disponible dans le flux web; les sorties console/info passent par les hooks `onPrintf`/console existants, sans logique parallele de formatage `Info_Print`.
+- renderer-three verifie: aucune sortie visible directe n'est attendue pour `CopyString`, `Info_Print` ou la zone memory; les seules sorties sont console/commandes/debug allocation, et les sorties visibles renderer restent indirectes via les flux client/serveur deja produits par le runtime.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` couvre `CopyString`, `Info_Print` valeur vide/chaine vide, metadata zone, `Z_Stats_f`, liberation multi-allocation par tag et commande `z_stats`; `scripts/verify/quake2-full-game-three-renderer.ts` accepte l'initialisation qcommon avec runtime de commandes.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cmd`, `npm run verify:cvar`, `npm run verify:cl-main`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Test session bloque hors lot: `npm run verify:full-game:server-host` echoue sur `loading should still activate before wait` (`0 !== 1`), sans lien detecte avec le bloc `qcommon/common.c` modifie.
 
 ## Session - 2026-05-08 - Bloc arguments COM_* et memsearch
 

@@ -10,32 +10,32 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_pred.c` | function | `CL_CheckPredictionError` | `packages/client/src/view.ts` | `CL_CheckPredictionError` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `frame` | `packages/client/src/view.ts` | `frame` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `delta` | `packages/client/src/view.ts` | `delta` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `i` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `len` | `packages/client/src/view.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | function | `CL_ClipMoveToEntities` | `packages/client/src/view.ts` | `CL_ClipMoveToEntities` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `trace` | `packages/client/src/view.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `headnode` | `packages/client/src/view.ts` | `headnode` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `angles` | `packages/client/src/view.ts` | `angles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `ent` | `packages/client/src/view.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `num` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `cmodel` | `packages/client/src/view.ts` | `cmodel` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `tr` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | function | `CL_PMTrace` | `packages/client/src/view.ts` | `CL_PMTrace` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `t` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | function | `CL_PMpointcontents` | `packages/client/src/view.ts` | `CL_PMpointcontents` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `i` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `ent` | `packages/client/src/view.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `num` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `cmodel` | `packages/client/src/view.ts` | `cmodel` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `contents` | `packages/client/src/view.ts` | `contents` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | function | `CL_PredictMovement` | `packages/client/src/view.ts` | `CL_PredictMovement` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `frame` | `packages/client/src/view.ts` | `frame` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `oldframe` | `packages/client/src/view.ts` | `oldframe` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `cmd` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `pm` | `packages/client/src/view.ts` | `pm` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `i` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `step` | `packages/client/src/view.ts` | `step` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_pred.c` | global | `oldz` | `packages/client/src/view.ts` | `oldz` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | function | `CL_CheckPredictionError` | `packages/client/src/view.ts` | `CL_CheckPredictionError` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `frame` | `packages/client/src/view.ts` | `frame` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `delta` | `packages/client/src/view.ts` | `delta` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `i` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `len` | `packages/client/src/view.ts` | `len` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | function | `CL_ClipMoveToEntities` | `packages/client/src/view.ts` | `CL_ClipMoveToEntities` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `trace` | `packages/client/src/view.ts` | `trace` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `headnode` | `packages/client/src/view.ts` | `headnode` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `angles` | `packages/client/src/view.ts` | `angles` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `ent` | `packages/client/src/view.ts` | `ent` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `num` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `cmodel` | `packages/client/src/view.ts` | `cmodel` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `tr` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | function | `CL_PMTrace` | `packages/client/src/view.ts` | `CL_PMTrace` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `t` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | function | `CL_PMpointcontents` | `packages/client/src/view.ts` | `CL_PMpointcontents` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `i` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `ent` | `packages/client/src/view.ts` | `ent` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `num` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `cmodel` | `packages/client/src/view.ts` | `cmodel` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `contents` | `packages/client/src/view.ts` | `contents` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | function | `CL_PredictMovement` | `packages/client/src/view.ts` | `CL_PredictMovement` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `frame` | `packages/client/src/view.ts` | `frame` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `oldframe` | `packages/client/src/view.ts` | `oldframe` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `cmd` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `pm` | `packages/client/src/view.ts` | `pm` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `i` | `packages/client/src/view.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `step` | `packages/client/src/view.ts` | `step` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_pred.c` | global | `oldz` | `packages/client/src/view.ts` | `oldz` | Non applicable | A redecouper |  |

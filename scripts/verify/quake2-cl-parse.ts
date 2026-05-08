@@ -27,6 +27,7 @@ import {
   CL_ParseServerData,
   CL_ParseStartSoundPacket,
   CL_ParseServerMessage,
+  SHOWNET,
   CL_WriteStringCmd
 } from "../../packages/client/src/cl_parse.js";
 import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
@@ -345,11 +346,28 @@ resetIncoming(runtime);
 MSG_WriteByte(runtime.net_message, 0);
 MSG_WriteByte(runtime.net_message, 4);
 runtime.net_message.readcount = 0;
-CL_ParseStartSoundPacket(runtime, {
+const defaultSoundPacket = CL_ParseStartSoundPacket(runtime, {
   onStartSound: () => {
     throw new Error("CL_ParseStartSoundPacket should ignore unregistered sound indices");
   }
 });
+assert.equal(defaultSoundPacket.volume, 1, "CL_ParseStartSoundPacket default volume mismatch");
+assert.equal(defaultSoundPacket.attenuation, 1, "CL_ParseStartSoundPacket default attenuation mismatch");
+assert.equal(defaultSoundPacket.ofs, 0, "CL_ParseStartSoundPacket default offset mismatch");
+assert.equal(defaultSoundPacket.ent, 0, "CL_ParseStartSoundPacket default entity mismatch");
+assert.equal(defaultSoundPacket.channel, 0, "CL_ParseStartSoundPacket default channel mismatch");
+assert.equal(defaultSoundPacket.pos, null, "CL_ParseStartSoundPacket default position mismatch");
+
+resetIncoming(runtime);
+MSG_WriteByte(runtime.net_message, SND_ENT);
+MSG_WriteByte(runtime.net_message, 3);
+MSG_WriteShort(runtime.net_message, ((MAX_EDICTS + 1) << 3) | 1);
+runtime.net_message.readcount = 0;
+assert.throws(
+  () => CL_ParseStartSoundPacket(runtime),
+  /CL_ParseStartSoundPacket: ent = 1025/,
+  "CL_ParseStartSoundPacket MAX_EDICTS guard mismatch"
+);
 
 resetIncoming(runtime);
 MSG_WriteShort(runtime.net_message, CS_LIGHTS);
@@ -487,6 +505,7 @@ let wroteDemo = 0;
 const startedLocalSounds: string[] = [];
 const parsedServerSounds: unknown[] = [];
 let serverDataName = "";
+const shownetLines: string[] = [];
 
 resetIncoming(runtime);
 MSG_WriteByte(runtime.net_message, svc_ops_e.svc_print);
@@ -524,6 +543,10 @@ CL_ParseServerMessage(runtime, {
   },
   onWriteDemoMessage: () => {
     wroteDemo += 1;
+  },
+  getShownet: () => 2,
+  onNetDebugPrint: (line) => {
+    shownetLines.push(line);
   }
 });
 assert.deepEqual(startedLocalSounds, ["misc/talk.wav"], "CL_ParseServerMessage chat sound mismatch");
@@ -533,6 +556,31 @@ assert.equal(executedBuffer, 1, "CL_ParseServerMessage command-buffer execution 
 assert.equal(serverDataName, "Map Unit", "CL_ParseServerMessage serverdata handoff mismatch");
 assert.equal(wroteDemo, 1, "CL_ParseServerMessage demo write mismatch");
 assert.equal(runtime.cl.screen.graph_current, 1, "CL_ParseServerMessage should add one netgraph ping sample");
+assert.ok(shownetLines.includes("------------------\n"), "CL_ParseServerMessage shownet separator mismatch");
+assert.ok(shownetLines.some((line) => line.endsWith(":svc_print\n")), "CL_ParseServerMessage shownet command label mismatch");
+assert.ok(shownetLines.some((line) => line.endsWith(":END OF MESSAGE\n")), "CL_ParseServerMessage shownet end marker mismatch");
+
+resetIncoming(runtime);
+const directShownetLines: string[] = [];
+MSG_WriteByte(runtime.net_message, svc_ops_e.svc_nop);
+runtime.net_message.readcount = 1;
+SHOWNET(runtime, "svc_nop", {
+  getShownet: () => 2,
+  onNetDebugPrint: (line) => {
+    directShownetLines.push(line);
+  }
+});
+assert.deepEqual(directShownetLines, ["  0:svc_nop\n"], "SHOWNET direct trace mismatch");
+
+runtime.cls.download = { partial: true };
+runtime.cls.downloadpercent = 77;
+resetIncoming(runtime);
+MSG_WriteByte(runtime.net_message, svc_ops_e.svc_reconnect);
+runtime.net_message.readcount = 0;
+CL_ParseServerMessage(runtime);
+assert.equal(runtime.cls.download, null, "CL_ParseServerMessage reconnect should clear active download");
+assert.equal(runtime.cls.downloadpercent, 0, "CL_ParseServerMessage reconnect should reset download percent");
+assert.equal(runtime.cls.state, connstate_t.ca_connecting, "CL_ParseServerMessage reconnect state mismatch");
 
 const entityBitsRuntime = createClientRuntime();
 const extendedBits = U_MOREBITS1 | U_MOREBITS2 | U_MOREBITS3 | U_NUMBER16 | U_MODEL | U_MODEL2 | U_SOLID;

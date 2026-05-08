@@ -20,6 +20,7 @@ import type { byte, qboolean } from "./q_shared.js";
 import type { cvar_t } from "./cvar.js";
 import type { sizebuf_t } from "../../memory/src/index.js";
 import { createSizeBuffer, SZ_Clear, SZ_Write } from "../../memory/src/index.js";
+import { Cmd_AddCommand, type CommandRuntime } from "./cmd.js";
 import { MSG_BeginReading } from "./messages.js";
 export { Com_BlockChecksum } from "./md4.js";
 
@@ -859,7 +860,7 @@ export {
 
 /**
  * Original name: CopyString
- * Source: qcommon/qcommon.h
+ * Source: qcommon/common.c / qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1137,6 +1138,32 @@ export function Z_FreeTags(runtime: QcommonMiscRuntime, tag: number): void {
 }
 
 /**
+ * Original name: Z_Stats_f
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Prints the current tracked zone byte/block counters.
+ *
+ * Porting notes:
+ * - Counts payload bytes only because JavaScript allocations do not expose the C `zhead_t` header.
+ */
+export function Z_Stats_f(runtime: QcommonMiscRuntime): string {
+  let bytes = 0;
+  let count = 0;
+
+  for (const metadata of runtime.zone_allocations.values()) {
+    bytes += metadata.size;
+    count += 1;
+  }
+
+  const message = `${bytes} bytes in ${count} blocks\n`;
+  runtime.hooks.onPrintf?.(message);
+  return message;
+}
+
+/**
  * Original name: Qcommon_Init
  * Source: qcommon/common.c
  * Category: Ported
@@ -1148,8 +1175,13 @@ export function Z_FreeTags(runtime: QcommonMiscRuntime, tag: number): void {
  * Porting notes:
  * - The full subsystem call chain remains distributed across the narrower ports already attached to `cmd`, `cvar`, `filesystem` and `runtime`.
  */
-export function Qcommon_Init(runtime: QcommonMiscRuntime): void {
+export function Qcommon_Init(runtime: QcommonMiscRuntime, cmd?: CommandRuntime): void {
   runtime.initialized = true;
+  if (cmd) {
+    Cmd_AddCommand(cmd, "z_stats", () => {
+      Z_Stats_f(runtime);
+    });
+  }
   runtime.hooks.onInit?.();
 }
 

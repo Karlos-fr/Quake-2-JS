@@ -125,24 +125,24 @@
 | `Quake-2-master/client/cl_main.c` | global | `sk` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_FixUpGender`. |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Userinfo_f` | `packages/client/src/cl_main.ts` | `CL_Userinfo_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Snd_Restart_f` | `packages/client/src/cl_main.ts` | `CL_Snd_Restart_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `precache_check` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `precache_spawncount` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `precache_tex` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `precache_model_skin` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `precache_model` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | macro | `PLAYER_MULT` | `packages/client/src/precache.ts` | `PLAYER_MULT` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | macro | `ENV_CNT` | `packages/client/src/precache.ts` | `ENV_CNT` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | macro | `TEXTURE_CNT` | `packages/client/src/precache.ts` | `TEXTURE_CNT` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `env_suf` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_RequestNextDownload` | `packages/client/src/precache.ts` | `CL_RequestNextDownload` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `map_checksum` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `fn` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `p` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `n` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `numtexinfo` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `fn` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Precache_f` | `packages/client/src/precache.ts` | `CL_Precache_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `map_checksum` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `precache_check` | `packages/client/src/client.ts` | `precache_check` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `precache_spawncount` | `packages/client/src/client.ts` | `precache_spawncount` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `precache_tex` | `packages/client/src/client.ts` | `precache_tex` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `precache_model_skin` | `packages/client/src/client.ts` | `precache_model_skin` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `precache_model` | `packages/client/src/precache.ts` |  | Valide | A redecouper | Replaced by hook reload local bytes; observable traversal covered. |
+| `Quake-2-master/client/cl_main.c` | macro | `PLAYER_MULT` | `packages/client/src/precache.ts` | `PLAYER_MULT` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | macro | `ENV_CNT` | `packages/client/src/precache.ts` | `ENV_CNT` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | macro | `TEXTURE_CNT` | `packages/client/src/precache.ts` | `TEXTURE_CNT` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `env_suf` | `packages/client/src/precache.ts` | `env_suf` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_RequestNextDownload` | `packages/client/src/precache.ts` | `CL_RequestNextDownload` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `map_checksum` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_RequestNextDownload`. |
+| `Quake-2-master/client/cl_main.c` | global | `fn` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_RequestNextDownload`. |
+| `Quake-2-master/client/cl_main.c` | global | `p` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_RequestNextDownload`. |
+| `Quake-2-master/client/cl_main.c` | global | `n` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_RequestNextDownload`. |
+| `Quake-2-master/client/cl_main.c` | global | `numtexinfo` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_RequestNextDownload`. |
+| `Quake-2-master/client/cl_main.c` | global | `fn` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_RequestNextDownload`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Precache_f` | `packages/client/src/precache.ts` | `CL_Precache_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `map_checksum` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Precache_f`. |
 | `Quake-2-master/client/cl_main.c` | function | `CL_InitLocal` | `packages/client/src/cl_main.ts` | `CL_InitLocal` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_WriteConfiguration` | `packages/client/src/cl_main.ts` | `CL_WriteConfiguration` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `path` | `packages/client/src/cl_main.ts` | `path` | A verifier | A redecouper |  |

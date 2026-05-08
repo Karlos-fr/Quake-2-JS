@@ -186,6 +186,7 @@ import {
   Z_Free,
   Z_FreeTags,
   Z_Malloc,
+  Z_Stats_f,
   Z_TagMalloc
 } from "../../packages/qcommon/src/qcommon.js";
 import {
@@ -770,9 +771,13 @@ assert.deepEqual(
 assert.equal(CopyString("baseq2"), "baseq2", "CopyString mismatch");
 assert.equal(CopyString(""), "", "CopyString empty mismatch");
 assert.equal(CopyString("line\nbreak"), "line\nbreak", "CopyString content preservation mismatch");
+const copied = CopyString("owned-copy");
+assert.equal(copied, "owned-copy", "CopyString copied content mismatch");
 assert.deepEqual(Info_Print("\\name\\quake\\skill\\2"), ["name                quake", "skill               2"], "Info_Print basic alignment mismatch");
 assert.deepEqual(Info_Print("missing"), ["missing             MISSING VALUE"], "Info_Print missing value mismatch");
 assert.deepEqual(Info_Print("\\abcdefghijklmnopqrstuv\\value"), ["abcdefghijklmnopqrstuvvalue"], "Info_Print long key mismatch");
+assert.deepEqual(Info_Print("\\name\\"), ["name                "], "Info_Print empty value mismatch");
+assert.deepEqual(Info_Print(""), [], "Info_Print empty string mismatch");
 
 const printed: string[] = [];
 const misc = createQcommonMiscRuntime({
@@ -840,6 +845,15 @@ assert.throws(
 );
 Z_FreeTags(misc, 3);
 assert.equal(misc.zone_allocations.has(tag3), false, "Z_FreeTags mismatch");
+const taggedA = Z_TagMalloc(misc, 5, 9);
+const taggedB = Z_TagMalloc(misc, 7, 9);
+const taggedC = Z_TagMalloc(misc, 11, 10);
+assert.equal(Z_Stats_f(misc), "23 bytes in 3 blocks\n", "Z_Stats_f direct output mismatch");
+Z_FreeTags(misc, 9);
+assert.equal(misc.zone_allocations.has(taggedA), false, "Z_FreeTags should free first matching tag");
+assert.equal(misc.zone_allocations.has(taggedB), false, "Z_FreeTags should free second matching tag");
+assert.equal(misc.zone_allocations.has(taggedC), true, "Z_FreeTags should preserve other tags");
+Z_Free(misc, taggedC);
 const shutdownAllocation = Z_TagMalloc(misc, 2, 7);
 assert.equal(misc.zone_allocations.has(shutdownAllocation), true, "Qcommon_Shutdown setup mismatch");
 Qcommon_Shutdown(misc);
@@ -847,12 +861,19 @@ assert.equal(misc.initialized, false, "Qcommon_Shutdown mismatch");
 assert.equal(misc.zone_allocations.size, 0, "Qcommon_Shutdown should release tracked zone allocations");
 
 const lifecycleCalls: string[] = [];
+const lifecyclePrints: string[] = [];
+const lifecycleCommandRuntime = createCommandRuntime();
 const lifecycleRuntime = createQcommonMiscRuntime({
+  onPrintf: (message) => lifecyclePrints.push(message),
   onInit: () => lifecycleCalls.push("init"),
   onFrame: (msec) => lifecycleCalls.push(`frame:${msec}`),
   onShutdown: () => lifecycleCalls.push("shutdown")
 });
-Qcommon_Init(lifecycleRuntime);
+Qcommon_Init(lifecycleRuntime, lifecycleCommandRuntime);
+assert.equal(Cmd_Exists(lifecycleCommandRuntime, "z_stats"), true, "Qcommon_Init should register z_stats");
+Z_TagMalloc(lifecycleRuntime, 6, 12);
+Cmd_ExecuteString(lifecycleCommandRuntime, "z_stats");
+assert.deepEqual(lifecyclePrints, ["6 bytes in 1 blocks\n"], "z_stats command output mismatch");
 Qcommon_Frame(lifecycleRuntime, 33.8);
 Qcommon_Shutdown(lifecycleRuntime);
 assert.deepEqual(lifecycleCalls, ["init", "frame:33", "shutdown"], "Qcommon lifecycle hook order mismatch");

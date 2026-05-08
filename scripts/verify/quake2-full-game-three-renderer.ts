@@ -26,7 +26,10 @@ assert.ok(source.includes("CL_PredictMovement(client"), "full-game should run cl
 assert.ok(source.includes("createClientPredictionCollisionSource(client, serverHost.collisionWorld)"), "full-game prediction should use the local server collision world");
 assert.ok(source.includes("createQcommonMiscRuntime"), "full-game should create the qcommon lifecycle runtime");
 assert.ok(source.includes("createQcommonHostRuntime"), "full-game should create the qcommon system host runtime");
-assert.ok(source.includes("Qcommon_Init(qcommon)"), "full-game should initialize through the qcommon lifecycle adapter");
+assert.ok(
+  source.includes("Qcommon_Init(qcommon)") || source.includes("Qcommon_Init(qcommon, cmd)"),
+  "full-game should initialize through the qcommon lifecycle adapter"
+);
 assert.ok(source.includes("Qcommon_Frame(qcommon, milliseconds)"), "full-game authoritative frame should run through Qcommon_Frame");
 assert.ok(source.includes("Qcommon_Shutdown(runtime.qcommon)"), "full-game should shut down the qcommon lifecycle adapter");
 assert.ok(source.includes("Sys_AppActivate(runtime.qcommonHost)"), "full-game should route browser activation through the qcommon system hook");
@@ -52,6 +55,9 @@ assert.ok(source.includes("drawLoadingFrame"), "full-game should render the load
 assert.ok(source.includes("drawCenteredPicture(page, runtime, \"loading\")"), "full-game should draw the original loading picture centered");
 assert.ok(source.includes("drawLoadingFrame(runtime, page);"), "full-game should keep the loading plaque visible while the Three renderer is pending");
 assert.ok(source.includes("forceGameInputForLevelLoad"), "full-game should force gameplay input during authoritative level loads");
+assert.ok(source.includes("isAuthoritativeLevelLoading"), "full-game should track automatic authoritative level loads");
+assert.ok(source.includes("shouldDrawFullGameLoadingFrame"), "full-game should prioritize the loading plaque over menu drawing");
+assert.ok(source.includes("runtime.isAuthoritativeLevelLoading() && !runtime.authoritativeGameReady()"), "automatic map changes should stay in loading mode until the client is ready");
 assert.ok(source.includes("M_ForceMenuOff(menuContext)"), "full-game level loads should close the main menu when a map transition begins");
 assert.ok(source.includes("onBeginLoadingPlaque: () => {\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "client changing commands should leave menu mode during level loads");
 assert.ok(source.includes("onBeginLoading: () => {\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "server map changes should leave menu mode during level loads");
