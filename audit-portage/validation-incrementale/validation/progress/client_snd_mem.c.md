@@ -1,5 +1,28 @@
 # Progress - Quake-2-master/client/snd_mem.c
 
+## Session 2026-05-08 - fermeture parser WAV RIFF
+
+- Lot traite: `data_p`, `iff_end`, `last_chunk`, `iff_data`, `iff_chunk_len`, `GetLittleShort`, `GetLittleLong`, `FindNextChunk`, `FindChunk`, `DumpChunks`, `str`, `GetWavinfo` et ses locaux generes (`i`, `format`, `samples`), plus les deux locaux `val` de `GetLittleShort`/`GetLittleLong`.
+- Corrections code:
+  - `packages/client/src/snd_mem.ts`: commentaires d'en-tete renforces pour `GetLittleShort`, `GetLittleLong`, `FindNextChunk` et `FindChunk`.
+  - `scripts/verify/quake2-snd-mem.ts`: couverture ajoutee pour chunks manquants (`RIFF`, `fmt `, `data`), rejet non-PCM, saut de chunk inconnu impair, offsets, sample count et diagnostics.
+- Tests lances:
+  - `npm run verify:snd-mem` - OK.
+  - `npm run verify:snd-loc:header` - OK.
+  - `npm run typecheck` - OK.
+- Comparaison C/TS:
+  - Les pointeurs/globals C `data_p`, `iff_end`, `last_chunk`, `iff_data`, `iff_chunk_len` sont portes comme `IffParseState` explicite passe aux helpers.
+  - `GetLittleShort`/`GetLittleLong` conservent l'endian little-endian, l'avance de curseur et la signature signee attendue.
+  - `FindNextChunk`/`FindChunk` conservent le scan depuis `last_chunk`, le rejet des longueurs negatives et l'arrondi pair `(len + 1) & ~1`.
+  - `GetWavinfo` conserve le flux `RIFF/WAVE`, `fmt ` PCM, cue/LIST `mark`, chunk `data`, `loopstart`, `samples`, `dataofs` et l'erreur `ERR_DROP` pour longueur de boucle invalide.
+  - `DumpChunks` conserve l'enumeration mais retourne les lignes de diagnostic au lieu d'appeler directement `Com_Printf`.
+- Runtime: le parser est atteint via `S_LoadSound`, lui-meme appele par `snd_loc.S_LoadSound`, `S_RegisterSound`, `S_EndRegistration`, `S_StartSound`, `S_Update_`/mixage.
+- apps/web: le flux navigateur utilise bien le runtime porte via `apps/web/src/full-game.ts`, `createClientSoundLocalContext`, `onFS_LoadFile` sur le filesystem monte, `S_DMA_RegisterSound`, puis emission WebAudio. Aucun flux parallele ne masque ce parser WAV.
+- renderer-three: non applicable; ce lot produit du PCM audio cache et ne produit ni modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene.
+- Decisions:
+  - Les lignes `val`, `str`, `i`, `format`, `samples` sont des locaux C couverts par leurs fonctions proprietaires.
+  - Toutes les lignes restantes de la matrice `client_snd_mem.c.md` sont maintenant `Valide` ou `Non applicable`.
+
 ## Session 2026-05-08 - demarrage chargement/resampling WAV
 
 - Lot traite: `cache_full_cycle`, declaration `S_Alloc`, `ResampleSfx` et ses locaux generes (`outcount`, `srcsample`, `stepscale`, `i`, `sample`), puis `S_LoadSound` et ses locaux generes (`namebuffer`, `data`, `len`, `stepscale`, `size`, `name`). `data_p` a ete qualifie `Partiel` car il appartient au lot parser WAV suivant.
@@ -18,4 +41,4 @@
 
 ## Prochain lot recommande
 
-Valider le bloc parser WAV: `iff_end`, `last_chunk`, `iff_data`, `iff_chunk_len`, `GetLittleShort`, `GetLittleLong`, `FindNextChunk`, `FindChunk`, `DumpChunks`, puis `GetWavinfo` si le lot reste coherent. Fermer `data_p` avec ce bloc.
+Aucun lot restant dans `client_snd_mem.c.md`: toutes les lignes sont `Valide` ou `Non applicable`. Proposer passage du fichier en `Termine`.

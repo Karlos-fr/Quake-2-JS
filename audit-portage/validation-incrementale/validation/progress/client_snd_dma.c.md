@@ -2,7 +2,7 @@
 
 ## Dernier lot valide
 
-Deuxieme gros lot coherent valide: flux update/streaming audio `S_AddLoopSounds`, `S_RawSamples`, `S_Update`, `GetSoundtime`, `S_Update_` et faux positifs locaux associes. Les fonctions ont ete comparees a `client/snd_dma.c`, leurs entetes TS ont ete ajoutes/verifies, le routage runtime/web est branche et couvert par tests.
+Troisieme gros lot coherent valide: commandes console restantes `S_Play`, `S_SoundList`, locaux `i`/`name` et faux positif `strcpy`. Les fonctions ont ete comparees a `client/snd_dma.c`, leurs entetes TS ont ete ajoutes, le format de sortie `S_SoundList` a ete aligne sur les largeurs C `%2d`/`%6i`, et les commandes `play`/`soundlist` sont prouvees via `Cmd_ExecuteString`.
 
 ## Tests de reference
 
@@ -20,12 +20,13 @@ Deuxieme gros lot coherent valide: flux update/streaming audio `S_AddLoopSounds`
 - Les static locals C `buffers` et `oldsamplepos` de `GetSoundtime` sont conserves dans `ClientSndDmaState` pour garder la persistance inter-appels sans exposer de globals TS.
 - `S_Update` est appele depuis le frame loop web complet via `updateClientAudio`, apres le pompage `CL_Frame`/`Qcommon_Frame`; les loop sounds sont consommes par `audio.syncLoopChannels(sndDma.sound.state.channels)`.
 - `S_RawSamples` du port DMA est valide pour le runtime DMA; les cinematics web utilisent encore le hook adapter `runtime.audio.queueRawSamples` directement, ce qui est acceptable pour le flux cinematic existant mais reste distinct du DMA gameplay.
-- `packages/renderer-three` est non applicable pour ce lot audio: les entites validees produisent du son brut/canaux audio, pas de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene.
+- `S_Play` et `S_SoundList` sont atteignables par les commandes enregistrees dans `S_Init`; `apps/web` execute le buffer de commandes qcommon et garde le routage audio via le runtime DMA et l'adapter WebAudio.
+- `packages/renderer-three` est non applicable pour ce lot audio: les entites validees produisent du son brut, des commandes console et des canaux audio, pas de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene.
 
 ## Blocages
 
-- `npm run typecheck` echoue hors scope sur `apps/web/src/full-game.ts`: exports `SFF_HIDDEN`, `SFF_SUBDIR`, `SFF_SYSTEM` absents de `packages/qcommon/src/index.js`.
+- Aucun blocage connu pour ce fichier pendant cette session: `npm run typecheck` passe.
 
 ## Prochain lot recommande
 
-Valider les commandes console restantes `S_Play`, `S_SoundList`, leurs locaux (`i`, `name`) et le faux positif `strcpy`.
+Aucun lot restant dans `client_snd_dma.c.md`: toutes les lignes sont `Valide` ou `Non applicable`. Proposer au coordinateur de passer `client/snd_dma.c` en `Termine`.

@@ -213,27 +213,27 @@
 | `Quake-2-master/client/client.h` | function | `CL_AddLightStyles` | `packages/client/src/cl_fx.ts` | `CL_AddLightStyles` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_PrepRefresh` | `packages/client/src/view.ts` | `CL_PrepRefresh` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_RegisterSounds` | `packages/client/src/sound.ts` | `CL_RegisterSounds` | Valide | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Quit_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `IN_Accumulate` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseLayout` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Init` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_FixUpGender` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Disconnect` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Disconnect_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_GetChallengePacket` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_PingServers_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Snd_Restart_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RequestNextDownload` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | struct | `kbutton_t` | `packages/client/src/client.ts` | `kbutton_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `down` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `downtime` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `msec` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `state` | `packages/client/src/keys.ts` | `state` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `in_strafe` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `in_speed` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_InitInput` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_SendCmd` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_SendMove` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Quit_f` | `packages/client/src/cl_main.ts` | `CL_Quit_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `IN_Accumulate` |  |  | Non applicable | A redecouper | Prototype header sans definition ni appel dans `client/*`; pas de port officiel attendu. |
+| `Quake-2-master/client/client.h` | function | `CL_ParseLayout` | `packages/client/src/cl_parse.ts` | `CL_ParseLayout` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Init` | `packages/client/src/cl_main.ts` | `CL_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_FixUpGender` | `packages/client/src/cl_main.ts` | `CL_FixUpGender` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Disconnect` | `packages/client/src/cl_main.ts` | `CL_Disconnect` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Disconnect_f` | `packages/client/src/cl_main.ts` | `CL_Disconnect_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_GetChallengePacket` |  |  | Non applicable | Prototype header sans definition ni appel dans `client/*`; challenge runtime couvert par `CL_CheckForResend` et `CL_ConnectionlessPacket`. |
+| `Quake-2-master/client/client.h` | function | `CL_PingServers_f` | `packages/client/src/cl_main.ts` | `CL_PingServers_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Snd_Restart_f` | `packages/client/src/cl_main.ts` | `CL_Snd_Restart_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_RequestNextDownload` | `packages/client/src/precache.ts` | `CL_RequestNextDownload` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | struct | `kbutton_t` | `packages/client/src/client.ts` | `kbutton_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `down` | `packages/client/src/client.ts` |  | Non applicable | Champ de `kbutton_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `downtime` | `packages/client/src/client.ts` |  | Non applicable | Champ de `kbutton_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `msec` | `packages/client/src/client.ts` |  | Non applicable | Champ de `kbutton_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `state` | `packages/client/src/client.ts` |  | Non applicable | Champ de `kbutton_t` couvert par la ligne structure; la cible `keys.ts` etait un faux rattachement genere. |
+| `Quake-2-master/client/client.h` | global | `in_strafe` | `packages/client/src/cl_input.ts` | `in_strafe` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `in_speed` | `packages/client/src/cl_input.ts` | `in_speed` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_InitInput` | `packages/client/src/cl_input.ts` | `CL_InitInput` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_SendCmd` | `packages/client/src/cl_input.ts` | `CL_SendCmd` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_SendMove` |  |  | Non applicable | Prototype header sans definition ni appel dans `client/*`; le packet `clc_move` est construit dans `CL_SendCmd`. |
 | `Quake-2-master/client/client.h` | function | `CL_ClearState` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ReadPackets` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ReadFromServer` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |

@@ -177,9 +177,30 @@ const context = createClientSoundLocalContext({
 assert.equal(context.state.channels.length, MAX_CHANNELS, "channels length mismatch");
 assert.equal(context.state.s_rawsamples.length, MAX_RAW_SAMPLES, "raw sample length mismatch");
 assert.equal(context.state.s_pendingplays.next, null, "pending plays default mismatch");
+assert.equal(context.state.paintedtime, 0, "paintedtime default mismatch");
+assert.equal(context.state.s_rawend, 0, "s_rawend default mismatch");
 assert.deepEqual(context.state.channels[0], createChannel(), "sound-local channel state mismatch");
 assert.deepEqual(context.state.dma, createDmaState(), "sound-local dma state mismatch");
 assert.deepEqual(context.state.s_rawsamples[0], createPortableSamplePair(), "sound-local raw sample state mismatch");
+assert.deepEqual({
+  s_volume: context.state.s_volume,
+  s_nosound: context.state.s_nosound,
+  s_loadas8bit: context.state.s_loadas8bit,
+  s_khz: context.state.s_khz,
+  s_show: context.state.s_show,
+  s_mixahead: context.state.s_mixahead,
+  s_testsound: context.state.s_testsound,
+  s_primary: context.state.s_primary
+}, {
+  s_volume: null,
+  s_nosound: null,
+  s_loadas8bit: null,
+  s_khz: null,
+  s_show: null,
+  s_mixahead: null,
+  s_testsound: null,
+  s_primary: null
+}, "sound cvar extern defaults mismatch");
 
 sfx.name = "misc/menu1.wav";
 

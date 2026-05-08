@@ -214,6 +214,12 @@ function skinItemNames(model: PlayerModelInfo | undefined): Array<string | null>
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Scans player models, selects the active `name`/`skin`/`hand`/`rate` cvars, and builds the player-config menu.
+ *
+ * Porting notes:
+ * - Uses explicit menu context state instead of C globals and local buffers.
  */
 export function PlayerConfig_MenuInit(context: ClientMenuContext): boolean {
   syncMenuVideo(context);
@@ -374,6 +380,18 @@ export function PlayerConfig_MenuInit(context: ClientMenuContext): boolean {
   return true;
 }
 
+/**
+ * Original name: PlayerConfig_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the menu, renders the selected player model preview, and draws the selected skin icon.
+ *
+ * Porting notes:
+ * - Keeps the preview refdef renderer-neutral, then calls `ref.RenderFrame` like the original renderer export.
+ */
 function PlayerConfig_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
 
@@ -423,6 +441,7 @@ function PlayerConfig_MenuDraw(context: ClientMenuContext): void {
     );
     refdef.height += 4;
 
+    context.ref.RenderFrame(refdef);
     context.hooks.onPlayerConfigPreview?.({ refdef, entity, modelPath, skinPath, iconPath });
     context.ref.DrawPic(context.state.s_player_config_menu.x - 40, refdef.y, iconPath);
   }
@@ -441,6 +460,12 @@ function clearPlayerModels(context: ClientMenuContext): void {
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - On Escape, persists `name` and `skin`, clears temporary player-model state, then delegates to `Default_MenuKey`.
+ *
+ * Porting notes:
+ * - JS garbage collection replaces the original per-skin `free` loop.
  */
 export function PlayerConfig_MenuKey(context: ClientMenuContext, key: number): string | null {
   if (key === K_ESCAPE) {
@@ -464,6 +489,9 @@ export function PlayerConfig_MenuKey(context: ClientMenuContext, key: number): s
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes the player-config menu or reports missing models on the multiplayer status bar, then pushes draw/key handlers.
  */
 export function M_Menu_PlayerConfig_f(context: ClientMenuContext): void {
   if (!PlayerConfig_MenuInit(context)) {

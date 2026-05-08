@@ -27,13 +27,20 @@ import {
   CL_BubbleTrail2,
   CL_BuildRefreshFrame,
   CL_DebugTrail,
+  CL_Disconnect,
+  CL_Disconnect_f,
+  CL_FixUpGender,
+  CL_Init,
+  CL_InitInput,
   CL_ParseConfigString,
   CL_ParseDelta,
   CL_ParseEntityBits,
   CL_ParseFrame,
+  CL_ParseLayout,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
   CL_ParseTEnt,
+  CL_PingServers_f,
   CL_PrepRefresh,
   CL_Flashlight,
   CL_FlameEffects,
@@ -44,12 +51,16 @@ import {
   CL_IonripperTrail,
   CL_ParticleSteamEffect,
   CL_QuadTrail,
+  CL_Quit_f,
   CL_RailTrail,
   CL_RegisterSounds,
+  CL_RequestNextDownload,
   CL_RunDLights,
   CL_RunLightStyles,
+  CL_SendCmd,
   CL_SetLightstyle,
   CL_SmokeTrail,
+  CL_Snd_Restart_f,
   INSTANT_PARTICLE,
   MAX_CLIENTWEAPONMODELS,
   MAX_DLIGHTS,
@@ -92,6 +103,7 @@ assert.equal(typeof CL_ParseDelta, "function", "CL_ParseDelta export mismatch");
 assert.equal(typeof CL_ParseFrame, "function", "CL_ParseFrame export mismatch");
 assert.equal(typeof CL_ParseTEnt, "function", "CL_ParseTEnt export mismatch");
 assert.equal(typeof CL_ParseConfigString, "function", "CL_ParseConfigString export mismatch");
+assert.equal(typeof CL_ParseLayout, "function", "CL_ParseLayout export mismatch");
 assert.equal(typeof CL_ParseMuzzleFlash, "function", "CL_ParseMuzzleFlash export mismatch");
 assert.equal(typeof CL_ParseMuzzleFlash2, "function", "CL_ParseMuzzleFlash2 export mismatch");
 assert.equal(typeof CL_SetLightstyle, "function", "CL_SetLightstyle export mismatch");
@@ -119,8 +131,21 @@ assert.equal(typeof CL_Heatbeam, "function", "CL_Heatbeam export mismatch");
 assert.equal(typeof CL_ParticleSteamEffect, "function", "CL_ParticleSteamEffect export mismatch");
 assert.equal(typeof CL_PrepRefresh, "function", "CL_PrepRefresh export mismatch");
 assert.equal(typeof CL_RegisterSounds, "function", "CL_RegisterSounds export mismatch");
+assert.equal(typeof CL_Quit_f, "function", "CL_Quit_f export mismatch");
+assert.equal(typeof CL_Init, "function", "CL_Init export mismatch");
+assert.equal(typeof CL_FixUpGender, "function", "CL_FixUpGender export mismatch");
+assert.equal(typeof CL_Disconnect, "function", "CL_Disconnect export mismatch");
+assert.equal(typeof CL_Disconnect_f, "function", "CL_Disconnect_f export mismatch");
+assert.equal(typeof CL_PingServers_f, "function", "CL_PingServers_f export mismatch");
+assert.equal(typeof CL_Snd_Restart_f, "function", "CL_Snd_Restart_f export mismatch");
+assert.equal(typeof CL_RequestNextDownload, "function", "CL_RequestNextDownload export mismatch");
+assert.equal(typeof CL_InitInput, "function", "CL_InitInput export mismatch");
+assert.equal(typeof CL_SendCmd, "function", "CL_SendCmd export mismatch");
 assert.equal(CL_AddEntities, CL_BuildRefreshFrame, "CL_AddEntities should expose CL_BuildRefreshFrame adapter");
 assert.equal("CL_RunParticles" in clientIndex, false, "CL_RunParticles is an unused original header declaration without a C definition");
+assert.equal("IN_Accumulate" in clientIndex, false, "IN_Accumulate is an unused original header declaration without a C definition");
+assert.equal("CL_GetChallengePacket" in clientIndex, false, "CL_GetChallengePacket is an unused original header declaration without a C definition");
+assert.equal("CL_SendMove" in clientIndex, false, "CL_SendMove is an unused original header declaration without a C definition");
 
 assert.equal(connstate_t.ca_uninitialized, 0, "connstate_t ca_uninitialized mismatch");
 assert.equal(connstate_t.ca_disconnected, 1, "connstate_t ca_disconnected mismatch");
@@ -167,6 +192,8 @@ assert.equal(clientInfo.valid, false, "createClientinfo valid mismatch");
 
 const button = createKbutton();
 assert.deepEqual(button.down, [0, 0], "createKbutton down mismatch");
+assert.equal(button.downtime, 0, "createKbutton downtime mismatch");
+assert.equal(button.msec, 0, "createKbutton msec mismatch");
 assert.equal(button.state, 0, "createKbutton state mismatch");
 
 const clientState = createClientState();

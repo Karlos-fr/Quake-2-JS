@@ -26,20 +26,20 @@
 | `Quake-2-master/client/snd_mem.c` | global | `size` | `packages/client/src/snd_dma.ts` | `size` | Non applicable | A redecouper | Variable locale C de `S_LoadSound`, remplacee par `data.length`; pas d'ownership `snd_dma.ts`. |
 | `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | Non applicable | A redecouper | Variable locale C de `S_LoadSound`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
 | `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | Non applicable | A redecouper | Doublon de variable locale C genere par la matrice, couvert avec `S_LoadSound`. |
-| `Quake-2-master/client/snd_mem.c` | global | `data_p` | `packages/client/src/snd_mem.ts` | `data_p` | Partiel | A redecouper | Remplace par `IffParseState.data_p` et exerce via `S_LoadSound`; validation complete reportee au lot parser WAV `GetLittle*`/chunks/`GetWavinfo`. |
-| `Quake-2-master/client/snd_mem.c` | global | `iff_end` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `last_chunk` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `iff_data` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `iff_chunk_len` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `GetLittleShort` | `packages/client/src/snd_mem.ts` | `GetLittleShort` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `GetLittleLong` | `packages/client/src/snd_mem.ts` | `GetLittleLong` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `FindNextChunk` | `packages/client/src/snd_mem.ts` | `FindNextChunk` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `FindChunk` | `packages/client/src/snd_mem.ts` | `FindChunk` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `DumpChunks` | `packages/client/src/snd_mem.ts` | `DumpChunks` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `str` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `GetWavinfo` | `packages/client/src/snd_mem.ts` | `GetWavinfo` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `format` | `packages/client/src/snd_mem.ts` | `format` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `samples` | `packages/client/src/snd_mem.ts` | `samples` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `data_p` | `packages/client/src/snd_mem.ts` | `IffParseState.data_p` | Valide | A redecouper | Remplacement explicite du pointeur global C par etat parser passe aux helpers. |
+| `Quake-2-master/client/snd_mem.c` | global | `iff_end` | `packages/client/src/snd_mem.ts` | `IffParseState.iff_end` | Valide | A redecouper | Remplacement explicite du pointeur global C par etat parser passe aux helpers. |
+| `Quake-2-master/client/snd_mem.c` | global | `last_chunk` | `packages/client/src/snd_mem.ts` | `IffParseState.last_chunk` | Valide | A redecouper | Remplacement explicite du pointeur global C par etat parser passe aux helpers. |
+| `Quake-2-master/client/snd_mem.c` | global | `iff_data` | `packages/client/src/snd_mem.ts` | `IffParseState.iff_data` | Valide | A redecouper | Remplacement explicite du pointeur global C par etat parser passe aux helpers. |
+| `Quake-2-master/client/snd_mem.c` | global | `iff_chunk_len` | `packages/client/src/snd_mem.ts` | `IffParseState.iff_chunk_len` | Valide | A redecouper | Remplacement explicite du global C par etat parser passe aux helpers. |
+| `Quake-2-master/client/snd_mem.c` | function | `GetLittleShort` | `packages/client/src/snd_mem.ts` | `GetLittleShort` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mem.ts` | `val` | Non applicable | A redecouper | Variable locale C de `GetLittleShort`, portee dans le corps TS. |
+| `Quake-2-master/client/snd_mem.c` | function | `GetLittleLong` | `packages/client/src/snd_mem.ts` | `GetLittleLong` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mem.ts` | `val` | Non applicable | A redecouper | Variable locale C de `GetLittleLong`, portee dans le corps TS. |
+| `Quake-2-master/client/snd_mem.c` | function | `FindNextChunk` | `packages/client/src/snd_mem.ts` | `FindNextChunk` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `FindChunk` | `packages/client/src/snd_mem.ts` | `FindChunk` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `DumpChunks` | `packages/client/src/snd_mem.ts` | `DumpChunks` | Valide | A redecouper | Retourne les lignes de diagnostic au lieu d'appeler `Com_Printf`. |
+| `Quake-2-master/client/snd_mem.c` | global | `str` | `packages/client/src/snd_mem.ts` | `name` | Non applicable | A redecouper | Buffer local C de `DumpChunks`, remplace par chaine locale TS. |
+| `Quake-2-master/client/snd_mem.c` | function | `GetWavinfo` | `packages/client/src/snd_mem.ts` | `GetWavinfo` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts` | `loopSamples` | Non applicable | A redecouper | Variable locale C de `GetWavinfo`, renommee pour clarifier le nombre d'echantillons de boucle. |
+| `Quake-2-master/client/snd_mem.c` | global | `format` | `packages/client/src/snd_mem.ts` | `format` | Non applicable | A redecouper | Variable locale C de `GetWavinfo`, portee dans le corps TS. |
+| `Quake-2-master/client/snd_mem.c` | global | `samples` | `packages/client/src/snd_mem.ts` | `samples` | Non applicable | A redecouper | Variable locale C de `GetWavinfo`, portee dans le corps TS. |

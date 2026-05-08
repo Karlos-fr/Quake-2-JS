@@ -16,6 +16,7 @@ import { strict as assert } from "node:assert";
 import {
   PAINTBUFFER_SIZE,
   S_InitScaletable,
+  S_PaintChannelFrom8,
   S_PaintChannelFrom16,
   S_PaintChannels,
   S_TransferPaintBuffer,
@@ -77,6 +78,59 @@ assert.deepEqual(
   [100, -100, 50, -50, 0, 0, 0, 0],
   "S_TransferPaintBuffer stereo16 mismatch"
 );
+
+const wrapTransferContext = createClientSoundLocalContext();
+wrapTransferContext.state.dma.buffer = new Uint8Array(16);
+wrapTransferContext.state.dma.channels = 2;
+wrapTransferContext.state.dma.samples = 8;
+wrapTransferContext.state.dma.samplebits = 16;
+wrapTransferContext.state.paintedtime = 3;
+for (let i = 0; i < 4; i += 1) {
+  wrapTransferContext.state.mix.paintbuffer[i].left = (10 + i * 10) << 8;
+  wrapTransferContext.state.mix.paintbuffer[i].right = -(10 + i * 10) << 8;
+}
+S_TransferPaintBuffer(wrapTransferContext, 7);
+assert.deepEqual(
+  Array.from(new Int16Array(wrapTransferContext.state.dma.buffer.buffer)),
+  [20, -20, 30, -30, 40, -40, 10, -10],
+  "S_TransferPaintBuffer stereo16 wrap mismatch"
+);
+
+const transfer8Context = createClientSoundLocalContext();
+transfer8Context.state.dma.buffer = new Uint8Array(4);
+transfer8Context.state.dma.channels = 1;
+transfer8Context.state.dma.samples = 4;
+transfer8Context.state.dma.samplebits = 8;
+transfer8Context.state.paintedtime = 1;
+transfer8Context.state.mix.paintbuffer[0].left = 0;
+transfer8Context.state.mix.paintbuffer[1].left = 0x7fff << 8;
+transfer8Context.state.mix.paintbuffer[2].left = -0x8000 << 8;
+S_TransferPaintBuffer(transfer8Context, 4);
+assert.deepEqual(
+  Array.from(transfer8Context.state.dma.buffer),
+  [0, 128, 255, 0],
+  "S_TransferPaintBuffer mono8 ring mismatch"
+);
+
+const paint8Context = createClientSoundLocalContext();
+paint8Context.state.s_volume = { value: 1, modified: false } as never;
+S_InitScaletable(paint8Context);
+const paint8Channel = createChannel();
+paint8Channel.leftvol = 255;
+paint8Channel.rightvol = 255;
+paint8Channel.pos = 1;
+const sfx8 = {
+  length: 3,
+  loopstart: -1,
+  speed: 11025,
+  width: 1,
+  stereo: 0,
+  data: new Uint8Array([0, 127, 255])
+};
+S_PaintChannelFrom8(paint8Context, paint8Channel, sfx8, 2, 0);
+assert.equal(paint8Channel.pos, 3, "S_PaintChannelFrom8 pos mismatch");
+assert.equal(paint8Channel.leftvol, 255, "S_PaintChannelFrom8 left clamp mismatch");
+assert.equal(paint8Context.state.mix.paintbuffer[0].left, 0, "S_PaintChannelFrom8 scale row mismatch");
 
 const issueLog: string[] = [];
 const mixContext = createClientSoundLocalContext({

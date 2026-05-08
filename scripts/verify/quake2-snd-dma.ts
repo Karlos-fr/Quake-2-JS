@@ -16,6 +16,7 @@ import { strict as assert } from "node:assert";
 import {
   CS_PLAYERSKINS,
   Cmd_Exists,
+  Cmd_ExecuteString,
   createCommandRuntime,
   createCvarRuntime
 } from "../../packages/qcommon/src/index.js";
@@ -39,6 +40,7 @@ import {
   S_RegisterSexedSound as S_DMA_RegisterSexedSound,
   S_RegisterSound as S_DMA_RegisterSound,
   S_Shutdown as S_DMA_Shutdown,
+  S_SoundList as S_DMA_SoundList,
   S_SpatializeOrigin as S_DMA_SpatializeOrigin,
   S_StartLocalSound as S_DMA_StartLocalSound,
   S_StartSound as S_DMA_StartSound,
@@ -52,6 +54,7 @@ let dmaPos = 0;
 let beginPaintingCalls = 0;
 let submitCalls = 0;
 let lastPaintEndtime = 0;
+const printed: string[] = [];
 
 const client = createClientRuntime();
 const cmd = createCommandRuntime();
@@ -68,6 +71,9 @@ const local = createClientSoundLocalContext({
   onS_PaintChannels: (endtime) => {
     lastPaintEndtime = endtime;
     local.state.paintedtime = endtime;
+  },
+  onComPrintf: (message) => {
+    printed.push(message);
   }
 });
 const context = createClientSndDmaContext(client, cmd, cvar, local);
@@ -172,7 +178,27 @@ assert.ok(localQueued && localQueued !== context.sound.state.s_pendingplays, "S_
 assert.equal(localQueued?.entnum, client.cl.playernum + 1, "S_StartLocalSound should use the listener entity");
 assert.equal(localQueued?.volume, 255, "S_StartLocalSound should queue full volume");
 
+S_DMA_StopAllSounds(context);
+Cmd_ExecuteString(cmd, "play misc/menu1 weapons/rocket.wav");
+const commandQueued = collectPendingSoundNames(context);
+assert.deepEqual(commandQueued.sort(), ["misc/menu1.wav", "weapons/rocket.wav"], "S_Play should queue every requested command argument");
+assert.equal(
+  collectPendingEntnums(context).every((entnum) => entnum === client.cl.playernum + 1),
+  true,
+  "S_Play should use the listener entity"
+);
+
+S_DMA_StopAllSounds(context);
+Cmd_ExecuteString(cmd, "play misc/menu1");
+assert.ok(
+  context.sound.state.s_pendingplays.next !== context.sound.state.s_pendingplays,
+  "registered console command `play` should invoke S_Play through Cmd_ExecuteString"
+);
+
 const overrideTarget = issuedChannel!;
+overrideTarget.sfx = registered;
+overrideTarget.entnum = 9;
+overrideTarget.entchannel = 2;
 overrideTarget.end = 9999;
 const overrideChannel = S_DMA_PickChannel(context, 9, 2);
 assert.equal(overrideChannel, overrideTarget, "S_PickChannel should override matching entnum + entchannel");
@@ -261,6 +287,23 @@ assert.equal(beginPaintingCalls, 1, "S_Update_ should begin DMA painting");
 assert.equal(lastPaintEndtime, 4, "S_Update_ should mix to the aligned mix-ahead endtime");
 assert.equal(submitCalls, 1, "S_Update_ should submit DMA after painting");
 
+const listedLoaded = S_DMA_RegisterSound(context, "misc/listed.wav");
+assert.ok(listedLoaded, "S_SoundList fixture registration mismatch");
+listedLoaded!.cache = createCachedSfx(32);
+const placeholder = S_DMA_FindName(context, "*placeholder", true);
+assert.ok(placeholder, "S_SoundList placeholder fixture mismatch");
+const notLoaded = S_DMA_FindName(context, "misc/notloaded.wav", true);
+assert.ok(notLoaded, "S_SoundList not-loaded fixture mismatch");
+printed.length = 0;
+const soundList = S_DMA_SoundList(context);
+assert.equal(soundList.lines.some((line) => line === " ( 8b)     64 : misc/listed.wav"), true, "S_SoundList loaded line formatting mismatch");
+assert.equal(soundList.lines.some((line) => line === "  placeholder : *placeholder"), true, "S_SoundList placeholder line mismatch");
+assert.equal(soundList.lines.some((line) => line === "  not loaded  : misc/notloaded.wav"), true, "S_SoundList not-loaded line mismatch");
+assert.equal(soundList.total >= 64, true, "S_SoundList total resident byte count mismatch");
+assert.equal(printed.some((line) => line.startsWith("Total resident: ")), true, "S_SoundList should print total resident bytes");
+Cmd_ExecuteString(cmd, "soundlist");
+assert.equal(printed.some((line) => line.includes("misc/listed.wav")), true, "registered console command `soundlist` should invoke S_SoundList");
+
 S_DMA_ClearBuffer(context);
 assert.deepEqual(Array.from(context.sound.state.dma.buffer?.slice(0, 16) ?? []), new Array(16).fill(0x80), "S_ClearBuffer mismatch");
 
@@ -281,4 +324,24 @@ function createCachedSfx(length: number) {
   cache.stereo = 1;
   cache.data = new Uint8Array(length);
   return cache;
+}
+
+function collectPendingSoundNames(testContext: typeof context): string[] {
+  const names: string[] = [];
+  let node = testContext.sound.state.s_pendingplays.next;
+  while (node && node !== testContext.sound.state.s_pendingplays) {
+    names.push(node.sfx?.name ?? "");
+    node = node.next;
+  }
+  return names;
+}
+
+function collectPendingEntnums(testContext: typeof context): number[] {
+  const entnums: number[] = [];
+  let node = testContext.sound.state.s_pendingplays.next;
+  while (node && node !== testContext.sound.state.s_pendingplays) {
+    entnums.push(node.entnum);
+    node = node.next;
+  }
+  return entnums;
 }

@@ -10,6 +10,7 @@ import { join } from "node:path";
 const repoRoot = process.cwd();
 const source = readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8");
 const renderLoopSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"), "utf8");
+const menuPlayerConfigSource = readFileSync(join(repoRoot, "packages", "client", "src", "menu-player-config.ts"), "utf8");
 
 assert.ok(source.includes("createFullGameRenderLoop"), "full-game should instantiate the shared Three/ref_gl render loop");
 assert.ok(source.includes("createFullGameServerRenderSource"), "full-game should build render frames from the authoritative client state");
@@ -52,6 +53,9 @@ assert.ok(source.includes("getPlayerModels: () => readFullGamePlayerModels(files
 assert.ok(source.includes("FS_ListFiles(filesystem, `${path}/players/*.*`, FULL_GAME_SFF_SUBDIR, 0)"), "full-game player-model hook should scan loose player model directories");
 assert.ok(source.includes("readFullGamePakPlayerModels(filesystem)"), "full-game player-model hook should include stock PAK player models");
 assert.ok(source.includes("fullGameIconOfSkinExists"), "full-game player-model hook should preserve the skin icon existence check");
+assert.ok(menuPlayerConfigSource.includes("context.ref.RegisterModel(modelPath)"), "player-config preview should register the selected player model through ref");
+assert.ok(menuPlayerConfigSource.includes("context.ref.RegisterSkin(skinPath)"), "player-config preview should register the selected skin through ref");
+assert.ok(menuPlayerConfigSource.includes("context.ref.RenderFrame(refdef)"), "player-config preview should render through the active ref_gl/Three host");
 assert.equal(source.includes("syncFullGamePredictionToAuthoritativeFrame"), false, "full-game should not add a non-original prediction resync path");
 assert.ok(source.includes("CL_BuildActionEffects"), "full-game should play client-side muzzleflash and temp-entity sounds");
 assert.ok(source.includes("CL_BuildEntityEventEffects"), "full-game should play client-side entity event sounds");

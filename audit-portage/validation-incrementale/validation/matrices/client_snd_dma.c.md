@@ -104,9 +104,9 @@
 | `Quake-2-master/client/snd_dma.c` | function | `S_Update_` | `packages/client/src/snd_dma.ts` | `S_Update_` | Valide | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `endtime` | `packages/client/src/snd_dma.ts` | `endtime` | Non applicable | A redecouper | Variable locale de `S_Update_`, pas une entite proprietaire. |
 | `Quake-2-master/client/snd_dma.c` | global | `samps` | `packages/client/src/snd_dma.ts` | `samps` | Non applicable | A redecouper | Variable locale de `S_Update_`, pas une entite proprietaire. |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Play` | `packages/client/src/snd_dma.ts` | `S_Play` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `name` | `packages/client/src/snd_dma.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `strcpy` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_SoundList` | `packages/client/src/snd_dma.ts` | `S_SoundList` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Play` | `packages/client/src/snd_dma.ts` | `S_Play` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper | Variable locale de `S_Play`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `name` | `packages/client/src/snd_dma.ts` | `name` | Non applicable | A redecouper | Buffer local de `S_Play` remplace par construction de string TS. |
+| `Quake-2-master/client/snd_dma.c` | function | `strcpy` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper | Appel libc dans `S_Play`, remplace par assignation/concat string TS. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_SoundList` | `packages/client/src/snd_dma.ts` | `S_SoundList` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper | Variable locale de `S_SoundList`, pas une entite proprietaire. |

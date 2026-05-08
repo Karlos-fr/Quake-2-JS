@@ -10,44 +10,44 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/snd_mix.c` | macro | `PAINTBUFFER_SIZE` | `packages/client/src/snd_mix.ts` | `PAINTBUFFER_SIZE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts` | `S_WriteLinearBlastStereo16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts` | `S_WriteLinearBlastStereo16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_TransferStereo16` | `packages/client/src/snd_mix.ts` | `S_TransferStereo16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `lpos` | `packages/client/src/snd_mix.ts` | `lpos` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `lpaintedtime` | `packages/client/src/snd_mix.ts` | `lpaintedtime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_TransferPaintBuffer` | `packages/client/src/snd_mix.ts` | `S_TransferPaintBuffer` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out_idx` | `packages/client/src/snd_mix.ts` | `out_idx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out_mask` | `packages/client/src/snd_mix.ts` | `out_mask` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `p` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `step` | `packages/client/src/snd_mix.ts` | `step` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `pbuf` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts` | `out` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts` | `out` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom8` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannels` | `packages/client/src/snd_mix.ts` | `S_PaintChannels` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `end` | `packages/client/src/snd_mix.ts` | `end` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `s` | `packages/client/src/snd_mix.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `stop` | `packages/client/src/snd_mix.ts` | `stop` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_InitScaletable` | `packages/client/src/snd_mix.ts` | `S_InitScaletable` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `scale` | `packages/client/src/snd_mix.ts` | `scale` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom8` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts` | `data` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts` | `data` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | macro | `PAINTBUFFER_SIZE` | `packages/client/src/snd_mix.ts` | `PAINTBUFFER_SIZE` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | Non applicable | A redecouper | Scratch pointer C remplace par parametre `out` typed array dans `S_WriteLinearBlastStereo16`. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts` | `S_WriteLinearBlastStereo16` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts` | `S_WriteLinearBlastStereo16` | Non applicable | A redecouper | Doublon genere; entite validee sur la ligne proprietaire. |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | Non applicable | A redecouper | Scratch pointer C remplace par vues typed array dans le transfert DMA. |
+| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | Non applicable | A redecouper | Doublon de scratch pointer C. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_TransferStereo16` | `packages/client/src/snd_mix.ts` | `S_TransferStereo16` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `lpos` | `packages/client/src/snd_mix.ts` | `lpos` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `lpaintedtime` | `packages/client/src/snd_mix.ts` | `lpaintedtime` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_TransferPaintBuffer` | `packages/client/src/snd_mix.ts` | `S_TransferPaintBuffer` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `out_idx` | `packages/client/src/snd_mix.ts` | `out_idx` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts` | `count` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `out_mask` | `packages/client/src/snd_mix.ts` | `out_mask` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `p` | `packages/client/src/snd_mix.ts` |  | Non applicable | A redecouper | Faux local C remplace par `paint`/`paintIndex` typed array. |
+| `Quake-2-master/client/snd_mix.c` | global | `step` | `packages/client/src/snd_mix.ts` | `step` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `pbuf` | `packages/client/src/snd_mix.ts` |  | Non applicable | A redecouper | Faux local C remplace par `dma.buffer` et vues typed array. |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts` | `count` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts` | `out` | Non applicable | A redecouper | Faux local C couvert par les vues typed array 16/8-bit. |
+| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts` | `out` | Non applicable | A redecouper | Doublon de faux local C. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom8` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannels` | `packages/client/src/snd_mix.ts` | `S_PaintChannels` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `end` | `packages/client/src/snd_mix.ts` | `end` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `s` | `packages/client/src/snd_mix.ts` | `s` | Non applicable | A redecouper | Faux local C couvert dans `clearOrPrimePaintbuffer`. |
+| `Quake-2-master/client/snd_mix.c` | global | `stop` | `packages/client/src/snd_mix.ts` | `stop` | Non applicable | A redecouper | Faux local C couvert dans `clearOrPrimePaintbuffer`. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | Non applicable | A redecouper | Doublon genere; entite validee sur la ligne proprietaire. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_InitScaletable` | `packages/client/src/snd_mix.ts` | `S_InitScaletable` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `scale` | `packages/client/src/snd_mix.ts` | `scale` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom8` | Non applicable | A redecouper | Doublon genere; entite validee sur la ligne proprietaire. |
+| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts` | `data` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | Non applicable | A redecouper | Faux local C; pas d'ownership `snd_dma.ts` pour `snd_mix.c`. |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | Non applicable | A redecouper | Doublon genere; entite validee sur la ligne proprietaire. |
+| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts` | `data` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |
+| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | Non applicable | A redecouper | Faux local C; pas d'ownership `snd_dma.ts` pour `snd_mix.c`. |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | Non applicable | A redecouper | Faux local C couvert dans le corps TS. |

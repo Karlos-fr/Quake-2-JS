@@ -39,6 +39,12 @@ const stereoWav = createPcm8BitWav({
   channels: 2,
   samples: [0, 255, 64, 128]
 });
+const oddJunkWav = createPcm8BitWav({
+  rate: 11025,
+  channels: 1,
+  samples: [0, 128],
+  prefixJunk: [1, 2, 3]
+});
 
 const info = GetWavinfo("misc/test.wav", wav, wav.length);
 assert.equal(info.rate, 11025, "GetWavinfo rate mismatch");
@@ -54,6 +60,58 @@ assert.deepEqual(DumpChunks(wav), [
   "0x4c : LIST (28)",
   "0x70 : data (4)"
 ], "DumpChunks mismatch");
+
+const oddJunkInfo = GetWavinfo("misc/odd-junk.wav", oddJunkWav, oddJunkWav.length);
+assert.equal(oddJunkInfo.rate, 11025, "GetWavinfo should skip odd-sized unknown chunks");
+assert.equal(oddJunkInfo.width, 1, "GetWavinfo odd-sized chunk width mismatch");
+assert.equal(oddJunkInfo.channels, 1, "GetWavinfo odd-sized chunk channel mismatch");
+assert.equal(oddJunkInfo.loopstart, -1, "GetWavinfo odd-sized chunk loopstart mismatch");
+assert.equal(oddJunkInfo.samples, 2, "GetWavinfo odd-sized chunk sample count mismatch");
+assert.equal(oddJunkInfo.dataofs, 56, "GetWavinfo odd-sized chunk data offset mismatch");
+assert.deepEqual(DumpChunks(oddJunkWav), [
+  "0x10 : JUNK (3)",
+  "0x1c : fmt  (16)",
+  "0x34 : data (2)"
+], "DumpChunks odd-sized chunk mismatch");
+
+const parserMessages: string[] = [];
+const parserHooks = {
+  onComPrintf: (message: string) => {
+    parserMessages.push(message.trim());
+  }
+};
+const missingRiffInfo = GetWavinfo(
+  "misc/missing-riff.wav",
+  replaceFourCC(wav, "RIFF", "RIFX"),
+  wav.length,
+  parserHooks
+);
+assert.equal(missingRiffInfo.samples, 0, "GetWavinfo missing RIFF should return empty info");
+const missingFmtInfo = GetWavinfo(
+  "misc/missing-fmt.wav",
+  replaceFourCC(wav, "fmt ", "JUNK"),
+  wav.length,
+  parserHooks
+);
+assert.equal(missingFmtInfo.samples, 0, "GetWavinfo missing fmt should return empty info");
+const nonPcmWav = replaceFourCC(wav, "fmt ", "fmt ");
+new DataView(nonPcmWav.buffer, nonPcmWav.byteOffset, nonPcmWav.byteLength).setUint16(20, 3, true);
+const nonPcmInfo = GetWavinfo("misc/non-pcm.wav", nonPcmWav, nonPcmWav.length, parserHooks);
+assert.equal(nonPcmInfo.samples, 0, "GetWavinfo non-PCM should return empty info");
+const simpleWav = createMono8BitWav({ rate: 11025, samples: [0, 128] });
+const missingDataInfo = GetWavinfo(
+  "misc/missing-data.wav",
+  replaceFourCC(simpleWav, "data", "JUNK"),
+  simpleWav.length,
+  parserHooks
+);
+assert.equal(missingDataInfo.samples, 0, "GetWavinfo missing data should return empty info");
+assert.deepEqual(parserMessages, [
+  "Missing RIFF/WAVE chunks",
+  "Missing fmt chunk",
+  "Microsoft PCM format only",
+  "Missing data chunk"
+], "GetWavinfo parser diagnostic mismatch");
 
 const resampleContext = createClientSoundLocalContext();
 resampleContext.state.dma.speed = 22050;
@@ -181,14 +239,18 @@ function createPcm8BitWav(options: {
   samples: number[];
   loopstart?: number;
   loopLength?: number;
+  prefixJunk?: number[];
 }): Uint8Array {
   const sampleBytes = Uint8Array.from(options.samples);
+  const prefixJunkBytes = Uint8Array.from(options.prefixJunk ?? []);
   const hasCue = options.loopstart !== undefined && options.loopLength !== undefined;
   const fmtChunkSize = 16;
+  const prefixJunkSize = prefixJunkBytes.length;
   const cueChunkSize = hasCue ? 28 : 0;
   const listChunkSize = hasCue ? 28 : 0;
   const dataChunkSize = sampleBytes.length;
   const riffSize = 4
+    + (prefixJunkSize > 0 ? 8 + ((prefixJunkSize + 1) & ~1) : 0)
     + (8 + fmtChunkSize)
     + (hasCue ? 8 + cueChunkSize : 0)
     + (hasCue ? 8 + listChunkSize : 0)
@@ -203,6 +265,15 @@ function createPcm8BitWav(options: {
   offset += 4;
   writeFourCC(wav, offset, "WAVE");
   offset += 4;
+
+  if (prefixJunkSize > 0) {
+    writeFourCC(wav, offset, "JUNK");
+    offset += 4;
+    view.setUint32(offset, prefixJunkSize, true);
+    offset += 4;
+    wav.set(prefixJunkBytes, offset);
+    offset += (prefixJunkSize + 1) & ~1;
+  }
 
   writeFourCC(wav, offset, "fmt ");
   offset += 4;
@@ -274,4 +345,16 @@ function writeFourCC(buffer: Uint8Array, offset: number, value: string): void {
   for (let index = 0; index < 4; index += 1) {
     buffer[offset + index] = value.charCodeAt(index);
   }
+}
+
+function replaceFourCC(buffer: Uint8Array, from: string, to: string): Uint8Array {
+  const copy = new Uint8Array(buffer);
+  for (let offset = 0; offset <= copy.length - 4; offset += 1) {
+    if (String.fromCharCode(copy[offset], copy[offset + 1], copy[offset + 2], copy[offset + 3]) === from) {
+      writeFourCC(copy, offset, to);
+      return copy;
+    }
+  }
+
+  throw new Error(`missing fourCC ${from}`);
 }

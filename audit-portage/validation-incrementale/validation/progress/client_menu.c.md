@@ -2,6 +2,18 @@
 
 ## Session 2026-05-08
 
+- Lot traite: fermeture du bloc player config restant et runtime final (`PlayerConfig_MenuInit` avec locaux `name`, `team`, `skin`, `currentdirectory`, `currentskin`, `i`, `currentdirectoryindex`, `currentskinindex`, `hand`, `handedness`, `j`; `PlayerConfig_MenuDraw` avec `scratch`, `yaw`, `maxframe`; `PlayerConfig_MenuKey` avec `i`, `scratch`, `j`, appel `Default_MenuKey`; `M_Menu_PlayerConfig_f`; puis `M_Quit_Key`, `M_Quit_Draw`, `M_Menu_Quit_f`, `M_Init`, `M_Draw`, `M_Keydown`, local `s`).
+- Matrice mise a jour: 233 `Valide`, 0 `Partiel`, 130 `Non applicable`, 0 `A verifier`.
+- Corrections appliquees: `PlayerConfig_MenuDraw` appelle maintenant `context.ref.RenderFrame(refdef)` comme le C apres construction du `refdef` et de l'entite preview; commentaires d'en-tete renforces pour `PlayerConfig_MenuInit`, `PlayerConfig_MenuDraw`, `PlayerConfig_MenuKey`, `M_Menu_PlayerConfig_f`, `M_Quit_Key`, `M_Quit_Draw`, `M_Menu_Quit_f`, `M_Init`, `M_Draw`, `M_Keydown`; tests renforces dans `scripts/verify/quake2-menu.ts` et `scripts/verify/quake2-full-game-three-renderer.ts`.
+- Runtime: `M_Init` enregistre `menu_playerconfig` et `menu_quit`; `M_Menu_PlayerConfig_f`/`M_Menu_Quit_f` poussent les draw/key handlers; `M_Draw` appelle le draw handler actif; `M_Keydown` appelle le key handler actif et joue le son retourne. Player config persiste `name`/`skin`, met a jour `hand`/`rate`, et nettoie l'etat temporaire au retour Escape.
+- apps/web: integration presente via `createClientMenuContext`, `M_Init`, commandes console, input clavier vers `M_Keydown`, `M_Draw` dans la boucle full-game, `getPlayerModels: () => readFullGamePlayerModels(filesystem)`, et ref full-game. Le navigateur consomme le runtime porte et ne remplace pas ce bloc par une logique parallele.
+- renderer-three: applicable pour la preview player config. Le lot produit un modele, une skin/image, une frame/entity et un `refdef` `RDF_NOWORLDMODEL`; le manque d'appel `RenderFrame` a ete corrige, donc le ref_gl/Three host peut maintenant consommer la sortie visible. L'icone de skin reste dessinee via `DrawPic`.
+- Tests lances:
+  - `npm run verify:menu` OK
+  - `npm run verify:full-game:three-renderer` OK
+  - `npm run verify:web-render-order` OK
+  - `npm run typecheck` OK
+
 - Lot traite: bloc player config initial (`s_player_name_field`, `s_player_model_box`, `s_player_skin_box`, `s_player_handedness_box`, `s_player_rate_box`, `s_player_download_action`, `MAX_DISPLAYNAME`, `MAX_PLAYERMODELS`, `playermodelinfo_s`, champs `nskins`/`displayname`/`directory`, `s_pmnames`, `s_numplayermodels`, `rate_tbl`, `rate_names`, callbacks `DownloadOptionsFunc`, `HandednessCallback`, `RateCallback`, `ModelCallback`, plus `FreeFileList`, `IconOfSkinExists`, `PlayerConfig_ScanDirectories` et locaux associes).
 - Matrice mise a jour: 222 `Valide`, 0 `Partiel`, 111 `Non applicable`, 29 `A verifier`.
 - Corrections appliquees: ajout des commentaires d'en-tete de portage manquants sur les callbacks player-config dans `packages/client/src/menu-player-config.ts`; branchement `apps/web` de `getPlayerModels` dans `apps/web/src/full-game.ts` via `readFullGamePlayerModels(filesystem)`, avec scan loose `FS_NextPath`/`FS_ListFiles`, scan des PAK montes et verification skin/icon type `IconOfSkinExists`; renforcement de `scripts/verify/quake2-full-game-three-renderer.ts`.
@@ -67,4 +79,4 @@
 
 ## Prochain lot recommande
 
-Continuer avec le bloc player config restant: `PlayerConfig_MenuInit` et ses locaux (`name`, `team`, `skin`, `currentdirectory`, `currentskin`, `currentdirectoryindex`, `currentskinindex`, `hand`, `handedness`, `i`, `j`), puis `PlayerConfig_MenuDraw` si le lot reste coherent pour couvrir la preview visible complete.
+Aucun lot restant dans `client_menu.c.md`: toutes les lignes sont `Valide` ou `Non applicable`. Laisser le coordinateur passer `client/menu.c` en `Termine` dans `AVANCEMENT_GLOBAL.md`.

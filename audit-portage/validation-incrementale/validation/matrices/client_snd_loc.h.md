@@ -62,28 +62,28 @@
 | `Quake-2-master/client/snd_loc.h` | global | `loopstart` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
 | `Quake-2-master/client/snd_loc.h` | global | `samples` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
 | `Quake-2-master/client/snd_loc.h` | global | `dataofs` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
-| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Init` | `packages/client/src/snd_loc.ts` | `SNDDMA_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_GetDMAPos` | `packages/client/src/snd_loc.ts` | `SNDDMA_GetDMAPos` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Shutdown` | `packages/client/src/snd_loc.ts` | `SNDDMA_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_BeginPainting` | `packages/client/src/snd_loc.ts` | `SNDDMA_BeginPainting` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Submit` | `packages/client/src/snd_loc.ts` | `SNDDMA_Submit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | macro | `MAX_CHANNELS` | `packages/client/src/snd_loc.ts` | `MAX_CHANNELS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `channels` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `paintedtime` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_rawend` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | macro | `MAX_RAW_SAMPLES` | `packages/client/src/snd_loc.ts` | `MAX_RAW_SAMPLES` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_volume` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_nosound` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_loadas8bit` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_khz` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_show` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_mixahead` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_testsound` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `s_primary` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `GetWavinfo` | `packages/client/src/snd_loc.ts` | `GetWavinfo` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `S_InitScaletable` | `packages/client/src/snd_loc.ts` | `S_InitScaletable` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `S_LoadSound` | `packages/client/src/snd_loc.ts` | `S_LoadSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `S_IssuePlaysound` | `packages/client/src/snd_loc.ts` | `S_IssuePlaysound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `S_PaintChannels` | `packages/client/src/snd_loc.ts` | `S_PaintChannels` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `S_PickChannel` | `packages/client/src/snd_loc.ts` | `S_PickChannel` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | function | `S_Spatialize` | `packages/client/src/snd_loc.ts` | `S_Spatialize` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Init` | `packages/client/src/snd_loc.ts` | `SNDDMA_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_GetDMAPos` | `packages/client/src/snd_loc.ts` | `SNDDMA_GetDMAPos` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Shutdown` | `packages/client/src/snd_loc.ts` | `SNDDMA_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_BeginPainting` | `packages/client/src/snd_loc.ts` | `SNDDMA_BeginPainting` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Submit` | `packages/client/src/snd_loc.ts` | `SNDDMA_Submit` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | macro | `MAX_CHANNELS` | `packages/client/src/snd_loc.ts` | `MAX_CHANNELS` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `channels` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `paintedtime` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_rawend` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | macro | `MAX_RAW_SAMPLES` | `packages/client/src/snd_loc.ts` | `MAX_RAW_SAMPLES` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_volume` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_nosound` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper | Declaration preservee; aucun usage runtime dans les sources C consultees. |
+| `Quake-2-master/client/snd_loc.h` | global | `s_loadas8bit` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_khz` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_show` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_mixahead` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_testsound` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `s_primary` | `packages/client/src/snd_loc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | function | `GetWavinfo` | `packages/client/src/snd_loc.ts` | `GetWavinfo` | Non applicable | A redecouper | Prototype externe; definition proprietaire validee dans `client/snd_mem.c`, adapter `snd_loc.ts` verifie. |
+| `Quake-2-master/client/snd_loc.h` | function | `S_InitScaletable` | `packages/client/src/snd_loc.ts` | `S_InitScaletable` | Non applicable | A redecouper | Prototype externe; definition proprietaire dans `client/snd_mix.c`, adapter `snd_loc.ts` verifie. |
+| `Quake-2-master/client/snd_loc.h` | function | `S_LoadSound` | `packages/client/src/snd_loc.ts` | `S_LoadSound` | Non applicable | A redecouper | Prototype externe; definition proprietaire validee dans `client/snd_mem.c`, adapter `snd_loc.ts` verifie. |
+| `Quake-2-master/client/snd_loc.h` | function | `S_IssuePlaysound` | `packages/client/src/snd_loc.ts` | `S_IssuePlaysound` | Non applicable | A redecouper | Prototype externe; definition proprietaire dans `client/snd_dma.c`, adapter `snd_loc.ts` verifie. |
+| `Quake-2-master/client/snd_loc.h` | function | `S_PaintChannels` | `packages/client/src/snd_loc.ts` | `S_PaintChannels` | Non applicable | A redecouper | Prototype externe; definition proprietaire dans `client/snd_mix.c`, adapter `snd_loc.ts` verifie. |
+| `Quake-2-master/client/snd_loc.h` | function | `S_PickChannel` | `packages/client/src/snd_loc.ts` | `S_PickChannel` | Non applicable | A redecouper | Prototype externe; definition proprietaire dans `client/snd_dma.c`, adapter `snd_loc.ts` verifie. |
+| `Quake-2-master/client/snd_loc.h` | function | `S_Spatialize` | `packages/client/src/snd_loc.ts` | `S_Spatialize` | Non applicable | A redecouper | Prototype externe; definition proprietaire dans `client/snd_dma.c`, adapter `snd_loc.ts` verifie. |

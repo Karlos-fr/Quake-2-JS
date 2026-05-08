@@ -1113,6 +1113,18 @@ export function S_Update_(context: ClientSndDmaContext): void {
   SNDDMA_Submit(context.sound);
 }
 
+/**
+ * Original name: S_Play
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Implements the `play` console command by registering each argument and starting it as a local player sound.
+ *
+ * Porting notes:
+ * - Uses string construction instead of the C `strcpy`/`strcat` scratch buffer.
+ */
 export function S_Play(context: ClientSndDmaContext): void {
   let i = 1;
   while (i < Cmd_Argc(context.cmd)) {
@@ -1126,6 +1138,18 @@ export function S_Play(context: ClientSndDmaContext): void {
   }
 }
 
+/**
+ * Original name: S_SoundList
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Implements the `soundlist` console command by listing registered sounds and resident cache bytes.
+ *
+ * Porting notes:
+ * - Returns the computed lines for tests while still emitting the original console output.
+ */
 export function S_SoundList(context: ClientSndDmaContext): { total: number; lines: string[] } {
   let total = 0;
   const lines: string[] = [];
@@ -1140,7 +1164,9 @@ export function S_SoundList(context: ClientSndDmaContext): { total: number; line
     if (sc) {
       const size = sc.length * sc.width * (sc.stereo + 1);
       total += size;
-      const line = `${sc.loopstart >= 0 ? "L" : " "}(${sc.width * 8}b) ${size} : ${sfx.name}`;
+      const bits = `${sc.width * 8}`.padStart(2, " ");
+      const byteCount = `${size}`.padStart(6, " ");
+      const line = `${sc.loopstart >= 0 ? "L" : " "}(${bits}b) ${byteCount} : ${sfx.name}`;
       lines.push(line);
       sndDmaPrintf(context, `${line}\n`);
       continue;

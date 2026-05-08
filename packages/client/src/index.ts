@@ -259,6 +259,7 @@ export {
   CL_ParseFrame,
   CL_ParseLaser,
   CL_ParseLightning,
+  CL_ParseLayout,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
   CL_ParseNuke,

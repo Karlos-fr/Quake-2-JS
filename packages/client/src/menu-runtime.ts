@@ -304,6 +304,12 @@ function registerMenuCommand(context: ClientMenuContext, name: string, callback:
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the original `menu_*` console commands and routes each command to its ported menu entry point.
+ *
+ * Porting notes:
+ * - Uses `Cmd_Exists` to keep initialization idempotent in browser/test runtimes.
  */
 export function M_Init(context: ClientMenuContext): void {
   registerMenuCommand(context, "menu_main", () => {
@@ -361,6 +367,9 @@ export function M_Init(context: ClientMenuContext): void {
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the active menu only in menu input mode, dirties the screen, fades/fills the background, and plays deferred enter sounds.
  */
 export function M_Draw(context: ClientMenuContext): void {
   if (context.keys.state.key_dest !== keydest_t.key_menu) {
@@ -389,6 +398,9 @@ export function M_Draw(context: ClientMenuContext): void {
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Dispatches a key to the active menu key handler and plays any returned menu sound.
  */
 export function M_Keydown(context: ClientMenuContext, key: number): void {
   const sound = context.state.m_keyfunc?.(key);

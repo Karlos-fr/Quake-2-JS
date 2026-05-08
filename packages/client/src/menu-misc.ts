@@ -33,6 +33,9 @@ export function M_Menu_Video_f(context: ClientMenuContext): void {
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Escape/`n` pops the quit menu; `y` switches to console input and invokes the quit hook.
  */
 export function M_Quit_Key(context: ClientMenuContext, key: number): string | null {
   switch (key) {
@@ -59,6 +62,9 @@ export function M_Quit_Key(context: ClientMenuContext, key: number): string | nu
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Centers and draws the original `quit` picture using renderer draw exports.
  */
 export function M_Quit_Draw(context: ClientMenuContext): void {
   const size = context.ref.DrawGetPicSize("quit");
@@ -74,6 +80,9 @@ export function M_Quit_Draw(context: ClientMenuContext): void {
  * Source: client/menu.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Pushes the quit menu draw/key handlers on the shared menu stack.
  */
 export function M_Menu_Quit_f(context: ClientMenuContext): void {
   M_PushMenu(

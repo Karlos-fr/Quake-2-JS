@@ -29,7 +29,26 @@ import {
   createClientSoundMixState
 } from "./snd_mix.js";
 
+/**
+ * Original name: MAX_CHANNELS
+ * Source: client/snd_loc.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Caps the fixed mixer channel array used by the client sound runtime.
+ */
 export const MAX_CHANNELS = 32;
+
+/**
+ * Original name: MAX_RAW_SAMPLES
+ * Source: client/snd_loc.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Sizes the raw streaming sample ring used by cinematic/raw audio mixing.
+ */
 export const MAX_RAW_SAMPLES = 8192;
 
 /**
@@ -386,6 +405,14 @@ export function createWavInfo(): wavinfo_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create the explicit state bundle that replaces the `snd_loc.h` extern globals.
+ *
+ * Constraints:
+ * - Fixed arrays must preserve `MAX_CHANNELS` and `MAX_RAW_SAMPLES`.
+ * - Cvar pointers remain nullable until `snd_dma.c` initialization installs them.
+ */
 export function createClientSoundLocalContext(hooks: ClientSoundLocalHooks = {}): ClientSoundLocalContext {
   return {
     state: {
@@ -413,30 +440,93 @@ export function createClientSoundLocalContext(hooks: ClientSoundLocalHooks = {})
   };
 }
 
+/**
+ * Original name: SNDDMA_Init
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Forwards DMA initialization to the host backend and reports failure when no backend is installed.
+ */
 export function SNDDMA_Init(context: ClientSoundLocalContext): qboolean {
   return context.hooks.onSNDDMA_Init?.() ?? false;
 }
 
+/**
+ * Original name: SNDDMA_GetDMAPos
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Forwards DMA cursor queries to the host backend, falling back to the explicit DMA state cursor.
+ */
 export function SNDDMA_GetDMAPos(context: ClientSoundLocalContext): number {
   return context.hooks.onSNDDMA_GetDMAPos?.() ?? context.state.dma.samplepos;
 }
 
+/**
+ * Original name: SNDDMA_Shutdown
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Forwards DMA shutdown to the host backend when present.
+ */
 export function SNDDMA_Shutdown(context: ClientSoundLocalContext): void {
   context.hooks.onSNDDMA_Shutdown?.();
 }
 
+/**
+ * Original name: SNDDMA_BeginPainting
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Gives the host DMA backend a chance to expose a writable output buffer before mixing.
+ */
 export function SNDDMA_BeginPainting(context: ClientSoundLocalContext): void {
   context.hooks.onSNDDMA_BeginPainting?.();
 }
 
+/**
+ * Original name: SNDDMA_Submit
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Submits the mixed DMA buffer to the host backend when present.
+ */
 export function SNDDMA_Submit(context: ClientSoundLocalContext): void {
   context.hooks.onSNDDMA_Submit?.();
 }
 
+/**
+ * Original name: GetWavinfo declaration adapter
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Exposes the `snd_mem.c` WAV parser through the private sound-local context hooks.
+ */
 export function GetWavinfo(context: ClientSoundLocalContext, name: string, wav: Uint8Array, wavlength: number): wavinfo_t {
   return context.hooks.onGetWavinfo?.(name, wav, wavlength) ?? GetWavinfo_Impl(name, wav, wavlength, context.hooks);
 }
 
+/**
+ * Original name: S_InitScaletable declaration adapter
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Exposes the `snd_mix.c` scale-table initializer through the private sound-local context hooks.
+ */
 export function S_InitScaletable(context: ClientSoundLocalContext): void {
   if (context.hooks.onS_InitScaletable) {
     context.hooks.onS_InitScaletable();
@@ -446,14 +536,41 @@ export function S_InitScaletable(context: ClientSoundLocalContext): void {
   S_InitScaletable_Impl(context);
 }
 
+/**
+ * Original name: S_LoadSound declaration adapter
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Exposes the `snd_mem.c` sound cache loader through the private sound-local context hooks.
+ */
 export function S_LoadSound(context: ClientSoundLocalContext, sfx: sfx_t): sfxcache_t | null {
   return context.hooks.onS_LoadSound?.(sfx) ?? S_LoadSound_Impl(context, sfx);
 }
 
+/**
+ * Original name: S_IssuePlaysound declaration adapter
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Forwards queued playsound issuance to the owning `snd_dma.c` runtime hook.
+ */
 export function S_IssuePlaysound(context: ClientSoundLocalContext, ps: playsound_t): void {
   context.hooks.onS_IssuePlaysound?.(ps);
 }
 
+/**
+ * Original name: S_PaintChannels declaration adapter
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Exposes the `snd_mix.c` paint routine through hooks, falling back to the ported mixer.
+ */
 export function S_PaintChannels(context: ClientSoundLocalContext, endtime: number): void {
   if (context.hooks.onS_PaintChannels) {
     context.hooks.onS_PaintChannels(endtime);
@@ -463,10 +580,28 @@ export function S_PaintChannels(context: ClientSoundLocalContext, endtime: numbe
   S_PaintChannels_Impl(context, endtime);
 }
 
+/**
+ * Original name: S_PickChannel declaration adapter
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Forwards channel selection to the owning `snd_dma.c` runtime hook.
+ */
 export function S_PickChannel(context: ClientSoundLocalContext, entnum: number, entchannel: number): channel_t | null {
   return context.hooks.onS_PickChannel?.(entnum, entchannel) ?? null;
 }
 
+/**
+ * Original name: S_Spatialize declaration adapter
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Forwards channel spatialization to the owning `snd_dma.c` runtime hook.
+ */
 export function S_Spatialize(context: ClientSoundLocalContext, channel: channel_t): void {
   context.hooks.onS_Spatialize?.(channel);
 }

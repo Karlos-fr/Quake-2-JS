@@ -2798,7 +2798,7 @@ function handlePointerDown(event: PointerEvent, runtime: FullGameRuntime, page: 
 
   runtime.mouse.lookActive = true;
   runtime.mouse.dragging = event.buttons !== 0;
-  requestFullGamePointerLock(runtime, page, event.target);
+  requestFullGamePointerLock(runtime, page);
 }
 
 function handlePointerLockChange(runtime: FullGameRuntime, page: FullGamePage): void {
@@ -2857,7 +2857,7 @@ function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRu
   runtime.mouse.lookActive = true;
   runtime.mouse.dragging = down || event.buttons !== 0;
   if (down) {
-    requestFullGamePointerLock(runtime, page, event.target);
+    requestFullGamePointerLock(runtime, page);
   }
   Key_Event(runtime.menu.keys, key, down, runtime.client.cls.realtime);
   executeRuntimeCommandBuffer(runtime, page);
@@ -2989,7 +2989,7 @@ function releaseFullGameMouseLook(runtime: FullGameRuntime, page: FullGamePage):
   }
 }
 
-function requestFullGamePointerLock(runtime: FullGameRuntime, page: FullGamePage, eventTarget: EventTarget | null = null): void {
+function requestFullGamePointerLock(runtime: FullGameRuntime, page: FullGamePage): void {
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
   }
@@ -2999,9 +2999,7 @@ function requestFullGamePointerLock(runtime: FullGameRuntime, page: FullGamePage
     return;
   }
 
-  const target = eventTarget instanceof HTMLElement && page.gameViewport.contains(eventTarget)
-    ? eventTarget
-    : page.gameViewport;
+  const target = page.gameViewport;
   try {
     void Promise.resolve(target.requestPointerLock()).catch(() => {
       runtime.mouse.pointerLocked = false;

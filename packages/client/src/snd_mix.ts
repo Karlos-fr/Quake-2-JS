@@ -101,7 +101,7 @@ export function S_TransferStereo16(context: ClientSoundLocalContext, endtime: nu
     Math.floor(context.state.dma.buffer.byteLength / 2)
   );
   const mix = context.state.mix;
-  mix.snd_p = flattenPaintbuffer(context.state.mix.paintbuffer, endtime - context.state.paintedtime);
+  const paint = flattenPaintbuffer(context.state.mix.paintbuffer, endtime - context.state.paintedtime);
 
   let lpaintedtime = context.state.paintedtime;
   let paintOffset = 0;
@@ -115,7 +115,7 @@ export function S_TransferStereo16(context: ClientSoundLocalContext, endtime: nu
     }
 
     mix.snd_linear_count = linearSamples << 1;
-    mix.snd_p = mix.snd_p.subarray(paintOffset, paintOffset + mix.snd_linear_count);
+    mix.snd_p = paint.subarray(paintOffset, paintOffset + mix.snd_linear_count);
     S_WriteLinearBlastStereo16(context, out, lpos << 1);
 
     paintOffset += mix.snd_linear_count;

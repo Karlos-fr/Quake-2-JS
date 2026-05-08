@@ -83,6 +83,7 @@ const drawPics: Array<{ x: number; y: number; name: string }> = [];
 const drawChars: Array<{ x: number; y: number; c: number }> = [];
 const drawFills: Array<{ x: number; y: number; w: number; h: number; c: number }> = [];
 const registeredPics: string[] = [];
+const renderedFrames: PlayerConfigPreview["refdef"][] = [];
 const sounds: string[] = [];
 let videoMenuInitCalls = 0;
 let videoMenuDrawCalls = 0;
@@ -151,6 +152,9 @@ ref.DrawFadeScreen = () => {
 ref.RegisterPic = (name) => {
   registeredPics.push(name);
   return null;
+};
+ref.RenderFrame = (fd) => {
+  renderedFrames.push(fd);
 };
 ref.EndFrame = () => {
   endFrameCalls += 1;
@@ -491,11 +495,15 @@ assert.equal(menu.state.s_player_skin_box.curvalue, 0, "PlayerConfig_MenuInit cu
 assert.equal(menu.state.s_player_rate_box.curvalue, 2, "PlayerConfig_MenuInit rate mismatch");
 
 playerPreviews.length = 0;
+renderedFrames.length = 0;
 drawPics.length = 0;
 M_Draw(menu);
 assert.equal(playerPreviews.length, 1, "PlayerConfig_MenuDraw should emit a preview snapshot");
 assert.equal(playerPreviews[0]?.modelPath, "players/female/tris.md2", "PlayerConfig preview model path mismatch");
 assert.equal(playerPreviews[0]?.skinPath, "players/female/athena.pcx", "PlayerConfig preview skin path mismatch");
+assert.equal(renderedFrames.length, 1, "PlayerConfig_MenuDraw should render the player preview through ref.RenderFrame");
+assert.equal(renderedFrames[0]?.num_entities, 1, "PlayerConfig preview should render one player entity");
+assert.equal(renderedFrames[0]?.rdflags, playerPreviews[0]?.refdef.rdflags, "PlayerConfig preview RenderFrame refdef mismatch");
 assert.ok(drawPics.some((entry) => entry.name === "/players/female/athena_i.pcx"), "PlayerConfig_MenuDraw should draw skin icon");
 
 menu.state.s_player_config_menu.cursor = 2;

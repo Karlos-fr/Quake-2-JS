@@ -311,6 +311,12 @@ export function GetWavinfo(
  * Source: client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reads one signed little-endian 16-bit value from the current RIFF parser cursor and advances it.
+ *
+ * Porting notes:
+ * - Uses `IffParseState.data_p` instead of the original file-static `data_p` pointer.
  */
 function GetLittleShort(wav: Uint8Array, state: IffParseState): number {
   const data_p = requireDataPointer(state);
@@ -328,6 +334,12 @@ function GetLittleShort(wav: Uint8Array, state: IffParseState): number {
  * Source: client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reads one signed little-endian 32-bit value from the current RIFF parser cursor and advances it.
+ *
+ * Porting notes:
+ * - Uses `IffParseState.data_p` instead of the original file-static `data_p` pointer.
  */
 function GetLittleLong(wav: Uint8Array, state: IffParseState): number {
   const data_p = requireDataPointer(state);
@@ -349,6 +361,12 @@ function GetLittleLong(wav: Uint8Array, state: IffParseState): number {
  * Source: client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Walks RIFF chunks from `last_chunk`, records each chunk length, and stops on the requested fourCC.
+ *
+ * Porting notes:
+ * - Keeps the original odd-length padding rule and null-cursor failure state through `IffParseState`.
  */
 function FindNextChunk(wav: Uint8Array, state: IffParseState, name: string): void {
   while (true) {
@@ -382,6 +400,12 @@ function FindNextChunk(wav: Uint8Array, state: IffParseState, name: string): voi
  * Source: client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Restarts chunk scanning from the active RIFF data base and delegates to `FindNextChunk`.
+ *
+ * Porting notes:
+ * - Preserves the source ownership while making the formerly file-static parser state explicit.
  */
 function FindChunk(wav: Uint8Array, state: IffParseState, name: string): void {
   state.last_chunk = state.iff_data;
