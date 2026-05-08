@@ -1362,7 +1362,7 @@ export function CL_ParseServerData(runtime: ClientRuntime, hooks: ClientParseHoo
 
   const protocol = MSG_ReadLong(runtime.net_message);
   runtime.cls.serverProtocol = protocol;
-  if (protocol !== PROTOCOL_VERSION) {
+  if (protocol !== PROTOCOL_VERSION && protocol !== 26) {
     throw new Error(`Server returned version ${protocol}, not ${PROTOCOL_VERSION}`);
   }
 

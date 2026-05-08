@@ -172,6 +172,17 @@ assert.equal(runtime.cl.playernum, 3, "CL_ParseServerData playernum mismatch");
 assert.equal(runtime.cl.refresh_prepped, false, "CL_ParseServerData should clear refresh_prepped for level loads");
 
 resetIncoming(runtime);
+MSG_WriteLong(runtime.net_message, 26);
+MSG_WriteLong(runtime.net_message, 13);
+MSG_WriteByte(runtime.net_message, 1);
+MSG_WriteString(runtime.net_message, "baseq2");
+MSG_WriteShort(runtime.net_message, 2);
+MSG_WriteString(runtime.net_message, "Unit Test Demo");
+runtime.net_message.readcount = 0;
+CL_ParseServerData(runtime);
+assert.equal(runtime.cls.serverProtocol, 26, "CL_ParseServerData should accept legacy dm2 demo protocol");
+
+resetIncoming(runtime);
 MSG_WriteShort(runtime.net_message, 7);
 MSG_WriteByte(runtime.net_message, MZ_BLASTER | MZ_SILENCED);
 runtime.net_message.readcount = 0;

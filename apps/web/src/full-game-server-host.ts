@@ -75,11 +75,18 @@ export interface FullGameServerHost {
   facade: ServerRuntimeFacade;
   collisionWorld: CollisionWorld;
   currentMapRequest: string | null;
+  hasActiveServer: () => boolean;
   hasActiveGameMap: () => boolean;
+  hasActiveAttractLoop: () => boolean;
   frame: (milliseconds: number) => void;
   writeLocalClientFrame: (client: ClientRuntime, hooks?: ClientParseHooks) => boolean;
   getLocalClientLastCommand: () => usercmd_t | null;
   shutdown: () => void;
+}
+
+interface FullGameDemoFileHandle {
+  bytes: Uint8Array;
+  offset: number;
 }
 
 /**
@@ -165,6 +172,12 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
     ...(options.setTimeAfterGame ? { setTimeAfterGame: options.setTimeAfterGame } : {}),
     randomInt: () => Math.trunc(Math.random() * 0x7fffffff),
     loadMapFile: (name) => readMountedFile(options.filesystem, name)?.bytes,
+    openDemoFile: (path) => {
+      const bytes = readMountedFile(options.filesystem, path)?.bytes ?? null;
+      return bytes ? { bytes, offset: 0 } satisfies FullGameDemoFileHandle : null;
+    },
+    readDemoMessage: (demofile) => readDemoMessage(demofile),
+    closeDemoFile: () => undefined,
     loadDownloadFile: (path) => {
       const file = readMountedFile(options.filesystem, path);
       return file ? { data: file.bytes, fromPak: file.pak !== undefined } : null;
@@ -232,7 +245,13 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
     get currentMapRequest() {
       return currentMapRequest ?? (sv.state === server_state_t.ss_game && sv.name ? sv.name : null);
     },
+    hasActiveServer: () => svs.initialized && sv.state !== server_state_t.ss_dead && sv.name.length > 0,
     hasActiveGameMap: () => sv.state === server_state_t.ss_game && sv.name.length > 0,
+    hasActiveAttractLoop: () => sv.attractloop && (
+      sv.state === server_state_t.ss_cinematic ||
+      sv.state === server_state_t.ss_demo ||
+      sv.state === server_state_t.ss_pic
+    ),
     frame: (milliseconds) => {
       if (!svs.initialized || sv.state === server_state_t.ss_dead) {
         return;
@@ -340,6 +359,46 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
       client.cl.image_precache[i] = sv.configstrings[CS_IMAGES + i] || null;
     }
   }
+}
+
+/**
+ * Original name: SV_SendClientMessages demo read block
+ * Source: server/sv_send.c
+ * Category: Adapter
+ * Purpose: Read one length-prefixed `.dm2` payload for the browser server host.
+ */
+function readDemoMessage(demofile: unknown): Uint8Array | null {
+  if (!isDemoFileHandle(demofile)) {
+    return null;
+  }
+
+  if (demofile.offset + 4 > demofile.bytes.length) {
+    return null;
+  }
+
+  const view = new DataView(demofile.bytes.buffer, demofile.bytes.byteOffset, demofile.bytes.byteLength);
+  const length = view.getInt32(demofile.offset, true);
+  demofile.offset += 4;
+
+  if (length === -1) {
+    return null;
+  }
+  if (length < 0 || demofile.offset + length > demofile.bytes.length) {
+    return null;
+  }
+
+  const payload = demofile.bytes.slice(demofile.offset, demofile.offset + length);
+  demofile.offset += length;
+  return payload;
+}
+
+function isDemoFileHandle(value: unknown): value is FullGameDemoFileHandle {
+  return typeof value === "object"
+    && value !== null
+    && "bytes" in value
+    && "offset" in value
+    && (value as { bytes?: unknown }).bytes instanceof Uint8Array
+    && typeof (value as { offset?: unknown }).offset === "number";
 }
 
 /**
