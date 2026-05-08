@@ -833,6 +833,7 @@ export function Game_MenuInit(context: ClientMenuContext): void {
  */
 function Game_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
+  context.state.s_game_menu.x = context.vid.viddef.width * 0.5;
   M_Banner(context, "m_banner_game");
   Menu_AdjustCursor(context.qmenu, context.state.s_game_menu, 1);
   Menu_Draw(context.qmenu, context.state.s_game_menu);
