@@ -13,6 +13,7 @@
  */
 
 import { createRefImport, type refexport_t, type refimport_t } from "../../client/src/ref.js";
+import { MAX_QPATH } from "../../qcommon/src/index.js";
 import {
   Draw_GetPalette,
   GL_Bind,
@@ -24,6 +25,7 @@ import {
   GL_TextureAlphaMode,
   GL_TextureMode,
   GL_TextureSolidMode,
+  R_RegisterSkin,
   Scrap_Upload,
   imagetype_t,
   setIntensityValue,
@@ -243,6 +245,15 @@ export function createRefGlHost(options: RefGlHostOptions): RefGlHost {
       R_BeginRegistration(glModelRuntime, map);
     },
     registerModel: (name) => R_RegisterModel(glModelRuntime, name),
+    ...(imageRuntime
+      ? {
+          registerSkin: (name) => R_RegisterSkin(imageRuntime, name),
+          registerPic: (name) => {
+            syncImageFromRmain(imageRuntime, bootstrap);
+            return GL_FindImage(imageRuntime, resolvePicName(name), imagetype_t.it_pic);
+          }
+        }
+      : {}),
     endRegistration: () => {
       R_EndRegistration(glModelRuntime);
     },
@@ -312,6 +323,22 @@ function toImageType(type: "wall" | "sprite" | "skin"): imagetype_t {
     case "wall":
       return imagetype_t.it_wall;
   }
+}
+
+function resolvePicName(name: string): string {
+  if (name[0] !== "/" && name[0] !== "\\") {
+    return truncateQPath(`pics/${name}.pcx`);
+  }
+
+  return name.slice(1);
+}
+
+function truncateQPath(path: string): string {
+  if (path.length < MAX_QPATH) {
+    return path;
+  }
+
+  return path.slice(0, MAX_QPATH - 1);
 }
 
 function createDefaultDrawRuntime(

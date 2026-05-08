@@ -2636,6 +2636,9 @@ function warmFullGameFrontendPics(ref: refexport_t): void {
   for (let index = 0; index < NUM_CURSOR_FRAMES; index += 1) {
     ref.RegisterPic(`m_cursor${index}`);
   }
+
+  // Small menu pics share the original scrap atlas; draw once so the atlas is uploaded before the menu is visible.
+  ref.DrawPic(0, 0, "m_main_logo");
 }
 
 async function createFullGameFrontendRenderer(
