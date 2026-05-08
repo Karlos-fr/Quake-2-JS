@@ -88,7 +88,7 @@ import {
   type lightstyle_t,
   type particle_t
 } from "./ref.js";
-import { CL_LoadClientinfo, CL_ParseClientinfo } from "./cl_parse.js";
+import { CL_LoadClientinfo, CL_ParseClientinfo, registerClientinfoResources as registerParsedClientinfoResources } from "./cl_parse.js";
 import { SCR_AddDirtyPoint, SCR_TouchPics } from "./cl_scrn.js";
 import type { vrect_t } from "./cl_scrn.js";
 import { Con_ClearNotify, type console_t } from "./console.js";
@@ -1634,14 +1634,11 @@ function registerClientinfoResources(
   clientinfo: ClientRuntime["cl"]["clientinfo"][number],
   ref?: Pick<refexport_t, "RegisterModel" | "RegisterSkin" | "RegisterPic">
 ): void {
-  clientinfo.model = clientinfo.model_filename ? (ref?.RegisterModel(clientinfo.model_filename) ?? clientinfo.model_filename) : null;
-  clientinfo.skin = clientinfo.skin_filename ? (ref?.RegisterSkin(clientinfo.skin_filename) ?? clientinfo.skin_filename) : null;
-  clientinfo.icon = clientinfo.iconname ? (ref?.RegisterPic(clientinfo.iconname) ?? clientinfo.iconname) : null;
-
-  for (let index = 0; index < clientinfo.weaponmodel_paths.length; index += 1) {
-    const weaponModelPath = clientinfo.weaponmodel_paths[index];
-    clientinfo.weaponmodel[index] = weaponModelPath ? (ref?.RegisterModel(weaponModelPath) ?? weaponModelPath) : null;
-  }
+  registerParsedClientinfoResources(clientinfo, {
+    registerModel: (name) => ref ? ref.RegisterModel(name) : name,
+    registerSkin: (name) => ref ? ref.RegisterSkin(name) : name,
+    registerPic: (name) => ref ? ref.RegisterPic(name) : name
+  });
 }
 
 function extractMapName(worldModel: string): string {

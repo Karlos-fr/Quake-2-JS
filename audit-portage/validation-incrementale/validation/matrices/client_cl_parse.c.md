@@ -24,28 +24,28 @@
 | `Quake-2-master/client/cl_parse.c` | global | `r` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par le reliquat Partiel. |
 | `Quake-2-master/client/cl_parse.c` | global | `oldn` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par le reliquat Partiel. |
 | `Quake-2-master/client/cl_parse.c` | global | `newn` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par le reliquat Partiel. |
-| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseServerData` | `packages/client/src/cl_parse.ts` | `CL_ParseServerData` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `fs_gamedirvar` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `str` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseBaseline` | `packages/client/src/cl_parse.ts` | `CL_ParseBaseline` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `es` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `bits` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `newnum` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `nullstate` | `packages/client/src/cl_parse.ts` | `nullstate` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | function | `CL_LoadClientinfo` | `packages/client/src/cl_parse.ts` | `CL_LoadClientinfo` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `t` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `model_name` | `packages/client/src/cl_parse.ts` | `model_name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `skin_name` | `packages/client/src/cl_parse.ts` | `skin_name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `model_filename` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `skin_filename` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `weapon_filename` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseClientinfo` | `packages/client/src/cl_parse.ts` | `CL_ParseClientinfo` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `s` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseConfigString` | `packages/client/src/cl_parse.ts` | `CL_ParseConfigString` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `s` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseServerData` | `packages/client/src/cl_parse.ts` | `CL_ParseServerData` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `fs_gamedirvar` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `str` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseBaseline` | `packages/client/src/cl_parse.ts` | `CL_ParseBaseline` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `es` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `bits` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `newnum` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `nullstate` | `packages/client/src/cl_parse.ts` | `nullstate` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | function | `CL_LoadClientinfo` | `packages/client/src/cl_parse.ts` | `CL_LoadClientinfo` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `t` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `model_name` | `packages/client/src/cl_parse.ts` | `model_name` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `skin_name` | `packages/client/src/cl_parse.ts` | `skin_name` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `model_filename` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `skin_filename` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `weapon_filename` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseClientinfo` | `packages/client/src/cl_parse.ts` | `CL_ParseClientinfo` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `s` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseConfigString` | `packages/client/src/cl_parse.ts` | `CL_ParseConfigString` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | global | `s` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_ParseStartSoundPacket` | `packages/client/src/cl_parse.ts` | `CL_ParseStartSoundPacket` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `pos_v` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `pos` | `packages/client/src/cl_parse.ts` | `pos` | A verifier | A redecouper |  |

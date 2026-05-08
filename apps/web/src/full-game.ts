@@ -48,13 +48,17 @@ import {
   Qcommon_Frame,
   Qcommon_Init,
   Qcommon_Shutdown,
+  Sys_AppActivate,
   AngleVectors,
   CM_InlineModel,
   createCommandRuntime,
+  createQcommonHostRuntime,
   createQcommonMiscRuntime,
   createCvarRuntime,
+  type QcommonHostRuntime,
   type QcommonMiscRuntime,
-  type cvar_t
+  type cvar_t,
+  type netadr_t
 } from "../../../packages/qcommon/src/index.js";
 import {
   K_DOWNARROW,
@@ -119,6 +123,7 @@ import {
   M_ForceMenuOff,
   M_Init,
   M_Keydown,
+  M_AddToServerList,
   M_Menu_Main_f,
   createClientMenuContext,
   type ClientMenuContext
@@ -296,6 +301,7 @@ interface FullGameRuntime {
   audioDebug: FullGameAudioDebugState;
   gameBridge: FullGameCommandBridgeState;
   qcommon: QcommonMiscRuntime;
+  qcommonHost: QcommonHostRuntime;
   serverHost: FullGameServerHost;
   gameRenderer: FullGameRendererState | null;
   gameRendererPromise: Promise<FullGameRendererState> | null;
@@ -308,6 +314,7 @@ interface FullGameRuntime {
   updateClientAudio: () => void;
   writeConfiguration: () => boolean;
   finishConfigBootstrap: () => void;
+  captureClipboardText: (text: string) => void;
   beginAuthoritativeConnection: (mapRequest: string) => void;
   shouldPumpAuthoritativeFrame: () => boolean;
   pumpAuthoritativeFrame: (milliseconds: number) => void;
@@ -369,9 +376,13 @@ async function bootstrap(): Promise<void> {
     document.addEventListener("mousemove", (event) => handleMouseMove(event, runtime, page));
     document.addEventListener("keydown", (event) => handleKeyDown(event, runtime, page), { capture: true });
     document.addEventListener("keyup", (event) => handleKeyUp(event, runtime, page), { capture: true });
+    document.addEventListener("paste", (event) => {
+      runtime.captureClipboardText(event.clipboardData?.getData("text") ?? "");
+    });
     window.addEventListener("mousedown", (event) => handleMouseButton(event, true, runtime, page));
     window.addEventListener("mouseup", (event) => handleMouseButton(event, false, runtime, page));
     window.addEventListener("wheel", (event) => handleMouseWheel(event, runtime, page), { passive: false });
+    window.addEventListener("focus", () => Sys_AppActivate(runtime.qcommonHost));
     window.addEventListener("blur", () => resetFullGameMouseLook(runtime));
 
     page.status.textContent = "Lecture de l'intro...";
@@ -560,6 +571,19 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   });
   const qcommonHooks: QcommonMiscRuntime["hooks"] = {};
   const qcommon = createQcommonMiscRuntime(qcommonHooks);
+  let clipboardText = "";
+  const qcommonHost = createQcommonHostRuntime({
+    sysConsoleOutput: printToConsole,
+    sysSendKeyEvents: () => undefined,
+    sysGetClipboardData: () => clipboardText || null,
+    sysQuit: () => {
+      throw new Error("Sys_Quit");
+    },
+    sysCopyProtect: () => undefined
+  });
+  const captureClipboardText = (text: string): void => {
+    clipboardText = text;
+  };
   const scheduleConfigAutosave = (): void => {
     if (!configAutosaveEnabled) {
       return;
@@ -669,6 +693,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     cmd,
     cvar,
     client,
+    host: qcommonHost,
     hooks: {
       onSetBinding: () => scheduleConfigAutosave()
     }
@@ -832,6 +857,19 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     startAuthoritativeEffectSounds(effects);
   };
   let activeServerHost: FullGameServerHost | null = null;
+  let menuContext: ClientMenuContext | null = null;
+  const forceGameInputForLevelLoad = (): void => {
+    if (keys.state.key_dest === keydest_t.key_console || keys.state.key_dest === keydest_t.key_message) {
+      return;
+    }
+
+    if (menuContext) {
+      M_ForceMenuOff(menuContext);
+    } else {
+      keys.state.key_dest = keydest_t.key_game;
+      keys.state.console_open = false;
+    }
+  };
   mainContext = createClientMainContext(client, cmd, cvar);
   CL_InitLocal(mainContext, {
     getMilliseconds: () => client.cls.realtime,
@@ -850,6 +888,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onQuit: () => printToConsole("Quit demande."),
     onBeginLoadingPlaque: () => {
       client.cl.screen.scr_draw_loading = 1;
+      forceGameInputForLevelLoad();
     },
     onEndLoadingPlaque: () => {
       client.cl.screen.scr_draw_loading = 0;
@@ -860,6 +899,11 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onEnableRemoteNetworking: () => undefined,
     onPingServer: (message, destination) => {
       printToConsole(`ping ${destination}: ${message.trimEnd()}`);
+    },
+    onAddToServerList: (address: netadr_t, info: string) => {
+      if (menuContext) {
+        M_AddToServerList(menuContext, address, info);
+      }
     },
     onSendRcon: (_message, destination) => {
       printToConsole(`rcon vers ${destination} non branche.`);
@@ -904,6 +948,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onPrint: printToConsole,
     onBeginLoading: () => {
       client.cl.screen.scr_draw_loading = 1;
+      forceGameInputForLevelLoad();
     }
   });
   activeServerHost = serverHost;
@@ -940,6 +985,11 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onPredictMovement: predictAuthoritativeClientMovement,
     onPrepRefresh: prepClientRefresh,
     onRegisterSounds: registerAuthoritativeSounds,
+    onAddToServerList: (address: netadr_t, info: string) => {
+      if (menuContext) {
+        M_AddToServerList(menuContext, address, info);
+      }
+    },
     onStartSound: startAuthoritativeSound,
     onMuzzleFlash: (packet: ClientMuzzleFlashPacket) => {
       applyAuthoritativeActionEffects(CL_BuildActionEffects(packet, client));
@@ -960,6 +1010,9 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     },
     onPlayCdTrack: (track: number, looping: boolean) => {
       cdAudio.play(track, looping);
+    },
+    onSetGameDir: (gamedir: string) => {
+      QcommonCvar_Set(cvar, "game", gamedir);
     },
     registerModel: (path: string) => ref.RegisterModel(path),
     registerSkin: (path: string) => ref.RegisterSkin(path),
@@ -1034,6 +1087,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
 
   const qmenu = createClientQMenuContext({
     getMilliseconds: () => client.cls.realtime,
+    getClipboardData: () => qcommonHost.hooks.sysGetClipboardData?.() ?? null,
     onDrawChar: (command) => {
       ref.DrawChar(command.x, command.y, command.c);
     },
@@ -1041,7 +1095,6 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       ref.DrawFill(command.x, command.y, command.w, command.h, command.c);
     }
   });
-  let menuContext: ClientMenuContext | null = null;
   let videoMenu: ClientVidMenuController | null = null;
   const vid = createClientVidContext({
     onMenuInit: () => {
@@ -1158,6 +1211,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     audioDebug,
     gameBridge,
     qcommon,
+    qcommonHost,
     serverHost,
     get consoleRenderedInThree() {
       return consoleRenderedInThree;
@@ -1191,6 +1245,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     updateClientAudio,
     writeConfiguration,
     finishConfigBootstrap,
+    captureClipboardText,
     beginAuthoritativeConnection,
     shouldPumpAuthoritativeFrame,
     pumpAuthoritativeFrame,

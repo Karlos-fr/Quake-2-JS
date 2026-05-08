@@ -113,18 +113,18 @@
 | `Quake-2-master/client/cl_main.c` | global | `adrstring` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
 | `Quake-2-master/client/cl_main.c` | global | `noudp` | `packages/client/src/cl_main.ts` | `noudp` | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
 | `Quake-2-master/client/cl_main.c` | global | `noipx` | `packages/client/src/cl_main.ts` | `noipx` | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Skins_f` | `packages/client/src/cl_main.ts` | `CL_Skins_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_ConnectionlessPacket` | `packages/client/src/cl_main.ts` | `CL_ConnectionlessPacket` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `s` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `c` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_DumpPackets` | `packages/client/src/cl_main.ts` | `CL_DumpPackets` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_ReadPackets` | `packages/client/src/cl_main.ts` | `CL_ReadPackets` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_FixUpGender` | `packages/client/src/cl_main.ts` | `CL_FixUpGender` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `p` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `sk` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Userinfo_f` | `packages/client/src/cl_main.ts` | `CL_Userinfo_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Snd_Restart_f` | `packages/client/src/cl_main.ts` | `CL_Snd_Restart_f` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Skins_f` | `packages/client/src/cl_main.ts` | `CL_Skins_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Skins_f`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_ConnectionlessPacket` | `packages/client/src/cl_main.ts` | `CL_ConnectionlessPacket` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `s` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_ConnectionlessPacket`. |
+| `Quake-2-master/client/cl_main.c` | global | `c` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_ConnectionlessPacket`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_DumpPackets` | `packages/client/src/cl_main.ts` | `CL_DumpPackets` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_ReadPackets` | `packages/client/src/cl_main.ts` | `CL_ReadPackets` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_FixUpGender` | `packages/client/src/cl_main.ts` | `CL_FixUpGender` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `p` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_FixUpGender`. |
+| `Quake-2-master/client/cl_main.c` | global | `sk` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_FixUpGender`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Userinfo_f` | `packages/client/src/cl_main.ts` | `CL_Userinfo_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Snd_Restart_f` | `packages/client/src/cl_main.ts` | `CL_Snd_Restart_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `precache_check` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `precache_spawncount` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `precache_tex` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |

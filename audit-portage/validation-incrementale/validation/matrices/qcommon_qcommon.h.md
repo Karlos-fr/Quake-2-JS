@@ -309,25 +309,25 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | Valide | A redecouper | Correction apps/web: initialisation lifecycle qcommon branchee dans full-game. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Frame` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Frame` | Valide | A redecouper | Correction apps/web: frame autoritatif full-game route via `Qcommon_Frame`. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Shutdown` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Shutdown` | Valide | A redecouper | Correction apps/web: shutdown lifecycle qcommon branche au `beforeunload`. |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `NUMVERTEXNORMALS` | `packages/qcommon/src/qcommon.ts` | `NUMVERTEXNORMALS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SCR_DebugGraph` | `packages/qcommon/src/qcommon.ts` | `SCR_DebugGraph` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_Init` | `packages/qcommon/src/qcommon.ts` | `Sys_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_AppActivate` | `packages/qcommon/src/qcommon.ts` | `Sys_AppActivate` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_UnloadGame` | `packages/qcommon/src/qcommon.ts` | `Sys_UnloadGame` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_GetGameAPI` | `packages/qcommon/src/qcommon.ts` | `Sys_GetGameAPI` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_ConsoleInput` | `packages/qcommon/src/qcommon.ts` | `Sys_ConsoleInput` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_ConsoleOutput` | `packages/qcommon/src/qcommon.ts` | `Sys_ConsoleOutput` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_SendKeyEvents` | `packages/qcommon/src/qcommon.ts` | `Sys_SendKeyEvents` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_Error` | `packages/qcommon/src/system.ts` | `Sys_Error` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_Quit` | `packages/qcommon/src/qcommon.ts` | `Sys_Quit` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_GetClipboardData` | `packages/qcommon/src/qcommon.ts` | `Sys_GetClipboardData` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_CopyProtect` | `packages/qcommon/src/qcommon.ts` | `Sys_CopyProtect` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Init` | `packages/qcommon/src/qcommon.ts` | `CL_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Drop` | `packages/qcommon/src/qcommon.ts` | `CL_Drop` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Shutdown` | `packages/qcommon/src/qcommon.ts` | `CL_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Frame` | `packages/qcommon/src/qcommon.ts` | `CL_Frame` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Con_Print` | `packages/qcommon/src/qcommon.ts` | `Con_Print` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SCR_BeginLoadingPlaque` | `packages/qcommon/src/qcommon.ts` | `SCR_BeginLoadingPlaque` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SV_Init` | `packages/qcommon/src/qcommon.ts` | `SV_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SV_Shutdown` | `packages/qcommon/src/qcommon.ts` | `SV_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SV_Frame` | `packages/qcommon/src/qcommon.ts` | `SV_Frame` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `NUMVERTEXNORMALS` | `packages/qcommon/src/qcommon.ts` | `NUMVERTEXNORMALS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SCR_DebugGraph` | `packages/qcommon/src/qcommon.ts` | `SCR_DebugGraph` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_Init` | `packages/qcommon/src/qcommon.ts` | `Sys_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_AppActivate` | `packages/qcommon/src/qcommon.ts` | `Sys_AppActivate` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_UnloadGame` | `packages/qcommon/src/qcommon.ts` | `Sys_UnloadGame` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_GetGameAPI` | `packages/qcommon/src/qcommon.ts` | `Sys_GetGameAPI` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_ConsoleInput` | `packages/qcommon/src/qcommon.ts` | `Sys_ConsoleInput` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_ConsoleOutput` | `packages/qcommon/src/qcommon.ts` | `Sys_ConsoleOutput` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_SendKeyEvents` | `packages/qcommon/src/qcommon.ts` | `Sys_SendKeyEvents` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_Error` | `packages/qcommon/src/system.ts` | `Sys_Error` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_Quit` | `packages/qcommon/src/qcommon.ts` | `Sys_Quit` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_GetClipboardData` | `packages/qcommon/src/qcommon.ts` | `Sys_GetClipboardData` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Sys_CopyProtect` | `packages/qcommon/src/qcommon.ts` | `Sys_CopyProtect` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Init` | `packages/qcommon/src/qcommon.ts` | `CL_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Drop` | `packages/qcommon/src/qcommon.ts` | `CL_Drop` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Shutdown` | `packages/qcommon/src/qcommon.ts` | `CL_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CL_Frame` | `packages/qcommon/src/qcommon.ts` | `CL_Frame` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Con_Print` | `packages/qcommon/src/qcommon.ts` | `Con_Print` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SCR_BeginLoadingPlaque` | `packages/qcommon/src/qcommon.ts` | `SCR_BeginLoadingPlaque` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SV_Init` | `packages/qcommon/src/qcommon.ts` | `SV_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SV_Shutdown` | `packages/qcommon/src/qcommon.ts` | `SV_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SV_Frame` | `packages/qcommon/src/qcommon.ts` | `SV_Frame` | Valide | A redecouper |  |

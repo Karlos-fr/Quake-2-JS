@@ -57,5 +57,5 @@
 | `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/view.ts` |  | Non applicable | A redecouper | Variable locale C des boucles de camera, couverte par `CL_CalcViewValues`. |
 | `Quake-2-master/client/cl_ents.c` | global | `oldframe` | `packages/client/src/view.ts` |  | Non applicable | A redecouper | Variable locale C de selection frame precedente, couverte par `CL_CalcViewValues`. |
 | `Quake-2-master/client/cl_ents.c` | global | `delta` | `packages/client/src/view.ts` |  | Non applicable | A redecouper | Variable locale C du stair smoothing, couverte par `CL_CalcViewValues`. |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_AddEntities` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/refresh.ts` | `CL_GetEntitySoundOrigin` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_AddEntities` | `packages/client/src/refresh.ts` | `CL_BuildRefreshFrame` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/refresh.ts` | `CL_GetEntitySoundOrigin` | Valide | A redecouper |  |

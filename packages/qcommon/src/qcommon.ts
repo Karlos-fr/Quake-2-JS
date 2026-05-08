@@ -122,6 +122,16 @@ export const MAX_LATENT = 32;
 export const ERR_FATAL = 0;
 export const ERR_DROP = 1;
 export const ERR_QUIT = 2;
+
+/**
+ * Original name: NUMVERTEXNORMALS
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the byte-normal table size shared by message direction encoding and visual effects.
+ */
 export const NUMVERTEXNORMALS = 162;
 
 /**

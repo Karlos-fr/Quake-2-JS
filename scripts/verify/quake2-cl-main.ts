@@ -39,12 +39,15 @@ import {
   CL_Record_f,
   CL_Reconnect_f,
   CL_Rcon_f,
+  CL_Skins_f,
   CL_SendConnectPacket,
   CL_SendCommand,
   CL_Setenv_f,
   CL_Shutdown,
+  CL_Snd_Restart_f,
   CL_Stop_f,
   CL_Quit_f,
+  CL_Userinfo_f,
   createClientInputContext,
   CL_WriteDemoMessage,
   CL_WriteConfiguration,
@@ -61,6 +64,7 @@ import {
   Cmd_ExecuteString,
   Cmd_TokenizeString,
   CS_MAXCLIENTS,
+  CS_PLAYERSKINS,
   CVAR_ARCHIVE,
   CVAR_USERINFO,
   Cvar_FindVar,
@@ -196,6 +200,52 @@ for (const command of [
 ]) {
   assert.equal(Cmd_Exists(cmd, command), true, `CL_InitLocal should register "${command}"`);
 }
+
+const skinPrints: string[] = [];
+let skinScreenUpdates = 0;
+let skinKeyPumps = 0;
+client.cl.configstrings[CS_PLAYERSKINS + 2] = "Ranger\\male/grunt";
+client.cl.configstrings[CS_PLAYERSKINS + 4] = "Athena\\female/athena";
+const parsedSkins = CL_Skins_f(context, {
+  onPrint: (line) => skinPrints.push(line),
+  onUpdateScreen: () => {
+    skinScreenUpdates += 1;
+  },
+  onSendKeyEvents: () => {
+    skinKeyPumps += 1;
+  }
+});
+assert.equal(parsedSkins, 2, "CL_Skins_f should parse each populated player skin configstring");
+assert.deepEqual(skinPrints, [
+  "client 2: Ranger\\male/grunt",
+  "client 4: Athena\\female/athena"
+], "CL_Skins_f should print the stock client index and skin configstring lines");
+assert.equal(skinScreenUpdates, 2, "CL_Skins_f should update the screen for each parsed skin");
+assert.equal(skinKeyPumps, 2, "CL_Skins_f should pump key events for each parsed skin");
+
+const userinfoPrints: string[] = [];
+const userinfoLines = CL_Userinfo_f(context, {
+  onPrint: (line) => userinfoPrints.push(line)
+});
+assert.equal(userinfoLines[0], "User info settings:", "CL_Userinfo_f should print the stock userinfo heading");
+assert.equal(userinfoPrints.includes("User info settings:"), true, "CL_Userinfo_f should send the heading through Com_Printf hook");
+assert.equal(userinfoLines.some((line) => line.includes("name")), true, "CL_Userinfo_f should include current userinfo pairs");
+
+const soundRestartOrder: string[] = [];
+CL_Snd_Restart_f(context, {
+  onSoundShutdown: () => soundRestartOrder.push("shutdown"),
+  onSoundInit: () => soundRestartOrder.push("init"),
+  onBeginSoundRegistration: () => soundRestartOrder.push("begin-registration"),
+  onEndSoundRegistration: () => soundRestartOrder.push("end-registration"),
+  onRegisterSounds: () => soundRestartOrder.push("register-sounds")
+});
+assert.deepEqual(soundRestartOrder, [
+  "shutdown",
+  "init",
+  "begin-registration",
+  "end-registration",
+  "register-sounds"
+], "CL_Snd_Restart_f should restart sound then run the CL_RegisterSounds path");
 
 context.gender!.modified = true;
 Cvar_Set(cvar, "gender", "female");

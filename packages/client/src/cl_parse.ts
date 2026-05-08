@@ -135,6 +135,7 @@ export interface ClientParseHooks {
   onConfigString?: (index: number, value: string) => void;
   onClientinfo?: (player: number, clientinfo: ClientRuntime["cl"]["clientinfo"][number]) => void;
   onServerData?: (levelName: string) => void;
+  onSetGameDir?: (gamedir: string) => void;
   onPlayCinematic?: (name: string) => void;
   onPlayCdTrack?: (track: number, looping: boolean) => void;
   onStartLocalSound?: (path: string) => void;
@@ -1267,7 +1268,7 @@ export function CL_ParseConfigString(runtime: ClientRuntime, hooks: ClientParseH
     }
   }
 
-  if (index >= CS_PLAYERSKINS && index < CS_PLAYERSKINS + MAX_CLIENTS) {
+  if (runtime.cl.refresh_prepped && index >= CS_PLAYERSKINS && index < CS_PLAYERSKINS + MAX_CLIENTS) {
     CL_ParseClientinfo(runtime, index - CS_PLAYERSKINS, hooks);
   }
   hooks.onConfigString?.(index, value);
@@ -1300,6 +1301,7 @@ export function CL_ParseServerData(runtime: ClientRuntime, hooks: ClientParseHoo
 
   const gamedir = MSG_ReadString(runtime.net_message);
   runtime.cl.gamedir = gamedir;
+  hooks.onSetGameDir?.(gamedir);
 
   runtime.cl.playernum = MSG_ReadShort(runtime.net_message);
   const levelName = MSG_ReadString(runtime.net_message);
@@ -1707,23 +1709,77 @@ function findModelSkinSeparator(value: string): number {
   return Math.min(forwardSlash, backSlash);
 }
 
-function registerClientinfoResources(
+export function registerClientinfoResources(
   clientinfo: ClientRuntime["cl"]["clientinfo"][number],
   hooks: Pick<ClientParseHooks, "registerModel" | "registerSkin" | "registerPic">
 ): void {
-  clientinfo.model = clientinfo.model_filename ? (hooks.registerModel?.(clientinfo.model_filename) ?? clientinfo.model_filename) : null;
-  clientinfo.skin = clientinfo.skin_filename ? (hooks.registerSkin?.(clientinfo.skin_filename) ?? clientinfo.skin_filename) : null;
+  let modelName = clientinfo.model_name || "male";
+  let skinName = clientinfo.skin_name || "grunt";
+
+  const requestedModel = `players/${modelName}/tris.md2`;
+  clientinfo.model = registerModelWithNull(hooks, requestedModel);
+  if (!clientinfo.model) {
+    modelName = "male";
+    clientinfo.model = registerModelWithNull(hooks, "players/male/tris.md2");
+  }
+
+  let skinFilename = `players/${modelName}/${skinName}.pcx`;
+  clientinfo.skin = registerSkinWithNull(hooks, skinFilename);
+  if (!clientinfo.skin && modelName !== "male") {
+    modelName = "male";
+    clientinfo.model = registerModelWithNull(hooks, "players/male/tris.md2");
+    skinFilename = `players/male/${skinName}.pcx`;
+    clientinfo.skin = registerSkinWithNull(hooks, skinFilename);
+  }
+  if (!clientinfo.skin) {
+    skinName = "grunt";
+    skinFilename = `players/${modelName}/grunt.pcx`;
+    clientinfo.skin = registerSkinWithNull(hooks, skinFilename);
+  }
+
+  clientinfo.model_name = modelName;
+  clientinfo.skin_name = skinName;
+  clientinfo.model_filename = `players/${modelName}/tris.md2`;
+  clientinfo.skin_filename = skinFilename;
+  clientinfo.iconname = `/players/${modelName}/${skinName}_i.pcx`;
   clientinfo.icon = clientinfo.iconname ? (hooks.registerPic?.(clientinfo.iconname) ?? clientinfo.iconname) : null;
 
   for (let index = 0; index < clientinfo.weaponmodel_paths.length; index += 1) {
-    const weaponPath = clientinfo.weaponmodel_paths[index];
-    clientinfo.weaponmodel[index] = weaponPath ? (hooks.registerModel?.(weaponPath) ?? weaponPath) : null;
+    const sourcePath = clientinfo.weaponmodel_paths[index];
+    if (!sourcePath) {
+      clientinfo.weaponmodel[index] = null;
+      continue;
+    }
+
+    const weaponName = sourcePath.slice(sourcePath.lastIndexOf("/") + 1);
+    const weaponPath = `players/${modelName}/${weaponName}`;
+    clientinfo.weaponmodel_paths[index] = weaponPath;
+    clientinfo.weaponmodel[index] = registerModelWithNull(hooks, weaponPath);
+    if (!clientinfo.weaponmodel[index] && modelName === "cyborg") {
+      const fallbackWeaponPath = `players/male/${weaponName}`;
+      clientinfo.weaponmodel_paths[index] = fallbackWeaponPath;
+      clientinfo.weaponmodel[index] = registerModelWithNull(hooks, fallbackWeaponPath);
+    }
   }
 
   clientinfo.valid = clientinfo.model !== null
     && clientinfo.skin !== null
     && clientinfo.icon !== null
     && clientinfo.weaponmodel[0] !== null;
+}
+
+function registerModelWithNull(
+  hooks: Pick<ClientParseHooks, "registerModel">,
+  path: string
+): unknown {
+  return hooks.registerModel ? hooks.registerModel(path) : path;
+}
+
+function registerSkinWithNull(
+  hooks: Pick<ClientParseHooks, "registerSkin">,
+  path: string
+): unknown {
+  return hooks.registerSkin ? hooks.registerSkin(path) : path;
 }
 
 /**

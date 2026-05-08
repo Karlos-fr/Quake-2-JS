@@ -306,6 +306,8 @@ export {
   LittleShort,
   LongNoSwap,
   LongSwap,
+  MAX_NUM_ARGVS,
+  memsearch,
   Q_strcasecmp,
   Q_stricmp,
   Q_strncasecmp,

@@ -17,6 +17,7 @@ import { join } from "node:path";
 
 import {
   CL_ParseConfigString,
+  CL_ParseBaseline,
   CL_ParseDownload,
   CL_ParseDelta,
   CL_ParseEntityBits,
@@ -36,6 +37,10 @@ import {
   CS_MODELS,
   CS_PLAYERSKINS,
   CS_SOUNDS,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
+  MAX_CONFIGSTRINGS,
   MSG_WriteByte,
   MSG_WriteChar,
   MSG_WriteCoord,
@@ -184,6 +189,7 @@ assert.throws(() => CL_ParseMuzzleFlash2(runtime), /bad entity 1024/, "CL_ParseM
 
 resetIncoming(runtime);
 let cinematicName = "";
+let setGameDir = "";
 MSG_WriteLong(runtime.net_message, 34);
 MSG_WriteLong(runtime.net_message, 99);
 MSG_WriteByte(runtime.net_message, 0);
@@ -192,11 +198,25 @@ MSG_WriteShort(runtime.net_message, -1);
 MSG_WriteString(runtime.net_message, "pics/test.pcx");
 runtime.net_message.readcount = 0;
 CL_ParseServerData(runtime, {
+  onSetGameDir: (gamedir) => {
+    setGameDir = gamedir;
+  },
   onPlayCinematic: (name) => {
     cinematicName = name;
   }
 });
 assert.equal(cinematicName, "pics/test.pcx", "CL_ParseServerData cinematic handoff mismatch");
+assert.equal(setGameDir, "baseq2", "CL_ParseServerData game cvar handoff mismatch");
+
+resetIncoming(runtime);
+MSG_WriteByte(runtime.net_message, (U_MODEL & 0xff) | U_MOREBITS1);
+MSG_WriteByte(runtime.net_message, (U_MODEL >> 8) & 0xff);
+MSG_WriteByte(runtime.net_message, 5);
+MSG_WriteByte(runtime.net_message, 9);
+runtime.net_message.readcount = 0;
+CL_ParseBaseline(runtime);
+assert.equal(runtime.cl_entities[5].baseline.number, 5, "CL_ParseBaseline entity number mismatch");
+assert.equal(runtime.cl_entities[5].baseline.modelindex, 9, "CL_ParseBaseline delta payload mismatch");
 
 runtime.cl.refresh_prepped = true;
 const registeredModels: string[] = [];
@@ -260,6 +280,31 @@ CL_ParseConfigString(runtime, {
   }
 });
 assert.deepEqual(playedTracks, [{ track: 7, looping: true }], "CL_ParseConfigString cd track mismatch");
+
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, CS_SKY);
+MSG_WriteString(runtime.net_message, "unit_sky");
+runtime.net_message.readcount = 0;
+CL_ParseConfigString(runtime);
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, CS_SKYROTATE);
+MSG_WriteString(runtime.net_message, "45");
+runtime.net_message.readcount = 0;
+CL_ParseConfigString(runtime);
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, CS_SKYAXIS);
+MSG_WriteString(runtime.net_message, "0 1 0");
+runtime.net_message.readcount = 0;
+CL_ParseConfigString(runtime);
+assert.equal(runtime.cl.sky.name, "unit_sky", "CL_ParseConfigString sky name mismatch");
+assert.equal(runtime.cl.sky.rotate, 45, "CL_ParseConfigString sky rotate mismatch");
+assert.deepEqual(runtime.cl.sky.axis, [0, 1, 0], "CL_ParseConfigString sky axis mismatch");
+
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, MAX_CONFIGSTRINGS);
+MSG_WriteString(runtime.net_message, "bad");
+runtime.net_message.readcount = 0;
+assert.throws(() => CL_ParseConfigString(runtime), /configstring > MAX_CONFIGSTRINGS/, "CL_ParseConfigString bounds guard mismatch");
 
 const ambienceSound = { name: "world/ambience.wav" };
 runtime.cl.sound_precache[3] = ambienceSound;
@@ -329,6 +374,59 @@ assert.equal(runtime.cl.clientinfo[0].name, "Ranger", "CL_ParseConfigString clie
 assert.equal(runtime.cl.clientinfo[0].model_filename, "players/female/tris.md2", "CL_ParseConfigString clientinfo model mismatch");
 assert.equal(runtime.cl.clientinfo[0].weaponmodel[0], "model:players/female/weapon.md2", "CL_ParseConfigString clientinfo weapon registration mismatch");
 assert.equal(runtime.cl.clientinfo[0].valid, true, "CL_ParseConfigString clientinfo validity mismatch");
+
+runtime.cl.clientinfo[1].name = "";
+runtime.cl.refresh_prepped = false;
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, CS_PLAYERSKINS + 1);
+MSG_WriteString(runtime.net_message, "Sleepy\\female/athena");
+runtime.net_message.readcount = 0;
+CL_ParseConfigString(runtime, {
+  onClientinfo: () => {
+    throw new Error("CL_ParseConfigString should defer clientinfo parsing until refresh_prepped");
+  }
+});
+assert.equal(runtime.cl.configstrings[CS_PLAYERSKINS + 1], "Sleepy\\female/athena", "CL_ParseConfigString should still store deferred playerskin");
+assert.equal(runtime.cl.clientinfo[1].name, "", "CL_ParseConfigString should not parse clientinfo before refresh prep");
+
+runtime.cl.refresh_prepped = true;
+runtime.cl.num_cl_weaponmodels = 2;
+runtime.cl.cl_weaponmodels[0] = "weapon.md2";
+runtime.cl.cl_weaponmodels[1] = "w_blaster.md2";
+const fallbackAttempts: string[] = [];
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, CS_PLAYERSKINS + 2);
+MSG_WriteString(runtime.net_message, "Fallback\\female/rare");
+runtime.net_message.readcount = 0;
+CL_ParseConfigString(runtime, {
+  registerModel: (path) => {
+    fallbackAttempts.push(`model:${path}`);
+    return path === "players/female/tris.md2" ? null : `model:${path}`;
+  },
+  registerSkin: (path) => {
+    fallbackAttempts.push(`skin:${path}`);
+    return path === "players/male/rare.pcx" ? null : `skin:${path}`;
+  },
+  registerPic: (path) => `pic:${path}`
+});
+assert.ok(fallbackAttempts.includes("model:players/female/tris.md2"), "CL_LoadClientinfo should try requested model first");
+assert.ok(fallbackAttempts.includes("model:players/male/tris.md2"), "CL_LoadClientinfo should fall back to male model");
+assert.ok(fallbackAttempts.includes("skin:players/male/rare.pcx"), "CL_LoadClientinfo should try male skin fallback");
+assert.ok(fallbackAttempts.includes("skin:players/male/grunt.pcx"), "CL_LoadClientinfo should fall back to grunt skin");
+assert.equal(runtime.cl.clientinfo[2].model_filename, "players/male/tris.md2", "CL_LoadClientinfo fallback model filename mismatch");
+assert.equal(runtime.cl.clientinfo[2].skin_filename, "players/male/grunt.pcx", "CL_LoadClientinfo fallback skin filename mismatch");
+assert.equal(runtime.cl.clientinfo[2].weaponmodel[1], "model:players/male/w_blaster.md2", "CL_LoadClientinfo fallback weapon model mismatch");
+
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, CS_PLAYERSKINS + 3);
+MSG_WriteString(runtime.net_message, "Cyborg\\cyborg/oni");
+runtime.net_message.readcount = 0;
+CL_ParseConfigString(runtime, {
+  registerModel: (path) => path === "players/cyborg/w_blaster.md2" ? null : `model:${path}`,
+  registerSkin: (path) => `skin:${path}`,
+  registerPic: (path) => `pic:${path}`
+});
+assert.equal(runtime.cl.clientinfo[3].weaponmodel[1], "model:players/male/w_blaster.md2", "CL_LoadClientinfo cyborg weapon fallback mismatch");
 
 let requestedDownloads = 0;
 resetIncoming(runtime);

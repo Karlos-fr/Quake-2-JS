@@ -277,7 +277,7 @@ export function Sys_FindClose(runtime: SystemRuntime): void {
 
 /**
  * Original name: Sys_Error
- * Source: game/q_shared.h
+ * Source: qcommon/qcommon.h and game/q_shared.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -285,7 +285,7 @@ export function Sys_FindClose(runtime: SystemRuntime): void {
  * - Formats the variadic message and raises a fatal host error.
  *
  * Porting notes:
- * - The C implementations format `char *error, ...` through `vsprintf`; the host hook still receives a single fatal message.
+ * - The C declarations share the same `char *error, ...` system-service contract; the host hook still receives one formatted fatal message.
  */
 export function Sys_Error(runtime: SystemRuntime, message: string, ...args: unknown[]): never {
   const formatted = formatSystemError(message, args);

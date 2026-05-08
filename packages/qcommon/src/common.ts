@@ -22,7 +22,7 @@ import {
   MAX_TOKEN_CHARS
 } from "./q_shared.js";
 
-const MAX_NUM_ARGVS = 50;
+export const MAX_NUM_ARGVS = 50;
 
 /**
  * Original name: bigendien
@@ -86,7 +86,7 @@ export function createCommonRuntime(): CommonRuntime {
 
 /**
  * Original name: COM_InitArgv
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -107,7 +107,7 @@ export function COM_InitArgv(runtime: CommonRuntime, argv: string[]): void {
 
 /**
  * Original name: COM_Argc
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -123,7 +123,7 @@ export function COM_Argc(runtime: CommonRuntime): number {
 
 /**
  * Original name: COM_Argv
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -143,7 +143,7 @@ export function COM_Argv(runtime: CommonRuntime, arg: number): string {
 
 /**
  * Original name: COM_ClearArgv
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -163,7 +163,7 @@ export function COM_ClearArgv(runtime: CommonRuntime, arg: number): void {
 
 /**
  * Original name: COM_AddParm
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -183,8 +183,32 @@ export function COM_AddParm(runtime: CommonRuntime, parm: string): void {
 }
 
 /**
+ * Original name: memsearch
+ * Source: Quake-2-master/qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the first index where one byte value appears, or `-1` when absent.
+ *
+ * Porting notes:
+ * - Accepts a `Uint8Array` instead of a raw byte pointer; `count` preserves the original bounded scan.
+ */
+export function memsearch(start: Uint8Array, count: number, search: number): number {
+  const limit = Math.min(Math.max(count, 0), start.length);
+  const byte = search & 0xff;
+  for (let index = 0; index < limit; index += 1) {
+    if (start[index] === byte) {
+      return index;
+    }
+  }
+
+  return -1;
+}
+
+/**
  * Original name: COM_CheckParm
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *

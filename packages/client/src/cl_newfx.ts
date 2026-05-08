@@ -21,6 +21,18 @@ import { MakeNormalVectors, type ClientActionEffect } from "./cl_fx.js";
 
 const PARTICLE_GRAVITY = 40;
 
+/**
+ * Original name: CL_ParticleSteamEffect
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits steam puffs along a direction with right/up spread, half gravity and randomized fade.
+ *
+ * Porting notes:
+ * - Also exposes a metadata form for packet effect descriptions; the runtime overload mutates the particle pool.
+ */
 export function CL_ParticleSteamEffect(
   org: vec3_t,
   dir: vec3_t,
@@ -97,6 +109,18 @@ export function CL_ParticleSteamEffect(
   }
 }
 
+/**
+ * Original name: CL_ParticleSteamEffect2
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Runs the steam sustain thinker from one sustain slot and advances `nextthink` by `thinkinterval`.
+ *
+ * Porting notes:
+ * - Mirrors `CL_ParticleSteamEffect` using sustain fields from `cl_sustain_t`.
+ */
 export function CL_ParticleSteamEffect2(self: client_sustain_t): ClientActionEffect[];
 export function CL_ParticleSteamEffect2(runtime: ClientRuntime, self: client_sustain_t): void;
 export function CL_ParticleSteamEffect2(
@@ -142,6 +166,18 @@ export function CL_ParticleSteamEffect2(
   self.nextthink += self.thinkinterval;
 }
 
+/**
+ * Original name: CL_ParticleSmokeEffect
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits steam-like smoke puffs along a direction, preserving zero gravity.
+ *
+ * Porting notes:
+ * - Also exposes a metadata form for packet effect descriptions; the runtime overload mutates the particle pool.
+ */
 export function CL_ParticleSmokeEffect(
   org: vec3_t,
   dir: vec3_t,
@@ -218,6 +254,18 @@ export function CL_ParticleSmokeEffect(
   }
 }
 
+/**
+ * Original name: CL_BlasterParticles2
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the Rogue green/flechette wall impact puff with directional velocity and full gravity.
+ *
+ * Porting notes:
+ * - Color is caller supplied, matching the original shared helper for `TE_BLASTER2` and `TE_FLECHETTE`.
+ */
 export function CL_BlasterParticles2(org: vec3_t, dir: vec3_t, color: number): ClientActionEffect[];
 export function CL_BlasterParticles2(runtime: ClientRuntime, org: vec3_t, dir: vec3_t, color: number): void;
 export function CL_BlasterParticles2(
@@ -804,6 +852,18 @@ export function CL_GenericParticleEffect(
   }
 }
 
+/**
+ * Original name: CL_TrackerTrail
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits tracker trail particles every 3 units using the original cosine/up offset.
+ *
+ * Porting notes:
+ * - Also exposes a metadata form for render-source effect descriptions.
+ */
 export function CL_TrackerTrail(start: vec3_t, end: vec3_t, particleColor: number): ClientActionEffect[];
 export function CL_TrackerTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t, particleColor: number): void;
 export function CL_TrackerTrail(
@@ -854,6 +914,15 @@ export function CL_TrackerTrail(
   }
 }
 
+/**
+ * Original name: CL_Tracker_Shell
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the instant tracker shell as 300 particles on a radius-40 random sphere.
+ */
 export function CL_Tracker_Shell(runtime: ClientRuntime, origin: vec3_t): void {
   for (let index = 0; index < 300; index += 1) {
     const particle = allocParticle(runtime);
@@ -871,6 +940,15 @@ export function CL_Tracker_Shell(runtime: ClientRuntime, origin: vec3_t): void {
   }
 }
 
+/**
+ * Original name: CL_Tracker_Explode
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the tracker explosion as 300 particles moving back toward the origin.
+ */
 export function CL_Tracker_Explode(runtime: ClientRuntime, origin: vec3_t): void {
   for (let index = 0; index < 300; index += 1) {
     const particle = allocParticle(runtime);
@@ -890,6 +968,18 @@ export function CL_Tracker_Explode(runtime: ClientRuntime, origin: vec3_t): void
   }
 }
 
+/**
+ * Original name: CL_TagTrail
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits color-tag trail particles every 5 units with random origin and velocity spread.
+ *
+ * Porting notes:
+ * - Also exposes a metadata form for render-source effect descriptions.
+ */
 export function CL_TagTrail(start: vec3_t, end: vec3_t, color: number): ClientActionEffect[];
 export function CL_TagTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t, color: number): void;
 export function CL_TagTrail(
@@ -940,6 +1030,18 @@ export function CL_TagTrail(
   }
 }
 
+/**
+ * Original name: CL_BlasterTrail2
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the green blaster/tracker projectile trail every 5 units with color `0xd0`.
+ *
+ * Porting notes:
+ * - Also exposes a metadata form for render-source effect descriptions.
+ */
 export function CL_BlasterTrail2(start: vec3_t, end: vec3_t): ClientActionEffect[];
 export function CL_BlasterTrail2(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
 export function CL_BlasterTrail2(
@@ -988,6 +1090,18 @@ export function CL_BlasterTrail2(
   }
 }
 
+/**
+ * Original name: CL_WidowSplash
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits 256 widow splash particles using the original four-color table and radial velocity.
+ *
+ * Porting notes:
+ * - Also exposes a metadata form for packet effect descriptions.
+ */
 export function CL_WidowSplash(org: vec3_t): ClientActionEffect[];
 export function CL_WidowSplash(runtime: ClientRuntime, org: vec3_t): void;
 export function CL_WidowSplash(
@@ -1028,6 +1142,18 @@ export function CL_WidowSplash(
   }
 }
 
+/**
+ * Original name: CL_ColorExplosionParticles
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits 128 colored explosion particles with random origin/velocity spread and full gravity.
+ *
+ * Porting notes:
+ * - Also exposes a metadata form for packet effect descriptions.
+ */
 export function CL_ColorExplosionParticles(org: vec3_t, color: number, run: number): ClientActionEffect[];
 export function CL_ColorExplosionParticles(runtime: ClientRuntime, org: vec3_t, color: number, run: number): void;
 export function CL_ColorExplosionParticles(
@@ -1154,6 +1280,15 @@ export function CL_Heatbeam(runtime: ClientRuntime, start: vec3_t, forward: vec3
   }
 }
 
+/**
+ * Original name: CL_MonsterPlasma_Shell
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the monster heatbeam plasma shell as 40 instant particles on a radius-10 random sphere.
+ */
 export function CL_MonsterPlasma_Shell(runtime: ClientRuntime, origin: vec3_t): void {
   for (let index = 0; index < 40; index += 1) {
     const particle = allocParticle(runtime);
@@ -1171,6 +1306,18 @@ export function CL_MonsterPlasma_Shell(runtime: ClientRuntime, origin: vec3_t): 
   }
 }
 
+/**
+ * Original name: CL_Widowbeamout
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the widow beam-out sustain burst using the original time ratio and four-color table.
+ *
+ * Porting notes:
+ * - Does not advance `nextthink`; the original C thinker leaves that field unchanged.
+ */
 export function CL_Widowbeamout(runtime: ClientRuntime, self: client_sustain_t): void {
   const colortable = [2 * 8, 13 * 8, 21 * 8, 18 * 8];
   const ratio = 1.0 - ((self.endtime - runtime.cl.time) / 2100.0);
@@ -1190,9 +1337,20 @@ export function CL_Widowbeamout(runtime: ClientRuntime, self: client_sustain_t):
     particle.vel = [0, 0, 0];
   }
 
-  self.nextthink += self.thinkinterval;
 }
 
+/**
+ * Original name: CL_Nukeblast
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the nuke sustain burst using the original time ratio and four-color table.
+ *
+ * Porting notes:
+ * - Does not advance `nextthink`; the original C thinker leaves that field unchanged.
+ */
 export function CL_Nukeblast(runtime: ClientRuntime, self: client_sustain_t): void {
   const colortable = [110, 112, 114, 116];
   const ratio = 1.0 - ((self.endtime - runtime.cl.time) / 1000.0);
@@ -1212,7 +1370,6 @@ export function CL_Nukeblast(runtime: ClientRuntime, self: client_sustain_t): vo
     particle.vel = [0, 0, 0];
   }
 
-  self.nextthink += self.thinkinterval;
 }
 
 function createTrailEffect(kind: string, start: vec3_t, end: vec3_t, color: number, spacing: number): ClientActionEffect {

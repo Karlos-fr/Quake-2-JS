@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: bloc sizebuf `SZ_Init`, `SZ_Clear`, `SZ_GetSpace`, `SZ_Write`, `SZ_Print` et faux positifs locaux associes
-- Prochain lot recommande: bloc arguments `COM_CheckParm`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_InitArgv`, `COM_AddParm` et locaux associes si le lot reste coherent.
+- Dernier lot valide: bloc arguments `MAX_NUM_ARGVS`, `com_argc`, `com_argv`, `COM_CheckParm`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_InitArgv`, `COM_AddParm`, locaux associes, plus `memsearch`.
+- Prochain lot recommande: `CopyString`, puis `Info_Print` et ses locaux `key`/`value`/`o`/`l` si le lot reste coherent.
 
 ## Preuves session
 
@@ -24,6 +24,20 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-08 - Bloc arguments COM_* et memsearch
+
+- Lot traite: `MAX_NUM_ARGVS`, globals `com_argc`/`com_argv`, `COM_CheckParm`, son local `i`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_InitArgv`, son local `i`, le doublon matriciel `com_argv`, `COM_AddParm`, `memsearch` et son local `i`.
+- Source C relue: `MAX_NUM_ARGVS` vaut 50; `com_argc` et `com_argv[MAX_NUM_ARGVS+1]` portent l'etat argv global; `COM_CheckParm` scanne a partir de `argv[1]`; `COM_Argv` retourne `""` sur index invalide ou slot nul; `COM_ClearArgv` vide un slot valide; `COM_InitArgv` refuse `argc > MAX_NUM_ARGVS` et remplace les args nuls ou trop longs par `""`; `COM_AddParm` append et refuse la capacite pleine; `memsearch` retourne le premier index du byte cherche ou `-1`.
+- Cible TS relue/corrigee: `packages/qcommon/src/common.ts` est l'owner unique du bloc; noms originaux conserves. Les en-tetes des fonctions du lot pointent maintenant vers `Quake-2-master/qcommon/common.c`. `MAX_NUM_ARGVS` est exporte pour preuve explicite et `memsearch` est porte strictement en `Uint8Array` avec scan borne par `count`.
+- Ecarts documentes: l'etat global C est stocke dans `CommonRuntime`; les erreurs fatales deviennent des exceptions JS; `COM_AddParm` corrige le texte d'erreur typo du C; `memsearch` masque `search` en byte et borne le scan a la longueur du tableau pour eviter un acces hors buffer JS.
+- Ownership/doublons: aucun doublon proprietaire `COM_*` trouve; les consommateurs passent par `packages/qcommon/src/common.ts` et `cmd.ts`. Les entrees `i` sont des variables locales generees et marquees `Non applicable`; le doublon `com_argv` matriciel est couvert par le meme etat runtime.
+- Runtime verifie: `createQcommonRuntime` appelle `COM_InitArgv`; `Cbuf_AddEarlyCommands` consomme `COM_Argc`/`COM_Argv`/`COM_ClearArgv` pour les triplets `+set`; `Cbuf_AddLateCommands` consomme `COM_Argc`/`COM_Argv` pour les commandes tardives. `COM_AddParm` et `COM_CheckParm` sont exposes comme helpers portes, mais aucun flux runtime actuel ne les appelle directement.
+- apps/web verifie: le full-game web passe par `Qcommon_Init` et les commandes runtime/console, sans injection argv navigateur ni logique parallele qui remplace `COM_*`; aucune integration launch-argv web n'est attendue pour ce lot tant qu'aucune configuration de lancement web n'existe.
+- renderer-three verifie: aucune sortie visible directe attendue; ce lot gere uniquement argv/bootstrap/debug scan. Les sorties visibles renderer restent produites par les flux client/serveur apres execution des commandes, pas par ces helpers directement.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` couvre maintenant `COM_CheckParm` qui ignore `argv[0]`, `COM_ClearArgv` sur index valide, la constante `MAX_NUM_ARGVS`, les limites d'overflow basees sur cette constante et `memsearch` trouve/absent/masque byte.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cmd`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`.
+- Test session bloque hors lot: `npm run typecheck` echoue dans `apps/web/src/full-game.ts` sur `onAddToServerList: (address, info)` avec deux `noImplicitAny`; ce fichier avait des modifications preexistantes hors mission et n'a pas ete modifie dans ce lot.
 
 ## Session - 2026-05-08 - Bloc sizebuf SZ_*
 

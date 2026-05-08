@@ -11,9 +11,9 @@
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/qcommon/common.c` | macro | `MAXPRINTMSG` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | macro | `MAX_NUM_ARGVS` | `packages/qcommon/src/common.ts` | `MAX_NUM_ARGVS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `com_argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `com_argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | macro | `MAX_NUM_ARGVS` | `packages/qcommon/src/common.ts` | `MAX_NUM_ARGVS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `com_argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `com_argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `realtime` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `host_speeds` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `log_stats` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
@@ -112,17 +112,17 @@
 | `Quake-2-master/qcommon/common.c` | global | `len` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `SZ_Print`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `memcpy` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel libc remplace par `Uint8Array.set`; couvert avec `SZ_Write`/`SZ_Print`. |
 | `Quake-2-master/qcommon/common.c` | function | `memcpy` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel libc remplace par `Uint8Array.set`; couvert avec `SZ_Write`/`SZ_Print`. |
-| `Quake-2-master/qcommon/common.c` | function | `COM_CheckParm` | `packages/qcommon/src/common.ts` | `COM_CheckParm` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_Argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_Argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_ClearArgv` | `packages/qcommon/src/common.ts` | `COM_ClearArgv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_InitArgv` | `packages/qcommon/src/common.ts` | `COM_InitArgv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `com_argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_AddParm` | `packages/qcommon/src/common.ts` | `COM_AddParm` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `memsearch` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_CheckParm` | `packages/qcommon/src/common.ts` | `COM_CheckParm` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `COM_CheckParm`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | function | `COM_Argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_Argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_ClearArgv` | `packages/qcommon/src/common.ts` | `COM_ClearArgv` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_InitArgv` | `packages/qcommon/src/common.ts` | `COM_InitArgv` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `COM_InitArgv`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | global | `com_argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_AddParm` | `packages/qcommon/src/common.ts` | `COM_AddParm` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `memsearch` | `packages/qcommon/src/common.ts` | `memsearch` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `memsearch`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `CopyString` | `packages/qcommon/src/qcommon.ts` | `CopyString` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `out` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Info_Print` | `packages/qcommon/src/common.ts` | `Info_Print` | A verifier | A redecouper |  |

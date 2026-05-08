@@ -311,19 +311,23 @@ export function createClientMainContext(client: ClientRuntime, cmd: CommandRunti
  * Fidelity level: Close
  *
  * Behavior:
- * - Rebuilds parsed clientinfo data for every active player skin configstring.
+ * - Prints and rebuilds parsed clientinfo data for every active player skin configstring.
  *
  * Porting notes:
- * - Reuses the ported `CL_ParseClientinfo` hook-based path instead of renderer registration.
+ * - Routes `SCR_UpdateScreen` and `Sys_SendKeyEvents` through hooks.
  */
 export function CL_Skins_f(context: ClientMainContext, hooks: ClientMainHooks = {}): number {
   let count = 0;
 
   for (let index = 0; index < MAX_CLIENTS; index += 1) {
-    if (!context.client.cl.configstrings[CS_PLAYERSKINS + index]) {
+    const skinConfig = context.client.cl.configstrings[CS_PLAYERSKINS + index];
+    if (!skinConfig) {
       continue;
     }
 
+    hooks.onPrint?.(`client ${index}: ${skinConfig}`);
+    hooks.onUpdateScreen?.();
+    hooks.onSendKeyEvents?.();
     CL_ParseClientinfo(context.client, index, hooks);
     count += 1;
   }

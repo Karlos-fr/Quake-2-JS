@@ -6,18 +6,33 @@
 import { strict as assert } from "node:assert";
 
 import {
+  CL_BlasterParticles2,
+  CL_BlasterTrail2,
   CL_BubbleTrail2,
   CL_ColorFlash,
+  CL_ColorExplosionParticles,
   CL_DebugTrail,
   CL_Flashlight,
   CL_ForceWall,
   CL_FlameEffects,
   CL_GenericParticleEffect,
   CL_Heatbeam,
-  CL_SmokeTrail
+  CL_MonsterPlasma_Shell,
+  CL_Nukeblast,
+  CL_ParticleSmokeEffect,
+  CL_ParticleSteamEffect,
+  CL_ParticleSteamEffect2,
+  CL_SmokeTrail,
+  CL_TagTrail,
+  CL_TrackerTrail,
+  CL_Tracker_Explode,
+  CL_Tracker_Shell,
+  CL_WidowSplash,
+  CL_Widowbeamout
 } from "../../packages/client/src/cl_newfx.js";
 import { CL_AddDLights, CL_AddParticles, CL_ExecuteTempEntityEffects } from "../../packages/client/src/cl_fx.js";
-import { createClientRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
+import { connstate_t, createClientRuntime, createClientSustain, type ClientRuntime } from "../../packages/client/src/client.js";
+import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
 import { temp_event_t, VIDREF_SOFT, type vec3_t } from "../../packages/qcommon/src/index.js";
 
 main();
@@ -28,7 +43,10 @@ function main(): void {
   verifyTrailRuntimeParticles();
   verifySmokeForceFlameAndGenericParticles();
   verifyHeatbeamRingsRuntimeParticles();
+  verifySteamSmokeAndBlasterParticles();
+  verifyTrackerWidowNukeAndColorParticles();
   verifyTempEntityRuntimeBranches();
+  verifyRefreshFrameParticleConsumption();
   console.log("quake2-cl-newfx: ok");
 }
 
@@ -147,6 +165,137 @@ function verifyHeatbeamRingsRuntimeParticles(): void {
   assert.deepEqual(particles[0]?.org, [0, 0, 0], "soft CL_Heatbeam should skip the GL-only right/up start offset before the first trimmed ring");
 }
 
+function verifySteamSmokeAndBlasterParticles(): void {
+  const origin: vec3_t = [8, 16, 24];
+  const dir: vec3_t = [1, 0, 0];
+
+  let runtime = createClientRuntime();
+  runtime.cl.time = 7000;
+  withMockRandom(9 / 0x7fffffff, () => CL_ParticleSteamEffect(runtime, origin, dir, 0xe0, 3, 60));
+  let particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_ParticleSteamEffect should allocate requested steam puffs");
+  assert.ok(particles.every((particle) => particle.color === 0xe1), "CL_ParticleSteamEffect color variation mismatch");
+  assert.ok(particles.every((particle) => particle.accel[2] === -20), "CL_ParticleSteamEffect half gravity mismatch");
+  assert.equal(CL_AddParticles(runtime).length, 3, "CL_ParticleSteamEffect particles should reach refresh output");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 7100;
+  const sustain = createClientSustain();
+  sustain.org = [...origin];
+  sustain.dir = [...dir];
+  sustain.color = 8;
+  sustain.count = 2;
+  sustain.magnitude = 60;
+  sustain.nextthink = 7100;
+  sustain.thinkinterval = 100;
+  withMockRandom(9 / 0x7fffffff, () => CL_ParticleSteamEffect2(runtime, sustain));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 2, "CL_ParticleSteamEffect2 should allocate sustain count");
+  assert.equal(sustain.nextthink, 7200, "CL_ParticleSteamEffect2 should advance sustain nextthink");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 7200;
+  withMockRandom(9 / 0x7fffffff, () => CL_ParticleSmokeEffect(runtime, origin, dir, 0, 2, 20));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 2, "CL_ParticleSmokeEffect should allocate requested smoke puffs");
+  assert.ok(particles.every((particle) => particle.accel[2] === 0), "CL_ParticleSmokeEffect should preserve zero gravity");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 7300;
+  withMockRandom(9 / 0x7fffffff, () => CL_BlasterParticles2(runtime, origin, dir, 0xd0));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 40, "CL_BlasterParticles2 should allocate 40 impact particles");
+  assert.ok(particles.every((particle) => particle.color === 0xd1), "CL_BlasterParticles2 color variation mismatch");
+  assert.ok(particles.every((particle) => particle.accel[2] === -40), "CL_BlasterParticles2 gravity mismatch");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 7400;
+  withMockRandom(9 / 0x7fffffff, () => CL_BlasterTrail2(runtime, [0, 0, 0], [16, 0, 0]));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 4, "CL_BlasterTrail2 should emit every 5 units while len > 0");
+  assert.ok(particles.every((particle) => particle.color === 0xd0), "CL_BlasterTrail2 color mismatch");
+}
+
+function verifyTrackerWidowNukeAndColorParticles(): void {
+  const origin: vec3_t = [4, 5, 6];
+
+  let runtime = createClientRuntime();
+  runtime.cl.time = 8000;
+  withMockRandom(0, () => CL_TrackerTrail(runtime, [0, 0, 0], [9, 0, 0], 0x2a));
+  let particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_TrackerTrail should emit every 3 units while len > 0");
+  assert.ok(particles.every((particle) => particle.color === 0x2a), "CL_TrackerTrail color mismatch");
+  assert.ok(particles.every((particle) => particle.vel[2] === 5), "CL_TrackerTrail vertical velocity mismatch");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8100;
+  withMockRandom(0, () => CL_TagTrail(runtime, [0, 0, 0], [10, 0, 0], 0x40));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_TagTrail should include len == 0 iteration");
+  assert.ok(particles.every((particle) => particle.color === 0x40), "CL_TagTrail color mismatch");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8200;
+  withMockRandom(0, () => CL_Tracker_Shell(runtime, origin));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 300, "CL_Tracker_Shell should allocate 300 instant particles");
+  assert.ok(particles.every((particle) => particle.alphavel === -10000), "CL_Tracker_Shell should use INSTANT_PARTICLE");
+  assert.ok(particles.every((particle) => particle.color === 0), "CL_Tracker_Shell color mismatch");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8300;
+  withMockRandom(0, () => CL_MonsterPlasma_Shell(runtime, origin));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 40, "CL_MonsterPlasma_Shell should allocate 40 instant particles");
+  assert.ok(particles.every((particle) => particle.color === 0xe0), "CL_MonsterPlasma_Shell color mismatch");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8400;
+  withMockRandom(0, () => CL_Tracker_Explode(runtime, origin));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 300, "CL_Tracker_Explode should allocate 300 particles");
+  assert.ok(particles.every((particle) => particle.alphavel === -1), "CL_Tracker_Explode alpha velocity mismatch");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8500;
+  const widow = createClientSustain();
+  widow.org = [...origin];
+  widow.endtime = 10600;
+  widow.nextthink = 8500;
+  widow.thinkinterval = 1;
+  withMockRandom(0, () => CL_Widowbeamout(runtime, widow));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 300, "CL_Widowbeamout should allocate 300 instant particles");
+  assert.equal(widow.nextthink, 8500, "CL_Widowbeamout should leave nextthink unchanged like the C thinker");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8600;
+  const nuke = createClientSustain();
+  nuke.org = [...origin];
+  nuke.endtime = 9600;
+  nuke.nextthink = 8600;
+  nuke.thinkinterval = 1;
+  withMockRandom(0, () => CL_Nukeblast(runtime, nuke));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 700, "CL_Nukeblast should allocate 700 instant particles");
+  assert.equal(nuke.nextthink, 8600, "CL_Nukeblast should leave nextthink unchanged like the C thinker");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8700;
+  withMockRandom(0, () => CL_WidowSplash(runtime, origin));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 256, "CL_WidowSplash should allocate 256 particles");
+  assert.ok(particles.every((particle) => particle.color === 16), "CL_WidowSplash color table mismatch");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8800;
+  withMockRandom(0, () => CL_ColorExplosionParticles(runtime, origin, 0x60, 4));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 128, "CL_ColorExplosionParticles should allocate 128 particles");
+  assert.ok(particles.every((particle) => particle.color === 0x60), "CL_ColorExplosionParticles color run mismatch");
+  assert.ok(particles.every((particle) => particle.accel[2] === -40), "CL_ColorExplosionParticles gravity mismatch");
+}
+
 function verifyTempEntityRuntimeBranches(): void {
   const runtime = createClientRuntime();
   runtime.cl.time = 5000;
@@ -171,6 +320,21 @@ function verifyTempEntityRuntimeBranches(): void {
 
   assert.ok(collectActiveParticles(runtime).length > 0, "cl_newfx temp-entity trails should mutate the runtime particle pool");
   assert.equal(CL_AddDLights(runtime).some((light) => light.sourceEntity === 3), true, "TE_FLASHLIGHT should reach runtime dlights");
+}
+
+function verifyRefreshFrameParticleConsumption(): void {
+  const runtime = createClientRuntime();
+  runtime.cls.state = connstate_t.ca_active;
+  runtime.cl.time = 9000;
+  runtime.cl.frame.valid = true;
+  runtime.cl.frame.serverframe = 1;
+  runtime.cl.frame.playerstate.pmove.origin = [0, 0, 0];
+  withMockRandom(9 / 0x7fffffff, () => {
+    CL_ParticleSteamEffect(runtime, [0, 0, 0], [1, 0, 0], 8, 2, 60);
+  });
+
+  const frame = CL_BuildRefreshFrame(runtime);
+  assert.equal(frame.particles.length, 2, "CL_BuildRefreshFrame should consume cl_newfx particles for apps/web and renderer-three");
 }
 
 function collectActiveParticles(runtime: ClientRuntime): ClientRuntime["cl"]["particles"] {

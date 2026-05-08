@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Emits structured refresh data instead of calling renderer entry points directly.
- * - Leaves temp entities, particles and backend resource registration to later adapter layers.
+ * - Emits temp entities, particles and backend-agnostic refresh data for later adapter layers.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original C source.
@@ -56,7 +56,7 @@ import { CL_BuildPacketEntitySnapshots, type ClientInterpolatedEntity } from "./
 import { CL_BuildTEntRefresh, type ClientBeamRender, type ClientExplosionRender, type ClientForceWallRender } from "./cl_tent.js";
 import type { ClientSustainRender } from "./cl_tent.js";
 import { CL_CalcViewValues, CL_UpdateLerpFraction, type ClientViewOptions, type ClientViewValues } from "./view.js";
-import { type ClientRuntime } from "./client.js";
+import { connstate_t, type ClientRuntime } from "./client.js";
 
 /**
  * Category: New
@@ -133,6 +133,29 @@ export interface ClientRefreshFrame {
   sustains: ClientSustainRender[];
 }
 
+function createEmptyRefreshFrame(runtime: ClientRuntime): ClientRefreshFrame {
+  return {
+    view: {
+      vieworg: [0, 0, 0],
+      viewangles: [...runtime.cl.viewangles],
+      forward: [0, 0, 1],
+      right: [1, 0, 0],
+      up: [0, 1, 0],
+      fov_x: runtime.cl.frame.playerstate.fov,
+      blend: [...runtime.cl.frame.playerstate.blend] as [number, number, number, number]
+    },
+    areabits: new Uint8Array(runtime.cl.frame.areabits),
+    entities: [],
+    lights: [],
+    particles: [],
+    lightStyles: [],
+    beams: [],
+    explosions: [],
+    forceWalls: [],
+    sustains: []
+  };
+}
+
 /**
  * Original name: CL_AddEntities
  * Source: client/cl_ents.c
@@ -144,12 +167,16 @@ export interface ClientRefreshFrame {
  *
  * Porting notes:
  * - Emits structured entities and lights instead of calling `V_AddEntity` / `V_AddLight`.
- * - Temp entities and particles remain for later phases.
+ * - Returns an empty structured frame when the original C would return before emitting.
  */
 export function CL_BuildRefreshFrame(
   runtime: ClientRuntime,
   options: ClientViewOptions = {}
 ): ClientRefreshFrame {
+  if (runtime.cls.state !== connstate_t.ca_active) {
+    return createEmptyRefreshFrame(runtime);
+  }
+
   CL_UpdateLerpFraction(runtime, options);
 
   const view = CL_CalcViewValues(runtime, options);

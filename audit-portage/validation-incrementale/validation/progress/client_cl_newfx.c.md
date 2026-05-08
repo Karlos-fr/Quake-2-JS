@@ -2,7 +2,7 @@
 
 ## Dernier lot valide
 
-Lot heatbeam valide : `RINGS`, variante active `CL_Heatbeam` RINGS et locaux associes. Les variantes CORKSCREW/SPRAY de `CL_Heatbeam` sont non applicables car non compilees dans le source original actif.
+Lot final particules Rogue valide : `CL_ParticleSteamEffect`, `CL_ParticleSteamEffect2`, `CL_TrackerTrail`, `CL_Tracker_Shell`, `CL_MonsterPlasma_Shell`, `CL_Widowbeamout`, `CL_Nukeblast`, `CL_WidowSplash`, `CL_Tracker_Explode`, `CL_TagTrail`, `CL_ColorExplosionParticles`, `CL_ParticleSmokeEffect`, `CL_BlasterParticles2`, `CL_BlasterTrail2` et locaux associes. Le fichier `client/cl_newfx.c` est clos: toutes les entrees sont `Valide` ou `Non applicable`.
 
 ## Preuves obtenues
 
@@ -32,7 +32,9 @@ Lot heatbeam valide : `RINGS`, variante active `CL_Heatbeam` RINGS et locaux ass
 - Les lignes `move`, `vec`, `len`, `dec`, `j`, `d` du lot sont des variables locales C, parfois avec cible automatique incorrecte vers `cl_fx.ts`.
 - `RINGS` est la variante `CL_Heatbeam` active; les blocs CORKSCREW et SPRAY restent non applicables. `CL_Heatbeam` preserve maintenant le decalage `right/up` seulement quand `runtime.cl.vidref_val == VIDREF_GL`.
 - Le branchement runtime heatbeam passe par `CL_AddPlayerBeams` / `createHeatbeamRender` dans `cl_tent.ts`; les particules emises par `CL_Heatbeam` rejoignent `CL_AddParticles`, puis `CL_BuildRefreshFrame`, `apps/web` et `renderer-three` via `particle-sync`.
+- Le branchement runtime du lot final passe par les temp entities (`TE_HEATBEAM_SPARKS`, `TE_HEATBEAM_STEAM`, `TE_STEAM`, `TE_CHAINFIST_SMOKE`, `TE_BLASTER2`, `TE_FLECHETTE`, `TE_TRACKER_EXPLOSION`, `TE_WIDOWSPLASH`), les sustains (`CL_ProcessSustain`) et les trails packet entities (`EF_BLASTER | EF_TRACKER`).
+- `CL_Widowbeamout` et `CL_Nukeblast` ne modifient pas `nextthink`; seul `CL_ParticleSteamEffect2` l'avance, comme dans `client/cl_newfx.c`.
 
 ## Prochain lot recommande
 
-`CL_ParticleSteamEffect`, son local `d`, puis `CL_ParticleSteamEffect2` et ses locaux associes (`d`, `dir`), en verifiant les temp entities/sustains qui les appellent et la sortie particules renderer.
+Aucun lot restant dans `client_cl_newfx.c.md`: toutes les lignes sont `Valide` ou `Non applicable`. Reprendre un autre fichier depuis `AVANCEMENT_GLOBAL.md`.

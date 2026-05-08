@@ -10,6 +10,8 @@
 - `S_RegisterSexedModel` est `Non applicable`: helper mort dans le C original, sans call site; le chemin runtime custom weapon actif passe par `CL_LoadClientinfo`/`clientinfo.weaponmodel` puis `CL_AddPacketEntities`. `vidref_val` est `Non applicable`: branche renderer logiciel legacy remplacee par le chemin GL/web actuel.
 - 2026-05-08: lot vue/arme/camera valide: `CL_AddViewWeapon` porte par `appendViewWeapon`, `CL_CalcViewValues` et locaux (`i`, `oldframe`, `delta`).
 - Les temporaires locaux sont `Non applicable`: ils sont couverts par les boucles/fallbacks de `appendViewWeapon` et `CL_CalcViewValues`.
+- 2026-05-08: lot final refresh/audio valide: `CL_AddEntities` porte par `CL_BuildRefreshFrame`, `CL_GetEntitySoundOrigin` porte par `CL_GetEntitySoundOrigin`.
+- Correction appliquee: `CL_BuildRefreshFrame` respecte maintenant le retour immediat C quand `cls.state != ca_active` et n'emet aucune entite/lumiere/particule/beam hors etat actif.
 
 ## Preuves de session
 
@@ -33,6 +35,11 @@
 - Runtime verifie depuis le flux normal `CL_BuildRefreshFrame -> CL_UpdateLerpFraction -> CL_CalcViewValues -> appendViewWeapon`, lui-meme appele par le render source web et par `V_RenderView`.
 - `apps/web` verifie via `createFullGameServerRenderSource` et `full-game.ts`: le web consomme la camera/weapon depuis le client runtime et ne remplace pas la logique de vue.
 - `renderer-three` verifie via `createThreeRefreshEntitySync`, `refresh-entity-sync`, `gl-world-scene-adapter` et `three-polyblend-overlay`: camera, areabits, blend et weapon model visible sont consommes depuis `ClientRefreshFrame`.
+- Comparaison C/TS effectuee pour `CL_AddEntities` et `CL_GetEntitySoundOrigin` entre `client/cl_ents.c`, `packages/client/src/refresh.ts` et `packages/client/src/view.ts`.
+- Commentaires d'en-tete verifies pour `CL_BuildRefreshFrame` (`Original name: CL_AddEntities`, `Source: client/cl_ents.c`, `Category: Ported`, `Fidelity level: Close`) et `CL_GetEntitySoundOrigin`.
+- Runtime verifie depuis `V_RenderView -> CL_BuildRefreshFrame` et depuis le render source web; `CL_BuildRefreshFrame` calcule le clamp/lerp, la vue, les packet entities, temp entities, particules, dlights, lightstyles et met a jour les `lerp_origin` utilises par `CL_GetEntitySoundOrigin`.
+- `apps/web` verifie via `createFullGameServerRenderSource`, `full-game.ts` et `full-game-render-loop`: la frame runtime alimente camera, areabits, entites, beams, particules, dlights et debug refresh sans logique parallele.
+- `renderer-three` verifie via `refresh-entity-sync`, `particle-sync`, `three-beam-sync`, `three-dlight-sync` et `gl-world-scene-adapter`: les sorties visibles attendues de `CL_AddEntities` sont consommees.
 
 ## Tests lances
 
@@ -68,6 +75,15 @@
 - `npm run verify:full-game:render-source`
 - `npm run verify:full-game:three-renderer`
 - `npm run typecheck`
+- `npm run verify:cl-parse`
+- `npx tsx ./scripts/verify/quake2-cl-view.ts`
+- `npm run verify:full-game:render-source`
+- `npm run verify:refresh-entity:weapon`
+- `npm run verify:beam-sync`
+- `npm run verify:particle-sync`
+- `npm run verify:dlight-sync`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck` (echec hors lot: `apps/web/src/full-game.ts:950` parametres `address`/`info` implicitement `any`)
 
 ## Blocages / remarques
 
@@ -75,4 +91,4 @@
 
 ## Prochain lot recommande
 
-- `CL_AddEntities`, puis `CL_GetEntitySoundOrigin` si le lot reste coherent pour fermer `client/cl_ents.c`.
+- Aucun lot restant dans `client_cl_ents.c.md`: toutes les entrees sont `Valide` ou `Non applicable`.

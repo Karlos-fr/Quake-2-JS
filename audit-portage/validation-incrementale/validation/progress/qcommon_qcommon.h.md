@@ -2,11 +2,22 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot valide: bloc zone/lifecycle qcommon `Z_Free`, `Z_Malloc`, `Z_TagMalloc`, `Z_FreeTags`, `Qcommon_Init`, `Qcommon_Frame`, `Qcommon_Shutdown`.
+- Statut: Termine
+- Dernier lot valide: bloc final header qcommon `NUMVERTEXNORMALS`, `SCR_DebugGraph`, services `Sys_*`, puis tail `CL_*`/`Con_Print`/`SCR_BeginLoadingPlaque`/`SV_*`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc final header qcommon depuis `qcommon/qcommon.h`: `NUMVERTEXNORMALS`, `SCR_DebugGraph`, `Sys_Init`, `Sys_AppActivate`, `Sys_UnloadGame`, `Sys_GetGameAPI`, `Sys_ConsoleInput`, `Sys_ConsoleOutput`, `Sys_SendKeyEvents`, `Sys_Error`, `Sys_Quit`, `Sys_GetClipboardData`, `Sys_CopyProtect`, puis tail client/server `CL_Init`, `CL_Drop`, `CL_Shutdown`, `CL_Frame`, `Con_Print`, `SCR_BeginLoadingPlaque`, `SV_Init`, `SV_Shutdown`, `SV_Frame`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`; implementation proprietaire client de `SCR_DebugGraph` dans `client/cl_scrn.c`; usages C de `Sys_*` dans `qcommon/common.c`, `server/sv_game.c`, `server/sv_init.c`, `client/cl_main.c`, `client/cl_view.c`, `client/keys.c` et `client/cl_parse.c`.
+- Cible comparee: `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/system.ts`, exports publics `packages/qcommon/src/index.ts`, usages `apps/web/src/full-game.ts`, `packages/client/src/keys.ts`, `packages/client/src/cl_scrn.ts`, `apps/web/src/full-game-server-host.ts`, `packages/renderer-three`, et harnais `scripts/verify/quake2-qcommon-header.ts` / `scripts/verify/quake2-full-game-three-renderer.ts`.
+- Decision: portage valide pour les 22 entrees restantes. `NUMVERTEXNORMALS` conserve la valeur 162 partagee avec les particules client et les normales renderer. Les services systeme qcommon sont des adapters host explicites avec fallbacks neutres ou signal `quit`; `Sys_Error` reste porte dans `system.ts` car la declaration est partagee avec `game/q_shared.h`. `SCR_DebugGraph` qcommon est un adapter host, tandis que le port proprietaire client reste dans `packages/client/src/cl_scrn.ts`. Les wrappers `CL_*`, `Con_Print`, `SCR_BeginLoadingPlaque` et `SV_*` conservent le role de declarations header vers callbacks client/serveur.
+- Runtime: attendu et verifie. Les wrappers qcommon host sont couverts par `createQcommonHostRuntime`; `Sys_SendKeyEvents` et `Sys_GetClipboardData` restent atteignables par `packages/client/src/keys.ts`; `Sys_Quit`/`Sys_Error` produisent les signaux/erreurs host attendus; `CL_Frame`/`SV_Frame` sont aussi atteints dans le flux web autoritatif via `Qcommon_Frame`.
+- apps/web: attendu et corrige. `apps/web/src/full-game.ts` cree un `QcommonHostRuntime`, le branche au contexte clavier/menu, route l'activation navigateur par `Sys_AppActivate`, capture le texte de paste pour `Sys_GetClipboardData`, et conserve le lifecycle `Qcommon_Init`/`Qcommon_Frame`/`Qcommon_Shutdown`.
+- renderer-three: pas de sortie visible directe produite par les services `Sys_*` eux-memes. Le renderer consomme indirectement les sorties visibles du tail client/serveur via le flux full-game (`CL_Frame`, `SV_Frame`, refdef/camera, entites, images, particules, dlights, areabits et scene); `Sys_Error` reste consomme comme hook d'erreur ref_gl.
+- Commentaires: en-tete `NUMVERTEXNORMALS` ajoute; en-tetes `SCR_DebugGraph`, `Sys_*`, `CL_*`, `Con_Print`, `SCR_BeginLoadingPlaque`, `SV_*` verifies; commentaire `Sys_Error` precise la declaration partagee `qcommon/qcommon.h` / `game/q_shared.h`.
+- Corrections: `apps/web/src/full-game.ts` branche le runtime systeme qcommon pour clipboard/key events/app activate; `packages/qcommon/src/qcommon.ts` ajoute l'en-tete `NUMVERTEXNORMALS`; `packages/qcommon/src/system.ts` corrige la source documentee de `Sys_Error`; les tests qcommon/full-game sont renforces.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
 
 - Lot traite: bloc zone/lifecycle qcommon depuis `qcommon/qcommon.h`: `Z_Free`, `Z_Malloc`, `Z_TagMalloc`, `Z_FreeTags`, `Qcommon_Init`, `Qcommon_Frame`, `Qcommon_Shutdown`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementation proprietaire `Quake-2-master/qcommon/common.c` pour la chaine zone (`z_chain`, `z_count`, `z_bytes`, magic/tag/size) et le cycle `Qcommon_Init`/`Qcommon_Frame`/`Qcommon_Shutdown`.
@@ -215,8 +226,8 @@
 
 ## Prochain lot recommande
 
-- Bloc final header qcommon: `NUMVERTEXNORMALS`, `SCR_DebugGraph`, puis `Sys_Init`, `Sys_AppActivate`, `Sys_UnloadGame`, `Sys_GetGameAPI`, `Sys_ConsoleInput`, `Sys_ConsoleOutput`, `Sys_SendKeyEvents`, `Sys_Error`, `Sys_Quit`, `Sys_GetClipboardData`, `Sys_CopyProtect` si le lot reste coherent.
+- Aucun lot restant dans `qcommon_qcommon.h.md`: toutes les entrees sont `Valide` ou `Non applicable`.
 
 ## Blocages
 
-- `npm run typecheck` echoue hors lot sur `packages/client/src/cl_parse.ts`: `vidref_val` manquant dans un objet `client_state_t`.
+- Aucun blocage courant.

@@ -19,6 +19,7 @@ import { strict as assert } from "node:assert";
 import {
   CL_BuildRefreshFrame,
   CL_CalcViewValues,
+  CL_GetRefreshEntitySoundOrigin,
   CL_PrepRefresh,
   CalcFov,
   V_RenderView,
@@ -38,10 +39,47 @@ function main(): void {
   verifyPrepRefreshRegistersLevelAssets();
   verifyCalcViewValuesInterpolatesWeaponRelevantMotion();
   verifyCalcViewValuesMatchesDroppedFrameAndTeleportFallbacks();
+  verifyBuildRefreshFrameActiveGuardAndSoundOrigin();
   verifyRenderViewResolvesDefaultEntityModelsAndSkins();
   verifyRenderViewAppliesViewWeaponDebugOverrides();
   verifyRenderViewHidesWeaponForWideFovAndComputesFovY();
   console.log("quake2-cl-view: ok");
+}
+
+function verifyBuildRefreshFrameActiveGuardAndSoundOrigin(): void {
+  const inactive = createClientRuntime();
+  inactive.cls.state = connstate_t.ca_connected;
+  inactive.cl.frame.valid = true;
+  inactive.cl.frame.servertime = 800;
+  inactive.cl.frame.playerstate.fov = 92;
+  inactive.cl.frame.playerstate.blend = [0.1, 0.2, 0.3, 0.4];
+  inactive.cl.frame.areabits.set([5, 6, 7]);
+  inactive.cl.time = 900;
+  inactive.cl.lerpfrac = 0.25;
+  inactive.cl.viewangles = [10, 20, 30];
+
+  const inactiveFrame = CL_BuildRefreshFrame(inactive, { predictMovement: false });
+  assert.equal(inactive.cl.time, 900, "CL_AddEntities inactive path should not clamp cl.time");
+  assert.equal(inactive.cl.lerpfrac, 0.25, "CL_AddEntities inactive path should not recompute lerpfrac");
+  assert.equal(inactiveFrame.entities.length, 0, "CL_AddEntities inactive path should not emit entities");
+  assert.equal(inactiveFrame.lights.length, 0, "CL_AddEntities inactive path should not emit lights");
+  assert.equal(inactiveFrame.particles.length, 0, "CL_AddEntities inactive path should not emit particles");
+  assert.equal(inactiveFrame.beams.length, 0, "CL_AddEntities inactive path should not emit beams");
+  assert.deepEqual(Array.from(inactiveFrame.areabits.slice(0, 3)), [5, 6, 7], "CL_AddEntities inactive areabits copy mismatch");
+  assert.deepEqual(inactiveFrame.view.viewangles, [10, 20, 30], "CL_AddEntities inactive viewangles fallback mismatch");
+  assert.deepEqual(inactiveFrame.view.blend, [0.1, 0.2, 0.3, 0.4], "CL_AddEntities inactive blend fallback mismatch");
+
+  const runtime = createClientRuntime();
+  runtime.cl_entities[3].lerp_origin = [11, 22, 33];
+  const origin = CL_GetRefreshEntitySoundOrigin(runtime, 3);
+  assert.deepEqual(origin, [11, 22, 33], "CL_GetEntitySoundOrigin should copy lerp_origin");
+  origin[0] = 99;
+  assert.deepEqual(runtime.cl_entities[3].lerp_origin, [11, 22, 33], "CL_GetEntitySoundOrigin should return a cloned vector");
+  assert.throws(
+    () => CL_GetRefreshEntitySoundOrigin(runtime, runtime.cl_entities.length),
+    /CL_GetEntitySoundOrigin: bad ent/,
+    "CL_GetEntitySoundOrigin should reject out-of-range entities"
+  );
 }
 
 function verifyPrepRefreshRegistersLevelAssets(): void {

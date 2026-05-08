@@ -40,9 +40,11 @@ import {
   LittleFloat,
   LittleLong,
   LittleShort,
+  MAX_NUM_ARGVS,
   Swap_Init,
   bigendien,
-  createCommonRuntime
+  createCommonRuntime,
+  memsearch
 } from "../../packages/qcommon/src/common.js";
 import {
   Cbuf_AddText,
@@ -186,6 +188,10 @@ import {
   Z_Malloc,
   Z_TagMalloc
 } from "../../packages/qcommon/src/qcommon.js";
+import {
+  createSystemRuntime,
+  Sys_Error
+} from "../../packages/qcommon/src/system.js";
 import {
   MSG_ReadAngle,
   MSG_ReadAngle16,
@@ -906,6 +912,13 @@ Sys_ConsoleOutput(host, "line");
 Sys_SendKeyEvents(host);
 assert.equal(Sys_GetClipboardData(host), "clipboard", "Sys_GetClipboardData mismatch");
 Sys_CopyProtect(host);
+const fallbackHost = createQcommonHostRuntime();
+assert.equal(Sys_GetGameAPI(fallbackHost, 456), null, "Sys_GetGameAPI fallback mismatch");
+assert.equal(Sys_ConsoleInput(fallbackHost), null, "Sys_ConsoleInput fallback mismatch");
+Sys_ConsoleOutput(fallbackHost, "ignored");
+Sys_SendKeyEvents(fallbackHost);
+assert.equal(Sys_GetClipboardData(fallbackHost), null, "Sys_GetClipboardData fallback mismatch");
+Sys_CopyProtect(fallbackHost);
 CL_Init(host);
 CL_Drop(host);
 CL_Shutdown(host);
@@ -918,6 +931,16 @@ SV_Frame(host, 44);
 SCR_DebugGraph(host, 1.5, 7);
 assert.deepEqual(host.debugGraph, [{ value: 1.5, color: 7 }], "SCR_DebugGraph storage mismatch");
 assert.throws(() => Sys_Quit(host), /host quit/, "Sys_Quit host mismatch");
+assert.throws(
+  () => Sys_Quit(fallbackHost),
+  (error: unknown) =>
+    error instanceof Error &&
+    "signal" in error &&
+    "code" in error &&
+    (error as { signal: string; code: number }).signal === "quit" &&
+    (error as { signal: string; code: number }).code === ERR_QUIT,
+  "Sys_Quit fallback mismatch"
+);
 assert.deepEqual(hostEvents, [
   "sysInit",
   "sysAppActivate",
@@ -936,6 +959,18 @@ assert.deepEqual(hostEvents, [
   "svFrame:44",
   "scrDebugGraph:1.5:7"
 ], "host tail mismatch");
+const systemErrors: string[] = [];
+assert.throws(
+  () => Sys_Error(createSystemRuntime({
+    error: (message): never => {
+      systemErrors.push(message);
+      throw new Error(`fatal:${message}`);
+    }
+  }), "fatal %s %d", "map", 7),
+  /fatal:fatal map 7/,
+  "Sys_Error qcommon declaration mismatch"
+);
+assert.deepEqual(systemErrors, ["fatal map 7"], "Sys_Error host message mismatch");
 
 const originalRandom = Math.random;
 try {
@@ -1434,15 +1469,20 @@ assert.equal(COM_Argc(common), 8, "COM_Argc mismatch");
 assert.equal(COM_Argv(common, 0), "quake2", "COM_Argv argv0 mismatch");
 assert.equal(COM_Argv(common, -1), "", "COM_Argv negative fallback mismatch");
 assert.equal(COM_Argv(common, 8), "", "COM_Argv overflow fallback mismatch");
+assert.equal(COM_CheckParm(common, "quake2"), 0, "COM_CheckParm must skip argv0");
 assert.equal(COM_CheckParm(common, "+map"), 4, "COM_CheckParm found mismatch");
 assert.equal(COM_CheckParm(common, "-missing"), 0, "COM_CheckParm missing mismatch");
 COM_ClearArgv(common, -1);
 assert.equal(COM_Argv(common, 0), "quake2", "COM_ClearArgv invalid index mismatch");
+COM_ClearArgv(common, 2);
+assert.equal(COM_Argv(common, 2), "", "COM_ClearArgv valid index mismatch");
+COM_InitArgv(common, ["quake2", "+set", "game", "xatrix", "+map", "base1", "+exec", "autoexec.cfg"]);
 
 const sanitizedCommon = createCommonRuntime();
 COM_InitArgv(sanitizedCommon, ["quake2", "", "x".repeat(MAX_TOKEN_CHARS)]);
 assert.equal(COM_Argv(sanitizedCommon, 1), "", "COM_InitArgv empty string mismatch");
 assert.equal(COM_Argv(sanitizedCommon, 2), "", "COM_InitArgv MAX_TOKEN_CHARS sanitization mismatch");
+assert.equal(MAX_NUM_ARGVS, 50, "MAX_NUM_ARGVS constant mismatch");
 
 const addParmCommon = createCommonRuntime();
 COM_InitArgv(addParmCommon, ["quake2"]);
@@ -1451,13 +1491,16 @@ assert.equal(COM_Argc(addParmCommon), 2, "COM_AddParm argc mismatch");
 assert.equal(COM_Argv(addParmCommon, 1), "+connect", "COM_AddParm argv mismatch");
 
 const fullArgvCommon = createCommonRuntime();
-COM_InitArgv(fullArgvCommon, Array.from({ length: 50 }, (_, index) => String(index)));
+COM_InitArgv(fullArgvCommon, Array.from({ length: MAX_NUM_ARGVS }, (_, index) => String(index)));
 assert.throws(() => COM_AddParm(fullArgvCommon, "overflow"), /COM_AddParm: MAX_NUM_ARGVS/, "COM_AddParm overflow mismatch");
 assert.throws(
-  () => COM_InitArgv(createCommonRuntime(), Array.from({ length: 51 }, (_, index) => String(index))),
+  () => COM_InitArgv(createCommonRuntime(), Array.from({ length: MAX_NUM_ARGVS + 1 }, (_, index) => String(index))),
   /argc > MAX_NUM_ARGVS/,
   "COM_InitArgv overflow mismatch"
 );
+assert.equal(memsearch(new Uint8Array([7, 13, 42, 13]), 4, 42), 2, "memsearch found mismatch");
+assert.equal(memsearch(new Uint8Array([7, 13, 42, 13]), 2, 42), -1, "memsearch count limit mismatch");
+assert.equal(memsearch(new Uint8Array([255]), 1, 511), 0, "memsearch byte mask mismatch");
 
 const earlyRuntime = createCommandRuntime();
 Cbuf_AddEarlyCommands(earlyRuntime, common, false);
