@@ -83,7 +83,7 @@ import { CL_ExecuteTempEntityEffects } from "./cl_fx.js";
 import { CL_AddTEntPacket, CL_SmokeAndFlash } from "./cl_tent.js";
 import { getPredictedViewheight } from "./local-loop.js";
 import type { ClientTempEntityPacket } from "./cl_parse.js";
-import type { ClientRuntime } from "./client.js";
+import { connstate_t, type ClientRuntime } from "./client.js";
 
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
 const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
@@ -212,6 +212,9 @@ export function updateLocalGameplayPlayer(
  * - Must only expose entities that are currently client-visible.
  */
 export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  runtime.cls.state = connstate_t.ca_active;
+  runtime.cl.refresh_prepped = true;
+
   syncLocalGameplayConfigstrings(runtime, gameplayRuntime);
   syncLocalGameplayAssetConfigstrings(runtime, gameplayRuntime);
   syncLocalGameplayModelClip(runtime, gameplayRuntime);

@@ -16,10 +16,10 @@ import { CL_RegisterSounds } from "../../packages/client/src/sound.js";
 import { createClientRuntime } from "../../packages/client/src/client.js";
 
 const repoRoot = process.cwd();
-const fullGameSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8");
-const serverHostSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game-server-host.ts"), "utf8");
-const renderLoopSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"), "utf8");
-const webAudioSource = readFileSync(join(repoRoot, "packages", "platform", "src", "web-audio-adapter.ts"), "utf8");
+const fullGameSource = normalizeLineEndings(readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8"));
+const serverHostSource = normalizeLineEndings(readFileSync(join(repoRoot, "apps", "web", "src", "full-game-server-host.ts"), "utf8"));
+const renderLoopSource = normalizeLineEndings(readFileSync(join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"), "utf8"));
+const webAudioSource = normalizeLineEndings(readFileSync(join(repoRoot, "packages", "platform", "src", "web-audio-adapter.ts"), "utf8"));
 
 verifyClientSoundRegistrationStoresBackendHandles();
 verifyServerHostPreservesRegisteredSoundHandles();
@@ -56,6 +56,10 @@ function verifyClientSoundRegistrationStoresBackendHandles(): void {
   assert.equal(registered.includes("doors/dr1_mid.wav"), true, "CL_RegisterSounds should register loop sounds");
   assert.equal(client.cl.sound_precache[1], startHandle, "CL_RegisterSounds should store start sound backend handle");
   assert.equal(client.cl.sound_precache[2], loopHandle, "CL_RegisterSounds should store loop sound backend handle");
+}
+
+function normalizeLineEndings(sourceText: string): string {
+  return sourceText.replace(/\r\n/g, "\n");
 }
 
 function verifyServerHostPreservesRegisteredSoundHandles(): void {

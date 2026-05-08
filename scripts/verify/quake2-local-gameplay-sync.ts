@@ -85,9 +85,9 @@ function verifyLocalCorpseFliesReachRefreshParticlesAndLoopSound(): void {
   corpse.s.sound = registerGameSound(gameplay, "infantry/inflies1.wav");
 
   syncLocalGameplayFrame(client, gameplay);
-  client.cl.time = 1000;
+  setClientFrameTime(client, 1000);
   CL_BuildRefreshFrame(client, { predictMovement: false });
-  client.cl.time = 2000;
+  setClientFrameTime(client, 2000);
   const refresh = CL_BuildRefreshFrame(client, { predictMovement: false });
   const parseEntity = client.cl_parse_entities[client.cl.frame.parse_entities & (client.cl_parse_entities.length - 1)];
 
@@ -270,6 +270,11 @@ function verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin(): void {
 
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+}
+
+function setClientFrameTime(client: ReturnType<typeof createClientRuntime>, time: number): void {
+  client.cl.time = time;
+  client.cl.frame.servertime = time;
 }
 
 function createVisiblePlayer(runtime: GameRuntime): GameEntity {

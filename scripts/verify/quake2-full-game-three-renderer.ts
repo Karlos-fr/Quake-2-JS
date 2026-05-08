@@ -8,9 +8,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const repoRoot = process.cwd();
-const source = readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8");
-const renderLoopSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"), "utf8");
-const menuPlayerConfigSource = readFileSync(join(repoRoot, "packages", "client", "src", "menu-player-config.ts"), "utf8");
+const source = normalizeLineEndings(readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8"));
+const renderLoopSource = normalizeLineEndings(readFileSync(join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"), "utf8"));
+const menuPlayerConfigSource = normalizeLineEndings(readFileSync(join(repoRoot, "packages", "client", "src", "menu-player-config.ts"), "utf8"));
 
 assert.ok(source.includes("createFullGameRenderLoop"), "full-game should instantiate the shared Three/ref_gl render loop");
 assert.ok(source.includes("createFullGameServerRenderSource"), "full-game should build render frames from the authoritative client state");
@@ -98,3 +98,7 @@ assert.equal(source.includes("FullGameLocalSession"), false, "full-game should n
 assert.equal(source.includes("createFullGameLocalSession"), false, "full-game should not create the legacy local-session harness");
 
 console.log("quake2-full-game-three-renderer: ok");
+
+function normalizeLineEndings(sourceText: string): string {
+  return sourceText.replace(/\r\n/g, "\n");
+}
