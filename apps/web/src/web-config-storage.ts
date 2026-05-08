@@ -15,20 +15,44 @@ import {
   type VirtualFilesystem
 } from "../../../packages/filesystem/src/index.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web storage namespace)
+ * Category: New
+ * Purpose: Prefix logical config-file paths stored in the browser backend.
+ */
 const STORAGE_PREFIX = "quake2js:fs:";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web adapter contract)
+ * Category: New
+ * Purpose: Expose logical text-file persistence without leaking browser APIs into engine packages.
+ */
 export interface WebConfigStorage {
   readText: (path: string) => string | null;
   writeText: (path: string, contents: string) => boolean;
   remove: (path: string) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (browser storage adapter)
+ * Category: New
+ * Purpose: Keep the localStorage-compatible backend replaceable for tests and future web storage backends.
+ */
 export interface WebStorageLike {
   getItem: (key: string) => string | null;
   setItem: (key: string, value: string) => void;
   removeItem: (key: string) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web storage adapter)
+ * Category: New
+ * Purpose: Build a browser-backed logical config storage adapter for apps/web.
+ */
 export function createWebConfigStorage(storage: WebStorageLike | null = getDefaultStorage()): WebConfigStorage {
   return {
     readText: (path) => {

@@ -1,5 +1,8 @@
 /**
- * File: cl_main.ts
+ * File: main.ts
+ * Original name: N/A
+ * Source declaree: N/A (web app bootstrap)
+ * Category: New
  * Purpose: Boot a browser demo that loads Quake II assets, parses one BSP map and renders it with Three.js.
  *
  * This file is not a direct source port.
@@ -65,10 +68,23 @@ import {
   formatSkySnapshot
 } from "./web-render-bootstrap.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web app bootstrap)
+ * Category: New
+ * Purpose: List browser-accessible candidate locations for a local or public `pak0.pak`.
+ */
 const BASEQ2_PAK_CANDIDATES = [
   "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2/pak0.pak",
   "/baseq2/pak0.pak"
 ];
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web app bootstrap)
+ * Category: New
+ * Purpose: Select the initial map shown by the standalone browser demo.
+ */
 const DEFAULT_MAP_PATH = "maps/base1.bsp";
 
 /**

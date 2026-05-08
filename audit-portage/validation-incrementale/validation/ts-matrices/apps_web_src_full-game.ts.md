@@ -5,15 +5,15 @@
 - Fichier TS: `apps/web/src/full-game.ts`
 - Symboles TS: 94
 - Couvert C/H: 0
-- Reste a auditer: 94
+- Reste a auditer: 89
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/full-game.ts` | value | `BASEQ2_PAK_CANDIDATES` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | value | `LOOSE_VIDEO_CANDIDATES` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | value | `STARTUP_CINEMATICS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | value | `LOGICAL_WIDTH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | value | `LOGICAL_HEIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game.ts` | value | `BASEQ2_PAK_CANDIDATES` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game.ts` | value | `LOOSE_VIDEO_CANDIDATES` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game.ts` | value | `STARTUP_CINEMATICS` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game.ts` | value | `LOGICAL_WIDTH` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game.ts` | value | `LOGICAL_HEIGHT` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
 | `apps/web/src/full-game.ts` | type | `DrawCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | interface | `FullGamePage` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | interface | `CanvasAssetCache` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

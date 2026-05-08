@@ -66,10 +66,26 @@ import {
 } from "../../../packages/qcommon/src/index.js";
 import type { BspSpawnPoint, BspMap } from "../../../packages/formats/src/index.js";
 import { createLocalCollisionAdapter } from "./local-collision-adapter.js";
+
+/**
+ * Original name: N/A
+ * Source: N/A (web adapter)
+ * Category: New
+ * Purpose: Convert browser pointer deltas from radians to Quake II view-angle degrees for the local demo controller.
+ */
 const CAMERA_MOUSE_SENSITIVITY = 0.0022;
+
+/**
+ * Original name: N/A
+ * Source: N/A (web adapter)
+ * Category: New
+ * Purpose: Name the browser movement directions mapped into the ported local client input state.
+ */
 type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Expose the web-local client prediction driver used by the browser demo.
  *
@@ -92,14 +108,8 @@ export interface LocalClientController {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the previous and current brush-model poses required to interpolate moving BSP submodels like the original client.
- *
- * Constraints:
- * - Must keep timestamps aligned with fixed Quake II server frames.
- * - Must preserve per-model pairing through the original `*N` model name.
- */
-/**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Create a local client controller that drives the browser camera from the ported Quake II client prediction path.
  *
@@ -331,6 +341,8 @@ export function createLocalClientController(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Apply the predicted client eye position and angles to the active camera.
  *

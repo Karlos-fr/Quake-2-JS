@@ -5,12 +5,12 @@
 - Fichier TS: `apps/web/src/main.ts`
 - Symboles TS: 6
 - Couvert C/H: 0
-- Reste a auditer: 6
+- Reste a auditer: 4
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/main.ts` | value | `BASEQ2_PAK_CANDIDATES` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/main.ts` | value | `DEFAULT_MAP_PATH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/main.ts` | value | `BASEQ2_PAK_CANDIDATES` | non | N/A | N/A (web app bootstrap) | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/main.ts` | value | `DEFAULT_MAP_PATH` | non | N/A | N/A (web app bootstrap) | New |  | TS sans lien source | Valide |  |
 | `apps/web/src/main.ts` | function | `bootstrap` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `apps/web/src/main.ts` | function | `createNoopQglBindings` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/main.ts` | function | `createWebRefImports` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

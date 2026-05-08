@@ -5,12 +5,12 @@
 - Fichier TS: `apps/web/src/refresh-debug-layer.ts`
 - Symboles TS: 5
 - Couvert C/H: 0
-- Reste a auditer: 5
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/refresh-debug-layer.ts` | function | `createRefreshDebugLayer` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/refresh-debug-layer.ts` | function | `createLineObject` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/refresh-debug-layer.ts` | function | `createSustainObject` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/refresh-debug-layer.ts` | function | `clearGroup` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/refresh-debug-layer.ts` | function | `disposeObject` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `apps/web/src/refresh-debug-layer.ts` | function | `createRefreshDebugLayer` | oui | `N/A` | `N/A (web debug adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/refresh-debug-layer.ts` | function | `createLineObject` | non | `N/A` | `N/A (web debug adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/refresh-debug-layer.ts` | function | `createSustainObject` | non | `N/A` | `N/A (web debug adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/refresh-debug-layer.ts` | function | `clearGroup` | non | `N/A` | `N/A (web debug adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/refresh-debug-layer.ts` | function | `disposeObject` | non | `N/A` | `N/A (web debug adapter)` | New |  | Hors C/H | Valide |  |

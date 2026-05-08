@@ -274,6 +274,15 @@ import {
   type ActiveRenderer
 } from "./web-render-bootstrap.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (web adapter)
+ * Category: New
+ * Purpose: Configure browser asset lookup and the fixed Quake II canvas coordinate space.
+ *
+ * Porting notes:
+ * - These constants are application bootstrap settings, not C/H-owned runtime symbols.
+ */
 const BASEQ2_PAK_CANDIDATES = [
   "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2/pak0.pak",
   "/baseq2/pak0.pak"

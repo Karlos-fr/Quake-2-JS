@@ -5,12 +5,12 @@
 - Fichier TS: `apps/web/src/local-client-controller.ts`
 - Symboles TS: 5
 - Couvert C/H: 0
-- Reste a auditer: 5
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/local-client-controller.ts` | value | `CAMERA_MOUSE_SENSITIVITY` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/local-client-controller.ts` | type | `MovementKey` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/local-client-controller.ts` | interface | `LocalClientController` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/local-client-controller.ts` | function | `createLocalClientController` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/local-client-controller.ts` | function | `applyPredictedCamera` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `apps/web/src/local-client-controller.ts` | value | `CAMERA_MOUSE_SENSITIVITY` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/local-client-controller.ts` | type | `MovementKey` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/local-client-controller.ts` | interface | `LocalClientController` | oui | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/local-client-controller.ts` | function | `createLocalClientController` | oui | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/local-client-controller.ts` | function | `applyPredictedCamera` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |

@@ -26,6 +26,8 @@ import type { LocalClientController } from "./local-client-controller.js";
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (web debug adapter)
  * Purpose: Build a lightweight scene debug layer for client refresh force walls and sustains.
  *
  * Constraints:
@@ -69,6 +71,8 @@ export function createRefreshDebugLayer(): {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (web debug adapter)
  * Purpose: Create one simple Three.js line object between two Quake-space points.
  */
 function createLineObject(start: [number, number, number], end: [number, number, number], material: LineBasicMaterial): Line {
@@ -81,6 +85,8 @@ function createLineObject(start: [number, number, number], end: [number, number,
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (web debug adapter)
  * Purpose: Create one minimal debug object representing a client sustain effect.
  */
 function createSustainObject(
@@ -107,6 +113,8 @@ function createSustainObject(
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (web debug adapter)
  * Purpose: Remove and dispose all transient debug objects from one Three.js group.
  */
 function clearGroup(group: Group): void {
@@ -119,6 +127,8 @@ function clearGroup(group: Group): void {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (web debug adapter)
  * Purpose: Dispose transient line geometries created by the current debug refresh layer.
  */
 function disposeObject(object: Object3D): void {
