@@ -532,7 +532,7 @@ function buildWorldGroup(
           surface,
           uvAttribute: mesh.geometry.getAttribute("uv") as BufferAttribute,
           lightmapUvAttribute: mesh.geometry.getAttribute("uv1") as BufferAttribute,
-          lightmapped: (surface.flags & SURF_DRAWTURB) === 0,
+          lightmapped: isSurfaceLightmapped(surface),
           warp: (surface.flags & SURF_DRAWTURB) !== 0,
           flowing: ((surface.texinfo?.flags ?? 0) & SURF_FLOWING) !== 0,
           currentMapSource: null,
@@ -615,13 +615,17 @@ function buildSurfaceMesh(
   geometry.computeVertexNormals();
 
   const baseImage = asThreeGlImageHandle(surface.texinfo.image) ?? createCheckerImageHandle();
-  const lightmapTexture = lightmapTextures.get(surface.lightmaptexturenum) ?? whiteLightmapTexture;
   const alpha = alphaForSurface(surface);
   const warp = (surface.flags & SURF_DRAWTURB) !== 0;
   const flowing = (surface.texinfo.flags & SURF_FLOWING) !== 0;
+  const lightmapped = isSurfaceLightmapped(surface);
+  const lightmapTexture = lightmapped
+    ? lightmapTextures.get(surface.lightmaptexturenum) ?? whiteLightmapTexture
+    : null;
   const material = createSurfaceMaterial(baseImage.texture, lightmapTexture, alpha, {
     flowing,
-    warp
+    warp,
+    lightmapped
   });
 
   if (flowing && !warp && material.map) {
@@ -634,7 +638,7 @@ function buildSurfaceMesh(
   mesh.userData.refGl = {
     surfaceFlags: surface.flags,
     texinfoFlags: surface.texinfo.flags,
-    lightmapped: warp ? false : true,
+    lightmapped,
     warp,
     flowing
   };
@@ -669,18 +673,19 @@ function collectPolygons(head: glpoly_t | null): glpoly_t[] {
 
 function createSurfaceMaterial(
   baseTexture: Texture,
-  lightmapTexture: Texture,
+  lightmapTexture: Texture | null,
   alpha: number,
   options: {
     flowing: boolean;
     warp: boolean;
+    lightmapped: boolean;
   }
 ): MeshBasicMaterial {
-  const { flowing, warp } = options;
+  const { flowing, warp, lightmapped } = options;
   const map = createMaterialTexture(baseTexture, flowing && !warp);
   map.needsUpdate = true;
 
-  if (warp) {
+  if (!lightmapped || warp) {
     const material = new MeshBasicMaterial({
       map,
       side: BackSide,
@@ -690,6 +695,10 @@ function createSurfaceMaterial(
     });
     material.color.setScalar(ORIGINAL_DEFAULT_INVERSE_INTENSITY);
     return material;
+  }
+
+  if (!lightmapTexture) {
+    throw new Error("createSurfaceMaterial: lightmapped surface missing lightmap texture");
   }
 
   return new MeshBasicMaterial({
@@ -983,6 +992,12 @@ function alphaForSurface(surface: msurface_t): number {
   }
 
   return 1;
+}
+
+function isSurfaceLightmapped(surface: msurface_t): boolean {
+  const flags = surface.texinfo?.flags ?? 0;
+  return (surface.flags & SURF_DRAWTURB) === 0
+    && (flags & (SURF_TRANS33 | SURF_TRANS66)) === 0;
 }
 
 function computeFlowingScroll(timeSeconds: number): number {

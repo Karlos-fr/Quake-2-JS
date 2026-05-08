@@ -1,6 +1,6 @@
 /**
  * File: quake2-three-world-alpha.ts
- * Purpose: Verify that translucent BSP surfaces produced by the ref_gl world path remain lightmapped in the Three.js adapter.
+ * Purpose: Verify that translucent BSP surfaces produced by the ref_gl world path are not lightmapped in the Three.js adapter.
  *
  * This file is not a direct source port.
  * It is a targeted integration harness for `gl_rsurf.c -> gl-world-scene-adapter.ts`.
@@ -55,7 +55,7 @@ function main(): void {
     assert.equal(translucent.material.transparent, true, `${mapPath} translucent material flag mismatch`);
     assert.equal(translucent.material.depthWrite, false, `${mapPath} translucent depthWrite mismatch`);
     assert.equal(translucent.material.opacity, expectedAlpha(translucent), `${mapPath} translucent opacity mismatch`);
-    assert.ok(translucent.material.lightMap, `${mapPath} translucent lightmap missing`);
+    assert.equal(translucent.material.lightMap, null, `${mapPath} translucent surfaces should not use lightmaps`);
     assert.equal(translucent.renderOrder > 0, true, `${mapPath} translucent renderOrder mismatch`);
     console.log(`quake2-three-world-alpha: ok (${mapPath})`);
     return;
