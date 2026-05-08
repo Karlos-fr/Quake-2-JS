@@ -53,6 +53,8 @@ for (const expected of [
   "bind d +moveright",
   "bind z +forward",
   "bind q +moveleft",
+  "bind 6 \\\"use Grenade Launcher\\\"",
+  "bind 8 \\\"use HyperBlaster\\\"",
   "window.addEventListener(\"wheel\"",
   "case \"Shift\": return K_SHIFT",
   "case \"Control\": return K_CTRL",

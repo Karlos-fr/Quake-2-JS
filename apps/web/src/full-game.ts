@@ -1283,6 +1283,16 @@ function queueFullGameConfigBootstrap(cmd: ReturnType<typeof createCommandRuntim
   Cbuf_AddText(cmd, "exec default.cfg\n");
   Cbuf_AddText(cmd, "exec config.cfg\n");
   Cbuf_AddText(cmd, "exec autoexec.cfg\n");
+  Cbuf_AddText(cmd, "bind 1 \"use Blaster\"\n");
+  Cbuf_AddText(cmd, "bind 2 \"use Shotgun\"\n");
+  Cbuf_AddText(cmd, "bind 3 \"use Super Shotgun\"\n");
+  Cbuf_AddText(cmd, "bind 4 \"use Machinegun\"\n");
+  Cbuf_AddText(cmd, "bind 5 \"use Chaingun\"\n");
+  Cbuf_AddText(cmd, "bind 6 \"use Grenade Launcher\"\n");
+  Cbuf_AddText(cmd, "bind 7 \"use Rocket Launcher\"\n");
+  Cbuf_AddText(cmd, "bind 8 \"use HyperBlaster\"\n");
+  Cbuf_AddText(cmd, "bind 9 \"use Railgun\"\n");
+  Cbuf_AddText(cmd, "bind 0 \"use BFG10K\"\n");
   Cbuf_AddText(cmd, "bind w +forward\n");
   Cbuf_AddText(cmd, "bind s +back\n");
   Cbuf_AddText(cmd, "bind a +moveleft\n");
