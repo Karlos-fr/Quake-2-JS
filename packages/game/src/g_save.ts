@@ -78,17 +78,70 @@ import {
   type GameRuntime
 } from "./runtime.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save marker)
+ * Category: New
+ * Purpose: Replace the C `__DATE__` save compatibility string with a stable TS save marker.
+ */
 const SAVEGAME_DATE = "Quake2JS g_save phase1";
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save marker)
+ * Category: New
+ * Purpose: Identify the JSON save payload shape used by this TypeScript port.
+ */
 const SAVEGAME_FORMAT = "quake2js.g_save.structured.v1";
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save note)
+ * Category: New
+ * Purpose: Document save payload limitations that differ from native C pointer relocation.
+ */
 const UNRESTORED_CALLBACK_NOTE = "closure-only callbacks and unregistered mmove objects cannot be restored";
 
 export const mmove_reloc = {};
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local callback registry type)
+ * Category: New
+ * Purpose: Type runtime callbacks registered for symbolic savegame restoration.
+ */
 type SaveCallback = (...args: any[]) => unknown;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local callback registry)
+ * Category: New
+ * Purpose: Map saved callback names back to live runtime functions.
+ */
 const saveFunctionByName = new Map<string, SaveCallback>();
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local callback registry)
+ * Category: New
+ * Purpose: Map live runtime functions to stable saved callback names.
+ */
 const saveFunctionNameByRef = new WeakMap<SaveCallback, string>();
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local mmove registry)
+ * Category: New
+ * Purpose: Map saved monster move names back to live runtime move descriptors.
+ */
 const saveMoveByName = new Map<string, GameMonsterMove>();
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local mmove registry)
+ * Category: New
+ * Purpose: Map live runtime move descriptors to stable saved names.
+ */
 const saveMoveNameByRef = new WeakMap<GameMonsterMove, string>();
 
 export const fields: field_t[] = [
@@ -244,6 +297,8 @@ export function registerGameSaveFunction(name: string, callback: SaveCallback): 
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local callback registry helper)
  * Category: New
  * Purpose: Register all named function exports from one gameplay module for save/load callback restoration.
  */
@@ -256,6 +311,8 @@ export function registerGameSaveFunctions(moduleExports: Record<string, unknown>
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local callback registry helper)
  * Category: New
  * Purpose: Resolve a saved callback name back into a runtime function.
  */
@@ -281,6 +338,8 @@ export function registerGameSaveMove(name: string, move: GameMonsterMove): void 
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local mmove registry helper)
  * Category: New
  * Purpose: Register all `mmove_t`-shaped exports from one gameplay module for save/load move restoration.
  */
@@ -293,6 +352,8 @@ export function registerGameSaveMoves(moduleExports: Record<string, unknown>): v
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local mmove registry helper)
  * Category: New
  * Purpose: Resolve a saved `mmove_t` name back into a runtime move descriptor.
  */
@@ -300,11 +361,23 @@ export function findGameSaveMove(name: string | null): GameMonsterMove | undefin
   return name ? saveMoveByName.get(name) : undefined;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local host persistence contract)
+ * Category: New
+ * Purpose: Describe the host file hooks used instead of C `FILE *` handles.
+ */
 interface SaveFileHooks {
   readFile?: (path: string) => string | Uint8Array | null | undefined;
   writeFile?: (path: string, contents: string) => boolean | void;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save payload)
+ * Category: New
+ * Purpose: Shape the cross-level game save payload written by `WriteGame`.
+ */
 interface GameSaveFile {
   format: typeof SAVEGAME_FORMAT;
   date: string;
@@ -314,6 +387,12 @@ interface GameSaveFile {
   notes: string[];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save payload)
+ * Category: New
+ * Purpose: Shape the level save payload written by `WriteLevel`.
+ */
 interface LevelSaveFile {
   format: typeof SAVEGAME_FORMAT;
   date: string;
@@ -480,6 +559,12 @@ export function ReadLevel(context: GameMainContext, filename: string): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured restore helper)
+ * Category: New
+ * Purpose: Recreate the cleared edict array state expected before `ReadLevel` materializes saved entities.
+ */
 function resetRuntimeEntitiesForLevelLoad(runtime: GameRuntime): void {
   runtime.entities.length = 0;
   runtime.entities.push(createClearedRuntimeEntity(0));
@@ -502,12 +587,24 @@ function resetRuntimeEntitiesForLevelLoad(runtime: GameRuntime): void {
   runtime.linkedDynamicBoxEntities = [];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured restore helper)
+ * Category: New
+ * Purpose: Create one cleared edict slot for the structured `ReadLevel` rebuild.
+ */
 function createClearedRuntimeEntity(index: number): GameEntity {
   const entity = createRuntimeEntity({ classname: "noclass" }, index);
   entity.inuse = false;
   return entity;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save helper)
+ * Category: New
+ * Purpose: Snapshot the serializable subset of `game_locals_t` used by `WriteGame`.
+ */
 function snapshotGame(context: GameMainContext) {
   return {
     helpmessage1: context.game.helpmessage1,
@@ -612,6 +709,12 @@ function restoreLevel(context: GameMainContext, snapshot: ReturnType<typeof snap
   context.level.power_cubes = snapshot.power_cubes;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local runtime mirror helper)
+ * Category: New
+ * Purpose: Mirror restored `level_locals_t` values into the object-based gameplay runtime.
+ */
 function syncRuntimeFromLevel(context: GameMainContext): void {
   context.runtime.framenum = context.level.framenum;
   context.runtime.time = context.level.time;
@@ -838,6 +941,12 @@ function restoreEntity(snapshot: ReturnType<typeof snapshotEntity>, runtime: Gam
   return entity;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save helper)
+ * Category: New
+ * Purpose: Encode edict callback and monster move references as stable registry names.
+ */
 function snapshotEntityCallbacks(entity: GameEntity) {
   return {
     prethink: callbackName(entity.prethink),
@@ -866,6 +975,12 @@ function snapshotEntityCallbacks(entity: GameEntity) {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured restore helper)
+ * Category: New
+ * Purpose: Resolve saved callback and monster move names back into runtime references.
+ */
 function restoreEntityCallbacks(entity: GameEntity, callbacks: ReturnType<typeof snapshotEntityCallbacks>): void {
   entity.prethink = findGameSaveFunction(callbacks.prethink) as GameEntity["prethink"];
   entity.think = findGameSaveFunction(callbacks.think) as GameEntity["think"];
@@ -888,6 +1003,12 @@ function restoreEntityCallbacks(entity: GameEntity, callbacks: ReturnType<typeof
   entity.moveinfo.endfunc = findGameSaveFunction(callbacks.moveinfo.endfunc) as GameEntity["moveinfo"]["endfunc"];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save helper)
+ * Category: New
+ * Purpose: Snapshot `moveinfo_t` fields while encoding `endfunc` separately through the callback registry.
+ */
 function snapshotMoveInfo(moveinfo: GameMoveInfo) {
   return {
     ...moveinfo,
@@ -900,6 +1021,12 @@ function snapshotMoveInfo(moveinfo: GameMoveInfo) {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured restore helper)
+ * Category: New
+ * Purpose: Resolve saved edict indexes after all restored entities have been materialized.
+ */
 function resolveEntityReferences(runtime: GameRuntime, records: LevelSaveFile["entities"]): void {
   for (const record of records) {
     const entity = runtime.entities[record.entnum];
@@ -922,6 +1049,12 @@ function resolveEntityReferences(runtime: GameRuntime, records: LevelSaveFile["e
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local host persistence helper)
+ * Category: New
+ * Purpose: Write a structured save payload through the injected host file hook.
+ */
 function writeSaveFile(context: GameMainContext, filename: string, payload: unknown): void {
   const hooks = context.hooks as SaveFileHooks;
   if (!hooks.writeFile) {
@@ -952,6 +1085,12 @@ function readSaveFile<T>(context: GameMainContext, filename: string): T {
   return JSON.parse(text) as T;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save helper)
+ * Category: New
+ * Purpose: Validate the TypeScript structured save format and compatibility marker.
+ */
 function validateSaveFile(context: GameMainContext, save: { format?: string; date?: string }): void {
   if (save.format !== SAVEGAME_FORMAT || save.date !== SAVEGAME_DATE) {
     context.gi.error("Savegame from an older version.\n");
@@ -969,18 +1108,42 @@ function validateLevelSaveFile(context: GameMainContext, save: LevelSaveFile): v
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save helper)
+ * Category: New
+ * Purpose: Encode nullable edict references as saved edict indexes.
+ */
 function entityIndex(entity: GameEntity | null | undefined): number {
   return entity ? entity.index : -1;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured restore helper)
+ * Category: New
+ * Purpose: Resolve saved edict indexes back to nullable runtime entity references.
+ */
 function edictByIndex(runtime: GameRuntime, index: number): GameEntity | null {
   return index === -1 ? null : runtime.entities[index] ?? null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local structured save helper)
+ * Category: New
+ * Purpose: Encode nullable item references as saved item indexes.
+ */
 function itemIndex(item: Parameters<typeof ITEM_INDEX>[0] | null | undefined): number {
   return item ? ITEM_INDEX(item) : -1;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local callback registry helper)
+ * Category: New
+ * Purpose: Encode nullable callbacks as stable registry names.
+ */
 function callbackName(callback: unknown): string | null {
   if (typeof callback !== "function") {
     return null;
@@ -989,10 +1152,22 @@ function callbackName(callback: unknown): string | null {
   return saveFunctionNameByRef.get(callback as SaveCallback) ?? null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local mmove registry helper)
+ * Category: New
+ * Purpose: Encode nullable monster move descriptors as stable registry names.
+ */
 function moveName(move: GameMonsterMove | null | undefined): string | null {
   return move ? saveMoveNameByRef.get(move) ?? null : null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local mmove registry helper)
+ * Category: New
+ * Purpose: Detect exported `mmove_t`-shaped objects for automatic save registry setup.
+ */
 function isGameMonsterMove(value: unknown): value is GameMonsterMove {
   if (!value || typeof value !== "object") {
     return false;

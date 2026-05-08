@@ -39,6 +39,7 @@ import {
 } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 import { M_CheckBottom } from "./m_move.js";
+import { M_CheckGround } from "./g_monster.js";
 import { touchTriggerEntities } from "./touch.js";
 import { FL_FLY, FL_SWIM } from "./g_local.js";
 import {
@@ -62,6 +63,8 @@ const SV_FRICTION = 6;
 const SV_WATERFRICTION = 1;
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local rollback helper)
  * Category: New
  * Purpose: Preserve the rollback state recorded for each entity moved during one pusher step.
  *
@@ -601,6 +604,12 @@ export function SV_Physics_Noclip(ent: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, ent);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local sound bridge helper)
+ * Category: New
+ * Purpose: Queue the positioned water-transition sound used by toss physics.
+ */
 function emitPositionedWaterHit(runtime: GameRuntime, origin: vec3_t): void {
   const soundPath = "misc/h2ohit1.wav";
   emitRegisteredGameSound(runtime, null, registerGameSound(runtime, soundPath), soundPath, {
@@ -856,6 +865,8 @@ export function G_RunEntity(ent: GameEntity, runtime: GameRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local gameplay frame helper)
  * Category: New
  * Purpose: Advance the local gameplay runtime by one Quake II server frame.
  *
@@ -879,6 +890,8 @@ export function G_RunFrame(runtime: GameRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local gameplay frame helper)
  * Category: New
  * Purpose: Advance the local gameplay runtime up to one target time using fixed Quake II server frames.
  *
@@ -893,6 +906,8 @@ export function runGameFrames(runtime: GameRuntime, upToTime: number, beforeFram
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Check whether one entity currently carries linear or angular movement.
  */
@@ -901,6 +916,8 @@ function hasMovement(entity: GameEntity): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local pusher helper)
  * Category: New
  * Purpose: Clamp one pusher translation to the original 1/8 unit grid.
  */
@@ -913,6 +930,8 @@ function clampPushMove(move: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local pusher helper)
  * Category: New
  * Purpose: Clamp one scalar push component to the Quake II pusher grid.
  */
@@ -928,6 +947,8 @@ function clampPushAxis(value: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local rollback helper)
  * Category: New
  * Purpose: Snapshot one moved entity before a pusher step so failed pushes can roll back.
  */
@@ -943,6 +964,8 @@ function capturePushedState(ent: GameEntity): pushed_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local rollback helper)
  * Category: New
  * Purpose: Restore all entities moved during one failed pusher step in reverse order.
  */
@@ -960,6 +983,8 @@ function rollbackPush(pushed: pushed_t[], runtime: GameRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local pusher helper)
  * Category: New
  * Purpose: Apply the pusher angular compensation used to carry riders around rotating brush models.
  */
@@ -981,38 +1006,8 @@ function rotateEntityByPusher(
 }
 
 /**
- * Category: New
- * Purpose: Check whether one entity is currently standing on valid ground and update ground linkage.
- */
-function M_CheckGround(ent: GameEntity, runtime: GameRuntime): void {
-  ensureCollision(runtime, "M_CheckGround");
-
-  if (ent.velocity[2] > 100) {
-    ent.groundentity = null;
-    return;
-  }
-
-  const point: vec3_t = [...ent.origin];
-  point[2] -= 0.25;
-  const trace = runtime.collision!.trace(ent.origin, ent.mins, ent.maxs, point, ent, MASK_MONSTERSOLID);
-
-  if (trace.plane.normal[2] < 0.7 && !trace.startsolid) {
-    ent.groundentity = null;
-    return;
-  }
-
-  if (!trace.startsolid && !trace.allsolid) {
-    setEntityOrigin(ent, trace.endpos);
-  }
-
-  ent.groundentity = asGameEntity(trace.ent);
-  ent.groundentity_linkcount = ent.groundentity?.linkcount ?? 0;
-  if (ent.velocity[2] < 0) {
-    ent.velocity[2] = 0;
-  }
-}
-
-/**
+ * Original name: N/A
+ * Source declaree: N/A (local physics helper)
  * Category: New
  * Purpose: Apply the lightweight vertical friction path used by flying entities in `SV_Physics_Step`.
  */
@@ -1029,6 +1024,8 @@ function applyVerticalFriction(ent: GameEntity, friction: number): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local entity sync helper)
  * Category: New
  * Purpose: Keep `origin` and `s.origin` synchronized after one position update.
  */
@@ -1038,6 +1035,8 @@ function setEntityOrigin(ent: GameEntity, origin: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local entity sync helper)
  * Category: New
  * Purpose: Keep `angles` and `s.angles` synchronized after one rotation update.
  */
@@ -1047,6 +1046,8 @@ function setEntityAngles(ent: GameEntity, angles: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local entity sync helper)
  * Category: New
  * Purpose: Update one entity pose in a single synchronized operation.
  */
@@ -1056,6 +1057,8 @@ function setEntityPose(ent: GameEntity, origin: vec3_t, angles: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local entity sync helper)
  * Category: New
  * Purpose: Keep `s.origin` synchronized when the caller already updated `origin`.
  */
@@ -1064,6 +1067,8 @@ function syncEntityOrigin(ent: GameEntity, origin: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Multiply one vector by one scalar without mutating the source.
  */
@@ -1072,6 +1077,8 @@ function scaleVec3(vector: vec3_t, scalar: number): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Add two vectors without mutating either input.
  */
@@ -1080,6 +1087,8 @@ function addVec3(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Subtract two vectors without mutating either input.
  */
@@ -1088,6 +1097,8 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Compute one cross product for the slide-crease resolution path.
  */
@@ -1100,6 +1111,8 @@ function crossProduct(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Copy one vector into another mutable target tuple.
  */
@@ -1110,6 +1123,8 @@ function copyVec3(source: vec3_t, target: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Compare two vectors with the exact equality used by the original clip-plane loop.
  */
@@ -1118,6 +1133,8 @@ function vectorCompare(left: vec3_t, right: vec3_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Detect a zero vector for lightweight branch decisions.
  */
@@ -1126,6 +1143,8 @@ function isZeroVec3(vector: vec3_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local trace helper)
  * Category: New
  * Purpose: Narrow one trace payload to the gameplay entity runtime shape when possible.
  */
@@ -1142,6 +1161,8 @@ function asGameEntity(value: unknown): GameEntity | null {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local runtime assertion helper)
  * Category: New
  * Purpose: Assert that the gameplay collision bridge exists before collision-backed physics work.
  */

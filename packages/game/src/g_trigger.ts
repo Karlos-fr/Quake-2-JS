@@ -49,10 +49,33 @@ import {
 import { G_SetMovedir, G_UseTargets, vtos } from "./g_utils.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
+/**
+ * Original name: PUSH_ONCE
+ * Source: game/g_trigger.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Mirrors the original trigger_push spawnflag macro.
+ */
 const PUSH_ONCE = 1;
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local spawnflag aliases)
+ * Category: New
+ * Purpose: Name the documented trigger_multiple spawnflag bits used inline in the C source.
+ */
 const TRIGGER_MULTIPLE_MONSTER = 1;
 const TRIGGER_MULTIPLE_NOT_PLAYER = 2;
 const TRIGGER_MULTIPLE_TRIGGERED = 4;
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local spawnflag aliases)
+ * Category: New
+ * Purpose: Name the documented trigger_hurt spawnflag bits used inline in the C source.
+ */
 const TRIGGER_HURT_START_OFF = 1;
 const TRIGGER_HURT_TOGGLE = 2;
 const TRIGGER_HURT_SILENT = 4;
@@ -699,6 +722,8 @@ export function SP_trigger_monsterjump(self: GameEntity, runtime: GameRuntime): 
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Free a trigger entity after the deferred one-frame removal used by Quake II touch loops.
  */
@@ -706,6 +731,12 @@ function freeTriggerEntity(self: GameEntity, runtime: GameRuntime): void {
   freeGameEntity(runtime, self);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Preserve the C `gi.setmodel(self, self->model)` guard through the runtime model hook.
+ */
 function setEntityModel(self: GameEntity, runtime: GameRuntime): void {
   if (!self.model) {
     return;
@@ -714,11 +745,23 @@ function setEntityModel(self: GameEntity, runtime: GameRuntime): void {
   setGameEntityModel(runtime, self, self.model);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Resolve registered runtime sound indexes while preserving the original fallback sound path.
+ */
 function emitRegisteredSound(runtime: GameRuntime, entity: GameEntity | null, soundIndex: number, fallbackPath: string): void {
   const soundPath = runtime.assets.soundPaths[soundIndex - 1] ?? fallbackPath;
   emitGameSound(runtime, entity, soundPath);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Port the local `VectorScale(movedir, scale, velocity)` assignments used by push triggers.
+ */
 function setScaledVelocity(entity: GameEntity, movedir: [number, number, number], scale: number): void {
   entity.velocity = [
     movedir[0] * scale,
@@ -727,6 +770,12 @@ function setScaledVelocity(entity: GameEntity, movedir: [number, number, number]
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Reproduce the integer coercion of BSP string spawn properties such as `gravity` and `height`.
+ */
 function parseIntegerProperty(value: string | undefined): number {
   if (!value) {
     return 0;
@@ -736,6 +785,12 @@ function parseIntegerProperty(value: string | undefined): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Compute the warning position used by the trigger_once legacy spawnflag fix.
+ */
 function getTriggerCenter(ent: GameEntity): [number, number, number] {
   return [
     ent.mins[0] + (0.5 * ent.size[0]),

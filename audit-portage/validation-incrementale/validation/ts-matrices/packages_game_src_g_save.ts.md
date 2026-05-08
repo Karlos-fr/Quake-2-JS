@@ -4,55 +4,55 @@
 
 - Fichier TS: `packages/game/src/g_save.ts`
 - Symboles TS: 47
-- Couvert C/H: 3
-- Reste a auditer: 44
+- Couvert C/H: 16
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_save.ts` | value | `SAVEGAME_DATE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `SAVEGAME_FORMAT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `UNRESTORED_CALLBACK_NOTE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `mmove_reloc` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | type | `SaveCallback` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `saveFunctionByName` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `saveFunctionNameByRef` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `saveMoveByName` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `saveMoveNameByRef` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `fields` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `levelfields` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | value | `clientfields` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `registerGameSaveFunction` | oui | `Function` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_save.ts` | function | `registerGameSaveFunctions` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_save.ts` | function | `findGameSaveFunction` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_save.ts` | function | `registerGameSaveMove` | oui | `F_MMOVE relocation` | `Quake-2-master/game/g_save.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/game/src/g_save.ts` | function | `registerGameSaveMoves` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_save.ts` | function | `findGameSaveMove` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_save.ts` | interface | `SaveFileHooks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | interface | `GameSaveFile` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | interface | `LevelSaveFile` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `WriteGame` | oui | `WriteGame` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/game/src/g_save.ts` | function | `ReadGame` | oui | `ReadGame` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/game/src/g_save.ts` | function | `WriteLevel` | oui | `WriteLevel` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/game/src/g_save.ts` | function | `ReadLevel` | oui | `ReadLevel` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/game/src/g_save.ts` | function | `resetRuntimeEntitiesForLevelLoad` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `createClearedRuntimeEntity` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `snapshotGame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `snapshotLevel` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `restoreLevel` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `syncRuntimeFromLevel` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `snapshotClient` | non | `WriteClient` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_save.ts` | function | `restoreClient` | non | `ReadClient` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_save.ts` | function | `snapshotEntity` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `restoreEntity` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `snapshotEntityCallbacks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `restoreEntityCallbacks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `snapshotMoveInfo` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `resolveEntityReferences` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `writeSaveFile` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `validateSaveFile` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `entityIndex` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `edictByIndex` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `itemIndex` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `callbackName` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `moveName` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_save.ts` | function | `isGameMonsterMove` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_save.ts` | value | `SAVEGAME_DATE` | non | `N/A` | `N/A (local structured save marker)` | New |  | TS sans lien source | Valide | Remplace le marqueur C `__DATE__` par un marqueur stable propre au format JSON TS. |
+| `packages/game/src/g_save.ts` | value | `SAVEGAME_FORMAT` | non | `N/A` | `N/A (local structured save marker)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | value | `UNRESTORED_CALLBACK_NOTE` | non | `N/A` | `N/A (local structured save note)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | value | `mmove_reloc` | oui | `mmove_reloc` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | type | `SaveCallback` | non | `N/A` | `N/A (local callback registry type)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | value | `saveFunctionByName` | non | `N/A` | `N/A (local callback registry)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | value | `saveFunctionNameByRef` | non | `N/A` | `N/A (local callback registry)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | value | `saveMoveByName` | non | `N/A` | `N/A (local mmove registry)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | value | `saveMoveNameByRef` | non | `N/A` | `N/A (local mmove registry)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | value | `fields` | oui | `fields` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | value | `levelfields` | oui | `levelfields` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | value | `clientfields` | oui | `clientfields` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `registerGameSaveFunction` | oui | `Function` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `registerGameSaveFunctions` | oui | `N/A` | `N/A (local callback registry helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `findGameSaveFunction` | oui | `N/A` | `N/A (local callback registry helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `registerGameSaveMove` | oui | `F_MMOVE relocation` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation C/H de `mmove_reloc` et de la relocation `F_MMOVE`. |
+| `packages/game/src/g_save.ts` | function | `registerGameSaveMoves` | oui | `N/A` | `N/A (local mmove registry helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `findGameSaveMove` | oui | `N/A` | `N/A (local mmove registry helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | interface | `SaveFileHooks` | non | `N/A` | `N/A (local host persistence contract)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | interface | `GameSaveFile` | non | `N/A` | `N/A (local structured save payload)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | interface | `LevelSaveFile` | non | `N/A` | `N/A (local structured save payload)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `WriteGame` | oui | `WriteGame` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon resolu | Couvert C/H | Proprietaire du portage; les homonymes `g_main.ts` sont des wrappers `GetGameAPI` deja classes Adapter. |
+| `packages/game/src/g_save.ts` | function | `ReadGame` | oui | `ReadGame` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon resolu | Couvert C/H | Proprietaire du portage; les homonymes `g_main.ts` sont des wrappers `GetGameAPI` deja classes Adapter. |
+| `packages/game/src/g_save.ts` | function | `WriteLevel` | oui | `WriteLevel` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon resolu | Couvert C/H | Proprietaire du portage; les homonymes `g_main.ts` sont des wrappers `GetGameAPI` deja classes Adapter. |
+| `packages/game/src/g_save.ts` | function | `ReadLevel` | oui | `ReadLevel` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Doublon resolu | Couvert C/H | Proprietaire du portage; les homonymes `g_main.ts` sont des wrappers `GetGameAPI` deja classes Adapter. |
+| `packages/game/src/g_save.ts` | function | `resetRuntimeEntitiesForLevelLoad` | non | `N/A` | `N/A (local structured restore helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `createClearedRuntimeEntity` | non | `N/A` | `N/A (local structured restore helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `snapshotGame` | non | `N/A` | `N/A (local structured save helper)` | New |  | TS sans lien source | Valide | Helper local de `WriteGame`; le comportement source proprietaire reste couvert par `WriteGame`. |
+| `packages/game/src/g_save.ts` | function | `snapshotLevel` | non | `WriteLevelLocals` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `restoreLevel` | non | `ReadLevelLocals` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `syncRuntimeFromLevel` | non | `N/A` | `N/A (local runtime mirror helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `snapshotClient` | non | `WriteClient` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `restoreClient` | non | `ReadClient` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `snapshotEntity` | non | `WriteEdict` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `restoreEntity` | non | `ReadEdict` | `Quake-2-master/game/g_save.c` | Ported | [`game_g_save.c.md`](../matrices/game_g_save.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_save.ts` | function | `snapshotEntityCallbacks` | non | `N/A` | `N/A (local structured save helper)` | New |  | TS sans lien source | Valide | Helper local pour l'encodage structure des champs `F_FUNCTION`/`F_MMOVE`. |
+| `packages/game/src/g_save.ts` | function | `restoreEntityCallbacks` | non | `N/A` | `N/A (local structured restore helper)` | New |  | TS sans lien source | Valide | Helper local pour la resolution structuree des champs `F_FUNCTION`/`F_MMOVE`. |
+| `packages/game/src/g_save.ts` | function | `snapshotMoveInfo` | non | `N/A` | `N/A (local structured save helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `resolveEntityReferences` | non | `N/A` | `N/A (local structured restore helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `writeSaveFile` | non | `N/A` | `N/A (local host persistence helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `validateSaveFile` | non | `N/A` | `N/A (local structured save helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `entityIndex` | non | `N/A` | `N/A (local structured save helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `edictByIndex` | non | `N/A` | `N/A (local structured restore helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `itemIndex` | non | `N/A` | `N/A (local structured save helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `callbackName` | non | `N/A` | `N/A (local callback registry helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `moveName` | non | `N/A` | `N/A (local mmove registry helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_save.ts` | function | `isGameMonsterMove` | non | `N/A` | `N/A (local mmove registry helper)` | New |  | TS sans lien source | Valide |  |

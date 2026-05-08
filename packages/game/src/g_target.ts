@@ -72,9 +72,28 @@ import { G_Find, G_FreeEdict, G_SetMovedir, G_Spawn, G_UseTargets, KillBox, vtos
 import { BeginIntermission } from "./p_hud.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local constants)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Names the original target_speaker spawnflag bit values used inline in `game/g_target.c`.
+ */
 const TARGET_SPEAKER_LOOPED_ON = 1;
 const TARGET_SPEAKER_LOOPED_OFF = 2;
 const TARGET_SPEAKER_RELIABLE = 4;
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local constants)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Names the original target_laser spawnflag bit values used inline in `game/g_target.c`.
+ */
 const TARGET_LASER_START_ON = 1;
 const TARGET_LASER_RED = 2;
 const TARGET_LASER_GREEN = 4;
@@ -83,6 +102,16 @@ const TARGET_LASER_YELLOW = 16;
 const TARGET_LASER_ORANGE = 32;
 const TARGET_LASER_FAT = 64;
 const TARGET_LASER_SPARKS = 0x80000000;
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local constants)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Mirrors the fixed `strncpy(..., sizeof(helpmessage*) - 1)` copy limit.
+ */
 const TARGET_HELP_MESSAGE_COPY_LENGTH = 511;
 
 /**
@@ -1116,6 +1145,15 @@ export function SP_target_earthquake(self: GameEntity, runtime: GameRuntime): vo
   self.noise_index = registerGameSound(runtime, "world/quake.wav");
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Bridges registered sound indices to structured runtime sound events.
+ */
 function emitRegisteredSound(
   runtime: GameRuntime,
   entity: GameEntity,
@@ -1134,34 +1172,106 @@ function emitRegisteredSound(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Keeps local map-hack comparisons routed through the ported `Q_stricmp`.
+ */
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Expresses the original `message[i] >= 'a' && message[i] <= 'z'` ramp validation.
+ */
 function isLowercaseLetter(value: string): boolean {
   return value >= "a" && value <= "z";
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Applies explicit C-style bounded string copies for local target fields.
+ */
 function truncateCString(value: string, maxLength: number): string {
   return value.length > maxLength ? value.slice(0, maxLength) : value;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Provides local vector comparison for the target_laser retargeting branch.
+ */
 function vec3Equal(left: vec3_t, right: vec3_t): boolean {
   return left[0] === right[0] && left[1] === right[1] && left[2] === right[2];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Provides local vector addition for target entity math.
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Provides local vector subtraction for target entity math.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Provides local vector scaling for target entity math.
+ */
 function scaleVec3(vector: vec3_t, scalar: number): vec3_t {
   return [vector[0] * scalar, vector[1] * scalar, vector[2] * scalar];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Provides local vector normalization for target_laser tracking.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {

@@ -94,6 +94,8 @@ import { PNOISE_IMPACT, crandom, random } from "./g_local.js";
 import { PlayerNoise } from "./p_weapon.js";
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local hook contract)
  * Category: New
  * Purpose: Keep the unresolved world-weapon dependencies explicit while `g_combat.c` and full impact logic are not ported.
  *
@@ -1085,6 +1087,8 @@ export function bfg_think(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Normalize one vector while preserving the zero-vector case safely for early projectile setup.
  */
@@ -1248,6 +1252,8 @@ function fire_lead(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Reconstruct forward/right/up vectors from one aim direction by mirroring the original `vectoangles` then `AngleVectors` flow.
  */
@@ -1256,6 +1262,8 @@ function angleVectorsFromDir(direction: vec3_t): { forward: vec3_t; right: vec3_
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local random helper)
  * Category: New
  * Purpose: Mirror Quake II `rand() % maxExclusive` for small projectile/debris counts.
  */
@@ -1264,6 +1272,8 @@ function randomInt(maxExclusive: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local splash helper)
  * Category: New
  * Purpose: Resolve the original Quake II splash color from one water-impact trace.
  */
@@ -1284,6 +1294,8 @@ function getSplashColor(trace: trace_t): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local combat bridge)
  * Category: New
  * Purpose: Test damageability through the explicit hook first, with a conservative health-based fallback.
  */
@@ -1295,6 +1307,8 @@ function isDamageable(entity: GameEntity, hooks: GameWeaponWorldHooks): boolean 
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local runtime bridge)
  * Category: New
  * Purpose: Preserve the original `G_FreeEdict` dependency with a direct runtime fallback.
  */
@@ -1307,6 +1321,8 @@ function freeEdict(entity: GameEntity, runtime: GameRuntime, hooks: GameWeaponWo
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local audio bridge)
  * Category: New
  * Purpose: Preserve immediate weapon sound call sites while falling back to simple registration until the audio gameplay bridge is fully ported.
  */
@@ -1319,6 +1335,8 @@ function playEntitySound(entity: GameEntity, soundPath: string, runtime: GameRun
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local combat bridge)
  * Category: New
  * Purpose: Preserve the original `T_RadiusDamage` call sites while falling back to the strict partial combat port.
  */
@@ -1342,6 +1360,8 @@ function radiusDamage(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local combat bridge)
  * Category: New
  * Purpose: Preserve the original `T_Damage` call sites while falling back to the partial combat port already available.
  */
@@ -1370,6 +1390,8 @@ function directDamage(
 
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local combat bridge)
  * Category: New
  * Purpose: Preserve the original `FL_IMMUNE_LASER` test while keeping the hook override explicit.
  */
@@ -1381,6 +1403,8 @@ function isLaserImmune(entity: GameEntity, hooks: GameWeaponWorldHooks): boolean
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Compare two vectors exactly for the Quake-style zero-delta checks used in the projectile helpers.
  */
@@ -1389,6 +1413,8 @@ function vec3Equal(left: vec3_t, right: vec3_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Add two 3D vectors without mutating either input.
  */
@@ -1397,6 +1423,8 @@ function addVec3(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Subtract two 3D vectors without mutating either input.
  */
@@ -1405,6 +1433,8 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Scale one 3D vector without mutating the input.
  */
@@ -1413,6 +1443,8 @@ function scaleVec3(vector: vec3_t, scalar: number): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Compute one vector length for the direct arithmetic mirrors kept close to the original C flow.
  */

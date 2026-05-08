@@ -392,6 +392,15 @@ export interface spawn_temp_t {
   maxpitch: number;
 }
 
+/**
+ * Original name: field_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Describes one spawn/save field entry using symbolic TS selectors instead of C byte offsets.
+ */
 export interface field_t {
   name: string;
   ofs: string;
@@ -400,8 +409,8 @@ export interface field_t {
 }
 
 /**
- * Original name: createGameLocals
- * Source: game/g_local.h
+ * Original name: N/A
+ * Source declaree: N/A (local zero-initializer)
  * Category: New
  * Fidelity level: Close
  *
@@ -424,8 +433,8 @@ export function createGameLocals(): game_locals_t {
 }
 
 /**
- * Original name: createLevelLocals
- * Source: game/g_local.h
+ * Original name: N/A
+ * Source declaree: N/A (local zero-initializer)
  * Category: New
  * Fidelity level: Close
  *
@@ -465,8 +474,8 @@ export function createLevelLocals(): level_locals_t {
 }
 
 /**
- * Original name: createSpawnTemp
- * Source: game/g_local.h
+ * Original name: N/A
+ * Source declaree: N/A (local zero-initializer)
  * Category: New
  * Fidelity level: Close
  *
@@ -496,7 +505,7 @@ export function createSpawnTemp(): spawn_temp_t {
 /**
  * Original name: ITEM_INDEX
  * Source: game/g_local.h
- * Category: New
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
@@ -509,7 +518,7 @@ export function ITEM_INDEX(item: gitem_t): number {
 /**
  * Original name: world
  * Source: game/g_local.h
- * Category: New
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
@@ -522,7 +531,7 @@ export function world(g_edicts: edict_t[]): edict_t | null {
 /**
  * Original name: FOFS
  * Source: game/g_local.h
- * Category: New
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
@@ -535,7 +544,7 @@ export function FOFS(field: keyof edict_t): keyof edict_t {
 /**
  * Original name: STOFS
  * Source: game/g_local.h
- * Category: New
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
@@ -548,7 +557,7 @@ export function STOFS(field: keyof spawn_temp_t): keyof spawn_temp_t {
 /**
  * Original name: LLOFS
  * Source: game/g_local.h
- * Category: New
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
@@ -561,7 +570,7 @@ export function LLOFS(field: keyof level_locals_t): keyof level_locals_t {
 /**
  * Original name: CLOFS
  * Source: game/g_local.h
- * Category: New
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
