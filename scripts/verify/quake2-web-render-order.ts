@@ -17,6 +17,7 @@ import path from "node:path";
 const LOOP_PATH = path.join(process.cwd(), "apps", "web", "src", "web-demo-loop.ts");
 const RENDER_LOOP_PATH = path.join(process.cwd(), "apps", "web", "src", "full-game-render-loop.ts");
 const FULL_GAME_PATH = path.join(process.cwd(), "apps", "web", "src", "full-game.ts");
+const GL_WORLD_PATH = path.join(process.cwd(), "packages", "renderer-three", "src", "gl-world-scene-adapter.ts");
 
 main();
 
@@ -28,6 +29,7 @@ function main(): void {
   const demoSource = fs.readFileSync(LOOP_PATH, "utf8");
   const renderSource = fs.readFileSync(RENDER_LOOP_PATH, "utf8");
   const fullGameSource = fs.readFileSync(FULL_GAME_PATH, "utf8");
+  const glWorldSource = fs.readFileSync(GL_WORLD_PATH, "utf8");
 
   assert.equal(
     demoSource.includes("ref.RenderFrame(") || renderSource.includes("ref.RenderFrame("),
@@ -112,6 +114,13 @@ function main(): void {
     false,
     "web render path should not keep the direct PointLight dlight path"
   );
+  assertInOrder(glWorldSource, [
+    "setFrameCount(glRsurfRuntime, nextFrameCount)",
+    "setGlLightFrameCount(glLightRuntime, nextFrameCount - 1)",
+    "R_PushDlights(glLightRuntime)",
+    "setGlLightFrameCount(glLightRuntime, nextFrameCount)",
+    "R_DrawWorld(glRsurfRuntime, imageHandles)"
+  ]);
 
   console.log("quake2-web-render-order: ok");
 }

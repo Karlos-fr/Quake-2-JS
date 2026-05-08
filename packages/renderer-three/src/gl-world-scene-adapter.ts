@@ -433,6 +433,7 @@ export function createThreeGlWorldSceneAdapter(
         setFrameCount(glRsurfRuntime, nextFrameCount);
         setGlLightFrameCount(glLightRuntime, nextFrameCount - 1);
         R_PushDlights(glLightRuntime);
+        setGlLightFrameCount(glLightRuntime, nextFrameCount);
 
         const leaf = Mod_PointInLeaf([vieworg[0], vieworg[1], vieworg[2]], worldmodel);
         setViewClusters(glRsurfRuntime, leaf.cluster, leaf.cluster);

@@ -127,8 +127,8 @@ assert.equal(color[1] > 0.58, true, "R_LightPoint green mismatch");
 assert.equal(color[2] > 0.78, true, "R_LightPoint blue mismatch");
 
 const dest = new Uint8Array(16);
-surface.dlightframe = runtime.r_framecount;
-surface.dlightbits = 1;
+setGlLightFrameCount(runtime, 11);
+assert.equal(surface.dlightframe, runtime.r_framecount, "R_PushDlights frame should match the later lightmap build frame");
 R_BuildLightMap(runtime, surface, dest, 8);
 assert.equal(dest[0] > 100, true, "R_BuildLightMap red accumulation mismatch");
 assert.equal(dest[1] > 150, true, "R_BuildLightMap green accumulation mismatch");
