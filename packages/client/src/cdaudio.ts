@@ -18,6 +18,12 @@
 
 import type { qboolean } from "../../qcommon/src/index.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (client CD audio context)
+ * Category: New
+ * Purpose: Host callback surface used by the logical CD-audio port.
+ */
 export interface ClientCDAudioHooks {
   onInit?: () => boolean | number | void;
   onShutdown?: () => void;
@@ -28,6 +34,12 @@ export interface ClientCDAudioHooks {
   onUpdate?: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (client CD audio context)
+ * Category: New
+ * Purpose: Explicit replacement for the native CD-audio module globals.
+ */
 export interface ClientCDAudioState {
   initialized: qboolean;
   enabled: qboolean;
@@ -37,11 +49,23 @@ export interface ClientCDAudioState {
   playTrack: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (client CD audio context)
+ * Category: New
+ * Purpose: Bundle CD-audio state and host hooks for runtime-owned calls.
+ */
 export interface ClientCDAudioContext {
   state: ClientCDAudioState;
   hooks: ClientCDAudioHooks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (client CD audio context)
+ * Category: New
+ * Purpose: Create the explicit CD-audio context used instead of native module globals.
+ */
 export function createClientCDAudioContext(hooks: ClientCDAudioHooks = {}): ClientCDAudioContext {
   return {
     state: {
@@ -157,9 +181,15 @@ export function CDAudio_Stop(context: ClientCDAudioContext): void {
 
 /**
  * Original name: CDAudio_Pause
- * Source: native cd_*.c backends
+ * Source: Quake-2-master/win32/cd_win.c and Quake-2-master/linux/cd_linux.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Pauses active playback, records that a track was playing, and leaves inactive or disabled state unchanged.
+ *
+ * Porting notes:
+ * - Native pause calls are delegated to the host hook because browser playback is implemented by an adapter.
  */
 export function CDAudio_Pause(context: ClientCDAudioContext): void {
   if (!context.state.enabled || !context.state.playing) {
@@ -173,9 +203,15 @@ export function CDAudio_Pause(context: ClientCDAudioContext): void {
 
 /**
  * Original name: CDAudio_Resume
- * Source: native cd_*.c backends
+ * Source: Quake-2-master/win32/cd_win.c and Quake-2-master/linux/cd_linux.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resumes playback only when CD audio is enabled and a paused track was previously marked as playing.
+ *
+ * Porting notes:
+ * - Native resume calls are delegated to the host hook because browser playback is implemented by an adapter.
  */
 export function CDAudio_Resume(context: ClientCDAudioContext): void {
   if (!context.state.enabled || !context.state.wasPlaying) {

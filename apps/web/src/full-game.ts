@@ -2081,6 +2081,12 @@ function seedMenuCvars(cvar: ReturnType<typeof createCvarRuntime>): void {
   Cvar_Get(cvar, "win_noalttab", "0", CVAR_ARCHIVE);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas ref adapter)
+ * Category: New
+ * Purpose: Capture refexport_t draw calls into the browser canvas command queue.
+ */
 function createCanvasRef(
   filesystem: VirtualFilesystem,
   assets: CanvasAssetCache,
@@ -2202,6 +2208,12 @@ function createMirroredMenuRef(canvasRef: refexport_t): FullGameMenuRef {
   return ref;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web full-game loop)
+ * Category: New
+ * Purpose: Advance the browser startup cinematic sequence through the ported cinematic runtime.
+ */
 function startNextCinematic(runtime: FullGameRuntime, page: FullGamePage): void {
   if (runtime.currentCinematicIndex >= STARTUP_CINEMATICS.length) {
     enterMainMenu(runtime, page);
@@ -2254,6 +2266,12 @@ function startFullGameAttractLoop(runtime: FullGameRuntime, page: FullGamePage):
   page.status.style.display = "block";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web full-game loop)
+ * Category: New
+ * Purpose: Switch the browser host to the ported Quake II main menu.
+ */
 function enterMainMenu(runtime: FullGameRuntime, page: FullGamePage): void {
   releaseFullGameMouseLook(runtime, page);
   runtime.mode = "menu";
@@ -2266,6 +2284,12 @@ function enterMainMenu(runtime: FullGameRuntime, page: FullGamePage): void {
   page.status.style.display = "none";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web full-game loop)
+ * Category: New
+ * Purpose: Drive the browser animation frame around the ported qcommon/client/server frame flow.
+ */
 function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void {
   const delta = runtime.lastFrameTime === 0 ? 0 : time - runtime.lastFrameTime;
   runtime.lastFrameTime = time;
@@ -2336,6 +2360,12 @@ function shouldHideAttractLoopLoading(runtime: FullGameRuntime): boolean {
     && runtime.menu.keys.state.key_dest !== keydest_t.key_console;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web full-game loop)
+ * Category: New
+ * Purpose: Execute pending Quake commands and reflect loading/game transitions into the web host.
+ */
 function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePage): void {
   Cbuf_Execute(runtime.menu.cmd);
   runtime.finishConfigBootstrap();
@@ -2395,6 +2425,12 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web full-game loop)
+ * Category: New
+ * Purpose: Keep the browser mode and status text aligned with the authoritative game/menu state.
+ */
 function syncFullGameActiveView(runtime: FullGameRuntime, page: FullGamePage, gameStatus: string): void {
   if (runtime.menu.keys.state.key_dest === keydest_t.key_menu) {
     runtime.mode = "menu";
@@ -2408,6 +2444,12 @@ function syncFullGameActiveView(runtime: FullGameRuntime, page: FullGamePage, ga
   page.status.style.display = "none";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web render orchestration)
+ * Category: New
+ * Purpose: Render one cinematic frame through the ported client cinematic draw path.
+ */
 function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   const wasActive = runtime.client.cl.cinematic.cinematictime > 0;
   SCR_RunCinematic(runtime.client, {
@@ -2446,6 +2488,12 @@ function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void 
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web render orchestration)
+ * Category: New
+ * Purpose: Render the ported menu either through the frontend ref_gl adapter or the canvas fallback.
+ */
 function drawMenuFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   runtime.drawCommands.length = 0;
   runtime.menu.qmenu.state.drawChars.length = 0;
@@ -2475,6 +2523,12 @@ function drawMenuFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   renderer.renderer.render(renderer.glDrawAdapter.scene, renderer.glDrawAdapter.camera);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web render orchestration)
+ * Category: New
+ * Purpose: Render the ported loading plaque through the active frontend renderer or canvas fallback.
+ */
 function drawLoadingFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   runtime.drawCommands.length = 0;
   const loadingCommand = SCR_DrawLoading(runtime.client) ?? createFullGameAutosizedPictureCommand("loading");
@@ -2498,6 +2552,12 @@ function drawLoadingFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   renderer.renderer.render(renderer.glDrawAdapter.scene, renderer.glDrawAdapter.camera);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web render orchestration)
+ * Category: New
+ * Purpose: Center or stretch a client picture command through a refexport_t draw target.
+ */
 function drawFullGamePictureRef(
   ref: refexport_t,
   command: ClientHudPictureCommand,
@@ -2521,6 +2581,12 @@ function drawFullGamePictureRef(
   ref.DrawPic(x, y, command.pic);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web render orchestration)
+ * Category: New
+ * Purpose: Build the web fallback picture command used when the ported screen layer has no pending plaque.
+ */
 function createFullGameAutosizedPictureCommand(pic: string): ClientHudPictureCommand {
   return {
     type: "picture",
@@ -2536,6 +2602,12 @@ function createFullGameAutosizedPictureCommand(pic: string): ClientHudPictureCom
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web render orchestration)
+ * Category: New
+ * Purpose: Feed authoritative client render data into the Three/ref_gl full-game renderer.
+ */
 function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSeconds: number): void {
   if (runtime.menu.keys.state.key_dest === keydest_t.key_console) {
     page.status.style.display = "none";
@@ -2615,6 +2687,12 @@ function drawMenuOverlayRef(runtime: FullGameRuntime, ref: refexport_t, viewport
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Lazily create or replace the map-scoped Three/ref_gl game renderer.
+ */
 function ensureFullGameRenderer(
   runtime: FullGameRuntime,
   page: FullGamePage,
@@ -2669,6 +2747,12 @@ function ensureFullGameRenderer(
   return null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Dispose the browser-owned Three/ref_gl game renderer resources.
+ */
 function disposeFullGameRenderer(renderer: FullGameRendererState): void {
   renderer.renderLoop.dispose();
   renderer.renderer.domElement.remove();
@@ -2828,6 +2912,12 @@ function disposeFullGameFrontendRenderer(runtime: FullGameRuntime): void {
   runtime.frontendRenderer = null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Assemble the map renderer, ref_gl host, scene adapters, and render loop for active gameplay.
+ */
 async function createFullGameThreeRenderer(
   runtime: FullGameRuntime,
   page: FullGamePage,
@@ -2959,6 +3049,12 @@ function buildFullGameHudBindings(client: ClientRuntime, keybindings: Array<stri
   return bindings;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Copy the ported refresh frame camera into the Three camera used by the web renderer.
+ */
 function syncThreeCameraToRefresh(camera: ReturnType<typeof createCamera>, refreshFrame: ClientRefreshFrame | null): void {
   if (!refreshFrame) {
     return;
@@ -2975,6 +3071,12 @@ function syncThreeCameraToRefresh(camera: ReturnType<typeof createCamera>, refre
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Resolve the authoritative server map path used to scope the active Three renderer.
+ */
 function getAuthoritativeMapPath(runtime: FullGameRuntime): string | null {
   return getFullGameServerMapPath(runtime.client, runtime.serverHost.currentMapRequest);
 }

@@ -4,15 +4,15 @@
 
 - Fichier TS: `packages/client/src/cl_ents.ts`
 - Symboles TS: 7
-- Couvert C/H: 0
-- Reste a auditer: 7
+- Couvert C/H: 2
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/cl_ents.ts` | interface | `ClientEntityEvent` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_ents.ts` | interface | `ClientInterpolatedEntity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_ents.ts` | function | `CL_FireEntityEvents` | oui | `CL_FireEntityEvents` | `Quake-2-master/client/cl_ents.c` | Ported | [`client_cl_ents.c.md`](../matrices/client_cl_ents.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_ents.ts` | function | `CL_BuildFrameEntityEventEffects` | oui | `CL_FireEntityEvents / CL_EntityEvent` | `Quake-2-master/client/cl_ents.c and client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_ents.ts` | function | `CL_GetFrameEntityStates` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_ents.ts` | function | `CL_BuildPacketEntitySnapshots` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_ents.ts` | function | `cloneEntityState` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_ents.ts` | interface | `ClientEntityEvent` | oui | `N/A` | `N/A (client event snapshot)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_ents.ts` | interface | `ClientInterpolatedEntity` | oui | `N/A` | `N/A (client render snapshot)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_ents.ts` | function | `CL_FireEntityEvents` | oui | `CL_FireEntityEvents` | `Quake-2-master/client/cl_ents.c` | Ported | [`client_cl_ents.c.md`](../matrices/client_cl_ents.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_ents.ts` | function | `CL_BuildFrameEntityEventEffects` | oui | `N/A` | `N/A (client event-effect adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_ents.ts` | function | `CL_GetFrameEntityStates` | oui | `N/A` | `N/A (client frame snapshot helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_ents.ts` | function | `CL_BuildPacketEntitySnapshots` | oui | `CL_AddPacketEntities` | `Quake-2-master/client/cl_ents.c` | Ported | [`client_cl_ents.c.md`](../matrices/client_cl_ents.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_ents.ts` | function | `cloneEntityState` | non | `N/A` | `N/A (entity state copy helper)` | New |  | TS sans lien source | Valide |  |

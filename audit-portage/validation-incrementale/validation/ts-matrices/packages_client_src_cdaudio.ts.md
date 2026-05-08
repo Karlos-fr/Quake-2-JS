@@ -4,20 +4,20 @@
 
 - Fichier TS: `packages/client/src/cdaudio.ts`
 - Symboles TS: 12
-- Couvert C/H: 0
-- Reste a auditer: 12
+- Couvert C/H: 6
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/cdaudio.ts` | interface | `ClientCDAudioHooks` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cdaudio.ts` | interface | `ClientCDAudioState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cdaudio.ts` | interface | `ClientCDAudioContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cdaudio.ts` | function | `createClientCDAudioContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Init` | oui | `CDAudio_Init` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Shutdown` | oui | `CDAudio_Shutdown` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Play` | oui | `CDAudio_Play` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Stop` | oui | `CDAudio_Stop` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Pause` | oui | `CDAudio_Pause` | `Quake-2-master/native cd_*.c backends` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Resume` | oui | `CDAudio_Resume` | `Quake-2-master/native cd_*.c backends` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Update` | oui | `CDAudio_Update` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cdaudio.ts` | function | `CDAudio_Activate` | oui | `CDAudio_Activate` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/cdaudio.ts` | interface | `ClientCDAudioHooks` | oui | `N/A` | `N/A (client CD audio context)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/cdaudio.ts` | interface | `ClientCDAudioState` | oui | `N/A` | `N/A (client CD audio context)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/cdaudio.ts` | interface | `ClientCDAudioContext` | oui | `N/A` | `N/A (client CD audio context)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/cdaudio.ts` | function | `createClientCDAudioContext` | oui | `N/A` | `N/A (client CD audio context)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Init` | oui | `CDAudio_Init` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Shutdown` | oui | `CDAudio_Shutdown` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Play` | oui | `CDAudio_Play` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Stop` | oui | `CDAudio_Stop` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Pause` | oui | `CDAudio_Pause` | `Quake-2-master/win32/cd_win.c and Quake-2-master/linux/cd_linux.c` | Ported |  | Hors matrice C/H | Valide | Source backend native sans matrice C/H dediee; comportement pause/wasPlaying verifie par `scripts/verify/quake2-cdaudio.ts`. |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Resume` | oui | `CDAudio_Resume` | `Quake-2-master/win32/cd_win.c and Quake-2-master/linux/cd_linux.c` | Ported |  | Hors matrice C/H | Valide | Source backend native sans matrice C/H dediee; comportement resume/wasPlaying verifie par `scripts/verify/quake2-cdaudio.ts`. |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Update` | oui | `CDAudio_Update` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cdaudio.ts` | function | `CDAudio_Activate` | oui | `CDAudio_Activate` | `Quake-2-master/client/cdaudio.h` | Ported | [`client_cdaudio.h.md`](../matrices/client_cdaudio.h.md) | Couvert C/H | Couvert C/H |  |

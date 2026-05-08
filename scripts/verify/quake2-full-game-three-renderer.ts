@@ -70,7 +70,8 @@ assert.ok(source.includes("onTempEntity:"), "full-game should connect temp-entit
 assert.ok(source.includes("onEntityEvent:"), "full-game should connect frame entity event sounds from the client parser");
 assert.ok(source.includes("SCR_DrawLoading"), "full-game should use the ported Quake II loading plaque state");
 assert.ok(source.includes("drawLoadingFrame"), "full-game should render the loading plaque while waiting for the authoritative level");
-assert.ok(source.includes("drawCenteredPicture(page, runtime, \"loading\")"), "full-game should draw the original loading picture centered");
+assert.ok(source.includes("drawCenteredPicture(page, runtime, loadingCommand.pic)"), "full-game should draw the original loading picture centered on the canvas fallback");
+assert.ok(source.includes("drawFullGamePictureRef("), "full-game should draw the loading picture centered through the frontend ref_gl adapter");
 assert.ok(source.includes("drawLoadingFrame(runtime, page);"), "full-game should keep the loading plaque visible while the Three renderer is pending");
 assert.ok(source.includes("forceGameInputForLevelLoad"), "full-game should force gameplay input during authoritative level loads");
 assert.ok(source.includes("isAuthoritativeLevelLoading"), "full-game should track automatic authoritative level loads");

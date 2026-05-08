@@ -4,24 +4,24 @@
 
 - Fichier TS: `packages/client/src/cl_cin.ts`
 - Symboles TS: 16
-- Couvert C/H: 0
-- Reste a auditer: 16
+- Couvert C/H: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/cl_cin.ts` | interface | `ClientCinematicSnapshot` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_cin.ts` | interface | `ClientScreenHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_cin.ts` | interface | `ClientCinematicScreenBridge` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_cin.ts` | function | `SCR_StopCinematic` | oui | `SCR_StopCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_cin.ts` | function | `SCR_FinishCinematic` | oui | `SCR_FinishCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_cin.ts` | function | `SCR_RunCinematic` | oui | `SCR_RunCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_cin.ts` | function | `SCR_DrawCinematic` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_cin.ts` | function | `SCR_DrawCinematicRef` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_cin.ts` | function | `SCR_PlayCinematic` | oui | `SCR_PlayCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_cin.ts` | function | `readCinematicLong` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_cin.ts` | function | `readCinematicBytes` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_cin.ts` | function | `SmallestNode1` | non | `SmallestNode1` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_cin.ts` | function | `Huff1TableInit` | non | `Huff1TableInit` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_cin.ts` | function | `Huff1Decompress` | non | `Huff1Decompress` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_cin.ts` | function | `SCR_ReadNextFrame` | non | `SCR_ReadNextFrame` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_cin.ts` | function | `buildCinematicSnapshot` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_cin.ts` | interface | `ClientCinematicSnapshot` | oui | N/A | N/A (renderer-facing adapter shape) | New |  | TS sans lien source | Valide | |
+| `packages/client/src/cl_cin.ts` | interface | `ClientScreenHooks` | oui | N/A | N/A (host callback adapter shape) | New |  | TS sans lien source | Valide | |
+| `packages/client/src/cl_cin.ts` | interface | `ClientCinematicScreenBridge` | oui | N/A | N/A (screen bridge adapter shape) | New |  | TS sans lien source | Valide | |
+| `packages/client/src/cl_cin.ts` | function | `SCR_StopCinematic` | oui | `SCR_StopCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `SCR_FinishCinematic` | oui | `SCR_FinishCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `SCR_RunCinematic` | oui | `SCR_RunCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `SCR_DrawCinematic` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `SCR_DrawCinematicRef` | oui | N/A | N/A (renderer raw cinematic adapter) | Adapter |  | TS sans lien source | Valide | Adapter raw `refexport_t` du port proprietaire `SCR_DrawCinematic`. |
+| `packages/client/src/cl_cin.ts` | function | `SCR_PlayCinematic` | oui | `SCR_PlayCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `readCinematicLong` | non | N/A | N/A (typed-array stream helper) | New |  | TS sans lien source | Valide | |
+| `packages/client/src/cl_cin.ts` | function | `readCinematicBytes` | non | N/A | N/A (typed-array stream helper) | New |  | TS sans lien source | Valide | |
+| `packages/client/src/cl_cin.ts` | function | `SmallestNode1` | non | `SmallestNode1` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `Huff1TableInit` | non | `Huff1TableInit` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `Huff1Decompress` | non | `Huff1Decompress` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `SCR_ReadNextFrame` | non | `SCR_ReadNextFrame` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H | |
+| `packages/client/src/cl_cin.ts` | function | `buildCinematicSnapshot` | non | N/A | N/A (renderer snapshot adapter) | New |  | TS sans lien source | Valide | |

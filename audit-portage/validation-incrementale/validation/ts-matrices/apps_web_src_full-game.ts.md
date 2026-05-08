@@ -5,7 +5,7 @@
 - Fichier TS: `apps/web/src/full-game.ts`
 - Symboles TS: 94
 - Couvert C/H: 0
-- Reste a auditer: 64
+- Reste a auditer: 49
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -39,21 +39,21 @@
 | `apps/web/src/full-game.ts` | function | `queueFullGameConfigBootstrap` | non | `N/A` | `N/A (web config bootstrap)` | New |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `registerFullGameToggleConsoleCommand` | non | `N/A` | `N/A (web config bootstrap)` | New |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `seedMenuCvars` | non | `N/A` | `N/A (web config bootstrap)` | New |  | Hors C/H | Valide |  |
-| `apps/web/src/full-game.ts` | function | `createCanvasRef` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `startNextCinematic` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `enterMainMenu` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `frame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `executeRuntimeCommandBuffer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `syncFullGameActiveView` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `drawCinematicFrame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `drawMenuFrame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `drawLoadingFrame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `drawGameFrame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `ensureFullGameRenderer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `disposeFullGameRenderer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `createFullGameThreeRenderer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `syncThreeCameraToRefresh` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `getAuthoritativeMapPath` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game.ts` | function | `createCanvasRef` | non | `N/A` | `N/A (web canvas ref adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `startNextCinematic` | non | `N/A` | `N/A (web full-game loop)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `enterMainMenu` | non | `N/A` | `N/A (web full-game loop)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `frame` | non | `N/A` | `N/A (web full-game loop)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `executeRuntimeCommandBuffer` | non | `N/A` | `N/A (web full-game loop)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `syncFullGameActiveView` | non | `N/A` | `N/A (web full-game loop)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `drawCinematicFrame` | non | `N/A` | `N/A (web render orchestration)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `drawMenuFrame` | non | `N/A` | `N/A (web render orchestration)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `drawLoadingFrame` | non | `N/A` | `N/A (web render orchestration)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `drawGameFrame` | non | `N/A` | `N/A (web render orchestration)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `ensureFullGameRenderer` | non | `N/A` | `N/A (web renderer adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `disposeFullGameRenderer` | non | `N/A` | `N/A (web renderer adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `createFullGameThreeRenderer` | non | `N/A` | `N/A (web renderer adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `syncThreeCameraToRefresh` | non | `N/A` | `N/A (web renderer adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `getAuthoritativeMapPath` | non | `N/A` | `N/A (web renderer adapter)` | New |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `drawConsoleFrame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `prepareConsoleCanvasOverlay` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `drawConsoleSnapshotToCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

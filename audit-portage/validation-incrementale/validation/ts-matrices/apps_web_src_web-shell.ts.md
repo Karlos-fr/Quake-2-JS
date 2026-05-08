@@ -5,18 +5,18 @@
 - Fichier TS: `apps/web/src/web-shell.ts`
 - Symboles TS: 11
 - Couvert C/H: 0
-- Reste a auditer: 11
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/web-shell.ts` | interface | `WebShell` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-shell.ts` | function | `requireApp` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-shell.ts` | function | `createWebShell` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-shell.ts` | function | `stopViewportInputPropagation` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-shell.ts` | function | `createVolumeSlider` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-shell.ts` | function | `appendAudioControl` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-shell.ts` | function | `volumeToSlider` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-shell.ts` | function | `sliderToVolume` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-shell.ts` | function | `getDisplayMapName` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-shell.ts` | function | `applyLiquidGlassPanel` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-shell.ts` | function | `createFpsTracker` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `apps/web/src/web-shell.ts` | interface | `WebShell` | oui | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `requireApp` | oui | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `createWebShell` | oui | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `stopViewportInputPropagation` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `createVolumeSlider` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `appendAudioControl` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `volumeToSlider` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `sliderToVolume` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `getDisplayMapName` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide | Helper homonyme local de `apps/web/src/web-map-bootstrap.ts`; doublon UI non C/H, pas un portage proprietaire. |
+| `apps/web/src/web-shell.ts` | function | `applyLiquidGlassPanel` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-shell.ts` | function | `createFpsTracker` | non | N/A | N/A (web UI shell) | New |  | Hors C/H | Valide |  |

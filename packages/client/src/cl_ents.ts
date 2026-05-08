@@ -51,6 +51,8 @@ import { MAX_PARSE_ENTITIES, type ClientRuntime, type frame_t } from "./client.j
 import { CL_BuildEntityEventEffects, type ClientActionEffect } from "./cl_fx.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (client event snapshot)
  * Category: New
  * Purpose: Describe one entity event extracted from the parsed packet entity stream.
  *
@@ -65,6 +67,8 @@ export interface ClientEntityEvent {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (client render snapshot)
  * Category: New
  * Purpose: Describe one interpolated entity snapshot ready for later renderer adapters.
  *
@@ -145,16 +149,15 @@ export function CL_FireEntityEvents(
 }
 
 /**
- * Original name: CL_FireEntityEvents / CL_EntityEvent
- * Source: client/cl_ents.c and client/cl_fx.c
- * Category: Ported
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (client event-effect adapter)
+ * Category: New
  *
- * Behavior:
- * - Builds the client-side Quake II effects implied by the current frame entity events.
+ * Purpose:
+ * - Compose the ported `CL_FireEntityEvents` extractor with the ported `CL_EntityEvent` effect builder.
  *
- * Porting notes:
- * - Keeps the existing event extraction path and then applies the `CL_EntityEvent` translation helper.
+ * Constraints:
+ * - Must not claim ownership of either C source entity; those remain covered by their dedicated ports.
  */
 export function CL_BuildFrameEntityEventEffects(
   runtime: ClientRuntime,
@@ -176,6 +179,8 @@ export function CL_BuildFrameEntityEventEffects(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (client frame snapshot helper)
  * Category: New
  * Purpose: Collect the entity states referenced by one parsed frame in network order.
  *
@@ -345,6 +350,8 @@ export function CL_BuildPacketEntitySnapshots(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (entity state copy helper)
  * Category: New
  * Purpose: Clone one entity state so exported snapshots keep value semantics.
  */

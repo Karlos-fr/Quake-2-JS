@@ -14,6 +14,8 @@ import type { RefreshEntitySyncStats } from "../../../packages/renderer-three/sr
 import type { LocalClientController } from "./local-client-controller.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
  * Category: New
  * Purpose: Describe the imperative browser shell hooks used by the current web bootstrap.
  *
@@ -56,6 +58,8 @@ export interface WebShell {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
  * Category: New
  * Purpose: Require the root application mount point.
  *
@@ -72,6 +76,8 @@ export function requireApp(): HTMLDivElement {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
  * Category: New
  * Purpose: Build the browser shell used for the live Quake II loading preview.
  *
@@ -223,6 +229,8 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   };
 
   /**
+   * Original name: N/A
+   * Source: N/A (web UI shell)
    * Category: New
    * Purpose: Keep the debug overlay compact by exposing only the first 12 non-empty information lines.
    */
@@ -378,6 +386,8 @@ export function createWebShell(app: HTMLDivElement): WebShell {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
  * Category: New
  * Purpose: Keep interactive overlay controls from bubbling into the viewport input/pointer-lock handlers.
  */
@@ -389,6 +399,12 @@ function stopViewportInputPropagation(element: HTMLElement): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
+ * Category: New
+ * Purpose: Create a compact DOM range input for browser-only audio controls.
+ */
 function createVolumeSlider(): HTMLInputElement {
   const slider = document.createElement("input");
   slider.type = "range";
@@ -400,6 +416,12 @@ function createVolumeSlider(): HTMLInputElement {
   return slider;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
+ * Category: New
+ * Purpose: Append one labeled control row to the browser-only audio panel.
+ */
 function appendAudioControl(panel: HTMLDivElement, labelText: string, control: HTMLElement): void {
   const label = document.createElement("label");
   label.textContent = labelText;
@@ -408,15 +430,29 @@ function appendAudioControl(panel: HTMLDivElement, labelText: string, control: H
   panel.append(label, control);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
+ * Category: New
+ * Purpose: Convert a normalized audio volume to the browser slider scale.
+ */
 function volumeToSlider(value: number): string {
   return `${Math.round(Math.max(0, Math.min(1, value)) * 100)}`;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
+ * Category: New
+ * Purpose: Convert the browser slider value back to a normalized audio volume.
+ */
 function sliderToVolume(value: string): number {
   return Math.max(0, Math.min(1, Number.parseFloat(value) / 100));
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
  * Category: New
  * Purpose: Format one BSP path into a compact UI label for the top-right map selector.
  */
@@ -426,6 +462,8 @@ function getDisplayMapName(mapPath: string): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
  * Category: New
  * Purpose: Apply one rounded liquid-glass treatment to lightweight browser UI panels.
  */
@@ -510,6 +548,8 @@ function applyLiquidGlassPanel(element: HTMLDivElement): HTMLDivElement {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web UI shell)
  * Category: New
  * Purpose: Track frame times and render a 60-second sliding FPS history in a compact canvas panel.
  *
@@ -540,6 +580,8 @@ function createFpsTracker(
   let accumulatedFrameMilliseconds = 0;
 
   /**
+   * Original name: N/A
+   * Source: N/A (web UI shell)
    * Category: New
    * Purpose: Paint the current FPS history as a green line over the trailing 60-second window.
    *

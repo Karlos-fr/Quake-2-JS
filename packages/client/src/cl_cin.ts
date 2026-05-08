@@ -190,9 +190,10 @@ export function SCR_RunCinematic(
 }
 
 /**
- * Original name: SCR_DrawCinematic
- * Source: client/cl_cin.c
- * Category: Ported
+ * Original name: N/A
+ * Source declaree: N/A (renderer raw cinematic adapter)
+ * Category: Adapter
+ * Adapts: SCR_DrawCinematic from client/cl_cin.c
  * Fidelity level: Close
  *
  * Behavior:
