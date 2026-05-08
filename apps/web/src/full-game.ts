@@ -2237,7 +2237,8 @@ function shouldDrawFullGameLoadingFrame(runtime: FullGameRuntime): boolean {
 
 function shouldDrawAttractLoopMenuOverlay(runtime: FullGameRuntime): boolean {
   return runtime.mode === "menu"
-    && runtime.serverHost.hasActiveAttractLoop()
+    && runtime.menu.keys.state.key_dest === keydest_t.key_menu
+    && (runtime.serverHost.hasActiveAttractLoop() || runtime.serverHost.hasActiveGameMap())
     && runtime.client.cls.state === connstate_t.ca_active
     && runtime.client.cl.refresh_prepped;
 }
