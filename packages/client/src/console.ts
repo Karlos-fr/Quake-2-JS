@@ -916,6 +916,7 @@ export function Con_DrawConsole(
 
   con.vislines = lines;
   context.keys.state.con_current = con.current;
+  context.keys.state.con_totallines = con.totallines;
   con.display = context.keys.state.con_display;
 
   const rowsToDraw = Math.max(0, (lines - 22) >> 3);
@@ -1093,6 +1094,7 @@ function forceMenuOff(context: ClientConsoleContext): void {
 function syncKeyStateFromConsole(context: ClientConsoleContext): void {
   context.keys.state.con_current = context.con.current;
   context.keys.state.con_display = context.con.display;
+  context.keys.state.con_totallines = context.con.totallines;
 }
 
 function getEffectiveCurrent(context: ClientConsoleContext): number {

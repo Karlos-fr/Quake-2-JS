@@ -34,21 +34,21 @@
 | `Quake-2-master/qcommon/common.c` | function | `Com_BeginRedirect` | `packages/qcommon/src/common.ts` | `Com_BeginRedirect` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_EndRedirect` | `packages/qcommon/src/common.ts` | `Com_EndRedirect` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_Printf` | `packages/qcommon/src/common.ts` | `Com_Printf` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `name` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_DPrintf` | `packages/qcommon/src/qcommon.ts` | `Com_DPrintf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_Error` | `packages/qcommon/src/qcommon.ts` | `Com_Error` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `recursive` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `jmp` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `jmp` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_Quit` | `packages/qcommon/src/qcommon.ts` | `Com_Quit` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_ServerState` | `packages/qcommon/src/qcommon.ts` | `Com_ServerState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_SetServerState` | `packages/qcommon/src/qcommon.ts` | `Com_SetServerState` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale va_list de `Com_Printf`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Buffer local/statique de print; couvert par `Com_Printf`/`Com_DPrintf`/`Com_Error`. |
+| `Quake-2-master/qcommon/common.c` | global | `name` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Buffer local de chemin `qconsole.log`; le port web n'ouvre pas de fichier natif. |
+| `Quake-2-master/qcommon/common.c` | function | `Com_DPrintf` | `packages/qcommon/src/qcommon.ts` | `Com_DPrintf` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale va_list de `Com_DPrintf`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Buffer local de `Com_DPrintf`; remplace par string JS bornee par l'appelant. |
+| `Quake-2-master/qcommon/common.c` | function | `Com_Error` | `packages/qcommon/src/qcommon.ts` | `Com_Error` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale va_list de `Com_Error`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Buffer statique de `Com_Error`; remplace par message string de l'exception structuree. |
+| `Quake-2-master/qcommon/common.c` | global | `recursive` | `packages/qcommon/src/qcommon.ts` | `QcommonMiscRuntime.recursive_error` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `jmp` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel `setjmp` externe remplace par exceptions structurees `QcommonSignal`. |
+| `Quake-2-master/qcommon/common.c` | function | `jmp` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel `longjmp` externe remplace par exceptions structurees `QcommonSignal`. |
+| `Quake-2-master/qcommon/common.c` | function | `Com_Quit` | `packages/qcommon/src/qcommon.ts` | `Com_Quit` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Com_ServerState` | `packages/qcommon/src/qcommon.ts` | `Com_ServerState` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Com_SetServerState` | `packages/qcommon/src/qcommon.ts` | `Com_SetServerState` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteChar` | `packages/qcommon/src/messages.ts` | `MSG_WriteChar` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | A verifier | A redecouper |  |

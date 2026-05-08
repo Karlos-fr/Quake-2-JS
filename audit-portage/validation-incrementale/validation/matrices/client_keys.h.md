@@ -40,72 +40,72 @@
 | `Quake-2-master/client/keys.h` | macro | `K_PGUP` | `packages/client/src/keys.ts` | `K_PGUP` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | macro | `K_HOME` | `packages/client/src/keys.ts` | `K_HOME` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | macro | `K_END` | `packages/client/src/keys.ts` | `K_END` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_HOME` | `packages/client/src/keys.ts` | `K_KP_HOME` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_UPARROW` | `packages/client/src/keys.ts` | `K_KP_UPARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_PGUP` | `packages/client/src/keys.ts` | `K_KP_PGUP` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_LEFTARROW` | `packages/client/src/keys.ts` | `K_KP_LEFTARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_5` | `packages/client/src/keys.ts` | `K_KP_5` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_RIGHTARROW` | `packages/client/src/keys.ts` | `K_KP_RIGHTARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_END` | `packages/client/src/keys.ts` | `K_KP_END` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_DOWNARROW` | `packages/client/src/keys.ts` | `K_KP_DOWNARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_PGDN` | `packages/client/src/keys.ts` | `K_KP_PGDN` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_ENTER` | `packages/client/src/keys.ts` | `K_KP_ENTER` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_INS` | `packages/client/src/keys.ts` | `K_KP_INS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_DEL` | `packages/client/src/keys.ts` | `K_KP_DEL` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_SLASH` | `packages/client/src/keys.ts` | `K_KP_SLASH` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_MINUS` | `packages/client/src/keys.ts` | `K_KP_MINUS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_KP_PLUS` | `packages/client/src/keys.ts` | `K_KP_PLUS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_PAUSE` | `packages/client/src/keys.ts` | `K_PAUSE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_MOUSE1` | `packages/client/src/keys.ts` | `K_MOUSE1` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_MOUSE2` | `packages/client/src/keys.ts` | `K_MOUSE2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_MOUSE3` | `packages/client/src/keys.ts` | `K_MOUSE3` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_JOY1` | `packages/client/src/keys.ts` | `K_JOY1` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_JOY2` | `packages/client/src/keys.ts` | `K_JOY2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_JOY3` | `packages/client/src/keys.ts` | `K_JOY3` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_JOY4` | `packages/client/src/keys.ts` | `K_JOY4` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX1` | `packages/client/src/keys.ts` | `K_AUX1` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX2` | `packages/client/src/keys.ts` | `K_AUX2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX3` | `packages/client/src/keys.ts` | `K_AUX3` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX4` | `packages/client/src/keys.ts` | `K_AUX4` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX5` | `packages/client/src/keys.ts` | `K_AUX5` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX6` | `packages/client/src/keys.ts` | `K_AUX6` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX7` | `packages/client/src/keys.ts` | `K_AUX7` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX8` | `packages/client/src/keys.ts` | `K_AUX8` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX9` | `packages/client/src/keys.ts` | `K_AUX9` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX10` | `packages/client/src/keys.ts` | `K_AUX10` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX11` | `packages/client/src/keys.ts` | `K_AUX11` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX12` | `packages/client/src/keys.ts` | `K_AUX12` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX13` | `packages/client/src/keys.ts` | `K_AUX13` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX14` | `packages/client/src/keys.ts` | `K_AUX14` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX15` | `packages/client/src/keys.ts` | `K_AUX15` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX16` | `packages/client/src/keys.ts` | `K_AUX16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX17` | `packages/client/src/keys.ts` | `K_AUX17` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX18` | `packages/client/src/keys.ts` | `K_AUX18` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX19` | `packages/client/src/keys.ts` | `K_AUX19` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX20` | `packages/client/src/keys.ts` | `K_AUX20` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX21` | `packages/client/src/keys.ts` | `K_AUX21` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX22` | `packages/client/src/keys.ts` | `K_AUX22` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX23` | `packages/client/src/keys.ts` | `K_AUX23` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX24` | `packages/client/src/keys.ts` | `K_AUX24` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX25` | `packages/client/src/keys.ts` | `K_AUX25` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX26` | `packages/client/src/keys.ts` | `K_AUX26` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX27` | `packages/client/src/keys.ts` | `K_AUX27` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX28` | `packages/client/src/keys.ts` | `K_AUX28` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX29` | `packages/client/src/keys.ts` | `K_AUX29` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX30` | `packages/client/src/keys.ts` | `K_AUX30` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX31` | `packages/client/src/keys.ts` | `K_AUX31` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_AUX32` | `packages/client/src/keys.ts` | `K_AUX32` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_MWHEELDOWN` | `packages/client/src/keys.ts` | `K_MWHEELDOWN` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_MWHEELUP` | `packages/client/src/keys.ts` | `K_MWHEELUP` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `keybindings` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `key_repeats` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `anykeydown` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `chat_buffer` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `chat_bufferlen` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `chat_team` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | function | `Key_Event` | `packages/client/src/keys.ts` | `Key_Event` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | function | `Key_Init` | `packages/client/src/keys.ts` | `Key_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | function | `Key_WriteBindings` | `packages/client/src/keys.ts` | `Key_WriteBindings` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | function | `Key_SetBinding` | `packages/client/src/keys.ts` | `Key_SetBinding` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | function | `Key_ClearStates` | `packages/client/src/keys.ts` | `Key_ClearStates` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | function | `Key_GetKey` | `packages/client/src/keys.ts` | `Key_GetKey` | A verifier | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_HOME` | `packages/client/src/keys.ts` | `K_KP_HOME` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_UPARROW` | `packages/client/src/keys.ts` | `K_KP_UPARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_PGUP` | `packages/client/src/keys.ts` | `K_KP_PGUP` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_LEFTARROW` | `packages/client/src/keys.ts` | `K_KP_LEFTARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_5` | `packages/client/src/keys.ts` | `K_KP_5` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_RIGHTARROW` | `packages/client/src/keys.ts` | `K_KP_RIGHTARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_END` | `packages/client/src/keys.ts` | `K_KP_END` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_DOWNARROW` | `packages/client/src/keys.ts` | `K_KP_DOWNARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_PGDN` | `packages/client/src/keys.ts` | `K_KP_PGDN` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_ENTER` | `packages/client/src/keys.ts` | `K_KP_ENTER` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_INS` | `packages/client/src/keys.ts` | `K_KP_INS` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_DEL` | `packages/client/src/keys.ts` | `K_KP_DEL` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_SLASH` | `packages/client/src/keys.ts` | `K_KP_SLASH` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_MINUS` | `packages/client/src/keys.ts` | `K_KP_MINUS` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_KP_PLUS` | `packages/client/src/keys.ts` | `K_KP_PLUS` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_PAUSE` | `packages/client/src/keys.ts` | `K_PAUSE` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_MOUSE1` | `packages/client/src/keys.ts` | `K_MOUSE1` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_MOUSE2` | `packages/client/src/keys.ts` | `K_MOUSE2` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_MOUSE3` | `packages/client/src/keys.ts` | `K_MOUSE3` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_JOY1` | `packages/client/src/keys.ts` | `K_JOY1` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_JOY2` | `packages/client/src/keys.ts` | `K_JOY2` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_JOY3` | `packages/client/src/keys.ts` | `K_JOY3` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_JOY4` | `packages/client/src/keys.ts` | `K_JOY4` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX1` | `packages/client/src/keys.ts` | `K_AUX1` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX2` | `packages/client/src/keys.ts` | `K_AUX2` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX3` | `packages/client/src/keys.ts` | `K_AUX3` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX4` | `packages/client/src/keys.ts` | `K_AUX4` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX5` | `packages/client/src/keys.ts` | `K_AUX5` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX6` | `packages/client/src/keys.ts` | `K_AUX6` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX7` | `packages/client/src/keys.ts` | `K_AUX7` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX8` | `packages/client/src/keys.ts` | `K_AUX8` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX9` | `packages/client/src/keys.ts` | `K_AUX9` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX10` | `packages/client/src/keys.ts` | `K_AUX10` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX11` | `packages/client/src/keys.ts` | `K_AUX11` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX12` | `packages/client/src/keys.ts` | `K_AUX12` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX13` | `packages/client/src/keys.ts` | `K_AUX13` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX14` | `packages/client/src/keys.ts` | `K_AUX14` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX15` | `packages/client/src/keys.ts` | `K_AUX15` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX16` | `packages/client/src/keys.ts` | `K_AUX16` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX17` | `packages/client/src/keys.ts` | `K_AUX17` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX18` | `packages/client/src/keys.ts` | `K_AUX18` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX19` | `packages/client/src/keys.ts` | `K_AUX19` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX20` | `packages/client/src/keys.ts` | `K_AUX20` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX21` | `packages/client/src/keys.ts` | `K_AUX21` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX22` | `packages/client/src/keys.ts` | `K_AUX22` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX23` | `packages/client/src/keys.ts` | `K_AUX23` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX24` | `packages/client/src/keys.ts` | `K_AUX24` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX25` | `packages/client/src/keys.ts` | `K_AUX25` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX26` | `packages/client/src/keys.ts` | `K_AUX26` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX27` | `packages/client/src/keys.ts` | `K_AUX27` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX28` | `packages/client/src/keys.ts` | `K_AUX28` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX29` | `packages/client/src/keys.ts` | `K_AUX29` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX30` | `packages/client/src/keys.ts` | `K_AUX30` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX31` | `packages/client/src/keys.ts` | `K_AUX31` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_AUX32` | `packages/client/src/keys.ts` | `K_AUX32` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_MWHEELDOWN` | `packages/client/src/keys.ts` | `K_MWHEELDOWN` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_MWHEELUP` | `packages/client/src/keys.ts` | `K_MWHEELUP` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `keybindings` | `packages/client/src/keys.ts` | `client_key_state_t.keybindings` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `key_repeats` | `packages/client/src/keys.ts` | `client_key_state_t.key_repeats` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `anykeydown` | `packages/client/src/keys.ts` | `client_key_state_t.anykeydown` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `chat_buffer` | `packages/client/src/keys.ts` | `client_key_state_t.chat_buffer` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `chat_bufferlen` | `packages/client/src/keys.ts` | `client_key_state_t.chat_bufferlen` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `chat_team` | `packages/client/src/keys.ts` | `client_key_state_t.chat_team` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | function | `Key_Event` | `packages/client/src/keys.ts` | `Key_Event` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | function | `Key_Init` | `packages/client/src/keys.ts` | `Key_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | function | `Key_WriteBindings` | `packages/client/src/keys.ts` | `Key_WriteBindings` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | function | `Key_SetBinding` | `packages/client/src/keys.ts` | `Key_SetBinding` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | function | `Key_ClearStates` | `packages/client/src/keys.ts` | `Key_ClearStates` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | function | `Key_GetKey` | `packages/client/src/keys.ts` | `Key_GetKey` | Valide | A redecouper |  |

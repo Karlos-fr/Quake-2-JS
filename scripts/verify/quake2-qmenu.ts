@@ -81,7 +81,7 @@ list.itemnames = ["easy", "medium", "hard", null];
 const spin = createMenuList(MTYPE_SPINCONTROL);
 spin.generic.name = "mode";
 spin.generic.y = 120;
-spin.itemnames = ["off", "on", null];
+spin.itemnames = ["off", "two\nlines", null];
 
 Menu_AddItem(context, menu, action);
 Menu_AddItem(context, menu, separator);
@@ -163,5 +163,40 @@ assert.ok(
     context.state.drawStrings.some((command) => command.text === "hard"),
   "Menu_Draw list item strings missing"
 );
+assert.ok(
+  context.state.drawFills.some((command) => command.x === -92 && command.y === 265 && command.w === 128 && command.h === 10 && command.c === 16),
+  "Menu_Draw list highlight fill geometry mismatch"
+);
+
+context.state.drawChars.length = 0;
+context.state.drawFills.length = 0;
+context.state.drawStrings.length = 0;
+menu.cursor = 3;
+slider.curvalue = 5;
+Menu_Draw(context, menu);
+
+assert.equal(slider.range, 0.5, "Slider_Draw range mismatch");
+assert.equal(
+  context.state.drawChars.filter((command) => command.c === 129).length,
+  10,
+  "Slider_Draw should emit ten rail glyphs"
+);
+assert.ok(context.state.drawChars.some((command) => command.c === 128), "Slider_Draw start glyph missing");
+assert.ok(context.state.drawChars.some((command) => command.c === 130), "Slider_Draw end glyph missing");
+assert.ok(
+  context.state.drawChars.some((command) => command.c === 131 && command.x === 80 && command.y === 235),
+  "Slider_Draw knob position mismatch"
+);
+
+context.state.drawChars.length = 0;
+context.state.drawFills.length = 0;
+context.state.drawStrings.length = 0;
+menu.cursor = 5;
+spin.curvalue = 1;
+Menu_Draw(context, menu);
+
+assert.ok(context.state.drawStrings.some((command) => command.text === "two"), "SpinControl_Draw first line missing");
+assert.ok(context.state.drawStrings.some((command) => command.text === "lines"), "SpinControl_Draw second line missing");
+assert.ok(context.state.drawStrings.some((command) => command.text === "----"), "Separator_Draw label missing");
 
 console.log("quake2-qmenu: ok");

@@ -78,6 +78,12 @@ const quality_items = ["low", "high", null] as const;
 const compatibility_items = ["max compatibility", "max performance", null] as const;
 const crosshair_names = ["none", "cross", "dot", "angle", null] as const;
 
+/**
+ * Original name: M_UnbindCommand
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function M_UnbindCommand(context: ClientMenuContext, command: string): void {
   const length = command.length;
 
@@ -93,6 +99,12 @@ function M_UnbindCommand(context: ClientMenuContext, command: string): void {
   }
 }
 
+/**
+ * Original name: M_FindKeysForCommand
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function M_FindKeysForCommand(context: ClientMenuContext, command: string): [number, number] {
   const length = command.length;
   const matches: [number, number] = [-1, -1];
@@ -116,6 +128,12 @@ function M_FindKeysForCommand(context: ClientMenuContext, command: string): [num
   return matches;
 }
 
+/**
+ * Original name: KeyCursorDrawFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function KeyCursorDrawFunc(context: ClientMenuContext, menu: import("./qmenu.js").menuframework_s): void {
   if (context.state.bind_grab) {
     QMenu_DrawChar(context.qmenu, menu.x, menu.y + menu.cursor * 9, "=".charCodeAt(0));
@@ -129,6 +147,12 @@ function KeyCursorDrawFunc(context: ClientMenuContext, menu: import("./qmenu.js"
   }
 }
 
+/**
+ * Original name: DrawKeyBindingFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function DrawKeyBindingFunc(context: ClientMenuContext, self: unknown): void {
   const action = self as import("./qmenu.js").menuaction_s;
   const [command] = bindnames[action.generic.localdata[0]] ?? ["", ""];
@@ -151,6 +175,12 @@ function DrawKeyBindingFunc(context: ClientMenuContext, self: unknown): void {
   }
 }
 
+/**
+ * Original name: KeyBindingFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function KeyBindingFunc(context: ClientMenuContext, self: unknown): void {
   const action = self as import("./qmenu.js").menuaction_s;
   const [command] = bindnames[action.generic.localdata[0]] ?? ["", ""];
@@ -203,6 +233,12 @@ export function Keys_MenuInit(context: ClientMenuContext): void {
   Menu_Center(context.qmenu, menu);
 }
 
+/**
+ * Original name: Keys_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function Keys_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   Menu_AdjustCursor(context.qmenu, context.state.s_keys_menu, 1);
@@ -263,31 +299,73 @@ export function M_Menu_Keys_f(context: ClientMenuContext): void {
   );
 }
 
+/**
+ * Original name: CrosshairFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function CrosshairFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "crosshair", context.state.s_options_crosshair_box.curvalue);
 }
 
+/**
+ * Original name: JoystickFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function JoystickFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "in_joystick", context.state.s_options_joystick_box.curvalue);
 }
 
+/**
+ * Original name: CustomizeControlsFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function CustomizeControlsFunc(context: ClientMenuContext): void {
   M_Menu_Keys_f(context);
 }
 
+/**
+ * Original name: AlwaysRunFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function AlwaysRunFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "cl_run", context.state.s_options_alwaysrun_box.curvalue);
 }
 
+/**
+ * Original name: FreeLookFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function FreeLookFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "freelook", context.state.s_options_freelook_box.curvalue);
 }
 
+/**
+ * Original name: MouseSpeedFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function MouseSpeedFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "sensitivity", context.state.s_options_sensitivity_slider.curvalue / 2.0);
 }
 
-function clampCvar(min: number, max: number, value: number): number {
+/**
+ * Original name: ClampCvar
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+function ClampCvar(min: number, max: number, value: number): number {
   if (value < min) {
     return min;
   }
@@ -297,41 +375,59 @@ function clampCvar(min: number, max: number, value: number): number {
   return value;
 }
 
+/**
+ * Original name: ControlsSetMenuItemValues
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function ControlsSetMenuItemValues(context: ClientMenuContext): void {
   context.state.s_options_sfxvolume_slider.curvalue = Cvar_VariableValue(context.cvar, "s_volume") * 10;
   context.state.s_options_cdvolume_box.curvalue = Number(!Cvar_VariableValue(context.cvar, "cd_nocd"));
   context.state.s_options_quality_list.curvalue = Number(!Cvar_VariableValue(context.cvar, "s_loadas8bit"));
   context.state.s_options_sensitivity_slider.curvalue = Cvar_VariableValue(context.cvar, "sensitivity") * 2;
 
-  Cvar_SetValue(context.cvar, "cl_run", clampCvar(0, 1, Cvar_VariableValue(context.cvar, "cl_run")));
+  Cvar_SetValue(context.cvar, "cl_run", ClampCvar(0, 1, Cvar_VariableValue(context.cvar, "cl_run")));
   context.state.s_options_alwaysrun_box.curvalue = Cvar_VariableValue(context.cvar, "cl_run");
 
   context.state.s_options_invertmouse_box.curvalue = Cvar_VariableValue(context.cvar, "m_pitch") < 0 ? 1 : 0;
 
-  Cvar_SetValue(context.cvar, "lookspring", clampCvar(0, 1, Cvar_VariableValue(context.cvar, "lookspring")));
+  Cvar_SetValue(context.cvar, "lookspring", ClampCvar(0, 1, Cvar_VariableValue(context.cvar, "lookspring")));
   context.state.s_options_lookspring_box.curvalue = Cvar_VariableValue(context.cvar, "lookspring");
 
-  Cvar_SetValue(context.cvar, "lookstrafe", clampCvar(0, 1, Cvar_VariableValue(context.cvar, "lookstrafe")));
+  Cvar_SetValue(context.cvar, "lookstrafe", ClampCvar(0, 1, Cvar_VariableValue(context.cvar, "lookstrafe")));
   context.state.s_options_lookstrafe_box.curvalue = Cvar_VariableValue(context.cvar, "lookstrafe");
 
-  Cvar_SetValue(context.cvar, "freelook", clampCvar(0, 1, Cvar_VariableValue(context.cvar, "freelook")));
+  Cvar_SetValue(context.cvar, "freelook", ClampCvar(0, 1, Cvar_VariableValue(context.cvar, "freelook")));
   context.state.s_options_freelook_box.curvalue = Cvar_VariableValue(context.cvar, "freelook");
 
-  Cvar_SetValue(context.cvar, "crosshair", clampCvar(0, 3, Cvar_VariableValue(context.cvar, "crosshair")));
+  Cvar_SetValue(context.cvar, "crosshair", ClampCvar(0, 3, Cvar_VariableValue(context.cvar, "crosshair")));
   context.state.s_options_crosshair_box.curvalue = Cvar_VariableValue(context.cvar, "crosshair");
 
-  Cvar_SetValue(context.cvar, "in_joystick", clampCvar(0, 1, Cvar_VariableValue(context.cvar, "in_joystick")));
+  Cvar_SetValue(context.cvar, "in_joystick", ClampCvar(0, 1, Cvar_VariableValue(context.cvar, "in_joystick")));
   context.state.s_options_joystick_box.curvalue = Cvar_VariableValue(context.cvar, "in_joystick");
 
   context.state.s_options_noalttab_box.curvalue = Cvar_VariableValue(context.cvar, "win_noalttab");
 }
 
+/**
+ * Original name: ControlsResetDefaultsFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function ControlsResetDefaultsFunc(context: ClientMenuContext): void {
   Cbuf_AddText(context.cmd, "exec default.cfg\n");
   Cbuf_Execute(context.cmd);
   ControlsSetMenuItemValues(context);
 }
 
+/**
+ * Original name: InvertMouseFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function InvertMouseFunc(context: ClientMenuContext): void {
   const pitch = Cvar_VariableValue(context.cvar, "m_pitch");
   if (context.state.s_options_invertmouse_box.curvalue === 0) {
@@ -341,22 +437,52 @@ function InvertMouseFunc(context: ClientMenuContext): void {
   }
 }
 
+/**
+ * Original name: LookspringFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function LookspringFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "lookspring", context.state.s_options_lookspring_box.curvalue);
 }
 
+/**
+ * Original name: LookstrafeFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function LookstrafeFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "lookstrafe", context.state.s_options_lookstrafe_box.curvalue);
 }
 
+/**
+ * Original name: UpdateVolumeFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function UpdateVolumeFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "s_volume", context.state.s_options_sfxvolume_slider.curvalue / 10);
 }
 
+/**
+ * Original name: UpdateCDVolumeFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function UpdateCDVolumeFunc(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "cd_nocd", Number(!context.state.s_options_cdvolume_box.curvalue));
 }
 
+/**
+ * Original name: ConsoleFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function ConsoleFunc(context: ClientMenuContext): void {
   if (context.client.cl.attractloop) {
     Cbuf_AddText(context.cmd, "killserver\n");
@@ -370,6 +496,12 @@ function ConsoleFunc(context: ClientMenuContext): void {
   context.keys.state.key_dest = keydest_t.key_console;
 }
 
+/**
+ * Original name: UpdateSoundQualityFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function UpdateSoundQualityFunc(context: ClientMenuContext): void {
   if (context.state.s_options_quality_list.curvalue) {
     Cvar_SetValue(context.cvar, "s_khz", 22);
@@ -543,6 +675,12 @@ export function Options_MenuInit(context: ClientMenuContext): void {
   Menu_AddItem(context.qmenu, menu, consoleAction);
 }
 
+/**
+ * Original name: Options_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function Options_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   M_Banner(context, "m_banner_options");

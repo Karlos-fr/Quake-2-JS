@@ -3,9 +3,44 @@
 - Source: `Quake-2-master/client/qmenu.c`
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/client_qmenu.c.md`
 - Cible TS proprietaire: `packages/client/src/qmenu.ts`
-- Statut: En cours
+- Statut: Termine
 
 ## Dernier lot traite
+
+Lot final widgets de fin de fichier:
+
+- `Menulist_DoEnter`, `MenuList_Draw`, `Separator_Draw`
+- `Slider_DoSlide`, `SLIDER_RANGE`, `Slider_Draw`
+- `SpinControl_DoEnter`, `SpinControl_DoSlide`, `SpinControl_Draw`
+- faux positifs locaux `start`, `y`, `i`, `buffer`
+
+## Validation effectuee
+
+- Source C comparee a `packages/client/src/qmenu.ts` pour les widgets de fin de fichier.
+- Ownership confirme: portage central dans `packages/client/src/qmenu.ts`, re-export du module via `packages/client/src/index.ts`.
+- Doublons: les declarations statiques et definitions C generees en doublon dans la matrice pointent vers les memes implementations TS et ont ete validees ensemble.
+- Faux positifs locaux marques `Non applicable`: `start`, `y`, `i`, `buffer`.
+- Commentaires d'en-tete ajoutes dans `packages/client/src/qmenu.ts` pour `Menulist_DoEnter`, `MenuList_Draw`, `Separator_Draw`, `Slider_DoSlide`, `Slider_Draw`, `SpinControl_DoEnter`, `SpinControl_DoSlide`, `SpinControl_Draw`.
+- Runtime: draw widgets atteignables via `Menu_Draw` depuis les menus portes; slide widgets atteignables via `Default_MenuKey` puis `Menu_SlideItem`. `Menulist_DoEnter` et `SpinControl_DoEnter` sont conserves pour parite source mais restent non appeles comme dans le C actif, ou les cas enter list/spincontrol sont commentes.
+- `apps/web`: `apps/web/src/full-game.ts` branche `createClientQMenuContext`, nettoie les buffers qmenu par frame et consomme les sorties via `M_Draw`.
+- `packages/renderer-three`: applicable comme adaptateur ref bas niveau via `ref-gl-host.ts`/`gl_draw.ts` pour glyphes et fills 2D; aucune sortie scene 3D, modele, frame, particule, beam, dlight, areabit, camera ou scene n'est produite par ce lot.
+
+## Tests de reference
+
+- `npm run verify:qmenu` OK
+- `npm run verify:qmenu:header` OK
+- `npm run verify:menu` OK
+- `npm run verify:full-game:newgame` OK
+- `npm run verify:web-render-order` OK
+- `npm run typecheck` OK
+
+## Prochain lot recommande
+
+Aucun pour `client/qmenu.c`: toutes les lignes de la matrice sont `Valide` ou `Non applicable`.
+
+## Historique
+
+### Lot initial large
 
 Lot initial large: constantes de colonnes/dimensions/dessin, actions, field enter/draw/key, helpers de menu generiques et draw strings:
 
@@ -16,7 +51,7 @@ Lot initial large: constantes de colonnes/dimensions/dessin, actions, field ente
 - `Menu_DrawString`, `Menu_DrawStringDark`, `Menu_DrawStringR2L`, `Menu_DrawStringR2LDark`
 - `Menu_ItemAtCursor`, `Menu_SelectItem`, `Menu_SetStatusBar`, `Menu_SlideItem`, `Menu_TallySlots`
 
-## Validation effectuee
+### Validation effectuee
 
 - Source C comparee a `packages/client/src/qmenu.ts`.
 - Ownership confirme: portage central dans `packages/client/src/qmenu.ts`, re-export dans `packages/client/src/index.ts`.
@@ -27,14 +62,14 @@ Lot initial large: constantes de colonnes/dimensions/dessin, actions, field ente
 - `apps/web`: `apps/web/src/full-game.ts` cree `createClientQMenuContext`, branche `getMilliseconds`, clipboard, `onDrawChar` et `onDrawFill`, nettoie les buffers qmenu par frame et appelle `M_Draw`.
 - `packages/renderer-three`: applicable comme adaptateur ref bas niveau via `ref-gl-host.ts`/`gl_draw.ts` pour `Draw_Char` et `Draw_Fill`; pas de sortie scene 3D attendue pour ces entites qmenu hors glyphes/fill 2D.
 
-## Tests de reference
+### Tests de reference
 
 - `npm run verify:qmenu` OK
 - `npm run verify:qmenu:header` OK
 - `npm run verify:full-game:newgame` OK
 - `npm run typecheck` OK
 
-## Prochain lot recommande
+### Prochain lot recommande
 
 Traiter la famille widgets de fin de fichier:
 

@@ -957,6 +957,15 @@ assert.throws(
     (error as { signal: string; code: number }).code === ERR_DROP,
   "Com_Error mismatch"
 );
+const recoverableErrorRuntime = createQcommonMiscRuntime();
+assert.throws(() => Com_Error(recoverableErrorRuntime, ERR_DROP, "recoverable"), /recoverable/, "Com_Error ERR_DROP throw mismatch");
+assert.equal(recoverableErrorRuntime.recursive_error, false, "Com_Error ERR_DROP should clear recursive guard");
+recoverableErrorRuntime.recursive_error = true;
+assert.throws(
+  () => Com_Error(recoverableErrorRuntime, ERR_DROP, "second"),
+  /recursive error after: second/,
+  "Com_Error recursive guard mismatch"
+);
 assert.throws(
   () => Com_Quit(createQcommonMiscRuntime()),
   (error: unknown) =>

@@ -1015,6 +1015,18 @@ export function Menu_TallySlots(context: ClientQMenuContext, menu: menuframework
   return total;
 }
 
+/**
+ * Original name: Menulist_DoEnter
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Updates the list value from the menu cursor and invokes the item callback.
+ *
+ * Porting notes:
+ * - Kept for source parity; the active Quake II `Menu_SelectItem` path leaves list enter disabled.
+ */
 function Menulist_DoEnter(l: menulist_s): void {
   const start = Math.trunc(l.generic.y / 10) + 1;
   const cursor = l.generic.parent?.cursor ?? 0;
@@ -1023,6 +1035,15 @@ function Menulist_DoEnter(l: menulist_s): void {
   l.generic.callback?.(l);
 }
 
+/**
+ * Original name: MenuList_Draw
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Draws the list label, current-value highlight fill and all visible list choices.
+ */
 function MenuList_Draw(context: ClientQMenuContext, l: menulist_s): void {
   const parentX = l.generic.parent?.x ?? 0;
   const parentY = l.generic.parent?.y ?? 0;
@@ -1064,6 +1085,15 @@ function MenuList_Draw(context: ClientQMenuContext, l: menulist_s): void {
   }
 }
 
+/**
+ * Original name: Separator_Draw
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Draws a separator label when one is present.
+ */
 function Separator_Draw(context: ClientQMenuContext, s: menuseparator_s): void {
   if (s.generic.name) {
     emitDrawString(
@@ -1077,6 +1107,15 @@ function Separator_Draw(context: ClientQMenuContext, s: menuseparator_s): void {
   }
 }
 
+/**
+ * Original name: Slider_DoSlide
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies a slider delta, clamps to min/max and invokes the item callback.
+ */
 function Slider_DoSlide(s: menuslider_s, dir: number): void {
   s.curvalue += dir;
 
@@ -1089,6 +1128,15 @@ function Slider_DoSlide(s: menuslider_s, dir: number): void {
   s.generic.callback?.(s);
 }
 
+/**
+ * Original name: Slider_Draw
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Draws the slider label, rail and knob using the original ten-slot range.
+ */
 function Slider_Draw(context: ClientQMenuContext, s: menuslider_s): void {
   const parentX = s.generic.parent?.x ?? 0;
   const parentY = s.generic.parent?.y ?? 0;
@@ -1136,6 +1184,18 @@ function Slider_Draw(context: ClientQMenuContext, s: menuslider_s): void {
   );
 }
 
+/**
+ * Original name: SpinControl_DoEnter
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances a spincontrol with wraparound and invokes the item callback.
+ *
+ * Porting notes:
+ * - Kept for source parity; the active Quake II `Menu_SelectItem` path leaves spincontrol enter disabled.
+ */
 function SpinControl_DoEnter(s: menulist_s): void {
   s.curvalue += 1;
 
@@ -1146,6 +1206,15 @@ function SpinControl_DoEnter(s: menulist_s): void {
   s.generic.callback?.(s);
 }
 
+/**
+ * Original name: SpinControl_DoSlide
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies a spincontrol delta, clamps to valid item names and invokes the item callback.
+ */
 function SpinControl_DoSlide(s: menulist_s, dir: number): void {
   s.curvalue += dir;
 
@@ -1158,6 +1227,15 @@ function SpinControl_DoSlide(s: menulist_s, dir: number): void {
   s.generic.callback?.(s);
 }
 
+/**
+ * Original name: SpinControl_Draw
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Draws the spincontrol label and current value, splitting values containing a newline across two rows.
+ */
 function SpinControl_Draw(context: ClientQMenuContext, s: menulist_s): void {
   const parentX = s.generic.parent?.x ?? 0;
   const parentY = s.generic.parent?.y ?? 0;

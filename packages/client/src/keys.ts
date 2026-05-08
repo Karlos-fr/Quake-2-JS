@@ -206,6 +206,7 @@ export interface client_key_state_t {
   console_open: qboolean;
   con_display: number;
   con_current: number;
+  con_totallines: number;
 }
 
 export interface KeyBindingWriter {
@@ -372,7 +373,8 @@ export function createClientKeyContext(optionsOrHooks: ClientKeyContextOptions |
       key_dest: keydest_t.key_game,
       console_open: false,
       con_display: 0,
-      con_current: 0
+      con_current: 0,
+      con_totallines: 0
     },
     hooks: options.hooks ?? {},
     ...(options.cmd ? { cmd: options.cmd } : {}),
@@ -382,6 +384,19 @@ export function createClientKeyContext(optionsOrHooks: ClientKeyContextOptions |
   };
 }
 
+/**
+ * Original name: CompleteCommand
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Completes the current console edit line by trying commands first, then
+ *   cvars, and rewrites the prompt as `]/<completion> ` when a match exists.
+ *
+ * Porting notes:
+ * - Uses injected command/cvar runtimes or hooks instead of file-global engines.
+ */
 export function CompleteCommand(context: ClientKeyContext): void {
   let s = getEditLine(context).slice(1);
   if (s.startsWith("\\") || s.startsWith("/")) {
@@ -404,6 +419,20 @@ export function CompleteCommand(context: ClientKeyContext): void {
   setEditLine(context, next);
 }
 
+/**
+ * Original name: Key_Console
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Handles console line editing, history navigation, clipboard paste, command
+ *   submission, command completion and console scrollback keys.
+ *
+ * Porting notes:
+ * - Console state is mirrored through the key context so this module can own
+ *   the original `keys.c` editing behavior without importing `console.c`.
+ */
 export function Key_Console(context: ClientKeyContext, key: number): void {
   const state = context.state;
   key = translateKeypadConsoleKey(key);
@@ -500,7 +529,7 @@ export function Key_Console(context: ClientKeyContext, key: number): void {
   }
 
   if (key === K_HOME || key === K_KP_HOME) {
-    state.con_display = state.con_current - 10;
+    state.con_display = state.con_current - state.con_totallines + 10;
     return;
   }
 
@@ -516,6 +545,19 @@ export function Key_Console(context: ClientKeyContext, key: number): void {
   appendToEditLine(context, String.fromCharCode(key));
 }
 
+/**
+ * Original name: Key_Message
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Edits the chat buffer, sends `say` or `say_team` commands on Enter, and
+ *   cancels chat input on Escape.
+ *
+ * Porting notes:
+ * - The fixed C char buffer is represented as a string plus mirrored length.
+ */
 export function Key_Message(context: ClientKeyContext, key: number): void {
   const state = context.state;
 
@@ -877,6 +919,19 @@ export function Key_Init(context: ClientKeyContext): void {
   context.hooks.onInit?.();
 }
 
+/**
+ * Original name: Key_Event
+ * Source: client/keys.c, declared in client/keys.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Dispatches one key transition through waits, repeats, bindings, console,
+ *   chat and menu routing exactly as the original client key entry point.
+ *
+ * Porting notes:
+ * - Receives an explicit key context instead of using the `keys.c` globals.
+ */
 export function Key_Event(context: ClientKeyContext, key: number, down: qboolean, time: number): void {
   if (key < 0 || key >= KEY_ARRAY_SIZE) {
     return;
@@ -1015,6 +1070,19 @@ export function Key_Event(context: ClientKeyContext, key: number, down: qboolean
   context.hooks.onKeyEvent?.(key, down, time);
 }
 
+/**
+ * Original name: Key_ClearStates
+ * Source: client/keys.c, declared in client/keys.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Releases every pressed or repeating key through Key_Event, clears repeat
+ *   counters and resets aggregate key state.
+ *
+ * Porting notes:
+ * - Receives an explicit key context instead of using the `keys.c` globals.
+ */
 export function Key_ClearStates(context: ClientKeyContext): void {
   context.state.anykeydown = 0;
 
@@ -1030,6 +1098,20 @@ export function Key_ClearStates(context: ClientKeyContext): void {
   context.hooks.onClearStates?.();
 }
 
+/**
+ * Original name: Key_GetKey
+ * Source: client/keys.c, declared in client/keys.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Arms the wait-for-key sentinel, pumps key events when a host is available
+ *   and returns the captured key number.
+ *
+ * Porting notes:
+ * - Test and web hosts can inject synchronous wait hooks instead of spinning
+ *   in a blocking loop.
+ */
 export function Key_GetKey(context: ClientKeyContext): number {
   context.state.key_waiting = -1;
 

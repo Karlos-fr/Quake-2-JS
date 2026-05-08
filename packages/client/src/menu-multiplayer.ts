@@ -64,18 +64,42 @@ import {
   type menulist_s
 } from "./qmenu.js";
 
+/**
+ * Original name: PlayerSetupFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function PlayerSetupFunc(context: ClientMenuContext): void {
   M_Menu_PlayerConfig_f(context);
 }
 
+/**
+ * Original name: JoinNetworkServerFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function JoinNetworkServerFunc(context: ClientMenuContext): void {
   M_Menu_JoinServer_f(context);
 }
 
+/**
+ * Original name: StartNetworkServerFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function StartNetworkServerFunc(context: ClientMenuContext): void {
   M_Menu_StartServer_f(context);
 }
 
+/**
+ * Original name: Multiplayer_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function Multiplayer_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   M_Banner(context, "m_banner_multiplayer");
@@ -191,6 +215,12 @@ export function M_AddToServerList(context: ClientMenuContext, adr: netadr_t, inf
   context.state.m_num_servers += 1;
 }
 
+/**
+ * Original name: JoinServerFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function JoinServerFunc(context: ClientMenuContext, self: unknown): void {
   const index = context.state.s_joinserver_server_actions.indexOf(self as import("./qmenu.js").menuaction_s);
 
@@ -215,10 +245,22 @@ function JoinServerFunc(context: ClientMenuContext, self: unknown): void {
   M_ForceMenuOff(context);
 }
 
+/**
+ * Original name: AddressBookFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function AddressBookFunc(context: ClientMenuContext): void {
   M_Menu_AddressBook_f(context);
 }
 
+/**
+ * Original name: SearchLocalGames
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function SearchLocalGames(context: ClientMenuContext): void {
   context.state.m_num_servers = 0;
 
@@ -235,6 +277,12 @@ function SearchLocalGames(context: ClientMenuContext): void {
   context.hooks.onPingServers?.();
 }
 
+/**
+ * Original name: SearchLocalGamesFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function SearchLocalGamesFunc(context: ClientMenuContext): void {
   SearchLocalGames(context);
 }
@@ -306,6 +354,12 @@ export function JoinServer_MenuInit(context: ClientMenuContext): void {
   SearchLocalGames(context);
 }
 
+/**
+ * Original name: JoinServer_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function JoinServer_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   M_Banner(context, "m_banner_join_server");
@@ -359,6 +413,12 @@ function parseMenuInt(value: string): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/**
+ * Original name: DMOptionsFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function DMOptionsFunc(context: ClientMenuContext): void {
   if (context.state.s_rules_box.curvalue === 1) {
     return;
@@ -367,6 +427,12 @@ function DMOptionsFunc(context: ClientMenuContext): void {
   M_Menu_DMOptions_f(context);
 }
 
+/**
+ * Original name: RulesChangeFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function RulesChangeFunc(context: ClientMenuContext): void {
   const rules = context.state.s_rules_box.curvalue;
 
@@ -418,6 +484,12 @@ function getCoopStartSpot(startmap: string): string | null {
   }
 }
 
+/**
+ * Original name: StartServerActionFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 function StartServerActionFunc(context: ClientMenuContext): void {
   const startmap = getStartMapName(context);
   const maxclients = parseMenuInt(context.state.s_maxclients_field.buffer);
@@ -592,6 +664,12 @@ export function StartServer_MenuInit(context: ClientMenuContext): void {
   RulesChangeFunc(context);
 }
 
+/**
+ * Original name: StartServer_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function StartServer_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   Menu_Draw(context.qmenu, context.state.s_startserver_menu);
@@ -818,6 +896,12 @@ export function DMOptions_MenuInit(context: ClientMenuContext): void {
   Menu_SetStatusBar(context.qmenu, menu, context.state.dmoptions_statusbar);
 }
 
+/**
+ * Original name: DMOptions_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function DMOptions_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   Menu_Draw(context.qmenu, context.state.s_dmoptions_menu);
@@ -928,6 +1012,12 @@ export function DownloadOptions_MenuInit(context: ClientMenuContext): void {
   }
 }
 
+/**
+ * Original name: DownloadOptions_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function DownloadOptions_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   Menu_Draw(context.qmenu, context.state.s_downloadoptions_menu);
@@ -1008,6 +1098,12 @@ export function AddressBook_MenuKey(context: ClientMenuContext, key: number): st
   return Default_MenuKey(context, context.state.s_addressbook_menu, key);
 }
 
+/**
+ * Original name: AddressBook_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function AddressBook_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   M_Banner(context, "m_banner_addressbook");

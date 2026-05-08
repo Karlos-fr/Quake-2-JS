@@ -13,8 +13,26 @@
 
 import { strict as assert } from "node:assert";
 
+import * as clientIndex from "../../packages/client/src/index.js";
 import {
   CMD_BACKUP,
+  CL_AddDLights,
+  CL_AddEntities,
+  CL_AddLightStyles,
+  CL_AddTEnts,
+  CL_BuildRefreshFrame,
+  CL_ParseConfigString,
+  CL_ParseDelta,
+  CL_ParseEntityBits,
+  CL_ParseFrame,
+  CL_ParseMuzzleFlash,
+  CL_ParseMuzzleFlash2,
+  CL_ParseTEnt,
+  CL_PrepRefresh,
+  CL_RegisterSounds,
+  CL_RunDLights,
+  CL_RunLightStyles,
+  CL_SetLightstyle,
   INSTANT_PARTICLE,
   MAX_CLIENTWEAPONMODELS,
   MAX_DLIGHTS,
@@ -51,6 +69,24 @@ assert.equal(MAX_SUSTAINS, 32, "MAX_SUSTAINS mismatch");
 assert.equal(MAX_DLIGHTS, 32, "MAX_DLIGHTS mismatch");
 assert.equal(MAX_PARTICLES, 4096, "MAX_PARTICLES mismatch");
 assert.equal(INSTANT_PARTICLE, -10000.0, "INSTANT_PARTICLE mismatch");
+
+assert.equal(typeof CL_ParseEntityBits, "function", "CL_ParseEntityBits export mismatch");
+assert.equal(typeof CL_ParseDelta, "function", "CL_ParseDelta export mismatch");
+assert.equal(typeof CL_ParseFrame, "function", "CL_ParseFrame export mismatch");
+assert.equal(typeof CL_ParseTEnt, "function", "CL_ParseTEnt export mismatch");
+assert.equal(typeof CL_ParseConfigString, "function", "CL_ParseConfigString export mismatch");
+assert.equal(typeof CL_ParseMuzzleFlash, "function", "CL_ParseMuzzleFlash export mismatch");
+assert.equal(typeof CL_ParseMuzzleFlash2, "function", "CL_ParseMuzzleFlash2 export mismatch");
+assert.equal(typeof CL_SetLightstyle, "function", "CL_SetLightstyle export mismatch");
+assert.equal(typeof CL_RunDLights, "function", "CL_RunDLights export mismatch");
+assert.equal(typeof CL_RunLightStyles, "function", "CL_RunLightStyles export mismatch");
+assert.equal(typeof CL_AddDLights, "function", "CL_AddDLights export mismatch");
+assert.equal(typeof CL_AddLightStyles, "function", "CL_AddLightStyles export mismatch");
+assert.equal(typeof CL_AddTEnts, "function", "CL_AddTEnts export mismatch");
+assert.equal(typeof CL_PrepRefresh, "function", "CL_PrepRefresh export mismatch");
+assert.equal(typeof CL_RegisterSounds, "function", "CL_RegisterSounds export mismatch");
+assert.equal(CL_AddEntities, CL_BuildRefreshFrame, "CL_AddEntities should expose CL_BuildRefreshFrame adapter");
+assert.equal("CL_RunParticles" in clientIndex, false, "CL_RunParticles is an unused original header declaration without a C definition");
 
 assert.equal(connstate_t.ca_uninitialized, 0, "connstate_t ca_uninitialized mismatch");
 assert.equal(connstate_t.ca_disconnected, 1, "connstate_t ca_disconnected mismatch");

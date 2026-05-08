@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: bloc impression/redirection et globals associes `MAXPRINTMSG`, cvars qcommon, `server_state`, timers host_speeds, `rd_*`, `Com_BeginRedirect`, `Com_EndRedirect` et `Com_Printf`; `realtime` est `Non applicable`; `frand`/`crand` restent `Partiel` pour integration client visible.
-- Prochain lot recommande: reprendre les prochaines lignes `A verifier`: temporaires locaux `argptr`/`msg`/`name` autour des prints, puis `Com_DPrintf`, `Com_Error`, `recursive`, `jmp`, `Com_Quit`, `Com_ServerState` et `Com_SetServerState` si le lot reste coherent.
+- Dernier lot valide: temporaires locaux `argptr`/`msg`/`name` autour des prints/errors, `Com_DPrintf`, `Com_Error`, garde `recursive`, remplacements `setjmp`/`longjmp`, `Com_Quit`, `Com_ServerState` et `Com_SetServerState`; `frand`/`crand` restent `Partiel` pour integration client visible.
+- Prochain lot recommande: bloc ecriture messages `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, locaux `buf`/`f`/`l`, puis `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16` et `MSG_WriteDir` si le lot reste coherent.
 
 ## Preuves session
 
@@ -40,6 +40,19 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-08 - Bloc erreurs, quit et server_state
+
+- Lot traite: temporaires locaux `argptr`/`msg`/`name` autour des prints, `Com_DPrintf`, temporaires de `Com_DPrintf`, `Com_Error`, temporaires de `Com_Error`, garde statique `recursive`, appels `setjmp`/`longjmp` generes comme `jmp`, `Com_Quit`, `Com_ServerState` et `Com_SetServerState`.
+- Source C relue: `Com_DPrintf` sort immediatement si `developer` est absent ou a zero puis route vers `Com_Printf`; `Com_Error` protege les erreurs recursives, remet `recursive` a false avant `longjmp` sur `ERR_DROP`, appelle les hooks client/serveur puis sort par `Sys_Error` en fatal; `Com_Quit` arrete serveur/client puis quitte; `Com_ServerState` lit `server_state`; `Com_SetServerState` l'ecrit.
+- Cible TS relue/corrigee: `packages/qcommon/src/qcommon.ts` porte le lot avec `QcommonSignal` a la place de `setjmp`/`longjmp`; `Com_Error` remet maintenant `recursive_error` a `false` pour `ERR_DROP`, comme le C avant `longjmp`; les commentaires de `Com_ServerState` et `Com_SetServerState` pointent maintenant vers `Quake-2-master/qcommon/common.c`.
+- Ownership/doublons: ownership confirme dans `packages/qcommon/src/qcommon.ts`; aucun doublon proprietaire trouve. Les locaux `argptr`/`msg`/`name` et les appels `setjmp`/`longjmp` sont marques `Non applicable`; `recursive` est represente par `QcommonMiscRuntime.recursive_error`.
+- Runtime verifie: `Com_DPrintf` depend du cvar `developer` cree par `Qcommon_Init`; `Com_Error_f` est enregistre comme commande `error`; `Com_Error`/`Com_Quit` sortent via exceptions structurees attrapables par le host; `Com_ServerState`/`Com_SetServerState` manipulent le global qcommon partage.
+- apps/web verifie: `apps/web/src/full-game.ts` passe par `Qcommon_Init`, `Qcommon_Frame` et `Qcommon_Shutdown`; les flux commandes/host utilisent les hooks qcommon portes sans logique parallele pour ces entites.
+- renderer-three verifie: aucune sortie renderer directe attendue pour erreurs/quit/server_state; l'impact visible est indirect via l'arret ou la continuation du frame host, et le test `full-game:three-renderer` couvre que le lifecycle qcommon reste branche au flux visible.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` couvre maintenant le reset `recursive_error` apres `ERR_DROP` et la garde recursive.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:full-game:three-renderer`, `npm run verify:server:runtime`, `npm run verify:cmd`, `npm run verify:full-game:server-host`, `npm run verify:full-game:commands`, `npm run typecheck`.
+- Matrice mise a jour: fonctions du lot en `Valide`; locaux et controle `setjmp`/`longjmp` en `Non applicable`; `frand`/`crand` laisses `Partiel`.
 
 ## Session - 2026-05-08 - Bloc impression/redirection et globals qcommon
 

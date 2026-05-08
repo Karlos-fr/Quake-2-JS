@@ -13,14 +13,14 @@
 | `Quake-2-master/client/qmenu.c` | function | `Action_DoEnter` | `packages/client/src/qmenu.ts` | `Action_DoEnter` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | function | `Action_Draw` | `packages/client/src/qmenu.ts` | `Action_Draw` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | function | `Menu_DrawStatusBar` | `packages/client/src/qmenu.ts` | `Menu_DrawStatusBar` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `Menulist_DoEnter` | `packages/client/src/qmenu.ts` | `Menulist_DoEnter` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `MenuList_Draw` | `packages/client/src/qmenu.ts` | `MenuList_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `Separator_Draw` | `packages/client/src/qmenu.ts` | `Separator_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `Slider_DoSlide` | `packages/client/src/qmenu.ts` | `Slider_DoSlide` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `Slider_Draw` | `packages/client/src/qmenu.ts` | `Slider_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoEnter` | `packages/client/src/qmenu.ts` | `SpinControl_DoEnter` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `SpinControl_Draw` | `packages/client/src/qmenu.ts` | `SpinControl_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoSlide` | `packages/client/src/qmenu.ts` | `SpinControl_DoSlide` | A verifier | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `Menulist_DoEnter` | `packages/client/src/qmenu.ts` | `Menulist_DoEnter` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `MenuList_Draw` | `packages/client/src/qmenu.ts` | `MenuList_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `Separator_Draw` | `packages/client/src/qmenu.ts` | `Separator_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `Slider_DoSlide` | `packages/client/src/qmenu.ts` | `Slider_DoSlide` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `Slider_Draw` | `packages/client/src/qmenu.ts` | `Slider_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoEnter` | `packages/client/src/qmenu.ts` | `SpinControl_DoEnter` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `SpinControl_Draw` | `packages/client/src/qmenu.ts` | `SpinControl_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoSlide` | `packages/client/src/qmenu.ts` | `SpinControl_DoSlide` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | macro | `RCOLUMN_OFFSET` | `packages/client/src/qmenu.ts` | `RCOLUMN_OFFSET` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | macro | `LCOLUMN_OFFSET` | `packages/client/src/qmenu.ts` | `LCOLUMN_OFFSET` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | macro | `VID_WIDTH` | `packages/client/src/qmenu.ts` | `ClientQMenuState.vidWidth` | Valide | A redecouper | Remplace `viddef.width` par etat runtime explicite. |
@@ -69,16 +69,16 @@
 | `Quake-2-master/client/qmenu.c` | global | `i` | `packages/client/src/qmenu.ts` | `i` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
 | `Quake-2-master/client/qmenu.c` | global | `total` | `packages/client/src/qmenu.ts` | `total` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
 | `Quake-2-master/client/qmenu.c` | global | `nitems` | `packages/client/src/qmenu.ts` | `nitems` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
-| `Quake-2-master/client/qmenu.c` | function | `Menulist_DoEnter` | `packages/client/src/qmenu.ts` | `Menulist_DoEnter` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | global | `start` | `packages/client/src/qmenu.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `MenuList_Draw` | `packages/client/src/qmenu.ts` | `MenuList_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | global | `y` | `packages/client/src/qmenu.ts` | `y` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `Separator_Draw` | `packages/client/src/qmenu.ts` | `Separator_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `Slider_DoSlide` | `packages/client/src/qmenu.ts` | `Slider_DoSlide` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | macro | `SLIDER_RANGE` | `packages/client/src/qmenu.ts` | `SLIDER_RANGE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `Slider_Draw` | `packages/client/src/qmenu.ts` | `Slider_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | global | `i` | `packages/client/src/qmenu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoEnter` | `packages/client/src/qmenu.ts` | `SpinControl_DoEnter` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoSlide` | `packages/client/src/qmenu.ts` | `SpinControl_DoSlide` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | function | `SpinControl_Draw` | `packages/client/src/qmenu.ts` | `SpinControl_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | global | `buffer` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `Menulist_DoEnter` | `packages/client/src/qmenu.ts` | `Menulist_DoEnter` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | global | `start` | `packages/client/src/qmenu.ts` | `start` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
+| `Quake-2-master/client/qmenu.c` | function | `MenuList_Draw` | `packages/client/src/qmenu.ts` | `MenuList_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | global | `y` | `packages/client/src/qmenu.ts` | `y` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
+| `Quake-2-master/client/qmenu.c` | function | `Separator_Draw` | `packages/client/src/qmenu.ts` | `Separator_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `Slider_DoSlide` | `packages/client/src/qmenu.ts` | `Slider_DoSlide` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | macro | `SLIDER_RANGE` | `packages/client/src/qmenu.ts` | `SLIDER_RANGE` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `Slider_Draw` | `packages/client/src/qmenu.ts` | `Slider_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | global | `i` | `packages/client/src/qmenu.ts` | `i` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
+| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoEnter` | `packages/client/src/qmenu.ts` | `SpinControl_DoEnter` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoSlide` | `packages/client/src/qmenu.ts` | `SpinControl_DoSlide` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | function | `SpinControl_Draw` | `packages/client/src/qmenu.ts` | `SpinControl_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.c` | global | `buffer` | `packages/client/src/qmenu.ts` |  | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |

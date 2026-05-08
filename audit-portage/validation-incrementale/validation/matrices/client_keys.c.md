@@ -27,14 +27,14 @@
 | `Quake-2-master/client/keys.c` | global | `name` | `packages/client/src/keys.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `keynum` | `packages/client/src/keys.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/keys.c` | table | `keynames` | `packages/client/src/keys.ts` | `keynames` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `CompleteCommand` | `packages/client/src/keys.ts` | `CompleteCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Key_Console` | `packages/client/src/keys.ts` | `Key_Console` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `cbd` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `chat_team` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `chat_buffer` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `chat_bufferlen` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Key_Message` | `packages/client/src/keys.ts` | `Key_Message` | A verifier | A redecouper |  |
+| `Quake-2-master/client/keys.c` | function | `CompleteCommand` | `packages/client/src/keys.ts` | `CompleteCommand` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.c` | function | `Key_Console` | `packages/client/src/keys.ts` | `Key_Console` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `cbd` | `packages/client/src/keys.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `chat_team` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `chat_buffer` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `chat_bufferlen` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.c` | function | `Key_Message` | `packages/client/src/keys.ts` | `Key_Message` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_StringToKeynum` | `packages/client/src/keys.ts` | `Key_StringToKeynum` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_KeynumToString` | `packages/client/src/keys.ts` | `Key_KeynumToString` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `tinystr` | `packages/client/src/keys.ts` |  | Non applicable | A redecouper |  |
@@ -53,9 +53,9 @@
 | `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_Init` | `packages/client/src/keys.ts` | `Key_Init` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Key_Event` | `packages/client/src/keys.ts` | `Key_Event` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `kb` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `cmd` | `packages/client/src/keys.ts` | `cmd` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Key_ClearStates` | `packages/client/src/keys.ts` | `Key_ClearStates` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Key_GetKey` | `packages/client/src/keys.ts` | `Key_GetKey` | A verifier | A redecouper |  |
+| `Quake-2-master/client/keys.c` | function | `Key_Event` | `packages/client/src/keys.ts` | `Key_Event` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `kb` | `packages/client/src/keys.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `cmd` | `packages/client/src/keys.ts` | `cmd` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/keys.c` | function | `Key_ClearStates` | `packages/client/src/keys.ts` | `Key_ClearStates` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/keys.c` | function | `Key_GetKey` | `packages/client/src/keys.ts` | `Key_GetKey` | Valide | A redecouper |  |

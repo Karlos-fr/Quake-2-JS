@@ -128,9 +128,10 @@
 | `Quake-2-master/client/client.h` | global | `die` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | global | `decay` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | global | `minlight` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
-| `Quake-2-master/client/client.h` | macro | `MAX_PARSE_ENTITIES` | `packages/client/src/client.ts` | `MAX_PARSE_ENTITIES` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_parse_entities` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `net_message` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | macro | `MAX_PARSE_ENTITIES` | `packages/client/src/client.ts` | `MAX_PARSE_ENTITIES` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_parse_entities` | `packages/client/src/client.ts` | `cl_parse_entities` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `net_message` | `packages/client/src/client.ts` | `net_message` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `net_from` | `packages/qcommon/src/qcommon.ts` | `net_from` | Valide | A redecouper | Declaration `extern` ajoutee a la matrice: ownership qcommon, consommee cote client via `CL_ReadPackets`/`hooks.qnet`. |
 | `Quake-2-master/client/client.h` | function | `DrawString` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `DrawAltString` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_CheckOrDownloadFile` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
@@ -194,24 +195,24 @@
 | `Quake-2-master/client/client.h` | function | `CL_Widowbeamout` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_Nukeblast` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_WidowSplash` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseEntityBits` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseDelta` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseFrame` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseTEnt` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseConfigString` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseMuzzleFlash` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseMuzzleFlash2` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `SmokeAndFlash` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_SetLightstyle` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RunParticles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RunDLights` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RunLightStyles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_AddEntities` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_AddDLights` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_AddTEnts` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_AddLightStyles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_PrepRefresh` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RegisterSounds` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseEntityBits` | `packages/client/src/cl_parse.ts` | `CL_ParseEntityBits` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseDelta` | `packages/client/src/cl_parse.ts` | `CL_ParseDelta` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseFrame` | `packages/client/src/cl_parse.ts` | `CL_ParseFrame` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseTEnt` | `packages/client/src/cl_tent.ts` | `CL_ParseTEnt` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseConfigString` | `packages/client/src/cl_parse.ts` | `CL_ParseConfigString` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseMuzzleFlash` | `packages/client/src/cl_parse.ts` | `CL_ParseMuzzleFlash` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseMuzzleFlash2` | `packages/client/src/cl_parse.ts` | `CL_ParseMuzzleFlash2` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `SmokeAndFlash` | `packages/client/src/cl_tent.ts` | `CL_SmokeAndFlash` | Non applicable | A redecouper | Declaration sans definition C; le flux effectif utilise `CL_SmokeAndFlash`, declare plus loin dans `client.h`. |
+| `Quake-2-master/client/client.h` | function | `CL_SetLightstyle` | `packages/client/src/cl_fx.ts` | `CL_SetLightstyle` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_RunParticles` | `packages/client/src/cl_fx.ts` |  | Non applicable | A redecouper | Prototype sans definition ni appel C; le comportement runtime particules passe par `CL_AddParticles`. |
+| `Quake-2-master/client/client.h` | function | `CL_RunDLights` | `packages/client/src/cl_fx.ts` | `CL_RunDLights` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_RunLightStyles` | `packages/client/src/cl_fx.ts` | `CL_RunLightStyles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_AddEntities` | `packages/client/src/refresh.ts` | `CL_AddEntities` | Valide | A redecouper | Alias public vers `CL_BuildRefreshFrame`, qui documente l'adaptation structurée du flux `V_Add*`. |
+| `Quake-2-master/client/client.h` | function | `CL_AddDLights` | `packages/client/src/cl_fx.ts` | `CL_AddDLights` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_AddTEnts` | `packages/client/src/cl_tent.ts` | `CL_AddTEnts` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_AddLightStyles` | `packages/client/src/cl_fx.ts` | `CL_AddLightStyles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_PrepRefresh` | `packages/client/src/view.ts` | `CL_PrepRefresh` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_RegisterSounds` | `packages/client/src/sound.ts` | `CL_RegisterSounds` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_Quit_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `IN_Accumulate` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ParseLayout` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |

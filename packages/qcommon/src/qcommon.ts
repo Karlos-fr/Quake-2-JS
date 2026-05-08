@@ -897,7 +897,7 @@ export function CopyString(input: string): string {
 
 /**
  * Original name: Com_ServerState
- * Source: qcommon/qcommon.h
+ * Source: qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -910,7 +910,7 @@ export function Com_ServerState(globals: QcommonGlobals): number {
 
 /**
  * Original name: Com_SetServerState
- * Source: qcommon/qcommon.h
+ * Source: qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1104,6 +1104,9 @@ export function Com_Error(runtime: QcommonMiscRuntime, code: number, message: st
 
   runtime.recursive_error = true;
   runtime.hooks.onError?.(code, message);
+  if (code === ERR_DROP) {
+    runtime.recursive_error = false;
+  }
   throw new QcommonSignal("error", code, message);
 }
 

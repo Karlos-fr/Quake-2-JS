@@ -665,6 +665,7 @@ export {
 } from "./cl_ents.js";
 export {
   CL_BuildRefreshFrame,
+  CL_BuildRefreshFrame as CL_AddEntities,
   CL_GetEntitySoundOrigin as CL_GetRefreshEntitySoundOrigin
 } from "./refresh.js";
 export {
@@ -692,6 +693,9 @@ export {
   CL_BuildMuzzleFlashEffects,
   CL_BuildTempEntityEffects,
   CL_ExecuteTempEntityEffects,
+  CL_AddDLights,
+  CL_AddLightStyles,
+  CL_AddParticles,
   CL_BlasterParticles,
   CL_BlueBlasterParticles,
   CL_BubbleTrail,
@@ -703,6 +707,9 @@ export {
   CL_ParticleEffect,
   CL_ParticleEffect2,
   CL_ParticleEffect3,
+  CL_RunDLights,
+  CL_RunLightStyles,
+  CL_SetLightstyle,
   CL_RailTrail,
   CL_TeleporterParticles,
   CL_TeleportParticles,
