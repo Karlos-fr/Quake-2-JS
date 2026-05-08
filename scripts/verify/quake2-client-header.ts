@@ -35,13 +35,17 @@ import {
   CL_Init,
   CL_InitInput,
   CL_ParseConfigString,
+  CL_ParseClientinfo,
   CL_ParseDelta,
   CL_ParseEntityBits,
   CL_ParseFrame,
   CL_ParseLayout,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
+  CL_ParseServerMessage,
   CL_ParseTEnt,
+  CL_LoadClientinfo,
+  CL_Download_f,
   CL_PingServers_f,
   CL_PrepRefresh,
   CL_Flashlight,
@@ -62,8 +66,15 @@ import {
   CL_RunLightStyles,
   CL_SendCmd,
   CL_SetLightstyle,
+  SHOWNET,
   CL_SmokeTrail,
   CL_Snd_Restart_f,
+  V_AddEntity,
+  V_AddLight,
+  V_AddLightStyle,
+  V_AddParticle,
+  V_Init,
+  V_RenderView,
   INSTANT_PARTICLE,
   MAX_CLIENTWEAPONMODELS,
   MAX_DLIGHTS,
@@ -92,7 +103,9 @@ import {
   MAX_MAP_AREAS,
   MAX_MODELS,
   MAX_SOUNDS,
-  UPDATE_BACKUP
+  UPDATE_BACKUP,
+  svc_ops_e,
+  svc_strings
 } from "../../packages/qcommon/src/index.js";
 
 assert.equal(CMD_BACKUP, 64, "CMD_BACKUP mismatch");
@@ -102,6 +115,7 @@ assert.equal(MAX_SUSTAINS, 32, "MAX_SUSTAINS mismatch");
 assert.equal(MAX_DLIGHTS, 32, "MAX_DLIGHTS mismatch");
 assert.equal(MAX_PARTICLES, 4096, "MAX_PARTICLES mismatch");
 assert.equal(INSTANT_PARTICLE, -10000.0, "INSTANT_PARTICLE mismatch");
+assert.equal(svc_strings[svc_ops_e.svc_muzzleflash2], "svc_muzzlflash2", "svc_strings shownet label mismatch");
 
 assert.equal(typeof CL_ParseEntityBits, "function", "CL_ParseEntityBits export mismatch");
 assert.equal(typeof CL_ParseDelta, "function", "CL_ParseDelta export mismatch");
@@ -111,6 +125,11 @@ assert.equal(typeof CL_ParseConfigString, "function", "CL_ParseConfigString expo
 assert.equal(typeof CL_ParseLayout, "function", "CL_ParseLayout export mismatch");
 assert.equal(typeof CL_ParseMuzzleFlash, "function", "CL_ParseMuzzleFlash export mismatch");
 assert.equal(typeof CL_ParseMuzzleFlash2, "function", "CL_ParseMuzzleFlash2 export mismatch");
+assert.equal(typeof CL_ParseServerMessage, "function", "CL_ParseServerMessage export mismatch");
+assert.equal(typeof CL_LoadClientinfo, "function", "CL_LoadClientinfo export mismatch");
+assert.equal(typeof SHOWNET, "function", "SHOWNET export mismatch");
+assert.equal(typeof CL_ParseClientinfo, "function", "CL_ParseClientinfo export mismatch");
+assert.equal(typeof CL_Download_f, "function", "CL_Download_f export mismatch");
 assert.equal(typeof CL_SetLightstyle, "function", "CL_SetLightstyle export mismatch");
 assert.equal(typeof CL_RunDLights, "function", "CL_RunDLights export mismatch");
 assert.equal(typeof CL_RunLightStyles, "function", "CL_RunLightStyles export mismatch");
@@ -152,6 +171,12 @@ assert.equal(typeof CL_BaseMove, "function", "CL_BaseMove export mismatch");
 assert.equal(typeof IN_CenterView, "function", "IN_CenterView export mismatch");
 assert.equal(typeof CL_KeyState, "function", "CL_KeyState export mismatch");
 assert.equal(CL_AddEntities, CL_BuildRefreshFrame, "CL_AddEntities should expose CL_BuildRefreshFrame adapter");
+assert.equal(typeof V_Init, "function", "V_Init export mismatch");
+assert.equal(typeof V_RenderView, "function", "V_RenderView export mismatch");
+assert.equal(typeof V_AddEntity, "function", "V_AddEntity export mismatch");
+assert.equal(typeof V_AddParticle, "function", "V_AddParticle export mismatch");
+assert.equal(typeof V_AddLight, "function", "V_AddLight export mismatch");
+assert.equal(typeof V_AddLightStyle, "function", "V_AddLightStyle export mismatch");
 assert.equal("CL_RunParticles" in clientIndex, false, "CL_RunParticles is an unused original header declaration without a C definition");
 assert.equal("IN_Accumulate" in clientIndex, false, "IN_Accumulate is an unused original header declaration without a C definition");
 assert.equal("CL_GetChallengePacket" in clientIndex, false, "CL_GetChallengePacket is an unused original header declaration without a C definition");

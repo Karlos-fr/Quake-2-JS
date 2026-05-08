@@ -259,6 +259,8 @@ export {
   CL_ParseFrame,
   CL_ParseLaser,
   CL_ParseLightning,
+  CL_LoadClientinfo,
+  CL_ParseClientinfo,
   CL_ParseLayout,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
@@ -272,6 +274,7 @@ export {
   CL_ParseStartSoundPacket,
   CL_ParseTEnt,
   CL_ParseWidow,
+  SHOWNET,
   CL_WriteStringCmd
 } from "./cl_parse.js";
 export {

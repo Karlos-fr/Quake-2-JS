@@ -10,3 +10,4 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Quake-2-master/ref_gl/warpsin.h` | table | `r_turbsin` | `packages/renderer-three/src/warpsin.ts` | `r_turbsin` | Valide | split-undocumented |  |

@@ -2,6 +2,11 @@
  * File: warpsin.ts
  * Source: Quake II original / ref_gl/warpsin.h
  * Purpose: Preserve the canonical 256-entry turbulence sine table used by `gl_warp.c`.
+ * Original name: r_turbsin
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Exposes the unmodified lookup values consumed by water turbulence.
+ * Porting notes: `gl_rmain.c` scales turbulence amplitude at runtime through `GlWarpRuntime.turbulence_scale`; this table stays immutable.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -10,9 +15,6 @@
  *
  * Deviations:
  * - None.
- *
- * Fidelity level: Strict
- *
  * Notes:
  * - Values are copied from `ref_gl/warpsin.h`.
  */

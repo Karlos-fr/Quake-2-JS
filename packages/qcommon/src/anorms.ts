@@ -1,6 +1,6 @@
 /**
  * File: anorms.ts
- * Source: Quake II original / client/anorms.h
+ * Source: Quake II original / client/anorms.h, ref_gl/anorms.h
  * Purpose: Port the canonical Quake II byte-direction lookup table used by networked temp entities and MD2-style encoded normals.
  *
  * Porting policy:
@@ -19,12 +19,13 @@ import type { vec3_t } from "./q_shared.js";
 
 /**
  * Original name: bytedirs
- * Source: qcommon/common.c, client/anorms.h
+ * Source: qcommon/common.c, client/anorms.h, ref_gl/anorms.h
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
  * - Preserves the original Quake II 162-entry byte-direction lookup table.
+ * - Matches the renderer include table used as `r_avertexnormals` in ref_gl/gl_mesh.c.
  *
  * Porting notes:
  * - Entry ordering must remain identical to the original table.

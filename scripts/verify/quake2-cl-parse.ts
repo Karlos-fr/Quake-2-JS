@@ -30,8 +30,10 @@ import {
   SHOWNET,
   CL_WriteStringCmd
 } from "../../packages/client/src/cl_parse.js";
+import { CL_Download_f } from "../../packages/client/src/download.js";
 import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
 import {
+  Cmd_TokenizeString,
   CS_CDTRACK,
   CS_IMAGES,
   CS_LIGHTS,
@@ -98,9 +100,11 @@ import {
   U_SKIN8,
   U_SOLID,
   clc_ops_e,
+  createCommandRuntime,
   createEntityState,
   entity_event_t,
-  pmtype_t
+  pmtype_t,
+  svc_strings
 } from "../../packages/qcommon/src/index.js";
 
 function resetIncoming(runtime: ReturnType<typeof createClientRuntime>): void {
@@ -119,12 +123,36 @@ assert.ok(
   parseSource.includes("incomingAcknowledged: runtime.cls.netchan.incoming_acknowledged"),
   "CL_ParseFrame should check prediction error against the acknowledged usercmd, not the serverframe"
 );
+assert.equal(svc_strings[svc_ops_e.svc_muzzleflash2], "svc_muzzlflash2", "svc_strings should preserve the original shownet label spelling");
 
 resetOutgoing(runtime);
 resetIncoming(runtime);
 CL_WriteStringCmd(runtime, "download maps/test.bsp");
 assert.equal(runtime.net_message.cursize, 0, "CL_WriteStringCmd should not write into incoming net_message");
 assert.ok(runtime.cls.netchan.message.cursize > 0, "CL_WriteStringCmd should append to outgoing netchan message");
+
+const downloadCmd = createCommandRuntime();
+const downloadPrints: string[] = [];
+resetOutgoing(runtime);
+runtime.cls.downloadnumber = 0;
+Cmd_TokenizeString(downloadCmd, "download maps/unit.bsp", false);
+CL_Download_f(runtime, downloadCmd, {
+  fileExists: () => false,
+  onPrint: (line) => downloadPrints.push(line)
+});
+assert.equal(runtime.cls.downloadname, "maps/unit.bsp", "CL_Download_f should store the requested filename");
+assert.equal(runtime.cls.downloadtempname, "maps/unit.tmp", "CL_Download_f temp filename mismatch");
+assert.equal(runtime.cls.downloadnumber, 1, "CL_Download_f should increment the download counter");
+assert.equal(runtime.cls.netchan.message.data[0], clc_ops_e.clc_stringcmd, "CL_Download_f should queue a string command");
+assert.ok(downloadPrints.includes("Downloading maps/unit.bsp"), "CL_Download_f should print the download request");
+
+resetOutgoing(runtime);
+Cmd_TokenizeString(downloadCmd, "download ../bad.pak", false);
+CL_Download_f(runtime, downloadCmd, {
+  fileExists: () => false,
+  onPrint: (line) => downloadPrints.push(line)
+});
+assert.equal(runtime.cls.netchan.message.cursize, 0, "CL_Download_f should reject parent-directory paths before writing");
 
 resetIncoming(runtime);
 MSG_WriteLong(runtime.net_message, 34);

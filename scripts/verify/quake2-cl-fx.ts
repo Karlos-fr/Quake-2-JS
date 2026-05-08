@@ -83,7 +83,7 @@ import {
   temp_event_t,
   type vec3_t
 } from "../../packages/qcommon/src/index.js";
-import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
+import { connstate_t, createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
 import { INSTANT_PARTICLE, MAX_DLIGHTS, MAX_PARTICLES } from "../../packages/client/src/client.js";
 import { CL_BuildFrameEntityEventEffects, type ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
 import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
@@ -440,6 +440,8 @@ function verifyMonsterMuzzleFlash2Effects(): void {
     dlight.minlight = infantry[0]!.light!.minlight ?? 0;
     dlight.die = runtime.cl.time + infantry[0]!.light!.durationMs;
     dlight.color = [...infantry[0]!.light!.color];
+    runtime.cls.state = connstate_t.ca_active;
+    runtime.cl.frame.servertime = runtime.cl.time;
     const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
     assert.ok(
       refreshFrame.lights.some((light) => light.sourceEntity === 12 && light.intensity === 200 && light.kind === "dlight"),
@@ -487,6 +489,8 @@ function verifyPlayerMuzzleFlashEffects(): void {
     dlight.minlight = blaster[0]!.light!.minlight ?? 0;
     dlight.die = runtime.cl.time + blaster[0]!.light!.durationMs;
     dlight.color = [...blaster[0]!.light!.color];
+    runtime.cls.state = connstate_t.ca_active;
+    runtime.cl.frame.servertime = runtime.cl.time;
     const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
     assert.ok(
       refreshFrame.lights.some((light) => light.sourceEntity === 4 && light.intensity === 200 && light.kind === "dlight"),
@@ -618,6 +622,8 @@ function verifyDlightManagement(): void {
     kind: "dlight"
   }, "CL_AddDLights output mismatch");
 
+  runtime.cls.state = connstate_t.ca_active;
+  runtime.cl.frame.servertime = runtime.cl.time;
   const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
   assert.ok(
     refreshFrame.lights.some((light) => light.kind === "dlight" && light.intensity === 50),
@@ -1112,6 +1118,8 @@ function verifyRocketTrailRuntimeParticles(): void {
   assert.equal(collectActiveParticles(runtimeBranch).length, 5, "EF_ROCKET should dispatch to CL_RocketTrail");
 
   const refreshRuntime = createRuntime();
+  refreshRuntime.cls.state = connstate_t.ca_active;
+  refreshRuntime.cl.frame.servertime = refreshRuntime.cl.time;
   refreshRuntime.cl.frame.num_entities = 1;
   refreshRuntime.cl.frame.parse_entities = 0;
   refreshRuntime.cl_parse_entities[0].number = 11;
@@ -1243,6 +1251,8 @@ function verifyIonripperTrailRuntimeParticles(): void {
   assert.equal(collectActiveParticles(runtimeBranch).length, 3, "EF_IONRIPPER should dispatch to CL_IonripperTrail");
 
   const refreshRuntime = createRuntime();
+  refreshRuntime.cls.state = connstate_t.ca_active;
+  refreshRuntime.cl.frame.servertime = refreshRuntime.cl.time;
   refreshRuntime.cl.frame.num_entities = 1;
   refreshRuntime.cl.frame.parse_entities = 0;
   refreshRuntime.cl_parse_entities[0].number = 12;
@@ -1411,7 +1421,9 @@ function verifyFlyParticlesPacketEntityRuntimeBranch(): void {
   assert.equal(collectActiveParticles(runtime).length, 41, "EF_FLIES should dispatch to CL_FlyEffectRuntime and CL_FlyParticles");
 
   const refreshRuntime = createRuntime();
+  refreshRuntime.cls.state = connstate_t.ca_active;
   refreshRuntime.cl.time = 11000;
+  refreshRuntime.cl.frame.servertime = refreshRuntime.cl.time;
   refreshRuntime.cl.frame.num_entities = 1;
   refreshRuntime.cl.frame.parse_entities = 0;
   refreshRuntime.cl_parse_entities[0].number = 7;
@@ -1482,7 +1494,9 @@ function verifyBfgParticlesPacketEntityRuntimeBranch(): void {
   assert.equal(collectActiveParticles(runtime).length, 162, "EF_BFG | EF_ANIM_ALLFAST should dispatch to CL_BfgParticles");
 
   const refreshRuntime = createRuntime();
+  refreshRuntime.cls.state = connstate_t.ca_active;
   refreshRuntime.cl.time = 0;
+  refreshRuntime.cl.frame.servertime = refreshRuntime.cl.time;
   refreshRuntime.cl.frame.num_entities = 1;
   refreshRuntime.cl.frame.parse_entities = 0;
   refreshRuntime.cl_parse_entities[0].number = 9;
@@ -1562,7 +1576,9 @@ function verifyTrapParticlesPacketEntityRuntimeBranch(): void {
   assert.equal(collectActiveParticles(runtime).length, 21, "EF_TRAP should dispatch to CL_TrapParticles");
 
   const refreshRuntime = createRuntime();
+  refreshRuntime.cls.state = connstate_t.ca_active;
   refreshRuntime.cl.time = 0;
+  refreshRuntime.cl.frame.servertime = refreshRuntime.cl.time;
   refreshRuntime.cl.frame.num_entities = 1;
   refreshRuntime.cl.frame.parse_entities = 0;
   refreshRuntime.cl_parse_entities[0].number = 11;
@@ -1758,6 +1774,8 @@ function verifyLightstyleManagement(): void {
   assert.equal(lightStyles.length, MAX_LIGHTSTYLES, "CL_AddLightStyles output count mismatch");
   assert.deepEqual(lightStyles[7], { style: 7, rgb: [2 / 12, 2 / 12, 2 / 12] }, "CL_AddLightStyles output mismatch");
 
+  runtime.cls.state = connstate_t.ca_active;
+  runtime.cl.frame.servertime = runtime.cl.time;
   const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
   assert.deepEqual(refreshFrame.lightStyles[7], lightStyles[7], "lightstyles should reach the refresh frame");
 

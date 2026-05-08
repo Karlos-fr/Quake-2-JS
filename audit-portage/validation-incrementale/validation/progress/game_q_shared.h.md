@@ -2,6 +2,15 @@
 
 ## Dernier lot traite
 
+- 2026-05-08: reliquat final des 73 `MZ2_*` Rogue de `MZ2_CARRIER_MACHINEGUN_L1` a `MZ2_WIDOW2_BEAM_SWEEP_11` clos par exclusion documentee.
+- Verdict: `Non applicable` pour les 73 entrees. Ces macros appartiennent aux producteurs mission-pack Rogue (`carrier`, `widow`, `stalker`, `daedalus`, `medic2`) et aux ids `MZ2_TURRET_*`; ces producteurs gameplay ne sont pas portes dans le perimetre base-game courant. Les constantes et offsets restent conserves dans `packages/game/src/m_flash.ts` pour compatibilite protocole/client si un serveur envoie ces ids.
+- Preuves source/cible: `q_shared.h` definit strictement la plage 138-210; `packages/game/src/m_flash.ts` expose les 73 ids et `monster_flash_offset` aligne les offsets. Aucun port producteur `carrier`, `widow`, `stalker`, `daedalus` ou `medic2` n'existe dans `packages/game/src`; `g_turret.ts` reste le port de `game/g_turret.c` base-game et ne produit pas `svc_muzzleflash2` avec `MZ2_TURRET_*`.
+- Runtime: exclusion justifiee cote production gameplay. Le flux de consommation reste present et verifie: `CL_ParseMuzzleFlash2` / `CL_BuildMuzzleFlash2Effects` consomment les ids entrants, resolvent les offsets et exposent dlights/particules/sustains selon les cas.
+- `apps/web`: aucune production web parallele attendue ni presente; le web consomme les sorties runtime client si un serveur les produit via les flux full-game/server-host et `applyAuthoritativeVisualEffects`.
+- `renderer-three`: sortie visible consommee quand les ids arrivent au client: dlights, particules et sustains Widow passent par les refresh frames et les adapters dlight/particle; aucune integration renderer directe manquante pour le lot exclu cote producteurs.
+- Commentaires d'en-tete: non applicable pour les macros/constantes; commentaires existants verifies sur `monster_flash_offset`, `getMonsterFlashOffset`, `CL_ParseMuzzleFlash2`, `CL_BuildMuzzleFlash2Effects`, `buildMonsterMuzzleFlashOrigin` et les adapters web/renderer inspectes.
+- Tests OK: `npm run verify:q-shared:header`, `npm run verify:m-flash`, `npm run verify:g-turret`, `npm run verify:full-game:server-host`, `npm run verify:dlight-sync`, `npm run verify:particle-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`, plus verification inline ciblee `focused-mz2-rogue-effects`.
+- Test non concluant hors lot: `npm run verify:cl-fx` echoue avant le bloc MZ2 Rogue sur `EF_ROCKET should expose the original rocket dlight to refresh`; la verification inline ciblee prouve les effets MZ2 Rogue avec un runtime client actif.
 - 2026-05-08: decision explicite reconfirmee sur les 73 `MZ2_*` Rogue de `MZ2_CARRIER_MACHINEGUN_L1` a `MZ2_WIDOW2_BEAM_SWEEP_11`.
 - Verdict maintenu: `Partiel` pour les 73 entrees. Les ids 138-210 de `q_shared.h`, les exports `packages/game/src/m_flash.ts`, les offsets `monster_flash_offset`, le parsing `CL_ParseMuzzleFlash2`, les effets `CL_BuildMuzzleFlash2Effects`, le branchement `apps/web` et la consommation renderer dlights/particules sont presents. Le manque ouvert est la production gameplay: aucun port `carrier`, `widow`, `stalker` ou `daedalus` dans `packages/game/src`; `MZ2_MEDIC_BLASTER_2` reste seulement expose par `m_flash.ts`; le turret TS porte `game/g_turret.c` de base et tire via `fire_rocket`, sans produire `svc_muzzleflash2` ni `MZ2_TURRET_*`.
 - Ownership: les 73 noms restent proprietaires de `packages/game/src/m_flash.ts` comme ids d'offsets partages. Ce n'est pas suffisant pour `Valide`, car les producteurs Rogue correspondants ne sont ni portes ni documentes comme exclusion volontaire.
@@ -337,4 +346,4 @@
 
 ## Prochain lot recommande
 
-- Aucune ligne `A verifier` restante dans `game_q_shared.h.md`. Le fichier doit rester `Partiel` tant que les producteurs gameplay Rogue `carrier`/`widow`/`stalker`/`daedalus`/`medic2` et les usages `MZ2_TURRET_*` ne sont pas portes ou explicitement exclus par une decision documentee.
+- Aucun lot restant dans `game_q_shared.h.md`: toutes les lignes sont `Valide` ou `Non applicable`. Reprendre le prochain fichier prioritaire depuis `AVANCEMENT_GLOBAL.md`.

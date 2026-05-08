@@ -1,6 +1,10 @@
 /**
  * File: anormtab.ts
- * Source: Quake II original / ref_gl/anormtab.h
+ * Source file: Quake II original / ref_gl/anormtab.h
+ * Original name: r_avertexnormal_dots
+ * Source: ref_gl/anormtab.h
+ * Category: Ported
+ * Fidelity level: Strict
  * Purpose: Port the precomputed alias-model shadedot table used by the original GL renderer.
  *
  * Porting policy:
@@ -19,8 +23,13 @@ export const SHADEDOT_QUANT = 16;
 export const SHADEDOT_NORMALS = 256;
 
 /**
- * Category: New
- * Purpose: Preserve the original `r_avertexnormal_dots` table consumed by alias-model shading in `ref_gl/gl_mesh.c`.
+ * Original name: r_avertexnormal_dots
+ * Source: ref_gl/anormtab.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the original 16x256 shadedot lookup table consumed by alias-model shading in `ref_gl/gl_mesh.c`.
  *
  * Constraints:
  * - Row ordering must remain identical to the original quantized angle ordering.
@@ -46,6 +55,8 @@ export const R_AVERTEXNORMAL_DOTS = [
 ] as const;
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript lookup helper for the ported table)
  * Category: New
  * Purpose: Return one shadedot row using the original `SHADEDOT_QUANT` wrapping behavior.
  *
@@ -58,6 +69,8 @@ export function getAliasShadedots(quantizedIndex: number): readonly number[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript lookup helper for the ported table)
  * Category: New
  * Purpose: Resolve one shadedot sample for a quantized angle row and MD2 lightnormal index.
  *

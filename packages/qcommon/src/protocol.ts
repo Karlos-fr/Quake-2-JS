@@ -160,16 +160,22 @@ export const U_SOUND = 1 << 26;
 export const U_SOLID = 1 << 27;
 
 /**
- * Category: New
- * Purpose: Expose the original `svc_strings` lookup table used for shownet/debug output.
+ * Original name: svc_strings
+ * Source: client/cl_parse.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Exposes the original service-command labels used for shownet/debug output.
  *
  * Constraints:
  * - Array indexes must line up with `svc_ops_e`.
+ * - Preserves the original Quake II spelling of `svc_muzzlflash2`.
  */
 export const svc_strings: string[] = [
   "svc_bad",
   "svc_muzzleflash",
-  "svc_muzzleflash2",
+  "svc_muzzlflash2",
   "svc_temp_entity",
   "svc_layout",
   "svc_inventory",

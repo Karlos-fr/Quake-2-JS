@@ -10,6 +10,8 @@
  */
 
 import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 import {
   getAliasShadedot,
@@ -19,12 +21,29 @@ import {
   SHADEDOT_QUANT
 } from "../../packages/renderer-three/src/anormtab.js";
 
+const repoRoot = process.cwd();
+const source = readFileSync(join(repoRoot, "Quake-2-master", "ref_gl", "anormtab.h"), "utf8");
+const sourceRows = source
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter((line) => line.startsWith("{") && line.includes(",") && /^.*\},?$/.test(line))
+  .map((line) =>
+    line
+      .replace(/^\{|\},?$/g, "")
+      .split(",")
+      .filter((value) => value.length > 0)
+      .map(Number)
+  );
+
 assert.equal(SHADEDOT_QUANT, 16, "SHADEDOT_QUANT mismatch");
 assert.equal(SHADEDOT_NORMALS, 256, "SHADEDOT_NORMALS mismatch");
 assert.equal(R_AVERTEXNORMAL_DOTS.length, SHADEDOT_QUANT, "shadedot row count mismatch");
+assert.equal(sourceRows.length, SHADEDOT_QUANT, "source shadedot row count mismatch");
 
 for (const [rowIndex, row] of R_AVERTEXNORMAL_DOTS.entries()) {
   assert.equal(row.length, SHADEDOT_NORMALS, `shadedot column count mismatch at row ${rowIndex}`);
+  assert.equal(sourceRows[rowIndex]?.length, SHADEDOT_NORMALS, `source shadedot column count mismatch at row ${rowIndex}`);
+  assert.deepEqual(row, sourceRows[rowIndex], `full shadedot row mismatch at row ${rowIndex}`);
 }
 
 assert.equal(R_AVERTEXNORMAL_DOTS[0][0], 1.23, "R_AVERTEXNORMAL_DOTS[0][0] mismatch");
