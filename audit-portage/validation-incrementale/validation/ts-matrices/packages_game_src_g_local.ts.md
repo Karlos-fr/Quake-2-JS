@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/g_local.ts`
 - Symboles TS: 137
-- Couvert C/H: 71
-- Reste a auditer: 66
+- Couvert C/H: 98
+- Reste a auditer: 39
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -75,37 +75,37 @@
 | `packages/game/src/g_local.ts` | value | `PNOISE_SELF` | oui | `PNOISE_SELF` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_local.ts` | value | `PNOISE_WEAPON` | oui | `PNOISE_WEAPON` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_local.ts` | value | `PNOISE_IMPACT` | oui | `PNOISE_IMPACT` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_local.ts` | value | `IT_WEAPON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `IT_AMMO` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `IT_ARMOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `IT_STAY_COOP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `IT_KEY` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `IT_POWERUP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `ITEM_TRIGGER_SPAWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `ITEM_NO_TOUCH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `ITEM_TARGETS_USED` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FFL_SPAWNTEMP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FFL_NOSPAWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_UNKNOWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_WATER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_SLIME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_LAVA` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_CRUSH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_TELEFRAG` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_FALLING` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_SUICIDE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_EXPLOSIVE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_BARREL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_BOMB` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_EXIT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_SPLASH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_TARGET_LASER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_TRIGGER_HURT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOD_TARGET_BLASTER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `VEC_UP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOVEDIR_UP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `VEC_DOWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MOVEDIR_DOWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_local.ts` | value | `IT_WEAPON` | oui | `IT_WEAPON` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `IT_AMMO` | oui | `IT_AMMO` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `IT_ARMOR` | oui | `IT_ARMOR` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `IT_STAY_COOP` | oui | `IT_STAY_COOP` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `IT_KEY` | oui | `IT_KEY` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `IT_POWERUP` | oui | `IT_POWERUP` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `ITEM_TRIGGER_SPAWN` | oui | `ITEM_TRIGGER_SPAWN` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `ITEM_NO_TOUCH` | oui | `ITEM_NO_TOUCH` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `ITEM_TARGETS_USED` | oui | `ITEM_TARGETS_USED` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FFL_SPAWNTEMP` | oui | `FFL_SPAWNTEMP` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FFL_NOSPAWN` | oui | `FFL_NOSPAWN` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_UNKNOWN` | oui | `MOD_UNKNOWN` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_WATER` | oui | `MOD_WATER` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_SLIME` | oui | `MOD_SLIME` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_LAVA` | oui | `MOD_LAVA` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_CRUSH` | oui | `MOD_CRUSH` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_TELEFRAG` | oui | `MOD_TELEFRAG` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Doublon local non exporte detecte dans `packages/game/src/g_utils.ts`; a traiter dans la matrice de `g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `MOD_FALLING` | oui | `MOD_FALLING` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_SUICIDE` | oui | `MOD_SUICIDE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_EXPLOSIVE` | oui | `MOD_EXPLOSIVE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_BARREL` | oui | `MOD_BARREL` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_BOMB` | oui | `MOD_BOMB` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_EXIT` | oui | `MOD_EXIT` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_SPLASH` | oui | `MOD_SPLASH` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_TARGET_LASER` | oui | `MOD_TARGET_LASER` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_TRIGGER_HURT` | oui | `MOD_TRIGGER_HURT` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `MOD_TARGET_BLASTER` | oui | `MOD_TARGET_BLASTER` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `VEC_UP` | oui | `VEC_UP` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `MOVEDIR_UP` | oui | `MOVEDIR_UP` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `VEC_DOWN` | oui | `VEC_DOWN` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `MOVEDIR_DOWN` | oui | `MOVEDIR_DOWN` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
 | `packages/game/src/g_local.ts` | enum | `damage_t` | oui | `damage_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_local.ts` | enum | `movetype_t` | oui | `movetype_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_local.ts` | value | `MOVETYPE_NONE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

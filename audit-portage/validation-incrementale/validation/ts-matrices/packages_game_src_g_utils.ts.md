@@ -4,39 +4,39 @@
 
 - Fichier TS: `packages/game/src/g_utils.ts`
 - Symboles TS: 31
-- Couvert C/H: 0
-- Reste a auditer: 31
+- Couvert C/H: 15
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_utils.ts` | value | `TV_POOL_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `tvPool` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `tvIndex` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `VTOS_POOL_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `vtosPool` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `vtosIndex` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `BODY_QUEUE_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `TAG_LEVEL` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `MOD_TELEFRAG` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `VEC_UP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `MOVEDIR_UP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `VEC_DOWN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | value | `MOVEDIR_DOWN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | function | `G_ProjectSource` | oui | `G_ProjectSource` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_Find` | oui | `G_Find` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_PickTarget` | oui | `G_PickTarget` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_UseTargets` | oui | `G_UseTargets` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `findradius` | oui | `findradius` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `tv` | oui | `tv` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `vtos` | oui | `vtos` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_SetMovedir` | oui | `G_SetMovedir` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `vectoyaw` | oui | `vectoyaw` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/game/src/g_utils.ts` | function | `vectoangles` | oui | `vectoangles` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_CopyString` | oui | `G_CopyString` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_InitEdict` | oui | `G_InitEdict` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_Spawn` | oui | `G_Spawn` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `G_FreeEdict` | oui | `G_FreeEdict` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `KillBox` | oui | `KillBox` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_utils.ts` | function | `equalsIgnoreCase` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_utils.ts` | function | `vectorLength` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_utils.ts` | function | `applyTelefragDamage` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_utils.ts` | value | `TV_POOL_SIZE` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | value | `tvPool` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | value | `tvIndex` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | value | `VTOS_POOL_SIZE` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | value | `vtosPool` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | value | `vtosIndex` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | value | `BODY_QUEUE_SIZE` | non | `BODY_QUEUE_SIZE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | Miroir local non exporte justifie: importer `g_local.ts` cree le cycle ESM `g_local -> runtime -> g_utils -> g_local`; le proprietaire exporte reste `g_local.ts`. |
+| `packages/game/src/g_utils.ts` | value | `TAG_LEVEL` | non | `TAG_LEVEL` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | Miroir local non exporte justifie: importer `g_local.ts` cree le cycle ESM `g_local -> runtime -> g_utils -> g_local`; le proprietaire exporte reste `g_local.ts`. |
+| `packages/game/src/g_utils.ts` | value | `MOD_TELEFRAG` | non | `MOD_TELEFRAG` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | Miroir local non exporte justifie: importer `g_local.ts` cree le cycle ESM `g_local -> runtime -> g_utils -> g_local`; le proprietaire exporte reste `g_local.ts`. |
+| `packages/game/src/g_utils.ts` | value | `VEC_UP` | non | `VEC_UP` | `Quake-2-master/game/g_utils.c` | Ported |  | Valide | Valide | Entite globale absente de la matrice C/H generee; valeur comparee au source C. |
+| `packages/game/src/g_utils.ts` | value | `MOVEDIR_UP` | non | `MOVEDIR_UP` | `Quake-2-master/game/g_utils.c` | Ported |  | Valide | Valide | Entite globale absente de la matrice C/H generee; valeur comparee au source C. |
+| `packages/game/src/g_utils.ts` | value | `VEC_DOWN` | non | `VEC_DOWN` | `Quake-2-master/game/g_utils.c` | Ported |  | Valide | Valide | Entite globale absente de la matrice C/H generee; valeur comparee au source C. |
+| `packages/game/src/g_utils.ts` | value | `MOVEDIR_DOWN` | non | `MOVEDIR_DOWN` | `Quake-2-master/game/g_utils.c` | Ported |  | Valide | Valide | Entite globale absente de la matrice C/H generee; valeur comparee au source C. |
+| `packages/game/src/g_utils.ts` | function | `G_ProjectSource` | oui | `G_ProjectSource` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_Find` | oui | `G_Find` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_PickTarget` | oui | `G_PickTarget` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_UseTargets` | oui | `G_UseTargets` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `findradius` | oui | `findradius` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `tv` | oui | `tv` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `vtos` | oui | `vtos` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_SetMovedir` | oui | `G_SetMovedir` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `vectoyaw` | oui | `vectoyaw` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H | Doublon potentiel recontrole: aucun autre symbole TS ne porte le meme couple Original name + Source declaree. |
+| `packages/game/src/g_utils.ts` | function | `vectoangles` | oui | `vectoangles` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_CopyString` | oui | `G_CopyString` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_InitEdict` | oui | `G_InitEdict` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_Spawn` | oui | `G_Spawn` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `G_FreeEdict` | oui | `G_FreeEdict` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `KillBox` | oui | `KillBox` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_utils.ts` | function | `equalsIgnoreCase` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | function | `vectorLength` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |
+| `packages/game/src/g_utils.ts` | function | `applyTelefragDamage` | non | `N/A` | `N/A (local helper)` | New |  | Non applicable | Non applicable |  |

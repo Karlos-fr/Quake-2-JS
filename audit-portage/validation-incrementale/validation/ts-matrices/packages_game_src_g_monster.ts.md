@@ -5,13 +5,13 @@
 - Fichier TS: `packages/game/src/g_monster.ts`
 - Symboles TS: 38
 - Couvert C/H: 31
-- Reste a auditer: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_monster.ts` | value | `NULL_VEC3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_monster.ts` | value | `MONSTER_PAUSE_FOREVER` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_monster.ts` | interface | `GameMonsterHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_monster.ts` | value | `NULL_VEC3` | non | `N/A` | `N/A (local constant)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_monster.ts` | value | `MONSTER_PAUSE_FOREVER` | non | `N/A` | `N/A (local constant)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_monster.ts` | interface | `GameMonsterHooks` | oui | `N/A` | `N/A (local hook interface)` | New |  | TS sans lien source documente | Valide |  |
 | `packages/game/src/g_monster.ts` | function | `monster_fire_bullet` | oui | `monster_fire_bullet` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `monster_fire_shotgun` | oui | `monster_fire_shotgun` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `monster_fire_blaster` | oui | `monster_fire_blaster` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
@@ -19,7 +19,7 @@
 | `packages/game/src/g_monster.ts` | function | `monster_fire_rocket` | oui | `monster_fire_rocket` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `monster_fire_railgun` | oui | `monster_fire_railgun` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `monster_fire_bfg` | oui | `monster_fire_bfg` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_monster.ts` | function | `queueMonsterMuzzleFlash` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_monster.ts` | function | `queueMonsterMuzzleFlash` | non | `N/A` | `N/A (local hook helper)` | New |  | TS sans lien source documente | Valide |  |
 | `packages/game/src/g_monster.ts` | function | `M_FliesOff` | oui | `M_FliesOff` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `M_FliesOn` | oui | `M_FliesOn` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `M_FlyCheck` | oui | `M_FlyCheck` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
@@ -44,6 +44,6 @@
 | `packages/game/src/g_monster.ts` | function | `flymonster_start` | oui | `flymonster_start` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `swimmonster_start_go` | oui | `swimmonster_start_go` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_monster.ts` | function | `swimmonster_start` | oui | `swimmonster_start` | `Quake-2-master/game/g_monster.c` | Ported | [`game_g_monster.c.md`](../matrices/game_g_monster.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_monster.ts` | function | `asGameEntity` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_monster.ts` | function | `setEntityOrigin` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_monster.ts` | function | `subtractVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_monster.ts` | function | `asGameEntity` | non | `N/A` | `N/A (local entity helper)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_monster.ts` | function | `setEntityOrigin` | non | `N/A` | `N/A (local entity helper)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_monster.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source documente | Valide |  |

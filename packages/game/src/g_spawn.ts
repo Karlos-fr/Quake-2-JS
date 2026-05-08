@@ -178,8 +178,21 @@ import {
 import type { GameEntity, GameRuntime } from "./runtime.js";
 import { G_Spawn } from "./g_utils.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local spawn callback type)
+ * Category: New
+ */
 type SpawnFunction = (entity: GameEntity, runtime: GameRuntime) => void;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local spawn parser field map)
+ * Category: New
+ *
+ * Porting notes:
+ * - Mirrors the spawn-relevant subset of `game/g_save.c` `fields`; the save/load table remains owned by `g_save.ts`.
+ */
 const spawnFields: field_t[] = [
   { name: "classname", ofs: "classname", type: fieldtype_t.F_LSTRING, flags: 0 },
   { name: "model", ofs: "model", type: fieldtype_t.F_LSTRING, flags: 0 },
@@ -878,6 +891,8 @@ export function G_FindTeams(runtime: GameRuntime): { teamCount: number; entityCo
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local door-plan bootstrap)
  * Category: New
  * Purpose: Apply the currently ported spawn registry to BSP runtime entities and then build team links.
  *
@@ -894,6 +909,8 @@ export function initializeDoorPlanEntities(runtime: GameRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local team-link reset helper)
  * Category: New
  * Purpose: Reset team runtime links before rebuilding them from the original BSP order.
  */
@@ -905,6 +922,11 @@ function clearTeamLinks(runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local g_main context bridge)
+ * Category: New
+ */
 function applyMainCvarsToRuntime(context: GameMainContext): void {
   context.runtime.deathmatch = Boolean(context.cvars.deathmatch?.value);
   context.runtime.coop = Boolean(context.cvars.coop?.value);
@@ -919,6 +941,11 @@ function applyMainCvarsToRuntime(context: GameMainContext): void {
   context.game.maxentities = context.runtime.maxentities;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local SpawnEntities helper)
+ * Category: New
+ */
 function normalizeSkillCvar(context: GameMainContext): void {
   const skill = context.cvars.skill;
   if (!skill) {
@@ -937,6 +964,11 @@ function normalizeSkillCvar(context: GameMainContext): void {
   context.cvars.skill.value = skillLevel;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local SP_worldspawn integration helper)
+ * Category: New
+ */
 function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, mapname: string): void {
   context.level.level_name = worldspawn.message && worldspawn.message.length > 0
     ? worldspawn.message
@@ -1012,6 +1044,11 @@ function precacheWorldspawnSounds(context: GameMainContext): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local sound precache helper)
+ * Category: New
+ */
 function precacheGameSound(context: GameMainContext, path: string): number {
   const runtimeIndex = registerGameSound(context.runtime, path);
   context.gi.soundindex(path);
@@ -1031,18 +1068,33 @@ function precacheWorldspawnModels(context: GameMainContext): void {
   context.runtime.sm_meat_index = precacheGameModel(context, "models/objects/gibs/sm_meat/tris.md2");
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local model precache helper)
+ * Category: New
+ */
 function precacheGameModel(context: GameMainContext, path: string): number {
   const runtimeIndex = registerGameModel(context.runtime, path);
   context.gi.modelindex(path);
   return runtimeIndex;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local SpawnEntities helper)
+ * Category: New
+ */
 function buildInitialServerEntityList(maxclients: number): BspEntity[] {
   const worldspawn = { properties: {} };
   const reservedClients = Array.from({ length: maxclients }, () => ({ properties: { classname: "player" } }));
   return [worldspawn, ...reservedClients];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local ED_ParseEdict adapter)
+ * Category: New
+ */
 function loadParsedEntityIntoEdict(entity: GameEntity, parsedEntity: BspEntity, runtime: GameRuntime): void {
   const parsed = createRuntimeEntity({}, entity.index);
   Object.assign(entity, parsed);
@@ -1051,6 +1103,11 @@ function loadParsedEntityIntoEdict(entity: GameEntity, parsedEntity: BspEntity, 
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local ED_ParseEdict helper)
+ * Category: New
+ */
 function resetParsedEdict(entity: GameEntity): void {
   const parsed = createRuntimeEntity({}, entity.index);
   Object.assign(entity, parsed);
@@ -1059,6 +1116,11 @@ function resetParsedEdict(entity: GameEntity): void {
   entity.properties = {};
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local ED_ParseField helper)
+ * Category: New
+ */
 function applyParsedField(field: field_t, value: string, ent: GameEntity, spawnTemp?: spawn_temp_t): void {
   if ((field.flags & FFL_SPAWNTEMP) !== 0) {
     applySpawnTempField(field, value, ent, spawnTemp);
@@ -1095,6 +1157,11 @@ function applyParsedField(field: field_t, value: string, ent: GameEntity, spawnT
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local spawn-temp field helper)
+ * Category: New
+ */
 function applySpawnTempField(field: field_t, value: string, ent: GameEntity, spawnTemp?: spawn_temp_t): void {
   switch (field.type) {
     case fieldtype_t.F_LSTRING: {
@@ -1131,6 +1198,11 @@ function applySpawnTempField(field: field_t, value: string, ent: GameEntity, spa
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local entity field setter)
+ * Category: New
+ */
 function setEntityVectorField(entity: GameEntity, path: string, value: [number, number, number]): void {
   setEntityField(entity, path, [...value]);
   if (path === "s.origin") {
@@ -1142,6 +1214,11 @@ function setEntityVectorField(entity: GameEntity, path: string, value: [number, 
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local entity field setter)
+ * Category: New
+ */
 function setEntityField(entity: GameEntity, path: string, value: unknown): void {
   if (!path) {
     return;
@@ -1160,6 +1237,11 @@ function setEntityField(entity: GameEntity, path: string, value: unknown): void 
   target[parts[parts.length - 1]] = value;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local field parser)
+ * Category: New
+ */
 function parseFieldVector(value: string): [number, number, number] {
   const parts = value.trim().split(/\s+/);
   return [
@@ -1169,16 +1251,31 @@ function parseFieldVector(value: string): [number, number, number] {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local field parser)
+ * Category: New
+ */
 function parseFieldFloat(value: string | undefined): number {
   const parsed = Number.parseFloat(value ?? "");
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local field parser)
+ * Category: New
+ */
 function parseFieldInteger(value: string): number {
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local spawnflag mask)
+ * Category: New
+ */
 const SPAWNFLAG_NOT_MASK =
   SPAWNFLAG_NOT_EASY |
   SPAWNFLAG_NOT_MEDIUM |
@@ -1186,6 +1283,11 @@ const SPAWNFLAG_NOT_MASK =
   SPAWNFLAG_NOT_DEATHMATCH |
   SPAWNFLAG_NOT_COOP;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local SpawnEntities helper)
+ * Category: New
+ */
 function applySpawnFlagMapHack(runtime: GameRuntime, entity: GameEntity): void {
   if (
     stringsEqualIgnoreCase(runtime.mapname, "command") &&
@@ -1196,6 +1298,11 @@ function applySpawnFlagMapHack(runtime: GameRuntime, entity: GameEntity): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local SpawnEntities helper)
+ * Category: New
+ */
 function shouldInhibitSpawnEntity(runtime: GameRuntime, entity: GameEntity): boolean {
   if (runtime.deathmatch) {
     return (entity.spawnflags & SPAWNFLAG_NOT_DEATHMATCH) !== 0;
@@ -1209,12 +1316,22 @@ function shouldInhibitSpawnEntity(runtime: GameRuntime, entity: GameEntity): boo
   );
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local runtime rebuild helper)
+ * Category: New
+ */
 function syncMainRuntimeState(target: GameRuntime, source: GameRuntime): void {
   for (const key of Object.keys(source) as Array<keyof GameRuntime>) {
     (target as Record<keyof GameRuntime, unknown>)[key] = source[key];
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local worldspawn precache list)
+ * Category: New
+ */
 const WORLDSPAWN_SOUND_PRECACHE = [
   "player/lava1.wav",
   "player/lava2.wav",
@@ -1256,6 +1373,11 @@ const WORLDSPAWN_SOUND_PRECACHE = [
   "infantry/inflies1.wav"
 ] as const;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local worldspawn lightstyle table)
+ * Category: New
+ */
 const WORLDSPAWN_LIGHTSTYLES = [
   [0, "m"],
   [1, "mmnmmommommnonmmonqnmmo"],
@@ -1272,6 +1394,11 @@ const WORLDSPAWN_LIGHTSTYLES = [
   [63, "a"]
 ] as const;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local string compare helper)
+ * Category: New
+ */
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }

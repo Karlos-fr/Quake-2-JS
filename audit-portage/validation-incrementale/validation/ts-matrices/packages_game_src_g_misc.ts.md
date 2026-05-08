@@ -4,26 +4,26 @@
 
 - Fichier TS: `packages/game/src/g_misc.ts`
 - Symboles TS: 96
-- Couvert C/H: 82
-- Reste a auditer: 14
+- Couvert C/H: 84
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_misc.ts` | value | `START_OFF` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | value | `CLOCK_MESSAGE_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `crandom` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `randomFloat` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `freeEdictThink` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `clamp` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `addVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `subVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `scaleVec3` | non | `VectorScale` | `Quake-2-master/game/q_shared.c` | Ported | [`game_q_shared.c.md`](../matrices/game_q_shared.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/game/src/g_misc.ts` | function | `vecLength` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_misc.ts` | function | `setEntityOrigin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_misc.ts` | value | `START_OFF` | non | `START_OFF` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
+| `packages/game/src/g_misc.ts` | value | `CLOCK_MESSAGE_SIZE` | non | `CLOCK_MESSAGE_SIZE` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
+| `packages/game/src/g_misc.ts` | function | `crandom` | non | `crandom` | `Quake-2-master/game/g_local.h` | Imported |  | TS sans lien source | Non applicable | Symbole importe depuis `packages/game/src/g_local.ts`; `g_misc.ts` n'est pas le proprietaire TS. |
+| `packages/game/src/g_misc.ts` | function | `randomFloat` | non | `random` | `Quake-2-master/game/g_local.h` | Imported |  | TS sans lien source | Non applicable | Symbole importe depuis `packages/game/src/g_local.ts`; `g_misc.ts` n'est pas le proprietaire TS. |
+| `packages/game/src/g_misc.ts` | function | `freeEdictThink` | non | `N/A` | `N/A (local think adapter)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_misc.ts` | function | `clamp` | non | `N/A` | `N/A (local numeric helper)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_misc.ts` | function | `addVec3` | non | `N/A` | `N/A (local immutable vector helper)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_misc.ts` | function | `subVec3` | non | `N/A` | `N/A (local immutable vector helper)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_misc.ts` | function | `scaleVec3` | non | `N/A` | `N/A (local immutable vector helper)` | New |  | TS sans lien source documente | Valide | Portage proprietaire `VectorScale` dans `packages/math/src/q_shared.ts`. |
+| `packages/game/src/g_misc.ts` | function | `vecLength` | non | `N/A` | `N/A (local immutable vector helper)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_misc.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local immutable vector helper)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_misc.ts` | function | `setEntityOrigin` | non | `N/A` | `N/A (local entity helper)` | New |  | TS sans lien source documente | Valide |  |
 | `packages/game/src/g_misc.ts` | function | `VelocityForDamage` | non | `VelocityForDamage` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_misc.ts` | function | `ClipGibVelocity` | non | `ClipGibVelocity` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_misc.ts` | function | `findFirstByClassname` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_misc.ts` | function | `findFirstByClassname` | non | `N/A` | `N/A (local entity lookup helper)` | New |  | TS sans lien source documente | Valide |  |
 | `packages/game/src/g_misc.ts` | function | `Use_Areaportal` | oui | `Use_Areaportal` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_misc.ts` | function | `SP_func_areaportal` | oui | `SP_func_areaportal` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_misc.ts` | function | `gib_think` | oui | `gib_think` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
@@ -92,7 +92,7 @@
 | `packages/game/src/g_misc.ts` | function | `SP_misc_teleporter` | oui | `SP_misc_teleporter` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_misc.ts` | function | `SP_misc_teleporter_dest` | oui | `SP_misc_teleporter_dest` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_misc.ts` | function | `SP_misc_deadsoldier` | oui | `SP_misc_deadsoldier` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_misc.ts` | function | `initialize_misc_gib` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_misc.ts` | function | `initialize_misc_gib` | non | `N/A` | `N/A (local gib spawn helper)` | New |  | TS sans lien source documente | Valide |  |
 | `packages/game/src/g_misc.ts` | function | `SP_misc_gib_arm` | oui | `SP_misc_gib_arm` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_misc.ts` | function | `SP_misc_gib_leg` | oui | `SP_misc_gib_leg` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_misc.ts` | function | `SP_misc_gib_head` | oui | `SP_misc_gib_head` | `Quake-2-master/game/g_misc.c` | Ported | [`game_g_misc.c.md`](../matrices/game_g_misc.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |

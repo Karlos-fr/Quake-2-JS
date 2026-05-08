@@ -90,10 +90,25 @@ import {
   type GameWeaponWorldHooks
 } from "./g_weapon.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local constant)
+ * Category: New
+ * Purpose: Provide a local zero vector for `vec3_origin` call sites without mutating shared state.
+ */
 const NULL_VEC3: vec3_t = [0, 0, 0];
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local constant)
+ * Category: New
+ * Purpose: Name the original `monster_start_go` indefinite pause literal.
+ */
 const MONSTER_PAUSE_FOREVER = 100000000;
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local hook interface)
  * Category: New
  * Purpose: Keep the still-external `g_monster.c` dependencies explicit until the remaining monster AI/runtime imports are ported.
  *
@@ -276,6 +291,12 @@ export function monster_fire_bfg(
   queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local hook helper)
+ * Category: New
+ * Purpose: Route monster muzzleflash emission through an optional test/runtime hook before using the default game event bridge.
+ */
 function queueMonsterMuzzleFlash(
   self: GameEntity,
   start: vec3_t,
@@ -1147,6 +1168,8 @@ export function swimmonster_start(self: GameEntity, runtime: GameRuntime, hooks:
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local entity helper)
  * Category: New
  * Purpose: Narrow one trace entity payload back to the gameplay entity shape when available.
  */
@@ -1163,6 +1186,8 @@ function asGameEntity(value: unknown): GameEntity | null {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local entity helper)
  * Category: New
  * Purpose: Keep `origin` and `s.origin` synchronized after position updates in the monster helpers.
  */
@@ -1172,6 +1197,8 @@ function setEntityOrigin(ent: GameEntity, origin: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Subtract two vectors without mutating either input.
  */

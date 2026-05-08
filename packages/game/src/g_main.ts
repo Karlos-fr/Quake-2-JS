@@ -101,6 +101,8 @@ import {
 } from "./g_save.js";
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (explicit TS context for grouped cvars)
  * Category: New
  * Purpose: Group the Quake II gameplay cvars touched directly by the first `g_main.c` port.
  */
@@ -139,6 +141,8 @@ export interface GameMainCvars {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (explicit TS context replacing file-scope globals)
  * Category: New
  * Purpose: Carry the explicit gameplay-module context that replaces the original `g_main.c` globals.
  */
@@ -154,6 +158,8 @@ export interface GameMainContext {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (TS callback surface for host integration)
  * Category: New
  * Purpose: Group the still-external callbacks used by the first `g_main.c` port.
  */
@@ -164,6 +170,8 @@ export interface GameMainHooks extends GamePlayerClientHooks, GameHudHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (TS options object for context construction)
  * Category: New
  * Purpose: Configure one `GetGameApi` context build.
  */
@@ -235,6 +243,8 @@ export function ClientEndServerFrames(context: GameMainContext): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (split runtime adapter)
  * Category: Adapter
  * Purpose: Keep the split TS game/runtime help fields equivalent to the original `game_locals_t game` global.
  *
@@ -257,7 +267,7 @@ function syncGameHelpState(context: GameMainContext): void {
 
 /**
  * Original name: InitGame
- * Source: game/g_main.c
+ * Source: game/g_save.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -557,6 +567,8 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (TS hook adapter for game export wiring)
  * Category: New
  * Purpose: Reattach the default `g_main.c` connection policy before delegating to the `p_client.c` port.
  */
@@ -582,6 +594,8 @@ function createClientConnectHooks(context: GameMainContext): GameMainHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (TS hook adapter for game export wiring)
  * Category: New
  * Purpose: Reattach the `ClientUserinfoChanged`/disconnect engine side effects to the original `gi` callbacks.
  */
@@ -741,6 +755,8 @@ function rejectSpectatorRespawn(context: GameMainContext, ent: GameEntity, messa
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (explicit TS context builder)
  * Category: New
  * Purpose: Create the explicit runtime context used by the first `g_main.c` port.
  */
@@ -818,10 +834,10 @@ export function ClientCommand(context: GameMainContext, ent: edict_t): void {
 }
 
 /**
- * Original name: WriteGame
- * Source: game/g_save.c
- * Category: Ported
- * Fidelity level: Close
+ * Original name: GetGameAPI WriteGame slot
+ * Source: game/g_main.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Delegates the savegame export slot to the `g_save.c` TypeScript attachment point.
@@ -832,10 +848,10 @@ export function WriteGame(context: GameMainContext, filename: string, autosave: 
 }
 
 /**
- * Original name: ReadGame
- * Source: game/g_save.c
- * Category: Ported
- * Fidelity level: Close
+ * Original name: GetGameAPI ReadGame slot
+ * Source: game/g_main.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Delegates the savegame import slot to the `g_save.c` TypeScript attachment point.
@@ -845,10 +861,10 @@ export function ReadGame(context: GameMainContext, filename: string): void {
 }
 
 /**
- * Original name: WriteLevel
- * Source: game/g_save.c
- * Category: Ported
- * Fidelity level: Close
+ * Original name: GetGameAPI WriteLevel slot
+ * Source: game/g_main.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Delegates the level-save export slot to the `g_save.c` TypeScript attachment point.
@@ -858,10 +874,10 @@ export function WriteLevel(context: GameMainContext, filename: string): void {
 }
 
 /**
- * Original name: ReadLevel
- * Source: game/g_save.c
- * Category: Ported
- * Fidelity level: Close
+ * Original name: GetGameAPI ReadLevel slot
+ * Source: game/g_main.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Delegates the level-save import slot to the `g_save.c` TypeScript attachment point.
@@ -870,6 +886,12 @@ export function ReadLevel(context: GameMainContext, filename: string): void {
   ReadLevel_Save(context, filename);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Build the nullable cvar handle block before `InitGame` binds engine cvars.
+ */
 function createGameMainCvars(): GameMainCvars {
   return {
     deathmatch: null,
@@ -912,6 +934,12 @@ function assignCvarValue<T extends Record<string, number | undefined>>(target: T
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Mirror the `g_main.c` cvars that are consumed through the explicit gameplay runtime.
+ */
 function applyMainCvarsToRuntime(context: GameMainContext): void {
   context.runtime.deathmatch = Boolean(context.cvars.deathmatch?.value);
   context.runtime.coop = Boolean(context.cvars.coop?.value);
@@ -927,6 +955,8 @@ function applyMainCvarsToRuntime(context: GameMainContext): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (runtime side-effect bridge)
  * Category: New
  * Purpose: Flush gameplay-runtime engine side effects through the original game import surface.
  *
@@ -1055,6 +1085,12 @@ function writeTempEntityStartEnd(
   context.gi.WritePosition(vectorPayloadWithFallback(event.payload, "end", event.origin));
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Identify temp-entity opcodes whose C emission writes an origin followed by a direction.
+ */
 function tempEntityWritesDirection(type: temp_event_t): boolean {
   switch (type) {
     case temp_event_t.TE_BLOOD:
@@ -1077,6 +1113,12 @@ function tempEntityWritesDirection(type: temp_event_t): boolean {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Read one numeric temp-entity payload value with the C-style zero default.
+ */
 function numberPayload(payload: Record<string, unknown>, key: string): number {
   const value = payload[key];
   return Number.isFinite(value) ? Number(value) : 0;
@@ -1090,6 +1132,12 @@ function numberPayloadWithFallback(payload: Record<string, unknown>, key: string
   return numberPayload(payload, fallbackKey);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Read one vector temp-entity payload value with the C-style zero vector default.
+ */
 function vectorPayload(payload: Record<string, unknown>, key: string): [number, number, number] {
   return vectorPayloadWithFallback(payload, key, [0, 0, 0]);
 }
@@ -1122,8 +1170,20 @@ function vectorPayloadOrNull(payload: Record<string, unknown>, key: string): vec
   return null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local port metadata)
+ * Category: New
+ * Purpose: Provide the `gamedate` cvar value used by the TS port's `InitGame` wiring.
+ */
 const GAME_BUILD_DATE = "TypeScript port";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (split runtime adapter)
+ * Category: New
+ * Purpose: Mirror runtime level state into `level_locals_t` for save, HUD and frame code that still reads it.
+ */
 function syncLevelFromRuntime(context: GameMainContext): void {
   context.level.framenum = context.runtime.framenum;
   context.level.time = context.runtime.time;
@@ -1151,6 +1211,12 @@ function syncLevelFromRuntime(context: GameMainContext): void {
   context.level.power_cubes = context.runtime.power_cubes;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Tokenize `sv_maplist` using the original `EndDMLevel` separators.
+ */
 function tokenizeMapList(maplist: string): string[] {
   return maplist
     .split(/[ ,\n\r]+/)
@@ -1158,6 +1224,12 @@ function tokenizeMapList(maplist: string): string[] {
     .filter((entry) => entry.length > 0);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Keep map-list comparisons routed through the Quake II case-insensitive string helper.
+ */
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }

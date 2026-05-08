@@ -95,43 +95,89 @@ import { G_Find, G_FreeEdict, G_PickTarget, G_Spawn, G_UseTargets, KillBox, vect
 const START_OFF = 1;
 const CLOCK_MESSAGE_SIZE = 16;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local think adapter)
+ * Category: New
+ *
+ * Purpose:
+ * - Adapts `G_FreeEdict` to the runtime think-callback signature used by local entity cleanup.
+ */
 function freeEdictThink(self: GameEntity, runtime: GameRuntime): void {
   G_FreeEdict(runtime, self);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local numeric helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Keeps local clamp call sites compact while preserving their source branch bounds.
+ */
 function clamp(value: number, min: number, max: number): number {
   return value < min ? min : value > max ? max : value;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Returns the sum of two vectors for local call sites that would mutate an out parameter in C.
+ */
 function addVec3(left: vec3_t, right: vec3_t): [number, number, number] {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Returns the difference of two vectors for local call sites that would mutate an out parameter in C.
+ */
 function subVec3(left: vec3_t, right: vec3_t): [number, number, number] {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
 /**
- * Original name: VectorScale
- * Source: game/q_shared.c
- * Category: Ported
- * Fidelity level: Strict
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector helper)
+ * Category: New
  *
- * Behavior:
- * - Multiplies a vec3 by one scalar, returning the out vector used by the original helper.
+ * Purpose:
+ * - Returns a scaled vector for local call sites that would use `VectorScale` with an out parameter in C.
  *
- * Porting notes:
- * - The C `out` parameter is represented as a returned tuple for local TS callers.
- * - This local adapter covers the `VectorScale` call sites in `game/g_misc.c`.
+ * Constraints:
+ * - The owning `VectorScale` port remains `packages/math/src/q_shared.ts`.
  */
 function scaleVec3(vector: vec3_t, scalar: number): [number, number, number] {
   return [vector[0] * scalar, vector[1] * scalar, vector[2] * scalar];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Computes a local vector length without mutating the input vector.
+ */
 function vecLength(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Returns a normalized vector for local call sites that need a copied result.
+ */
 function normalizeVec3(vector: vec3_t): [number, number, number] {
   const length = vecLength(vector);
   if (length === 0) {
@@ -141,6 +187,14 @@ function normalizeVec3(vector: vec3_t): [number, number, number] {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local entity helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Keeps gameplay origin and network origin fields synchronized after local position changes.
+ */
 function setEntityOrigin(self: GameEntity, origin: vec3_t): void {
   self.origin = [...origin];
   self.s.origin = [...origin];
@@ -184,6 +238,14 @@ function ClipGibVelocity(ent: GameEntity): void {
   ent.velocity[2] = clamp(ent.velocity[2], 200, 500);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local entity lookup helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Finds the first active entity with one classname for source flows that search by class.
+ */
 function findFirstByClassname(runtime: GameRuntime, classname: string): GameEntity | null {
   return runtime.entities.find((entity) => entity.inuse && entity.classname === classname) ?? null;
 }
@@ -2099,7 +2161,10 @@ export function SP_misc_deadsoldier(ent: GameEntity, runtime: GameRuntime): void
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local gib spawn helper)
  * Category: New
+ *
  * Purpose: Apply the shared gib spawn baseline used by the `misc_gib_*` ports.
  *
  * Constraints:

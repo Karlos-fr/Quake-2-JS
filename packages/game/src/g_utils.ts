@@ -27,7 +27,6 @@ import {
   getRuntimeEntityLabel,
   unlinkGameEntity,
   registerGameSound,
-  refreshEntitySpatialState,
   spawnGameEntity
 } from "./runtime.js";
 import type {
@@ -44,6 +43,7 @@ const VTOS_POOL_SIZE = 8;
 const vtosPool: string[] = new Array<string>(VTOS_POOL_SIZE).fill("(0 0 0)");
 let vtosIndex = 0;
 
+// Local mirrors of g_local.h macros avoid an ESM cycle through g_local -> runtime -> g_utils.
 const BODY_QUEUE_SIZE = 8;
 const TAG_LEVEL = 766;
 const MOD_TELEFRAG = 21;
@@ -638,11 +638,19 @@ export function KillBox(runtime: GameRuntime, ent: GameEntity): boolean {
   return true;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Compare two game strings through the original Quake II case-insensitive comparator.
+ */
 function equalsIgnoreCase(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Compute one vector length for the strict `findradius` port.
  */
@@ -651,6 +659,8 @@ function vectorLength(vector: [number, number, number]): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Apply the local telefrag damage effect used by the `KillBox` port without pulling in the full combat module at runtime.
  *
