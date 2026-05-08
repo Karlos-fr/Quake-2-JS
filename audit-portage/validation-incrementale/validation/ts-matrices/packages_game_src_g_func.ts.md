@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_func.ts`
 - Symboles TS: 103
 - Couvert C/H: 81
-- Reste a auditer: 17
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -95,20 +95,20 @@
 | `packages/game/src/g_func.ts` | function | `emitMoverSound` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Factorisation locale de `gi.sound` mover avec canal `CHAN_NO_PHS_ADD+CHAN_VOICE`; entete ajoute. |
 | `packages/game/src/g_func.ts` | function | `startMoverLoop` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Helper local pour les blocs C de demarrage mover: skip `FL_TEAMSLAVE`, son start, puis `s.sound`. |
 | `packages/game/src/g_func.ts` | function | `stopMoverLoop` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Helper local pour les blocs C d'arret mover: skip `FL_TEAMSLAVE`, son end, puis clear `s.sound`. |
-| `packages/game/src/g_func.ts` | function | `computeDoorDistance` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `parseDoorMovedir` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `parseDistance` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `crandom` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | function | `addVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | function | `absVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | function | `dotProduct` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | function | `setEntityOrigin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | function | `computeDoorTriggerBounds` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `getAbsoluteEntityBounds` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `forEachDoorTeam` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `accelerationDistance` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `normalizeVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `scaleVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `subtractVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `vec3Length` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_func.ts` | function | `isZeroVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_func.ts` | function | `computeDoorDistance` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `parseDoorMovedir` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `parseDistance` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `crandom` | non | `crandom` | `Quake-2-master/game/g_local.h` | Imported |  | TS sans lien source | Non applicable | Symbole importe depuis `packages/game/src/g_local.ts`; `g_func.ts` n'est pas le proprietaire TS. |
+| `packages/game/src/g_func.ts` | function | `addVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `absVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `dotProduct` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `setEntityOrigin` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `computeDoorTriggerBounds` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `getAbsoluteEntityBounds` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `forEachDoorTeam` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `accelerationDistance` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `scaleVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `vec3Length` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_func.ts` | function | `isZeroVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |

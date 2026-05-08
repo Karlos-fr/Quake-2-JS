@@ -1,8 +1,8 @@
 # Progress TS - packages/game/src/g_combat.ts
 
-- Statut: En cours
-- Dernier lot valide: helpers locaux combat (`dotProduct`, `traceCanDamage`, `emitCombatTempEntity`) classes; doublon local `ClientTeam`/`OnSameTeam` retire au profit du port proprietaire `g_cmds.ts`.
-- Prochain lot recommande: traiter les helpers locaux avec entete incomplet restants, en commencant par `addVec3`, `subtractVec3`, `scaleVec3`, `vectorLength` et `normalizeVec3`.
+- Statut: Termine
+- Dernier lot valide: helpers locaux vecteur/bookkeeping (`addVec3`, `subtractVec3`, `scaleVec3`, `vectorLength`, `normalizeVec3`, `incrementKilledMonsters`) classes; type local superflu `GameCombatRuntimeBookkeeping` retire.
+- Prochain lot recommande: aucun pour `packages/game/src/g_combat.ts`.
 - Tests de reference: `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run verify:p-view`, `npm run verify:particle-sync`, `npm run typecheck`.
 - Blocages: aucun pour les lignes `Couvert C/H`.
 
@@ -34,3 +34,13 @@
 - Ownership/doublons: suppression du doublon prive `ClientTeam`/`OnSameTeam`; `T_Damage` importe maintenant `OnSameTeam` depuis `g_cmds.ts`.
 - Integration: runtime integre via `T_Damage`, `CheckPowerArmor`, `CanDamage` et `SpawnDamage`; `apps/web` consomme les effets via le runtime server/game; `renderer-three` consomme indirectement les temp entities/particules, aucune integration directe supplementaire attendue pour ces helpers locaux.
 - Tests: `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run verify:g-cmds`, `npm run typecheck`.
+
+## Session helpers locaux vecteur/bookkeeping
+
+- Lignes traitees: `addVec3`, `subtractVec3`, `scaleVec3`, `vectorLength`, `normalizeVec3`, `GameCombatRuntimeBookkeeping`, `incrementKilledMonsters`.
+- Verdict: `Valide` pour les 5 wrappers vecteur et `incrementKilledMonsters`; `GameCombatRuntimeBookkeeping` retire car `GameRuntime` porte deja le champ `killed_monsters`.
+- Preuves: `g_combat.c` relu pour les appels `VectorAdd`, `VectorSubtract`, `VectorScale`, `VectorLength`, `VectorNormalize` et `level.killed_monsters++`; `packages/math/src/q_shared.ts`/`packages/qcommon/src/index.ts` confirment les portages proprietaires des helpers vecteur; `packages/game/src/runtime.ts` confirme `GameRuntime.killed_monsters`.
+- En-tetes: metadonnees ajoutees avec `Original name: N/A`, `Source declaree: N/A (...)`, `Category: New`.
+- Ownership/doublons: les wrappers restent locaux, prives et immutables; ils ne se presentent pas comme portage proprietaire des `Vector*`, qui restent dans `packages/math/src/q_shared.ts`. Le helper bookkeeping ne duplique plus le type runtime.
+- Integration: runtime integre via `CheckPowerArmor`, `CanDamage`, `T_RadiusDamage`, `T_Damage` et `Killed`; `apps/web` consomme les resultats via le runtime server/game; `renderer-three` consomme indirectement les temp entities/particules et etats client deja produits par le runtime, aucune integration directe supplementaire attendue pour ces helpers locaux.
+- Tests: `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run typecheck`.

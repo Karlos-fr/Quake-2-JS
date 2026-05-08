@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_cmds.ts`
 - Symboles TS: 41
 - Couvert C/H: 25
-- Reste a auditer: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -41,12 +41,12 @@
 | `packages/game/src/g_cmds.ts` | function | `giveSpawnedItem` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_cmds.ts` | function | `callItemUse` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_cmds.ts` | function | `callItemDrop` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
-| `packages/game/src/g_cmds.ts` | function | `scanWeapon` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `isFloodBlocked` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `buildHelpData` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `cprintf` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `qstricmp` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `atoi` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `positiveModulo` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `padLeft` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `pad2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_cmds.ts` | function | `scanWeapon` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `isFloodBlocked` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `buildHelpData` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `cprintf` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `qstricmp` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `atoi` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `positiveModulo` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `padLeft` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `pad2` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |

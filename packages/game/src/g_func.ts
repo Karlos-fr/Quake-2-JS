@@ -2465,7 +2465,11 @@ function stopMoverLoop(self: GameEntity, runtime: GameRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Derive the linear translation distance of one door from its movedir and brush bounds.
  *
  * Constraints:
@@ -2481,7 +2485,11 @@ function computeDoorDistance(entity: GameEntity): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Decode the first Quake-style movedir semantics used by translating doors.
  *
  * Constraints:
@@ -2501,7 +2509,11 @@ function parseDoorMovedir(properties: Record<string, string>): [number, number, 
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Parse one numeric distance-like key with a fallback.
  */
 function parseDistance(value: string | undefined, fallback: number): number {
@@ -2509,25 +2521,61 @@ function parseDistance(value: string | undefined, fallback: number): number {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose: Add two vec3 values without mutating the inputs.
+ */
 function addVec3(left: vec3_t, right: vec3_t): [number, number, number] {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose: Return the component-wise absolute value used by mover distance calculations.
+ */
 function absVec3(vector: vec3_t): [number, number, number] {
   return [Math.abs(vector[0]), Math.abs(vector[1]), Math.abs(vector[2])];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose: Compute a vec3 dot product for translated vector macro use.
+ */
 function dotProduct(left: vec3_t, right: vec3_t): number {
   return left[0] * right[0] + left[1] * right[1] + left[2] * right[2];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose: Keep entity origin aliases in sync after translated spawn-position updates.
+ */
 function setEntityOrigin(entity: GameEntity, origin: vec3_t): void {
   entity.origin = [...origin];
   entity.s.origin = [...origin];
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Reproduce the first door-trigger bounds expansion used by Quake II touch doors.
  *
  * Constraints:
@@ -2560,7 +2608,11 @@ function computeDoorTriggerBounds(entity: GameEntity): { mins: [number, number, 
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Resolve absolute world bounds for one brush entity using inline-model bounds when available.
  */
 function getAbsoluteEntityBounds(entity: GameEntity): { mins: [number, number, number]; maxs: [number, number, number] } {
@@ -2586,7 +2638,11 @@ function getAbsoluteEntityBounds(entity: GameEntity): { mins: [number, number, n
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Iterate the linked members of one door team starting from the team master.
  *
  * Constraints:
@@ -2601,7 +2657,11 @@ function forEachDoorTeam(self: GameEntity, callback: (entity: GameEntity) => voi
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Compute the original Quake acceleration distance helper.
  */
 function accelerationDistance(target: number, rate: number): number {
@@ -2609,7 +2669,11 @@ function accelerationDistance(target: number, rate: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Normalize one vector in place and return its original length.
  */
 function normalizeVec3(vector: [number, number, number]): number {
@@ -2628,7 +2692,11 @@ function normalizeVec3(vector: [number, number, number]): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Multiply one vector by a scalar without mutating the source.
  */
 function scaleVec3(vector: [number, number, number], scalar: number): [number, number, number] {
@@ -2636,7 +2704,11 @@ function scaleVec3(vector: [number, number, number], scalar: number): [number, n
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Subtract two vectors without mutating the inputs.
  */
 function subtractVec3(left: [number, number, number], right: [number, number, number]): [number, number, number] {
@@ -2644,7 +2716,11 @@ function subtractVec3(left: [number, number, number], right: [number, number, nu
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Compute one vector Euclidean length.
  */
 function vec3Length(vector: [number, number, number]): number {
@@ -2652,7 +2728,11 @@ function vec3Length(vector: [number, number, number]): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
+ * Fidelity level: Close
+ *
  * Purpose: Detect a zero vector for movement completion checks.
  */
 function isZeroVec3(vector: [number, number, number]): boolean {

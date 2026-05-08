@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_items.ts`
 - Symboles TS: 74
 - Couvert C/H: 53
-- Reste a auditer: 20
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -18,27 +18,27 @@
 | `packages/game/src/g_items.ts` | value | `power_shield_index` | non | `power_shield_index` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | value | `quad_drop_timeout_hack` | non | `quad_drop_timeout_hack` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `cacheItemIndices` | non | `N/A` | `N/A (local cache helper)` | New |  | TS sans lien source | Valide |  |
-| `packages/game/src/g_items.ts` | type | `GameItemPickupKind` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | type | `GameItemUseKind` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | type | `GameItemDropKind` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | type | `GameItemWeaponThinkKind` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_items.ts` | type | `GameItemPickupKind` | oui | `N/A` | `N/A (local dispatch helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | type | `GameItemUseKind` | oui | `N/A` | `N/A (local dispatch helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | type | `GameItemDropKind` | oui | `N/A` | `N/A (local dispatch helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | type | `GameItemWeaponThinkKind` | oui | `N/A` | `N/A (local dispatch helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_items.ts` | interface | `GameItemDefinition` | oui | `gitem_s` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | interface | `GameItemArmorInfo` | oui | `gitem_armor_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_items.ts` | interface | `RawGameItemDefinition` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_items.ts` | interface | `RawGameItemDefinition` | non | `N/A` | `N/A (local itemlist construction helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_items.ts` | value | `rawItemlist` | non | `itemlist` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_items.ts` | value | `itemlist` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `jacketarmor_info` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `combatarmor_info` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `bodyarmor_info` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_items.ts` | value | `itemlist` | non | `N/A` | `N/A (local indexed itemlist view)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | value | `jacketarmor_info` | non | `jacketarmor_info` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Croise direct C | Valide | Global C compare directement pendant cette session: `{25, 50, .30, .00, ARMOR_JACKET}`. |
+| `packages/game/src/g_items.ts` | value | `combatarmor_info` | non | `combatarmor_info` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Croise direct C | Valide | Global C compare directement pendant cette session: `{50, 100, .60, .30, ARMOR_COMBAT}`. |
+| `packages/game/src/g_items.ts` | value | `bodyarmor_info` | non | `bodyarmor_info` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Croise direct C | Valide | Global C compare directement pendant cette session: `{100, 200, .80, .60, ARMOR_BODY}`. |
 | `packages/game/src/g_items.ts` | function | `FindItemByClassname` | oui | `FindItemByClassname` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `GetItemByIndex` | oui | `GetItemByIndex` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `FindItem` | oui | `FindItem` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_items.ts` | function | `GetGameItems` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_items.ts` | function | `GetGameItems` | oui | `N/A` | `N/A (local itemlist accessor)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_items.ts` | function | `ArmorIndex` | oui | `ArmorIndex` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `PowerArmorType` | oui | `PowerArmorType` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_items.ts` | function | `GetArmorInfoByItem` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_items.ts` | function | `GetAmmoItemForWeapon` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_items.ts` | function | `FindWeaponItemByThink` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_items.ts` | function | `GetArmorInfoByItem` | oui | `N/A` | `N/A (local armor info resolver)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | function | `GetAmmoItemForWeapon` | oui | `N/A` | `N/A (local ammo resolver)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | function | `FindWeaponItemByThink` | oui | `N/A` | `N/A (local weapon lookup helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_items.ts` | function | `InitItems` | oui | `InitItems` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `SetItemNames` | oui | `SetItemNames` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `PrecacheItem` | oui | `PrecacheItem` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
@@ -76,10 +76,10 @@
 | `packages/game/src/g_items.ts` | function | `SP_item_health_small` | oui | `SP_item_health_small` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `SP_item_health_large` | oui | `SP_item_health_large` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | function | `SP_item_health_mega` | oui | `SP_item_health_mega` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_items.ts` | function | `ITEM_INDEX` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | function | `requireClient` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | function | `getArmorInfoByIndex` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | function | `getAmmoMax` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | function | `grantAmmoPickup` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | function | `callItemPickup` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | function | `callItemUse` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_items.ts` | function | `ITEM_INDEX` | non | `N/A` | `N/A (local index helper)` | New |  | TS sans lien source | Valide | Helper prive nullable; `packages/game/src/g_local.ts` reste le proprietaire du macro header public `ITEM_INDEX`. |
+| `packages/game/src/g_items.ts` | function | `requireClient` | non | `N/A` | `N/A (local client guard)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | function | `getArmorInfoByIndex` | non | `N/A` | `N/A (local armor info resolver)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | function | `getAmmoMax` | non | `N/A` | `N/A (local ammo max helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | function | `grantAmmoPickup` | non | `N/A` | `N/A (local ammo pickup helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | function | `callItemPickup` | non | `N/A` | `N/A (local dispatch helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_items.ts` | function | `callItemUse` | non | `N/A` | `N/A (local dispatch helper)` | New |  | TS sans lien source | Valide |  |

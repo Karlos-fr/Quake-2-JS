@@ -1,8 +1,8 @@
 # Progress TS - packages/game/src/g_ai.ts
 
-- Statut: En cours
-- Dernier lot valide: helpers locaux vectoriels `subtractVec3`, `vectorLength`, `normalizeVec3`, `dotProduct` classes `New`.
-- Prochain lot recommande: classer les helpers locaux collision/PHS encore `A verifier` (`setEntityOrigin`, `inPHS`, `pointArea`, `getEntityArea`, `areasConnected`, `randomInt`).
+- Statut: Termine
+- Dernier lot valide: helpers locaux collision/PHS/RNG `setEntityOrigin`, `inPHS`, `pointArea`, `getEntityArea`, `areasConnected`, `randomInt` classes `New`.
+- Prochain lot recommande: aucun pour `packages/game/src/g_ai.ts`.
 - Tests de reference: `npm run verify:g-ai`, `npm run typecheck`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`.
 - Blocages: aucun pour les lignes `Couvert C/H`.
 
@@ -30,4 +30,13 @@
 - Preuves: usages lus dans `packages/game/src/g_ai.ts`; equivalents C `VectorSubtract`, `VectorLength`, `VectorNormalize`, `DotProduct` identifies dans `Quake-2-master/game/q_shared.h`/`.c`; port proprietaire confirme dans `packages/math/src/q_shared.ts` et matrices `game_q_shared.h.md`/`game_q_shared.c.md`.
 - Ownership/doublons: helpers non exportes, limites a `g_ai.ts`; ils ne revendiquent pas le portage proprietaire des operations `q_shared`.
 - Integration: runtime via les fonctions AI deja branchees (`FindTarget`, `ai_checkattack`, `ai_run`, callbacks monstres); aucune integration directe `apps/web` ou `renderer-three` attendue pour ces helpers de calcul internes.
-- Tests: `npm run verify:g-ai`, `npm run typecheck` OK.
+- Tests: `npm run verify:g-ai`, `npm run typecheck`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer` OK.
+
+## Session helpers collision/PHS/RNG locaux
+
+- Lignes traitees: `setEntityOrigin`, `inPHS`, `pointArea`, `getEntityArea`, `areasConnected`, `randomInt`.
+- Verdict: `Valide` / `Category: New`; metadonnees `Original name: N/A`, `Source declaree: N/A (...)` ajoutees aux en-tetes et a la matrice.
+- Preuves: usages lus dans `packages/game/src/g_ai.ts`; source `Quake-2-master/game/g_ai.c` comparee pour `gi.inPHS`, `gi.AreasConnected`, `VectorCopy(..., goalentity->s.origin)` et `rand() & 3`; port proprietaire `PF_inPHS` verifie dans `packages/server/src/sv_game.ts` et matrice `server_sv_game.c.md`; primitives `CM_PointLeafnum`, `CM_LeafCluster`, `CM_LeafArea`, `CM_ClusterPHS`, `CM_AreasConnected` verifiees dans `packages/qcommon/src/cmodel.ts` et matrices `qcommon_cmodel.c.md`/`qcommon_qcommon.h.md`.
+- Ownership/doublons: helpers non exportes, limites a `g_ai.ts`; ils adaptent le flux local `FindTarget`/`ai_run` sans masquer les ports proprietaires serveur/qcommon.
+- Integration: runtime via `FindTarget`, `M_CheckAttack` et `ai_run`; `apps/web` consomme via le serveur/full-game sans logique parallele; `renderer-three` n'a pas d'integration directe attendue car ces helpers ne produisent pas de sortie visible propre.
+- Tests: `npm run verify:g-ai`, `npm run typecheck`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer` OK.

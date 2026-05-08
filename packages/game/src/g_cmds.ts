@@ -1051,6 +1051,12 @@ function callItemDrop(ent: GameEntity, item: GameItemDefinition, context: GameCo
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Share the forward/backward weapon inventory scan used by `Cmd_WeapPrev_f` and `Cmd_WeapNext_f`.
+ */
 function scanWeapon(ent: GameEntity, runtime: GameRuntime, direction: 1 | -1): void {
   const cl = ent.client;
   if (!cl?.pers.weapon) {
@@ -1075,6 +1081,12 @@ function scanWeapon(ent: GameEntity, runtime: GameRuntime, direction: 1 | -1): v
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Keep the `Cmd_Say_f` flood-protection block isolated while preserving its client timestamp side effects.
+ */
 function isFloodBlocked(ent: GameEntity, context: GameCommandContext): boolean {
   const flood_msgs = context.cvars?.flood_msgs?.value ?? 0;
   const client = ent.client;
@@ -1106,6 +1118,12 @@ function isFloodBlocked(ent: GameEntity, context: GameCommandContext): boolean {
   return false;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Build the explicit help-computer data object required when `ClientCommand` dispatches `help`.
+ */
 function buildHelpData(context: GameCommandContext): GameHudHelpComputerData {
   return {
     skill: context.helpData?.skill ?? context.cvars?.skill?.value ?? context.runtime.skill,
@@ -1121,27 +1139,63 @@ function buildHelpData(context: GameCommandContext): GameHudHelpComputerData {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Preserve the common `gi.cprintf(..., "%s", message)` call shape used throughout `g_cmds.c`.
+ */
 function cprintf(context: GameCommandContext, ent: GameEntity | null, printlevel: number, message: string): void {
   context.gi.cprintf(ent, printlevel, "%s", message);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Provide a boolean wrapper for original `Q_stricmp(...) == 0` command and item-name checks.
+ */
 function qstricmp(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Match C `atoi` fallback semantics for command arguments that are missing or not numeric.
+ */
 function atoi(value: string): number {
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Keep C-style non-negative inventory wraparound explicit for translated modulo scans.
+ */
 function positiveModulo(value: number, modulo: number): number {
   return ((value % modulo) + modulo) % modulo;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Format integer columns that were produced by fixed-width `sprintf` fields in `g_cmds.c`.
+ */
 function padLeft(value: number, width: number): string {
   return Math.trunc(value).toString().padStart(width, " ");
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Format two-digit minute/second fields for `Cmd_PlayerList_f`.
+ */
 function pad2(value: number): string {
   return Math.trunc(value).toString().padStart(2, "0");
 }

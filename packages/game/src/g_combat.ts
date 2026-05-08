@@ -781,6 +781,8 @@ function emitCombatTempEntity(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector wrapper)
  * Category: New
  * Purpose: Add two vectors without mutating either input.
  */
@@ -789,6 +791,8 @@ function addVec3(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector wrapper)
  * Category: New
  * Purpose: Subtract two vectors without mutating either input.
  */
@@ -797,6 +801,8 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector wrapper)
  * Category: New
  * Purpose: Scale one vector without mutating the input.
  */
@@ -805,6 +811,8 @@ function scaleVec3(vector: vec3_t, scalar: number): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector wrapper)
  * Category: New
  * Purpose: Compute one vector length for the strict combat helper ports.
  */
@@ -813,6 +821,8 @@ function vectorLength(vector: vec3_t): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local immutable vector wrapper)
  * Category: New
  * Purpose: Normalize one vector while preserving the zero-vector case safely for damage knockback.
  */
@@ -824,11 +834,12 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
-type GameCombatRuntimeBookkeeping = GameRuntime & {
-  killed_monsters?: number;
-};
-
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local runtime bookkeeping helper)
+ * Category: New
+ * Purpose: Centralize the `level.killed_monsters++` runtime-state update used by the ported `Killed` flow.
+ */
 function incrementKilledMonsters(runtime: GameRuntime): void {
-  const bookkeepingRuntime = runtime as GameCombatRuntimeBookkeeping;
-  bookkeepingRuntime.killed_monsters = (bookkeepingRuntime.killed_monsters ?? 0) + 1;
+  runtime.killed_monsters += 1;
 }

@@ -176,6 +176,12 @@ function cacheItemIndices(): void {
   power_shield_index = itemlist.find((item) => item.pickupName === "Power Shield")?.index ?? 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local dispatch helper)
+ * Category: New
+ * Purpose: Name the supported `gitem_t.pickup` callbacks without storing JS function pointers in item definitions.
+ */
 export type GameItemPickupKind =
   | "Pickup_Armor"
   | "Pickup_PowerArmor"
@@ -189,6 +195,12 @@ export type GameItemPickupKind =
   | "Pickup_Key"
   | "Pickup_Health";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local dispatch helper)
+ * Category: New
+ * Purpose: Name the supported `gitem_t.use` callbacks without storing JS function pointers in item definitions.
+ */
 export type GameItemUseKind =
   | "Use_Weapon"
   | "Use_PowerArmor"
@@ -198,12 +210,24 @@ export type GameItemUseKind =
   | "Use_Breather"
   | "Use_Envirosuit";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local dispatch helper)
+ * Category: New
+ * Purpose: Name the supported `gitem_t.drop` callbacks without storing JS function pointers in item definitions.
+ */
 export type GameItemDropKind =
   | "Drop_Weapon"
   | "Drop_Ammo"
   | "Drop_General"
   | "Drop_PowerArmor";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local dispatch helper)
+ * Category: New
+ * Purpose: Name the supported `gitem_t.weaponthink` callbacks delegated to `p_weapon.ts`.
+ */
 export type GameItemWeaponThinkKind =
   | "Weapon_Blaster"
   | "Weapon_Shotgun"
@@ -270,6 +294,12 @@ export interface GameItemArmorInfo {
   armor: number;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local itemlist construction helper)
+ * Category: New
+ * Purpose: Represent raw C `itemlist` rows before assigning the TypeScript-side stable item index.
+ */
 interface RawGameItemDefinition extends Omit<GameItemDefinition, "index"> {}
 
 /**
@@ -329,13 +359,39 @@ const rawItemlist: readonly RawGameItemDefinition[] = [
   { classname: "", pickup: "Pickup_Health", use: null, drop: null, weaponThink: null, pickupName: "Health", pickupSound: "items/pkup.wav", worldModel: "", worldModelFlags: 0, viewModel: null, icon: "i_health", countWidth: 3, quantity: 0, ammo: null, flags: 0, weapmodel: 0, tag: 0, precaches: "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav" }
 ] as const;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local indexed itemlist view)
+ * Category: New
+ * Purpose: Attach stable 1-based Quake II item indices to the raw item definitions.
+ */
 const itemlist: readonly GameItemDefinition[] = rawItemlist.map((item, index) => ({
   index: index + 1,
   ...item
 }));
 
+/**
+ * Original name: jacketarmor_info
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const jacketarmor_info: GameItemArmorInfo = { base_count: 25, max_count: 50, normal_protection: 0.30, energy_protection: 0.00, armor: ARMOR_JACKET };
+
+/**
+ * Original name: combatarmor_info
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const combatarmor_info: GameItemArmorInfo = { base_count: 50, max_count: 100, normal_protection: 0.60, energy_protection: 0.30, armor: ARMOR_COMBAT };
+
+/**
+ * Original name: bodyarmor_info
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const bodyarmor_info: GameItemArmorInfo = { base_count: 100, max_count: 200, normal_protection: 0.80, energy_protection: 0.60, armor: ARMOR_BODY };
 
 /**
@@ -406,6 +462,8 @@ export function FindItem(pickupName: string): GameItemDefinition | null {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local itemlist accessor)
  * Category: New
  * Purpose: Expose the stable Quake II itemlist to later integration helpers without duplicating item metadata.
  *
@@ -478,6 +536,8 @@ export function PowerArmorType(ent: GameEntity): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local armor info resolver)
  * Category: New
  * Purpose: Resolve the strict armor-info record associated with one base-game armor item.
  */
@@ -499,6 +559,8 @@ export function GetArmorInfoByItem(item: GameItemDefinition | null): GameItemArm
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local ammo resolver)
  * Category: New
  * Purpose: Resolve the ammo item definition referenced by one weapon item definition.
  *
@@ -514,6 +576,8 @@ export function GetAmmoItemForWeapon(item: GameItemDefinition | null): GameItemD
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local weapon lookup helper)
  * Category: New
  * Purpose: Resolve one weapon item definition by its `weaponThink` identifier.
  *
@@ -1717,10 +1781,22 @@ export function SP_item_health_mega(self: GameEntity, runtime: GameRuntime): voi
   self.style = HEALTH_IGNORE_MAX | HEALTH_TIMED;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local index helper)
+ * Category: New
+ * Purpose: Return the stable itemlist index for nullable item references inside this port.
+ */
 function ITEM_INDEX(item: GameItemDefinition | null): number {
   return item?.index ?? 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local client guard)
+ * Category: New
+ * Purpose: Narrow gameplay entities to entities with client state before mutating player inventory or timers.
+ */
 function requireClient(ent: GameEntity, caller: string) {
   if (!ent.client) {
     throw new Error(`${caller}: entity #${ent.index} has no client`);
@@ -1729,6 +1805,12 @@ function requireClient(ent: GameEntity, caller: string) {
   return ent.client;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local armor info resolver)
+ * Category: New
+ * Purpose: Resolve the armor-info record from the active inventory index cached by the item initialization path.
+ */
 function getArmorInfoByIndex(index: number): GameItemArmorInfo | null {
   if (index === jacket_armor_index) {
     return jacketarmor_info;
@@ -1742,6 +1824,12 @@ function getArmorInfoByIndex(index: number): GameItemArmorInfo | null {
   return null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local ammo max helper)
+ * Category: New
+ * Purpose: Map an ammo tag to the matching per-client ammo cap.
+ */
 function getAmmoMax(client: NonNullable<GameEntity["client"]>, tag: number): number {
   switch (tag) {
     case ammo_t.AMMO_BULLETS:
@@ -1761,6 +1849,12 @@ function getAmmoMax(client: NonNullable<GameEntity["client"]>, tag: number): num
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local ammo pickup helper)
+ * Category: New
+ * Purpose: Apply one named ammo pickup while preserving the original item lookup, index and max-ammo clamp.
+ */
 function grantAmmoPickup(client: NonNullable<GameEntity["client"]>, pickupName: string): void {
   const item = FindItem(pickupName);
   if (!item) {
@@ -1775,6 +1869,12 @@ function grantAmmoPickup(client: NonNullable<GameEntity["client"]>, pickupName: 
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local dispatch helper)
+ * Category: New
+ * Purpose: Dispatch the callback-kind stored in `GameItemDefinition.pickup` to the matching ported pickup routine.
+ */
 function callItemPickup(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   switch (ent.item?.pickup) {
     case "Pickup_Armor":
@@ -1804,6 +1904,12 @@ function callItemPickup(ent: GameEntity, other: GameEntity, runtime: GameRuntime
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local dispatch helper)
+ * Category: New
+ * Purpose: Dispatch the callback-kind stored in `GameItemDefinition.use` to the matching ported use routine.
+ */
 function callItemUse(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   switch (item.use) {
     case "Use_PowerArmor":

@@ -1106,6 +1106,14 @@ function dotProduct(left: vec3_t, right: vec3_t): number {
   return left[0] * right[0] + left[1] * right[1] + left[2] * right[2];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local entity-origin helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Mirrors `VectorCopy(..., ent->s.origin)` updates while keeping TS entity aliases in sync.
+ */
 function setEntityOrigin(ent: GameEntity | null, origin: vec3_t): void {
   if (!ent) {
     return;
@@ -1115,6 +1123,14 @@ function setEntityOrigin(ent: GameEntity | null, origin: vec3_t): void {
   ent.origin = [...origin];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local collision adapter)
+ * Category: New
+ *
+ * Purpose:
+ * - Provides the local `gi.inPHS` check used by `FindTarget` sound acquisition.
+ */
 function inPHS(p1: vec3_t, p2: vec3_t, runtime: GameRuntime): boolean {
   const world = runtime.collision?.world;
   if (!world) {
@@ -1134,6 +1150,14 @@ function inPHS(p1: vec3_t, p2: vec3_t, runtime: GameRuntime): boolean {
   return (phs[cluster2 >> 3] & (1 << (cluster2 & 7))) !== 0;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local collision adapter)
+ * Category: New
+ *
+ * Purpose:
+ * - Resolves a point to a collision area for `FindTarget` sound-portal checks.
+ */
 function pointArea(point: vec3_t, runtime: GameRuntime): number {
   const world = runtime.collision?.world;
   if (!world) {
@@ -1144,6 +1168,14 @@ function pointArea(point: vec3_t, runtime: GameRuntime): number {
   return CM_LeafArea(world, leaf);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local collision adapter)
+ * Category: New
+ *
+ * Purpose:
+ * - Reads an entity's linked area when available, with a point-area fallback for partial runtimes.
+ */
 function getEntityArea(entity: GameEntity, runtime: GameRuntime): number {
   if (entity.areanum !== 0) {
     return entity.areanum;
@@ -1152,6 +1184,14 @@ function getEntityArea(entity: GameEntity, runtime: GameRuntime): number {
   return pointArea(entity.s.origin, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local collision adapter)
+ * Category: New
+ *
+ * Purpose:
+ * - Delegates the local `FindTarget` sound-portal gate to the collision area's connectivity.
+ */
 function areasConnected(area1: number, area2: number, runtime: GameRuntime): boolean {
   const world = runtime.collision?.world;
   if (!world) {
@@ -1161,6 +1201,14 @@ function areasConnected(area1: number, area2: number, runtime: GameRuntime): boo
   return CM_AreasConnected(world, area1, area2);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local integer RNG helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Represents the C `rand()` integer branch used by the easy-skill melee gate.
+ */
 function randomInt(): number {
   return (Math.random() * 0x7fffffff) | 0;
 }

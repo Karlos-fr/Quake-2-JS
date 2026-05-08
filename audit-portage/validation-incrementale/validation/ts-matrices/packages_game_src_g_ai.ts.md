@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_ai.ts`
 - Symboles TS: 34
 - Couvert C/H: 23
-- Reste a auditer: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -37,9 +37,9 @@
 | `packages/game/src/g_ai.ts` | function | `vectorLength` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide | Helper local non exporte; le port proprietaire de `VectorLength` reste `packages/math/src/q_shared.ts`. Tests: `verify:g-ai`, `typecheck` OK. |
 | `packages/game/src/g_ai.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide | Helper local non exporte; le port proprietaire de `VectorNormalize` reste `packages/math/src/q_shared.ts`. Tests: `verify:g-ai`, `typecheck` OK. |
 | `packages/game/src/g_ai.ts` | function | `dotProduct` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide | Helper local non exporte; le port proprietaire de `DotProduct` reste `packages/math/src/q_shared.ts`. Tests: `verify:g-ai`, `typecheck` OK. |
-| `packages/game/src/g_ai.ts` | function | `setEntityOrigin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `inPHS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `pointArea` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `getEntityArea` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `areasConnected` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_ai.ts` | function | `setEntityOrigin` | non | `N/A` | `N/A (local entity-origin helper)` | New |  | TS sans lien source | Valide | Helper local non exporte pour synchroniser `s.origin`/`origin` sur les buts temporaires AI; ne revendique pas un port proprietaire. |
+| `packages/game/src/g_ai.ts` | function | `inPHS` | non | `N/A` | `N/A (local collision adapter)` | New |  | TS sans lien source | Valide | Adapter local de l'appel `gi.inPHS` de `FindTarget`; port proprietaire `PF_inPHS` verifie dans `packages/server/src/sv_game.ts`, primitives `CM_*` validees cote C/H. |
+| `packages/game/src/g_ai.ts` | function | `pointArea` | non | `N/A` | `N/A (local collision adapter)` | New |  | TS sans lien source | Valide | Helper local pour l'area fallback de `FindTarget`; port proprietaire `CM_PointLeafnum`/`CM_LeafArea` verifie dans `packages/qcommon/src/cmodel.ts`. |
+| `packages/game/src/g_ai.ts` | function | `getEntityArea` | non | `N/A` | `N/A (local collision adapter)` | New |  | TS sans lien source | Valide | Helper local combinant `entity.areanum` et fallback point-area pour l'adaptation TS du test de portail sonore. |
+| `packages/game/src/g_ai.ts` | function | `areasConnected` | non | `N/A` | `N/A (local collision adapter)` | New |  | TS sans lien source | Valide | Adapter local de `gi.AreasConnected`; port proprietaire `CM_AreasConnected` verifie dans `packages/qcommon/src/cmodel.ts`. |
+| `packages/game/src/g_ai.ts` | function | `randomInt` | non | `N/A` | `N/A (local integer RNG helper)` | New |  | TS sans lien source | Valide | Helper local non exporte pour le `rand() & 3` de `M_CheckAttack`; pattern local coherent avec les helpers RNG de monstres. |
