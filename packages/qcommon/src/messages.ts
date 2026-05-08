@@ -76,7 +76,7 @@ const CM_IMPULSE = 1 << 7;
 
 /**
  * Original name: MSG_WriteChar
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -92,7 +92,7 @@ export function MSG_WriteChar(sb: sizebuf_t, c: number): void {
 
 /**
  * Original name: MSG_WriteByte
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -108,7 +108,7 @@ export function MSG_WriteByte(sb: sizebuf_t, c: number): void {
 
 /**
  * Original name: MSG_WriteShort
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -126,7 +126,7 @@ export function MSG_WriteShort(sb: sizebuf_t, c: number): void {
 
 /**
  * Original name: MSG_WriteLong
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -146,7 +146,7 @@ export function MSG_WriteLong(sb: sizebuf_t, c: number): void {
 
 /**
  * Original name: MSG_WriteFloat
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -164,7 +164,7 @@ export function MSG_WriteFloat(sb: sizebuf_t, f: number): void {
 
 /**
  * Original name: MSG_WriteString
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -190,7 +190,7 @@ export function MSG_WriteString(sb: sizebuf_t, value?: string | null): void {
 
 /**
  * Original name: MSG_WriteCoord
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -206,7 +206,7 @@ export function MSG_WriteCoord(sb: sizebuf_t, f: number): void {
 
 /**
  * Original name: MSG_WritePos
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -224,7 +224,7 @@ export function MSG_WritePos(sb: sizebuf_t, pos: vec3_t): void {
 
 /**
  * Original name: MSG_WriteAngle
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -240,7 +240,7 @@ export function MSG_WriteAngle(sb: sizebuf_t, f: number): void {
 
 /**
  * Original name: MSG_WriteAngle16
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -256,7 +256,7 @@ export function MSG_WriteAngle16(sb: sizebuf_t, f: number): void {
 
 /**
  * Original name: MSG_WriteDeltaUsercmd
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -327,7 +327,7 @@ export function MSG_WriteDeltaUsercmd(buf: sizebuf_t, from: usercmd_t, cmd: user
 
 /**
  * Original name: MSG_WriteDir
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -359,7 +359,7 @@ export function MSG_WriteDir(sb: sizebuf_t, dir: vec3_t | null | undefined): voi
 
 /**
  * Original name: MSG_WriteDeltaEntity
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -586,7 +586,7 @@ export function MSG_WriteDeltaEntity(
 
 /**
  * Original name: MSG_ReadChar
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -608,7 +608,7 @@ export function MSG_ReadChar(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadByte
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -629,7 +629,7 @@ export function MSG_ReadByte(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadShort
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -651,7 +651,7 @@ export function MSG_ReadShort(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadLong
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -676,7 +676,7 @@ export function MSG_ReadLong(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadFloat
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -703,7 +703,7 @@ export function MSG_ReadFloat(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadString
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -719,7 +719,7 @@ export function MSG_ReadString(msg_read: sizebuf_t): string {
 
 /**
  * Original name: MSG_ReadStringLine
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -735,7 +735,7 @@ export function MSG_ReadStringLine(msg_read: sizebuf_t): string {
 
 /**
  * Original name: MSG_ReadCoord
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -751,7 +751,7 @@ export function MSG_ReadCoord(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadPos
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -767,7 +767,7 @@ export function MSG_ReadPos(msg_read: sizebuf_t): vec3_t {
 
 /**
  * Original name: MSG_ReadAngle
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -783,7 +783,7 @@ export function MSG_ReadAngle(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadAngle16
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -799,7 +799,7 @@ export function MSG_ReadAngle16(msg_read: sizebuf_t): number {
 
 /**
  * Original name: MSG_ReadDeltaUsercmd
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -848,7 +848,7 @@ export function MSG_ReadDeltaUsercmd(msg_read: sizebuf_t, from: usercmd_t): user
 
 /**
  * Original name: MSG_ReadData
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -868,7 +868,7 @@ export function MSG_ReadData(msg_read: sizebuf_t, len: number): Uint8Array {
 
 /**
  * Original name: MSG_ReadDir
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *

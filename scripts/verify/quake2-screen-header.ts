@@ -155,6 +155,15 @@ assert.equal(client.cl.screen.crosshair_pic, "ch2", "SCR_TouchPics crosshair sta
 assert.equal(client.cl.screen.crosshair_width, 24, "SCR_TouchPics crosshair width mismatch");
 assert.equal(client.cl.screen.crosshair_height, 24, "SCR_TouchPics crosshair height mismatch");
 
+const invalidCrosshairPics = SCR_TouchPics(-1, {
+  runtime: client,
+  getPicSize: (pic) => pic === "ch3" ? { width: 16, height: 16 } : { width: 0, height: 0 }
+});
+assert.ok(invalidCrosshairPics.includes("ch3"), "SCR_TouchPics invalid crosshair should use ch3");
+assert.equal(client.cl.screen.crosshair_pic, "ch3", "SCR_TouchPics invalid crosshair state mismatch");
+assert.equal(client.cl.screen.crosshair_width, 16, "SCR_TouchPics invalid crosshair width mismatch");
+assert.equal(client.cl.screen.crosshair_height, 16, "SCR_TouchPics invalid crosshair height mismatch");
+
 client.cls.state = connstate_t.ca_active;
 SCR_BeginLoadingPlaque(client);
 assert.equal(client.cl.screen.scr_draw_loading, 1, "SCR_BeginLoadingPlaque draw flag mismatch");

@@ -18,6 +18,7 @@ import {
   createVirtualFilesystem,
   FS_AddGameDirectory,
   FS_Gamedir,
+  FS_LoadFile,
   FS_SetGamedir,
   readMountedFile,
   type VirtualFilesystem
@@ -42,6 +43,7 @@ import {
   Cvar_Set as QcommonCvar_Set,
   Cvar_SetValue as QcommonCvar_SetValue,
   Cvar_VariableValue,
+  COM_Parse,
   CS_ITEMS,
   Com_BlockChecksum,
   MAX_ITEMS,
@@ -129,7 +131,8 @@ import {
   M_AddToServerList,
   M_Menu_Main_f,
   createClientMenuContext,
-  type ClientMenuContext
+  type ClientMenuContext,
+  type ClientMenuMapEntry
 } from "../../../packages/client/src/menu.js";
 import { createClientQMenuContext } from "../../../packages/client/src/qmenu.js";
 import {
@@ -538,6 +541,37 @@ async function fetchFirstBytes(urls: string[]): Promise<Uint8Array> {
   }
 
   throw new Error(`Aucun fichier accessible:\n${errors.join("\n")}`);
+}
+
+function readFullGameMapList(filesystem: VirtualFilesystem): ClientMenuMapEntry[] | null {
+  const bytes = FS_LoadFile(filesystem, "maps.lst");
+  if (!bytes) {
+    return null;
+  }
+
+  const text = new TextDecoder("latin1").decode(bytes);
+  const entries: ClientMenuMapEntry[] = [];
+  let index: number | null = 0;
+
+  while (index !== null) {
+    const shortName = COM_Parse(text, index);
+    if (!shortName.token || shortName.nextIndex === null) {
+      break;
+    }
+
+    const longName = COM_Parse(text, shortName.nextIndex);
+    if (!longName.token) {
+      break;
+    }
+
+    entries.push({
+      shortName: shortName.token,
+      longName: longName.token
+    });
+    index = longName.nextIndex;
+  }
+
+  return entries.length > 0 ? entries : null;
 }
 
 function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage): FullGameRuntime {
@@ -1208,7 +1242,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
         }
       },
       getSaveSlots: () => saveStorage.getSaveSlots(FS_Gamedir(filesystem)),
-      getMapList: () => null,
+      getMapList: () => readFullGameMapList(filesystem),
       getPlayerModels: () => null,
       onClearNotify: () => Con_ClearNotify(consoleContext.con),
       onQuit: () => printToConsole("Quit demande.")
@@ -2758,8 +2792,11 @@ function resizeCanvas(page: FullGamePage): void {
 }
 
 function syncFullGameViewportVisibility(runtime: FullGameRuntime, page: FullGamePage): void {
-  const gameVisible = runtime.mode === "game";
-  const overlayVisible = !gameVisible || runtime.gameRenderer === null;
+  const loadingOverlayVisible = runtime.mode === "loading"
+    || runtime.isAuthoritativeLevelLoading()
+    || runtime.client.cl.screen.scr_draw_loading !== 0;
+  const gameVisible = runtime.mode === "game" || runtime.isAuthoritativeLevelLoading();
+  const overlayVisible = !gameVisible || runtime.gameRenderer === null || loadingOverlayVisible;
   page.gameViewport.style.display = gameVisible ? "block" : "none";
   page.canvas.style.display = overlayVisible ? "block" : "none";
 }

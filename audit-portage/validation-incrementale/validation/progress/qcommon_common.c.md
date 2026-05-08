@@ -2,9 +2,9 @@
 
 ## Statut
 
-- Statut: En cours
-- Dernier lot valide: temporaires locaux `argptr`/`msg`/`name` autour des prints/errors, `Com_DPrintf`, `Com_Error`, garde `recursive`, remplacements `setjmp`/`longjmp`, `Com_Quit`, `Com_ServerState` et `Com_SetServerState`; `frand`/`crand` restent `Partiel` pour integration client visible.
-- Prochain lot recommande: bloc ecriture messages `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, locaux `buf`/`f`/`l`, puis `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16` et `MSG_WriteDir` si le lot reste coherent.
+- Statut: Partiel
+- Dernier lot valide: bloc ecriture messages `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, locaux `buf`/`f`/`l`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir`, `MSG_ReadDir` et local `b`; `frand`/`crand` restent `Partiel` pour integration client visible.
+- Prochain lot recommande: decision explicite sur les deux reliquats `frand`/`crand` marques `Partiel`: soit brancher les helpers qcommon dans les consommateurs client visibles, soit accepter/documenter le maintien des helpers locaux.
 
 ## Preuves session
 
@@ -40,6 +40,29 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+- `npm run verify:qcommon:header`: OK
+- `npm run verify:server:ents`: OK
+- `npm run verify:server:send`: OK
+- `npm run verify:cl-parse`: OK
+- `npm run verify:cl-tent`: OK
+- `npm run verify:full-game:server-host`: OK
+- `npm run verify:full-game:render-source`: OK
+- `npm run verify:full-game:three-renderer`: OK
+- `npm run typecheck`: bloque hors lot sur `apps/web/src/full-game.ts(1214,25): Cannot find name 'readFullGameMapList'`.
+
+## Session - 2026-05-08 - Bloc ecriture MSG et directions
+
+- Lot traite: `MSG_WriteChar`, les quatre locaux `buf`, `MSG_WriteByte` (ligne proprietaire et doublon matriciel), `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, les champs locaux d'union `f`/`l`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir`, `MSG_ReadDir` et le local `b`.
+- Source C/H relue: `qcommon.h` declare les prototypes MSG; `common.c` ecrit les scalaires little-endian via `SZ_GetSpace` ou `SZ_Write`, encode les floats par union puis `LittleLong`, ecrit les strings NUL-terminees, quantifie coordonnees a `f*8`, angles a `(int)(f*256/360)&255` ou `ANGLE2SHORT`, encode les directions par meilleur `DotProduct` dans `bytedirs`, et lit une direction en copiant `bytedirs[b]` apres garde `b >= NUMVERTEXNORMALS`.
+- Cible TS relue/corrigee: `packages/qcommon/src/messages.ts` conserve l'ownership et les noms originaux, les entetes du fichier pointent maintenant vers `Quake-2-master/qcommon/common.c`, les scalaires/coordonnees/angles/directions suivent le layout C; `MSG_WriteFloat` utilise `DataView` little-endian au lieu de l'union C; `MSG_ReadDir` retourne un tuple au lieu de muter un out pointer et lance une erreur sur index invalide.
+- Ownership/doublons: ownership confirme dans `packages/qcommon/src/messages.ts`; le doublon matriciel `MSG_WriteByte` couvre la meme fonction. Aucun doublon proprietaire concurrent trouve; `DirFromByte` dans `packages/qcommon/src/anorms.ts` est un adapter documente, pas le port proprietaire. `buf`, `f`, `l` et `b` sont des locaux C marques `Non applicable`.
+- Runtime verifie: les primitives sont atteignables depuis les flux normaux `CL_SendCmd`, connectionless/out-of-band netchan, `SV_WriteFrameToClient`, `SV_SendClientDatagram`, `PF_Write*`, `PF_StartSound`, serverdata/configstrings/baselines/downloads, playerstate, packetentities et temp entities; `MSG_WriteDir` est branche via `PF_WriteDir`; `MSG_ReadDir` proprietaire existe et les flux client actuels lisent le byte puis passent par l'adapter documente `DirFromByte`.
+- apps/web verifie: `apps/web/src/full-game-server-host.ts` declenche `SV_WriteFrameToClient`, recopie le message serveur vers `client.net_message`, puis appelle `CL_ParseServerMessage`; `apps/web/src/full-game.ts` consomme les sorties client via render-source/Three sans logique parallele d'encodage des primitives MSG.
+- renderer-three verifie: les primitives MSG ne sont pas appelees directement par `renderer-three`, mais leurs sorties visibles attendues alimentent bien les frames, playerstate/camera, entites, areabits, sons, temp entities, particules, beams et dlights; ces donnees sont consommees via `ClientRefreshFrame`, `refresh-entity-sync`, `particle-sync`, `three-beam-sync`, `three-dlight-sync` et `gl-world-scene-adapter`.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` verifie maintenant la longueur et des entrees sentinelles de `BYTE_DIRS`/`bytedirs`, en plus du layout brut des primitives MSG deja present.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:server:ents`, `npm run verify:server:send`, `npm run verify:cl-parse`, `npm run verify:cl-tent`, `npm run verify:full-game:server-host`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`.
+- Test session bloque hors lot: `npm run typecheck` echoue dans `apps/web/src/full-game.ts` sur `readFullGameMapList` introuvable; le fichier etait deja modifie avant cette session et ce symbole n'appartient pas au lot `qcommon/common.c`.
+- Matrice mise a jour: fonctions du lot en `Valide`; locaux `buf`/`f`/`l`/`b` en `Non applicable`; les seuls reliquats du fichier restent `frand`/`crand` en `Partiel`.
 
 ## Session - 2026-05-08 - Bloc erreurs, quit et server_state
 

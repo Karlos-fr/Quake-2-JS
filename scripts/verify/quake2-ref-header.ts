@@ -58,8 +58,18 @@ assert.equal(ENTITY_FLAGS, 68, "ENTITY_FLAGS mismatch");
 assert.equal(API_VERSION, 3, "API_VERSION mismatch");
 
 const entity = createRefEntity();
+assert.equal(entity.model, null, "createEntity model mismatch");
+assert.deepEqual(entity.angles, [0, 0, 0], "createEntity angles mismatch");
 assert.deepEqual(entity.origin, [0, 0, 0], "createEntity origin mismatch");
+assert.equal(entity.frame, 0, "createEntity frame mismatch");
+assert.deepEqual(entity.oldorigin, [0, 0, 0], "createEntity oldorigin mismatch");
+assert.equal(entity.oldframe, 0, "createEntity oldframe mismatch");
+assert.equal(entity.backlerp, 0, "createEntity backlerp mismatch");
+assert.equal(entity.skinnum, 0, "createEntity skinnum mismatch");
+assert.equal(entity.lightstyle, 0, "createEntity lightstyle mismatch");
+assert.equal(entity.alpha, 0, "createEntity alpha mismatch");
 assert.equal(entity.skin, null, "createEntity skin mismatch");
+assert.equal(entity.flags, 0, "createEntity flags mismatch");
 
 const dlight = createRefDlight();
 assert.deepEqual(dlight.color, [0, 0, 0], "createDlight color mismatch");

@@ -225,6 +225,7 @@ import {
   MSG_WriteShort,
   MSG_WriteString
 } from "../../packages/qcommon/src/messages.js";
+import { BYTE_DIRS } from "../../packages/qcommon/src/anorms.js";
 import { PM_AirAccelerate, Pmove, createPmoveContext } from "../../packages/qcommon/src/pmove.js";
 import {
   FS_ExecAutoexec,
@@ -332,6 +333,10 @@ assert.equal(ERR_QUIT, 2, "ERR_QUIT mismatch");
 assert.equal(PRINT_ALL, 0, "PRINT_ALL mismatch");
 assert.equal(PRINT_DEVELOPER, 1, "PRINT_DEVELOPER mismatch");
 assert.equal(NUMVERTEXNORMALS, 162, "NUMVERTEXNORMALS mismatch");
+assert.equal(BYTE_DIRS.length, NUMVERTEXNORMALS, "bytedirs length mismatch");
+assert.deepEqual(BYTE_DIRS[0], [-0.525731, 0, 0.850651], "bytedirs first entry mismatch");
+assert.deepEqual(BYTE_DIRS[5], [0, 0, 1], "bytedirs +Z entry mismatch");
+assert.deepEqual(BYTE_DIRS[161], [-0.688191, -0.587785, -0.425325], "bytedirs last entry mismatch");
 assert.equal(PROTOCOL_VERSION, 34, "PROTOCOL_VERSION mismatch");
 assert.equal(UPDATE_BACKUP, 16, "UPDATE_BACKUP mismatch");
 assert.equal(UPDATE_MASK, 15, "UPDATE_MASK mismatch");

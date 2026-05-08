@@ -132,39 +132,39 @@
 | `Quake-2-master/client/client.h` | global | `cl_parse_entities` | `packages/client/src/client.ts` | `cl_parse_entities` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | global | `net_message` | `packages/client/src/client.ts` | `net_message` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | global | `net_from` | `packages/qcommon/src/qcommon.ts` | `net_from` | Valide | A redecouper | Declaration `extern` ajoutee a la matrice: ownership qcommon, consommee cote client via `CL_ReadPackets`/`hooks.qnet`. |
-| `Quake-2-master/client/client.h` | function | `DrawString` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `DrawAltString` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_CheckOrDownloadFile` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_AddNetgraph` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | struct | `cl_sustain` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `id` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `type` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `endtime` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `nextthink` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `thinkinterval` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `org` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `dir` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `color` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `count` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `magnitude` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | macro | `MAX_SUSTAINS` | `packages/client/src/client.ts` | `MAX_SUSTAINS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParticleSteamEffect2` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_TeleporterParticles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParticleEffect` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParticleEffect2` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParticleEffect3` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | struct | `particle_s` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `time` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `org` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `vel` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `accel` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `color` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `colorvel` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `alpha` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `alphavel` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | macro | `PARTICLE_GRAVITY` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | macro | `BLASTER_PARTICLE_COLOR` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | macro | `INSTANT_PARTICLE` | `packages/client/src/client.ts` | `INSTANT_PARTICLE` | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `DrawString` | `packages/client/src/console.ts` | `DrawString` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `DrawAltString` | `packages/client/src/console.ts` | `DrawAltString` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_CheckOrDownloadFile` | `packages/client/src/download.ts` | `CL_CheckOrDownloadFile` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_AddNetgraph` | `packages/client/src/cl_scrn.ts` | `CL_AddNetgraph` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | struct | `cl_sustain` | `packages/client/src/client.ts` | `client_sustain_t` | Valide | A redecouper | Renommage TS documente dans l'en-tete `client_sustain_t`. |
+| `Quake-2-master/client/client.h` | global | `id` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `type` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `endtime` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `nextthink` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `thinkinterval` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `org` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `dir` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `color` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `count` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `magnitude` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cl_sustain_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | macro | `MAX_SUSTAINS` | `packages/client/src/client.ts` | `MAX_SUSTAINS` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParticleSteamEffect2` | `packages/client/src/cl_newfx.ts` | `CL_ParticleSteamEffect2` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_TeleporterParticles` | `packages/client/src/cl_fx.ts` | `CL_TeleporterParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParticleEffect` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParticleEffect2` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect2` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParticleEffect3` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect3` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | struct | `particle_s` | `packages/client/src/client.ts` | `cparticle_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `time` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `org` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `vel` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `accel` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `color` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `colorvel` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `alpha` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `alphavel` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cparticle_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | macro | `PARTICLE_GRAVITY` | `packages/client/src/cl_fx.ts` | `PARTICLE_GRAVITY` | Valide | A redecouper | Macro miroir aussi dans `cl_newfx.ts` pour les effets Rogue. |
+| `Quake-2-master/client/client.h` | macro | `BLASTER_PARTICLE_COLOR` | `packages/client/src/cl_fx.ts` |  | Non applicable | A redecouper | Macro source non referencee par le C; les couleurs blaster litterales `0xe0` sont couvertes par les tests `cl_fx`. |
+| `Quake-2-master/client/client.h` | macro | `INSTANT_PARTICLE` | `packages/client/src/client.ts` | `INSTANT_PARTICLE` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ClearEffects` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ClearTEnts` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_BlasterTrail` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |

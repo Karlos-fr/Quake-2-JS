@@ -2,6 +2,18 @@
 
 ## Session 2026-05-08
 
+- Lot traite: bloc join-server complet et debut start-server (`MAX_LOCAL_SERVERS`, `NO_SERVER_STRING`, etats join-server, `M_AddToServerList`, `JoinServerFunc`, `AddressBookFunc`, `NullCursorDraw`, `SearchLocalGames`, `SearchLocalGamesFunc`, `JoinServer_MenuInit`, `JoinServer_MenuDraw`, `JoinServer_MenuKey`, `M_Menu_JoinServer_f`, puis `nummaps`, `DMOptionsFunc`, `RulesChangeFunc`, `StartServerActionFunc`, `StartServer_MenuInit` et locaux associes).
+- Matrice mise a jour: 176 `Valide`, 0 `Partiel`, 84 `Non applicable`, 102 `A verifier`.
+- Corrections appliquees: branchement `apps/web` du menu start-server corrige dans `apps/web/src/full-game.ts` avec lecture/parsing de `maps.lst` via `FS_LoadFile` et `COM_Parse`; ajout d'une assertion anti-regression dans `scripts/verify/quake2-full-game-three-renderer.ts`.
+- Runtime: join-server/start-server atteignables via `M_Init` (`menu_joinserver`, `menu_startserver`), `M_Menu_Multiplayer_f`, callbacks qmenu, `M_PushMenu`, `M_Draw` et `M_Keydown`; `SearchLocalGames` appelle le hook de ping, `M_AddToServerList` recoit les reponses status, `JoinServerFunc` emet `connect`, `StartServerActionFunc` pose les cvars et emet `map`/`gamemap`.
+- apps/web: join-server integre par `onAddToServerList` vers `M_AddToServerList`; start-server integre pendant cette session par `getMapList: () => readFullGameMapList(filesystem)`, ce qui evite le hook vide precedent.
+- renderer-three: pas de sortie scene 3D directe attendue pour ce lot. Les menus produisent du dessin 2D via qmenu/ref et des commandes/cvars/requetes reseau; aucune nouvelle sortie modeles, frames, images de scene, particules, beams, dlights, temp entities, areabits, camera ou scene n'est produite par ces entites. Le flux visible reste consomme via l'adapter ref/web et le test three-renderer verifie l'integration full-game pertinente.
+- Tests lances:
+  - `npm run verify:menu` OK
+  - `npm run verify:full-game:commands` OK
+  - `npm run verify:full-game:three-renderer` OK
+  - `npm run typecheck` OK
+
 - Lot traite: bloc credits complet (`idcredits`, `xatcredits`, `roguecredits`, `M_Credits_MenuDraw`, `M_Credits_Key`, `M_Menu_Credits_f`) plus extension large aux blocs adjacents multiplayer d'entree, keys, options et video (`M_Menu_Multiplayer_f`, `M_Menu_Keys_f`, `M_Menu_Options_f`, `M_Menu_Video_f` et callbacks/tables/globals associes).
 - Matrice mise a jour: 156 `Valide`, 0 `Partiel`, 61 `Non applicable`, 145 `A verifier`.
 - Corrections appliquees: ajout des commentaires d'en-tete de portage manquants dans `packages/client/src/menu-options-keys.ts` et `packages/client/src/menu-multiplayer.ts`; renommage du helper options `clampCvar` en `ClampCvar` pour conserver le nom source.
@@ -31,4 +43,4 @@
 
 ## Prochain lot recommande
 
-Reprendre le bloc join-server et start-server: `MAX_LOCAL_SERVERS`, `NO_SERVER_STRING`, `M_AddToServerList`, `JoinServerFunc`, `SearchLocalGames`, `JoinServer_MenuInit/Draw/Key`, `M_Menu_JoinServer_f`, puis `DMOptionsFunc`, `RulesChangeFunc`, `StartServerActionFunc` et `StartServer_MenuInit` si le lot reste coherent.
+Continuer le bloc start-server: `StartServer_MenuDraw`, `StartServer_MenuKey`, `M_Menu_StartServer_f` et les `Default_MenuKey`/locaux associes, puis enchainer sur `dmoptions_statusbar`, `DMFlagCallback`, `DMOptions_MenuInit/Draw/Key`, `M_Menu_DMOptions_f` si le lot reste coherent.

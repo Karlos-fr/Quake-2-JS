@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: gros bloc parse/frame de `MAX_PARSE_ENTITIES`, `cl_parse_entities`, `net_message`, `net_from`, puis prototypes `CL_ParseEntityBits` a `CL_RegisterSounds`.
-- Verdict du lot: Valide pour les constantes/globals et prototypes portes; `Non applicable` pour `SmokeAndFlash` (declaration orpheline sans definition C, flux effectif `CL_SmokeAndFlash`) et `CL_RunParticles` (prototype sans definition ni appel C, flux effectif `CL_AddParticles`).
+- Dernier lot traite: bloc `DrawString`, `DrawAltString`, `CL_CheckOrDownloadFile`, `CL_AddNetgraph`, `cl_sustain`/`MAX_SUSTAINS`, `CL_ParticleSteamEffect2`, `CL_TeleporterParticles`, `CL_ParticleEffect*`, `particle_s`, `PARTICLE_GRAVITY`, `BLASTER_PARTICLE_COLOR`, `INSTANT_PARTICLE`.
+- Verdict du lot: Valide pour les fonctions, structures et constantes portees; `Non applicable` pour les champs couverts par `client_sustain_t`/`cparticle_t` et pour `BLASTER_PARTICLE_COLOR`, macro source non referencee par le C.
 
 ## Preuves session
 
@@ -18,6 +18,10 @@
 - Cibles lues session parse/frame: `packages/client/src/client.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_tent.ts`, `packages/client/src/cl_fx.ts`, `packages/client/src/refresh.ts`, `packages/client/src/view.ts`, `packages/client/src/sound.ts`, `packages/client/src/index.ts`, `packages/qcommon/src/qcommon.ts`, `apps/web/src`, `packages/renderer-three/src`.
 - Tests lances session parse/frame: `npm run verify:client:header`, `npm run verify:cl-parse`, `npm run verify:cl-tent`, `npm run verify:cl-view`, `npm run verify:dlight-sync`, `npm run verify:particle-sync`, `npm run verify:beam-sync`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:authoritative-handshake`, `npm run verify:full-game:audio-routing`, `npm run typecheck`.
 - Test tente non bloquant session parse/frame: `npm run verify:cl-fx` echoue sur le meme cas historique `EF_ROCKET should expose the original rocket dlight to refresh`, lie au harness qui appelle `CL_BuildRefreshFrame` avec un runtime non actif.
+- Session console/download/netgraph/particules: source lue `Quake-2-master/client/client.h` lignes 319-375; definitions comparees dans `client/console.c`, `client/cl_parse.c`, `client/cl_scrn.c`, `client/cl_tent.c`, `client/cl_fx.c`, `client/cl_newfx.c`.
+- Cibles lues session console/download/netgraph/particules: `packages/client/src/console.ts`, `packages/client/src/download.ts`, `packages/client/src/precache.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_scrn.ts`, `packages/client/src/client.ts`, `packages/client/src/cl_fx.ts`, `packages/client/src/cl_newfx.ts`, `packages/client/src/cl_tent.ts`, `packages/client/src/refresh.ts`, `apps/web/src`, `packages/renderer-three/src`.
+- Tests lances session console/download/netgraph/particules: `npm run verify:console`, `npm run verify:client:header`, `npm run verify:cl-main`, `npm run verify:cl-scrn`, `npm run verify:cl-newfx`, `npm run verify:cl-tent`, `npm run verify:particle-sync`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
+- Test tente non bloquant session console/download/netgraph/particules: `npm run verify:cl-fx` echoue sur le cas historique deja connu `EF_ROCKET should expose the original rocket dlight to refresh`.
 
 ## Decisions
 
@@ -43,7 +47,13 @@
 - `apps/web`: le flux web appelle `CL_ParseServerMessage` cote server-host, `CL_PrepRefresh`/`CL_RegisterSounds` dans full-game, consomme `CL_BuildRefreshFrame` via render-source/local-session/local-controller et branche les hooks muzzleflash/temp entity.
 - `renderer-three`: applicable et branche pour areabits, camera, entites/modeles/frames/images, particules, beams, dlights, lightstyles et scene via `ClientRefreshFrame`, `gl-world-scene-adapter`, `refresh-entity-sync`, `particle-sync`, `three-beam-sync`, `three-dlight-sync` et `gl_rsurf`/`gl_light`.
 - `SmokeAndFlash` dans ce bloc est une declaration sans definition C; le comportement attendu passe par `CL_SmokeAndFlash`, declare plus loin dans `client.h` et valide dans les flux temp entities. `CL_RunParticles` est aussi un prototype orphelin sans definition ni reference C; le comportement runtime des particules est celui de `CL_AddParticles`.
+- `DrawString`/`DrawAltString` sont portes dans `console.ts` comme commandes de texte renderer-agnostiques; `DrawAltString` conserve la banque high-bit via `setHighBit`. Runtime/apps-web consomment ces commandes via les chemins console/HUD; `renderer-three` n'a pas d'integration directe attendue pour ce texte 2D.
+- `CL_CheckOrDownloadFile` est porte dans `download.ts` avec hooks filesystem/resume; le flux runtime est atteint par `CL_RequestNextDownload`/`CL_Precache_f` dans `precache.ts` et les tests `cl-main`. `apps/web` fournit le contexte full-game/precache et l'UI consomme l'etat `downloadpercent`; `renderer-three` n'a pas de sortie visible directe attendue.
+- `CL_AddNetgraph` est porte dans `cl_scrn.ts` et appele apres `CL_ParseServerMessage`; il remplit le ring-buffer debug graph puis `SCR_DrawDebugGraph` produit les commandes 2D. `apps/web` consomme le snapshot de rendu screen; `renderer-three` n'a pas de sortie scene 3D attendue pour ce graphe 2D.
+- `cl_sustain_t` est represente par `client_sustain_t`; le commentaire d'en-tete a ete corrige pour documenter `Original name`, `Source`, `Category: Ported`, le renommage et l'identite de thinker. `MAX_SUSTAINS` vaut 32 et dimensionne `runtime.cl.tents.sustains`.
+- `CL_ParticleSteamEffect2` est porte dans `cl_newfx.ts`, branche via `CL_ParseTEnt`/`assignSteamSustain` puis `CL_ProcessSustain`; les sorties particules atteignent `CL_BuildRefreshFrame`, `apps/web` et `renderer-three` via `particle-sync`.
+- `CL_TeleporterParticles`, `CL_ParticleEffect`, `CL_ParticleEffect2`, `CL_ParticleEffect3`, `cparticle_t`, `PARTICLE_GRAVITY` et `INSTANT_PARTICLE` sont portes dans le flux particules client; `BLASTER_PARTICLE_COLOR` est une macro source non referencee par le C, les couleurs blaster litterales restant couvertes par `cl_fx`.
 
 ## Prochain lot recommande
 
-Revenir au bloc encore `A verifier` entre `net_message` et les prototypes parse: `DrawString`, `DrawAltString`, `CL_CheckOrDownloadFile`, `CL_AddNetgraph`, puis `cl_sustain`/`MAX_SUSTAINS` et les declarations particules adjacentes si le lot reste coherent.
+Continuer par `CL_ClearEffects`, `CL_ClearTEnts`, puis les premiers trails/effects adjacents (`CL_BlasterTrail`, `CL_QuadTrail`, `CL_RailTrail`, `CL_BubbleTrail`, `CL_FlagTrail`) si le lot reste coherent.

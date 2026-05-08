@@ -578,7 +578,8 @@ export function SCR_TouchPics(
   }
 
   if (crosshairValue !== 0) {
-    const clampedCrosshair = Math.max(0, Math.min(3, Math.trunc(crosshairValue)));
+    const rawCrosshair = Math.trunc(crosshairValue);
+    const clampedCrosshair = rawCrosshair > 3 || rawCrosshair < 0 ? 3 : rawCrosshair;
     const crosshairPic = `ch${clampedCrosshair}`;
     pics.add(crosshairPic);
 

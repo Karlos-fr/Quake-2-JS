@@ -10,23 +10,23 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/screen.h` | function | `SCR_Init` | `packages/client/src/cl_scrn.ts` | `SCR_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_UpdateScreen` | `packages/client/src/cl_scrn.ts` | `SCR_UpdateScreen` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_SizeUp` | `packages/client/src/cl_scrn.ts` | `SCR_SizeUp` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_SizeDown` | `packages/client/src/cl_scrn.ts` | `SCR_SizeDown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_CenterPrint` | `packages/client/src/cl_scrn.ts` | `SCR_CenterPrint` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_BeginLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_BeginLoadingPlaque` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_EndLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_EndLoadingPlaque` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_DebugGraph` | `packages/client/src/cl_scrn.ts` | `SCR_DebugGraph` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_TouchPics` | `packages/client/src/cl_scrn.ts` | `SCR_TouchPics` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_RunConsole` | `packages/client/src/cl_scrn.ts` | `SCR_RunConsole` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | global | `scr_con_current` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | global | `scr_conlines` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | global | `sb_lines` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | global | `scr_viewsize` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | global | `crosshair` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | global | `scr_vrect` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | global | `crosshair_pic` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_Init` | `packages/client/src/cl_scrn.ts` | `SCR_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_UpdateScreen` | `packages/client/src/cl_scrn.ts` | `SCR_UpdateScreen` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_SizeUp` | `packages/client/src/cl_scrn.ts` | `SCR_SizeUp` | Valide | A redecouper | Header declare `SCR_SizeUp`; original C command function is `SCR_SizeUp_f`, exported TS name keeps the header API. |
+| `Quake-2-master/client/screen.h` | function | `SCR_SizeDown` | `packages/client/src/cl_scrn.ts` | `SCR_SizeDown` | Valide | A redecouper | Header declare `SCR_SizeDown`; original C command function is `SCR_SizeDown_f`, exported TS name keeps the header API. |
+| `Quake-2-master/client/screen.h` | function | `SCR_CenterPrint` | `packages/client/src/cl_scrn.ts` | `SCR_CenterPrint` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_BeginLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_BeginLoadingPlaque` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_EndLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_EndLoadingPlaque` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_DebugGraph` | `packages/client/src/cl_scrn.ts` | `SCR_DebugGraph` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_TouchPics` | `packages/client/src/cl_scrn.ts` | `SCR_TouchPics` | Valide | A redecouper | Correction appliquee dans `packages/client/src/cl_scrn.ts`: crosshair hors plage force vers `ch3` comme le C. |
+| `Quake-2-master/client/screen.h` | function | `SCR_RunConsole` | `packages/client/src/cl_scrn.ts` | `SCR_RunConsole` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | global | `scr_con_current` | `packages/client/src/client.ts` | `scr_con_current` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | global | `scr_conlines` | `packages/client/src/client.ts` | `scr_conlines` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | global | `sb_lines` | `packages/client/src/client.ts` | `sb_lines` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | global | `scr_viewsize` | `packages/client/src/cl_scrn.ts` | `scr_viewsize` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | global | `crosshair` | `packages/client/src/cl_scrn.ts` | `crosshair` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | global | `scr_vrect` | `packages/client/src/client.ts` | `scr_vrect` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | global | `crosshair_pic` | `packages/client/src/client.ts` | `crosshair_pic` | Valide | A redecouper |  |
 | `Quake-2-master/client/screen.h` | function | `SCR_AddDirtyPoint` | `packages/client/src/cl_scrn.ts` | `SCR_AddDirtyPoint` | A verifier | A redecouper |  |
 | `Quake-2-master/client/screen.h` | function | `SCR_DirtyScreen` | `packages/client/src/cl_scrn.ts` | `SCR_DirtyScreen` | A verifier | A redecouper |  |
 | `Quake-2-master/client/screen.h` | function | `SCR_PlayCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_PlayCinematic` | A verifier | A redecouper |  |

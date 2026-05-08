@@ -228,6 +228,13 @@ export interface refimport_t {
 
 export type GetRefAPI_t = (imports: refimport_t) => refexport_t;
 
+/**
+ * Category: New
+ * Purpose: Create the zero-initialized `entity_t` state used by renderer-facing client code.
+ *
+ * Constraints:
+ * - Must preserve every `client/ref.h` `entity_t` field with C zero/null startup values.
+ */
 export function createEntity(): entity_t {
   return {
     model: null,

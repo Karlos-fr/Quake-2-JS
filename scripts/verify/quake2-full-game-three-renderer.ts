@@ -46,6 +46,8 @@ assert.ok(source.includes("runtime.captureClipboardText"), "full-game should cap
 assert.ok(source.includes("getClipboardData: () => qcommonHost.hooks.sysGetClipboardData"), "full-game menu fields should use the qcommon clipboard hook");
 assert.ok(source.includes("M_AddToServerList"), "full-game should route connectionless info responses into the Quake II server-list menu");
 assert.ok(source.includes("onAddToServerList"), "full-game should expose the cl_main status-response hook to the web adapter");
+assert.ok(source.includes("getMapList: () => readFullGameMapList(filesystem)"), "full-game start-server menu should read maps.lst through the ported menu hook");
+assert.ok(source.includes("FS_LoadFile(filesystem, \"maps.lst\")"), "full-game map list hook should load maps.lst from the mounted Quake filesystem");
 assert.equal(source.includes("syncFullGamePredictionToAuthoritativeFrame"), false, "full-game should not add a non-original prediction resync path");
 assert.ok(source.includes("CL_BuildActionEffects"), "full-game should play client-side muzzleflash and temp-entity sounds");
 assert.ok(source.includes("CL_BuildEntityEventEffects"), "full-game should play client-side entity event sounds");
@@ -73,7 +75,8 @@ assert.ok(source.includes("M_ForceMenuOff(menuContext)"), "full-game level loads
 assert.ok(source.includes("onBeginLoadingPlaque: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "client changing commands should leave menu mode during level loads");
 assert.ok(source.includes("onBeginLoading: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "server map changes should leave menu mode during level loads");
 assert.ok(source.includes("elapsedSeconds: runtime.client.cl.time * 0.001"), "full-game should pass absolute client time to ref_gl world rendering");
-assert.ok(source.includes("const gameVisible = runtime.mode === \"game\""), "full-game should show the render viewport before the renderer finishes initializing");
+assert.ok(source.includes("const gameVisible = runtime.mode === \"game\" || runtime.isAuthoritativeLevelLoading()"), "full-game should keep the render viewport visible during automatic level loads");
+assert.ok(source.includes("runtime.client.cl.screen.scr_draw_loading !== 0"), "full-game should show the loading plaque as an overlay without hiding the game viewport");
 assert.ok(source.includes("runtime.gameRenderer === null"), "full-game should keep the 2D loading overlay while the renderer is pending");
 assert.ok(renderLoopSource.includes("getRenderableViewportSize"), "full-game render loop should guard against zero-sized hidden viewports");
 assert.ok(renderLoopSource.includes("Math.max(1, width)"), "full-game render loop should never pass zero width to Three");

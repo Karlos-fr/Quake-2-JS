@@ -283,11 +283,17 @@ export interface client_laser_t {
 }
 
 /**
- * Category: New
- * Purpose: Preserve one client-side sustain slot modeled after `cl_sustain_t`.
+ * Original name: cl_sustain_t
+ * Source: client/client.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must retain timer, thinker identity and payload values for exact `CL_ProcessSustain` reconstruction.
+ * Behavior:
+ * - Preserves one client-side sustain slot used by Rogue temp-entity thinkers.
+ *
+ * Porting notes:
+ * - Renamed to `client_sustain_t` to follow the client runtime state naming used by temp entities.
+ * - Stores the C function pointer as a stable thinker identity.
  */
 export interface client_sustain_t {
   id: number;

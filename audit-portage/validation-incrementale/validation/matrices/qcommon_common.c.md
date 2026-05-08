@@ -49,31 +49,31 @@
 | `Quake-2-master/qcommon/common.c` | function | `Com_Quit` | `packages/qcommon/src/qcommon.ts` | `Com_Quit` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_ServerState` | `packages/qcommon/src/qcommon.ts` | `Com_ServerState` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_SetServerState` | `packages/qcommon/src/qcommon.ts` | `Com_SetServerState` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteChar` | `packages/qcommon/src/messages.ts` | `MSG_WriteChar` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteShort` | `packages/qcommon/src/messages.ts` | `MSG_WriteShort` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteLong` | `packages/qcommon/src/messages.ts` | `MSG_WriteLong` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteFloat` | `packages/qcommon/src/messages.ts` | `MSG_WriteFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `f` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `l` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteString` | `packages/qcommon/src/messages.ts` | `MSG_WriteString` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteChar` | `packages/qcommon/src/messages.ts` | `MSG_WriteChar` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | Non applicable | A redecouper | Local `byte *buf` des primitives MSG_Write*; remplace par la vue `Uint8Array` retournee par `SZ_GetSpace`. |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | Non applicable | A redecouper | Local `byte *buf` des primitives MSG_Write*; remplace par la vue `Uint8Array` retournee par `SZ_GetSpace`. |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteShort` | `packages/qcommon/src/messages.ts` | `MSG_WriteShort` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | Non applicable | A redecouper | Local `byte *buf` des primitives MSG_Write*; remplace par la vue `Uint8Array` retournee par `SZ_GetSpace`. |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteLong` | `packages/qcommon/src/messages.ts` | `MSG_WriteLong` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `buf` | `packages/qcommon/src/messages.ts` | `buf` | Non applicable | A redecouper | Local `byte *buf` des primitives MSG_Write*; remplace par la vue `Uint8Array` retournee par `SZ_GetSpace`. |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteFloat` | `packages/qcommon/src/messages.ts` | `MSG_WriteFloat` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `f` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Champ local de l'union C de `MSG_WriteFloat`; remplace par ecriture `DataView` little-endian equivalente. |
+| `Quake-2-master/qcommon/common.c` | global | `l` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Champ local de l'union C de `MSG_WriteFloat`; remplace par ecriture `DataView` little-endian equivalente. |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteString` | `packages/qcommon/src/messages.ts` | `MSG_WriteString` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `SZ_Write` | `packages/memory/src/sizebuf.ts` | `SZ_Write` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteCoord` | `packages/qcommon/src/messages.ts` | `MSG_WriteCoord` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WritePos` | `packages/qcommon/src/messages.ts` | `MSG_WritePos` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteAngle` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteAngle16` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle16` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteCoord` | `packages/qcommon/src/messages.ts` | `MSG_WriteCoord` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WritePos` | `packages/qcommon/src/messages.ts` | `MSG_WritePos` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteAngle` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteAngle16` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle16` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaUsercmd` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | Non applicable | A redecouper | Variable locale de `MSG_WriteDeltaUsercmd`; couverte avec la fonction. |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `b` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `b` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local de `MSG_ReadDir`; remplace par l'index lu dans `packages/qcommon/src/messages.ts`. |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | Non applicable | A redecouper | Variable locale de `MSG_WriteDeltaEntity`; couverte avec la fonction. |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_BeginReading` | `packages/memory/src/sizebuf.ts` | `MSG_BeginReading` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_ReadChar` | `packages/qcommon/src/messages.ts` | `MSG_ReadChar` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `c` | `packages/qcommon/src/messages.ts` | `c` | Non applicable | A redecouper | Variable locale de lecture scalaire; couverte avec la fonction proprietaire. |

@@ -227,49 +227,49 @@
 | `Quake-2-master/client/menu.c` | function | `SaveGame_MenuKey` | `packages/client/src/menu-main-game.ts` | `SaveGame_MenuKey` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Valide | A redecouper | Duplicate reference from `SaveGame_MenuKey`; function validated in runtime block. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_SaveGame_f` | `packages/client/src/menu-main-game.ts` | `M_Menu_SaveGame_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | macro | `MAX_LOCAL_SERVERS` | `packages/client/src/menu-types.ts` | `MAX_LOCAL_SERVERS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_joinserver_search_action` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_joinserver_address_book_action` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_joinserver_server_actions` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `m_num_servers` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | macro | `NO_SERVER_STRING` | `packages/client/src/menu-types.ts` | `NO_SERVER_STRING` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `M_AddToServerList` | `packages/client/src/menu-multiplayer.ts` | `M_AddToServerList` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `JoinServerFunc` | `packages/client/src/menu-multiplayer.ts` | `JoinServerFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `index` | `packages/client/src/menu.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `AddressBookFunc` | `packages/client/src/menu-multiplayer.ts` | `AddressBookFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `NullCursorDraw` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `SearchLocalGames` | `packages/client/src/menu-multiplayer.ts` | `SearchLocalGames` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `SearchLocalGamesFunc` | `packages/client/src/menu-multiplayer.ts` | `SearchLocalGamesFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `JoinServer_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `JoinServer_MenuInit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `JoinServer_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `JoinServer_MenuDraw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `JoinServer_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `JoinServer_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `M_Menu_JoinServer_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_JoinServer_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `nummaps` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DMOptionsFunc` | `packages/client/src/menu-multiplayer.ts` | `DMOptionsFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `RulesChangeFunc` | `packages/client/src/menu-multiplayer.ts` | `RulesChangeFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `StartServerActionFunc` | `packages/client/src/menu-multiplayer.ts` | `StartServerActionFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `startmap` | `packages/client/src/menu-multiplayer.ts` | `startmap` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `timelimit` | `packages/client/src/menu-multiplayer.ts` | `timelimit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `fraglimit` | `packages/client/src/menu-multiplayer.ts` | `fraglimit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `maxclients` | `packages/client/src/menu-multiplayer.ts` | `maxclients` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `spot` | `packages/client/src/menu-multiplayer.ts` | `spot` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `StartServer_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuInit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `dm_coop_names` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `dm_coop_names_rogue` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `mapsname` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s` | `packages/client/src/keys.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `length` | `packages/client/src/menu-options-keys.ts` | `length` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `shortname` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `longname` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `strcpy` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/menu.c` | macro | `MAX_LOCAL_SERVERS` | `packages/client/src/menu-types.ts` | `MAX_LOCAL_SERVERS` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_joinserver_search_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_joinserver_search_action` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_joinserver_address_book_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_joinserver_address_book_action` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_joinserver_server_actions` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_joinserver_server_actions` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `m_num_servers` | `packages/client/src/menu-types.ts` | `ClientMenuState.m_num_servers` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | macro | `NO_SERVER_STRING` | `packages/client/src/menu-types.ts` | `NO_SERVER_STRING` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `M_AddToServerList` | `packages/client/src/menu-multiplayer.ts` | `M_AddToServerList` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `M_AddToServerList`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `JoinServerFunc` | `packages/client/src/menu-multiplayer.ts` | `JoinServerFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local command buffer inside `JoinServerFunc`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `index` | `packages/client/src/menu.ts` | `index` | Non applicable | A redecouper | Local index inside `JoinServerFunc`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `AddressBookFunc` | `packages/client/src/menu-multiplayer.ts` | `AddressBookFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `NullCursorDraw` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Empty legacy cursor callback; no behavior or TS owner required. |
+| `Quake-2-master/client/menu.c` | function | `SearchLocalGames` | `packages/client/src/menu-multiplayer.ts` | `SearchLocalGames` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `SearchLocalGames`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `SearchLocalGamesFunc` | `packages/client/src/menu-multiplayer.ts` | `SearchLocalGamesFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `JoinServer_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `JoinServer_MenuInit` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `JoinServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `JoinServer_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `JoinServer_MenuDraw` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `JoinServer_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `JoinServer_MenuKey` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
+| `Quake-2-master/client/menu.c` | function | `M_Menu_JoinServer_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_JoinServer_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `nummaps` | `packages/client/src/menu-types.ts` | `ClientMenuState.nummaps` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `DMOptionsFunc` | `packages/client/src/menu-multiplayer.ts` | `DMOptionsFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `RulesChangeFunc` | `packages/client/src/menu-multiplayer.ts` | `RulesChangeFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `StartServerActionFunc` | `packages/client/src/menu-multiplayer.ts` | `StartServerActionFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `startmap` | `packages/client/src/menu-multiplayer.ts` | `startmap` | Non applicable | A redecouper | Local variable inside `StartServerActionFunc`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `timelimit` | `packages/client/src/menu-multiplayer.ts` | `timelimit` | Non applicable | A redecouper | Local variable inside `StartServerActionFunc`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `fraglimit` | `packages/client/src/menu-multiplayer.ts` | `fraglimit` | Non applicable | A redecouper | Local variable inside `StartServerActionFunc`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `maxclients` | `packages/client/src/menu-multiplayer.ts` | `maxclients` | Non applicable | A redecouper | Local variable inside `StartServerActionFunc`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `spot` | `packages/client/src/menu-multiplayer.ts` | `spot` | Non applicable | A redecouper | Local variable inside `StartServerActionFunc`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `StartServer_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuInit` | Valide | A redecouper | apps/web map-list hook corrected in `apps/web/src/full-game.ts`. |
+| `Quake-2-master/client/menu.c` | global | `dm_coop_names` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local static table inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `dm_coop_names_rogue` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local static table inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local maps.lst buffer inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `mapsname` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local filesystem path inside `StartServer_MenuInit`; web adapter uses mounted `maps.lst`. |
+| `Quake-2-master/client/menu.c` | global | `s` | `packages/client/src/keys.ts` | `s` | Non applicable | A redecouper | Local parse cursor inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `length` | `packages/client/src/menu-options-keys.ts` | `length` | Non applicable | A redecouper | Local maps.lst length inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `shortname` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local map token inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `longname` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local map token inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local formatted map label inside `StartServer_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `strcpy` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | C library call used inside `StartServer_MenuInit`, not a menu-owned function. |
 | `Quake-2-master/client/menu.c` | function | `StartServer_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuDraw` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `StartServer_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuKey` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
