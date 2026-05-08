@@ -56,11 +56,19 @@ function main(): void {
     "glDrawAdapter.clear()",
     "SCR_DrawHudRef(",
     "renderer.clear()",
-    "renderer.render(scene, camera)",
+    "renderSceneWithoutViewWeapon(",
+    "renderViewWeaponDepthHackPass(",
     "renderer.clearDepth()",
     "renderer.render(polyblendOverlay.scene, polyblendOverlay.camera)",
     "renderer.render(glDrawAdapter.scene, glDrawAdapter.camera)"
   ]);
+
+  assert.equal(
+    renderSource.includes("viewWeaponRoot.visible = false") &&
+      renderSource.includes("renderer.clearDepth();\n    renderer.render(scene, camera);"),
+    true,
+    "view weapon depthhack should render first-person weapons in a dedicated post-world depth pass"
+  );
 
   assert.equal(
     renderSource.includes("crosshairValue: source.getCvarValue(\"crosshair\")"),

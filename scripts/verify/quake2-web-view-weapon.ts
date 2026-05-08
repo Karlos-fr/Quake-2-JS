@@ -90,16 +90,6 @@ function main(): void {
   assert.equal((firstMesh.material as { depthTest?: boolean }).depthTest, true, "weapon depthhack should preserve ref_gl depth testing");
   assert.equal((firstMesh.material as { depthWrite?: boolean }).depthWrite, true, "weapon depthhack should preserve ref_gl depth writes");
   assert.equal(firstMesh.renderOrder > 0 && firstMesh.renderOrder < 20, true, "weapon depthhack should render after world entities but before particles");
-  let weaponDepthClears = 0;
-  firstMesh.onBeforeRender(
-    { clearDepth: () => { weaponDepthClears += 1; } } as never,
-    null as never,
-    null as never,
-    firstMesh.geometry,
-    firstMesh.material,
-    null as never
-  );
-  assert.equal(weaponDepthClears, 1, "weapon depthhack should clear world depth before drawing the first-person model");
   const firstPositions = readPositions(firstMesh);
   assert.deepEqual(firstPositions, [0, 0, 0, 8, 0, 0, 0, 8, 0], "weapon frame-0 geometry mismatch");
   const firstColors = readColors(firstMesh);
@@ -157,16 +147,6 @@ function main(): void {
   assert.equal((translucentMesh.material as { transparent?: boolean }).transparent, true, "RF_TRANSLUCENT alias transparency mismatch");
   assert.equal((translucentMesh.material as { opacity?: number }).opacity, 1, "RF_TRANSLUCENT alias opacity mismatch");
   assert.equal((translucentMesh.material as { depthWrite?: boolean }).depthWrite, true, "RF_TRANSLUCENT alias depthWrite mismatch");
-  let worldDepthClears = 0;
-  translucentMesh.onBeforeRender(
-    { clearDepth: () => { worldDepthClears += 1; } } as never,
-    null as never,
-    null as never,
-    translucentMesh.geometry,
-    translucentMesh.material,
-    null as never
-  );
-  assert.equal(worldDepthClears, 0, "non-depthhack alias models must keep the world depth buffer");
 
   console.log("quake2-web-view-weapon: ok");
 }

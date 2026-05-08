@@ -733,9 +733,6 @@ function updateRefreshEntityInstance(
   instance.md2.mesh.material.depthTest = true;
   instance.md2.mesh.material.depthWrite = true;
   instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? DEPTHHACK_RENDER_ORDER : 0;
-  instance.md2.mesh.onBeforeRender = (entity.flags & RF_DEPTHHACK) !== 0
-    ? clearDepthBeforeDepthHackRender
-    : noopBeforeRender;
   updateRefreshAliasShadow(instance, entity, aliasShadowsEnabled, shadowReceiverRoot, shadowRaycaster);
 }
 
@@ -861,14 +858,6 @@ function applyAliasEntityRotation(root: Group, entity: ClientRenderEntity): void
   const rollRadians = MathUtils.degToRad(entity.angles[2]);
 
   root.rotation.set(-rollRadians, pitchRadians, yawRadians, "ZYX");
-}
-
-function clearDepthBeforeDepthHackRender(renderer: { clearDepth: () => void }): void {
-  renderer.clearDepth();
-}
-
-function noopBeforeRender(): void {
-  // Restore Three.js' default no-op callback when an instance is reused without RF_DEPTHHACK.
 }
 
 /**

@@ -18,6 +18,7 @@ import {
   LinearFilter,
   Mesh,
   MeshBasicMaterial,
+  Object3D,
   OrthographicCamera,
   PlaneGeometry,
   Scene,
@@ -270,7 +271,8 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
 
     renderer.autoClear = false;
     renderer.clear();
-    renderer.render(scene, camera);
+    renderSceneWithoutViewWeapon(renderer, scene, camera, refreshEntitySync.viewWeaponRoot);
+    renderViewWeaponDepthHackPass(renderer, scene, camera, refreshEntitySync.viewWeaponRoot);
     renderer.clearDepth();
     renderer.render(polyblendOverlay.scene, polyblendOverlay.camera);
     renderer.render(glDrawAdapter.scene, glDrawAdapter.camera);
@@ -320,6 +322,62 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
   };
 
   return { resize, renderFrame, renderOverlay, renderCanvasOverlay, dispose };
+}
+
+function renderSceneWithoutViewWeapon(
+  renderer: ActiveRenderer,
+  scene: Scene,
+  camera: PerspectiveCamera,
+  viewWeaponRoot: Object3D
+): void {
+  const viewWeaponVisible = viewWeaponRoot.visible;
+  viewWeaponRoot.visible = false;
+  try {
+    renderer.render(scene, camera);
+  } finally {
+    viewWeaponRoot.visible = viewWeaponVisible;
+  }
+}
+
+function renderViewWeaponDepthHackPass(
+  renderer: ActiveRenderer,
+  scene: Scene,
+  camera: PerspectiveCamera,
+  viewWeaponRoot: Object3D
+): void {
+  if (!viewWeaponRoot.visible || viewWeaponRoot.children.length === 0) {
+    return;
+  }
+
+  const hidden = hideSceneChildrenExceptCamera(scene, camera);
+  try {
+    renderer.clearDepth();
+    renderer.render(scene, camera);
+  } finally {
+    restoreSceneChildVisibility(hidden);
+  }
+}
+
+function hideSceneChildrenExceptCamera(
+  scene: Scene,
+  camera: PerspectiveCamera
+): Array<{ object: Object3D; visible: boolean }> {
+  const hidden: Array<{ object: Object3D; visible: boolean }> = [];
+  for (const child of scene.children) {
+    if (child === camera) {
+      continue;
+    }
+
+    hidden.push({ object: child, visible: child.visible });
+    child.visible = false;
+  }
+  return hidden;
+}
+
+function restoreSceneChildVisibility(hidden: Array<{ object: Object3D; visible: boolean }>): void {
+  for (const item of hidden) {
+    item.object.visible = item.visible;
+  }
 }
 
 function resolveTextureIntensity(source: FullGameRenderSource): number {
