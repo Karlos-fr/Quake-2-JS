@@ -983,26 +983,76 @@ function flushRuntimeEngineEvents(context: GameMainContext): void {
   for (const event of drainGameTempEntityEvents(context.runtime)) {
     context.gi.WriteByte(svc_temp_entity);
     context.gi.WriteByte(event.type);
+    writeTempEntityPayload(context, event);
+    context.gi.multicast(event.origin, event.multicast);
+  }
+}
 
-    if (event.type === temp_event_t.TE_SPLASH) {
+function writeTempEntityPayload(context: GameMainContext, event: ReturnType<typeof drainGameTempEntityEvents>[number]): void {
+  switch (event.type) {
+    case temp_event_t.TE_SPLASH:
       context.gi.WriteByte(numberPayload(event.payload, "count"));
       context.gi.WritePosition(event.origin);
       context.gi.WriteDir(vectorPayload(event.payload, "dir"));
       context.gi.WriteByte(numberPayloadWithFallback(event.payload, "color", "sounds"));
-    } else if (event.type === temp_event_t.TE_LASER_SPARKS) {
+      return;
+    case temp_event_t.TE_LASER_SPARKS:
+    case temp_event_t.TE_WELDING_SPARKS:
+    case temp_event_t.TE_TUNNEL_SPARKS:
       context.gi.WriteByte(numberPayload(event.payload, "count"));
       context.gi.WritePosition(event.origin);
       context.gi.WriteDir(vectorPayload(event.payload, "dir"));
       context.gi.WriteByte(numberPayload(event.payload, "color"));
-    } else if (tempEntityWritesDirection(event.type)) {
-      context.gi.WritePosition(event.origin);
-      context.gi.WriteDir(vectorPayload(event.payload, "dir"));
-    } else {
-      context.gi.WritePosition(event.origin);
-    }
+      return;
+    case temp_event_t.TE_RAILTRAIL:
+    case temp_event_t.TE_BLUEHYPERBLASTER:
+    case temp_event_t.TE_BFG_LASER:
+    case temp_event_t.TE_BUBBLETRAIL:
+    case temp_event_t.TE_DEBUGTRAIL:
+    case temp_event_t.TE_BUBBLETRAIL2:
+      writeTempEntityStartEnd(context, event);
+      return;
+    case temp_event_t.TE_FORCEWALL:
+      writeTempEntityStartEnd(context, event);
+      context.gi.WriteByte(numberPayload(event.payload, "color"));
+      return;
+    case temp_event_t.TE_PARASITE_ATTACK:
+    case temp_event_t.TE_MEDIC_CABLE_ATTACK:
+      context.gi.WriteShort(numberPayloadWithFallback(event.payload, "entityIndex", "entity"));
+      writeTempEntityStartEnd(context, event);
+      return;
+    case temp_event_t.TE_GRAPPLE_CABLE:
+      context.gi.WriteShort(numberPayloadWithFallback(event.payload, "entityIndex", "entity"));
+      writeTempEntityStartEnd(context, event);
+      context.gi.WritePosition(vectorPayload(event.payload, "offset"));
+      return;
+    case temp_event_t.TE_HEATBEAM:
+    case temp_event_t.TE_MONSTER_HEATBEAM:
+      context.gi.WriteShort(numberPayloadWithFallback(event.payload, "entityIndex", "entity"));
+      writeTempEntityStartEnd(context, event);
+      return;
+    case temp_event_t.TE_LIGHTNING:
+      context.gi.WriteShort(numberPayloadWithFallback(event.payload, "entityIndex", "entity"));
+      context.gi.WriteShort(numberPayloadWithFallback(event.payload, "entity2Index", "entity2"));
+      writeTempEntityStartEnd(context, event);
+      return;
+    default:
+      if (tempEntityWritesDirection(event.type)) {
+        context.gi.WritePosition(event.origin);
+        context.gi.WriteDir(vectorPayload(event.payload, "dir"));
+        return;
+      }
 
-    context.gi.multicast(event.origin, event.multicast);
+      context.gi.WritePosition(event.origin);
   }
+}
+
+function writeTempEntityStartEnd(
+  context: GameMainContext,
+  event: ReturnType<typeof drainGameTempEntityEvents>[number]
+): void {
+  context.gi.WritePosition(vectorPayloadWithFallback(event.payload, "start", event.origin));
+  context.gi.WritePosition(vectorPayloadWithFallback(event.payload, "end", event.origin));
 }
 
 function tempEntityWritesDirection(type: temp_event_t): boolean {
@@ -1041,6 +1091,10 @@ function numberPayloadWithFallback(payload: Record<string, unknown>, key: string
 }
 
 function vectorPayload(payload: Record<string, unknown>, key: string): [number, number, number] {
+  return vectorPayloadWithFallback(payload, key, [0, 0, 0]);
+}
+
+function vectorPayloadWithFallback(payload: Record<string, unknown>, key: string, fallback: [number, number, number]): [number, number, number] {
   const value = payload[key];
   if (Array.isArray(value) && value.length === 3) {
     return [
@@ -1050,7 +1104,7 @@ function vectorPayload(payload: Record<string, unknown>, key: string): [number, 
     ];
   }
 
-  return [0, 0, 0];
+  return [...fallback];
 }
 
 function readTempEntityOrigin(payload: Record<string, unknown>): vec3_t | null {

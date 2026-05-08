@@ -851,6 +851,49 @@ assert.deepEqual(writePositions.at(-1), [7, 8, 9], "G_RunFrame must flush TE_SPL
 assert.deepEqual(writeDirs.at(-1), [0, 1, 0], "G_RunFrame must flush TE_SPLASH direction");
 assert.deepEqual(multicasts.at(-1)?.origin, [7, 8, 9], "G_RunFrame must multicast TE_SPLASH at event origin");
 
+writeBytes.length = 0;
+writeShorts.length = 0;
+writePositions.length = 0;
+writeDirs.length = 0;
+multicasts.length = 0;
+emitGameTempEntity(frameContext.runtime, temp_event_t.TE_RAILTRAIL, [30, 40, 50], multicast_t.MULTICAST_PHS, {
+  start: [1, 2, 3],
+  end: [4, 5, 6]
+});
+G_RunFrame(frameContext);
+assert.deepEqual(writeBytes, [svc_temp_entity, temp_event_t.TE_RAILTRAIL], "G_RunFrame must flush TE_RAILTRAIL opcode bytes");
+assert.deepEqual(writePositions, [[1, 2, 3], [4, 5, 6]], "G_RunFrame must flush TE_RAILTRAIL start and end positions");
+assert.deepEqual(multicasts.at(-1)?.origin, [30, 40, 50], "G_RunFrame must multicast TE_RAILTRAIL at event origin");
+
+writeBytes.length = 0;
+writeShorts.length = 0;
+writePositions.length = 0;
+writeDirs.length = 0;
+multicasts.length = 0;
+emitGameTempEntity(frameContext.runtime, temp_event_t.TE_BFG_LASER, [60, 70, 80], multicast_t.MULTICAST_PHS, {
+  start: [10, 20, 30],
+  end: [40, 50, 60]
+});
+G_RunFrame(frameContext);
+assert.deepEqual(writeBytes, [svc_temp_entity, temp_event_t.TE_BFG_LASER], "G_RunFrame must flush TE_BFG_LASER opcode bytes");
+assert.deepEqual(writePositions, [[10, 20, 30], [40, 50, 60]], "G_RunFrame must flush TE_BFG_LASER start and end positions");
+assert.deepEqual(multicasts.at(-1)?.origin, [60, 70, 80], "G_RunFrame must multicast TE_BFG_LASER at event origin");
+
+writeBytes.length = 0;
+writeShorts.length = 0;
+writePositions.length = 0;
+writeDirs.length = 0;
+multicasts.length = 0;
+emitGameTempEntity(frameContext.runtime, temp_event_t.TE_PARASITE_ATTACK, [90, 91, 92], multicast_t.MULTICAST_PVS, {
+  entityIndex: 12,
+  start: [13, 14, 15],
+  end: [16, 17, 18]
+});
+G_RunFrame(frameContext);
+assert.deepEqual(writeBytes, [svc_temp_entity, temp_event_t.TE_PARASITE_ATTACK], "G_RunFrame must flush TE_PARASITE_ATTACK opcode bytes");
+assert.equal(writeShorts.at(-1), 12, "G_RunFrame must flush TE_PARASITE_ATTACK source entity");
+assert.deepEqual(writePositions, [[13, 14, 15], [16, 17, 18]], "G_RunFrame must flush TE_PARASITE_ATTACK beam positions");
+
 const runEntityContext = createGameMainContext(imports);
 runEntityContext.runtime.maxclients = 1;
 runEntityContext.runtime.entities = [

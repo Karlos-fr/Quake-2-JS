@@ -39,6 +39,7 @@ import {
   RF_WEAPONMODEL,
   STAT_AMMO,
   STAT_ARMOR,
+  temp_event_t,
   Cvar_Init,
   createCommandRuntime,
   createCvarRuntime
@@ -58,6 +59,7 @@ assert.ok(pakPath, "pak0.pak must be available for full-game authoritative input
 
 let now = 1000;
 let parsedFrames = 0;
+let railTrailPackets = 0;
 let prepRefreshCount = 0;
 const filesystem = createVirtualFilesystem();
 mountPak(filesystem, new Uint8Array(readFileSync(pakPath)), "pak0.pak");
@@ -173,6 +175,11 @@ const createClientHooks = (withReadPackets: boolean) => ({
   onBegin: () => undefined,
   onFrameParsed: () => {
     parsedFrames += 1;
+  },
+  onTempEntity: (packet) => {
+    if (packet.type === temp_event_t.TE_RAILTRAIL) {
+      railTrailPackets += 1;
+    }
   },
   registerModel: (path: string) => path,
   registerSkin: (path: string) => path,
@@ -344,6 +351,37 @@ for (let frame = 0; frame < 12; frame += 1) {
 }
 
 assert.equal(client.cl.frame.playerstate.stats[STAT_AMMO], 50, "give all should grant railgun ammo so the original use command can select it");
+
+const railTrailPacketsBeforeAttack = railTrailPackets;
+Cbuf_AddText(cmd, "+attack\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 20; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+Cbuf_AddText(cmd, "-attack\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 20; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+assert.equal(
+  railTrailPackets > railTrailPacketsBeforeAttack,
+  true,
+  "firing the Railgun should parse the TE_RAILTRAIL start/end payload without desyncing the server message"
+);
 
 Cbuf_AddText(cmd, "use Grenade Launcher\n");
 Cbuf_Execute(cmd);
