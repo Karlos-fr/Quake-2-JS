@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: usercmd/data message `MSG_WriteDeltaUsercmd`, `MSG_ReadDeltaUsercmd`, `MSG_ReadData` et locaux associes
-- Prochain lot recommande: bloc `SZ_*` (`SZ_Init`, `SZ_Clear`, `SZ_GetSpace`, `SZ_Write`, `SZ_Print`) et faux positifs locaux associes si le lot reste coherent.
+- Dernier lot valide: bloc sizebuf `SZ_Init`, `SZ_Clear`, `SZ_GetSpace`, `SZ_Write`, `SZ_Print` et faux positifs locaux associes
+- Prochain lot recommande: bloc arguments `COM_CheckParm`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_InitArgv`, `COM_AddParm` et locaux associes si le lot reste coherent.
 
 ## Preuves session
 
@@ -24,6 +24,18 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-08 - Bloc sizebuf SZ_*
+
+- Lot traite: `SZ_Init`, `SZ_Clear`, `SZ_GetSpace`, `SZ_Write`, `SZ_Print`, le doublon genere de `SZ_Write`, le local `len` de `SZ_Print` et les deux appels libc `memcpy` generes comme faux positifs.
+- Source C/H relue: `qcommon.h` definit `sizebuf_t` (`allowoverflow`, `overflowed`, `data`, `maxsize`, `cursize`, `readcount`) et les prototypes `SZ_*`; `common.c` initialise par `memset`, conserve le backing buffer dans `SZ_Clear`, gere les overflows fatals/autorises dans `SZ_GetSpace`, copie les octets dans `SZ_Write` et concatene une chaine NUL-terminee dans `SZ_Print` en reutilisant un NUL terminal existant.
+- Cible TS relue/corrigee: `packages/memory/src/sizebuf.ts` est l'owner unique du bloc; noms originaux conserves; commentaires d'en-tete verifies et precises vers `Quake-2-master/qcommon/common.c` ou `Quake-2-master/qcommon/qcommon.h`. Les ecarts documentes restent volontaires: `Uint8Array` remplace les pointeurs bruts, les erreurs JS remplacent `Com_Error`, `SZ_Write` prend la longueur depuis la source byte-array, et `SZ_Print` encode les strings JS en octets.
+- Ownership/doublons: aucun autre port proprietaire `SZ_*` trouve; le `SZ_Write` duplique dans la matrice est couvert par la meme fonction TS; `len` est local a `SZ_Print`; `memcpy` est un appel libc non proprietaire remplace par `Uint8Array.set`.
+- Runtime verifie: les primitives sont atteignables depuis les flux normaux `Qcommon_Frame`/client/serveur via `Netchan_Setup`, `Netchan_Transmit`, `Netchan_Process`, `CL_SendCmd`, `SV_WriteFrameToClient`, multicast/datagram server et commandes console; les buffers `allowoverflow`/`overflowed` sont consommes notamment par netchan et `SV_SendClientMessages`.
+- apps/web verifie: `apps/web/src/full-game-server-host.ts` utilise `SZ_Write`, `SZ_Clear` et `MSG_BeginReading` pour transporter les datagrammes serveur vers `client.net_message`; le web declenche le runtime porte et ne remplace pas ces operations par une logique parallele.
+- renderer-three verifie: pas d'appel direct attendu depuis `renderer-three`; les sorties visibles attendues passent indirectement par les messages ecrits/lus avec `SZ_*` (frames, areabits, entites, temp entities, camera/scene) puis sont consommees par les tests full-game renderer.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` verifie maintenant que `SZ_Clear` preserve `allowoverflow` et `readcount`, et que `SZ_Print` gere la chaine vide et la reutilisation du NUL terminal.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:net-chan`, `npm run verify:server:send`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
 
 ## Session - 2026-05-07 - Delta usercmd et MSG_ReadData
 

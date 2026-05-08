@@ -63,6 +63,7 @@ import {
   MSG_WriteString,
   createNetAdr,
   createEntityState,
+  netadrtype_t,
   netsrc_t,
   type CommandRuntime,
   type CvarRuntime,
@@ -458,7 +459,7 @@ export function CL_Connect_f(context: ClientMainContext, hooks: ClientMainHooks 
  * - Builds and sends one remote-console command as an out-of-band packet.
  *
  * Porting notes:
- * - Defers actual packet transport and address parsing to hooks.
+ * - Uses the explicit qcommon net runtime for packet transport when available.
  * - Uses the current `rcon_password` and `rcon_address` cvars from the client cvar runtime.
  */
 export function CL_Rcon_f(context: ClientMainContext, hooks: ClientMainHooks = {}): void {
@@ -476,17 +477,36 @@ export function CL_Rcon_f(context: ClientMainContext, hooks: ClientMainHooks = {
   }
   const message = `\xff\xff\xff\xff${parts.join(" ")} `;
 
+  const destinationAdr = createNetAdr();
   let destination = "";
   if (context.client.cls.state >= connstate_t.ca_connected) {
-    destination = context.client.cls.servername;
+    destinationAdr.type = context.client.cls.netchan.remote_address.type;
+    destinationAdr.ip.set(context.client.cls.netchan.remote_address.ip);
+    destinationAdr.ipx.set(context.client.cls.netchan.remote_address.ipx);
+    destinationAdr.port = context.client.cls.netchan.remote_address.port;
+    destination = NET_AdrToString(destinationAdr);
   } else {
     destination = Cvar_VariableString(context.cvar, "rcon_address");
     if (destination.length === 0) {
       hooks.onPrint?.("You must either be connected,\nor set the 'rcon_address' cvar\nto issue rcon commands");
       return;
     }
+    if (hooks.qnet && !NET_StringToAdr(destination, destinationAdr)) {
+      hooks.onPrint?.(`Bad address: ${destination}`);
+      return;
+    }
+    if (destinationAdr.port === 0) {
+      destinationAdr.port = PORT_SERVER;
+    }
   }
 
+  if (hooks.qnet) {
+    const packet = new Uint8Array(message.length + 1);
+    for (let index = 0; index < message.length; index += 1) {
+      packet[index] = message.charCodeAt(index) & 0xff;
+    }
+    NET_SendPacket(hooks.qnet, netsrc_t.NS_CLIENT, packet.length, packet, destinationAdr);
+  }
   hooks.onSendRcon?.(message, destination);
 }
 
@@ -500,7 +520,7 @@ export function CL_Rcon_f(context: ClientMainContext, hooks: ClientMainHooks = {
  * - Broadcasts Quake II `info` probes and pings every populated address-book entry.
  *
  * Porting notes:
- * - Defers actual packet emission and address validation to hooks.
+ * - Uses the explicit qcommon net runtime for packet emission when available.
  * - Recreates the original `noudp`, `noipx` and `adr0..adr15` cvar usage locally.
  */
 export function CL_PingServers_f(context: ClientMainContext, hooks: ClientMainHooks = {}): void {
@@ -509,11 +529,21 @@ export function CL_PingServers_f(context: ClientMainContext, hooks: ClientMainHo
 
   const noudp = Cvar_Get(context.cvar, "noudp", "0", CVAR_NOSET);
   if (!noudp?.value) {
+    if (hooks.qnet) {
+      const adr = createNetAdr(netadrtype_t.NA_BROADCAST);
+      adr.port = PORT_SERVER;
+      Netchan_OutOfBandPrint(hooks.qnet, netsrc_t.NS_CLIENT, adr, `info ${PROTOCOL_VERSION}`);
+    }
     hooks.onPingServer?.(`info ${PROTOCOL_VERSION}`, "broadcast", "broadcast");
   }
 
   const noipx = Cvar_Get(context.cvar, "noipx", "0", CVAR_NOSET);
   if (!noipx?.value) {
+    if (hooks.qnet) {
+      const adr = createNetAdr(netadrtype_t.NA_BROADCAST_IPX);
+      adr.port = PORT_SERVER;
+      Netchan_OutOfBandPrint(hooks.qnet, netsrc_t.NS_CLIENT, adr, `info ${PROTOCOL_VERSION}`);
+    }
     hooks.onPingServer?.(`info ${PROTOCOL_VERSION}`, "broadcast_ipx", "broadcast_ipx");
   }
 
@@ -525,11 +555,19 @@ export function CL_PingServers_f(context: ClientMainContext, hooks: ClientMainHo
     }
 
     hooks.onPrint?.(`pinging ${address}...`);
-    if (hooks.validateAddressString?.(address) === false) {
+    const adr = createNetAdr();
+    const validAddress = hooks.qnet ? NET_StringToAdr(address, adr) : hooks.validateAddressString?.(address) !== false;
+    if (!validAddress) {
       hooks.onPrint?.(`Bad address: ${address}`);
       continue;
     }
+    if (adr.port === 0) {
+      adr.port = PORT_SERVER;
+    }
 
+    if (hooks.qnet) {
+      Netchan_OutOfBandPrint(hooks.qnet, netsrc_t.NS_CLIENT, adr, `info ${PROTOCOL_VERSION}`);
+    }
     hooks.onPingServer?.(`info ${PROTOCOL_VERSION}`, address, "addressbook");
   }
 }

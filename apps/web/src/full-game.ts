@@ -45,10 +45,15 @@ import {
   CS_ITEMS,
   MAX_ITEMS,
   PRINT_ALL,
+  Qcommon_Frame,
+  Qcommon_Init,
+  Qcommon_Shutdown,
   AngleVectors,
   CM_InlineModel,
   createCommandRuntime,
+  createQcommonMiscRuntime,
   createCvarRuntime,
+  type QcommonMiscRuntime,
   type cvar_t
 } from "../../../packages/qcommon/src/index.js";
 import {
@@ -290,6 +295,7 @@ interface FullGameRuntime {
   sndDma: ClientSndDmaContext;
   audioDebug: FullGameAudioDebugState;
   gameBridge: FullGameCommandBridgeState;
+  qcommon: QcommonMiscRuntime;
   serverHost: FullGameServerHost;
   gameRenderer: FullGameRendererState | null;
   gameRendererPromise: Promise<FullGameRendererState> | null;
@@ -352,6 +358,7 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("beforeunload", () => {
       runtime.finishConfigBootstrap();
       runtime.writeConfiguration();
+      Qcommon_Shutdown(runtime.qcommon);
     });
     window.addEventListener("pointerdown", (event) => handlePointerDown(event, runtime, page), { capture: true });
     document.addEventListener("pointerlockchange", () => handlePointerLockChange(runtime, page));
@@ -551,6 +558,8 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       Cbuf_AddText(cmd, "exec autoexec.cfg\n");
     }
   });
+  const qcommonHooks: QcommonMiscRuntime["hooks"] = {};
+  const qcommon = createQcommonMiscRuntime(qcommonHooks);
   const scheduleConfigAutosave = (): void => {
     if (!configAutosaveEnabled) {
       return;
@@ -963,11 +972,14 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     || client.cls.state === connstate_t.ca_connected
     || client.cls.state === connstate_t.ca_active
   );
-  const pumpAuthoritativeFrame = (milliseconds: number): void => {
+  qcommonHooks.onFrame = (milliseconds: number): void => {
     const msec = Math.max(0, Math.trunc(milliseconds));
     CL_Frame(mainContext!, msec, createAuthoritativeClientHooks(true));
     serverHost.frame(msec);
     CL_ReadPackets(mainContext!, createAuthoritativeClientHooks(false));
+  };
+  const pumpAuthoritativeFrame = (milliseconds: number): void => {
+    Qcommon_Frame(qcommon, milliseconds);
   };
   const authoritativeGameReady = (): boolean => (
     serverHost.hasActiveGameMap()
@@ -1001,6 +1013,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       beginAuthoritativeConnection(map);
     }
   });
+  Qcommon_Init(qcommon);
 
   consoleContext = createClientConsoleContext({
     client,
@@ -1144,6 +1157,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     sndDma,
     audioDebug,
     gameBridge,
+    qcommon,
     serverHost,
     get consoleRenderedInThree() {
       return consoleRenderedInThree;

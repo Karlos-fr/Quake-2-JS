@@ -24,6 +24,10 @@ assert.ok(source.includes(": page.gameViewport;"), "pointer lock should fall bac
 assert.ok(source.includes("onPredictMovement"), "full-game CL_Frame hook should update predicted camera angles");
 assert.ok(source.includes("CL_PredictMovement(client"), "full-game should run client prediction before rendering active gameplay");
 assert.ok(source.includes("createClientPredictionCollisionSource(client, serverHost.collisionWorld)"), "full-game prediction should use the local server collision world");
+assert.ok(source.includes("createQcommonMiscRuntime"), "full-game should create the qcommon lifecycle runtime");
+assert.ok(source.includes("Qcommon_Init(qcommon)"), "full-game should initialize through the qcommon lifecycle adapter");
+assert.ok(source.includes("Qcommon_Frame(qcommon, milliseconds)"), "full-game authoritative frame should run through Qcommon_Frame");
+assert.ok(source.includes("Qcommon_Shutdown(runtime.qcommon)"), "full-game should shut down the qcommon lifecycle adapter");
 assert.equal(source.includes("syncFullGamePredictionToAuthoritativeFrame"), false, "full-game should not add a non-original prediction resync path");
 assert.ok(source.includes("CL_BuildActionEffects"), "full-game should play client-side muzzleflash and temp-entity sounds");
 assert.ok(source.includes("CL_BuildEntityEventEffects"), "full-game should play client-side entity event sounds");

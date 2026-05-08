@@ -13,6 +13,7 @@ import {
   CL_ForceWall,
   CL_FlameEffects,
   CL_GenericParticleEffect,
+  CL_Heatbeam,
   CL_SmokeTrail
 } from "../../packages/client/src/cl_newfx.js";
 import { CL_AddDLights, CL_AddParticles, CL_ExecuteTempEntityEffects } from "../../packages/client/src/cl_fx.js";
@@ -26,6 +27,7 @@ function main(): void {
   verifyColorFlashSoftRendererBranch();
   verifyTrailRuntimeParticles();
   verifySmokeForceFlameAndGenericParticles();
+  verifyHeatbeamRingsRuntimeParticles();
   verifyTempEntityRuntimeBranches();
   console.log("quake2-cl-newfx: ok");
 }
@@ -120,6 +122,29 @@ function verifySmokeForceFlameAndGenericParticles(): void {
   assert.equal(particles.length, 3, "CL_GenericParticleEffect should allocate the requested count");
   assert.ok(particles.every((particle) => particle.color === 0x61), "CL_GenericParticleEffect color variation mismatch");
   assert.ok(particles.every((particle) => particle.accel[2] === -40), "CL_GenericParticleEffect gravity mismatch");
+}
+
+function verifyHeatbeamRingsRuntimeParticles(): void {
+  let runtime = createClientRuntime();
+  runtime.cl.time = 6000;
+  runtime.cl.particles[0].next = -1;
+  withMockRandom(0, () => CL_Heatbeam(runtime, [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]));
+  let particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 1, "CL_Heatbeam should allocate RINGS particles until free list exhaustion");
+  assert.deepEqual(particles[0]?.org, [0, -0.5, -0.5], "GL CL_Heatbeam should apply the original right/up half-unit start offset before the first trimmed ring");
+  assert.equal(particles[0]?.alpha, 0.5, "CL_Heatbeam particle alpha mismatch");
+  assert.equal(particles[0]?.alphavel, -1000.0, "CL_Heatbeam particle alphavel mismatch");
+  assert.equal(particles[0]?.color, 223, "CL_Heatbeam color should preserve 223 - (rand&7)");
+  assert.deepEqual(particles[0]?.vel, [0, 0, 0], "CL_Heatbeam particles should have zero velocity");
+  assert.equal(CL_AddParticles(runtime).length, 1, "CL_Heatbeam particles should reach refresh output");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 6000;
+  runtime.cl.vidref_val = VIDREF_SOFT;
+  runtime.cl.particles[0].next = -1;
+  withMockRandom(0, () => CL_Heatbeam(runtime, [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]));
+  particles = collectActiveParticles(runtime);
+  assert.deepEqual(particles[0]?.org, [0, 0, 0], "soft CL_Heatbeam should skip the GL-only right/up start offset before the first trimmed ring");
 }
 
 function verifyTempEntityRuntimeBranches(): void {

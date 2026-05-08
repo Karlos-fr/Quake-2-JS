@@ -20,14 +20,13 @@ import { createRefDef, MAX_PARTICLES } from "../../client/src/ref.js";
 import type { ClientRefreshFrame } from "../../client/src/refresh.js";
 import { AngleVectors } from "../../qcommon/src/index.js";
 import {
+  BufferAttribute,
+  BufferGeometry,
   DynamicDrawUsage,
   Group,
-  InstancedBufferAttribute,
-  Sprite,
-  SpriteMaterial
+  Points,
+  PointsMaterial
 } from "three";
-import { PointsNodeMaterial } from "three/webgpu";
-import { instancedDynamicBufferAttribute } from "three/tsl";
 import {
   createGlRmainRuntime,
   R_DrawParticles,
@@ -50,7 +49,7 @@ export interface ThreeParticleSyncOptions {
 
 /**
  * Category: New
- * Purpose: Build one Three.js adapter that renders client refresh particles through the WebGPU sprite-instancing path.
+ * Purpose: Build one Three.js adapter that renders client refresh particles through Three.js point primitives.
  *
  * Constraints:
  * - Must reuse `R_DrawParticles` instead of inventing a parallel particle layout.
@@ -64,36 +63,35 @@ export function createThreeParticleSync(filesystem: VirtualFilesystem, options: 
   const particleMaxSize = options.particleMaxSize ?? Math.max(40, particleSize);
   const particleAttenuation = options.particleAttenuation ?? [0.01, 0, 0.01];
 
-  const positionAttribute = new InstancedBufferAttribute(new Float32Array(MAX_PARTICLES * 3), 3);
-  const sizeAttribute = new InstancedBufferAttribute(new Float32Array(MAX_PARTICLES * 2), 2);
-  const colorAttribute = new InstancedBufferAttribute(new Float32Array(MAX_PARTICLES * 3), 3);
-  const alphaAttribute = new InstancedBufferAttribute(new Float32Array(MAX_PARTICLES), 1);
+  const positionAttribute = new BufferAttribute(new Float32Array(MAX_PARTICLES * 3), 3);
+  const colorAttribute = new BufferAttribute(new Float32Array(MAX_PARTICLES * 4), 4);
   positionAttribute.setUsage(DynamicDrawUsage);
-  sizeAttribute.setUsage(DynamicDrawUsage);
   colorAttribute.setUsage(DynamicDrawUsage);
-  alphaAttribute.setUsage(DynamicDrawUsage);
 
-  const material = new PointsNodeMaterial({
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", positionAttribute);
+  geometry.setAttribute("color", colorAttribute);
+  geometry.setDrawRange(0, 0);
+  geometry.boundingSphere = null;
+
+  const material = new PointsMaterial({
+    size: particleSize,
+    sizeAttenuation: false,
+    vertexColors: true,
     transparent: true,
     depthWrite: false,
     depthTest: true,
-    fog: false,
-    sizeAttenuation: false
+    fog: false
   });
-  material.positionNode = instancedDynamicBufferAttribute(positionAttribute, "vec3");
-  material.sizeNode = instancedDynamicBufferAttribute(sizeAttribute, "vec2");
-  material.colorNode = instancedDynamicBufferAttribute(colorAttribute, "vec3");
-  material.opacityNode = instancedDynamicBufferAttribute(alphaAttribute, "float");
   material.toneMapped = false;
-  material.alphaToCoverage = false;
 
-  const particleSprite = new Sprite(material as unknown as SpriteMaterial);
-  particleSprite.name = "refresh-particles:webgpu-instanced-sprite";
-  particleSprite.count = 0;
-  particleSprite.visible = false;
-  particleSprite.frustumCulled = false;
-  particleSprite.renderOrder = 20;
-  root.add(particleSprite);
+  const particlePoints = new Points(geometry, material);
+  particlePoints.name = "refresh-particles:gl-points";
+  particlePoints.visible = false;
+  particlePoints.frustumCulled = false;
+  particlePoints.renderOrder = 20;
+  setParticleObjectCount(particlePoints, 0);
+  root.add(particlePoints);
 
   const runtime = createGlRmainRuntime();
   const paletteTable = loadPaletteTable(filesystem);
@@ -112,9 +110,7 @@ export function createThreeParticleSync(filesystem: VirtualFilesystem, options: 
 
   runtime.hooks.onDrawPointParticleBatch = (particles, count, colortable, pointSize) => {
     const positions = positionAttribute.array as Float32Array;
-    const sizes = sizeAttribute.array as Float32Array;
     const colors = colorAttribute.array as Float32Array;
-    const alphas = alphaAttribute.array as Float32Array;
 
     capturedCount = Math.min(count, particles.length, MAX_PARTICLES);
     for (let index = 0; index < capturedCount; index += 1) {
@@ -134,33 +130,31 @@ export function createThreeParticleSync(filesystem: VirtualFilesystem, options: 
       positions[positionOffset + 1] = particle.origin[1];
       positions[positionOffset + 2] = particle.origin[2];
 
-      const attenuatedSize = computePointParameterSize(runtime, pointSize, distance);
-      const sizeOffset = index * 2;
-      sizes[sizeOffset] = attenuatedSize;
-      sizes[sizeOffset + 1] = attenuatedSize;
+      void computePointParameterSize(runtime, pointSize, distance);
 
       const packed = colortable[particle.color] ?? 0;
-      const colorOffset = index * 3;
+      const colorOffset = index * 4;
       colors[colorOffset] = (packed & 0xff) / 255.0;
       colors[colorOffset + 1] = ((packed >> 8) & 0xff) / 255.0;
       colors[colorOffset + 2] = ((packed >> 16) & 0xff) / 255.0;
-      alphas[index] = clamp01(particle.alpha);
+      colors[colorOffset + 3] = clamp01(particle.alpha);
     }
 
-    particleSprite.count = capturedCount;
-    particleSprite.visible = capturedCount > 0;
+    setParticleObjectCount(particlePoints, capturedCount);
+    geometry.setDrawRange(0, capturedCount);
+    geometry.computeBoundingSphere();
+    particlePoints.visible = capturedCount > 0;
     positionAttribute.needsUpdate = true;
-    sizeAttribute.needsUpdate = true;
     colorAttribute.needsUpdate = true;
-    alphaAttribute.needsUpdate = true;
   };
 
   return {
     root,
     apply: (refreshFrame) => {
       if (!refreshFrame || refreshFrame.particles.length === 0) {
-        particleSprite.count = 0;
-        particleSprite.visible = false;
+        setParticleObjectCount(particlePoints, 0);
+        geometry.setDrawRange(0, 0);
+        particlePoints.visible = false;
         return 0;
       }
 
@@ -182,6 +176,10 @@ export function createThreeParticleSync(filesystem: VirtualFilesystem, options: 
       return capturedCount;
     }
   };
+}
+
+function setParticleObjectCount(points: Points<BufferGeometry, PointsMaterial>, count: number): void {
+  (points as unknown as { count: number }).count = count;
 }
 
 function computePointParameterSize(

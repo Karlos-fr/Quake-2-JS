@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc etat serveur/checksum/random/globals `Com_ServerState`, `Com_SetServerState`, `Com_BlockChecksum`, `COM_BlockSequenceCRCByte`, `frand`, `crand`, `developer`, `dedicated`, `host_speeds`, `log_stats`, `time_before_game`, `time_after_game`, `time_before_ref`, `time_after_ref`.
+- Dernier lot valide: bloc zone/lifecycle qcommon `Z_Free`, `Z_Malloc`, `Z_TagMalloc`, `Z_FreeTags`, `Qcommon_Init`, `Qcommon_Frame`, `Qcommon_Shutdown`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc zone/lifecycle qcommon depuis `qcommon/qcommon.h`: `Z_Free`, `Z_Malloc`, `Z_TagMalloc`, `Z_FreeTags`, `Qcommon_Init`, `Qcommon_Frame`, `Qcommon_Shutdown`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementation proprietaire `Quake-2-master/qcommon/common.c` pour la chaine zone (`z_chain`, `z_count`, `z_bytes`, magic/tag/size) et le cycle `Qcommon_Init`/`Qcommon_Frame`/`Qcommon_Shutdown`.
+- Cible comparee: `packages/qcommon/src/qcommon.ts`, exports publics `packages/qcommon/src/index.ts`, usages `apps/web/src/full-game.ts`, `apps/web/src/full-game-server-host.ts`, `packages/client`, `packages/server`, `packages/renderer-three`, et harnais `scripts/verify/quake2-qcommon-header.ts` / `scripts/verify/quake2-full-game-three-renderer.ts`.
+- Decision: portage valide pour 7 entrees. Les allocations zone sont portees comme `Uint8Array` zero-filled suivies dans `QcommonMiscRuntime.zone_allocations` avec tag et taille utilisateur; `Z_Malloc` conserve le tag 0, `Z_Free` rejette les references deja liberees, `Z_FreeTags` supprime toutes les allocations du tag demande. Le cycle qcommon reste un adapter explicite, coherent avec le decoupage TS des sous-systemes deja portes, mais il est maintenant branche dans `apps/web`: init au bootstrap runtime, frame autoritatif via `Qcommon_Frame`, shutdown sur `beforeunload`.
+- Runtime: attendu et verifie. Les helpers zone n'ont pas de racine C obligatoire dans le flux web courant sauf tests/ownership VFS qui remplacent les pointeurs C par buffers JS; le tracking est verifie. `Qcommon_Frame` est maintenant la racine du frame autoritatif web et appelle le flux client/serveur porte (`CL_Frame`, `serverHost.frame`/`SV_Frame`, `CL_ReadPackets`) via hook lifecycle.
+- apps/web: attendu et corrige. `apps/web/src/full-game.ts` cree `QcommonMiscRuntime`, appelle `Qcommon_Init(qcommon)`, route `pumpAuthoritativeFrame` par `Qcommon_Frame(qcommon, milliseconds)` et appelle `Qcommon_Shutdown(runtime.qcommon)` au `beforeunload`; le web ne remplace plus ce cycle par un appel direct non-qcommon.
+- renderer-three: attendu indirectement pour le cycle frame, car `Qcommon_Frame` declenche le flux client/server qui produit camera/refdef, entites, particules, dlights, temp entities, areabits et scene consommes par le renderer. Aucun appel direct renderer n'est attendu pour les helpers zone; ils ne produisent pas eux-memes de sortie visible.
+- Commentaires: en-tetes `Z_TagMalloc`, `Z_Malloc`, `Z_Free`, `Z_FreeTags`, `Qcommon_Init`, `Qcommon_Frame`, `Qcommon_Shutdown` verifies dans `packages/qcommon/src/qcommon.ts`; commentaires `Category: New` du runtime qcommon verifies.
+- Corrections: `apps/web/src/full-game.ts` branche le runtime lifecycle qcommon autour du frame autoritatif et du shutdown; `scripts/verify/quake2-qcommon-header.ts` ajoute les preuves metadata/free double/shutdown/hook order; `scripts/verify/quake2-full-game-three-renderer.ts` ajoute les preuves statiques d'integration lifecycle qcommon.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc etat serveur/checksum/random/globals depuis `qcommon/qcommon.h`: `Com_ServerState`, `Com_SetServerState`, `Com_BlockChecksum`, `COM_BlockSequenceCRCByte`, `frand`, `crand`, `developer`, `dedicated`, `host_speeds`, `log_stats`, et timers host-speed `time_before_game`, `time_after_game`, `time_before_ref`, `time_after_ref`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementation proprietaire `Quake-2-master/qcommon/common.c` pour server state, sequence CRC et random, implementation `Quake-2-master/qcommon/md4.c` pour `Com_BlockChecksum`, et initialisation/usages C des cvars globals dans `Qcommon_Init`/`Qcommon_Frame`.
@@ -202,7 +215,7 @@
 
 ## Prochain lot recommande
 
-- Bloc zone/lifecycle qcommon: `Z_Free`, `Z_Malloc`, `Z_TagMalloc`, `Z_FreeTags`, puis `Qcommon_Init`, `Qcommon_Frame`, `Qcommon_Shutdown` si le lot reste coherent.
+- Bloc final header qcommon: `NUMVERTEXNORMALS`, `SCR_DebugGraph`, puis `Sys_Init`, `Sys_AppActivate`, `Sys_UnloadGame`, `Sys_GetGameAPI`, `Sys_ConsoleInput`, `Sys_ConsoleOutput`, `Sys_SendKeyEvents`, `Sys_Error`, `Sys_Quit`, `Sys_GetClipboardData`, `Sys_CopyProtect` si le lot reste coherent.
 
 ## Blocages
 

@@ -42,39 +42,39 @@
 | `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de `CL_BubbleTrail2`. |
 | `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de `CL_BubbleTrail2`. |
 | `Quake-2-master/client/cl_newfx.c` | global | `dec` | `packages/client/src/cl_newfx.ts` | `dec` | Non applicable | A redecouper | Local C de `CL_BubbleTrail2`. |
-| `Quake-2-master/client/cl_newfx.c` | macro | `RINGS` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `dir` | `packages/client/src/cl_newfx.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `step` | `packages/client/src/cl_newfx.ts` | `step` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `dir` | `packages/client/src/cl_newfx.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `step` | `packages/client/src/cl_newfx.ts` | `step` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `start_pt` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `rot` | `packages/client/src/cl_newfx.ts` | `rot` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `variance` | `packages/client/src/cl_newfx.ts` | `variance` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `end` | `packages/client/src/cl_newfx.ts` | `end` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `dir` | `packages/client/src/cl_newfx.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `step` | `packages/client/src/cl_newfx.ts` | `step` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `start_pt` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `rot` | `packages/client/src/cl_newfx.ts` | `rot` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | macro | `RINGS` | `packages/client/src/cl_newfx.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | Non applicable | A redecouper | Variante CORKSCREW inactive: `RINGS` est la variante compilee. |
+| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | Non applicable | A redecouper | Local C de la variante CORKSCREW inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de la variante CORKSCREW inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de la variante CORKSCREW inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Local C de la variante CORKSCREW inactive de `CL_Heatbeam`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | global | `dir` | `packages/client/src/cl_newfx.ts` | `dir` | Non applicable | A redecouper | Local C de la variante CORKSCREW inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | Non applicable | A redecouper | Local C de la variante CORKSCREW inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `step` | `packages/client/src/cl_newfx.ts` | `step` | Non applicable | A redecouper | Local C de la variante CORKSCREW inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | global | `dir` | `packages/client/src/cl_newfx.ts` | `dir` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `step` | `packages/client/src/cl_newfx.ts` | `step` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `start_pt` | `packages/client/src/cl_newfx.ts` |  | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `rot` | `packages/client/src/cl_newfx.ts` | `rot` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `variance` | `packages/client/src/cl_newfx.ts` | `variance` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `end` | `packages/client/src/cl_newfx.ts` | `end` | Non applicable | A redecouper | Local C de la variante RINGS active de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | Non applicable | A redecouper | Variante SPRAY inactive: `RINGS` est la variante compilee. |
+| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | global | `dir` | `packages/client/src/cl_newfx.ts` | `dir` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `step` | `packages/client/src/cl_newfx.ts` | `step` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `start_pt` | `packages/client/src/cl_newfx.ts` |  | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `rot` | `packages/client/src/cl_newfx.ts` | `rot` | Non applicable | A redecouper | Local C de la variante SPRAY inactive de `CL_Heatbeam`. |
 | `Quake-2-master/client/cl_newfx.c` | function | `CL_ParticleSteamEffect` | `packages/client/src/cl_newfx.ts` | `CL_ParticleSteamEffect` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | global | `d` | `packages/client/src/cl_newfx.ts` | `d` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | function | `CL_ParticleSteamEffect2` | `packages/client/src/cl_newfx.ts` | `CL_ParticleSteamEffect2` | A verifier | A redecouper |  |

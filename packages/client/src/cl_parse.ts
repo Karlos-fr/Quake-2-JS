@@ -616,6 +616,7 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
 
   if (size === -1) {
     emitPrint(runtime, "Server does not have this file.\n", hooks);
+    runtime.cls.download = null;
     runtime.cls.downloadpercent = 0;
     const missingBlock: ClientDownloadBlock = {
       size,
@@ -642,7 +643,10 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
   };
   hooks.onDownloadBlock?.(block);
   if (percent === 100) {
+    runtime.cls.download = null;
     hooks.onRequestNextDownload?.();
+  } else {
+    CL_WriteStringCmd(runtime, "nextdl");
   }
   return block;
 }

@@ -18,6 +18,8 @@ import {
   Cmd_ForwardToServer,
   CL_InitInput,
   CL_CheckForResend,
+  CL_Changing_f,
+  CL_Connect_f,
   CL_ConnectionlessPacket,
   CL_Disconnect,
   CL_Disconnect_f,
@@ -30,10 +32,13 @@ import {
   CL_Init,
   CL_InitLocal,
   CL_Packet_f,
+  CL_PingServers_f,
   CL_ParseStatusMessage,
   CL_Pause_f,
   CL_ReadPackets,
   CL_Record_f,
+  CL_Reconnect_f,
+  CL_Rcon_f,
   CL_SendConnectPacket,
   CL_SendCommand,
   CL_Setenv_f,
@@ -315,6 +320,20 @@ context.client.cls.state = 4;
 CL_Disconnect_f(context);
 assert.equal(context.client.cls.state, 1, "CL_Disconnect_f should route through CL_Disconnect");
 
+let localShutdowns = 0;
+Cmd_TokenizeString(cmd, "connect 10.1.2.3", false);
+context.client.cls.state = 4;
+CL_Connect_f(context, {
+  serverRunning: () => true,
+  onShutdownLocalServer: () => {
+    localShutdowns += 1;
+  }
+});
+assert.equal(localShutdowns, 1, "CL_Connect_f should request local server shutdown before connecting");
+assert.equal(context.client.cls.state, 2, "CL_Connect_f should enter connecting state");
+assert.equal(context.client.cls.servername, "10.1.2.3", "CL_Connect_f should store the requested server name");
+assert.equal(context.client.cls.connect_time, -99999, "CL_Connect_f should force immediate CL_CheckForResend timing");
+
 sentPackets.length = 0;
 const disconnectAdr = qnetAddressFactory();
 NET_StringToAdr("10.2.3.4:27910", disconnectAdr);
@@ -325,6 +344,55 @@ context.client.cls.netchan.message.cursize = 5;
 CL_Disconnect(context, { qnet });
 assert.equal(sentPackets.length, 3, "CL_Disconnect should transmit the stock triple disconnect packet");
 assert.equal(context.client.cls.netchan.message.cursize, 0, "CL_Disconnect should clear the netchan message through CL_ClearState");
+
+sentPackets.length = 0;
+Cvar_Set(cvar, "rcon_password", "secret");
+Cvar_Set(cvar, "rcon_address", "10.1.1.1:27911");
+Cmd_TokenizeString(cmd, "rcon status", false);
+context.client.cls.state = 1;
+CL_Rcon_f(context, { qnet });
+assert.equal(sentPackets[0]?.text, "rcon secret status ", "CL_Rcon_f should send the stock rcon payload while disconnected");
+assert.equal(sentPackets[0]?.port, 27911, "CL_Rcon_f should honor rcon_address ports");
+
+sentPackets.length = 0;
+const rconServerAdr = qnetAddressFactory();
+NET_StringToAdr("10.2.2.2:27912", rconServerAdr);
+context.client.cls.state = 3;
+context.client.cls.servername = "stale-server-name";
+context.client.cls.netchan.remote_address = rconServerAdr;
+Cmd_TokenizeString(cmd, "rcon map base1", false);
+CL_Rcon_f(context, { qnet });
+assert.equal(sentPackets[0]?.text, "rcon secret map base1 ", "CL_Rcon_f should preserve command arguments for connected rcon");
+assert.equal(sentPackets[0]?.port, 27912, "CL_Rcon_f should target the connected netchan remote address");
+
+let loadingPlaqueStarted = false;
+context.client.cls.state = 4;
+CL_Changing_f(context, {
+  onBeginLoadingPlaque: () => {
+    loadingPlaqueStarted = true;
+  }
+});
+assert.equal(loadingPlaqueStarted, true, "CL_Changing_f should start the loading plaque");
+assert.equal(context.client.cls.state, 3, "CL_Changing_f should fall back to connected state");
+
+let stoppedReconnectSounds = false;
+context.client.cls.state = 3;
+context.client.cls.netchan.message.cursize = 0;
+CL_Reconnect_f(context, {
+  onStopAllSounds: () => {
+    stoppedReconnectSounds = true;
+  }
+});
+assert.equal(stoppedReconnectSounds, true, "CL_Reconnect_f should stop all sounds before reconnecting");
+MSG_BeginReading(context.client.cls.netchan.message);
+assert.equal(MSG_ReadByte(context.client.cls.netchan.message), clc_ops_e.clc_stringcmd, "CL_Reconnect_f connected path should queue a string command opcode");
+assert.equal(MSG_ReadString(context.client.cls.netchan.message), "new", "CL_Reconnect_f connected path should queue the stock new command");
+
+sentPackets.length = 0;
+Cvar_Set(cvar, "adr0", "10.4.4.4:27915");
+CL_PingServers_f(context, { qnet });
+assert.equal(sentPackets.some((packet) => packet.text === `info ${PROTOCOL_VERSION}` && packet.type === 1), true, "CL_PingServers_f should broadcast an info probe over UDP");
+assert.equal(sentPackets.some((packet) => packet.text === `info ${PROTOCOL_VERSION}` && packet.port === 27915), true, "CL_PingServers_f should probe populated address-book entries");
 
 qnet.net_message.cursize = 0;
 qnet.net_message.readcount = 0;

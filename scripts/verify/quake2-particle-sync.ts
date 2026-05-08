@@ -1,6 +1,6 @@
 /**
  * File: quake2-particle-sync.ts
- * Purpose: Verify that the Three.js particle sync adapter consumes refresh particles through the ported `gl_rmain.c` point path and feeds one WebGPU instanced sprite.
+ * Purpose: Verify that the Three.js particle sync adapter consumes refresh particles through the ported `gl_rmain.c` point path and feeds one Three.js point cloud.
  *
  * This file is not a direct source port.
  * It is a targeted verification harness for the particle adapter layer.
@@ -48,18 +48,20 @@ const refreshFrame: ClientRefreshFrame = {
 
 const renderedCount = particleSync.apply(refreshFrame);
 assert.equal(renderedCount, 2, "particleSync rendered count mismatch");
-assert.equal(particleSync.root.children.length, 1, "particleSync instanced sprite count mismatch");
+assert.equal(particleSync.root.children.length, 1, "particleSync point object count mismatch");
 
-const particleSprite = particleSync.root.children[0] as {
+const particlePoints = particleSync.root.children[0] as {
   count: number;
+  type: string;
   visible: boolean;
 };
-assert.equal(particleSprite.visible, true, "particleSync sprite visibility mismatch");
-assert.equal(particleSprite.count, 2, "particleSync sprite instance count mismatch");
+assert.equal(particlePoints.type, "Points", "particleSync should render through Three.js Points");
+assert.equal(particlePoints.visible, true, "particleSync point visibility mismatch");
+assert.equal(particlePoints.count, 2, "particleSync point count mismatch");
 
 const emptyCount = particleSync.apply(null);
 assert.equal(emptyCount, 0, "particleSync empty count mismatch");
-assert.equal(particleSprite.visible, false, "particleSync empty visibility mismatch");
-assert.equal(particleSprite.count, 0, "particleSync empty instance count mismatch");
+assert.equal(particlePoints.visible, false, "particleSync empty visibility mismatch");
+assert.equal(particlePoints.count, 0, "particleSync empty point count mismatch");
 
 console.log("quake2-particle-sync: ok");

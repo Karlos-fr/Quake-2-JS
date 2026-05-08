@@ -91,6 +91,7 @@ import {
   U_SKIN16,
   U_SKIN8,
   U_SOLID,
+  clc_ops_e,
   createEntityState,
   entity_event_t,
   pmtype_t
@@ -331,6 +332,7 @@ assert.equal(runtime.cl.clientinfo[0].valid, true, "CL_ParseConfigString clienti
 
 let requestedDownloads = 0;
 resetIncoming(runtime);
+runtime.cls.download = { partial: true };
 MSG_WriteShort(runtime.net_message, -1);
 MSG_WriteByte(runtime.net_message, 0);
 runtime.net_message.readcount = 0;
@@ -341,6 +343,21 @@ const missingDownload = CL_ParseDownload(runtime, {
 });
 assert.equal(missingDownload.missing, true, "CL_ParseDownload missing block mismatch");
 assert.equal(requestedDownloads, 1, "CL_ParseDownload missing next-request mismatch");
+assert.equal(runtime.cls.download, null, "CL_ParseDownload missing block should clear active download");
+
+resetIncoming(runtime);
+resetOutgoing(runtime);
+MSG_WriteShort(runtime.net_message, 2);
+MSG_WriteByte(runtime.net_message, 42);
+MSG_WriteByte(runtime.net_message, 7);
+MSG_WriteByte(runtime.net_message, 8);
+runtime.net_message.readcount = 0;
+const partialDownload = CL_ParseDownload(runtime);
+const queuedDownloadCommand = String.fromCharCode(...runtime.cls.netchan.message.data.subarray(1, runtime.cls.netchan.message.cursize - 1));
+assert.equal(partialDownload.missing, false, "CL_ParseDownload partial block mismatch");
+assert.equal(runtime.cls.downloadpercent, 42, "CL_ParseDownload partial percent mismatch");
+assert.equal(runtime.cls.netchan.message.data[0], clc_ops_e.clc_stringcmd, "CL_ParseDownload partial should queue a string command");
+assert.equal(queuedDownloadCommand, "nextdl", "CL_ParseDownload partial should request the next block");
 
 resetIncoming(runtime);
 MSG_WriteShort(runtime.net_message, 3);
@@ -355,6 +372,7 @@ const finalDownload = CL_ParseDownload(runtime, {
   }
 });
 assert.equal(finalDownload.bytes[2], 30, "CL_ParseDownload payload mismatch");
+assert.equal(runtime.cls.download, null, "CL_ParseDownload final block should clear active download");
 assert.equal(runtime.cls.downloadpercent, 0, "CL_ParseDownload percent reset mismatch");
 assert.equal(requestedDownloads, 2, "CL_ParseDownload final next-request mismatch");
 

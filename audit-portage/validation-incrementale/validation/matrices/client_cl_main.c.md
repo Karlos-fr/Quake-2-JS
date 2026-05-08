@@ -91,28 +91,28 @@
 | `Quake-2-master/client/cl_main.c` | function | `CL_SendConnectPacket` | `packages/client/src/cl_main.ts` | `CL_SendConnectPacket` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `port` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_SendConnectPacket`. |
 | `Quake-2-master/client/cl_main.c` | function | `CL_CheckForResend` | `packages/client/src/cl_main.ts` | `CL_CheckForResend` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Connect_f` | `packages/client/src/cl_main.ts` | `CL_Connect_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `server` | `packages/client/src/cl_main.ts` | `server` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Rcon_f` | `packages/client/src/cl_main.ts` | `CL_Rcon_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `message` | `packages/client/src/cl_main.ts` | `message` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Connect_f` | `packages/client/src/cl_main.ts` | `CL_Connect_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `server` | `packages/client/src/cl_main.ts` | `server` | Non applicable | A redecouper | Local C generated; covered by `CL_Connect_f`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Rcon_f` | `packages/client/src/cl_main.ts` | `CL_Rcon_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `message` | `packages/client/src/cl_main.ts` | `message` | Non applicable | A redecouper | Local C generated; covered by `CL_Rcon_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Rcon_f`. |
 | `Quake-2-master/client/cl_main.c` | function | `CL_ClearState` | `packages/client/src/cl_parse.ts` | `CL_ClearState` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Disconnect` | `packages/client/src/cl_main.ts` | `CL_Disconnect` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `final` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Disconnect`. |
 | `Quake-2-master/client/cl_main.c` | global | `time` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Disconnect` timedemo branch. |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Disconnect_f` | `packages/client/src/cl_main.ts` | `CL_Disconnect_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Packet_f` | `packages/client/src/cl_main.ts` | `CL_Packet_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `send` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Changing_f` | `packages/client/src/cl_main.ts` | `CL_Changing_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Reconnect_f` | `packages/client/src/cl_main.ts` | `CL_Reconnect_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_ParseStatusMessage` | `packages/client/src/cl_main.ts` | `CL_ParseStatusMessage` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `s` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_PingServers_f` | `packages/client/src/cl_main.ts` | `CL_PingServers_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adrstring` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `noudp` | `packages/client/src/cl_main.ts` | `noudp` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `noipx` | `packages/client/src/cl_main.ts` | `noipx` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Packet_f` | `packages/client/src/cl_main.ts` | `CL_Packet_f` | Valide | A redecouper | Source command registration is commented out; direct function parity verified. |
+| `Quake-2-master/client/cl_main.c` | global | `send` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Packet_f`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Changing_f` | `packages/client/src/cl_main.ts` | `CL_Changing_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Reconnect_f` | `packages/client/src/cl_main.ts` | `CL_Reconnect_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_ParseStatusMessage` | `packages/client/src/cl_main.ts` | `CL_ParseStatusMessage` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `s` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_ParseStatusMessage`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_PingServers_f` | `packages/client/src/cl_main.ts` | `CL_PingServers_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `adrstring` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `noudp` | `packages/client/src/cl_main.ts` | `noudp` | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `noipx` | `packages/client/src/cl_main.ts` | `noipx` | Non applicable | A redecouper | Local C generated; covered by `CL_PingServers_f`. |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Skins_f` | `packages/client/src/cl_main.ts` | `CL_Skins_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_ConnectionlessPacket` | `packages/client/src/cl_main.ts` | `CL_ConnectionlessPacket` | A verifier | A redecouper |  |

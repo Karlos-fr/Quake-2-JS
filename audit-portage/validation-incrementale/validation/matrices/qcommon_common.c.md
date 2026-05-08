@@ -61,7 +61,7 @@
 | `Quake-2-master/qcommon/common.c` | global | `f` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `l` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteString` | `packages/qcommon/src/messages.ts` | `MSG_WriteString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `SZ_Write` | `packages/memory/src/sizebuf.ts` | `SZ_Write` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `SZ_Write` | `packages/memory/src/sizebuf.ts` | `SZ_Write` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteCoord` | `packages/qcommon/src/messages.ts` | `MSG_WriteCoord` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WritePos` | `packages/qcommon/src/messages.ts` | `MSG_WritePos` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteAngle` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle` | A verifier | A redecouper |  |
@@ -104,14 +104,14 @@
 | `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | Non applicable | A redecouper | Variable locale de `MSG_ReadDeltaUsercmd`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_ReadData` | `packages/qcommon/src/messages.ts` | `MSG_ReadData` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de boucle de `MSG_ReadData`; couverte avec la fonction. |
-| `Quake-2-master/qcommon/common.c` | function | `SZ_Init` | `packages/memory/src/sizebuf.ts` | `SZ_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `SZ_Clear` | `packages/memory/src/sizebuf.ts` | `SZ_Clear` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `SZ_GetSpace` | `packages/memory/src/sizebuf.ts` | `SZ_GetSpace` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `SZ_Write` | `packages/memory/src/sizebuf.ts` | `SZ_Write` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `SZ_Print` | `packages/memory/src/sizebuf.ts` | `SZ_Print` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `len` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `memcpy` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `memcpy` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `SZ_Init` | `packages/memory/src/sizebuf.ts` | `SZ_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `SZ_Clear` | `packages/memory/src/sizebuf.ts` | `SZ_Clear` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `SZ_GetSpace` | `packages/memory/src/sizebuf.ts` | `SZ_GetSpace` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `SZ_Write` | `packages/memory/src/sizebuf.ts` | `SZ_Write` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `SZ_Print` | `packages/memory/src/sizebuf.ts` | `SZ_Print` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `len` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `SZ_Print`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | function | `memcpy` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel libc remplace par `Uint8Array.set`; couvert avec `SZ_Write`/`SZ_Print`. |
+| `Quake-2-master/qcommon/common.c` | function | `memcpy` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel libc remplace par `Uint8Array.set`; couvert avec `SZ_Write`/`SZ_Print`. |
 | `Quake-2-master/qcommon/common.c` | function | `COM_CheckParm` | `packages/qcommon/src/common.ts` | `COM_CheckParm` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `COM_Argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | A verifier | A redecouper |  |

@@ -51,11 +51,11 @@
 | `Quake-2-master/client/cl_ents.c` | global | `ci` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C couverte avec le chemin custom player/custom weapon de `CL_AddPacketEntities`. |
 | `Quake-2-master/client/cl_ents.c` | global | `bfg_lightramp` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Table locale C couverte avec les lumieres BFG de `CL_AddPacketEntities`. |
 | `Quake-2-master/client/cl_ents.c` | global | `intensity` | `packages/client/src/cl_ents.ts` | `intensity` | Non applicable | A redecouper | Variable locale C couverte avec la branche tracker de `CL_AddPacketEntities`. |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_AddViewWeapon` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_CalcViewValues` | `packages/client/src/view.ts` | `CL_CalcViewValues` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `oldframe` | `packages/client/src/cl_ents.ts` | `oldframe` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `delta` | `packages/client/src/view.ts` | `delta` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_AddViewWeapon` | `packages/client/src/refresh.ts` | `appendViewWeapon` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/refresh.ts` |  | Non applicable | A redecouper | Variable locale C de `CL_AddViewWeapon`, couverte par la boucle `appendViewWeapon`. |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_CalcViewValues` | `packages/client/src/view.ts` | `CL_CalcViewValues` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/view.ts` |  | Non applicable | A redecouper | Variable locale C des boucles de camera, couverte par `CL_CalcViewValues`. |
+| `Quake-2-master/client/cl_ents.c` | global | `oldframe` | `packages/client/src/view.ts` |  | Non applicable | A redecouper | Variable locale C de selection frame precedente, couverte par `CL_CalcViewValues`. |
+| `Quake-2-master/client/cl_ents.c` | global | `delta` | `packages/client/src/view.ts` |  | Non applicable | A redecouper | Variable locale C du stair smoothing, couverte par `CL_CalcViewValues`. |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_AddEntities` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/refresh.ts` | `CL_GetEntitySoundOrigin` | A verifier | A redecouper |  |

@@ -15,7 +15,7 @@
  * - This file is the principal port target for `client/cl_newfx.c`.
  */
 
-import { AngleVectors, VIDREF_SOFT, type vec3_t } from "../../qcommon/src/index.js";
+import { AngleVectors, VIDREF_GL, VIDREF_SOFT, type vec3_t } from "../../qcommon/src/index.js";
 import { INSTANT_PARTICLE, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./client.js";
 import { MakeNormalVectors, type ClientActionEffect } from "./cl_fx.js";
 
@@ -1076,18 +1076,33 @@ export function CL_ColorExplosionParticles(
   }
 }
 
+/**
+ * Original name: CL_Heatbeam
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the active `RINGS` heatbeam particle helix using the current view right/up vectors.
+ *
+ * Porting notes:
+ * - The inactive CORKSCREW/SPRAY preprocessor variants are not runtime-active in the original source.
+ * - Uses `runtime.cl.vidref_val` for the original `vidref_val` GL-only start offset branch.
+ */
 export function CL_Heatbeam(runtime: ClientRuntime, start: vec3_t, forward: vec3_t, right: vec3_t, up: vec3_t): void {
   const move = [...start] as vec3_t;
   const end = addScaledVector(start, forward, 4096);
   const vec = subtractVec3(end, start);
   const len = normalizeVectorCopy(vec);
 
-  move[0] -= right[0] * 0.5;
-  move[1] -= right[1] * 0.5;
-  move[2] -= right[2] * 0.5;
-  move[0] -= up[0] * 0.5;
-  move[1] -= up[1] * 0.5;
-  move[2] -= up[2] * 0.5;
+  if (runtime.cl.vidref_val === VIDREF_GL) {
+    move[0] -= right[0] * 0.5;
+    move[1] -= right[1] * 0.5;
+    move[2] -= right[2] * 0.5;
+    move[0] -= up[0] * 0.5;
+    move[1] -= up[1] * 0.5;
+    move[2] -= up[2] * 0.5;
+  }
 
   const ltime = runtime.cl.time / 1000.0;
   const step = 32.0;

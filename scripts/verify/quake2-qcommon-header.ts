@@ -686,9 +686,13 @@ assert.throws(
 initializedBuffer.readcount = 2;
 MSG_BeginReading(initializedBuffer);
 assert.equal(initializedBuffer.readcount, 0, "MSG_BeginReading readcount mismatch");
+initializedBuffer.allowoverflow = true;
+initializedBuffer.readcount = 2;
 SZ_Clear(initializedBuffer);
 assert.equal(initializedBuffer.cursize, 0, "SZ_Clear cursize mismatch");
 assert.equal(initializedBuffer.overflowed, false, "SZ_Clear overflowed mismatch");
+assert.equal(initializedBuffer.allowoverflow, true, "SZ_Clear allowoverflow preservation mismatch");
+assert.equal(initializedBuffer.readcount, 2, "SZ_Clear readcount preservation mismatch");
 
 const printInitial = createSizeBuffer(16);
 SZ_Print(printInitial, "abc");
@@ -704,6 +708,11 @@ assert.deepEqual(
   [97, 98, 99, 33, 100, 0],
   "SZ_Print append without trailing nul mismatch"
 );
+const printEmpty = createSizeBuffer(4);
+SZ_Print(printEmpty, "");
+assert.deepEqual(Array.from(printEmpty.data.subarray(0, printEmpty.cursize)), [0], "SZ_Print empty initial mismatch");
+SZ_Print(printEmpty, "");
+assert.deepEqual(Array.from(printEmpty.data.subarray(0, printEmpty.cursize)), [0], "SZ_Print empty reuse mismatch");
 
 let crc = CRC_Init();
 for (const byte of new Uint8Array([49, 50, 51, 52, 53, 54, 55, 56, 57])) {
@@ -814,12 +823,33 @@ const tag3 = Z_TagMalloc(misc, 4, 3);
 assert.equal(tag0.length, 8, "Z_Malloc length mismatch");
 assert.equal(tag3.length, 4, "Z_TagMalloc length mismatch");
 assert.equal(tag3[0], 0, "Z_TagMalloc zero-fill mismatch");
+assert.deepEqual(misc.zone_allocations.get(tag0), { tag: 0, size: 8 }, "Z_Malloc metadata mismatch");
+assert.deepEqual(misc.zone_allocations.get(tag3), { tag: 3, size: 4 }, "Z_TagMalloc metadata mismatch");
 Z_Free(misc, tag0);
 assert.equal(misc.zone_allocations.has(tag0), false, "Z_Free mismatch");
+assert.throws(
+  () => Z_Free(misc, tag0),
+  /Z_Free: bad allocation reference/,
+  "Z_Free should reject an already freed allocation"
+);
 Z_FreeTags(misc, 3);
 assert.equal(misc.zone_allocations.has(tag3), false, "Z_FreeTags mismatch");
+const shutdownAllocation = Z_TagMalloc(misc, 2, 7);
+assert.equal(misc.zone_allocations.has(shutdownAllocation), true, "Qcommon_Shutdown setup mismatch");
 Qcommon_Shutdown(misc);
 assert.equal(misc.initialized, false, "Qcommon_Shutdown mismatch");
+assert.equal(misc.zone_allocations.size, 0, "Qcommon_Shutdown should release tracked zone allocations");
+
+const lifecycleCalls: string[] = [];
+const lifecycleRuntime = createQcommonMiscRuntime({
+  onInit: () => lifecycleCalls.push("init"),
+  onFrame: (msec) => lifecycleCalls.push(`frame:${msec}`),
+  onShutdown: () => lifecycleCalls.push("shutdown")
+});
+Qcommon_Init(lifecycleRuntime);
+Qcommon_Frame(lifecycleRuntime, 33.8);
+Qcommon_Shutdown(lifecycleRuntime);
+assert.deepEqual(lifecycleCalls, ["init", "frame:33", "shutdown"], "Qcommon lifecycle hook order mismatch");
 
 assert.throws(
   () => Com_Error(createQcommonMiscRuntime(), ERR_DROP, "boom"),

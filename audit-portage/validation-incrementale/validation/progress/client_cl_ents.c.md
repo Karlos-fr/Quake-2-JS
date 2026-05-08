@@ -8,6 +8,8 @@
 - Les temporaires et `memset` sont `Non applicable`: ils sont couverts par les fonctions portees ou remplaces par les helpers TS `createFrame`/copie playerstate.
 - 2026-05-07: lot visible packet entities valide: `vidref_val`, `S_RegisterSexedModel` et locaux (`n`, `p`, `model`, `buffer`), puis `CL_AddPacketEntities` et locaux (`ent`, `s1`, `autorotate`, `i`, `pnum`, `cent`, `autoanim`, `ci`, `bfg_lightramp`, `intensity`).
 - `S_RegisterSexedModel` est `Non applicable`: helper mort dans le C original, sans call site; le chemin runtime custom weapon actif passe par `CL_LoadClientinfo`/`clientinfo.weaponmodel` puis `CL_AddPacketEntities`. `vidref_val` est `Non applicable`: branche renderer logiciel legacy remplacee par le chemin GL/web actuel.
+- 2026-05-08: lot vue/arme/camera valide: `CL_AddViewWeapon` porte par `appendViewWeapon`, `CL_CalcViewValues` et locaux (`i`, `oldframe`, `delta`).
+- Les temporaires locaux sont `Non applicable`: ils sont couverts par les boucles/fallbacks de `appendViewWeapon` et `CL_CalcViewValues`.
 
 ## Preuves de session
 
@@ -26,6 +28,11 @@
 - Runtime verifie depuis `CL_ParseServerMessage -> CL_ParseFrame`, puis `CL_BuildRefreshFrame -> CL_BuildPacketEntitySnapshots`.
 - `apps/web` verifie via `createFullGameServerRenderSource`: le web consomme le refresh frame runtime sans logique parallele.
 - `renderer-three` verifie via `refresh-entity-sync`, `gl-world-scene-adapter`, `md2-mesh-builder` et `quake2-web-view-weapon`: modeles, frames, renderfx, skins, weapon model, dlights et scene sont consommes depuis les sorties runtime.
+- Comparaison C/TS effectuee pour `CL_AddViewWeapon` et `CL_CalcViewValues` entre `client/cl_ents.c`, `packages/client/src/refresh.ts` et `packages/client/src/view.ts`.
+- Commentaires d'en-tete verifies pour `appendViewWeapon` (`Original name: CL_AddViewWeapon`, `Source: client/cl_ents.c`, `Category: Ported`, `Fidelity level: Close`) et `CL_CalcViewValues`.
+- Runtime verifie depuis le flux normal `CL_BuildRefreshFrame -> CL_UpdateLerpFraction -> CL_CalcViewValues -> appendViewWeapon`, lui-meme appele par le render source web et par `V_RenderView`.
+- `apps/web` verifie via `createFullGameServerRenderSource` et `full-game.ts`: le web consomme la camera/weapon depuis le client runtime et ne remplace pas la logique de vue.
+- `renderer-three` verifie via `createThreeRefreshEntitySync`, `refresh-entity-sync`, `gl-world-scene-adapter` et `three-polyblend-overlay`: camera, areabits, blend et weapon model visible sont consommes depuis `ClientRefreshFrame`.
 
 ## Tests lances
 
@@ -56,6 +63,11 @@
 - `npm run verify:refresh-entity:weapon`
 - `npm run verify:entities:phase8`
 - `npm run typecheck`
+- `npm run verify:refresh-entity:weapon`
+- `npx tsx ./scripts/verify/quake2-cl-view.ts`
+- `npm run verify:full-game:render-source`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
 
 ## Blocages / remarques
 
@@ -63,4 +75,4 @@
 
 ## Prochain lot recommande
 
-- `CL_AddViewWeapon` et son local `i`, puis `CL_CalcViewValues` et locaux (`i`, `oldframe`, `delta`) si le lot reste coherent.
+- `CL_AddEntities`, puis `CL_GetEntitySoundOrigin` si le lot reste coherent pour fermer `client/cl_ents.c`.

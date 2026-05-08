@@ -30,13 +30,14 @@ import { createConsoleState } from "../../packages/client/src/console.js";
 import { createCommandRuntime } from "../../packages/qcommon/src/cmd.js";
 import { createCvarRuntime } from "../../packages/qcommon/src/cvar.js";
 import { createRefExport } from "../../packages/client/src/ref.js";
-import { CS_CDTRACK, CS_IMAGES, CS_MODELS, CS_PLAYERSKINS, CS_SKY, CS_SKYAXIS, CS_SKYROTATE } from "../../packages/qcommon/src/index.js";
+import { CS_CDTRACK, CS_IMAGES, CS_MODELS, CS_PLAYERSKINS, CS_SKY, CS_SKYAXIS, CS_SKYROTATE, pmtype_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
 function main(): void {
   verifyPrepRefreshRegistersLevelAssets();
   verifyCalcViewValuesInterpolatesWeaponRelevantMotion();
+  verifyCalcViewValuesMatchesDroppedFrameAndTeleportFallbacks();
   verifyRenderViewResolvesDefaultEntityModelsAndSkins();
   verifyRenderViewAppliesViewWeaponDebugOverrides();
   verifyRenderViewHidesWeaponForWideFovAndComputesFovY();
@@ -352,6 +353,88 @@ function verifyCalcViewValuesInterpolatesWeaponRelevantMotion(): void {
   assert.ok(Math.abs(view.vieworg[0] - 104.25) < 1e-6, "CL_CalcViewValues predicted-origin X mismatch");
   assert.ok(Math.abs(view.vieworg[1] - 207.5) < 1e-6, "CL_CalcViewValues predicted-origin Y mismatch");
   assert.ok(Math.abs(view.vieworg[2] - 305.95) < 1e-6, "CL_CalcViewValues predicted step smoothing mismatch");
+}
+
+function verifyCalcViewValuesMatchesDroppedFrameAndTeleportFallbacks(): void {
+  const runtime = createClientRuntime();
+  runtime.cl.lerpfrac = 0.5;
+  runtime.cl.predicted_angles = [0, 0, 0];
+  runtime.cl.frame.serverframe = 7;
+  runtime.cl.frame.valid = true;
+  runtime.cl.frame.playerstate.pmove.pm_type = pmtype_t.PM_DEAD;
+  runtime.cl.frame.playerstate.pmove.origin = [160, 320, 480];
+  runtime.cl.frame.playerstate.viewoffset = [4, 8, 12];
+  runtime.cl.frame.playerstate.viewangles = [20, 40, 60];
+  runtime.cl.frame.playerstate.kick_angles = [2, 4, 6];
+  runtime.cl.frame.playerstate.fov = 100;
+  runtime.cl.frame.playerstate.blend = [0.1, 0.2, 0.3, 0.4];
+
+  runtime.cl.frames[6] = {
+    ...runtime.cl.frame,
+    valid: false,
+    serverframe: 6,
+    playerstate: {
+      ...runtime.cl.frame.playerstate,
+      pmove: {
+        ...runtime.cl.frame.playerstate.pmove,
+        origin: [0, 0, 0]
+      },
+      viewoffset: [0, 0, 0],
+      viewangles: [0, 0, 0],
+      kick_angles: [0, 0, 0],
+      fov: 80
+    }
+  };
+
+  const dropped = CL_CalcViewValues(runtime, { predictMovement: false });
+  assert.deepEqual(dropped.vieworg, [24, 48, 72], "CL_CalcViewValues dropped oldframe origin fallback mismatch");
+  assert.deepEqual(dropped.viewangles, [22, 44, 66], "CL_CalcViewValues dropped oldframe angle fallback mismatch");
+  assert.equal(dropped.fov_x, 100, "CL_CalcViewValues dropped oldframe fov fallback mismatch");
+  assert.deepEqual(dropped.blend, [0.1, 0.2, 0.3, 0.4], "CL_CalcViewValues must copy current blend without lerp");
+
+  runtime.cl.frames[6] = {
+    ...runtime.cl.frame,
+    valid: true,
+    serverframe: 6,
+    playerstate: {
+      ...runtime.cl.frame.playerstate,
+      pmove: {
+        ...runtime.cl.frame.playerstate.pmove,
+        origin: [160 + 256 * 8 + 8, 320, 480]
+      },
+      viewoffset: [40, 80, 120],
+      viewangles: [80, 120, 160],
+      kick_angles: [8, 12, 16],
+      fov: 60
+    }
+  };
+
+  const teleported = CL_CalcViewValues(runtime, { predictMovement: false });
+  assert.deepEqual(teleported.vieworg, [24, 48, 72], "CL_CalcViewValues teleport origin fallback mismatch");
+  assert.deepEqual(teleported.viewangles, [22, 44, 66], "CL_CalcViewValues teleport angle fallback mismatch");
+  assert.equal(teleported.fov_x, 100, "CL_CalcViewValues teleport fov fallback mismatch");
+
+  runtime.cl.frames[6] = {
+    ...runtime.cl.frame,
+    valid: true,
+    serverframe: 6,
+    playerstate: {
+      ...runtime.cl.frame.playerstate,
+      pmove: {
+        ...runtime.cl.frame.playerstate.pmove,
+        origin: [80, 160, 240]
+      },
+      viewoffset: [0, 0, 0],
+      viewangles: [10, 20, 30],
+      kick_angles: [0, 0, 0],
+      fov: 80
+    }
+  };
+
+  const interpolated = CL_CalcViewValues(runtime, { predictMovement: false });
+  assert.deepEqual(interpolated.vieworg, [17, 34, 51], "CL_CalcViewValues non-predicted origin lerp mismatch");
+  assert.deepEqual(interpolated.viewangles, [16, 32, 48], "CL_CalcViewValues non-predicted angle/kick lerp mismatch");
+  assert.equal(interpolated.fov_x, 90, "CL_CalcViewValues non-predicted fov lerp mismatch");
 }
 
 function verifyRenderViewHidesWeaponForWideFovAndComputesFovY(): void {

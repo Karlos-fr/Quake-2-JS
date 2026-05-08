@@ -18,7 +18,7 @@
 
 /**
  * Original name: sizebuf_t
- * Source: qcommon/qcommon.h
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -59,7 +59,7 @@ export function createSizeBuffer(lengthOrData: number | Uint8Array, allowoverflo
 
 /**
  * Original name: SZ_Init
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -80,7 +80,7 @@ export function SZ_Init(buf: sizebuf_t, data: Uint8Array): void {
 
 /**
  * Original name: SZ_Clear
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -97,7 +97,7 @@ export function SZ_Clear(buf: sizebuf_t): void {
 
 /**
  * Original name: MSG_BeginReading
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -113,7 +113,7 @@ export function MSG_BeginReading(buf: sizebuf_t): void {
 
 /**
  * Original name: SZ_GetSpace
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -145,7 +145,7 @@ export function SZ_GetSpace(buf: sizebuf_t, length: number): Uint8Array {
 
 /**
  * Original name: SZ_Write
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -161,7 +161,7 @@ export function SZ_Write(buf: sizebuf_t, data: Uint8Array): void {
 
 /**
  * Original name: SZ_Print
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *

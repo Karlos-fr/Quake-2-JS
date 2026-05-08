@@ -302,13 +302,13 @@
 | `Quake-2-master/qcommon/qcommon.h` | global | `time_after_game` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `time_before_ref` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `time_after_ref` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Z_Free` | `packages/qcommon/src/qcommon.ts` | `Z_Free` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Z_Malloc` | `packages/qcommon/src/qcommon.ts` | `Z_Malloc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Z_FreeTags` | `packages/qcommon/src/qcommon.ts` | `Z_FreeTags` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Frame` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Frame` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Shutdown` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Shutdown` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Z_Free` | `packages/qcommon/src/qcommon.ts` | `Z_Free` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Z_Malloc` | `packages/qcommon/src/qcommon.ts` | `Z_Malloc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Z_FreeTags` | `packages/qcommon/src/qcommon.ts` | `Z_FreeTags` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | Valide | A redecouper | Correction apps/web: initialisation lifecycle qcommon branchee dans full-game. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Frame` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Frame` | Valide | A redecouper | Correction apps/web: frame autoritatif full-game route via `Qcommon_Frame`. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Qcommon_Shutdown` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Shutdown` | Valide | A redecouper | Correction apps/web: shutdown lifecycle qcommon branche au `beforeunload`. |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `NUMVERTEXNORMALS` | `packages/qcommon/src/qcommon.ts` | `NUMVERTEXNORMALS` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `SCR_DebugGraph` | `packages/qcommon/src/qcommon.ts` | `SCR_DebugGraph` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Sys_Init` | `packages/qcommon/src/qcommon.ts` | `Sys_Init` | A verifier | A redecouper |  |

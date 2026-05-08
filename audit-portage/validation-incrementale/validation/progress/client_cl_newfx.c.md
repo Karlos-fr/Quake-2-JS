@@ -2,7 +2,7 @@
 
 ## Dernier lot valide
 
-Premier gros lot effets/particules valide : declarations externes initiales, `vectoangles2`, `CL_Flashlight`, `CL_ColorFlash`, `CL_DebugTrail`, `CL_SmokeTrail`, `CL_ForceWall`, `CL_FlameEffects`, `CL_GenericParticleEffect`, `CL_BubbleTrail2`, et les variables locales associees.
+Lot heatbeam valide : `RINGS`, variante active `CL_Heatbeam` RINGS et locaux associes. Les variantes CORKSCREW/SPRAY de `CL_Heatbeam` sont non applicables car non compilees dans le source original actif.
 
 ## Preuves obtenues
 
@@ -22,6 +22,7 @@ Premier gros lot effets/particules valide : declarations externes initiales, `ve
 - `npm run verify:web-render-order`
 - `npm run verify:full-game:render-source`
 - `npm run verify:full-game:three-renderer`
+- `npm run verify:beam-sync`
 - `npm run typecheck`
 
 ## Decisions importantes
@@ -29,7 +30,9 @@ Premier gros lot effets/particules valide : declarations externes initiales, `ve
 - `cl_numparticles` et `vid_ref` sont des declarations externes dans `cl_newfx.c`; elles ne sont pas des entites proprietaires du fichier.
 - `CL_ColorFlash` preserve maintenant la branche software `vidref_val == VIDREF_SOFT` via `runtime.cl.vidref_val`; le navigateur/full-game reste par defaut sur le chemin GL.
 - Les lignes `move`, `vec`, `len`, `dec`, `j`, `d` du lot sont des variables locales C, parfois avec cible automatique incorrecte vers `cl_fx.ts`.
+- `RINGS` est la variante `CL_Heatbeam` active; les blocs CORKSCREW et SPRAY restent non applicables. `CL_Heatbeam` preserve maintenant le decalage `right/up` seulement quand `runtime.cl.vidref_val == VIDREF_GL`.
+- Le branchement runtime heatbeam passe par `CL_AddPlayerBeams` / `createHeatbeamRender` dans `cl_tent.ts`; les particules emises par `CL_Heatbeam` rejoignent `CL_AddParticles`, puis `CL_BuildRefreshFrame`, `apps/web` et `renderer-three` via `particle-sync`.
 
 ## Prochain lot recommande
 
-`RINGS` puis `CL_Heatbeam` (variante active RINGS) et ses locaux associes (`move`, `vec`, `len`, `i`, `j`, `dir`, `ltime`, `step`, `start_pt`, `rot`, `variance`, `end`), en verifiant le branchement `cl_tent.ts` heatbeam et la consommation renderer des particules.
+`CL_ParticleSteamEffect`, son local `d`, puis `CL_ParticleSteamEffect2` et ses locaux associes (`d`, `dir`), en verifiant les temp entities/sustains qui les appellent et la sortie particules renderer.
