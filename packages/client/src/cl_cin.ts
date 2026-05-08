@@ -129,8 +129,8 @@ export function SCR_StopCinematic(runtime: ClientRuntime, hooks: ClientScreenHoo
  * - Queues the original `nextserver` string command so the server can advance after a cinematic.
  */
 export function SCR_FinishCinematic(runtime: ClientRuntime): void {
-  MSG_WriteByte(runtime.net_message, clc_ops_e.clc_stringcmd);
-  MSG_WriteString(runtime.net_message, `nextserver ${runtime.cl.servercount}\n`);
+  MSG_WriteByte(runtime.cls.netchan.message, clc_ops_e.clc_stringcmd);
+  MSG_WriteString(runtime.cls.netchan.message, `nextserver ${runtime.cl.servercount}\n`);
 }
 
 /**

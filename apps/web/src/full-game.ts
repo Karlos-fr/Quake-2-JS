@@ -142,6 +142,7 @@ import {
   SCR_Init,
   SCR_DrawCinematicRef,
   SCR_DrawLoading,
+  SCR_FinishCinematic,
   SCR_PlayCinematic,
   SCR_RunCinematic,
   SCR_RunConsole,
@@ -302,6 +303,7 @@ type DrawCommand =
 interface FullGamePage {
   root: HTMLElement;
   gameViewport: HTMLDivElement;
+  menuBackdrop: HTMLDivElement;
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   status: HTMLElement;
@@ -425,8 +427,8 @@ async function bootstrap(): Promise<void> {
       activateFullGameSound(runtime, false);
     });
 
-    page.status.textContent = "Lecture de l'intro...";
-    startNextCinematic(runtime, page);
+    page.status.textContent = "Lancement de la boucle de demonstration...";
+    startFullGameAttractLoop(runtime, page);
     requestAnimationFrame((time) => frame(time, runtime, page));
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
@@ -470,17 +472,26 @@ function createPage(root: HTMLElement): FullGamePage {
   gameViewport.style.zIndex = "0";
   gameViewport.style.display = "none";
 
+  const menuBackdrop = document.createElement("div");
+  menuBackdrop.style.position = "absolute";
+  menuBackdrop.style.inset = "0";
+  menuBackdrop.style.background = "rgba(0, 0, 0, 0.58)";
+  menuBackdrop.style.zIndex = "1";
+  menuBackdrop.style.display = "none";
+  menuBackdrop.style.pointerEvents = "none";
+
   const canvas = document.createElement("canvas");
   canvas.width = LOGICAL_WIDTH;
   canvas.height = LOGICAL_HEIGHT;
   canvas.style.position = "absolute";
   canvas.style.inset = "0";
+  canvas.style.margin = "auto";
   canvas.style.width = "100vw";
   canvas.style.height = "100vh";
   canvas.style.objectFit = "contain";
   canvas.style.background = "#000";
   canvas.style.imageRendering = "pixelated";
-  canvas.style.zIndex = "1";
+  canvas.style.zIndex = "2";
   canvas.tabIndex = 0;
 
   const status = document.createElement("div");
@@ -513,13 +524,14 @@ function createPage(root: HTMLElement): FullGamePage {
     throw new Error("Canvas 2D indisponible.");
   }
 
-  shell.append(gameViewport, canvas, log);
+  shell.append(gameViewport, menuBackdrop, canvas, log);
   root.append(shell);
   canvas.focus();
 
   return {
     root: shell,
     gameViewport,
+    menuBackdrop,
     canvas,
     context,
     status,
@@ -944,7 +956,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       onPlayCdTrack: (track: number, looping: boolean) => {
         cdAudio.play(track, looping);
       },
-      inlineModel: (name: string) => activeServerHost
+      inlineModel: (name: string) => activeServerHost?.hasActiveGameMap()
         ? CM_InlineModel(activeServerHost.collisionWorld, name)
         : null
     };
@@ -1130,7 +1142,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   CL_InitLocal(mainContext, {
     getMilliseconds: () => client.cls.realtime,
     qnet: localTransport.clientQnet,
-    serverRunning: () => activeServerHost?.hasActiveGameMap() ?? false,
+    serverRunning: () => activeServerHost?.hasActiveServer() ?? false,
     allowDownload: false,
     fileExists,
     loadBinaryFile,
@@ -1232,6 +1244,10 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   });
   activeServerHost = serverHost;
   const predictAuthoritativeClientMovement = (): void => {
+    if (serverHost.hasActiveAttractLoop()) {
+      return;
+    }
+
     const incomingAcknowledged = client.cls.netchan.incoming_acknowledged;
     const outgoingSequence = client.cls.netchan.outgoing_sequence;
     const predictionCollision = serverHost.hasActiveGameMap()
@@ -1248,10 +1264,28 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     ...inputDeviceMainHooks,
     getMilliseconds: () => client.cls.realtime,
     qnet: localTransport.clientQnet,
-    serverRunning: () => serverHost.hasActiveGameMap(),
+    serverRunning: () => serverHost.hasActiveServer(),
     onPrint: printToConsole,
     onStufftext: (text: string) => {
       Cbuf_AddText(cmd, text);
+    },
+    onPlayCinematic: (name: string) => {
+      const started = SCR_PlayCinematic(client, name, {
+        loadBinaryFile: (path) => readMountedFile(filesystem, path)?.bytes ?? null,
+        onCinematicRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
+          S_DMA_RawSamples(sndDma, count, sampleRate, sampleWidth, channels, samples);
+          audio.queueRawSamples(count, sampleRate, sampleWidth, channels, samples);
+        },
+        onCinematicSoundRestart: () => {
+          audio.stopRaw();
+        },
+        onCDAudioStop: () => {
+          cdAudio.stop();
+        }
+      });
+      if (!started) {
+        printToConsole(`cinematique introuvable: ${name}`);
+      }
     },
     onSoundShutdown: shutdownAuthoritativeSound,
     onSoundInit: initAuthoritativeSound,
@@ -1319,7 +1353,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     registerSound: registerAuthoritativeSound
   });
   const shouldPumpAuthoritativeFrame = (): boolean => (
-    serverHost.hasActiveGameMap()
+    serverHost.hasActiveServer()
     || client.cls.state === connstate_t.ca_connecting
     || client.cls.state === connstate_t.ca_connected
     || client.cls.state === connstate_t.ca_active
@@ -1338,7 +1372,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     });
   };
   const authoritativeGameReady = (): boolean => (
-    serverHost.hasActiveGameMap()
+    (serverHost.hasActiveGameMap() || serverHost.hasActiveAttractLoop())
     && client.cls.state === connstate_t.ca_active
     && client.cl.refresh_prepped
   );
@@ -1479,6 +1513,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       getSaveSlots: () => saveStorage.getSaveSlots(FS_Gamedir(filesystem)),
       getMapList: () => readFullGameMapList(filesystem),
       getPlayerModels: () => readFullGamePlayerModels(filesystem),
+      getServerState: () => serverHost.hasActiveServer() ? 1 : 0,
       onClearNotify: () => Con_ClearNotify(consoleContext.con),
       onQuit: () => printToConsole("Quit demande.")
     }
@@ -1890,6 +1925,8 @@ function seedMenuCvars(cvar: ReturnType<typeof createCvarRuntime>): void {
   Cvar_Get(cvar, "lookstrafe", "0", CVAR_ARCHIVE);
   Cvar_Get(cvar, "freelook", "1", CVAR_ARCHIVE);
   Cvar_Get(cvar, "crosshair", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "gl_polyblend", "1", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "gl_shadows", "0", CVAR_ARCHIVE);
   Cvar_Get(cvar, "in_joystick", "0", CVAR_ARCHIVE);
   Cvar_Get(cvar, "cd_nocd", "0", CVAR_ARCHIVE);
   Cvar_Get(cvar, "s_khz", "22", CVAR_ARCHIVE);
@@ -1980,6 +2017,23 @@ function startNextCinematic(runtime: FullGameRuntime, page: FullGamePage): void 
   page.status.style.display = "block";
 }
 
+function startFullGameAttractLoop(runtime: FullGameRuntime, page: FullGamePage): void {
+  runtime.mode = "loading";
+  runtime.menu.keys.state.key_dest = keydest_t.key_game;
+  runtime.client.cls.state = connstate_t.ca_disconnected;
+  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d1 \"demomap idlog.cin ; set nextserver q2js_d2\"\n");
+  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d2 \"demomap ntro.cin ; set nextserver q2js_d3\"\n");
+  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d3 \"demomap demo1.dm2 ; set nextserver q2js_d4\"\n");
+  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d4 \"demomap demo2.dm2 ; set nextserver q2js_d1\"\n");
+  Cbuf_AddText(runtime.menu.cmd, "q2js_d1\n");
+  executeRuntimeCommandBuffer(runtime, page);
+  if (runtime.serverHost.hasActiveAttractLoop()) {
+    runtime.beginAuthoritativeConnection("__attractloop");
+  }
+  page.status.textContent = "Boucle de demonstration Quake II.";
+  page.status.style.display = "block";
+}
+
 function enterMainMenu(runtime: FullGameRuntime, page: FullGamePage): void {
   releaseFullGameMouseLook(runtime, page);
   runtime.mode = "menu";
@@ -2016,8 +2070,14 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
     drawCinematicFrame(runtime, page);
   } else if (runtime.mode === "game") {
     drawGameFrame(runtime, page, delta / 1000);
+  } else if (shouldDrawAttractLoopMenuOverlay(runtime)) {
+    drawGameFrame(runtime, page, delta / 1000);
+    clearOverlayCanvas(page);
+    drawMenuFrame(runtime, page);
   } else if (runtime.mode === "loading") {
-    drawLoadingFrame(runtime, page);
+    if (!shouldHideAttractLoopLoading(runtime)) {
+      drawLoadingFrame(runtime, page);
+    }
   } else {
     drawMenuFrame(runtime, page);
   }
@@ -2037,8 +2097,24 @@ function shouldDrawFullGameLoadingFrame(runtime: FullGameRuntime): boolean {
     return false;
   }
 
+  if (shouldHideAttractLoopLoading(runtime)) {
+    return false;
+  }
+
   return runtime.isAuthoritativeLevelLoading()
     || runtime.client.cl.screen.scr_draw_loading !== 0;
+}
+
+function shouldDrawAttractLoopMenuOverlay(runtime: FullGameRuntime): boolean {
+  return runtime.mode === "menu"
+    && runtime.serverHost.hasActiveAttractLoop()
+    && runtime.client.cls.state === connstate_t.ca_active
+    && runtime.client.cl.refresh_prepped;
+}
+
+function shouldHideAttractLoopLoading(runtime: FullGameRuntime): boolean {
+  return runtime.serverHost.hasActiveAttractLoop()
+    && runtime.menu.keys.state.key_dest !== keydest_t.key_console;
 }
 
 function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePage): void {
@@ -2056,10 +2132,24 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
   runtime.flushClientOutput();
   runtime.updateClientAudio();
 
+  if (runtime.serverHost.hasActiveAttractLoop() && runtime.client.cl.cinematic.cinematictime > 0) {
+    runtime.markAuthoritativeGameActive();
+    runtime.mode = "cinematic";
+    runtime.client.cl.screen.scr_draw_loading = 0;
+    page.status.textContent = "Boucle de demonstration Quake II.";
+    page.status.style.display = "block";
+    return;
+  }
+
   if (runtime.isAuthoritativeLevelLoading() && !runtime.authoritativeGameReady()) {
     runtime.mode = "loading";
-    page.status.textContent = "Chargement du niveau...";
-    page.status.style.display = "block";
+    if (runtime.serverHost.hasActiveAttractLoop()) {
+      page.status.textContent = "";
+      page.status.style.display = "none";
+    } else {
+      page.status.textContent = "Chargement du niveau...";
+      page.status.style.display = "block";
+    }
     return;
   }
 
@@ -2077,7 +2167,7 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
       page.status.textContent = `Preparation de ${requestedMap}.`;
       page.status.style.display = "block";
     }
-  } else if (runtime.serverHost.hasActiveGameMap() && runtime.serverHost.currentMapRequest && runtime.authoritativeGameReady()) {
+  } else if (runtime.serverHost.hasActiveServer() && runtime.authoritativeGameReady()) {
     runtime.markAuthoritativeGameActive();
     syncFullGameActiveView(runtime, page, "");
   } else if (runtime.gameBridge.phase === "loading" || enteredLoading) {
@@ -2126,6 +2216,12 @@ function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void 
   drawCapturedCommands(page, runtime);
 
   if (wasActive && runtime.client.cl.cinematic.cinematictime <= 0) {
+    if (runtime.serverHost.hasActiveAttractLoop()) {
+      runtime.audio.stopRaw();
+      runtime.mode = "loading";
+      return;
+    }
+
     runtime.currentCinematicIndex += 1;
     startNextCinematic(runtime, page);
   }
@@ -2182,7 +2278,8 @@ function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSecond
 
   page.status.style.display = "none";
   const source = createFullGameServerRenderSource(runtime.client, {
-    cvar: runtime.menu.cvar
+    cvar: runtime.menu.cvar,
+    predictMovement: !runtime.serverHost.hasActiveAttractLoop()
   });
   syncThreeCameraToRefresh(renderer.camera, source.refreshFrame);
   const consoleCanvas = runtime.menu.keys.state.key_dest === keydest_t.key_console
@@ -2631,6 +2728,9 @@ function drawCapturedCommands(page: FullGamePage, runtime: FullGameRuntime): voi
         drawRawIndexedImage(page, runtime.assets, command);
         break;
       case "fade":
+        if (runtime.serverHost.hasActiveAttractLoop() && runtime.menu.keys.state.key_dest === keydest_t.key_menu) {
+          break;
+        }
         page.context.fillStyle = "rgba(0, 0, 0, 0.58)";
         page.context.fillRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
         break;
@@ -2820,6 +2920,19 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   }
 
   if (runtime.mode === "cinematic") {
+    if (runtime.serverHost.hasActiveAttractLoop()) {
+      SCR_StopCinematic(runtime.client, {
+        onCinematicSoundRestart: () => {
+          runtime.audio.stopRaw();
+        }
+      });
+      SCR_FinishCinematic(runtime.client);
+      runtime.audio.stopRaw();
+      runtime.mode = "loading";
+      runtime.client.cl.screen.scr_draw_loading = 0;
+      return;
+    }
+
     const elapsed = runtime.client.cls.realtime - runtime.cinematicStartedAt;
     if (elapsed > 1000 || key === K_ESCAPE || key === K_ENTER || key === K_SPACE) {
       SCR_StopCinematic(runtime.client);
@@ -3086,19 +3199,37 @@ function resizeCanvas(page: FullGamePage): void {
 }
 
 function syncFullGameViewportVisibility(runtime: FullGameRuntime, page: FullGamePage): void {
+  const attractLoopMenuOverlay = shouldDrawAttractLoopMenuOverlay(runtime);
   const loadingOverlayVisible = runtime.mode === "loading"
     || runtime.isAuthoritativeLevelLoading()
     || runtime.client.cl.screen.scr_draw_loading !== 0;
-  const gameVisible = runtime.mode === "game" || runtime.isAuthoritativeLevelLoading();
-  const overlayVisible = !gameVisible || runtime.gameRenderer === null || loadingOverlayVisible;
+  const gameVisible = runtime.mode === "game" || runtime.isAuthoritativeLevelLoading() || attractLoopMenuOverlay;
+  const overlayVisible = attractLoopMenuOverlay || !gameVisible || runtime.gameRenderer === null || loadingOverlayVisible;
   page.gameViewport.style.display = gameVisible ? "block" : "none";
+  page.menuBackdrop.style.display = attractLoopMenuOverlay ? "block" : "none";
   page.canvas.style.display = overlayVisible ? "block" : "none";
+  page.canvas.style.background = attractLoopMenuOverlay ? "transparent" : "#000";
+  page.canvas.style.objectFit = "contain";
+  if (attractLoopMenuOverlay) {
+    const width = Math.min(window.innerWidth, window.innerHeight * LOGICAL_WIDTH / LOGICAL_HEIGHT, 960);
+    const height = width * LOGICAL_HEIGHT / LOGICAL_WIDTH;
+    page.canvas.style.width = `${width}px`;
+    page.canvas.style.height = `${height}px`;
+  } else {
+    page.canvas.style.width = "100vw";
+    page.canvas.style.height = "100vh";
+  }
 }
 
 function clearCanvas(page: FullGamePage): void {
   page.context.imageSmoothingEnabled = false;
   page.context.fillStyle = "#000";
   page.context.fillRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
+}
+
+function clearOverlayCanvas(page: FullGamePage): void {
+  page.context.imageSmoothingEnabled = false;
+  page.context.clearRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
 }
 
 function resetFullGameMouseLook(runtime: FullGameRuntime): void {

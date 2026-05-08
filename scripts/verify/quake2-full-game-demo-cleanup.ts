@@ -67,6 +67,81 @@ assert.equal(
   "authoritative full-game must not create the legacy local-session harness"
 );
 assert.equal(
+  fullGameSource.includes("startFullGameAttractLoop(runtime, page);"),
+  true,
+  "full-game startup should enter the source attract loop"
+);
+assert.equal(
+  fullGameSource.includes('demomap idlog.cin ; set nextserver q2js_d2'),
+  true,
+  "full-game attract loop should start with the logo cinematic"
+);
+assert.equal(
+  fullGameSource.includes('demomap ntro.cin ; set nextserver q2js_d3'),
+  true,
+  "full-game attract loop should play the intro cinematic before the in-game demo"
+);
+assert.equal(
+  fullGameSource.includes('demomap demo1.dm2 ; set nextserver q2js_d4'),
+  true,
+  "full-game attract loop should continue into the in-game demo"
+);
+assert.equal(
+  fullGameSource.includes('demomap demo2.dm2 ; set nextserver q2js_d1'),
+  true,
+  "full-game attract loop should play the second in-game demo before looping"
+);
+assert.equal(
+  fullGameSource.includes('demomap idlog.cin ; set nextserver q2js_d5'),
+  false,
+  "full-game attract loop should not replay the logo between demo1 and demo2"
+);
+assert.equal(
+  fullGameSource.includes("SCR_FinishCinematic(runtime.client);"),
+  true,
+  "keyboard skip during attract-loop cinematics should advance through nextserver"
+);
+assert.equal(
+  fullGameSource.includes('Cbuf_AddText(runtime.menu.cmd, "killserver\\n");\n    executeRuntimeCommandBuffer(runtime, page);\n    enterMainMenu(runtime, page);'),
+  false,
+  "keyboard input during in-game attract demos should open the menu through Key_Event instead of killing the server"
+);
+assert.equal(
+  fullGameSource.includes("getServerState: () => serverHost.hasActiveServer() ? 1 : 0"),
+  true,
+  "opening the menu over an attract demo should set paused through the source menu path"
+);
+assert.equal(
+  fullGameSource.includes('Cvar_Get(cvar, "gl_polyblend", "1", CVAR_ARCHIVE);'),
+  true,
+  "full-game should enable the source polyblend overlay by default"
+);
+assert.equal(
+  fullGameSource.includes('page.canvas.style.background = attractLoopMenuOverlay ? "transparent" : "#000";'),
+  true,
+  "the 2D menu canvas should stay transparent over paused attract demos"
+);
+assert.equal(
+  fullGameSource.includes("menuBackdrop"),
+  true,
+  "the attract-demo menu fade should use a full-viewport HTML backdrop"
+);
+assert.equal(
+  fullGameSource.includes('page.canvas.style.objectFit = "contain";'),
+  true,
+  "the attract-demo menu canvas should keep the source 4:3 aspect instead of stretching"
+);
+assert.equal(
+  fullGameSource.includes("Math.min(window.innerWidth, window.innerHeight * LOGICAL_WIDTH / LOGICAL_HEIGHT, 960)"),
+  true,
+  "the attract-demo menu canvas should cap its displayed size on wide viewports"
+);
+assert.equal(
+  fullGameSource.includes("onPlayCinematic: (name: string) =>"),
+  true,
+  "server-driven attract-loop cinematics should use the browser cinematic/audio hooks"
+);
+assert.equal(
   fullGameLocalSessionSource.includes("./local-client-controller.js"),
   false,
   "legacy local-session harness must not import the standalone demo controller"

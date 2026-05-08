@@ -11,6 +11,7 @@ import {
   SCR_RunCinematic
 } from "../../packages/client/src/cl_scrn.js";
 import { createClientRuntime } from "../../packages/client/src/client.js";
+import { clc_ops_e } from "../../packages/qcommon/src/index.js";
 
 function createLittleLong(value: number): number[] {
   const normalized = value >>> 0;
@@ -62,6 +63,7 @@ function createTwoFrameCin(): Uint8Array {
 
 const client = createClientRuntime();
 client.cls.realtime = 1;
+client.cl.servercount = 77;
 
 const rawChunks: Array<{
   count: number;
@@ -132,5 +134,11 @@ assert.deepEqual(rawChunks[1], {
 SCR_RunCinematic(client, { currentTimeMs: 358, keyDest: "game" }, hooks);
 assert.equal(client.cl.cinematic.cinematictime, 0, "cinematic should stop after the stream terminator");
 assert.deepEqual(restarts, [14, undefined], "cinematic completion should restore the previous sound backend rate");
+assert.equal(client.cls.netchan.message.data[0], clc_ops_e.clc_stringcmd, "cinematic completion should queue nextserver as an outgoing string command");
+assert.equal(
+  new TextDecoder("latin1").decode(client.cls.netchan.message.data.subarray(1, client.cls.netchan.message.cursize)).replace(/\0$/, ""),
+  "nextserver 77\n",
+  "cinematic completion should preserve the source nextserver command"
+);
 
 console.log("quake2-cinematic-audio-sync: ok");
