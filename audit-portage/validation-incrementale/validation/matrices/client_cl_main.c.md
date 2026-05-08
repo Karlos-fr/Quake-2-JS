@@ -143,22 +143,22 @@
 | `Quake-2-master/client/cl_main.c` | global | `fn` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_RequestNextDownload`. |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Precache_f` | `packages/client/src/precache.ts` | `CL_Precache_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `map_checksum` | `packages/client/src/precache.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Precache_f`. |
-| `Quake-2-master/client/cl_main.c` | function | `CL_InitLocal` | `packages/client/src/cl_main.ts` | `CL_InitLocal` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_WriteConfiguration` | `packages/client/src/cl_main.ts` | `CL_WriteConfiguration` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `path` | `packages/client/src/cl_main.ts` | `path` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | struct | `cheatvar_t` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `value` | `packages/client/src/cl_main.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `var` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | table | `cheatvars` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `numcheatvars` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_FixCvarCheats` | `packages/client/src/cl_main.ts` | `CL_FixCvarCheats` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_SendCommand` | `packages/client/src/cl_main.ts` | `CL_SendCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Frame` | `packages/client/src/cl_main.ts` | `CL_Frame` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `extratime` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `lasttimecalled` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `now` | `packages/client/src/cl_main.ts` | `now` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Init` | `packages/client/src/cl_main.ts` | `CL_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Shutdown` | `packages/client/src/cl_main.ts` | `CL_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `isdown` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_InitLocal` | `packages/client/src/cl_main.ts` | `CL_InitLocal` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_WriteConfiguration` | `packages/client/src/cl_main.ts` | `CL_WriteConfiguration` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `path` | `packages/client/src/cl_main.ts` | `path` | Non applicable | A redecouper | Local C genere; couvert par `CL_WriteConfiguration`. |
+| `Quake-2-master/client/cl_main.c` | struct | `cheatvar_t` | `packages/client/src/cl_main.ts` | `ClientMainContext.cheatvars[]` | Valide | A redecouper | Structure C representee par le type inline des entrees `cheatvars`. |
+| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Champ C genere de `cheatvar_t`; couvert par `cheatvars`. |
+| `Quake-2-master/client/cl_main.c` | global | `value` | `packages/client/src/cl_main.ts` | `value` | Non applicable | A redecouper | Champ C genere de `cheatvar_t`; couvert par `cheatvars`. |
+| `Quake-2-master/client/cl_main.c` | global | `var` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Champ C genere de `cheatvar_t`; couvert par `cheatvars`. |
+| `Quake-2-master/client/cl_main.c` | table | `cheatvars` | `packages/client/src/cl_main.ts` | `ClientMainContext.cheatvars` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `numcheatvars` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Compteur C remplace par la longueur de `context.cheatvars` et resolution paresseuse par entree. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_FixCvarCheats` | `packages/client/src/cl_main.ts` | `CL_FixCvarCheats` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C genere; couvert par `CL_FixCvarCheats`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_SendCommand` | `packages/client/src/cl_main.ts` | `CL_SendCommand` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Frame` | `packages/client/src/cl_main.ts` | `CL_Frame` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `extratime` | `packages/client/src/cl_main.ts` | `ClientMainContext.frame_extratime` | Valide | A redecouper | Static C mappe dans le contexte TS pour conserver l'etat frame reentrant. |
+| `Quake-2-master/client/cl_main.c` | global | `lasttimecalled` | `packages/client/src/cl_main.ts` | `ClientMainContext.frame_lasttimecalled` | Valide | A redecouper | Static C mappe dans le contexte TS pour conserver l'etat log_stats reentrant. |
+| `Quake-2-master/client/cl_main.c` | global | `now` | `packages/client/src/cl_main.ts` | `now` | Non applicable | A redecouper | Local C genere; couvert par `CL_Frame`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Init` | `packages/client/src/cl_main.ts` | `CL_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Shutdown` | `packages/client/src/cl_main.ts` | `CL_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `isdown` | `packages/client/src/cl_main.ts` | `ClientMainContext.shutdown_in_progress` | Valide | A redecouper | Static C mappe dans le contexte TS pour conserver la garde de shutdown recursive. |

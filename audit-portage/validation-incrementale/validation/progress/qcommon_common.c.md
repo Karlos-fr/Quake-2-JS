@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: `CopyString`, `Info_Print`, locaux associes, puis bloc zone memory `Z_MAGIC`/`zhead_s`/`z_chain`, `Z_Free`, `Z_Stats_f`, `Z_FreeTags`, `Z_TagMalloc`, `Z_Malloc` et doublon matriciel `Z_TagMalloc`.
-- Prochain lot recommande: `COM_BlockSequenceCheckByte`, table `chktbl`, `COM_BlockSequenceCRCByte` et locaux `n`/`p`/`x`/`chkb`/`crc`, puis `frand`/`crand` si le lot reste coherent.
+- Dernier lot valide: `COM_BlockSequenceCheckByte`, table `chktbl`, `COM_BlockSequenceCRCByte` et locaux `n`/`p`/`x`/`chkb`/`crc`; `frand`/`crand` restent `Partiel` pour integration client visible.
+- Prochain lot recommande: `Com_Error_f`, `Qcommon_Init` et son local `s`, puis `Qcommon_Frame` et son local `s` si le lot reste coherent.
 
 ## Preuves session
 
@@ -18,12 +18,31 @@
 ## Tests
 
 - `npm run verify:qcommon:header`: OK
+- `npm run verify:cl-input`: OK
+- `npm run verify:server:user`: OK
+- `npm run verify:full-game:authoritative-input`: OK
+- `npm run verify:full-game:three-renderer`: OK
+- `npm run typecheck`: OK
+- `npm run verify:qcommon:header`: OK
 - `npm run verify:cl-parse`: OK
 - `npm run verify:full-game:server-snapshots`: OK
 - `npm run verify:full-game:render-source`: OK
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-08 - Checksum sequence et frand/crand
+
+- Lot traite: `COM_BlockSequenceCheckByte`, table `chktbl`, `COM_BlockSequenceCRCByte`, locaux `n`/`p`/`x`/`chkb`/`crc`, puis `frand`/`crand`.
+- Source C relue: `COM_BlockSequenceCheckByte` appelle immediatement `Sys_Error("COM_BlockSequenceCheckByte called\n")` et garde l'ancien corps sous `#if 0`; `chktbl` est une table statique de 1024 octets; `COM_BlockSequenceCRCByte` rejette les sequences negatives, selectionne `chktbl + sequence % (sizeof(chktbl)-4)`, borne `length` a 60, ajoute quatre octets de table, calcule `CRC_Block`, additionne tous les octets et retourne `(crc ^ x) & 0xff`; `frand` et `crand` appliquent la quantification `rand() & 32767`.
+- Cible TS relue/corrigee: `packages/qcommon/src/qcommon.ts` contient maintenant `COM_BlockSequenceCheckByte` comme stub fatal strict, conserve la table sous le nom source `chktbl`, utilise cette table dans `COM_BlockSequenceCRCByte`, et declare les sources d'en-tete `frand`/`crand` vers `qcommon/common.c`.
+- Ownership/doublons: ownership du lot confirme dans `packages/qcommon/src/qcommon.ts`; aucun doublon proprietaire `COM_BlockSequenceCRCByte`, `COM_BlockSequenceCheckByte`, `frand` ou `crand` trouve. Les locaux `n`/`p`/`x`/`chkb`/`crc` sont des variables de fonction couvertes par `COM_BlockSequenceCRCByte`.
+- Runtime verifie: `COM_BlockSequenceCRCByte` est atteint depuis `CL_SendCmd` pour ecrire le checksum `clc_move`, puis depuis `SV_ExecuteClientMessage` pour le verifier avant `ClientThink`; `COM_BlockSequenceCheckByte` n'est pas attendu dans le runtime normal car le C le desactive volontairement par erreur fatale; `frand`/`crand` qcommon sont exportes mais les flux visuels client attendus utilisent encore des helpers locaux, donc les deux lignes restent `Partiel`.
+- apps/web verifie: le navigateur declenche le flux checksum via `full-game-server-host.ts`, `CL_ParseServerMessage`, `CL_SendCmd` et le serveur local sans logique parallele de checksum; pour `frand`/`crand`, les sorties visibles web passent par les effets client locaux, pas encore par les helpers qcommon.
+- renderer-three verifie: le checksum ne produit aucune sortie renderer directe, mais protege le flux input qui alimente le mouvement/playerstate consomme par la scene; `frand`/`crand` affectent potentiellement particules/temp entities visibles, mais l'integration renderer consomme les sorties deja produites par les helpers client locaux.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` couvre maintenant le stub fatal `COM_BlockSequenceCheckByte`, le checksum sur bloc vide et le wrap de table `sequence % 1020`.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-input`, `npm run verify:server:user`, `npm run verify:full-game:authoritative-input`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Matrice mise a jour: checksum et table `Valide`; locaux `Non applicable`; `frand`/`crand` `Partiel` avec action suivante d'integration des helpers qcommon dans les consommateurs client visibles.
 
 ## Session - 2026-05-08 - CopyString, Info_Print et zone memory Z_*
 

@@ -32,6 +32,17 @@ import {
   dltype_t,
   keydest_t
 } from "../../packages/client/src/index.js";
+import {
+  MAX_CLIENTS,
+  MAX_CONFIGSTRINGS,
+  MAX_EDICTS,
+  MAX_IMAGES,
+  MAX_ITEMS,
+  MAX_MAP_AREAS,
+  MAX_MODELS,
+  MAX_SOUNDS,
+  UPDATE_BACKUP
+} from "../../packages/qcommon/src/index.js";
 
 assert.equal(CMD_BACKUP, 64, "CMD_BACKUP mismatch");
 assert.equal(MAX_CLIENTWEAPONMODELS, 20, "MAX_CLIENTWEAPONMODELS mismatch");
@@ -60,15 +71,26 @@ assert.equal(keydest_t.key_menu, 3, "keydest_t key_menu mismatch");
 
 const frame = createFrame();
 assert.equal(frame.valid, false, "createFrame valid mismatch");
-assert.equal(frame.areabits.length, 32, "createFrame areabits length mismatch");
+assert.equal(frame.serverframe, 0, "createFrame serverframe mismatch");
+assert.equal(frame.servertime, 0, "createFrame servertime mismatch");
+assert.equal(frame.deltaframe, 0, "createFrame deltaframe mismatch");
+assert.equal(frame.areabits.length, MAX_MAP_AREAS / 8, "createFrame areabits length mismatch");
 assert.equal(frame.num_entities, 0, "createFrame num_entities mismatch");
+assert.equal(frame.parse_entities, 0, "createFrame parse_entities mismatch");
 
 const centity = createCentity();
+assert.equal(centity.serverframe, 0, "createCentity serverframe mismatch");
 assert.deepEqual(centity.lerp_origin, [0, 0, 0], "createCentity lerp_origin mismatch");
 assert.equal(centity.trailcount, 0, "createCentity trailcount mismatch");
+assert.equal(centity.fly_stoptime, 0, "createCentity fly_stoptime mismatch");
 
 const clientInfo = createClientinfo();
 assert.equal(clientInfo.name, "", "createClientinfo name mismatch");
+assert.equal(clientInfo.cinfo, "", "createClientinfo cinfo mismatch");
+assert.equal(clientInfo.skin, null, "createClientinfo skin handle mismatch");
+assert.equal(clientInfo.icon, null, "createClientinfo icon handle mismatch");
+assert.equal(clientInfo.iconname, "", "createClientinfo iconname mismatch");
+assert.equal(clientInfo.model, null, "createClientinfo model handle mismatch");
 assert.equal(clientInfo.weaponmodel.length, MAX_CLIENTWEAPONMODELS, "createClientinfo weaponmodel length mismatch");
 assert.equal(clientInfo.weaponmodel_paths.length, MAX_CLIENTWEAPONMODELS, "createClientinfo weaponmodel_paths length mismatch");
 assert.equal(clientInfo.valid, false, "createClientinfo valid mismatch");
@@ -78,15 +100,44 @@ assert.deepEqual(button.down, [0, 0], "createKbutton down mismatch");
 assert.equal(button.state, 0, "createKbutton state mismatch");
 
 const clientState = createClientState();
+assert.equal(clientState.timeoutcount, 0, "createClientState timeoutcount mismatch");
+assert.equal(clientState.timedemo_frames, 0, "createClientState timedemo_frames mismatch");
+assert.equal(clientState.timedemo_start, 0, "createClientState timedemo_start mismatch");
+assert.equal(clientState.refresh_prepped, false, "createClientState refresh_prepped mismatch");
+assert.equal(clientState.sound_prepped, false, "createClientState sound_prepped mismatch");
+assert.equal(clientState.force_refdef, false, "createClientState force_refdef mismatch");
+assert.equal(clientState.parse_entities, 0, "createClientState parse_entities mismatch");
 assert.equal(clientState.cmds.length, CMD_BACKUP, "createClientState cmds length mismatch");
 assert.equal(clientState.cmd_time.length, CMD_BACKUP, "createClientState cmd_time length mismatch");
 assert.equal(clientState.predicted_origins.length, CMD_BACKUP, "createClientState predicted_origins length mismatch");
-assert.equal(clientState.frames.length, 16, "createClientState frames length mismatch");
+assert.equal(clientState.predicted_step, 0, "createClientState predicted_step mismatch");
+assert.equal(clientState.predicted_step_time, 0, "createClientState predicted_step_time mismatch");
+assert.deepEqual(clientState.predicted_origin, [0, 0, 0], "createClientState predicted_origin mismatch");
+assert.deepEqual(clientState.predicted_angles, [0, 0, 0], "createClientState predicted_angles mismatch");
+assert.deepEqual(clientState.prediction_error, [0, 0, 0], "createClientState prediction_error mismatch");
+assert.equal(clientState.frame.valid, false, "createClientState frame validity mismatch");
+assert.equal(clientState.surpressCount, 0, "createClientState surpressCount mismatch");
+assert.equal(clientState.frames.length, UPDATE_BACKUP, "createClientState frames length mismatch");
+assert.deepEqual(clientState.viewangles, [0, 0, 0], "createClientState viewangles mismatch");
+assert.equal(clientState.time, 0, "createClientState time mismatch");
+assert.equal(clientState.lerpfrac, 0, "createClientState lerpfrac mismatch");
+assert.equal(clientState.layout, "", "createClientState layout mismatch");
+assert.equal(clientState.inventory.length, MAX_ITEMS, "createClientState inventory length mismatch");
+assert.equal(clientState.attractloop, false, "createClientState attractloop mismatch");
+assert.equal(clientState.servercount, 0, "createClientState servercount mismatch");
+assert.equal(clientState.gamedir, "", "createClientState gamedir mismatch");
+assert.equal(clientState.playernum, 0, "createClientState playernum mismatch");
+assert.equal(clientState.configstrings.length, MAX_CONFIGSTRINGS, "createClientState configstrings length mismatch");
+assert.equal(clientState.model_draw.length, MAX_MODELS, "createClientState model_draw length mismatch");
+assert.equal(clientState.model_clip.length, MAX_MODELS, "createClientState model_clip length mismatch");
+assert.equal(clientState.sound_precache.length, MAX_SOUNDS, "createClientState sound_precache length mismatch");
+assert.equal(clientState.image_precache.length, MAX_IMAGES, "createClientState image_precache length mismatch");
 assert.equal(clientState.dlights.length, MAX_DLIGHTS, "createClientState dlights length mismatch");
 assert.equal(clientState.particles.length, MAX_PARTICLES, "createClientState particles length mismatch");
 assert.equal(clientState.cl_weaponmodels[0], "weapon.md2", "createClientState default weapon model mismatch");
 assert.equal(clientState.num_cl_weaponmodels, 1, "createClientState num_cl_weaponmodels mismatch");
-assert.equal(clientState.clientinfo.length > 0, true, "createClientState clientinfo length mismatch");
+assert.equal(clientState.clientinfo.length, MAX_CLIENTS, "createClientState clientinfo length mismatch");
+assert.equal(clientState.baseclientinfo.name, "", "createClientState baseclientinfo name mismatch");
 assert.equal(clientState.tents.sustains.length, MAX_SUSTAINS, "createClientState sustains length mismatch");
 
 const clientStatic = createClientStatic();
@@ -99,7 +150,7 @@ assert.equal(clientStatic.demofile, null, "createClientStatic demofile mismatch"
 
 const runtime = createClientRuntime();
 assert.equal(runtime.cl_parse_entities.length, MAX_PARSE_ENTITIES, "createClientRuntime parse_entities length mismatch");
-assert.equal(runtime.cl_entities.length > 0, true, "createClientRuntime entities length mismatch");
+assert.equal(runtime.cl_entities.length, MAX_EDICTS, "createClientRuntime entities length mismatch");
 assert.equal(runtime.cls.downloadtype, dltype_t.dl_none, "createClientRuntime persistent downloadtype mismatch");
 assert.equal(runtime.net_message.maxsize, 65536, "createClientRuntime net_message size mismatch");
 

@@ -1000,8 +1000,8 @@ export function CL_BuildTempEntityEffects(packet: ClientTempEntityPacket): Clien
       if (packet.position) {
         effect.position = [...packet.position];
       }
-      if (packet.position && packet.direction) {
-        effects.push(...CL_ParticleSteamEffect(packet.position, packet.direction, 8, 50, 60).map((entry) => ({
+      if (packet.position && packet.directionByte !== undefined) {
+        effects.push(...CL_ParticleSteamEffect(packet.position, DirFromByte(packet.directionByte), 8, 50, 60).map((entry) => ({
           ...entry,
           packet
         })));
@@ -1017,8 +1017,8 @@ export function CL_BuildTempEntityEffects(packet: ClientTempEntityPacket): Clien
       if (packet.position) {
         effect.position = [...packet.position];
       }
-      if (packet.position && packet.direction) {
-        effects.push(...CL_ParticleSteamEffect(packet.position, packet.direction, 0xe0, 20, 60).map((entry) => ({
+      if (packet.position && packet.directionByte !== undefined) {
+        effects.push(...CL_ParticleSteamEffect(packet.position, DirFromByte(packet.directionByte), 0xe0, 20, 60).map((entry) => ({
           ...entry,
           packet
         })));
@@ -1241,13 +1241,13 @@ export function CL_ExecuteTempEntityEffects(runtime: ClientRuntime, packet: Clie
       }
       break;
     case temp_event_t.TE_HEATBEAM_SPARKS:
-      if (packet.position && packet.direction) {
-        CL_ParticleSteamEffect(runtime, packet.position, packet.direction, 8, 50, 60);
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleSteamEffect(runtime, packet.position, DirFromByte(packet.directionByte), 8, 50, 60);
       }
       break;
     case temp_event_t.TE_HEATBEAM_STEAM:
-      if (packet.position && packet.direction) {
-        CL_ParticleSteamEffect(runtime, packet.position, packet.direction, 0xe0, 20, 60);
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleSteamEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0xe0, 20, 60);
       }
       break;
     case temp_event_t.TE_STEAM:

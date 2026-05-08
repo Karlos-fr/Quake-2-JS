@@ -17,18 +17,18 @@
 | `Quake-2-master/client/cl_view.c` | global | `cl_testlights` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | global | `cl_testblend` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | global | `cl_stats` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | global | `r_numdlights` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | global | `r_numentities` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | global | `r_numparticles` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | global | `r_numdlights` | `packages/client/src/view.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | global | `r_numentities` | `packages/client/src/view.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | global | `r_numparticles` | `packages/client/src/view.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | global | `num_cl_weaponmodels` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_ClearScene` | `packages/client/src/view.ts` | `V_ClearScene` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_AddEntity` | `packages/client/src/view.ts` | `V_AddEntity` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_AddParticle` | `packages/client/src/view.ts` | `V_AddParticle` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_AddLight` | `packages/client/src/view.ts` | `V_AddLight` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_AddLightStyle` | `packages/client/src/view.ts` | `V_AddLightStyle` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_TestParticles` | `packages/client/src/view.ts` | `V_TestParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_TestEntities` | `packages/client/src/view.ts` | `V_TestEntities` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `V_TestLights` | `packages/client/src/view.ts` | `V_TestLights` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_ClearScene` | `packages/client/src/view.ts` | `V_ClearScene` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_AddEntity` | `packages/client/src/view.ts` | `V_AddEntity` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_AddParticle` | `packages/client/src/view.ts` | `V_AddParticle` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_AddLight` | `packages/client/src/view.ts` | `V_AddLight` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_AddLightStyle` | `packages/client/src/view.ts` | `V_AddLightStyle` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_TestParticles` | `packages/client/src/view.ts` | `V_TestParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_TestEntities` | `packages/client/src/view.ts` | `V_TestEntities` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_view.c` | function | `V_TestLights` | `packages/client/src/view.ts` | `V_TestLights` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | function | `CL_PrepRefresh` | `packages/client/src/view.ts` | `CL_PrepRefresh` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | global | `mapname` | `packages/client/src/view.ts` | `mapname` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | global | `i` | `packages/client/src/menu-player-config.ts` | `i` | A verifier | A redecouper |  |

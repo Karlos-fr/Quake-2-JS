@@ -22,20 +22,30 @@ import {
   CL_GetRefreshEntitySoundOrigin,
   CL_PrepRefresh,
   CalcFov,
+  V_AddEntity,
+  V_AddLight,
+  V_AddLightStyle,
+  V_AddParticle,
+  V_ClearScene,
   V_RenderView,
+  V_TestEntities,
+  V_TestLights,
+  V_TestParticles,
   createClientRuntime,
   createClientViewContext,
+  createClientViewScene,
   connstate_t
 } from "../../packages/client/src/index.js";
 import { createConsoleState } from "../../packages/client/src/console.js";
 import { createCommandRuntime } from "../../packages/qcommon/src/cmd.js";
 import { createCvarRuntime } from "../../packages/qcommon/src/cvar.js";
-import { createRefExport } from "../../packages/client/src/ref.js";
+import { MAX_DLIGHTS, MAX_ENTITIES, MAX_PARTICLES, createEntity, createRefExport } from "../../packages/client/src/ref.js";
 import { CS_CDTRACK, CS_IMAGES, CS_MODELS, CS_PLAYERSKINS, CS_SKY, CS_SKYAXIS, CS_SKYROTATE, pmtype_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
 function main(): void {
+  verifySceneStagingHelpersMirrorClView();
   verifyPrepRefreshRegistersLevelAssets();
   verifyCalcViewValuesInterpolatesWeaponRelevantMotion();
   verifyCalcViewValuesMatchesDroppedFrameAndTeleportFallbacks();
@@ -44,6 +54,100 @@ function main(): void {
   verifyRenderViewAppliesViewWeaponDebugOverrides();
   verifyRenderViewHidesWeaponForWideFovAndComputesFovY();
   console.log("quake2-cl-view: ok");
+}
+
+function verifySceneStagingHelpersMirrorClView(): void {
+  const scene = createClientViewScene();
+
+  scene.r_numdlights = 7;
+  scene.r_numentities = 8;
+  scene.r_numparticles = 9;
+  V_ClearScene(scene);
+  assert.equal(scene.r_numdlights, 0, "V_ClearScene dlight count mismatch");
+  assert.equal(scene.r_numentities, 0, "V_ClearScene entity count mismatch");
+  assert.equal(scene.r_numparticles, 0, "V_ClearScene particle count mismatch");
+
+  const entity = createEntity();
+  entity.model = "model:test";
+  entity.origin = [1, 2, 3];
+  entity.oldorigin = [4, 5, 6];
+  entity.angles = [7, 8, 9];
+  entity.frame = 3;
+  V_AddEntity(scene, entity);
+  entity.origin[0] = 99;
+  assert.equal(scene.r_numentities, 1, "V_AddEntity count mismatch");
+  assert.deepEqual(scene.r_entities[0].origin, [1, 2, 3], "V_AddEntity should copy entity vectors");
+  scene.r_numentities = MAX_ENTITIES;
+  V_AddEntity(scene, entity);
+  assert.equal(scene.r_numentities, MAX_ENTITIES, "V_AddEntity should clamp at MAX_ENTITIES");
+
+  scene.r_numparticles = 0;
+  const particleOrigin: [number, number, number] = [10, 20, 30];
+  V_AddParticle(scene, particleOrigin, 8, 0.5);
+  particleOrigin[0] = 99;
+  assert.equal(scene.r_numparticles, 1, "V_AddParticle count mismatch");
+  assert.deepEqual(scene.r_particles[0].origin, [10, 20, 30], "V_AddParticle should copy origin");
+  assert.equal(scene.r_particles[0].color, 8, "V_AddParticle color mismatch");
+  assert.equal(scene.r_particles[0].alpha, 0.5, "V_AddParticle alpha mismatch");
+  scene.r_numparticles = MAX_PARTICLES;
+  V_AddParticle(scene, [1, 1, 1], 1, 1);
+  assert.equal(scene.r_numparticles, MAX_PARTICLES, "V_AddParticle should clamp at MAX_PARTICLES");
+
+  scene.r_numdlights = 0;
+  const lightOrigin: [number, number, number] = [11, 22, 33];
+  V_AddLight(scene, lightOrigin, 200, 1, 0.5, 0.25);
+  lightOrigin[0] = 99;
+  assert.equal(scene.r_numdlights, 1, "V_AddLight count mismatch");
+  assert.deepEqual(scene.r_dlights[0].origin, [11, 22, 33], "V_AddLight should copy origin");
+  assert.deepEqual(scene.r_dlights[0].color, [1, 0.5, 0.25], "V_AddLight color mismatch");
+  assert.equal(scene.r_dlights[0].intensity, 200, "V_AddLight intensity mismatch");
+  scene.r_numdlights = MAX_DLIGHTS;
+  V_AddLight(scene, [1, 1, 1], 1, 1, 1, 1);
+  assert.equal(scene.r_numdlights, MAX_DLIGHTS, "V_AddLight should clamp at MAX_DLIGHTS");
+
+  V_AddLightStyle(scene, 0, 0.2, 0.3, 0.4);
+  assert.deepEqual(scene.r_lightstyles[0].rgb, [0.2, 0.3, 0.4], "V_AddLightStyle rgb mismatch");
+  assert.equal(scene.r_lightstyles[0].white, 0.9, "V_AddLightStyle white mismatch");
+  assert.throws(() => V_AddLightStyle(scene, -1, 0, 0, 0), /Bad light style -1/, "V_AddLightStyle should reject negative styles");
+
+  const runtime = createClientRuntime();
+  runtime.cl.baseclientinfo.model = "model:base";
+  runtime.cl.baseclientinfo.skin = "skin:base";
+  const view = {
+    vieworg: [100, 200, 300] as [number, number, number],
+    viewangles: [0, 0, 0] as [number, number, number],
+    forward: [1, 0, 0] as [number, number, number],
+    right: [0, 1, 0] as [number, number, number],
+    up: [0, 0, 1] as [number, number, number],
+    fov_x: 90,
+    blend: [0, 0, 0, 0] as [number, number, number, number]
+  };
+
+  V_TestParticles(scene, view, 0.75);
+  assert.equal(scene.r_numparticles, MAX_PARTICLES, "V_TestParticles count mismatch");
+  assert.deepEqual(scene.r_particles[0].origin, [100, 186, 286], "V_TestParticles first origin mismatch");
+  assert.equal(scene.r_particles[0].color, 8, "V_TestParticles color mismatch");
+  assert.equal(scene.r_particles[0].alpha, 0.75, "V_TestParticles alpha mismatch");
+
+  scene.r_entities[0].flags = 123;
+  scene.r_entities[0].frame = 456;
+  scene.r_entities[0].alpha = 0.25;
+  V_TestEntities(scene, runtime, view);
+  assert.equal(scene.r_numentities, 32, "V_TestEntities count mismatch");
+  assert.deepEqual(scene.r_entities[0].origin, [228, 104, 300], "V_TestEntities first origin mismatch");
+  assert.equal(scene.r_entities[0].model, "model:base", "V_TestEntities model mismatch");
+  assert.equal(scene.r_entities[0].skin, "skin:base", "V_TestEntities skin mismatch");
+  assert.equal(scene.r_entities[0].flags, 0, "V_TestEntities should clear stale flags like memset");
+  assert.equal(scene.r_entities[0].frame, 0, "V_TestEntities should clear stale frame like memset");
+  assert.equal(scene.r_entities[0].alpha, 0, "V_TestEntities should clear stale alpha like memset");
+
+  scene.r_dlights[0].color = [9, 9, 9];
+  scene.r_dlights[0].intensity = 999;
+  V_TestLights(scene, view);
+  assert.equal(scene.r_numdlights, 32, "V_TestLights count mismatch");
+  assert.deepEqual(scene.r_dlights[0].origin, [228, 104, 300], "V_TestLights first origin mismatch");
+  assert.deepEqual(scene.r_dlights[0].color, [1, 0, 0], "V_TestLights color mismatch");
+  assert.equal(scene.r_dlights[0].intensity, 200, "V_TestLights intensity mismatch");
 }
 
 function verifyBuildRefreshFrameActiveGuardAndSoundOrigin(): void {

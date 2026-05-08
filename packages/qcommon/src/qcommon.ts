@@ -185,7 +185,16 @@ const crcTable = new Uint16Array([
   0x6e17, 0x7e36, 0x4e55, 0x5e74, 0x2e93, 0x3eb2, 0x0ed1, 0x1ef0
 ]);
 
-const sequenceCheckTable = new Uint8Array([
+/**
+ * Original name: chktbl
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the 1024-byte sequence-protection table consumed by `COM_BlockSequenceCRCByte`.
+ */
+const chktbl = new Uint8Array([
   0x84, 0x47, 0x51, 0xc1, 0x93, 0x22, 0x21, 0x24, 0x2f, 0x66, 0x60, 0x4d, 0xb0, 0x7c, 0xda,
   0x88, 0x54, 0x15, 0x2b, 0xc6, 0x6c, 0x89, 0xc5, 0x9d, 0x48, 0xee, 0xe6, 0x8a, 0xb5, 0xf4,
   0xcb, 0xfb, 0xf1, 0x0c, 0x2e, 0xa0, 0xd7, 0xc9, 0x1f, 0xd6, 0x06, 0x9a, 0x09, 0x41, 0x54,
@@ -899,7 +908,7 @@ export function Com_SetServerState(globals: QcommonGlobals, state: number): void
 
 /**
  * Original name: frand
- * Source: qcommon/qcommon.h
+ * Source: qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -912,7 +921,7 @@ export function frand(): number {
 
 /**
  * Original name: crand
- * Source: qcommon/qcommon.h
+ * Source: qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -988,6 +997,27 @@ export function CRC_Block(start: Uint8Array, count = start.length): number {
 }
 
 /**
+ * Original name: COM_BlockSequenceCheckByte
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the original disabled legacy proxy checksum entry point, which immediately raises a fatal error.
+ *
+ * Porting notes:
+ * - The live C implementation calls `Sys_Error` before the obsolete `#if 0` checksum body can run.
+ */
+export function COM_BlockSequenceCheckByte(
+  _base: Uint8Array,
+  _length: number,
+  _sequence: number,
+  _challenge: number
+): never {
+  throw new Error("COM_BlockSequenceCheckByte called");
+}
+
+/**
  * Original name: COM_BlockSequenceCRCByte
  * Source: qcommon/common.c
  * Category: Ported
@@ -1001,14 +1031,14 @@ export function COM_BlockSequenceCRCByte(base: Uint8Array, length: number, seque
     throw new Error("COM_BlockSequenceCRCByte: sequence < 0");
   }
 
-  const start = sequence % (sequenceCheckTable.length - 4);
+  const start = sequence % (chktbl.length - 4);
   const clampedLength = Math.min(length, 60);
   const chkb = new Uint8Array(clampedLength + 4);
   chkb.set(base.subarray(0, clampedLength), 0);
-  chkb[clampedLength] = sequenceCheckTable[start];
-  chkb[clampedLength + 1] = sequenceCheckTable[start + 1];
-  chkb[clampedLength + 2] = sequenceCheckTable[start + 2];
-  chkb[clampedLength + 3] = sequenceCheckTable[start + 3];
+  chkb[clampedLength] = chktbl[start];
+  chkb[clampedLength + 1] = chktbl[start + 1];
+  chkb[clampedLength + 2] = chktbl[start + 2];
+  chkb[clampedLength + 3] = chktbl[start + 3];
 
   const crc = CRC_Block(chkb);
   let sum = 0;

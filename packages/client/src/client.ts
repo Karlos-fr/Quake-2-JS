@@ -182,11 +182,17 @@ export interface centity_t {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the parts of `clientinfo_t` needed by early parsing work before renderer registration exists.
+ * Original name: clientinfo_t
+ * Source: client/client.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must keep the original textual fields available for future refresh preparation.
+ * Behavior:
+ * - Stores one parsed player skin/model identity plus the registered renderer handles.
+ *
+ * Porting notes:
+ * - Uses strings for fixed char buffers and `unknown` placeholders for renderer-owned handles.
+ * - Adds parsed filename/cache metadata so clientinfo registration can stay deterministic before a renderer adapter is present.
  */
 export interface clientinfo_t {
   name: string;

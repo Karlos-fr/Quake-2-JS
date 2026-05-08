@@ -10,28 +10,28 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/console.c` | global | `con_notifytime` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | macro | `MAXCMDLINE` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `edit_line` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `key_linepos` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `DrawString` | `packages/client/src/console.ts` | `DrawString` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `DrawAltString` | `packages/client/src/console.ts` | `DrawAltString` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Key_ClearTyping` | `packages/client/src/console.ts` | `Key_ClearTyping` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_ToggleConsole_f` | `packages/client/src/console.ts` | `Con_ToggleConsole_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_ToggleChat_f` | `packages/client/src/console.ts` | `Con_ToggleChat_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_Clear_f` | `packages/client/src/console.ts` | `Con_Clear_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_Dump_f` | `packages/client/src/console.ts` | `Con_Dump_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `line` | `packages/client/src/console.ts` | `line` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `buffer` | `packages/client/src/console.ts` | `buffer` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `name` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `break` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_ClearNotify` | `packages/client/src/console.ts` | `Con_ClearNotify` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `i` | `packages/client/src/console.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_MessageMode_f` | `packages/client/src/console.ts` | `Con_MessageMode_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_MessageMode2_f` | `packages/client/src/console.ts` | `Con_MessageMode2_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_CheckResize` | `packages/client/src/console.ts` | `Con_CheckResize` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `tbuf` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_Init` | `packages/client/src/console.ts` | `Con_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `con_notifytime` | `packages/client/src/console.ts` | `con_notifytime` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | macro | `MAXCMDLINE` | `packages/client/src/keys.ts` | `MAXCMDLINE` | Valide | A redecouper | Ownership deplace avec l'etat de saisie console de `keys.c`; importe par `console.ts`. |
+| `Quake-2-master/client/console.c` | global | `edit_line` | `packages/client/src/keys.ts` | `edit_line` | Non applicable | A redecouper | Extern `keys.c`, valide dans la matrice `client_keys.c.md`. |
+| `Quake-2-master/client/console.c` | global | `key_linepos` | `packages/client/src/keys.ts` | `key_linepos` | Non applicable | A redecouper | Extern `keys.c`, valide dans la matrice `client_keys.c.md`. |
+| `Quake-2-master/client/console.c` | function | `DrawString` | `packages/client/src/console.ts` | `DrawString` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `DrawAltString` | `packages/client/src/console.ts` | `DrawAltString` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Key_ClearTyping` | `packages/client/src/console.ts` | `Key_ClearTyping` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_ToggleConsole_f` | `packages/client/src/console.ts` | `Con_ToggleConsole_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_ToggleChat_f` | `packages/client/src/console.ts` | `Con_ToggleChat_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_Clear_f` | `packages/client/src/console.ts` | `Con_Clear_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_Dump_f` | `packages/client/src/console.ts` | `Con_Dump_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `line` | `packages/client/src/console.ts` | `line` | Non applicable | A redecouper | Variable locale de `Con_Dump_f`. |
+| `Quake-2-master/client/console.c` | global | `buffer` | `packages/client/src/console.ts` | `buffer` | Non applicable | A redecouper | Variable locale de `Con_Dump_f`. |
+| `Quake-2-master/client/console.c` | global | `name` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Variable locale de `Con_Dump_f`. |
+| `Quake-2-master/client/console.c` | global | `break` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Faux positif generateur sur instruction `break`. |
+| `Quake-2-master/client/console.c` | function | `Con_ClearNotify` | `packages/client/src/console.ts` | `Con_ClearNotify` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `i` | `packages/client/src/console.ts` | `i` | Non applicable | A redecouper | Variable locale de `Con_ClearNotify`. |
+| `Quake-2-master/client/console.c` | function | `Con_MessageMode_f` | `packages/client/src/console.ts` | `Con_MessageMode_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_MessageMode2_f` | `packages/client/src/console.ts` | `Con_MessageMode2_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_CheckResize` | `packages/client/src/console.ts` | `Con_CheckResize` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `tbuf` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Variable locale de `Con_CheckResize`. |
+| `Quake-2-master/client/console.c` | function | `Con_Init` | `packages/client/src/console.ts` | `Con_Init` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | function | `Con_Linefeed` | `packages/client/src/console.ts` | `Con_Linefeed` | A verifier | A redecouper |  |
 | `Quake-2-master/client/console.c` | function | `Con_Print` | `packages/client/src/console.ts` | `Con_Print` | A verifier | A redecouper |  |
 | `Quake-2-master/client/console.c` | global | `y` | `packages/client/src/console.ts` | `y` | A verifier | A redecouper |  |

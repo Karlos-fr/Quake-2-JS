@@ -97,6 +97,7 @@ assert.equal(serverHost.currentMapRequest, "base1", "server host should expose t
 
 serverHost.frame(100);
 assert.equal(serverHost.hasActiveGameMap(), true, "server frame should preserve the active game map");
+assert.equal(serverHost.currentMapRequest, "base1", "server frame should keep exposing the active server map name");
 const linkedSolids = new Array(2048).fill(null);
 const linkedSolidCount = serverHost.facade.world.SV_AreaEdicts(
   [-99999, -99999, -99999],
@@ -152,5 +153,11 @@ assert.equal(
   false,
   "server gameplay RunFrame should have a collision bridge"
 );
+
+Cbuf_AddText(cmd, "gamemap \"base2$base1\"\n");
+Cbuf_Execute(cmd);
+serverHost.frame(100);
+assert.equal(serverHost.currentMapRequest, "base2", "server host should update currentMapRequest after automatic gamemap changes");
+assert.equal(serverHost.hasActiveGameMap(), true, "automatic gamemap should leave the server in an active game state");
 
 console.log("quake2-full-game-server-host: ok");

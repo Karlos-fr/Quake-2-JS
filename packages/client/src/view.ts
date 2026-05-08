@@ -461,7 +461,7 @@ export function V_TestEntities(scene: ClientViewScene, runtime: ClientRuntime, v
   scene.r_numentities = 32;
 
   for (let index = 0; index < scene.r_numentities; index += 1) {
-    const ent = scene.r_entities[index];
+    const ent = createEntity();
     const r = 64 * ((index % 4) - 1.5);
     const f = 64 * Math.floor(index / 4) + 128;
 
@@ -474,6 +474,7 @@ export function V_TestEntities(scene: ClientViewScene, runtime: ClientRuntime, v
 
     ent.model = runtime.cl.baseclientinfo.model ?? null;
     ent.skin = runtime.cl.baseclientinfo.skin ?? null;
+    scene.r_entities[index] = ent;
   }
 }
 
@@ -490,7 +491,7 @@ export function V_TestLights(scene: ClientViewScene, view: ClientViewValues): vo
   scene.r_numdlights = 32;
 
   for (let index = 0; index < scene.r_numdlights; index += 1) {
-    const dlight = scene.r_dlights[index];
+    const dlight = createDlight();
     const r = 64 * ((index % 4) - 1.5);
     const f = 64 * Math.floor(index / 4) + 128;
 
@@ -505,6 +506,7 @@ export function V_TestLights(scene: ClientViewScene, view: ClientViewValues): vo
     dlight.color[1] = ((((index % 6) + 1) & 2) >> 1);
     dlight.color[2] = ((((index % 6) + 1) & 4) >> 2);
     dlight.intensity = 200;
+    scene.r_dlights[index] = dlight;
   }
 }
 

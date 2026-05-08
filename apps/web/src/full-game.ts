@@ -42,6 +42,7 @@ import {
   Cvar_Set as QcommonCvar_Set,
   Cvar_SetValue as QcommonCvar_SetValue,
   Cvar_VariableValue,
+  CS_MODELS,
   CS_ITEMS,
   Com_BlockChecksum,
   MAX_ITEMS,
@@ -114,6 +115,7 @@ import {
   Con_Init,
   Con_Print,
   Con_SyncConsoleToKeys,
+  Con_ToggleConsole_f,
   createClientConsoleContext,
   type ClientConsoleContext,
   type ConsoleDrawConsoleSnapshot,
@@ -951,6 +953,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
 
     authoritativeLevelLoading = true;
     pendingAuthoritativeMapRequest = mapRequest;
+    forceGameInputForLevelLoad();
     localTransport.clear();
     client.cls.state = connstate_t.ca_disconnected;
     client.cl.refresh_prepped = false;
@@ -1059,9 +1062,14 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     && client.cl.refresh_prepped
   );
   const markAuthoritativeGameActive = (): void => {
+    const wasLevelLoading = authoritativeLevelLoading;
     authoritativeLevelLoading = false;
     client.cl.screen.scr_draw_loading = 0;
-    if (keys.state.key_dest !== keydest_t.key_console
+    if (wasLevelLoading
+      && keys.state.key_dest !== keydest_t.key_console
+      && keys.state.key_dest !== keydest_t.key_message) {
+      forceGameInputForLevelLoad();
+    } else if (keys.state.key_dest !== keydest_t.key_console
       && keys.state.key_dest !== keydest_t.key_message
       && keys.state.key_dest !== keydest_t.key_menu) {
       keys.state.key_dest = keydest_t.key_game;
@@ -1162,6 +1170,9 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     }
   });
   menuContext = menu;
+  consoleContext.hooks.M_ForceMenuOff = () => {
+    M_ForceMenuOff(menu);
+  };
   keys.hooks.onMenuKeydown = (key) => M_Keydown(menu, key);
   keys.hooks.onMenuMain = () => M_Menu_Main_f(menu);
   keys.hooks.onToggleConsole = () => {
@@ -1631,6 +1642,13 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
   runtime.flushClientOutput();
   runtime.updateClientAudio();
 
+  const serverMapRequest = runtime.serverHost.currentMapRequest;
+  if (runtime.serverHost.hasActiveGameMap()
+    && serverMapRequest
+    && shouldReconnectForAuthoritativeMap(runtime, serverMapRequest)) {
+    runtime.beginAuthoritativeConnection(serverMapRequest);
+  }
+
   if (runtime.isAuthoritativeLevelLoading() && !runtime.authoritativeGameReady()) {
     runtime.mode = "loading";
     page.status.textContent = "Chargement du niveau...";
@@ -1659,6 +1677,42 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
     page.status.textContent = "Chargement du jeu...";
     page.status.style.display = "block";
   }
+}
+
+function shouldReconnectForAuthoritativeMap(runtime: FullGameRuntime, serverMapRequest: string): boolean {
+  if (runtime.isAuthoritativeLevelLoading()) {
+    return false;
+  }
+
+  const serverMap = normalizeFullGameMapName(serverMapRequest);
+  const clientMap = getFullGameClientWorldMapName(runtime);
+  return serverMap !== null && clientMap !== null && serverMap !== clientMap;
+}
+
+function getFullGameClientWorldMapName(runtime: FullGameRuntime): string | null {
+  return normalizeFullGameMapName(runtime.client.cl.configstrings[CS_MODELS + 1] ?? "");
+}
+
+function normalizeFullGameMapName(value: string): string | null {
+  let name = value.trim().replaceAll("\\", "/");
+  if (!name) {
+    return null;
+  }
+
+  const spawnIndex = name.indexOf("$");
+  if (spawnIndex !== -1) {
+    name = name.slice(0, spawnIndex);
+  }
+  if (name.startsWith("*")) {
+    name = name.slice(1);
+  }
+  if (name.toLowerCase().startsWith("maps/")) {
+    name = name.slice(5);
+  }
+  if (name.toLowerCase().endsWith(".bsp")) {
+    name = name.slice(0, -4);
+  }
+  return name.toLowerCase();
 }
 
 function syncFullGameActiveView(runtime: FullGameRuntime, page: FullGamePage, gameStatus: string): void {
@@ -2475,17 +2529,7 @@ function toggleFullGameConsoleContext(
   client: ClientRuntime
 ): void {
   const keys = menu.keys.state;
-  Con_ClearNotify(consoleContext.con);
-  if (keys.key_dest === keydest_t.key_console) {
-    keys.console_open = false;
-    keys.key_dest = client.cls.state === connstate_t.ca_active
-      ? keydest_t.key_game
-      : keydest_t.key_menu;
-  } else {
-    M_ForceMenuOff(menu);
-    keys.console_open = true;
-    keys.key_dest = keydest_t.key_console;
-  }
+  Con_ToggleConsole_f(consoleContext);
   Con_SyncConsoleToKeys(consoleContext);
   page.status.textContent = keys.key_dest === keydest_t.key_console
     ? "Console Quake II."

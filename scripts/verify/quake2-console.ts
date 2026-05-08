@@ -24,6 +24,9 @@ import {
   Con_Print,
   Con_ToggleChat_f,
   Con_ToggleConsole_f,
+  DrawAltString,
+  DrawString,
+  Key_ClearTyping,
   createClientConsoleContext
 } from "../../packages/client/src/console.js";
 import { createClientKeyContext, keydest_t } from "../../packages/client/src/keys.js";
@@ -112,11 +115,28 @@ Con_ToggleConsole_f(context);
 assert.equal(keys.state.key_dest, keydest_t.key_console, "toggleconsole must open console");
 assert.equal(Cvar_VariableValue(cvar, "paused"), 1, "toggleconsole must pause single-player local server");
 
+Con_ToggleConsole_f(context);
+assert.equal(keys.state.key_dest, keydest_t.key_game, "toggleconsole must close console through M_ForceMenuOff semantics");
+assert.equal(Cvar_VariableValue(cvar, "paused"), 0, "toggleconsole close must clear paused");
+
 keys.state.key_lines[keys.state.edit_line] = "]status";
 keys.state.key_linepos = 7;
+Key_ClearTyping(context);
+assert.equal(keys.state.key_lines[keys.state.edit_line], "]", "Key_ClearTyping must clear the edit line");
+assert.equal(keys.state.key_linepos, 1, "Key_ClearTyping must reset line position");
+keys.state.key_lines[keys.state.edit_line] = "]status";
+keys.state.key_linepos = 7;
+keys.state.key_dest = keydest_t.key_console;
 client.cls.realtime = 512;
 const input = Con_DrawInput(context);
 assert.equal(input?.text.startsWith("]status"), true, "Con_DrawInput must expose edit line text");
+
+assert.deepEqual(DrawString(8, 16, "abc"), { x: 8, y: 16, text: "abc", variant: "normal" }, "DrawString mismatch");
+assert.deepEqual(
+  DrawAltString(8, 16, "abc"),
+  { x: 8, y: 16, text: "\u00e1\u00e2\u00e3", variant: "alt" },
+  "DrawAltString mismatch"
+);
 
 Con_Print(context.con, "hello world\nsecond line\n", 1000);
 Con_Print(context.con, "\u0001colored\n", 1200);

@@ -58,9 +58,12 @@ assert.ok(source.includes("forceGameInputForLevelLoad"), "full-game should force
 assert.ok(source.includes("isAuthoritativeLevelLoading"), "full-game should track automatic authoritative level loads");
 assert.ok(source.includes("shouldDrawFullGameLoadingFrame"), "full-game should prioritize the loading plaque over menu drawing");
 assert.ok(source.includes("runtime.isAuthoritativeLevelLoading() && !runtime.authoritativeGameReady()"), "automatic map changes should stay in loading mode until the client is ready");
+assert.ok(source.includes("shouldReconnectForAuthoritativeMap"), "full-game should detect server-side automatic map changes");
+assert.ok(source.includes("normalizeFullGameMapName"), "full-game should compare server and client map names before reconnecting");
+assert.ok(source.includes("runtime.beginAuthoritativeConnection(serverMapRequest)"), "automatic server map changes should restart the authoritative client handshake");
 assert.ok(source.includes("M_ForceMenuOff(menuContext)"), "full-game level loads should close the main menu when a map transition begins");
-assert.ok(source.includes("onBeginLoadingPlaque: () => {\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "client changing commands should leave menu mode during level loads");
-assert.ok(source.includes("onBeginLoading: () => {\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "server map changes should leave menu mode during level loads");
+assert.ok(source.includes("onBeginLoadingPlaque: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "client changing commands should leave menu mode during level loads");
+assert.ok(source.includes("onBeginLoading: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "server map changes should leave menu mode during level loads");
 assert.ok(source.includes("elapsedSeconds: runtime.client.cl.time * 0.001"), "full-game should pass absolute client time to ref_gl world rendering");
 assert.ok(source.includes("const gameVisible = runtime.mode === \"game\""), "full-game should show the render viewport before the renderer finishes initializing");
 assert.ok(source.includes("runtime.gameRenderer === null"), "full-game should keep the 2D loading overlay while the renderer is pending");

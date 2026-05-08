@@ -233,7 +233,7 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
 
       facade.main.SV_Frame(Math.max(0, Math.trunc(milliseconds)));
       if (sv.state === server_state_t.ss_game && sv.name) {
-        currentMapRequest = currentMapRequest ?? sv.name;
+        currentMapRequest = sv.name;
       }
     },
     writeLocalClientFrame: (client, hooks = {}) => {

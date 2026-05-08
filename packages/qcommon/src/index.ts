@@ -78,6 +78,7 @@ export {
   CM_ANGLE2,
   CM_ANGLE3,
   CM_BUTTONS,
+  COM_BlockSequenceCheckByte,
   COM_BlockSequenceCRCByte,
   CM_FORWARD,
   CM_IMPULSE,

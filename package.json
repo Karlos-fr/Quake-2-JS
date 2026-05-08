@@ -96,6 +96,7 @@
     "verify:cl-newfx": "npx tsx ./scripts/verify/quake2-cl-newfx.ts",
     "verify:cl-parse": "npx tsx ./scripts/verify/quake2-cl-parse.ts",
     "verify:cl-tent": "npx tsx ./scripts/verify/quake2-cl-tent.ts",
+    "verify:cl-view": "npx tsx ./scripts/verify/quake2-cl-view.ts",
     "verify:cl-scrn": "npx tsx ./scripts/verify/quake2-cl-scrn.ts",
     "verify:menu": "npx tsx ./scripts/verify/quake2-menu.ts",
     "verify:qmenu": "npx tsx ./scripts/verify/quake2-qmenu.ts",

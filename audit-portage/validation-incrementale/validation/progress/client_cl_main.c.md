@@ -2,23 +2,26 @@
 
 ## Dernier lot valide
 
-Quatrieme gros lot `cl_main.c` : bloc precache/autodownload complet `precache_check`, `precache_spawncount`, `precache_tex`, `precache_model_skin`, `precache_model`, `PLAYER_MULT`, `ENV_CNT`, `TEXTURE_CNT`, `env_suf`, `CL_RequestNextDownload`, `CL_Precache_f` et locaux C associes (`map_checksum`, `fn`, `p`, `n`, `numtexinfo`). Lots precedents conserves : bloc connectionless/network-read `CL_Skins_f`, `CL_ConnectionlessPacket`, `CL_DumpPackets`, `CL_ReadPackets`, `CL_FixUpGender`, `CL_Userinfo_f`, `CL_Snd_Restart_f`; commandes client reseau/connexion `CL_Connect_f`, `CL_Rcon_f`, `CL_Packet_f`, `CL_Changing_f`, `CL_Reconnect_f`, `CL_ParseStatusMessage`, `CL_PingServers_f`; cvars/globals de startup `freelook` a `cl_vwep`, etat client `cl_entities` / `cl_parse_entities`, externs `allow_download*`, demo record/stop/write, forwarding console, `setenv`, pause/quit/drop, connect-packet/resend, `CL_ClearState`, `CL_Disconnect`, `CL_Disconnect_f`.
+Cinquieme gros lot `cl_main.c` : bloc final runtime/init/frame `CL_InitLocal`, `CL_WriteConfiguration`, `cheatvar_t`, `cheatvars`, `CL_FixCvarCheats`, `CL_SendCommand`, `CL_Frame`, `CL_Init`, `CL_Shutdown`, et etats/locaux associes (`path`, champs `name`/`value`/`var`, `numcheatvars`, `i`, `extratime`, `lasttimecalled`, `now`, `isdown`). Lots precedents conserves : bloc precache/autodownload complet `precache_check`, `precache_spawncount`, `precache_tex`, `precache_model_skin`, `precache_model`, `PLAYER_MULT`, `ENV_CNT`, `TEXTURE_CNT`, `env_suf`, `CL_RequestNextDownload`, `CL_Precache_f`; bloc connectionless/network-read `CL_Skins_f`, `CL_ConnectionlessPacket`, `CL_DumpPackets`, `CL_ReadPackets`, `CL_FixUpGender`, `CL_Userinfo_f`, `CL_Snd_Restart_f`; commandes client reseau/connexion `CL_Connect_f`, `CL_Rcon_f`, `CL_Packet_f`, `CL_Changing_f`, `CL_Reconnect_f`, `CL_ParseStatusMessage`, `CL_PingServers_f`; cvars/globals de startup `freelook` a `cl_vwep`, etat client `cl_entities` / `cl_parse_entities`, externs `allow_download*`, demo record/stop/write, forwarding console, `setenv`, pause/quit/drop, connect-packet/resend, `CL_ClearState`, `CL_Disconnect`, `CL_Disconnect_f`.
 
 ## Preuves obtenues
 
-- Comparaison C/TS : `Quake-2-master/client/cl_main.c`, `packages/client/src/precache.ts`, `packages/client/src/cl_main.ts`, `packages/client/src/client.ts`, `apps/web/src/full-game.ts`.
-- Commentaires d'en-tete verifies pour `CL_RequestNextDownload` et `CL_Precache_f`; `Original name`, `Source: client/cl_main.c`, `Category: Ported`, niveau de fidelite, behavior et notes de portage presents.
-- Runtime : commande `precache` atteignable via `CL_InitLocal -> Cmd_AddCommand`; `CL_RequestNextDownload` traverse map, models, sounds, images, playerskins, sky env, textures BSP, puis appelle registration sounds, prep refresh et envoie `begin <spawncount>`. Pause sur telechargement manquant verifiee avec reprise par compteurs explicites.
-- `apps/web` : `apps/web/src/full-game.ts` fournit `fileExists`, `loadBinaryFile`, `getMapInfo`, `onRegisterSounds`, `onPrepRefresh` et `onBegin` au flux `precache`; `getMapInfo` charge le BSP monte, calcule le checksum et expose les textures `texinfo`. `allowDownload: false` reste voulu pour le navigateur, sans masquer la verification checksum/prep/begin.
-- `renderer-three` : integration indirecte validee. Le lot produit des ressources visibles attendues (modeles, images/skins, sky/env, textures BSP) via `CL_PrepRefresh`, les configstrings et le render-source, ensuite consommes par `renderer-three`.
+- Comparaison C/TS : `Quake-2-master/client/cl_main.c`, `packages/client/src/cl_main.ts`, `packages/client/src/cl_input.ts`, `packages/client/src/precache.ts`, `packages/client/src/client.ts`, `packages/qcommon/src/qcommon.ts`, `apps/web/src/full-game.ts`, `packages/renderer-three`.
+- Commentaires d'en-tete verifies pour `CL_InitLocal`, `CL_WriteConfiguration`, `CL_FixCvarCheats`, `CL_SendCommand`, `CL_Frame`, `CL_Init` et `CL_Shutdown`; `Original name`, `Source: client/cl_main.c`, `Category: Ported`, niveau de fidelite, behavior et notes de portage presents.
+- Runtime : `CL_Frame` est atteint depuis `Qcommon_Frame -> qcommonHooks.onFrame -> CL_Frame` dans `apps/web/src/full-game.ts`; il preserve l'ordre input/read/send/predict/refresh/screen/audio/effects. `CL_SendCommand` appelle `Cbuf_Execute`, `CL_FixCvarCheats`, le pont `CL_SendCmd` et `CL_CheckForResend`. `CL_InitLocal` enregistre les commandes et cvars; les cvars d'input appelees par le C depuis `CL_InitLocal -> CL_InitInput` restent proprietaires de `cl_input.c` et sont initialisees par `CL_InitInput`.
+- `apps/web` : `apps/web/src/full-game.ts` appelle `CL_InitLocal`, pompe `CL_Frame` via `Qcommon_Frame`, branche `CL_ReadPackets`, `CL_SendCmd`, prediction, refresh, sons et ecriture config via `CL_WriteConfiguration`; `beforeunload` appelle `finishConfigBootstrap`, `writeConfiguration` puis `Qcommon_Shutdown`.
+- `renderer-three` : integration indirecte validee. Le lot produit les donnees visibles via le chemin `CL_Frame -> CL_PredictMovement/CL_PrepRefresh/SCR_UpdateScreen` et les sorties de scene/camera/areabits/dlights/particules/modeles sont consommees par le render-source et le render loop Three.
 
 ## Tests lances
 
 - `npm run verify:cl-main`
 - `npm run verify:full-game:local-transport`
 - `npm run verify:full-game:authoritative-handshake`
+- `npm run verify:full-game:authoritative-input`
 - `npm run verify:full-game:render-source`
 - `npm run verify:full-game:three-renderer`
+- `npm run verify:web-config-writeconfig`
+- `npm run verify:web-config-write`
 - `npm run typecheck`
 
 ## Decisions
@@ -34,10 +37,13 @@ Quatrieme gros lot `cl_main.c` : bloc precache/autodownload complet `precache_ch
 - `PLAYER_MULT`, `ENV_CNT`, `TEXTURE_CNT` et `env_suf` sont exportes depuis `precache.ts` pour verification explicite de parite.
 - `CL_Precache_f` old-demo appelle maintenant le hook map avant registration sounds / prep refresh, comme le chemin C `CM_LoadMap`.
 - `CL_RequestNextDownload` reutilise l'info map chargee pendant la traversal complete pour verifier checksum puis enumerer les textures BSP sans double chargement dans la meme passe.
+- `cheatvar_t` est represente par le type inline des entrees `ClientMainContext.cheatvars`; `numcheatvars` est remplace par la longueur du tableau et la resolution paresseuse par entree.
+- Les statics C `extratime`, `lasttimecalled` et `isdown` sont portes comme `ClientMainContext.frame_extratime`, `ClientMainContext.frame_lasttimecalled` et `ClientMainContext.shutdown_in_progress` pour conserver un etat reentrant.
+- `CL_Init` reste un port hooke de l'ordre d'initialisation; `apps/web` initialise explicitement `CL_InitLocal` et `CL_InitInput`, tandis que le lifecycle qcommon appelle le frame client via `Qcommon_Frame`.
 
 ## Prochain lot recommande
 
-Bloc final runtime/init/frame : `CL_InitLocal`, `CL_WriteConfiguration`, `cheatvar_t`, `cheatvars`, `numcheatvars`, `CL_FixCvarCheats`, `CL_SendCommand`, `CL_Frame`, `CL_Init`, `CL_Shutdown` et locaux associes.
+Aucun lot restant dans `client_cl_main.c.md`: toutes les entrees sont `Valide` ou `Non applicable`.
 
 ## Blocages
 

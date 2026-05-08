@@ -143,16 +143,16 @@
 | `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Z_Malloc` | `packages/qcommon/src/qcommon.ts` | `Z_Malloc` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCheckByte` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `chktbl` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCRCByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCRCByte` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `n` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `p` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `x` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `chkb` | `packages/qcommon/src/qcommon.ts` | `chkb` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCheckByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCheckByte` | Valide | A redecouper | Stub fatal volontaire: le C appelle `Sys_Error` avant le bloc obsolete sous `#if 0`. |
+| `Quake-2-master/qcommon/common.c` | global | `chktbl` | `packages/qcommon/src/qcommon.ts` | `chktbl` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCRCByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCRCByte` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `n` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Variable locale de `COM_BlockSequenceCRCByte`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | global | `p` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Pointeur local de `COM_BlockSequenceCRCByte`; remplace par index `start` dans `chktbl`. |
+| `Quake-2-master/qcommon/common.c` | global | `x` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Accumulateur local de `COM_BlockSequenceCRCByte`; couvert avec la somme TS. |
+| `Quake-2-master/qcommon/common.c` | global | `chkb` | `packages/qcommon/src/qcommon.ts` | `chkb` | Non applicable | A redecouper | Buffer local de `COM_BlockSequenceCRCByte`; couvert avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | Non applicable | A redecouper | Variable locale de `COM_BlockSequenceCRCByte`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | Partiel | A redecouper | Fonction portee/testee, mais les flux visuels client encore attendus passent par des helpers locaux au lieu du helper qcommon. |
+| `Quake-2-master/qcommon/common.c` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | Partiel | A redecouper | Fonction portee/testee, mais les flux particules client visibles encore attendus passent par des helpers locaux au lieu du helper qcommon. |
 | `Quake-2-master/qcommon/common.c` | function | `Com_Error_f` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |

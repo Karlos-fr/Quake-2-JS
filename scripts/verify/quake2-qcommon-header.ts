@@ -105,6 +105,7 @@ import {
   CM_IMPULSE,
   CM_SIDE,
   CM_UP,
+  COM_BlockSequenceCheckByte,
   COM_BlockSequenceCRCByte,
   CPUSTRING,
   CRC_Block,
@@ -733,15 +734,26 @@ assert.equal(CRC_ProcessByte(0xffff, 49), 0xc782, "CRC_ProcessByte first-step mi
 assert.equal(CRC_Block(new Uint8Array([1, 2, 3, 4, 5]), 3), 0xadad, "CRC_Block partial-count mismatch");
 assert.equal(CRC_Block(new Uint8Array()), 0xffff, "CRC_Block empty mismatch");
 assert.equal(COM_BlockSequenceCRCByte(new Uint8Array([1, 2, 3, 4, 5]), 5, 7), 201, "COM_BlockSequenceCRCByte mismatch");
+assert.equal(COM_BlockSequenceCRCByte(new Uint8Array(), 0, 0), 10, "COM_BlockSequenceCRCByte empty block mismatch");
 assert.equal(
   COM_BlockSequenceCRCByte(new Uint8Array(Array.from({ length: 80 }, (_, index) => index)), 80, 1234),
   80,
   "COM_BlockSequenceCRCByte length clamp mismatch"
 );
+assert.equal(
+  COM_BlockSequenceCRCByte(new Uint8Array([9, 8, 7, 6]), 4, 1020),
+  50,
+  "COM_BlockSequenceCRCByte table wrap mismatch"
+);
 assert.throws(
   () => COM_BlockSequenceCRCByte(new Uint8Array([1]), 1, -1),
   /sequence < 0/,
   "COM_BlockSequenceCRCByte negative sequence mismatch"
+);
+assert.throws(
+  () => COM_BlockSequenceCheckByte(new Uint8Array([1]), 1, 0, 0),
+  /COM_BlockSequenceCheckByte called/,
+  "COM_BlockSequenceCheckByte disabled stub mismatch"
 );
 assert.equal(Com_BlockChecksum(new Uint8Array([97, 98, 99])), 1570836014, "Com_BlockChecksum mismatch");
 assert.equal(Com_BlockChecksum(new Uint8Array([97, 98, 99, 100]), 3), 1570836014, "Com_BlockChecksum length mismatch");
