@@ -386,6 +386,7 @@ interface FullGameRendererState {
   renderLoop: FullGameRenderLoop;
   camera: ReturnType<typeof createCamera>;
   ref: refexport_t;
+  menuOverlayPicsWarmed: boolean;
   consoleCanvas: HTMLCanvasElement;
 }
 
@@ -2494,6 +2495,10 @@ function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSecond
     ? prepareConsoleCanvasOverlay(runtime, page, renderer)
     : null;
   const drawAttractLoopMenu = shouldDrawAttractLoopMenuOverlay(runtime);
+  if (drawAttractLoopMenu && !renderer.menuOverlayPicsWarmed) {
+    warmFullGameMenuPics(renderer.ref);
+    renderer.menuOverlayPicsWarmed = true;
+  }
   renderer.renderLoop.renderFrame({
     source,
     elapsedSeconds: runtime.client.cl.time * 0.001,
@@ -2625,6 +2630,10 @@ async function ensureFullGameFrontendRenderer(
 }
 
 function warmFullGameFrontendPics(ref: refexport_t): void {
+  warmFullGameMenuPics(ref);
+}
+
+function warmFullGameMenuPics(ref: refexport_t): void {
   for (const pic of [
     "loading",
     "m_main_game",
@@ -2835,6 +2844,7 @@ async function createFullGameThreeRenderer(
     renderLoop,
     camera,
     ref: refGlHost.api,
+    menuOverlayPicsWarmed: false,
     consoleCanvas: document.createElement("canvas")
   };
 }
