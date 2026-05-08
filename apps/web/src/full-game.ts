@@ -235,6 +235,7 @@ import {
 } from "./web-config-storage.js";
 import { createWebSaveStorage, type WebSaveStorage } from "./web-save-storage.js";
 import { registerWebConfigCommands } from "./web-config-commands.js";
+import { mapFullGameDomKey } from "./full-game-keymap.js";
 import { createFullGameLocalTransport } from "./full-game-local-transport.js";
 import {
   createFullGameServerHost,
@@ -2802,7 +2803,7 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
     return;
   }
 
-  const key = mapDomKey(event);
+  const key = mapFullGameDomKey(event);
   if (key === null) {
     return;
   }
@@ -2945,7 +2946,7 @@ function handleKeyUp(event: KeyboardEvent, runtime: FullGameRuntime, page: FullG
     return;
   }
 
-  const key = mapDomKey(event);
+  const key = mapFullGameDomKey(event);
   if (key === null) {
     return;
   }
@@ -3076,68 +3077,6 @@ function isTextInputTarget(target: EventTarget | null): boolean {
   return target instanceof HTMLInputElement
     || target instanceof HTMLTextAreaElement
     || target instanceof HTMLSelectElement;
-}
-
-function mapDomKey(event: KeyboardEvent): number | null {
-  const functionKey = mapFunctionKey(event.key);
-  if (functionKey !== null) {
-    return functionKey;
-  }
-
-  switch (event.key) {
-    case "Escape": return K_ESCAPE;
-    case "Enter": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_ENTER : K_ENTER;
-    case "Tab": return K_TAB;
-    case "Backspace": return K_BACKSPACE;
-    case "Delete": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_DEL : K_DEL;
-    case "Home": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_HOME : K_HOME;
-    case "End": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_END : K_END;
-    case "PageUp": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_PGUP : K_PGUP;
-    case "PageDown": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_PGDN : K_PGDN;
-    case "Insert": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_INS : K_INS;
-    case "Shift": return K_SHIFT;
-    case "Control": return K_CTRL;
-    case "Alt": return K_ALT;
-    case "Pause": return K_PAUSE;
-    case " ": return K_SPACE;
-    case "ArrowUp": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_UPARROW : K_UPARROW;
-    case "ArrowDown": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_DOWNARROW : K_DOWNARROW;
-    case "ArrowLeft": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_LEFTARROW : K_LEFTARROW;
-    case "ArrowRight": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_RIGHTARROW : K_RIGHTARROW;
-    case "/": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_SLASH : "/".charCodeAt(0);
-    case "-": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_MINUS : "-".charCodeAt(0);
-    case "+": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_PLUS : "+".charCodeAt(0);
-    default:
-      return mapPrintableDomKey(event);
-  }
-}
-
-function mapFunctionKey(key: string): number | null {
-  const match = /^F(\d{1,2})$/.exec(key);
-  if (!match) {
-    return null;
-  }
-
-  const index = Number.parseInt(match[1], 10);
-  return index >= 1 && index <= 12 ? K_F1 + index - 1 : null;
-}
-
-function mapPrintableDomKey(event: KeyboardEvent): number | null {
-  const digitMatch = /^Digit(\d)$/.exec(event.code);
-  if (digitMatch) {
-    return digitMatch[1]!.charCodeAt(0);
-  }
-
-  if (event.key.length !== 1) {
-    return null;
-  }
-
-  const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
-  if (key.length !== 1) {
-    return null;
-  }
-
-  return key.charCodeAt(0);
 }
 
 function resizeCanvas(page: FullGamePage): void {

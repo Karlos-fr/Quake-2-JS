@@ -12,6 +12,7 @@ import { join } from "node:path";
 import {
   CL_InitInput,
   CL_InitLocal,
+  K_KP_MINUS,
   K_MOUSE1,
   Key_Event,
   Key_Init,
@@ -36,10 +37,12 @@ import {
   createCommandRuntime,
   createCvarRuntime
 } from "../../packages/qcommon/src/index.js";
+import { mapFullGameDomKey } from "../../apps/web/src/full-game-keymap.js";
 import { createFullGameLocalSession } from "../../apps/web/src/full-game-local-session.js";
 
 const repoRoot = process.cwd();
-const fullGameSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8");
+const fullGameSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8").replace(/\r\n/g, "\n");
+const keymapSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game-keymap.ts"), "utf8").replace(/\r\n/g, "\n");
 const pakPath = [
   join(repoRoot, "Quake 2", "baseq2", "pak0.pak"),
   join(repoRoot, "apps", "web", "public", "baseq2", "pak0.pak")
@@ -57,16 +60,48 @@ for (const expected of [
   "bind 8 \\\"use HyperBlaster\\\"",
   "bind g \\\"use grenades\\\"",
   "window.addEventListener(\"wheel\"",
-  "case \"Shift\": return K_SHIFT",
-  "case \"Control\": return K_CTRL",
-  "case \"Alt\": return K_ALT",
-  "case \"Insert\": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_INS : K_INS",
-  "case \"/\": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_SLASH",
-  "const digitMatch = /^Digit(\\d)$/.exec(event.code)",
-  "return index >= 1 && index <= 12 ? K_F1 + index - 1 : null"
+  "mapFullGameDomKey(event)"
 ]) {
   assert.ok(fullGameSource.includes(expected), `full-game keyboard mapping should include ${expected}`);
 }
+
+for (const expected of [
+  "case \"Shift\": return K_SHIFT",
+  "case \"Control\": return K_CTRL",
+  "case \"Alt\": return K_ALT",
+  "case \"Insert\": return event.location === DOM_KEY_LOCATION_NUMPAD ? K_KP_INS : K_INS",
+  "case \"/\": return event.location === DOM_KEY_LOCATION_NUMPAD ? K_KP_SLASH",
+  "const digitMatch = /^Digit(\\d)$/.exec(event.code)",
+  "return index >= 1 && index <= 12 ? K_F1 + index - 1 : null"
+]) {
+  assert.ok(keymapSource.includes(expected), `full-game keymap should include ${expected}`);
+}
+
+assert.ok(
+  keymapSource.indexOf("const topRowDigit = mapTopRowDigitKey(event);") < keymapSource.indexOf("switch (event.key)"),
+  "full-game keymap should prefer physical top-row digit codes before localized printable characters"
+);
+
+assert.equal(
+  mapFullGameDomKey({ key: "-", code: "Digit6", location: 0 }),
+  "6".charCodeAt(0),
+  "AZERTY top-row Digit6 should activate the Quake key 6, not the printable minus key"
+);
+assert.equal(
+  mapFullGameDomKey({ key: "_", code: "Digit8", location: 0 }),
+  "8".charCodeAt(0),
+  "AZERTY top-row Digit8 should activate the Quake key 8"
+);
+assert.equal(
+  mapFullGameDomKey({ key: "-", code: "Minus", location: 0 }),
+  "-".charCodeAt(0),
+  "a non-digit minus key should still map to the Quake minus key"
+);
+assert.equal(
+  mapFullGameDomKey({ key: "-", code: "NumpadSubtract", location: 3 }),
+  K_KP_MINUS,
+  "numpad minus should keep its keypad key number"
+);
 
 assert.ok(
   fullGameSource.includes("Key_Event(runtime.menu.keys, key, true, runtime.client.cls.realtime);\n    executeRuntimeCommandBuffer(runtime, page);\n    syncFullGameKeyDestination(runtime, page);"),
