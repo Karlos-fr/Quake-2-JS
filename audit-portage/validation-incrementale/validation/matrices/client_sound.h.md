@@ -10,16 +10,16 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/sound.h` | function | `S_Init` | `packages/client/src/sound-public.ts` | `S_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_Shutdown` | `packages/client/src/sound-public.ts` | `S_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_StartSound` | `packages/client/src/sound-public.ts` | `S_StartSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_StartLocalSound` | `packages/client/src/sound-public.ts` | `S_StartLocalSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_RawSamples` | `packages/client/src/sound-public.ts` | `S_RawSamples` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_StopAllSounds` | `packages/client/src/sound-public.ts` | `S_StopAllSounds` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_Update` | `packages/client/src/sound-public.ts` | `S_Update` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_Activate` | `packages/client/src/sound-public.ts` | `S_Activate` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_BeginRegistration` | `packages/client/src/sound-public.ts` | `S_BeginRegistration` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_RegisterSound` | `packages/client/src/sound-public.ts` | `S_RegisterSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_EndRegistration` | `packages/client/src/sound-public.ts` | `S_EndRegistration` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_FindName` | `packages/client/src/sound-public.ts` | `S_FindName` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/sound-public.ts` | `CL_GetEntitySoundOrigin` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_Init` | `packages/client/src/sound-public.ts` | `S_Init` | Partiel | A redecouper | Initialisation full-game via `S_DMA_Init` validee; action suivante: brancher `snd_restart`/shutdown web sur `S_DMA_Shutdown` puis `S_DMA_Init`. |
+| `Quake-2-master/client/sound.h` | function | `S_Shutdown` | `packages/client/src/sound-public.ts` | `S_Shutdown` | Partiel | A redecouper | Implementation `snd_dma.ts` validee; action suivante: brancher `apps/web` beforeunload/`snd_restart` sur `S_DMA_Shutdown`. |
+| `Quake-2-master/client/sound.h` | function | `S_StartSound` | `packages/client/src/sound-public.ts` | `S_StartSound` | Valide | A redecouper | Correction `packages/client/src/snd_dma.ts`: origine dynamique par `cl_entities[ent].lerp_origin` sans hook explicite. |
+| `Quake-2-master/client/sound.h` | function | `S_StartLocalSound` | `packages/client/src/sound-public.ts` | `S_StartLocalSound` | Partiel | A redecouper | Menu local branche; action suivante: brancher `onStartLocalSound` du parser full-game pour le son chat `misc/talk.wav`. |
+| `Quake-2-master/client/sound.h` | function | `S_RawSamples` | `packages/client/src/sound-public.ts` | `S_RawSamples` | Partiel | A redecouper | `snd_dma.ts` valide; action suivante: router les raw samples cinematic full-game via `S_DMA_RawSamples` ou documenter un adapter WebAudio explicite. |
+| `Quake-2-master/client/sound.h` | function | `S_StopAllSounds` | `packages/client/src/sound-public.ts` | `S_StopAllSounds` | Partiel | A redecouper | Commande `stopsound` et fin registration validees; action suivante: brancher le hook reconnect/disconnect full-game sur `S_DMA_StopAllSounds`. |
+| `Quake-2-master/client/sound.h` | function | `S_Update` | `packages/client/src/sound-public.ts` | `S_Update` | Valide | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_Activate` | `packages/client/src/sound-public.ts` | `S_Activate` | Partiel | A redecouper | Facade validee; action suivante: brancher focus/blur full-game sur l'activation audio ou justifier l'equivalent WebAudio. |
+| `Quake-2-master/client/sound.h` | function | `S_BeginRegistration` | `packages/client/src/sound-public.ts` | `S_BeginRegistration` | Valide | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_RegisterSound` | `packages/client/src/sound-public.ts` | `S_RegisterSound` | Valide | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_EndRegistration` | `packages/client/src/sound-public.ts` | `S_EndRegistration` | Valide | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_FindName` | `packages/client/src/sound-public.ts` | `S_FindName` | Valide | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/sound-public.ts` | `CL_GetEntitySoundOrigin` | Valide | A redecouper | Correction `packages/client/src/snd_dma.ts`: consommation runtime de l'origine d'entite sans hook applicatif. |

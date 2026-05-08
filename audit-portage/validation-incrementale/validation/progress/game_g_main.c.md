@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-08: reliquats `Partiel` historiques `sm_meat_index`, `snd_fry`, politiques `password`/`spectator_password`/`maxspectators`, `sv_maxvelocity`, `sv_gravity`.
 - 2026-05-06: gros lot frame/export/intermission `G_RunFrame`, `ShutdownGame`, `GetGameAPI`, `ClientEndServerFrames`, `CreateTargetChangeLevel`, `EndDMLevel`, `CheckDMRules`, `ExitLevel`, plus temporaires locaux associes.
 - 2026-05-03: entree `ReadLevel`.
 - 2026-05-01: entree `WriteLevel`.
@@ -24,6 +25,9 @@
 
 ## Verdict du lot
 
+- 2026-05-08 reliquats: `sv_maxvelocity` et `sv_gravity` sont maintenant `Valide`. `g_main.ts` initialise et miroir les cvars vers `runtime.maxvelocity`/`runtime.gravity`; `g_phys.ts` consomme ces valeurs runtime dans `SV_CheckVelocity`, `SV_AddGravity` et le seuil hitsound de `SV_Physics_Step`; `g_spawn.ts` conserve le branchement worldspawn de `sv_gravity`.
+- 2026-05-08 politiques `password`/`spectator_password`/`maxspectators`: correction partielle appliquee. Le chemin `G_RunFrame -> ClientBeginServerFrame -> spectator_respawn` utilise maintenant les hooks runtime de `g_main.ts`; `spectator_respawn` applique les rejets C avec `gi.cprintf`, `svc_stufftext`, `WriteString("spectator 0/1\n")` et `gi.unicast`. `ClientConnect` applique deja les gates IP/password/spectator/limite. Les trois cvars restent `Partiel` car le rejet `ClientConnect` C mute `userinfo` via `rejmsg`, alors que l'ABI TS passe une string immuable et `packages/server/src/sv_main.ts` relit encore le `rejmsg` dans la string originale.
+- 2026-05-08 `sm_meat_index` et `snd_fry`: conserves `Partiel`. Les consommateurs fonctionnent par registre d'assets (`runtime.assets.modelPaths` dans `g_misc.ts`, `registerGameSound("player/fry.wav")` dans `p_view.ts`), mais il n'existe toujours pas de champ global/runtime explicite appartenant a `g_main.c`/`g_spawn.c` qui stocke l'index comme dans le C.
 - Gros lot frame/export/intermission: valide pour les fonctions proprietaires `G_RunFrame`, `ShutdownGame`, `GetGameAPI`, `ClientEndServerFrames`, `CreateTargetChangeLevel`, `EndDMLevel`, `CheckDMRules` et `ExitLevel`. La comparaison C/TS couvre l'incrementation frame/time, `AI_SetSightClient`, la sortie d'intermission via `ExitLevel`, la boucle edicts avec `old_origin`, groundentity, clients par `ClientBeginServerFrame`, non-clients par `G_RunEntity`, regles deathmatch, construction playerstate et flush des effets moteur. `GetGameAPI` expose bien `RunFrame`, `Shutdown`, `ServerCommand`, edicts/num/max edicts; `ShutdownGame` libere `TAG_LEVEL` puis `TAG_GAME`.
 - Entrees locales `argptr`, `text`, `i`, `ent`, `command`: non applicables, ce sont des variables locales C generees comme pseudo-globals par la matrice; aucune entite runtime autonome n'est attendue. `Sys_Error` et `Com_Printf` sont non applicables dans `g_main.ts`: helpers de linkage `#ifndef GAME_HARD_LINKED`, remplaces dans le port modulaire par les hooks moteur/renderer (`gi.error`, `gi.dprintf`, imports ref).
 - Runtime: integre. Le chemin serveur appelle `SV_RunGameFrame -> ge.RunFrame -> G_RunFrame`; `SV_SpawnServer` lance aussi des frames de bootstrap. `apps/web`: integre via `full-game-server-host.ts`, qui enveloppe seulement la collision manquante pendant bootstrap et ne remplace pas la logique frame/intermission. `renderer-three`: pas de port direct attendu; les sorties visibles de `G_RunFrame` (modeles/frames via snapshots, playerstate/camera, sons, muzzleflash, temp entities, particules/dlights aval) passent par serveur/client puis les adapters renderer.
@@ -55,16 +59,16 @@
 - `g_select_empty`: valide. Cvar init portee avec default `0` et `CVAR_ARCHIVE`; `applyMainCvarsToRuntime` alimente `runtime.g_select_empty`, consomme par `p_weapon.ts` pour autoriser/refuser la selection d'armes sans munitions.
 - `dedicated`: valide. Cvar init portee avec default `0` et `CVAR_NOSET`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou le chat echo dedie suit la branche originale.
 - `filterban`: valide. Cvar init portee avec default `1` et flags `0`; la commande serveur portee dans `g_svcmds.ts` relit le cvar via `gi.cvar` pour `SV_FilterPacket` et `writeip`.
-- `sv_maxvelocity`: partiel. Cvar init portee avec default `2000` et flags `0`; en revanche le consommateur original `g_phys.c` est encore code en TS avec la constante locale `SV_MAXVELOCITY = 2000`, sans lecture du cvar/runtime.
-- `sv_gravity`: partiel. Cvar init portee avec default `800` et flags `0`; `runtime.gravity` et PMove client sont branches, et worldspawn applique bien `cvar_set("sv_gravity", ...)`. Reste un ecart cote `g_phys.ts`, qui utilise encore `SV_GRAVITY = 800` pour la physique entite et le seuil de hitsound au lieu d'une valeur runtime/cvar.
+- `sv_maxvelocity`: valide. Cvar init portee avec default `2000` et flags `0`; `applyMainCvarsToRuntime` alimente `runtime.maxvelocity`, et `g_phys.ts` consomme cette valeur dans les appels runtime a `SV_CheckVelocity`.
+- `sv_gravity`: valide. Cvar init portee avec default `800` et flags `0`; `runtime.gravity`, PMove client, worldspawn et `g_phys.ts` sont branches sur la valeur runtime pour la physique entite et le seuil de hitsound.
 - `sv_rollspeed`: valide apres correction. `g_main.ts` cree maintenant le cvar avec default `200` et flags `0`, puis `ClientEndServerFrames` le transmet a `p_view.ts` pour `SV_CalcRoll`.
 - `sv_rollangle`: valide apres correction. `g_main.ts` cree maintenant le cvar avec default `2` et flags `0`, puis `ClientEndServerFrames` le transmet a `p_view.ts` pour `SV_CalcRoll`.
 - `fraglimit`: valide. Cvar init portee avec default `0` et `CVAR_SERVERINFO`; `CheckDMRules` la relit depuis `G_RunFrame`, parcourt les clients actifs via `runtime.maxclients`, annonce `Fraglimit hit.` puis declenche `EndDMLevel`.
 - `timelimit`: valide. Cvar init portee avec default `0` et `CVAR_SERVERINFO`; `CheckDMRules` la relit depuis `G_RunFrame`, compare `level.time >= timelimit * 60`, annonce `Timelimit hit.` puis declenche `EndDMLevel`.
-- `password`: partiel. Cvar init portee avec default vide et `CVAR_USERINFO`; en revanche le rejet original des connexions non-spectateur et des sorties de spectator dans `p_client.c` est actuellement delegue a des hooks TS, sans hook par defaut dans `g_main.ts` qui lise `context.cvars.password`.
-- `spectator_password`: partiel. Cvar init portee avec default vide et `CVAR_USERINFO`; en revanche le rejet original des connexions/entrees spectator dans `p_client.c` est actuellement delegue a des hooks TS, sans hook par defaut dans `g_main.ts` qui lise `context.cvars.spectator_password`.
+- `password`: partiel. Cvar init portee avec default vide et `CVAR_USERINFO`; le rejet des connexions non-spectateur et des sorties de spectator est maintenant applique par les hooks par defaut `g_main.ts`. Reste l'ecart `ClientConnect`/serveur: le `rejmsg` C n'est pas propage via l'ABI TS immuable.
+- `spectator_password`: partiel. Cvar init portee avec default vide et `CVAR_USERINFO`; le rejet des connexions/entrees spectator est maintenant applique par les hooks par defaut `g_main.ts`. Reste l'ecart `ClientConnect`/serveur: le `rejmsg` C n'est pas propage via l'ABI TS immuable.
 - `maxclients`: valide. Cvar init portee avec default `4` et `CVAR_SERVERINFO | CVAR_LATCH`; `applyMainCvarsToRuntime` alimente `runtime.maxclients`/`game.maxclients`, `SpawnEntities` reserve les slots joueurs `1..maxclients`, et les boucles frame/DM/serveur consomment cette valeur.
-- `maxspectators`: partiel. Cvar init portee avec default `4` et `CVAR_SERVERINFO`; en revanche le comptage/rejet original des spectateurs en trop dans `p_client.c` est actuellement delegue a des hooks TS, sans hook par defaut dans `g_main.ts` qui lise `context.cvars.maxspectators`.
+- `maxspectators`: partiel. Cvar init portee avec default `4` et `CVAR_SERVERINFO`; le comptage/rejet original des spectateurs en trop est maintenant applique par les hooks par defaut `g_main.ts`. Reste l'ecart `ClientConnect`/serveur: le `rejmsg` C n'est pas propage via l'ABI TS immuable.
 - `maxentities`: valide. Cvar init portee avec default `1024` et `CVAR_LATCH`; `applyMainCvarsToRuntime` alimente `runtime.maxentities`/`game.maxentities`, `GetGameApi.max_edicts` l'expose, et `G_Spawn` applique la limite d'allocation.
 - `g_edicts`: valide. Le pointeur global C est porte comme tableau `context.runtime.entities`, expose par `GetGameApi().edicts`; `SpawnEntities` reconstruit ce tableau avec worldspawn en slot 0, joueurs reserves en `1..maxclients`, entites map ensuite, puis body queue/player trail. Les chemins serveur consomment `ge.edicts`/`ge.num_edicts` pour snapshots, world traces et frames.
 - `deathmatch`: valide. Cvar init portee avec default `0` et `CVAR_LATCH`; `applyMainCvarsToRuntime` alimente `runtime.deathmatch`, consomme par spawn filtering, DM rules et gameplay.
@@ -77,6 +81,17 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-08, couverture ajoutee pour `spectator_respawn` via `G_RunFrame`: mauvais `spectator_password`, limite `maxspectators`, mauvais `password`, `cprintf`, `svc_stufftext`, `WriteString("spectator 0/1\n")` et `unicast`.
+- `npm run verify:g-phys`: ok le 2026-05-08, confirme `runtime.maxvelocity` dans `G_RunEntity`/`SV_CheckVelocity` et `runtime.gravity` dans `SV_AddGravity`/physique toss.
+- `npm run verify:g-spawn`: ok le 2026-05-08, confirme l'application worldspawn de `sv_gravity`.
+- `npm run verify:p-client`: ok le 2026-05-08, confirme que les chemins player lifecycle restent valides apres mise a jour documentaire des hooks.
+- `npm run verify:g-misc`: ok le 2026-05-08, confirme les consommateurs gib/sm_meat via registre d'assets.
+- `npm run verify:p-view`: ok le 2026-05-08, confirme `G_SetClientSound` et `player/fry.wav` via registre runtime.
+- `npm run verify:full-game:server-host`: ok le 2026-05-08, confirme que le flux `apps/web` server-backed continue d'utiliser `GetGameApi`.
+- `npm run verify:web-render-order`: ok le 2026-05-08, preuve renderer/web aval pour les sorties snapshots normales.
+- `npm run verify:full-game:audio-routing`: ok le 2026-05-08, preuve aval audio web pour les sorties son runtime.
+- `npm run typecheck`: ok le 2026-05-08.
+- `npm run verify:full-game:three-renderer`: bloque le 2026-05-08 avant d'exercer ce lot sur l'assertion existante `pointer lock should accept the clicked renderer viewport child`; aucune correction appliquee hors perimetre renderer.
 - `npm run verify:g-main`: ok le 2026-05-06, couverture renforcee pour `GetGameApi().RunFrame`/`Shutdown`/`ServerCommand` et pour la branche `G_RunFrame -> ExitLevel`.
 - `npm run verify:g-main`: ok le 2026-05-03, couverture ajoutee pour `GetGameApi().ReadLevel`: delegation au port `g_save.ts`, liberation `TAG_LEVEL`, restauration de `level.time`, d'un edict `inuse` et de ses champs.
 - `npm run verify:g-save`: ok le 2026-05-03, confirme `ReadLevel` sur donnees level/edict, references, callbacks, relink, slots clients et erreurs de marqueurs.
@@ -243,12 +258,12 @@
 - Blocage hors lot: `verify:full-game:render-source` echoue sur un import `packages/client/src/types.js` absent avant de tester le flux; laisse ouvert pour le fichier/proprietaire concerne.
 - Correction appliquee dans `packages/game/src/g_main.ts`: ajout de `sv_rollspeed`/`sv_rollangle` au contexte cvars, init C-equivalente, et transmission a `ClientEndServerFrame`.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: assertions de defaults/flags du lot, mirroring runtime `g_select_empty`/`sv_gravity`, et verification du roll branche par cvars.
-- Pas de correction appliquee dans `packages/game/src/g_phys.ts`: `sv_maxvelocity` et le reliquat `sv_gravity` dependent du port de `g_phys.c`, fichier potentiellement traite par un autre agent; statuts gardes `Partiel` avec action suivante explicite.
+- Verification 2026-05-08: `packages/game/src/g_phys.ts` consomme maintenant `runtime.maxvelocity` et `runtime.gravity` dans les chemins runtime; `sv_maxvelocity` et `sv_gravity` sont repasses `Valide`.
 - `apps/web`: integration jugee presente via `full-game-server-host.ts` et le runtime server-backed. Aucune logique web parallele ne remplace `g_select_empty`, `filterban`, les cvars physiques ou le roll.
 - `packages/renderer-three`: pas d'integration directe attendue. Le roll/vue et les entites visibles arrivent via les etats client/serveur deja produits; `filterban`, `dedicated`, `g_select_empty` et les cvars physiques ne produisent pas de sortie renderer directe.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: ajout d'assertions ciblees sur les defaults/flags des cvars du lot.
-- Pas de correction runtime appliquee pour `password`/`spectator_password`/`maxspectators`: le comportement C depend de `p_client.c` et la version TS actuelle documente explicitement une delegation aux hooks. Une correction fidele toucherait la frontiere `g_main.ts`/`p_client.ts` et doit etre traitee dans un lot dedie ClientConnect/spectator_respawn.
-- `apps/web`: integration presente pour les cvars de regles via le runtime server-backed (`full-game-server-host.ts`) et les ecritures de menu/client; aucune logique web parallele ne remplace `CheckDMRules`. Les politiques password/spectator ne sont pas compensees cote web.
+- Correction 2026-05-08 appliquee pour `password`/`spectator_password`/`maxspectators`: `G_RunFrame` passe les hooks runtime par defaut a `ClientBeginServerFrame`, `g_main.ts` ajoute `validateSpectatorRespawn`, et `scripts/verify/quake2-g-main.ts` couvre les rejets spectator password, limite spectator et password joueur. Les statuts restent `Partiel` seulement pour la propagation `ClientConnect` de `rejmsg` vers le serveur TS.
+- `apps/web`: integration presente via le runtime server-backed (`full-game-server-host.ts`); aucune logique web parallele ne remplace les politiques password/spectator. Le manque restant est la frontiere serveur/game du `rejmsg`, pas une compensation web.
 - `packages/renderer-three`: aucune integration directe attendue pour ce lot. Les cvars de regles et de capacite n'emettent pas de donnees de rendu; les entites visibles atteignent le renderer via snapshots client/serveur.
 - Correction appliquee dans `packages/game/src/g_main.ts`: ajout de la normalisation `skill` au debut de `SpawnEntities`.
 - `apps/web`: integration jugee presente via `full-game-server-host.ts`, qui instancie `GetGameApiFunction` avec un runtime serveur-backed; `full-game.ts`/`full-game-command-bridge.ts` seedent ou forcent les cvars menu/newgame sans remplacer la logique gameplay.
@@ -263,4 +278,4 @@
 
 ## Prochain lot recommande
 
-- Aucune ligne `A verifier` restante dans `game_g_main.c.md`. Prochain lot recommande: traiter les reliquats `Partiel` historiques (`sm_meat_index`, `snd_fry`, politiques `password`/`spectator_password`/`maxspectators`, `sv_maxvelocity`, reliquat `sv_gravity`) si le coordinateur veut fermer le statut global `Partiel`.
+- Aucune ligne `A verifier` restante dans `game_g_main.c.md`. Prochain lot recommande: traiter les cinq reliquats `Partiel` restants. `sm_meat_index`/`snd_fry` demandent une decision ou correction d'ownership sur les globals d'assets (`runtime.ts`, `g_spawn.ts`, `g_misc.ts`, `p_view.ts`). `password`/`spectator_password`/`maxspectators` demandent une correction de propagation du rejet `ClientConnect` (`rejmsg`) a la frontiere `game_export_t`/`packages/server/src/sv_main.ts`.

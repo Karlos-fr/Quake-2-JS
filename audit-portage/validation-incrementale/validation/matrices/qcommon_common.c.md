@@ -151,8 +151,8 @@
 | `Quake-2-master/qcommon/common.c` | global | `x` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Accumulateur local de `COM_BlockSequenceCRCByte`; couvert avec la somme TS. |
 | `Quake-2-master/qcommon/common.c` | global | `chkb` | `packages/qcommon/src/qcommon.ts` | `chkb` | Non applicable | A redecouper | Buffer local de `COM_BlockSequenceCRCByte`; couvert avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | Non applicable | A redecouper | Variable locale de `COM_BlockSequenceCRCByte`; couverte avec la fonction. |
-| `Quake-2-master/qcommon/common.c` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | Partiel | A redecouper | Fonction portee/testee, mais les flux visuels client encore attendus passent par des helpers locaux au lieu du helper qcommon. |
-| `Quake-2-master/qcommon/common.c` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | Partiel | A redecouper | Fonction portee/testee, mais les flux particules client visibles encore attendus passent par des helpers locaux au lieu du helper qcommon. |
+| `Quake-2-master/qcommon/common.c` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_Error_f` | `packages/qcommon/src/qcommon.ts` | `Com_Error_f` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local de construction de la cvar `version`; couvert par `Qcommon_Init`. |

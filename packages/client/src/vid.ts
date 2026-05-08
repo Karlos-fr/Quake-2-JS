@@ -29,6 +29,8 @@ export interface viddef_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript host hooks for client/vid.h)
  * Category: New
  * Purpose: Describe the host-side implementation hooks for the `VID_*` procedures declared by `client/vid.h`.
  *
@@ -45,6 +47,8 @@ export interface ClientVidHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript context replacing the C `viddef` global)
  * Category: New
  * Purpose: Group the header-visible global video state with the pending `VID_*` implementation hooks.
  *
@@ -57,6 +61,8 @@ export interface ClientVidContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript factory for client/vid.h state)
  * Category: New
  * Purpose: Create a zero-initialized `viddef_t` matching the public `client/vid.h` global state.
  *
@@ -71,6 +77,8 @@ export function createVidDef(): viddef_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript context factory for client/vid.h)
  * Category: New
  * Purpose: Create the explicit context replacing the C global `viddef` plus the public `VID_*` hooks.
  *

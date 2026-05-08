@@ -35,6 +35,8 @@ import {
   Cbuf_AddText,
   Cbuf_Execute,
   Cmd_Init,
+  CS_MODELS,
+  RF_WEAPONMODEL,
   STAT_AMMO,
   STAT_ARMOR,
   Cvar_Init,
@@ -342,5 +344,51 @@ for (let frame = 0; frame < 12; frame += 1) {
 }
 
 assert.equal(client.cl.frame.playerstate.stats[STAT_AMMO], 50, "give all should grant railgun ammo so the original use command can select it");
+
+Cbuf_AddText(cmd, "use Grenade Launcher\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 12; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+let playerState = client.cl.frame.playerstate;
+assert.equal(
+  client.cl.configstrings[CS_MODELS + playerState.gunindex],
+  "models/weapons/v_launch/tris.md2",
+  "key-6 Grenade Launcher use path should select the launcher view model"
+);
+
+Cbuf_AddText(cmd, "use HyperBlaster\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 12; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+playerState = client.cl.frame.playerstate;
+assert.equal(
+  client.cl.configstrings[CS_MODELS + playerState.gunindex],
+  "models/weapons/v_hyperb/tris.md2",
+  "key-8 HyperBlaster use path should select the hyperblaster view model"
+);
+const hyperBlasterRenderFrame = createFullGameServerRenderSource(client, { cvar }).refreshFrame;
+const hyperBlasterViewWeapon = hyperBlasterRenderFrame?.entities.find((entity) => (entity.flags & RF_WEAPONMODEL) !== 0) ?? null;
+assert.ok(hyperBlasterViewWeapon, "HyperBlaster should append a first-person weapon render entity");
+assert.equal(
+  client.cl.configstrings[CS_MODELS + hyperBlasterViewWeapon.modelindex],
+  "models/weapons/v_hyperb/tris.md2",
+  "HyperBlaster render entity should resolve to the hyperblaster view model"
+);
 
 console.log("quake2-full-game-authoritative-input: ok");

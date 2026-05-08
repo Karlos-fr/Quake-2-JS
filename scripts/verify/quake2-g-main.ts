@@ -12,7 +12,7 @@
 import { strict as assert } from "node:assert";
 
 import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_FIXED_FOV, DF_SAME_LEVEL, MZ_BLASTER, MZ_LOGIN, MZ_LOGOUT, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
-import { MOVETYPE_NONE, MOVETYPE_NOCLIP, TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
+import { MOVETYPE_NONE, MOVETYPE_NOCLIP, TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_stufftext, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
 import { CheckDMRules, ClientCommand, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, createGameMainContext } from "../../packages/game/src/g_main.js";
@@ -20,13 +20,16 @@ import { SpawnEntities, single_statusbar } from "../../packages/game/src/g_spawn
 
 const dprints: string[] = [];
 const bprints: string[] = [];
+const cprints: string[] = [];
 const freeTags: number[] = [];
 const addedCommands: string[] = [];
 const writeBytes: number[] = [];
 const writeShorts: number[] = [];
+const writeStrings: string[] = [];
 const writePositions: Array<[number, number, number]> = [];
 const writeDirs: Array<[number, number, number]> = [];
 const multicasts: Array<{ origin: [number, number, number]; to: number }> = [];
+const unicasts: Array<{ ent: number; reliable: boolean }> = [];
 const unlinkedEntities: number[] = [];
 const command = { argv: ["sv"], args: "" };
 const cvars = new Map<string, cvar_t>();
@@ -38,7 +41,9 @@ const imports = {
   dprintf: (fmt, ...args) => {
     dprints.push(formatPrintf(fmt, args));
   },
-  cprintf: () => {},
+  cprintf: (_ent, _printLevel, fmt, ...args) => {
+    cprints.push(formatPrintf(fmt, args));
+  },
   centerprintf: () => {},
   sound: () => {},
   positioned_sound: () => {},
@@ -69,7 +74,9 @@ const imports = {
   multicast: (origin, to) => {
     multicasts.push({ origin: [...origin], to });
   },
-  unicast: () => {},
+  unicast: (ent, reliable) => {
+    unicasts.push({ ent: ent.index, reliable });
+  },
   WriteChar: () => {},
   WriteByte: (value) => {
     writeBytes.push(value);
@@ -79,7 +86,9 @@ const imports = {
   },
   WriteLong: () => {},
   WriteFloat: () => {},
-  WriteString: () => {},
+  WriteString: (value) => {
+    writeStrings.push(value);
+  },
   WritePosition: (value) => {
     writePositions.push([...value]);
   },
@@ -480,6 +489,73 @@ assert.equal(
 );
 assert.equal(connectRuntime.entities[2]!.client!.pers.spectator, true, "ClientConnect must apply spectator userinfo");
 assert.equal(configstrings.get(CS_PLAYERSKINS + 1), "spec\\", "ClientConnect must publish spectator userinfo through the player skin configstring");
+
+const spectatorRuntime = createGameRuntimeFromBspEntities([
+  { properties: { classname: "worldspawn" } },
+  { properties: { classname: "player" } }
+]);
+spectatorRuntime.maxclients = 1;
+spectatorRuntime.deathmatch = true;
+spectatorRuntime.entities[1]!.client = attachGameClient(spectatorRuntime.entities[1]!);
+spectatorRuntime.entities[1]!.inuse = true;
+const spectatorApi = GetGameApi(imports, { runtime: spectatorRuntime });
+spectatorApi.Init();
+setCvar("deathmatch", "1", CVAR_LATCH);
+setCvar("maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
+setCvar("password", "secret", CVAR_USERINFO);
+setCvar("spectator_password", "watch", CVAR_USERINFO);
+setCvar("maxspectators", "2", CVAR_SERVERINFO);
+spectatorRuntime.deathmatch = true;
+spectatorRuntime.maxclients = 1;
+
+writeBytes.length = 0;
+writeStrings.length = 0;
+unicasts.length = 0;
+cprints.length = 0;
+spectatorRuntime.framenum = 50;
+spectatorRuntime.entities[1]!.client!.pers.spectator = true;
+spectatorRuntime.entities[1]!.client!.resp.spectator = false;
+spectatorRuntime.entities[1]!.client!.pers.userinfo = "\\spectator\\bad";
+spectatorRuntime.entities[1]!.client!.respawn_time = 0;
+spectatorApi.RunFrame();
+assert.equal(spectatorRuntime.entities[1]!.client!.pers.spectator, false, "spectator_respawn must clear spectator after a bad spectator password");
+assert.equal(cprints.at(-1), "Spectator password incorrect.\n", "spectator_respawn must cprintf a bad spectator password");
+assert.equal(writeBytes.at(-1), svc_stufftext, "spectator_respawn must emit stufftext after a bad spectator password");
+assert.equal(writeStrings.at(-1), "spectator 0\n", "spectator_respawn must reset the spectator userinfo cvar after a bad spectator password");
+assert.deepEqual(unicasts.at(-1), { ent: 1, reliable: true }, "spectator_respawn must unicast the spectator reset command");
+
+setCvar("spectator_password", "none", CVAR_USERINFO);
+setCvar("maxspectators", "1", CVAR_SERVERINFO);
+writeBytes.length = 0;
+writeStrings.length = 0;
+unicasts.length = 0;
+cprints.length = 0;
+spectatorRuntime.framenum = 100;
+spectatorRuntime.entities[1]!.client!.pers.spectator = true;
+spectatorRuntime.entities[1]!.client!.resp.spectator = false;
+spectatorRuntime.entities[1]!.client!.pers.userinfo = "\\spectator\\1";
+spectatorRuntime.entities[1]!.client!.respawn_time = 0;
+spectatorApi.RunFrame();
+assert.equal(spectatorRuntime.entities[1]!.client!.pers.spectator, false, "spectator_respawn must clear spectator when maxspectators is full");
+assert.equal(cprints.at(-1), "Server spectator limit is full.", "spectator_respawn must cprintf the spectator limit message");
+assert.equal(writeBytes.at(-1), svc_stufftext, "spectator_respawn must emit stufftext after spectator limit rejection");
+assert.equal(writeStrings.at(-1), "spectator 0\n", "spectator_respawn must reset the spectator cvar after spectator limit rejection");
+
+setCvar("password", "secret", CVAR_USERINFO);
+writeBytes.length = 0;
+writeStrings.length = 0;
+unicasts.length = 0;
+cprints.length = 0;
+spectatorRuntime.framenum = 150;
+spectatorRuntime.entities[1]!.client!.pers.spectator = false;
+spectatorRuntime.entities[1]!.client!.resp.spectator = true;
+spectatorRuntime.entities[1]!.client!.pers.userinfo = "\\password\\bad";
+spectatorRuntime.entities[1]!.client!.respawn_time = 0;
+spectatorApi.RunFrame();
+assert.equal(spectatorRuntime.entities[1]!.client!.pers.spectator, true, "spectator_respawn must restore spectator after a bad game password");
+assert.equal(cprints.at(-1), "Password incorrect.\n", "spectator_respawn must cprintf a bad game password");
+assert.equal(writeBytes.at(-1), svc_stufftext, "spectator_respawn must emit stufftext after a bad game password");
+assert.equal(writeStrings.at(-1), "spectator 1\n", "spectator_respawn must restore the spectator userinfo cvar after a bad game password");
 
 connectRuntime.dmflags = 0;
 connectApi.ClientUserinfoChanged(connectRuntime.entities[1]!, "\\name\\rename\\skin\\female/athena\\spectator\\0\\fov\\200\\hand\\2");

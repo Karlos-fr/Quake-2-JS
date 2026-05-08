@@ -12,6 +12,7 @@
 
 import { strict as assert } from "node:assert";
 
+import type { viddef_t, vrect_t } from "../../packages/client/src/index.js";
 import {
   VID_CheckChanges,
   VID_Init,
@@ -22,6 +23,12 @@ import {
   createClientVidContext,
   createVidDef
 } from "../../packages/client/src/index.js";
+
+const rect: vrect_t = { x: 1, y: 2, width: 320, height: 200 };
+assert.deepEqual(rect, { x: 1, y: 2, width: 320, height: 200 }, "vrect_t shape mismatch");
+
+const explicitViddef: viddef_t = { width: 640, height: 480 };
+assert.deepEqual(explicitViddef, { width: 640, height: 480 }, "viddef_t explicit shape mismatch");
 
 const viddef = createVidDef();
 assert.deepEqual(viddef, { width: 0, height: 0 }, "createVidDef mismatch");

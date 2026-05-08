@@ -172,6 +172,21 @@ assert.equal(issuedChannel?.entnum, 9, "S_IssuePlaysound channel entnum mismatch
 assert.equal(issuedChannel?.entchannel, 2, "S_IssuePlaysound channel entchannel mismatch");
 assert.equal(issuedChannel?.end, context.sound.state.paintedtime + 32, "S_IssuePlaysound channel end mismatch");
 
+const dynamic = S_DMA_RegisterSound(context, "misc/dynamic.wav");
+assert.ok(dynamic, "S_RegisterSound should create dynamic spatialization fixture");
+dynamic!.cache = createCachedSfx(24);
+client.cls.state = connstate_t.ca_active;
+context.sound.state.listener_origin = [0, 0, 0];
+context.sound.state.listener_right = [1, 0, 0];
+client.cl_entities[11].lerp_origin = [100, 0, 0];
+S_DMA_StartSound(context, null, 11, 3, dynamic, 1, 1, 0);
+const dynamicQueued = context.sound.state.s_pendingplays.next;
+assert.ok(dynamicQueued && dynamicQueued !== context.sound.state.s_pendingplays, "S_StartSound should queue dynamic entity sounds");
+const dynamicIssued = S_DMA_IssuePlaysound(context, dynamicQueued!);
+assert.ok(dynamicIssued, "S_IssuePlaysound should issue dynamic entity sounds");
+assert.equal(dynamicIssued?.fixed_origin, false, "S_StartSound null origin should stay entity-following");
+assert.equal(dynamicIssued!.rightvol > dynamicIssued!.leftvol, true, "S_Spatialize should use the entity lerp origin without an explicit hook");
+
 S_DMA_StartLocalSound(context, "misc/talk.wav");
 const localQueued = context.sound.state.s_pendingplays.next;
 assert.ok(localQueued && localQueued !== context.sound.state.s_pendingplays, "S_StartLocalSound should queue one local playsound");

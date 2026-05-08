@@ -21,6 +21,7 @@ import {
   ATTN_IDLE,
   BYTE_DIRS,
   CS_LIGHTS,
+  crand,
   DirFromByte,
   EF_BFG,
   EF_FLIES,
@@ -79,6 +80,7 @@ import {
   EF_TRAP,
   EF_TRACKER,
   EF_TRACKERTRAIL,
+  frand,
   type entity_state_t,
   entity_event_t,
   temp_event_t,
@@ -204,7 +206,7 @@ export function CL_ParticleEffect(runtime: ClientRuntime, org: vec3_t, dir: vec3
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -240,7 +242,7 @@ export function CL_ParticleEffect2(runtime: ClientRuntime, org: vec3_t, dir: vec
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -276,7 +278,7 @@ export function CL_ParticleEffect3(runtime: ClientRuntime, org: vec3_t, dir: vec
     particle.accel[1] = 0;
     particle.accel[2] = PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -1527,9 +1529,9 @@ export function CL_LogoutEffect(
       particle.color = 0xe0 + (Math.floor(Math.random() * 0x7fffffff) & 7);
     }
 
-    particle.org[0] = org[0] - 16 + Math.random() * 32;
-    particle.org[1] = org[1] - 16 + Math.random() * 32;
-    particle.org[2] = org[2] - 24 + Math.random() * 56;
+    particle.org[0] = org[0] - 16 + frand() * 32;
+    particle.org[1] = org[1] - 16 + frand() * 32;
+    particle.org[2] = org[2] - 24 + frand() * 56;
     particle.vel[0] = crand() * 20;
     particle.vel[1] = crand() * 20;
     particle.vel[2] = crand() * 20;
@@ -1537,7 +1539,7 @@ export function CL_LogoutEffect(
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1.0 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (1.0 + frand() * 0.3);
   }
 }
 
@@ -1576,7 +1578,7 @@ export function CL_ItemRespawnParticles(runtimeOrOrg: ClientRuntime | vec3_t, ma
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY * 0.2;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1.0 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (1.0 + frand() * 0.3);
   }
 }
 
@@ -1614,7 +1616,7 @@ export function CL_ExplosionParticles(runtimeOrOrg: ClientRuntime | vec3_t, mayb
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -0.8 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -0.8 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -1666,7 +1668,7 @@ export function CL_BigTeleportParticles(runtimeOrOrg: ClientRuntime | vec3_t, ma
     particle.vel[2] = -100 + (Math.floor(Math.random() * 0x7fffffff) & 31);
     particle.accel[2] = PARTICLE_GRAVITY * 4;
     particle.alpha = 1.0;
-    particle.alphavel = -0.3 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -0.3 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -1717,7 +1719,7 @@ export function CL_BlasterParticles(
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -2043,7 +2045,7 @@ export function CL_BubbleTrail(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (1 + frand() * 0.2);
     particle.color = 4 + (Math.floor(Math.random() * 0x7fffffff) & 7);
     for (let component = 0; component < 3; component += 1) {
       particle.org[component] = move[component] + crand() * 2;
@@ -2226,7 +2228,7 @@ export function CL_BFGExplosionParticles(runtimeOrOrg: ClientRuntime | vec3_t, m
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -0.8 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -0.8 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -2792,7 +2794,7 @@ function spawnSimpleTrailParticles(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (options.alphaVelocityBase + Math.random() * options.alphaVelocityRandom);
+    particle.alphavel = -1.0 / (options.alphaVelocityBase + frand() * options.alphaVelocityRandom);
     particle.color = options.colorBase + (Math.floor(Math.random() * 0x7fffffff) & options.colorMask);
 
     for (let component = 0; component < 3; component += 1) {
@@ -2840,7 +2842,7 @@ function spawnDiminishingTrailParticles(
       particle.time = runtime.cl.time;
       particle.alpha = 1.0;
       if ((flags & EF_GIB) !== 0 || (flags & EF_GREENGIB) !== 0) {
-        particle.alphavel = -1.0 / (1 + Math.random() * 0.4);
+        particle.alphavel = -1.0 / (1 + frand() * 0.4);
         particle.color = ((flags & EF_GIB) !== 0 ? 0xe8 : 0xdb) + (Math.floor(Math.random() * 0x7fffffff) & 7);
         for (let component = 0; component < 3; component += 1) {
           particle.org[component] = move[component] + (crand() * orgscale);
@@ -2848,7 +2850,7 @@ function spawnDiminishingTrailParticles(
         }
         particle.vel[2] -= PARTICLE_GRAVITY;
       } else {
-        particle.alphavel = -1.0 / (1 + Math.random() * 0.2);
+        particle.alphavel = -1.0 / (1 + frand() * 0.2);
         particle.color = 4 + (Math.floor(Math.random() * 0x7fffffff) & 7);
         for (let component = 0; component < 3; component += 1) {
           particle.org[component] = move[component] + (crand() * orgscale);
@@ -2889,7 +2891,7 @@ function spawnRailTrailParticles(runtime: ClientRuntime, start: vec3_t, end: vec
     particle.time = runtime.cl.time;
     particle.accel = [0, 0, 0];
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (1 + frand() * 0.2);
     particle.color = 0x74 + (Math.floor(Math.random() * 0x7fffffff) & 7);
     for (let component = 0; component < 3; component += 1) {
       particle.org[component] = move[component] + (dir[component] * 3);
@@ -2910,7 +2912,7 @@ function spawnRailTrailParticles(runtime: ClientRuntime, start: vec3_t, end: vec
     particle.time = runtime.cl.time;
     particle.accel = [0, 0, 0];
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.6 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (0.6 + frand() * 0.2);
     particle.color = Math.floor(Math.random() * 0x7fffffff) & 15;
     for (let component = 0; component < 3; component += 1) {
       particle.org[component] = sparkMove[component] + (crand() * 3);
@@ -2942,7 +2944,7 @@ function spawnIonripperTrailParticles(runtime: ClientRuntime, start: vec3_t, end
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 0.5;
-    particle.alphavel = -1.0 / (0.3 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (0.3 + frand() * 0.2);
     particle.color = 0xe4 + (Math.floor(Math.random() * 0x7fffffff) & 3);
     particle.org = [...move] as vec3_t;
     particle.vel = left ? [10, 0, 0] : [-10, 0, 0];
@@ -3638,7 +3640,7 @@ function spawnTrapParticles(runtime: ClientRuntime, adjustedOrigin: vec3_t): voi
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.3 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (0.3 + frand() * 0.2);
     particle.color = 0xe0;
     for (let component = 0; component < 3; component += 1) {
       particle.org[component] = move[component] + crand();
@@ -3769,17 +3771,6 @@ function randomRicochetSound(): string | null {
     return "world/ric3.wav";
   }
   return null;
-}
-
-/**
- * Category: New
- * Purpose: Reproduce Quake's centered random float helper.
- *
- * Constraints:
- * - Must return values in the `[-1, 1)` family used throughout `cl_fx.c`.
- */
-function crand(): number {
-  return (Math.random() * 2.0) - 1.0;
 }
 
 /**

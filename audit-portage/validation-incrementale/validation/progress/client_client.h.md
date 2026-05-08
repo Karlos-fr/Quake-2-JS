@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc Rogue `CL_TrackerTrail`, `CL_Tracker_Explode`, `CL_TagTrail`, `CL_ColorFlash`, `CL_Tracker_Shell`, `CL_MonsterPlasma_Shell`, `CL_ColorExplosionParticles`, `CL_ParticleSmokeEffect`, puis `CL_Widowbeamout`, `CL_Nukeblast`, `CL_WidowSplash`.
-- Verdict du lot: Valide; proprietaire TS corrige dans la matrice (`cl_newfx.ts`) et branchements packet-entities Rogue ajoutes pour `EF_TRACKER`, `EF_TAGTRAIL` et `EF_TRACKERTRAIL` sans `EF_TRACKER`.
+- Dernier lot traite: declarations runtime/input `CL_ClearState`, `CL_ReadPackets`, `CL_ReadFromServer`, `CL_WriteToServer`, `CL_BaseMove`, `IN_CenterView`, `CL_KeyState`.
+- Verdict du lot: `CL_ClearState`, `CL_ReadPackets`, `CL_BaseMove`, `IN_CenterView` et `CL_KeyState` valides comme declarations header avec proprietaires TS reels; `CL_ReadFromServer` et `CL_WriteToServer` non applicables car prototypes sans definition ni appel C.
 
 ## Preuves session
 
@@ -78,7 +78,15 @@
 - Runtime: `CL_Quit_f`, `CL_Disconnect`, `CL_Disconnect_f`, `CL_Init`, `CL_FixUpGender`, `CL_PingServers_f`, `CL_Snd_Restart_f` sont atteignables par commandes console ou bootstrap client dans `cl_main.ts`; `CL_ParseLayout` est atteint par `CL_ParseServerMessage` sur `svc_layout`; `CL_RequestNextDownload` est atteint par `CL_Precache_f`; `CL_InitInput` initialise commandes/cvars input et `CL_SendCmd` est appele depuis `CL_SendCommand` via le bridge full-game.
 - `apps/web`: applicable et branche pour init, input, precache/download, layout, sons restart et deconnexion via `full-game.ts`/`local-client-controller.ts`; le navigateur consomme `cl.layout`, le packet path `CL_SendCmd`, les hooks precache et les hooks main sans logique parallele masquant le runtime.
 - `renderer-three`: pas de sortie scene 3D directe attendue pour commandes console, sons ou packets input; les sorties visibles indirectes de layout/HUD et d'entree camera passent par les render sources web et le refresh frame, verifies par les tests full-game/render-source et three-renderer.
+- Session declarations runtime/input header: source lue `Quake-2-master/client/client.h` lignes 484-494; definitions comparees dans `client/cl_main.c` (`CL_ClearState`, `CL_ReadPackets`) et `client/cl_input.c` (`CL_KeyState`, `CL_BaseMove`, `IN_CenterView`). `CL_ReadFromServer` et `CL_WriteToServer` ont ete recherches dans `Quake-2-master`, `packages`, `apps` et les matrices: uniquement prototypes dans `client.h`.
+- Cibles lues session declarations runtime/input header: `packages/client/src/cl_parse.ts`, `packages/client/src/cl_main.ts`, `packages/client/src/cl_input.ts`, `packages/client/src/index.ts`, `scripts/verify/quake2-client-header.ts`, `apps/web/src/full-game.ts`, `apps/web/src/full-game-render-source.ts`, `apps/web/src/local-client-controller.ts`, `packages/renderer-three/src`.
+- Corrections session declarations runtime/input header: `client_client.h.md` pointe maintenant vers les proprietaires TS reels (`cl_parse.ts`, `cl_main.ts`, `cl_input.ts`) et marque `CL_ReadFromServer` / `CL_WriteToServer` `Non applicable`; `scripts/verify/quake2-client-header.ts` verifie les exports header du lot et l'absence volontaire des deux prototypes orphelins.
+- Tests lances session declarations runtime/input header: `npm run verify:client:header`, `npm run verify:cl-main`, `npm run verify:cl-input`, `npm run verify:full-game:authoritative-input`, `npm run verify:full-game:render-source`, `npm run verify:full-game:local-transport`, `npm run verify:full-game:authoritative-handshake`, `npm run verify:web-render-order`, `npm run typecheck`.
+- Tests tentes non bloquants session declarations runtime/input header: `npm run verify:full-game:input-bindings` et `npm run verify:full-game:three-renderer` echouent hors fichiers autorises sur l'attente pointer-lock de `apps/web/src/full-game.ts` (`requestFullGamePointerLock(runtime, page, event.target)` / cible enfant viewport); correction web a traiter hors mission.
+- Runtime: `CL_ClearState` est atteint par `CL_Disconnect` et `CL_ParseServerData`, `CL_ReadPackets` par `CL_Frame` et les hooks full-game, `CL_BaseMove`/`CL_KeyState` par `CL_CreateCmd` puis `CL_SendCmd`, et `IN_CenterView` par la commande `centerview` enregistree dans `CL_InitInput`.
+- `apps/web`: applicable pour lecture reseau et input; le flux full-game appelle `CL_ReadPackets`, branche le bridge `CL_SendCmd` et transmet l'input runtime. Le manque pointer-lock detecte par deux harness web reste ouvert hors perimetre et ne remplace pas le flux runtime valide par `authoritative-input`.
+- `renderer-three`: pas de sortie directe pour `CL_ClearState`/`CL_ReadPackets`; les sorties visibles attendues du sous-lot input sont la camera/viewangles et les frames de scene, consommees via `ClientRefreshFrame`, `syncThreeCameraToRefresh`, `gl-world-scene-adapter`, `refresh-entity-sync`, `particle-sync`, `three-beam-sync` et `three-dlight-sync`. Le test `three-renderer` est bloque avant ces assertions par le meme manque pointer-lock web hors mission.
 
 ## Prochain lot recommande
 
-Continuer apres `CL_SendMove` avec le bloc client suivant reste `A verifier`: `CL_ClearState`, `CL_ReadPackets`, `CL_ReadFromServer`, `CL_WriteToServer`, puis `CL_BaseMove`, `IN_CenterView` et `CL_KeyState` si coherent.
+Continuer avec `Key_KeynumToString`, puis le bloc coherent suivant `CL_WriteDemoMessage`, `CL_Stop_f`, `CL_Record_f`; ensuite traiter `svc_strings` et `CL_ParseServerMessage` avec leur ownership `cl_parse.c`.

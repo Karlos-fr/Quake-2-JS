@@ -13,6 +13,7 @@
  */
 
 import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
 
 import {
   createSizeBuffer,
@@ -1092,6 +1093,23 @@ try {
 } finally {
   Math.random = originalRandom;
 }
+
+const clientFxSource = readFileSync("packages/client/src/cl_fx.ts", "utf8");
+const clientNewFxSource = readFileSync("packages/client/src/cl_newfx.ts", "utf8");
+assert.match(
+  clientFxSource,
+  /import \{[\s\S]*\bcrand,[\s\S]*\bfrand,[\s\S]*\} from "\.\.\/\.\.\/qcommon\/src\/index\.js";/,
+  "cl_fx should consume qcommon frand/crand helpers"
+);
+assert.match(
+  clientNewFxSource,
+  /import \{[^}]*\bcrand,\s*frand,[^}]*\} from "\.\.\/\.\.\/qcommon\/src\/index\.js";/,
+  "cl_newfx should consume qcommon frand/crand helpers"
+);
+assert.doesNotMatch(clientFxSource, /\nfunction crand\s*\(/, "cl_fx should not keep a local crand helper");
+assert.doesNotMatch(clientNewFxSource, /\nfunction crand\s*\(/, "cl_newfx should not keep a local crand helper");
+assert.doesNotMatch(clientFxSource, /Math\.random\(\) \* 2\.0/, "cl_fx crand calls should route through qcommon");
+assert.doesNotMatch(clientNewFxSource, /Math\.random\(\) \* 2\.0/, "cl_newfx crand calls should route through qcommon");
 
 const netchan = createNetchan(netsrc_t.NS_SERVER);
 assert.equal(netchan.sock, netsrc_t.NS_SERVER, "createNetchan sock mismatch");

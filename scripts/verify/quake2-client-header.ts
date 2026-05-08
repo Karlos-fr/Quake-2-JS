@@ -26,6 +26,8 @@ import {
   CL_BubbleTrail,
   CL_BubbleTrail2,
   CL_BuildRefreshFrame,
+  CL_BaseMove,
+  CL_ClearState,
   CL_DebugTrail,
   CL_Disconnect,
   CL_Disconnect_f,
@@ -53,6 +55,7 @@ import {
   CL_QuadTrail,
   CL_Quit_f,
   CL_RailTrail,
+  CL_ReadPackets,
   CL_RegisterSounds,
   CL_RequestNextDownload,
   CL_RunDLights,
@@ -76,6 +79,8 @@ import {
   createFrame,
   createKbutton,
   dltype_t,
+  IN_CenterView,
+  CL_KeyState,
   keydest_t
 } from "../../packages/client/src/index.js";
 import {
@@ -141,11 +146,18 @@ assert.equal(typeof CL_Snd_Restart_f, "function", "CL_Snd_Restart_f export misma
 assert.equal(typeof CL_RequestNextDownload, "function", "CL_RequestNextDownload export mismatch");
 assert.equal(typeof CL_InitInput, "function", "CL_InitInput export mismatch");
 assert.equal(typeof CL_SendCmd, "function", "CL_SendCmd export mismatch");
+assert.equal(typeof CL_ClearState, "function", "CL_ClearState export mismatch");
+assert.equal(typeof CL_ReadPackets, "function", "CL_ReadPackets export mismatch");
+assert.equal(typeof CL_BaseMove, "function", "CL_BaseMove export mismatch");
+assert.equal(typeof IN_CenterView, "function", "IN_CenterView export mismatch");
+assert.equal(typeof CL_KeyState, "function", "CL_KeyState export mismatch");
 assert.equal(CL_AddEntities, CL_BuildRefreshFrame, "CL_AddEntities should expose CL_BuildRefreshFrame adapter");
 assert.equal("CL_RunParticles" in clientIndex, false, "CL_RunParticles is an unused original header declaration without a C definition");
 assert.equal("IN_Accumulate" in clientIndex, false, "IN_Accumulate is an unused original header declaration without a C definition");
 assert.equal("CL_GetChallengePacket" in clientIndex, false, "CL_GetChallengePacket is an unused original header declaration without a C definition");
 assert.equal("CL_SendMove" in clientIndex, false, "CL_SendMove is an unused original header declaration without a C definition");
+assert.equal("CL_ReadFromServer" in clientIndex, false, "CL_ReadFromServer is an unused original header declaration without a C definition");
+assert.equal("CL_WriteToServer" in clientIndex, false, "CL_WriteToServer is an unused original header declaration without a C definition");
 
 assert.equal(connstate_t.ca_uninitialized, 0, "connstate_t ca_uninitialized mismatch");
 assert.equal(connstate_t.ca_disconnected, 1, "connstate_t ca_disconnected mismatch");

@@ -47,6 +47,7 @@ import {
   svc_layout,
   svc_muzzleflash,
   svc_muzzleflash2,
+  svc_stufftext,
   svc_temp_entity,
   TAG_GAME,
   TAG_LEVEL,
@@ -323,6 +324,7 @@ export function G_RunFrame(context: GameMainContext): void {
     return;
   }
 
+  const clientFrameHooks = createClientUserinfoHooks(context);
   for (let index = 0; index < context.runtime.entities.length; index += 1) {
     const ent = context.runtime.entities[index] ?? null;
     if (!ent?.inuse) {
@@ -340,7 +342,7 @@ export function G_RunFrame(context: GameMainContext): void {
     }
 
     if (index > 0 && index <= context.runtime.maxclients) {
-      ClientBeginServerFrame(ent, context.runtime, context.hooks);
+      ClientBeginServerFrame(ent, context.runtime, clientFrameHooks);
       continue;
     }
 
@@ -576,6 +578,7 @@ function createClientConnectHooks(context: GameMainContext): GameMainHooks {
  * Purpose: Reattach the `ClientUserinfoChanged`/disconnect engine side effects to the original `gi` callbacks.
  */
 function createClientUserinfoHooks(context: GameMainContext): GameMainHooks {
+  const userSpectatorRespawnValidation = context.hooks.onSpectatorRespawnValidation;
   return {
     ...context.hooks,
     onPrint: context.hooks.onPrint ?? ((printLevel, message) => {
@@ -601,7 +604,15 @@ function createClientUserinfoHooks(context: GameMainContext): GameMainHooks {
     }),
     isIntermission: context.hooks.isIntermission ?? ((runtime) => {
       return runtime.intermissiontime !== 0;
-    })
+    }),
+    onSpectatorRespawnValidation: (ent, runtime) => {
+      const validation = validateSpectatorRespawn(context, ent, runtime);
+      if (!validation.accepted) {
+        return validation;
+      }
+
+      return userSpectatorRespawnValidation?.(ent, runtime) ?? validation;
+    }
   };
 }
 
@@ -654,6 +665,71 @@ function validateClientConnect(context: GameMainContext, userinfo: string): { ac
   }
 
   return { accepted: true };
+}
+
+/**
+ * Original name: spectator_respawn connection gates
+ * Source: game/p_client.c through the `g_main.c` exported frame path
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Enforces the password and spectator capacity checks applied when a connected player toggles spectator mode.
+ *
+ * Porting notes:
+ * - The actual respawn body stays in `p_client.ts`; this adapter attaches the original `gi` print/stufftext
+ *   side effects required by the game export runtime.
+ */
+function validateSpectatorRespawn(
+  context: GameMainContext,
+  ent: GameEntity,
+  runtime: GameRuntime
+): { accepted: boolean; spectatorValue?: boolean } {
+  const client = ent.client;
+  if (!client) {
+    return { accepted: true };
+  }
+
+  if (client.pers.spectator) {
+    const value = Info_ValueForKey(client.pers.userinfo, "spectator");
+    const spectatorPassword = context.cvars.spectator_password?.string ?? "";
+    if (spectatorPassword.length > 0 && spectatorPassword !== "none" && spectatorPassword !== value) {
+      rejectSpectatorRespawn(context, ent, "Spectator password incorrect.\n", "spectator 0\n");
+      return { accepted: false, spectatorValue: false };
+    }
+
+    let numspec = 0;
+    const maxclients = Math.trunc(context.cvars.maxclients?.value ?? runtime.maxclients);
+    for (let index = 1; index <= maxclients; index += 1) {
+      const spectator = runtime.entities[index];
+      if (spectator?.inuse && spectator.client?.pers.spectator) {
+        numspec += 1;
+      }
+    }
+
+    if (numspec >= (context.cvars.maxspectators?.value ?? 0)) {
+      rejectSpectatorRespawn(context, ent, "Server spectator limit is full.", "spectator 0\n");
+      return { accepted: false, spectatorValue: false };
+    }
+
+    return { accepted: true };
+  }
+
+  const password = context.cvars.password?.string ?? "";
+  const value = Info_ValueForKey(client.pers.userinfo, "password");
+  if (password.length > 0 && password !== "none" && password !== value) {
+    rejectSpectatorRespawn(context, ent, "Password incorrect.\n", "spectator 1\n");
+    return { accepted: false, spectatorValue: true };
+  }
+
+  return { accepted: true };
+}
+
+function rejectSpectatorRespawn(context: GameMainContext, ent: GameEntity, message: string, command: string): void {
+  context.gi.cprintf(ent, PRINT_HIGH, message);
+  context.gi.WriteByte(svc_stufftext);
+  context.gi.WriteString(command);
+  context.gi.unicast(ent, true);
 }
 
 /**

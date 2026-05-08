@@ -929,6 +929,9 @@ export function Com_SetServerState(globals: QcommonGlobals, state: number): void
  *
  * Behavior:
  * - Returns one random float in the `[0, 1]` range using the original 15-bit `rand()` quantization.
+ *
+ * Porting notes:
+ * - Preserves `(rand() & 32767) / 32767` quantization, but not the libc RNG sequence.
  */
 export function frand(): number {
   return (Math.floor(Math.random() * 0x8000) & 32767) * (1.0 / 32767);
@@ -942,6 +945,9 @@ export function frand(): number {
  *
  * Behavior:
  * - Returns one random float in the `[-1, 1]` range using the original 15-bit `rand()` quantization.
+ *
+ * Porting notes:
+ * - Preserves `(rand() & 32767) * (2 / 32767) - 1` quantization, but not the libc RNG sequence.
  */
 export function crand(): number {
   return (Math.floor(Math.random() * 0x8000) & 32767) * (2.0 / 32767) - 1;

@@ -14,18 +14,23 @@
  */
 
 import { strict as assert } from "node:assert";
-import { PerspectiveCamera, BufferAttribute, Mesh } from "three";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { PerspectiveCamera, BufferAttribute, Mesh, Raycaster, Scene, Vector3 } from "three";
 
-import { createVirtualFilesystem, mountDirectory } from "../../packages/filesystem/src/index.js";
+import { createVirtualFilesystem, mountDirectory, mountPak } from "../../packages/filesystem/src/index.js";
 import { createClientRuntime, type ClientRefreshFrame } from "../../packages/client/src/index.js";
 import { ALIAS_VERSION, IDALIASHEADER } from "../../packages/formats/src/index.js";
 import { setLittleFloat, setLittleLong, setLittleShort, setUnsignedByte } from "../../packages/memory/src/binary-io.js";
+import { AngleVectors } from "../../packages/qcommon/src/index.js";
 import { CS_MODELS, RF_DEPTHHACK, RF_MINLIGHT, RF_TRANSLUCENT, RF_WEAPONMODEL } from "../../packages/qcommon/src/index.js";
 import { createThreeRefreshEntitySync } from "../../packages/renderer-three/src/index.js";
 
 main();
 
 function main(): void {
+  verifyRealPakWeaponModels();
+
   const filesystem = createVirtualFilesystem();
   mountDirectory(filesystem, "baseq2", {
     "models/weapons/v_test/tris.md2": createAliasBuffer(
@@ -146,6 +151,75 @@ function main(): void {
   console.log("quake2-web-view-weapon: ok");
 }
 
+function verifyRealPakWeaponModels(): void {
+  const repoRoot = process.cwd();
+  const pakPath = [
+    join(repoRoot, "Quake 2", "baseq2", "pak0.pak"),
+    join(repoRoot, "apps", "web", "public", "baseq2", "pak0.pak")
+  ].find((candidate) => existsSync(candidate));
+
+  assert.ok(pakPath, "pak0.pak must be available for real weapon model verification");
+
+  const filesystem = createVirtualFilesystem();
+  mountPak(filesystem, new Uint8Array(readFileSync(pakPath)), "pak0.pak");
+
+  for (const [modelPath, readyFrame] of [
+    ["models/weapons/v_launch/tris.md2", 17],
+    ["models/weapons/v_hyperb/tris.md2", 21]
+  ] as const) {
+    const runtime = createClientRuntime();
+    runtime.cl.configstrings[CS_MODELS + 1] = modelPath;
+    const sync = createThreeRefreshEntitySync(filesystem);
+    const camera = new PerspectiveCamera(75, 4 / 3, 4, 20000);
+    const scene = new Scene();
+    scene.add(camera);
+    const vieworg: [number, number, number] = [10, 20, 30];
+    const viewangles: [number, number, number] = [0, 0, 0];
+    const vectors = AngleVectors(viewangles);
+    camera.position.set(vieworg[0], vieworg[1], vieworg[2]);
+    camera.up.set(vectors.up[0], vectors.up[1], vectors.up[2]);
+    camera.lookAt(new Vector3(
+      vieworg[0] + vectors.forward[0],
+      vieworg[1] + vectors.forward[1],
+      vieworg[2] + vectors.forward[2]
+    ));
+    camera.updateMatrixWorld(true);
+    camera.updateProjectionMatrix();
+    sync.attachToCamera(camera);
+
+    const stats = sync.apply(runtime, createWeaponRefreshFrame({
+      modelindex: 1,
+      frame: readyFrame,
+      oldframe: readyFrame,
+      origin: vieworg,
+      oldorigin: vieworg,
+      angles: viewangles
+    }));
+
+    assert.equal(stats.renderedEntities, 1, `${modelPath} should render one weapon entity`);
+    assert.equal(stats.missingMd2AssetCount, 0, `${modelPath} should load from pak0.pak`);
+    assert.equal(sync.viewWeaponRoot.children.length, 1, `${modelPath} should attach to the view weapon root`);
+
+    const weaponRoot = sync.viewWeaponRoot.children[0] as Mesh;
+    const projected = collectProjectedMeshVertices(camera, weaponRoot);
+    const projectedBounds = summarizeProjectedBounds(projected);
+    const localBounds = summarizeLocalMeshBounds(weaponRoot);
+    const cameraSpaceBounds = summarizeCameraSpaceBounds(camera, weaponRoot);
+    assert.equal(
+      projected.some((point) => point.z >= -1 && point.z <= 1 && Math.abs(point.x) <= 1 && Math.abs(point.y) <= 1),
+      true,
+      `${modelPath} should project at least one vertex inside the active camera frustum (${projectedBounds}, local ${localBounds}, camera ${cameraSpaceBounds})`
+    );
+    assert.equal(
+      countScreenRayHits(camera, weaponRoot) > 0,
+      true,
+      `${modelPath} should be hittable by a screen-space camera ray`
+    );
+
+    sync.dispose();
+  }
+}
+
 function createWeaponRefreshFrame(overrides: Partial<ClientRefreshFrame["entities"][number]> = {}): ClientRefreshFrame {
   return {
     view: {
@@ -199,6 +273,123 @@ function readTextureData(map: unknown): Uint8Array {
   const data = (map as { image?: { data?: unknown } } | null)?.image?.data;
   assert.ok(data instanceof Uint8Array, "weapon skin texture data missing");
   return data;
+}
+
+function collectProjectedMeshVertices(camera: PerspectiveCamera, root: Mesh): Vector3[] {
+  const points: Vector3[] = [];
+  root.updateWorldMatrix(true, true);
+  root.traverse((object) => {
+    if (!(object instanceof Mesh) || !object.visible) {
+      return;
+    }
+
+    const position = object.geometry.getAttribute("position") as BufferAttribute | undefined;
+    if (!position) {
+      return;
+    }
+
+    for (let index = 0; index < position.count; index += 1) {
+      points.push(
+        new Vector3(
+          position.getX(index),
+          position.getY(index),
+          position.getZ(index)
+        ).applyMatrix4(object.matrixWorld).project(camera)
+      );
+    }
+  });
+
+  return points;
+}
+
+function summarizeProjectedBounds(points: readonly Vector3[]): string {
+  const min = [Infinity, Infinity, Infinity];
+  const max = [-Infinity, -Infinity, -Infinity];
+
+  for (const point of points) {
+    min[0] = Math.min(min[0], point.x);
+    min[1] = Math.min(min[1], point.y);
+    min[2] = Math.min(min[2], point.z);
+    max[0] = Math.max(max[0], point.x);
+    max[1] = Math.max(max[1], point.y);
+    max[2] = Math.max(max[2], point.z);
+  }
+
+  return `x=${min[0].toFixed(2)}..${max[0].toFixed(2)} y=${min[1].toFixed(2)}..${max[1].toFixed(2)} z=${min[2].toFixed(2)}..${max[2].toFixed(2)}`;
+}
+
+function summarizeCameraSpaceBounds(camera: PerspectiveCamera, root: Mesh): string {
+  const min = [Infinity, Infinity, Infinity];
+  const max = [-Infinity, -Infinity, -Infinity];
+  const cameraInverse = camera.matrixWorldInverse.clone();
+  root.updateWorldMatrix(true, true);
+  root.traverse((object) => {
+    if (!(object instanceof Mesh) || !object.visible) {
+      return;
+    }
+
+    const position = object.geometry.getAttribute("position") as BufferAttribute | undefined;
+    if (!position) {
+      return;
+    }
+
+    for (let index = 0; index < position.count; index += 1) {
+      const point = new Vector3(
+        position.getX(index),
+        position.getY(index),
+        position.getZ(index)
+      ).applyMatrix4(object.matrixWorld).applyMatrix4(cameraInverse);
+      min[0] = Math.min(min[0], point.x);
+      min[1] = Math.min(min[1], point.y);
+      min[2] = Math.min(min[2], point.z);
+      max[0] = Math.max(max[0], point.x);
+      max[1] = Math.max(max[1], point.y);
+      max[2] = Math.max(max[2], point.z);
+    }
+  });
+
+  return `x=${min[0].toFixed(2)}..${max[0].toFixed(2)} y=${min[1].toFixed(2)}..${max[1].toFixed(2)} z=${min[2].toFixed(2)}..${max[2].toFixed(2)}`;
+}
+
+function summarizeLocalMeshBounds(root: Mesh): string {
+  const min = [Infinity, Infinity, Infinity];
+  const max = [-Infinity, -Infinity, -Infinity];
+  root.traverse((object) => {
+    if (!(object instanceof Mesh) || !object.visible) {
+      return;
+    }
+
+    const position = object.geometry.getAttribute("position") as BufferAttribute | undefined;
+    if (!position) {
+      return;
+    }
+
+    for (let index = 0; index < position.count; index += 1) {
+      min[0] = Math.min(min[0], position.getX(index));
+      min[1] = Math.min(min[1], position.getY(index));
+      min[2] = Math.min(min[2], position.getZ(index));
+      max[0] = Math.max(max[0], position.getX(index));
+      max[1] = Math.max(max[1], position.getY(index));
+      max[2] = Math.max(max[2], position.getZ(index));
+    }
+  });
+
+  return `x=${min[0].toFixed(2)}..${max[0].toFixed(2)} y=${min[1].toFixed(2)}..${max[1].toFixed(2)} z=${min[2].toFixed(2)}..${max[2].toFixed(2)}`;
+}
+
+function countScreenRayHits(camera: PerspectiveCamera, root: Mesh): number {
+  const raycaster = new Raycaster();
+  let hits = 0;
+  for (let y = -0.9; y <= 0.9; y += 0.3) {
+    for (let x = -0.9; x <= 0.9; x += 0.3) {
+      raycaster.setFromCamera({ x, y }, camera);
+      if (raycaster.intersectObject(root, true).some((hit) => hit.object.visible)) {
+        hits += 1;
+      }
+    }
+  }
+
+  return hits;
 }
 
 function createAliasBuffer(

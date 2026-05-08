@@ -1402,7 +1402,8 @@ export function respawn(ent: GameEntity, runtime: GameRuntime, hooks: GamePlayer
  * - Applies the spectator-side respawn path when the player's spectator mode toggles.
  *
  * Porting notes:
- * - Passwords and server spectator-limit policies are delegated to one validation hook.
+ * - Passwords and server spectator-limit policies are delegated to one validation hook; the `g_main.c`
+ *   export adapter supplies the default original policy for server frames.
  */
 export function spectator_respawn(ent: GameEntity, runtime: GameRuntime, hooks: GamePlayerClientHooks = {}): void {
   const client = ent.client;
@@ -1498,7 +1499,8 @@ export function ClientUserinfoChanged(
  * - Initializes the client slot on connect and applies the first valid userinfo payload.
  *
  * Porting notes:
- * - External policy checks such as passwords, bans and spectator limits are delegated to hooks for now.
+ * - External policy checks such as passwords, bans and spectator limits are delegated to hooks; the `g_main.c`
+ *   export adapter supplies the default original policy for runtime connects.
  */
 export function ClientConnect(
   ent: GameEntity,

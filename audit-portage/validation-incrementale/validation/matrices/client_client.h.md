@@ -234,13 +234,13 @@
 | `Quake-2-master/client/client.h` | function | `CL_InitInput` | `packages/client/src/cl_input.ts` | `CL_InitInput` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_SendCmd` | `packages/client/src/cl_input.ts` | `CL_SendCmd` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_SendMove` |  |  | Non applicable | Prototype header sans definition ni appel dans `client/*`; le packet `clc_move` est construit dans `CL_SendCmd`. |
-| `Quake-2-master/client/client.h` | function | `CL_ClearState` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ReadPackets` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ReadFromServer` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_WriteToServer` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_BaseMove` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `IN_CenterView` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_KeyState` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ClearState` | `packages/client/src/cl_parse.ts` | `CL_ClearState` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ReadPackets` | `packages/client/src/cl_main.ts` | `CL_ReadPackets` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ReadFromServer` |  |  | Non applicable | A redecouper | Prototype header sans definition ni appel dans `client/*`; pas de port officiel attendu. |
+| `Quake-2-master/client/client.h` | function | `CL_WriteToServer` |  |  | Non applicable | A redecouper | Prototype header sans definition ni appel dans `client/*`; pas de port officiel attendu. |
+| `Quake-2-master/client/client.h` | function | `CL_BaseMove` | `packages/client/src/cl_input.ts` | `CL_BaseMove` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `IN_CenterView` | `packages/client/src/cl_input.ts` | `IN_CenterView` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_KeyState` | `packages/client/src/cl_input.ts` | `CL_KeyState` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `Key_KeynumToString` | `packages/client/src/keys.ts` | `Key_KeynumToString` | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_WriteDemoMessage` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_Stop_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |

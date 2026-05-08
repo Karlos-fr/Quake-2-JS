@@ -96,7 +96,7 @@ export interface ClientSndDmaState {
  * Purpose: Carry the extra host-side callbacks needed by the `snd_dma.c` port beyond the private `snd_loc.h` hooks.
  *
  * Constraints:
- * - Entity-origin lookup must remain injectable until the client refresh/runtime path is fully converged.
+ * - Entity-origin lookup remains injectable for adapters but defaults to the client lerp origins like `CL_GetEntitySoundOrigin`.
  */
 export interface ClientSndDmaHooks {
   onGetEntitySoundOrigin?: (ent: number) => vec3_t;
@@ -576,7 +576,7 @@ export function S_SpatializeOrigin(
  * Fidelity level: Close
  *
  * Behavior:
- * - Updates a channel's volumes from either a fixed origin or an entity sound origin hook.
+ * - Updates a channel's volumes from either a fixed origin or the current entity sound origin.
  */
 export function S_Spatialize(context: ClientSndDmaContext, ch: channel_t): void {
   if (ch.entnum === context.client.cl.playernum + 1) {
@@ -587,7 +587,7 @@ export function S_Spatialize(context: ClientSndDmaContext, ch: channel_t): void 
 
   const origin: vec3_t = ch.fixed_origin
     ? [...ch.origin]
-    : [...(context.hooks.onGetEntitySoundOrigin?.(ch.entnum) ?? [0, 0, 0])];
+    : getEntitySoundOrigin(context, ch.entnum);
 
   const volumes = S_SpatializeOrigin(context, origin, ch.master_vol, ch.dist_mult);
   ch.leftvol = volumes.left;
@@ -704,6 +704,18 @@ export function S_RegisterSexedSound(context: ClientSndDmaContext, entNumber: nu
   return S_AliasName(context, sexedFilename, maleFilename);
 }
 
+/**
+ * Original name: S_StartSound
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Validates one sound effect, loads its cache, builds a pending playsound and schedules it by server time.
+ *
+ * Porting notes:
+ * - Nullable `origin` preserves the original entity-following sound path; dynamic origin lookup occurs at spatialization time.
+ */
 export function S_StartSound(
   context: ClientSndDmaContext,
   origin: vec3_t | null,
@@ -824,6 +836,15 @@ export function S_ClearBuffer(context: ClientSndDmaContext): void {
   SNDDMA_Submit(context.sound);
 }
 
+/**
+ * Original name: S_StopAllSounds
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds pending/free playsound lists, clears active mixer channels and zeros the DMA buffer.
+ */
 export function S_StopAllSounds(context: ClientSndDmaContext): void {
   if (!context.state.sound_started) {
     return;
@@ -1306,6 +1327,19 @@ function resetChannel(channel: channel_t): void {
   channel.master_vol = reset.master_vol;
   channel.fixed_origin = reset.fixed_origin;
   channel.autosound = reset.autosound;
+}
+
+function getEntitySoundOrigin(context: ClientSndDmaContext, ent: number): vec3_t {
+  const hooked = context.hooks.onGetEntitySoundOrigin?.(ent);
+  if (hooked) {
+    return [...hooked];
+  }
+
+  if (ent < 0 || ent >= context.client.cl_entities.length) {
+    sndDmaError(context, ERR_DROP, "CL_GetEntitySoundOrigin: bad ent");
+  }
+
+  return [...context.client.cl_entities[ent].lerp_origin];
 }
 
 function copyVec3(source: vec3_t, target: vec3_t): void {

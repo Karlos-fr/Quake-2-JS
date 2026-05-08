@@ -196,7 +196,7 @@ function verifyParticleEffectRuntimeParticles(): void {
     )),
     "CL_ParticleEffect should apply jitter and local d * dir displacement"
   );
-  const expectedVelocity = ((randomUnit * 2) - 1) * 20;
+  const expectedVelocity = quantizedCrand(randomUnit) * 20;
   assert.ok(
     particles.every((particle) => (
       almostEqual(particle.vel[0], expectedVelocity)
@@ -206,7 +206,7 @@ function verifyParticleEffectRuntimeParticles(): void {
     "CL_ParticleEffect velocity crand scale mismatch"
   );
   assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "CL_ParticleEffect gravity mismatch");
-  const expectedAlphavel = -1.0 / (0.5 + (randomUnit * 0.3));
+  const expectedAlphavel = -1.0 / (0.5 + (quantizedFrand(randomUnit) * 0.3));
   assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, expectedAlphavel)), "CL_ParticleEffect alpha decay mismatch");
 
   const renderParticles = CL_AddParticles(runtime);
@@ -237,7 +237,7 @@ function verifyParticleEffect2RuntimeParticles(): void {
     )),
     "CL_ParticleEffect2 should apply jitter and local d = rand&7 displacement"
   );
-  const expectedVelocity = ((randomUnit * 2) - 1) * 20;
+  const expectedVelocity = quantizedCrand(randomUnit) * 20;
   assert.ok(
     particles.every((particle) => (
       almostEqual(particle.vel[0], expectedVelocity)
@@ -247,7 +247,7 @@ function verifyParticleEffect2RuntimeParticles(): void {
     "CL_ParticleEffect2 velocity crand scale mismatch"
   );
   assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "CL_ParticleEffect2 gravity mismatch");
-  const expectedAlphavel = -1.0 / (0.5 + (randomUnit * 0.3));
+  const expectedAlphavel = -1.0 / (0.5 + (quantizedFrand(randomUnit) * 0.3));
   assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, expectedAlphavel)), "CL_ParticleEffect2 alpha decay mismatch");
 
   const renderParticles = CL_AddParticles(runtime);
@@ -278,7 +278,7 @@ function verifyParticleEffect3RuntimeParticles(): void {
     )),
     "CL_ParticleEffect3 should apply jitter and local d = rand&7 displacement"
   );
-  const expectedVelocity = ((randomUnit * 2) - 1) * 20;
+  const expectedVelocity = quantizedCrand(randomUnit) * 20;
   assert.ok(
     particles.every((particle) => (
       almostEqual(particle.vel[0], expectedVelocity)
@@ -288,7 +288,7 @@ function verifyParticleEffect3RuntimeParticles(): void {
     "CL_ParticleEffect3 velocity crand scale mismatch"
   );
   assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 40), "CL_ParticleEffect3 positive gravity mismatch");
-  const expectedAlphavel = -1.0 / (0.5 + (randomUnit * 0.3));
+  const expectedAlphavel = -1.0 / (0.5 + (quantizedFrand(randomUnit) * 0.3));
   assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, expectedAlphavel)), "CL_ParticleEffect3 alpha decay mismatch");
 
   const renderParticles = CL_AddParticles(runtime);
@@ -747,7 +747,7 @@ function verifyBlasterRuntimeParticles(): void {
     )),
     "CL_BlasterParticles should apply jitter and local d = rand&15 displacement"
   );
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
   assert.ok(
     particles.every((particle) => (
       almostEqual(particle.vel[0], (direction[0] * 30) + (expectedCrand * 40))
@@ -757,7 +757,7 @@ function verifyBlasterRuntimeParticles(): void {
     "CL_BlasterParticles velocity should preserve dir * 30 + crand() * 40"
   );
   assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "CL_BlasterParticles gravity mismatch");
-  const expectedAlphavel = -1.0 / (0.5 + (randomUnit * 0.3));
+  const expectedAlphavel = -1.0 / (0.5 + (quantizedFrand(randomUnit) * 0.3));
   assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, expectedAlphavel)), "CL_BlasterParticles alpha decay mismatch");
 
   const renderParticles = CL_AddParticles(runtime);
@@ -806,7 +806,7 @@ function verifyBlasterTrailRuntimeParticles(): void {
   const start: vec3_t = [0, 0, 0];
   const end: vec3_t = [13, 0, 0];
   const randomUnit = 0.75;
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
 
   withMockRandom(randomUnit, () => {
     CL_BlasterTrail(runtime, start, end);
@@ -822,12 +822,18 @@ function verifyBlasterTrailRuntimeParticles(): void {
     particles.every((particle) => particle.vel[0] === expectedCrand * 5 && particle.vel[1] === expectedCrand * 5 && particle.vel[2] === expectedCrand * 5),
     "CL_BlasterTrail velocity jitter mismatch"
   );
-  const expectedAlphavel = -1.0 / (0.3 + (randomUnit * 0.2));
+  const expectedAlphavel = -1.0 / (0.3 + (quantizedFrand(randomUnit) * 0.2));
   assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_BlasterTrail alpha decay mismatch");
 
   const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
-  assert.deepEqual(emittedX, [0.5, 5.5, 10.5], "CL_BlasterTrail should advance move by the normalized vec * dec");
-  assert.ok(particles.every((particle) => particle.org[1] === 0.5 && particle.org[2] === 0.5), "CL_BlasterTrail origin jitter mismatch");
+  assert.ok(
+    emittedX.every((value, index) => almostEqual(value, (index * 5) + expectedCrand)),
+    "CL_BlasterTrail should advance move by the normalized vec * dec"
+  );
+  assert.ok(
+    particles.every((particle) => almostEqual(particle.org[1], expectedCrand) && almostEqual(particle.org[2], expectedCrand)),
+    "CL_BlasterTrail origin jitter mismatch"
+  );
 
   const metadata = CL_BlasterTrail(start, end);
   assert.equal(metadata[0]?.kind, "blaster-trail", "CL_BlasterTrail metadata kind mismatch");
@@ -846,7 +852,7 @@ function verifyQuadTrailRuntimeParticles(): void {
   const start: vec3_t = [0, 0, 0];
   const end: vec3_t = [13, 0, 0];
   const randomUnit = 0.75;
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
 
   withMockRandom(randomUnit, () => {
     CL_QuadTrail(runtime, start, end);
@@ -862,12 +868,19 @@ function verifyQuadTrailRuntimeParticles(): void {
     particles.every((particle) => particle.vel[0] === expectedCrand * 5 && particle.vel[1] === expectedCrand * 5 && particle.vel[2] === expectedCrand * 5),
     "CL_QuadTrail velocity jitter mismatch"
   );
-  const expectedAlphavel = -1.0 / (0.8 + (randomUnit * 0.2));
+  const expectedAlphavel = -1.0 / (0.8 + (quantizedFrand(randomUnit) * 0.2));
   assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_QuadTrail alpha decay mismatch");
 
   const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
-  assert.deepEqual(emittedX, [8, 13, 18], "CL_QuadTrail should advance move by the normalized vec * dec");
-  assert.ok(particles.every((particle) => particle.org[1] === 8 && particle.org[2] === 8), "CL_QuadTrail origin jitter mismatch");
+  const expectedOffset = expectedCrand * 16;
+  assert.ok(
+    emittedX.every((value, index) => almostEqual(value, (index * 5) + expectedOffset)),
+    "CL_QuadTrail should advance move by the normalized vec * dec"
+  );
+  assert.ok(
+    particles.every((particle) => almostEqual(particle.org[1], expectedOffset) && almostEqual(particle.org[2], expectedOffset)),
+    "CL_QuadTrail origin jitter mismatch"
+  );
 
   const metadata = CL_QuadTrail(start, end);
   assert.equal(metadata[0]?.kind, "quad-trail", "CL_QuadTrail metadata kind mismatch");
@@ -886,7 +899,7 @@ function verifyFlagTrailRuntimeParticles(): void {
   const start: vec3_t = [0, 0, 0];
   const end: vec3_t = [13, 0, 0];
   const randomUnit = 0.75;
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
 
   withMockRandom(randomUnit, () => {
     CL_FlagTrail(runtime, start, end, 242);
@@ -902,12 +915,19 @@ function verifyFlagTrailRuntimeParticles(): void {
     particles.every((particle) => particle.vel[0] === expectedCrand * 5 && particle.vel[1] === expectedCrand * 5 && particle.vel[2] === expectedCrand * 5),
     "CL_FlagTrail velocity jitter mismatch"
   );
-  const expectedAlphavel = -1.0 / (0.8 + (randomUnit * 0.2));
+  const expectedAlphavel = -1.0 / (0.8 + (quantizedFrand(randomUnit) * 0.2));
   assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_FlagTrail alpha decay mismatch");
 
   const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
-  assert.deepEqual(emittedX, [8, 13, 18], "CL_FlagTrail should advance move by the normalized vec * dec");
-  assert.ok(particles.every((particle) => particle.org[1] === 8 && particle.org[2] === 8), "CL_FlagTrail origin jitter mismatch");
+  const expectedOffset = expectedCrand * 16;
+  assert.ok(
+    emittedX.every((value, index) => almostEqual(value, (index * 5) + expectedOffset)),
+    "CL_FlagTrail should advance move by the normalized vec * dec"
+  );
+  assert.ok(
+    particles.every((particle) => almostEqual(particle.org[1], expectedOffset) && almostEqual(particle.org[2], expectedOffset)),
+    "CL_FlagTrail origin jitter mismatch"
+  );
 
   const metadata = CL_FlagTrail(start, end, 115);
   assert.equal(metadata[0]?.kind, "flag-trail", "CL_FlagTrail metadata kind mismatch");
@@ -963,7 +983,7 @@ function verifyDiminishingTrailRuntimeParticles(): void {
   const old = runtime.cl_entities[7];
   old.trailcount = 950;
   const randomUnit = 0;
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
 
   withMockRandom(randomUnit, () => {
     CL_DiminishingTrail(runtime, start, end, old, EF_GIB);
@@ -981,7 +1001,7 @@ function verifyDiminishingTrailRuntimeParticles(): void {
     particles.every((particle) => particle.vel[0] === expectedCrand * 15 && particle.vel[1] === expectedCrand * 15 && particle.vel[2] === (expectedCrand * 15) - 40),
     "CL_DiminishingTrail gib velocity scale/gravity mismatch"
   );
-  const expectedAlphavel = -1.0 / (1 + (randomUnit * 0.4));
+  const expectedAlphavel = -1.0 / (1 + (quantizedFrand(randomUnit) * 0.4));
   assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_DiminishingTrail gib alpha decay mismatch");
 
   const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
@@ -1039,7 +1059,7 @@ function verifyRocketTrailRuntimeParticles(): void {
   const old = runtime.cl_entities[7];
   old.trailcount = 950;
   const randomUnit = 0;
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
 
   withMockRandom(randomUnit, () => {
     CL_RocketTrail(runtime, start, end, old);
@@ -1109,7 +1129,7 @@ function verifyRailTrailRuntimeParticles(): void {
   const start: vec3_t = [0, 0, 0];
   const end: vec3_t = [2.5, 0, 0];
   const randomUnit = 0;
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
 
   withMockRandom(randomUnit, () => {
     CL_RailTrail(runtime, start, end);
@@ -1243,7 +1263,7 @@ function verifyBubbleTrailRuntimeParticles(): void {
   const start: vec3_t = [0, 0, 0];
   const end: vec3_t = [65, 0, 0];
   const randomUnit = 0;
-  const expectedCrand = (randomUnit * 2) - 1;
+  const expectedCrand = quantizedCrand(randomUnit);
 
   withMockRandom(randomUnit, () => {
     CL_BubbleTrail(runtime, start, end);
@@ -2047,6 +2067,14 @@ function withMockRandom<T>(value: number, callback: () => T): T {
 
 function almostEqual(actual: number, expected: number, epsilon = 1e-12): boolean {
   return Math.abs(actual - expected) <= epsilon;
+}
+
+function quantizedFrand(randomUnit: number): number {
+  return (Math.floor(randomUnit * 0x8000) & 32767) * (1.0 / 32767);
+}
+
+function quantizedCrand(randomUnit: number): number {
+  return (Math.floor(randomUnit * 0x8000) & 32767) * (2.0 / 32767) - 1;
 }
 
 function dotProduct(a: vec3_t, b: vec3_t): number {

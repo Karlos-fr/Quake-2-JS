@@ -2,9 +2,9 @@
 
 ## Statut
 
-- Statut: Partiel
-- Dernier lot valide: bloc ecriture messages `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, locaux `buf`/`f`/`l`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir`, `MSG_ReadDir` et local `b`; `frand`/`crand` restent `Partiel` pour integration client visible.
-- Prochain lot recommande: decision explicite sur les deux reliquats `frand`/`crand` marques `Partiel`: soit brancher les helpers qcommon dans les consommateurs client visibles, soit accepter/documenter le maintien des helpers locaux.
+- Statut: Termine
+- Dernier lot valide: reliquats `frand`/`crand` branches dans les consommateurs client visibles `cl_fx.ts` et `cl_newfx.ts`, avec quantification qcommon 15 bits verifiee.
+- Prochain lot recommande: aucun pour `qcommon/common.c`; toutes les lignes sont `Valide` ou `Non applicable`.
 
 ## Preuves session
 
@@ -39,6 +39,27 @@
 - `npm run verify:full-game:render-source`: OK
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
+- `npm run verify:qcommon:header`: OK
+- `npm run verify:cl-newfx`: OK
+- `npm run verify:particle-sync`: OK
+- `npm run verify:full-game:render-source`: OK
+- `npm run typecheck`: OK
+- `npm run verify:cl-fx`: bloque hors lot sur le cas historique `EF_ROCKET should expose the original rocket dlight to refresh` apres passage des assertions `frand`/`crand` touchees.
+- `npm run verify:full-game:three-renderer`: bloque hors lot sur `pointer lock should accept the clicked renderer viewport child`.
+
+## Session - 2026-05-08 - Reliquats frand/crand client visible
+
+- Lot traite: decision finale sur `frand` et `crand` de `qcommon/common.c`.
+- Source C/H relue: `common.c` definit `frand` comme `(rand()&32767) * (1.0/32767)` et `crand` comme `(rand()&32767) * (2.0/32767) - 1`; `qcommon.h` les declare comme helpers communs.
+- Cible TS relue/corrigee: `packages/qcommon/src/qcommon.ts` conserve les noms originaux, exporte les deux helpers et documente la quantification 15 bits sans promettre la sequence libc. `packages/client/src/cl_fx.ts` et `packages/client/src/cl_newfx.ts` importent maintenant `frand`/`crand` depuis qcommon au lieu de garder un `crand` local ou des `Math.random()` directs pour les usages C `frand()`.
+- Ownership/doublons: ownership confirme dans `packages/qcommon/src/qcommon.ts`; les deux helpers locaux `crand` de `cl_fx.ts` et `cl_newfx.ts` ont ete supprimes. Le helper `randomExplosionBaseframe` de `cl_tent.ts` reste un adapter local deja hors perimetre de ce lot; il ne porte pas `Original name: frand` et ne bloque pas l'ownership qcommon.
+- Runtime verifie/corrige: `frand` et `crand` sont atteignables depuis les flux normaux de particules/trails/temp effects client via `CL_ExecuteTempEntityEffects`, `CL_ExecutePacketEntityEffects`, `CL_BuildRefreshFrame` et les fonctions runtime `cl_fx`/`cl_newfx`.
+- apps/web verifie: le navigateur declenche ces flux via le runtime full-game/render-source et ne remplace pas les particules par une logique parallele; aucune modification `apps/web` n'est attendue pour ce helper commun.
+- renderer-three verifie: les helpers ne produisent pas directement des objets Three, mais modifient les sorties visibles de particules/trails/temp entities consommees ensuite par `particle-sync`, le render-source et les adapters renderer; aucun manque renderer direct constate dans ce lot.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` verifie les endpoints/ranges quantifies et l'absence de `crand` local dans `cl_fx.ts`/`cl_newfx.ts`; `scripts/verify/quake2-cl-fx.ts` attend maintenant la quantification 15 bits; `scripts/verify/quake2-cl-newfx.ts` ajuste l'attendu `CL_BubbleTrail2` pour `crand() == -1`.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-newfx`, `npm run verify:particle-sync`, `npm run verify:full-game:render-source`, `npm run typecheck`.
+- Tests session bloques hors lot: `npm run verify:cl-fx` echoue sur le cas historique `EF_ROCKET should expose the original rocket dlight to refresh`; `npm run verify:full-game:three-renderer` echoue sur `pointer lock should accept the clicked renderer viewport child`.
+- Matrice mise a jour: `frand` et `crand` passent `Valide`; aucun reliquat `Partiel` restant pour `qcommon/common.c`.
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
 - `npm run verify:qcommon:header`: OK
 - `npm run verify:server:ents`: OK

@@ -15,7 +15,7 @@
  * - This file is the principal port target for `client/cl_newfx.c`.
  */
 
-import { AngleVectors, VIDREF_GL, VIDREF_SOFT, type vec3_t } from "../../qcommon/src/index.js";
+import { AngleVectors, VIDREF_GL, VIDREF_SOFT, crand, frand, type vec3_t } from "../../qcommon/src/index.js";
 import { INSTANT_PARTICLE, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./client.js";
 import { MakeNormalVectors, type ClientActionEffect } from "./cl_fx.js";
 
@@ -105,7 +105,7 @@ export function CL_ParticleSteamEffect(
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY / 2;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -160,7 +160,7 @@ export function CL_ParticleSteamEffect2(
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY / 2;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 
   self.nextthink += self.thinkinterval;
@@ -250,7 +250,7 @@ export function CL_ParticleSmokeEffect(
     particle.accel[1] = 0;
     particle.accel[2] = 0;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -309,7 +309,7 @@ export function CL_BlasterParticles2(
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -1.0 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -416,7 +416,7 @@ export function CL_BubbleTrail2(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1 + Math.random() * 0.1);
+    particle.alphavel = -1.0 / (1 + frand() * 0.1);
     particle.color = 4 + (Math.floor(Math.random() * 0x7fffffff) & 7);
 
     for (let component = 0; component < 3; component += 1) {
@@ -610,7 +610,7 @@ export function CL_SmokeTrail(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1 + Math.random() * 0.5);
+    particle.alphavel = -1.0 / (1 + frand() * 0.5);
     particle.color = colorStart + (Math.floor(Math.random() * colorRun));
     particle.vel = [0, 0, 20 + (crand() * 5)];
 
@@ -663,7 +663,7 @@ export function CL_ForceWall(
   while (len > 0) {
     len -= 4;
 
-    if (Math.random() <= 0.3) {
+    if (frand() <= 0.3) {
       move[0] += vec[0];
       move[1] += vec[1];
       move[2] += vec[2];
@@ -678,7 +678,7 @@ export function CL_ForceWall(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (3.0 + Math.random() * 0.5);
+    particle.alphavel = -1.0 / (3.0 + frand() * 0.5);
     particle.color = color;
     particle.vel = [0, 0, -40 - (crand() * 10)];
 
@@ -733,7 +733,7 @@ export function CL_FlameEffects(
     particle.accel = [0, 0, -PARTICLE_GRAVITY];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (1 + frand() * 0.2);
     particle.color = 226 + (Math.floor(Math.random() * 4));
 
     for (let component = 0; component < 3; component += 1) {
@@ -753,7 +753,7 @@ export function CL_FlameEffects(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (1 + Math.random() * 0.5);
+    particle.alphavel = -1.0 / (1 + frand() * 0.5);
     particle.color = Math.floor(Math.random() * 4);
     particle.vel = [0, 0, 20 + (crand() * 5)];
 
@@ -848,7 +848,7 @@ export function CL_GenericParticleEffect(
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.5 + Math.random() * alphavel);
+    particle.alphavel = -1.0 / (0.5 + frand() * alphavel);
   }
 }
 
@@ -1016,7 +1016,7 @@ export function CL_TagTrail(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.8 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (0.8 + frand() * 0.2);
     particle.color = color;
 
     for (let component = 0; component < 3; component += 1) {
@@ -1076,7 +1076,7 @@ export function CL_BlasterTrail2(
     particle.accel = [0, 0, 0];
     particle.time = runtime.cl.time;
     particle.alpha = 1.0;
-    particle.alphavel = -1.0 / (0.3 + Math.random() * 0.2);
+    particle.alphavel = -1.0 / (0.3 + frand() * 0.2);
     particle.color = 0xd0;
 
     for (let component = 0; component < 3; component += 1) {
@@ -1138,7 +1138,7 @@ export function CL_WidowSplash(
     particle.accel[1] = 0;
     particle.accel[2] = 0;
     particle.alpha = 1.0;
-    particle.alphavel = -0.8 / (0.5 + Math.random() * 0.3);
+    particle.alphavel = -0.8 / (0.5 + frand() * 0.3);
   }
 }
 
@@ -1198,7 +1198,7 @@ export function CL_ColorExplosionParticles(
     particle.accel[1] = 0;
     particle.accel[2] = -PARTICLE_GRAVITY;
     particle.alpha = 1.0;
-    particle.alphavel = -0.4 / (0.6 + Math.random() * 0.2);
+    particle.alphavel = -0.4 / (0.6 + frand() * 0.2);
   }
 }
 
@@ -1496,10 +1496,6 @@ function normalizeVectorCopy(vector: vec3_t): number {
 
 function floatMod(value: number, divisor: number): number {
   return value - (Math.floor(value / divisor) * divisor);
-}
-
-function crand(): number {
-  return (Math.random() * 2.0) - 1.0;
 }
 
 function normalizeRandomDirection(): vec3_t {

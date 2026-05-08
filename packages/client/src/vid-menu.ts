@@ -65,6 +65,8 @@ const REF_3DFX = 2;
 const REF_POWERVR = 3;
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript adapter hooks for win32/vid_menu.c side effects)
  * Category: New
  * Purpose: Describe host callbacks for side effects outside the original menu cvar updates.
  */
@@ -73,6 +75,8 @@ export interface ClientVidMenuHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript controller adapter for win32/vid_menu.c)
  * Category: New
  * Purpose: Carry the callable `VID_Menu*` implementation used by `vid.ts` hooks.
  */
@@ -83,6 +87,8 @@ export interface ClientVidMenuController {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript controller factory for win32/vid_menu.c)
  * Category: New
  * Purpose: Create a ported `win32/vid_menu.c` controller bound to one client menu context.
  */

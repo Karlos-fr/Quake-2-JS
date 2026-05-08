@@ -271,6 +271,9 @@ export interface ClientScreenBuildOptions {
  *
  * Behavior:
  * - Stores the screen-space rectangle used by the Quake II refresh view.
+ *
+ * Porting notes:
+ * - The C tag is `vrect_s`; TypeScript exposes the public typedef name `vrect_t` and `vid.ts` reexports it.
  */
 export interface vrect_t {
   x: number;

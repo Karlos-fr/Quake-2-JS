@@ -103,7 +103,7 @@ function verifyTrailRuntimeParticles(): void {
   particles = collectActiveParticles(runtime);
   assert.equal(particles.length, 3, "CL_BubbleTrail2 should honor caller spacing");
   assert.ok(particles.every((particle) => particle.color === 5), "CL_BubbleTrail2 color should be 4 + (rand&7)");
-  assert.ok(particles.every((particle) => particle.vel[2] > 10), "CL_BubbleTrail2 should add upward velocity after random jitter");
+  assert.ok(particles.every((particle) => particle.vel[2] === 10), "CL_BubbleTrail2 should add upward velocity after quantized crand jitter");
 }
 
 function verifySmokeForceFlameAndGenericParticles(): void {
