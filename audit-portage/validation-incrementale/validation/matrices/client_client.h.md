@@ -89,45 +89,45 @@
 | `Quake-2-master/client/client.h` | global | `demorecording` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | global | `demowaiting` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | global | `demofile` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
-| `Quake-2-master/client/client.h` | global | `cl_stereo_separation` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_stereo` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_gun` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_add_blend` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_add_lights` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_add_particles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_add_entities` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_predict` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_footsteps` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_noskins` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_autoskins` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_upspeed` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_forwardspeed` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_sidespeed` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_yawspeed` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_pitchspeed` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_run` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_anglespeedkey` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_shownet` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_showmiss` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_showclamp` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `lookspring` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `lookstrafe` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `sensitivity` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `m_pitch` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `m_yaw` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `m_forward` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `m_side` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `freelook` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_lightlevel` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_paused` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_timedemo` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `cl_vwep` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | struct | `cdlight_t` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `key` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `radius` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `die` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `decay` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `minlight` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_stereo_separation` | `packages/client/src/cl_main.ts` | `cl_stereo_separation` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_stereo` | `packages/client/src/cl_main.ts` | `cl_stereo` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_gun` | `packages/client/src/cl_main.ts` | `cl_gun` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_add_blend` | `packages/client/src/cl_main.ts` | `cl_add_blend` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_add_lights` | `packages/client/src/cl_main.ts` | `cl_add_lights` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_add_particles` | `packages/client/src/cl_main.ts` | `cl_add_particles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_add_entities` | `packages/client/src/cl_main.ts` | `cl_add_entities` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_predict` | `packages/client/src/cl_main.ts` | `cl_predict` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_footsteps` | `packages/client/src/cl_main.ts` | `cl_footsteps` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_noskins` | `packages/client/src/cl_main.ts` | `cl_noskins` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_autoskins` | `packages/client/src/cl_main.ts` | `cl_autoskins` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_upspeed` | `packages/client/src/cl_input.ts` | `cl_upspeed` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_forwardspeed` | `packages/client/src/cl_input.ts` | `cl_forwardspeed` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_sidespeed` | `packages/client/src/cl_input.ts` | `cl_sidespeed` | Valide | A redecouper | Corrige: `cl_input.ts` aligne le defaut C `200`. |
+| `Quake-2-master/client/client.h` | global | `cl_yawspeed` | `packages/client/src/cl_input.ts` | `cl_yawspeed` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_pitchspeed` | `packages/client/src/cl_input.ts` | `cl_pitchspeed` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_run` | `packages/client/src/cl_input.ts` | `cl_run` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_anglespeedkey` | `packages/client/src/cl_input.ts` | `cl_anglespeedkey` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_shownet` | `packages/client/src/cl_main.ts` | `cl_shownet` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_showmiss` | `packages/client/src/cl_main.ts` | `cl_showmiss` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_showclamp` | `packages/client/src/cl_main.ts` | `cl_showclamp` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `lookspring` | `packages/client/src/cl_main.ts` | `lookspring` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `lookstrafe` | `packages/client/src/cl_main.ts` | `lookstrafe` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `sensitivity` | `packages/client/src/cl_main.ts` | `sensitivity` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `m_pitch` | `packages/client/src/cl_main.ts` | `m_pitch` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `m_yaw` | `packages/client/src/cl_main.ts` | `m_yaw` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `m_forward` | `packages/client/src/cl_main.ts` | `m_forward` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `m_side` | `packages/client/src/cl_main.ts` | `m_side` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `freelook` | `packages/client/src/cl_main.ts` | `freelook` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_lightlevel` | `packages/client/src/cl_input.ts` | `cl_lightlevel` | Valide | A redecouper | Corrige: `cl_input.ts` lie le pointeur client au cvar C `r_lightlevel`. |
+| `Quake-2-master/client/client.h` | global | `cl_paused` | `packages/client/src/cl_main.ts` | `cl_paused` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_timedemo` | `packages/client/src/cl_main.ts` | `cl_timedemo` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | global | `cl_vwep` | `packages/client/src/cl_main.ts` | `cl_vwep` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | struct | `cdlight_t` | `packages/client/src/client.ts` | `client_dlight_t` | Valide | A redecouper | Cible renommee pour eviter la collision avec `client/ref.h` `dlight_t`; commentaire TS mis a jour. |
+| `Quake-2-master/client/client.h` | global | `key` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `radius` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `die` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `decay` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `minlight` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `cdlight_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | macro | `MAX_PARSE_ENTITIES` | `packages/client/src/client.ts` | `MAX_PARSE_ENTITIES` | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | global | `cl_parse_entities` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | global | `net_message` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |

@@ -471,7 +471,7 @@ export function CL_BaseMove(context: ClientInputContext, cmd: usercmd_t): usercm
   cmd.impulse = 0;
   cmd.lightlevel = 0;
 
-  const sidespeed = context.cl_sidespeed?.value ?? 350;
+  const sidespeed = context.cl_sidespeed?.value ?? 200;
   const upspeed = context.cl_upspeed?.value ?? 200;
   const forwardspeed = context.cl_forwardspeed?.value ?? 200;
 
@@ -795,12 +795,12 @@ export function CL_InitInput(context: ClientInputContext): void {
   context.cl_nodelta = Cvar_Get(context.cvar, "cl_nodelta", "0", 0);
   context.cl_upspeed = Cvar_Get(context.cvar, "cl_upspeed", "200", 0);
   context.cl_forwardspeed = Cvar_Get(context.cvar, "cl_forwardspeed", "200", 0);
-  context.cl_sidespeed = Cvar_Get(context.cvar, "cl_sidespeed", "350", 0);
+  context.cl_sidespeed = Cvar_Get(context.cvar, "cl_sidespeed", "200", 0);
   context.cl_yawspeed = Cvar_Get(context.cvar, "cl_yawspeed", "140", 0);
   context.cl_pitchspeed = Cvar_Get(context.cvar, "cl_pitchspeed", "150", 0);
   context.cl_run = Cvar_Get(context.cvar, "cl_run", "0", CVAR_ARCHIVE);
   context.cl_anglespeedkey = Cvar_Get(context.cvar, "cl_anglespeedkey", "1.5", 0);
-  context.cl_lightlevel = Cvar_Get(context.cvar, "cl_lightlevel", "0", 0);
+  context.cl_lightlevel = Cvar_Get(context.cvar, "r_lightlevel", "0", 0);
 }
 
 /**

@@ -16,13 +16,37 @@ import { strict as assert } from "node:assert";
 import { Cmd_ExecuteString, createCommandRuntime, STAT_LAYOUTS } from "../../packages/qcommon/src/index.js";
 import {
   KEY_ARRAY_SIZE,
+  K_ALT,
+  K_BACKSPACE,
   K_CTRL,
+  K_DEL,
+  K_DOWNARROW,
+  K_END,
   K_ENTER,
   K_ESCAPE,
+  K_F1,
+  K_F10,
+  K_F11,
+  K_F12,
   K_F2,
+  K_F3,
+  K_F4,
+  K_F5,
+  K_F6,
+  K_F7,
+  K_F8,
+  K_F9,
+  K_HOME,
+  K_INS,
+  K_LEFTARROW,
   K_MOUSE1,
+  K_PGDN,
+  K_PGUP,
+  K_RIGHTARROW,
   K_SHIFT,
+  K_SPACE,
   K_TAB,
+  K_UPARROW,
   Key_Bind_f,
   Key_ClearStates,
   Key_Console,
@@ -77,6 +101,40 @@ const context = createClientKeyContext({
 });
 
 assert.equal(KEY_ARRAY_SIZE, 256, "KEY_ARRAY_SIZE mismatch");
+for (const [name, actual, expected] of [
+  ["K_TAB", K_TAB, 9],
+  ["K_ENTER", K_ENTER, 13],
+  ["K_ESCAPE", K_ESCAPE, 27],
+  ["K_SPACE", K_SPACE, 32],
+  ["K_BACKSPACE", K_BACKSPACE, 127],
+  ["K_UPARROW", K_UPARROW, 128],
+  ["K_DOWNARROW", K_DOWNARROW, 129],
+  ["K_LEFTARROW", K_LEFTARROW, 130],
+  ["K_RIGHTARROW", K_RIGHTARROW, 131],
+  ["K_ALT", K_ALT, 132],
+  ["K_CTRL", K_CTRL, 133],
+  ["K_SHIFT", K_SHIFT, 134],
+  ["K_F1", K_F1, 135],
+  ["K_F2", K_F2, 136],
+  ["K_F3", K_F3, 137],
+  ["K_F4", K_F4, 138],
+  ["K_F5", K_F5, 139],
+  ["K_F6", K_F6, 140],
+  ["K_F7", K_F7, 141],
+  ["K_F8", K_F8, 142],
+  ["K_F9", K_F9, 143],
+  ["K_F10", K_F10, 144],
+  ["K_F11", K_F11, 145],
+  ["K_F12", K_F12, 146],
+  ["K_INS", K_INS, 147],
+  ["K_DEL", K_DEL, 148],
+  ["K_PGDN", K_PGDN, 149],
+  ["K_PGUP", K_PGUP, 150],
+  ["K_HOME", K_HOME, 151],
+  ["K_END", K_END, 152]
+] as const) {
+  assert.equal(actual, expected, `${name} mismatch`);
+}
 assert.equal(Key_StringToKeynum("TAB"), K_TAB, "Key_StringToKeynum named mismatch");
 assert.equal(Key_StringToKeynum("a"), "a".charCodeAt(0), "Key_StringToKeynum ascii mismatch");
 assert.equal(Key_KeynumToString(K_TAB), "TAB", "Key_KeynumToString named mismatch");

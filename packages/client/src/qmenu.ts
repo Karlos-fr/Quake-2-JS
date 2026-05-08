@@ -378,10 +378,31 @@ function setFieldBuffer(field: menufield_s, text: string): void {
   field.buffer = text;
 }
 
+/**
+ * Original name: Action_DoEnter
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Invokes the action callback when the menu item provides one.
+ */
 function Action_DoEnter(a: menuaction_s): void {
   a.generic.callback?.(a);
 }
 
+/**
+ * Original name: Action_Draw
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws an action item using the original left/right justification and grayed-string rules.
+ *
+ * Porting notes:
+ * - Emits draw commands through the explicit qmenu context instead of direct `Draw_Char` calls.
+ */
 function Action_Draw(context: ClientQMenuContext, a: menuaction_s): void {
   const x = a.generic.x + (a.generic.parent?.x ?? 0) + LCOLUMN_OFFSET;
   const y = a.generic.y + (a.generic.parent?.y ?? 0);
@@ -395,6 +416,15 @@ function Action_Draw(context: ClientQMenuContext, a: menuaction_s): void {
   a.generic.ownerdraw?.(context, a);
 }
 
+/**
+ * Original name: Field_DoEnter
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Invokes the field callback when present and reports whether enter was handled.
+ */
 function Field_DoEnter(f: menufield_s): qboolean {
   if (f.generic.callback) {
     f.generic.callback(f);
@@ -404,6 +434,18 @@ function Field_DoEnter(f: menufield_s): qboolean {
   return false;
 }
 
+/**
+ * Original name: Field_Draw
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the field label, frame glyphs, visible text slice and blinking cursor.
+ *
+ * Porting notes:
+ * - Uses explicit timing/video/draw state from `ClientQMenuContext` instead of C globals.
+ */
 function Field_Draw(context: ClientQMenuContext, f: menufield_s): void {
   const parentX = f.generic.parent?.x ?? 0;
   const parentY = f.generic.parent?.y ?? 0;
@@ -700,6 +742,18 @@ export function Menu_Center(context: ClientQMenuContext, menu: menuframework_s):
   }
 }
 
+/**
+ * Original name: Menu_DrawStatusBar
+ * Source: client/qmenu.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Fills the bottom 8-pixel status bar and centers text when a status string is present.
+ *
+ * Porting notes:
+ * - Reads video dimensions from the explicit qmenu state instead of `viddef`.
+ */
 function Menu_DrawStatusBar(context: ClientQMenuContext, text: string | null): void {
   if (text) {
     const maxcol = Math.trunc(context.state.vidWidth / 8);

@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: lifecycle qcommon `Com_Error_f`, `Qcommon_Init`, local `s` de version, `Qcommon_Frame`, local `s` console input, remise a zero showtrace de `c_pointcontents`, et `Qcommon_Shutdown`; `frand`/`crand` restent `Partiel` pour integration client visible.
-- Prochain lot recommande: reprendre le debut de matrice encore `A verifier`: bloc impression/redirection et globals associes `MAXPRINTMSG`, `realtime`, `host_speeds`, `log_stats`, `developer`, `timescale`, `fixedtime`, `logfile_active`, `showtrace`, `dedicated`, `server_state`, `time_before_game`/`time_after_game`/`time_before_ref`/`time_after_ref`, `rd_target`/`rd_buffer`/`rd_buffersize`, puis `Com_BeginRedirect`/`Com_EndRedirect`/`Com_Printf` si le lot reste coherent.
+- Dernier lot valide: bloc impression/redirection et globals associes `MAXPRINTMSG`, cvars qcommon, `server_state`, timers host_speeds, `rd_*`, `Com_BeginRedirect`, `Com_EndRedirect` et `Com_Printf`; `realtime` est `Non applicable`; `frand`/`crand` restent `Partiel` pour integration client visible.
+- Prochain lot recommande: reprendre les prochaines lignes `A verifier`: temporaires locaux `argptr`/`msg`/`name` autour des prints, puis `Com_DPrintf`, `Com_Error`, `recursive`, `jmp`, `Com_Quit`, `Com_ServerState` et `Com_SetServerState` si le lot reste coherent.
 
 ## Preuves session
 
@@ -40,6 +40,20 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-08 - Bloc impression/redirection et globals qcommon
+
+- Lot traite: `MAXPRINTMSG`, `realtime`, `host_speeds`, `log_stats`, `developer`, `timescale`, `fixedtime`, `logfile_active`, `showtrace`, `dedicated`, `server_state`, timers `time_before_game`/`time_after_game`/`time_before_ref`/`time_after_ref`, `rd_target`/`rd_buffer`/`rd_buffersize`, `Com_BeginRedirect`, `Com_EndRedirect` et `Com_Printf`.
+- Source C/H relue: `MAXPRINTMSG` vaut 4096; `Com_BeginRedirect` ignore target/buffer/size/flush invalides puis vide le buffer; `Com_EndRedirect` flush et remet les statiques `rd_*` a zero/null; `Com_Printf` formate dans `msg[MAXPRINTMSG]`, flush le redirect avant append si le buffer deborde, sinon envoie vers console/sys/logfile; `Qcommon_Init` cree les cvars du lot; `Qcommon_Frame` applique `fixedtime`/`timescale`, `showtrace`, `log_stats`, timers `host_speeds`; `server_state` est lu/ecrit par `Com_ServerState`/`Com_SetServerState`. `realtime` est defini dans `common.c` mais non externe et non reference par le runtime original.
+- Cible TS relue/corrigee: `packages/qcommon/src/common.ts` expose maintenant `MAXPRINTMSG`, borne `Com_Printf` a `MAXPRINTMSG - 1`, et conserve `rd_*` dans `CommonRuntime`; `packages/qcommon/src/qcommon.ts` conserve les cvars/globals dans `QcommonGlobals`, cree les cvars dans `Qcommon_Init` et consomme les timers dans `Qcommon_Frame`.
+- Commentaires d'en-tete: verifies pour `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Qcommon_Init`, `Qcommon_Frame`, `Com_ServerState` et `Com_SetServerState`; les trois commentaires redirect/printf pointent maintenant vers `Quake-2-master/qcommon/common.c`.
+- Ownership/doublons: ownership confirme dans `packages/qcommon/src/common.ts` pour redirect/printf et dans `packages/qcommon/src/qcommon.ts` pour globals/cvars/frame/server_state; aucun doublon proprietaire trouve. `realtime` est marque `Non applicable` car le global C n'est pas declare dans `qcommon.h` et n'est pas utilise.
+- Runtime verifie/corrige: `Qcommon_Init` cree les cvars; `Qcommon_Frame` est la racine frame appelee par `apps/web`; `Com_Printf` et redirect sont couverts par le runtime explicite. Le remote rcon server garde son adapter `executeRconCommand`, documente comme remplacement local de la redirection globale C.
+- apps/web verifie/corrige: `apps/web/src/full-game.ts` partage maintenant le cvar `host_speeds` avec le server host, alimente `qcommonGlobals.time_before_game/time_after_game`, et branche les hooks client `time_before_ref/time_after_ref` ainsi que `logStatsEnabled` sur les cvars qcommon. `apps/web/src/full-game-server-host.ts` accepte ces callbacks et les transmet au runtime serveur.
+- renderer-three verifie: pas de sortie renderer directe pour `Com_Printf`/redirect/cvars, mais `time_before_ref`/`time_after_ref` encadrent le flux `CL_Frame`/`SCR_UpdateScreen` qui produit la scene visible, camera, entites, dlights, particules et frames consommees ensuite par `renderer-three`; le cablage web a ete corrige pour ne pas masquer ce flux.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` couvre `MAXPRINTMSG` et le clamp `Com_Printf`; `scripts/verify/quake2-full-game-three-renderer.ts` couvre le partage `host_speeds`, les timers game/ref et `log_stats` dans le flux web.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:full-game:three-renderer`, `npm run verify:server:runtime`, `npm run typecheck`.
+- Matrice mise a jour: lot passe `Valide`, sauf `realtime` en `Non applicable`.
 
 ## Session - 2026-05-08 - Lifecycle qcommon init/frame/shutdown
 

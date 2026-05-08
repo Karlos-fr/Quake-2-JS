@@ -10,30 +10,30 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/common.c` | macro | `MAXPRINTMSG` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | macro | `MAXPRINTMSG` | `packages/qcommon/src/common.ts` | `MAXPRINTMSG` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | macro | `MAX_NUM_ARGVS` | `packages/qcommon/src/common.ts` | `MAX_NUM_ARGVS` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `com_argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `com_argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `realtime` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `host_speeds` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `log_stats` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `developer` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `timescale` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `fixedtime` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `logfile_active` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `showtrace` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `dedicated` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `server_state` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_before_game` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_after_game` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_before_ref` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_after_ref` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `rd_target` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `rd_buffer` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `rd_buffersize` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_BeginRedirect` | `packages/qcommon/src/common.ts` | `Com_BeginRedirect` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_EndRedirect` | `packages/qcommon/src/common.ts` | `Com_EndRedirect` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_Printf` | `packages/qcommon/src/common.ts` | `Com_Printf` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `realtime` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Global C non externe et non reference dans le runtime original; les horloges vivantes sont `cls.realtime` et `svs.realtime`. |
+| `Quake-2-master/qcommon/common.c` | global | `host_speeds` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.host_speeds` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `log_stats` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.log_stats` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `developer` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.developer` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `timescale` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.timescale` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `fixedtime` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.fixedtime` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `logfile_active` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.logfile_active` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `showtrace` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.showtrace` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `dedicated` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.dedicated` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `server_state` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.server_state` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_before_game` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_before_game` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_after_game` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_after_game` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_before_ref` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_before_ref` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_after_ref` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_after_ref` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `rd_target` | `packages/qcommon/src/common.ts` | `CommonRuntime.rd_target` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `rd_buffer` | `packages/qcommon/src/common.ts` | `CommonRuntime.rd_buffer` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `rd_buffersize` | `packages/qcommon/src/common.ts` | `CommonRuntime.rd_buffersize` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Com_BeginRedirect` | `packages/qcommon/src/common.ts` | `Com_BeginRedirect` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Com_EndRedirect` | `packages/qcommon/src/common.ts` | `Com_EndRedirect` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Com_Printf` | `packages/qcommon/src/common.ts` | `Com_Printf` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `name` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |

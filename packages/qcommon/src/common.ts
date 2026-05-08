@@ -23,6 +23,7 @@ import {
 } from "./q_shared.js";
 
 export const MAX_NUM_ARGVS = 50;
+export const MAXPRINTMSG = 4096;
 
 /**
  * Original name: bigendien
@@ -230,7 +231,7 @@ export function COM_CheckParm(runtime: CommonRuntime, parm: string): number {
 
 /**
  * Original name: Com_BeginRedirect
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -258,7 +259,7 @@ export function Com_BeginRedirect(
 
 /**
  * Original name: Com_EndRedirect
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -282,7 +283,7 @@ export function Com_EndRedirect(runtime: CommonRuntime): void {
 
 /**
  * Original name: Com_Printf
- * Source: qcommon/common.c
+ * Source: Quake-2-master/qcommon/common.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -305,7 +306,8 @@ export function Com_Printf(
 ): void {
   const sink = typeof sinkOrArg === "function" ? sinkOrArg : undefined;
   const args = typeof sinkOrArg === "function" || sinkOrArg === undefined ? remainingArgs : [sinkOrArg, ...remainingArgs];
-  const message = args.length > 0 ? va(format, ...args) : format;
+  const formatted = args.length > 0 ? va(format, ...args) : format;
+  const message = formatted.length >= MAXPRINTMSG ? formatted.slice(0, MAXPRINTMSG - 1) : formatted;
 
   if (runtime.rd_target && runtime.rd_flush) {
     if (message.length + runtime.rd_buffer.length > runtime.rd_buffersize - 1) {

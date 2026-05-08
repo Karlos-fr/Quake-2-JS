@@ -10,36 +10,36 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/keys.h` | macro | `K_TAB` | `packages/client/src/keys.ts` | `K_TAB` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_ENTER` | `packages/client/src/keys.ts` | `K_ENTER` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_ESCAPE` | `packages/client/src/keys.ts` | `K_ESCAPE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_SPACE` | `packages/client/src/keys.ts` | `K_SPACE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_BACKSPACE` | `packages/client/src/keys.ts` | `K_BACKSPACE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_UPARROW` | `packages/client/src/keys.ts` | `K_UPARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_DOWNARROW` | `packages/client/src/keys.ts` | `K_DOWNARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_LEFTARROW` | `packages/client/src/keys.ts` | `K_LEFTARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_RIGHTARROW` | `packages/client/src/keys.ts` | `K_RIGHTARROW` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_ALT` | `packages/client/src/keys.ts` | `K_ALT` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_CTRL` | `packages/client/src/keys.ts` | `K_CTRL` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_SHIFT` | `packages/client/src/keys.ts` | `K_SHIFT` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F1` | `packages/client/src/keys.ts` | `K_F1` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F2` | `packages/client/src/keys.ts` | `K_F2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F3` | `packages/client/src/keys.ts` | `K_F3` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F4` | `packages/client/src/keys.ts` | `K_F4` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F5` | `packages/client/src/keys.ts` | `K_F5` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F6` | `packages/client/src/keys.ts` | `K_F6` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F7` | `packages/client/src/keys.ts` | `K_F7` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F8` | `packages/client/src/keys.ts` | `K_F8` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F9` | `packages/client/src/keys.ts` | `K_F9` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F10` | `packages/client/src/keys.ts` | `K_F10` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F11` | `packages/client/src/keys.ts` | `K_F11` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_F12` | `packages/client/src/keys.ts` | `K_F12` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_INS` | `packages/client/src/keys.ts` | `K_INS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_DEL` | `packages/client/src/keys.ts` | `K_DEL` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_PGDN` | `packages/client/src/keys.ts` | `K_PGDN` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_PGUP` | `packages/client/src/keys.ts` | `K_PGUP` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_HOME` | `packages/client/src/keys.ts` | `K_HOME` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.h` | macro | `K_END` | `packages/client/src/keys.ts` | `K_END` | A verifier | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_TAB` | `packages/client/src/keys.ts` | `K_TAB` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_ENTER` | `packages/client/src/keys.ts` | `K_ENTER` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_ESCAPE` | `packages/client/src/keys.ts` | `K_ESCAPE` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_SPACE` | `packages/client/src/keys.ts` | `K_SPACE` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_BACKSPACE` | `packages/client/src/keys.ts` | `K_BACKSPACE` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_UPARROW` | `packages/client/src/keys.ts` | `K_UPARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_DOWNARROW` | `packages/client/src/keys.ts` | `K_DOWNARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_LEFTARROW` | `packages/client/src/keys.ts` | `K_LEFTARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_RIGHTARROW` | `packages/client/src/keys.ts` | `K_RIGHTARROW` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_ALT` | `packages/client/src/keys.ts` | `K_ALT` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_CTRL` | `packages/client/src/keys.ts` | `K_CTRL` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_SHIFT` | `packages/client/src/keys.ts` | `K_SHIFT` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F1` | `packages/client/src/keys.ts` | `K_F1` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F2` | `packages/client/src/keys.ts` | `K_F2` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F3` | `packages/client/src/keys.ts` | `K_F3` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F4` | `packages/client/src/keys.ts` | `K_F4` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F5` | `packages/client/src/keys.ts` | `K_F5` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F6` | `packages/client/src/keys.ts` | `K_F6` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F7` | `packages/client/src/keys.ts` | `K_F7` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F8` | `packages/client/src/keys.ts` | `K_F8` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F9` | `packages/client/src/keys.ts` | `K_F9` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F10` | `packages/client/src/keys.ts` | `K_F10` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F11` | `packages/client/src/keys.ts` | `K_F11` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_F12` | `packages/client/src/keys.ts` | `K_F12` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_INS` | `packages/client/src/keys.ts` | `K_INS` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_DEL` | `packages/client/src/keys.ts` | `K_DEL` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_PGDN` | `packages/client/src/keys.ts` | `K_PGDN` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_PGUP` | `packages/client/src/keys.ts` | `K_PGUP` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_HOME` | `packages/client/src/keys.ts` | `K_HOME` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | macro | `K_END` | `packages/client/src/keys.ts` | `K_END` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | macro | `K_KP_HOME` | `packages/client/src/keys.ts` | `K_KP_HOME` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.h` | macro | `K_KP_UPARROW` | `packages/client/src/keys.ts` | `K_KP_UPARROW` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.h` | macro | `K_KP_PGUP` | `packages/client/src/keys.ts` | `K_KP_PGUP` | A verifier | A redecouper |  |

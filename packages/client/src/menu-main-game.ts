@@ -169,6 +169,18 @@ export function M_Menu_Main_f(context: ClientMenuContext): void {
   );
 }
 
+/**
+ * Original name: StartGame
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Starts a new single-player game through the original command chain.
+ *
+ * Porting notes:
+ * - Uses the explicit command/cvar/key contexts instead of file globals.
+ */
 function StartGame(context: ClientMenuContext): void {
   context.client.cl.servercount = -1;
   M_ForceMenuOff(context);
@@ -179,29 +191,65 @@ function StartGame(context: ClientMenuContext): void {
   context.keys.state.key_dest = keydest_t.key_game;
 }
 
+/**
+ * Original name: EasyGameFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function EasyGameFunc(context: ClientMenuContext): void {
   Cvar_ForceSet(context.cvar, "skill", "0");
   StartGame(context);
 }
 
+/**
+ * Original name: MediumGameFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function MediumGameFunc(context: ClientMenuContext): void {
   Cvar_ForceSet(context.cvar, "skill", "1");
   StartGame(context);
 }
 
+/**
+ * Original name: HardGameFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function HardGameFunc(context: ClientMenuContext): void {
   Cvar_ForceSet(context.cvar, "skill", "2");
   StartGame(context);
 }
 
+/**
+ * Original name: LoadGameFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function LoadGameFunc(context: ClientMenuContext): void {
   M_Menu_LoadGame_f(context);
 }
 
+/**
+ * Original name: SaveGameFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function SaveGameFunc(context: ClientMenuContext): void {
   M_Menu_SaveGame_f(context);
 }
 
+/**
+ * Original name: CreditsFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function CreditsFunc(context: ClientMenuContext): void {
   M_Menu_Credits_f(context);
 }
@@ -777,6 +825,12 @@ export function Game_MenuInit(context: ClientMenuContext): void {
   Menu_Center(context.qmenu, menu);
 }
 
+/**
+ * Original name: Game_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function Game_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   M_Banner(context, "m_banner_game");
@@ -836,6 +890,15 @@ export function Create_Savestrings(context: ClientMenuContext): void {
   }
 }
 
+/**
+ * Original name: LoadGameCallback
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Receives the slot number directly from the closure instead of reading `generic.localdata` through a void pointer.
+ */
 function LoadGameCallback(context: ClientMenuContext, slot: number): void {
   if (context.state.m_savevalid[slot]) {
     Cbuf_AddText(context.cmd, `load save${slot}\n`);
@@ -875,6 +938,12 @@ export function LoadGame_MenuInit(context: ClientMenuContext): void {
   }
 }
 
+/**
+ * Original name: LoadGame_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function LoadGame_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   M_Banner(context, "m_banner_load_game");
@@ -913,11 +982,26 @@ export function M_Menu_LoadGame_f(context: ClientMenuContext): void {
   );
 }
 
+/**
+ * Original name: SaveGameCallback
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Receives the slot number directly from the closure instead of reading `generic.localdata` through a void pointer.
+ */
 function SaveGameCallback(context: ClientMenuContext, slot: number): void {
   Cbuf_AddText(context.cmd, `save save${slot}\n`);
   M_ForceMenuOff(context);
 }
 
+/**
+ * Original name: SaveGame_MenuDraw
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 function SaveGame_MenuDraw(context: ClientMenuContext): void {
   syncMenuVideo(context);
   M_Banner(context, "m_banner_save_game");

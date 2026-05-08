@@ -139,11 +139,12 @@ assert.deepEqual(
 assert.equal(input.cl_nodelta?.string, "0", "CL_InitInput should create cl_nodelta like the C cvar registration");
 assert.equal(input.cl_upspeed?.value, 200, "CL_InitInput should register cl_upspeed default");
 assert.equal(input.cl_forwardspeed?.value, 200, "CL_InitInput should register cl_forwardspeed default");
-assert.equal(input.cl_sidespeed?.value, 350, "CL_InitInput should register cl_sidespeed default");
+assert.equal(input.cl_sidespeed?.value, 200, "CL_InitInput should register cl_sidespeed default");
 assert.equal(input.cl_yawspeed?.value, 140, "CL_InitInput should register cl_yawspeed default");
 assert.equal(input.cl_pitchspeed?.value, 150, "CL_InitInput should register cl_pitchspeed default");
 assert.equal(input.cl_run?.flags, CVAR_ARCHIVE, "CL_InitInput should archive cl_run like the C code");
 assert.equal(input.cl_anglespeedkey?.string, "1.5", "CL_InitInput should register cl_anglespeedkey default");
+assert.equal(input.cl_lightlevel?.name, "r_lightlevel", "CL_InitInput should bind cl_lightlevel to the original r_lightlevel cvar");
 assert.equal(input.cl_lightlevel?.value, 0, "CL_InitInput should register cl_lightlevel default");
 client.cls.frametime = 0.05;
 CL_SetInputFrameTime(input, 100);

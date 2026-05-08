@@ -51,6 +51,7 @@ import {
   type CollisionWorld,
   type CvarRuntime,
   type QcommonNetRuntime,
+  type cvar_t,
   type usercmd_t
 } from "../../../packages/qcommon/src/index.js";
 import {
@@ -94,6 +95,9 @@ export interface FullGameServerHostOptions {
   getGameDir: () => string;
   saveStorage?: WebSaveStorage;
   qnet?: QcommonNetRuntime;
+  host_speeds?: cvar_t | null;
+  setTimeBeforeGame?: (milliseconds: number) => void;
+  setTimeAfterGame?: (milliseconds: number) => void;
   onPrint: (message: string) => void;
   onBeginLoading: () => void;
 }
@@ -145,6 +149,7 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
     sv_reconnect_limit: Cvar_Get(options.cvar, "sv_reconnect_limit", "3", 0),
     dedicated: Cvar_Get(options.cvar, "dedicated", "0", 0),
     public_server: Cvar_Get(options.cvar, "public", "0", 0),
+    host_speeds: options.host_speeds ?? null,
     master_adr: [createNetAdr()],
     getGameApi: (imports) => createCollisionTolerantGameApi(GetGameApiFunction(imports, {
       runtime: createServerBackedGameRuntime(collisionWorld, imports),
@@ -156,6 +161,8 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
     onPrintf: options.onPrint,
     onDPrintf: options.onPrint,
     nowMs: () => performance.now(),
+    ...(options.setTimeBeforeGame ? { setTimeBeforeGame: options.setTimeBeforeGame } : {}),
+    ...(options.setTimeAfterGame ? { setTimeAfterGame: options.setTimeAfterGame } : {}),
     randomInt: () => Math.trunc(Math.random() * 0x7fffffff),
     loadMapFile: (name) => readMountedFile(options.filesystem, name)?.bytes,
     loadDownloadFile: (path) => {

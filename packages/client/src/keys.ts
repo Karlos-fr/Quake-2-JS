@@ -36,6 +36,15 @@ import {
 import { connstate_t, type ClientRuntime } from "./client.js";
 
 export const KEY_ARRAY_SIZE = 256;
+/**
+ * Original name: MAXCMDLINE
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Caps editable console and chat command lines at the original fixed C buffer size.
+ */
 export const MAXCMDLINE = 256;
 export const KEY_LINE_COUNT = 32;
 
@@ -146,11 +155,36 @@ export enum keydest_t {
   key_menu
 }
 
+/**
+ * Original name: keyname_t
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Maps a textual key name to the integer key code used by keybindings[].
+ */
 export interface keyname_t {
   name: string;
   keynum: number;
 }
 
+/**
+ * Original name: key_lines, key_linepos, shift_down, anykeydown, edit_line,
+ * history_line, key_waiting, keybindings, consolekeys, menubound, keyshift,
+ * key_repeats, keydown, chat_team, chat_buffer, chat_bufferlen
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Holds the mutable keyboard, console-editing, chat and binding state from the
+ *   original file-static globals.
+ *
+ * Porting notes:
+ * - Uses an explicit context object instead of module globals so web runtimes and
+ *   tests can host isolated key systems.
+ */
 export interface client_key_state_t {
   keybindings: Array<string | null>;
   key_repeats: Int32Array;
@@ -214,6 +248,15 @@ export interface ClientKeyContextOptions {
   client?: ClientRuntime;
 }
 
+/**
+ * Original name: keynames
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Provides the original named-key lookup table, including the SEMICOLON alias.
+ */
 export const keynames: keyname_t[] = [
   { name: "TAB", keynum: K_TAB },
   { name: "ENTER", keynum: K_ENTER },
@@ -511,6 +554,16 @@ export function Key_Message(context: ClientKeyContext, key: number): void {
   state.chat_bufferlen = state.chat_buffer.length;
 }
 
+/**
+ * Original name: Key_StringToKeynum
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns a single ASCII character code directly, otherwise resolves a
+ *   case-insensitive named key from keynames.
+ */
 export function Key_StringToKeynum(str: string | null | undefined): number {
   if (!str || str.length === 0) {
     return -1;
@@ -528,6 +581,16 @@ export function Key_StringToKeynum(str: string | null | undefined): number {
   return -1;
 }
 
+/**
+ * Original name: Key_KeynumToString
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts printable ASCII key codes or named Quake key codes back to their
+ *   bind/config string representation.
+ */
 export function Key_KeynumToString(keynum: number): string {
   if (keynum === -1) {
     return "<KEY NOT FOUND>";
@@ -546,6 +609,19 @@ export function Key_KeynumToString(keynum: number): string {
   return "<UNKNOWN KEYNUM>";
 }
 
+/**
+ * Original name: Key_SetBinding
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Replaces the binding string for one key slot.
+ *
+ * Porting notes:
+ * - JavaScript strings replace Z_Malloc/Z_Free ownership; out-of-range key slots
+ *   are ignored instead of writing outside keybindings[].
+ */
 export function Key_SetBinding(context: ClientKeyContext, keynum: number, binding: string): void {
   if (keynum < 0 || keynum >= KEY_ARRAY_SIZE) {
     return;
@@ -555,6 +631,15 @@ export function Key_SetBinding(context: ClientKeyContext, keynum: number, bindin
   context.hooks.onSetBinding?.(keynum, binding);
 }
 
+/**
+ * Original name: Key_Unbind_f
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Implements the `unbind <key>` console command and clears one binding.
+ */
 export function Key_Unbind_f(context: ClientKeyContext): void {
   if (!context.cmd) {
     return;
@@ -574,6 +659,15 @@ export function Key_Unbind_f(context: ClientKeyContext): void {
   Key_SetBinding(context, b, "");
 }
 
+/**
+ * Original name: Key_Unbindall_f
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clears every non-empty key binding.
+ */
 export function Key_Unbindall_f(context: ClientKeyContext): void {
   for (let i = 0; i < KEY_ARRAY_SIZE; i += 1) {
     if (context.state.keybindings[i]) {
@@ -582,6 +676,16 @@ export function Key_Unbindall_f(context: ClientKeyContext): void {
   }
 }
 
+/**
+ * Original name: Key_Bind_f
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Implements `bind <key> [command]`, including query-only output when no
+ *   command text is supplied.
+ */
 export function Key_Bind_f(context: ClientKeyContext): void {
   if (!context.cmd) {
     return;
@@ -618,6 +722,15 @@ export function Key_Bind_f(context: ClientKeyContext): void {
   Key_SetBinding(context, b, parts.join(" "));
 }
 
+/**
+ * Original name: Key_WriteBindings
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits config-file `bind key "value"` lines for non-empty bindings.
+ */
 export function Key_WriteBindings(context: ClientKeyContext, writer: KeyBindingWriter): void {
   for (let i = 0; i < KEY_ARRAY_SIZE; i += 1) {
     const binding = context.state.keybindings[i];
@@ -627,6 +740,15 @@ export function Key_WriteBindings(context: ClientKeyContext, writer: KeyBindingW
   }
 }
 
+/**
+ * Original name: Key_Bindlist_f
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Prints every non-empty key binding to the console.
+ */
 export function Key_Bindlist_f(context: ClientKeyContext): void {
   for (let i = 0; i < KEY_ARRAY_SIZE; i += 1) {
     const binding = context.state.keybindings[i];
@@ -636,6 +758,20 @@ export function Key_Bindlist_f(context: ClientKeyContext): void {
   }
 }
 
+/**
+ * Original name: Key_Init
+ * Source: client/keys.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes console edit lines, console/menu key masks, shifted key mapping
+ *   and the bind/unbind console commands.
+ *
+ * Porting notes:
+ * - Registers commands on the injected command runtime and keeps existing
+ *   bindings, matching the original initialization intent.
+ */
 export function Key_Init(context: ClientKeyContext): void {
   const state = context.state;
 

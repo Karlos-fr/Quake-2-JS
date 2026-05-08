@@ -40,6 +40,7 @@ import {
   LittleFloat,
   LittleLong,
   LittleShort,
+  MAXPRINTMSG,
   MAX_NUM_ARGVS,
   Swap_Init,
   bigendien,
@@ -817,6 +818,10 @@ assert.equal(redirected.rd_target, 0, "Com_EndRedirect target reset mismatch");
 const printfSink: string[] = [];
 Com_Printf(createCommonRuntime(), "value %i %s", (line) => printfSink.push(line), 7, "ok");
 assert.deepEqual(printfSink, ["value 7 ok"], "Com_Printf sink/format mismatch");
+assert.equal(MAXPRINTMSG, 4096, "MAXPRINTMSG constant mismatch");
+const clampedPrints: string[] = [];
+Com_Printf(createCommonRuntime(), "%s", (line) => clampedPrints.push(line), "x".repeat(MAXPRINTMSG + 5));
+assert.equal(clampedPrints[0]?.length, MAXPRINTMSG - 1, "Com_Printf MAXPRINTMSG clamp mismatch");
 
 const disabledRedirect = createCommonRuntime();
 Com_BeginRedirect(disabledRedirect, 0, 16, () => {

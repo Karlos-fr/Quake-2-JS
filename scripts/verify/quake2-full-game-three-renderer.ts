@@ -32,6 +32,13 @@ assert.ok(
 );
 assert.ok(source.includes("Qcommon_Frame(qcommon, milliseconds, {"), "full-game authoritative frame should run through Qcommon_Frame");
 assert.ok(source.includes("globals: qcommonGlobals"), "full-game should pass qcommon globals through the lifecycle adapter");
+assert.ok(source.includes("host_speeds: Cvar_Get(cvar, \"host_speeds\", \"0\", 0)"), "full-game server host should share the qcommon host_speeds cvar");
+assert.ok(source.includes("qcommonGlobals.time_before_game = milliseconds"), "full-game server host should feed host_speeds pre-game timing into qcommon globals");
+assert.ok(source.includes("qcommonGlobals.time_after_game = milliseconds"), "full-game server host should feed host_speeds post-game timing into qcommon globals");
+assert.ok(source.includes("hostSpeedsEnabled: () => (qcommonGlobals.host_speeds?.value ?? 0) !== 0"), "full-game client hooks should use qcommon host_speeds");
+assert.ok(source.includes("qcommonGlobals.time_before_ref = milliseconds"), "full-game client hooks should feed pre-ref timing into qcommon globals");
+assert.ok(source.includes("qcommonGlobals.time_after_ref = milliseconds"), "full-game client hooks should feed post-ref timing into qcommon globals");
+assert.ok(source.includes("logStatsEnabled: () => (qcommonGlobals.log_stats?.value ?? 0) !== 0"), "full-game client hooks should use qcommon log_stats");
 assert.ok(source.includes("Qcommon_Shutdown(runtime.qcommon)"), "full-game should shut down the qcommon lifecycle adapter");
 assert.ok(source.includes("Sys_AppActivate(runtime.qcommonHost)"), "full-game should route browser activation through the qcommon system hook");
 assert.ok(source.includes("host: qcommonHost"), "full-game keys should consume qcommon system hooks");
@@ -59,10 +66,9 @@ assert.ok(source.includes("forceGameInputForLevelLoad"), "full-game should force
 assert.ok(source.includes("isAuthoritativeLevelLoading"), "full-game should track automatic authoritative level loads");
 assert.ok(source.includes("shouldDrawFullGameLoadingFrame"), "full-game should prioritize the loading plaque over menu drawing");
 assert.ok(source.includes("runtime.isAuthoritativeLevelLoading() && !runtime.authoritativeGameReady()"), "automatic map changes should stay in loading mode until the client is ready");
-assert.ok(source.includes("shouldReconnectForAuthoritativeMap"), "full-game should detect server-side automatic map changes");
-assert.ok(source.includes("normalizeFullGameMapName"), "full-game should compare server and client map names before reconnecting");
-assert.ok(source.includes("runtime.beginAuthoritativeConnection(serverMapRequest)"), "automatic server map changes should restart the authoritative client handshake");
-assert.equal(source.includes("if (runtime.isAuthoritativeLevelLoading()) {\n    return false;\n  }\n\n  const serverMap = normalizeFullGameMapName(serverMapRequest);"), false, "loading state must not suppress automatic map reconnect detection");
+assert.equal(source.includes("shouldReconnectForAuthoritativeMap"), false, "automatic server map changes should follow original changing/reconnect commands, not web-side map-name heuristics");
+assert.equal(source.includes("normalizeFullGameMapName"), false, "full-game should not compare client/server map names to synthesize reconnects");
+assert.equal(source.includes("runtime.beginAuthoritativeConnection(serverMapRequest)"), false, "automatic server map changes must not restart the authoritative handshake from the web adapter");
 assert.ok(source.includes("M_ForceMenuOff(menuContext)"), "full-game level loads should close the main menu when a map transition begins");
 assert.ok(source.includes("onBeginLoadingPlaque: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "client changing commands should leave menu mode during level loads");
 assert.ok(source.includes("onBeginLoading: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "server map changes should leave menu mode during level loads");

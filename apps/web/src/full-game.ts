@@ -42,7 +42,6 @@ import {
   Cvar_Set as QcommonCvar_Set,
   Cvar_SetValue as QcommonCvar_SetValue,
   Cvar_VariableValue,
-  CS_MODELS,
   CS_ITEMS,
   Com_BlockChecksum,
   MAX_ITEMS,
@@ -987,6 +986,13 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     getGameDir: () => FS_Gamedir(filesystem),
     saveStorage,
     qnet: localTransport.serverQnet,
+    host_speeds: Cvar_Get(cvar, "host_speeds", "0", 0),
+    setTimeBeforeGame: (milliseconds) => {
+      qcommonGlobals.time_before_game = milliseconds;
+    },
+    setTimeAfterGame: (milliseconds) => {
+      qcommonGlobals.time_after_game = milliseconds;
+    },
     onPrint: printToConsole,
     onBeginLoading: () => {
       authoritativeLevelLoading = true;
@@ -1029,6 +1035,15 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onPredictMovement: predictAuthoritativeClientMovement,
     onPrepRefresh: prepClientRefresh,
     onRegisterSounds: registerAuthoritativeSounds,
+    hostSpeedsEnabled: () => (qcommonGlobals.host_speeds?.value ?? 0) !== 0,
+    onHostSpeedTimeBeforeRef: (milliseconds: number) => {
+      qcommonGlobals.time_before_ref = milliseconds;
+    },
+    onHostSpeedTimeAfterRef: (milliseconds: number) => {
+      qcommonGlobals.time_after_ref = milliseconds;
+    },
+    logStatsEnabled: () => (qcommonGlobals.log_stats?.value ?? 0) !== 0,
+    onLogStatSample: () => undefined,
     onAddToServerList: (address: netadr_t, info: string) => {
       if (menuContext) {
         M_AddToServerList(menuContext, address, info);
@@ -1673,13 +1688,6 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
   runtime.flushClientOutput();
   runtime.updateClientAudio();
 
-  const serverMapRequest = runtime.serverHost.currentMapRequest;
-  if (runtime.serverHost.hasActiveGameMap()
-    && serverMapRequest
-    && shouldReconnectForAuthoritativeMap(runtime, serverMapRequest)) {
-    runtime.beginAuthoritativeConnection(serverMapRequest);
-  }
-
   if (runtime.isAuthoritativeLevelLoading() && !runtime.authoritativeGameReady()) {
     runtime.mode = "loading";
     page.status.textContent = "Chargement du niveau...";
@@ -1708,38 +1716,6 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
     page.status.textContent = "Chargement du jeu...";
     page.status.style.display = "block";
   }
-}
-
-function shouldReconnectForAuthoritativeMap(runtime: FullGameRuntime, serverMapRequest: string): boolean {
-  const serverMap = normalizeFullGameMapName(serverMapRequest);
-  const clientMap = getFullGameClientWorldMapName(runtime);
-  return serverMap !== null && clientMap !== null && serverMap !== clientMap;
-}
-
-function getFullGameClientWorldMapName(runtime: FullGameRuntime): string | null {
-  return normalizeFullGameMapName(runtime.client.cl.configstrings[CS_MODELS + 1] ?? "");
-}
-
-function normalizeFullGameMapName(value: string): string | null {
-  let name = value.trim().replaceAll("\\", "/");
-  if (!name) {
-    return null;
-  }
-
-  const spawnIndex = name.indexOf("$");
-  if (spawnIndex !== -1) {
-    name = name.slice(0, spawnIndex);
-  }
-  if (name.startsWith("*")) {
-    name = name.slice(1);
-  }
-  if (name.toLowerCase().startsWith("maps/")) {
-    name = name.slice(5);
-  }
-  if (name.toLowerCase().endsWith(".bsp")) {
-    name = name.slice(0, -4);
-  }
-  return name.toLowerCase();
 }
 
 function syncFullGameActiveView(runtime: FullGameRuntime, page: FullGamePage, gameStatus: string): void {

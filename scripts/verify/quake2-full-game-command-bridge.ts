@@ -26,6 +26,7 @@ import {
   createClientScreenContext,
   createClientVidContext,
   createRefExport,
+  connstate_t,
   keydest_t
 } from "../../packages/client/src/index.js";
 import {
@@ -50,6 +51,7 @@ const keys = createClientKeyContext({ client, cmd, cvar });
 Cmd_Init(cmd);
 Cvar_Init(cvar, cmd);
 SCR_Init(createClientScreenContext(client, cmd, cvar));
+client.cls.state = connstate_t.ca_connected;
 
 const bridge = createFullGameCommandBridgeState();
 const prints: string[] = [];

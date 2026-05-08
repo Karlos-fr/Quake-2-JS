@@ -3,14 +3,17 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc persistent `connstate_t`, `dltype_t`, `keydest_t`, `client_static_t` et champs generes associes jusqu'a `demofile`.
-- Verdict du lot: Valide pour les enums et le struct proprietaire; `Non applicable` pour les lignes correspondant a des champs de `client_static_t` deja couvertes par la ligne structure.
+- Dernier lot traite: bloc cvars client de `cl_stereo_separation` a `cl_vwep`, puis `cdlight_t` et champs generes `key`/`radius`/`die`/`decay`/`minlight`.
+- Verdict du lot: Valide pour les cvars et `cdlight_t`; `Non applicable` pour les lignes correspondant a des champs de `cdlight_t` deja couvertes par la ligne structure.
 
 ## Preuves session
 
 - Source lue: `Quake-2-master/client/client.h` lignes de declaration du bloc `connstate_t`/`dltype_t`/`keydest_t`/`client_static_t`.
 - Cible lue: `packages/client/src/client.ts`, `packages/client/src/keys.ts`, `packages/client/src/index.ts`, integrations `packages/client/src/cl_main.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_input.ts`, `packages/client/src/console.ts`, `packages/client/src/download.ts`, `apps/web/src/full-game.ts`, `apps/web/src/full-game-local-session.ts`, `apps/web/src/full-game-server-host.ts`, `apps/web/src/local-client-controller.ts`, `packages/renderer-three/src`.
 - Tests lances: `npm run verify:client:header`, `npm run verify:keys:header`, `npm run verify:keys`, `npm run verify:full-game:local-transport`, `npm run verify:full-game:authoritative-handshake`, `npm run verify:full-game:input-bindings`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Session cvars/dlights: source lue `Quake-2-master/client/client.h` cvars + `cdlight_t`; cibles lues `packages/client/src/client.ts`, `packages/client/src/cl_main.ts`, `packages/client/src/cl_input.ts`, `packages/client/src/view.ts`, `packages/client/src/refresh.ts`, `packages/client/src/cl_fx.ts`, `apps/web/src`, `packages/renderer-three/src`.
+- Tests lances session cvars/dlights: `npm run verify:client:header`, `npm run verify:cl-main`, `npm run verify:cl-input`, `npm run verify:cl-view`, `npm run verify:dlight-sync`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
+- Test tente non bloquant pour ce lot: `npm run verify:cl-fx` echoue avant cloture sur une attente historique de `CL_BuildRefreshFrame` appelee avec runtime non actif (`EF_ROCKET should expose the original rocket dlight to refresh`).
 
 ## Decisions
 
@@ -22,7 +25,13 @@
 - Runtime: le bloc est atteint par les transitions `CL_Init`/`CL_Frame`, `CL_Connect_f`, `CL_CheckForResend`, `CL_ConnectionlessPacket`, `CL_ParseServerData`, `CL_ParseServerMessage`, `CL_SendCmd`, `CL_Disconnect` et les commandes demo/download.
 - `apps/web`: le navigateur declenche et consomme ce bloc via `full-game.ts`, `full-game-local-session.ts`, `full-game-server-host.ts` et `local-client-controller.ts`; pas de logique parallele masquant `connstate_t`, `keydest_t`, le timing `cls` ou les champs de download/demo.
 - `renderer-three`: pas de sortie visible directe depuis `client_static_t`; l'impact visible passe par l'etat `ca_active`, `realtime`/`frametime` et les frames/render-source deja consommes par `apps/web` et `renderer-three`, verifies par `verify:full-game:render-source` et `verify:full-game:three-renderer`.
+- Cvars: les cvars client sont rattaches au runtime via `CL_InitLocal` et `CL_InitInput`; `cl_sidespeed` a ete corrige de `350` vers le defaut C `200`, et `cl_lightlevel` cote input pointe maintenant vers le cvar C `r_lightlevel`.
+- Runtime rendu: `cl_stereo_separation`/`cl_stereo`, `cl_add_*`, `cl_gun`, `cl_timedemo` et `cl_paused` alimentent le flux `V_RenderView`/`CL_BuildRefreshFrame`; `cl_predict`, `cl_shownet`, `cl_showmiss`, `cl_showclamp`, `cl_vwep`, skins et footsteps sont consommes par parse/prediction/entities selon les ports existants.
+- Runtime input/menu/son: `cl_upspeed` a `cl_anglespeedkey`, `cl_run`, `freelook`, `lookspring`, `lookstrafe`, `sensitivity`, `m_*` sont branches via input/menu; `cl_paused` est aussi consomme par audio.
+- `cdlight_t`: porte comme `client_dlight_t` dans `client.ts`; le renommage est documente pour eviter la collision avec le `dlight_t` renderer de `client/ref.h`. Les champs C `key`, `color`, `origin`, `radius`, `die`, `decay`, `minlight` sont representes; la matrice marque les champs generes couverts par la ligne structure.
+- `apps/web`: le flux web declenche/consomme ces sorties via les render sources full-game et les controllers; pas de logique parallele masquant les toggles runtime dans le lot valide.
+- `renderer-three`: les sorties visibles `entities`, `particles`, `dlights`, `lightstyles`, camera/vieworg et stereo arrivent via `ClientRefreshFrame`, `V_RenderView`, `gl-world-scene-adapter`, `refresh-entity-sync` et `three-dlight-sync`; tests render-source, three-renderer, web-render-order et dlight-sync passes.
 
 ## Prochain lot recommande
 
-Continuer avec le bloc cvars client de `cl_stereo_separation` a `cl_vwep`, puis `cdlight_t` et ses champs si le lot reste coherent; verifier les flux runtime `V_RenderView`/`SCR_UpdateScreen`/input, `apps/web` render-source et la consommation renderer-three des sorties visibles.
+Continuer avec `MAX_PARSE_ENTITIES`, `cl_parse_entities`, `net_message`, `net_from`, puis le bloc de fonctions de frame/parse immediatement adjacent si le lot reste coherent.

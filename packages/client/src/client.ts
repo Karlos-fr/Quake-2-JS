@@ -82,6 +82,7 @@ export interface client_lightstyle_t {
  *
  * Porting notes:
  * - Preserves the original timing, decay and contribution fields.
+ * - Uses the TypeScript name `client_dlight_t` to avoid colliding with the renderer-facing `dlight_t` from `client/ref.h`.
  */
 export interface client_dlight_t {
   key: number;
