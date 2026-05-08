@@ -107,15 +107,95 @@ assert.equal(refdef.num_particles, 0, "createRefDef num_particles mismatch");
 assert.deepEqual(refdef.particles, [], "createRefDef particles mismatch");
 
 const refExport = createRefExport();
+assert.deepEqual(
+  Object.keys(refExport),
+  [
+    "api_version",
+    "Init",
+    "Shutdown",
+    "BeginRegistration",
+    "RegisterModel",
+    "RegisterSkin",
+    "RegisterPic",
+    "SetSky",
+    "EndRegistration",
+    "RenderFrame",
+    "DrawGetPicSize",
+    "DrawPic",
+    "DrawStretchPic",
+    "DrawChar",
+    "DrawTileClear",
+    "DrawFill",
+    "DrawFadeScreen",
+    "DrawStretchRaw",
+    "CinematicSetPalette",
+    "BeginFrame",
+    "EndFrame",
+    "AppActivate"
+  ],
+  "createRefExport callback surface mismatch"
+);
 assert.equal(refExport.api_version, API_VERSION, "createRefExport api_version mismatch");
 assert.equal(refExport.Init(null, null), false, "createRefExport Init default mismatch");
 assert.deepEqual(refExport.DrawGetPicSize("conback"), { width: 0, height: 0 }, "createRefExport DrawGetPicSize mismatch");
 assert.equal(refExport.RegisterModel("tris.md2"), null, "createRefExport RegisterModel mismatch");
+assert.equal(refExport.RegisterSkin("players/male/grunt.pcx"), null, "createRefExport RegisterSkin mismatch");
+assert.equal(refExport.RegisterPic("loading"), null, "createRefExport RegisterPic mismatch");
+assert.doesNotThrow(() => refExport.Shutdown(), "createRefExport Shutdown default mismatch");
+assert.doesNotThrow(() => refExport.BeginRegistration("base1"), "createRefExport BeginRegistration default mismatch");
+assert.doesNotThrow(() => refExport.SetSky("unit1_", 0, [0, 0, 1]), "createRefExport SetSky default mismatch");
+assert.doesNotThrow(() => refExport.EndRegistration(), "createRefExport EndRegistration default mismatch");
+assert.doesNotThrow(() => refExport.RenderFrame(createRefDef()), "createRefExport RenderFrame default mismatch");
+assert.doesNotThrow(() => refExport.DrawPic(0, 0, "conback"), "createRefExport DrawPic default mismatch");
+assert.doesNotThrow(() => refExport.DrawStretchPic(0, 0, 8, 8, "conback"), "createRefExport DrawStretchPic default mismatch");
+assert.doesNotThrow(() => refExport.DrawChar(0, 0, 65), "createRefExport DrawChar default mismatch");
+assert.doesNotThrow(() => refExport.DrawTileClear(0, 0, 8, 8, "backtile"), "createRefExport DrawTileClear default mismatch");
+assert.doesNotThrow(() => refExport.DrawFill(0, 0, 8, 8, 1), "createRefExport DrawFill default mismatch");
+assert.doesNotThrow(() => refExport.DrawFadeScreen(), "createRefExport DrawFadeScreen default mismatch");
+assert.doesNotThrow(() => refExport.DrawStretchRaw(0, 0, 8, 8, 8, 8, new Uint8Array(64)), "createRefExport DrawStretchRaw default mismatch");
+assert.doesNotThrow(() => refExport.CinematicSetPalette(null), "createRefExport CinematicSetPalette default mismatch");
+assert.doesNotThrow(() => refExport.BeginFrame(0), "createRefExport BeginFrame default mismatch");
+assert.doesNotThrow(() => refExport.EndFrame(), "createRefExport EndFrame default mismatch");
+assert.doesNotThrow(() => refExport.AppActivate(true), "createRefExport AppActivate default mismatch");
 
 const refImport = createRefImport();
+assert.deepEqual(
+  Object.keys(refImport),
+  [
+    "Sys_Error",
+    "Cmd_AddCommand",
+    "Cmd_RemoveCommand",
+    "Cmd_Argc",
+    "Cmd_Argv",
+    "Cmd_ExecuteText",
+    "Con_Printf",
+    "FS_LoadFile",
+    "FS_FreeFile",
+    "FS_Gamedir",
+    "Cvar_Get",
+    "Cvar_Set",
+    "Cvar_SetValue",
+    "Vid_GetModeInfo",
+    "Vid_MenuInit",
+    "Vid_NewWindow"
+  ],
+  "createRefImport callback surface mismatch"
+);
+assert.doesNotThrow(() => refImport.Sys_Error(0, "ignored"), "createRefImport Sys_Error mismatch");
+assert.doesNotThrow(() => refImport.Cmd_AddCommand("unit", () => undefined), "createRefImport Cmd_AddCommand mismatch");
+assert.doesNotThrow(() => refImport.Cmd_RemoveCommand("unit"), "createRefImport Cmd_RemoveCommand mismatch");
 assert.equal(refImport.Cmd_Argc(), 0, "createRefImport Cmd_Argc mismatch");
 assert.equal(refImport.Cmd_Argv(1), "", "createRefImport Cmd_Argv mismatch");
+assert.doesNotThrow(() => refImport.Cmd_ExecuteText(0, "echo unit"), "createRefImport Cmd_ExecuteText mismatch");
+assert.doesNotThrow(() => refImport.Con_Printf(0, "unit"), "createRefImport Con_Printf mismatch");
 assert.equal(refImport.FS_LoadFile("pak0.pak"), null, "createRefImport FS_LoadFile mismatch");
+assert.doesNotThrow(() => refImport.FS_FreeFile(new Uint8Array()), "createRefImport FS_FreeFile mismatch");
+assert.equal(refImport.FS_Gamedir(), "", "createRefImport FS_Gamedir mismatch");
+assert.equal(refImport.Cvar_Get("unit", "0", 0), null, "createRefImport Cvar_Get mismatch");
+assert.equal(refImport.Cvar_Set("unit", "1"), null, "createRefImport Cvar_Set mismatch");
+assert.doesNotThrow(() => refImport.Cvar_SetValue("unit", 2), "createRefImport Cvar_SetValue mismatch");
 assert.equal(refImport.Vid_GetModeInfo(3), null, "createRefImport Vid_GetModeInfo mismatch");
+assert.doesNotThrow(() => refImport.Vid_MenuInit(), "createRefImport Vid_MenuInit mismatch");
+assert.doesNotThrow(() => refImport.Vid_NewWindow(640, 480), "createRefImport Vid_NewWindow mismatch");
 
 console.log("quake2-ref-header: ok");

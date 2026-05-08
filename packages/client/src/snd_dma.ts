@@ -838,6 +838,19 @@ export function S_StopAllSounds(context: ClientSndDmaContext): void {
   S_ClearBuffer(context);
 }
 
+/**
+ * Original name: S_AddLoopSounds
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds per-frame entity loop sound channels from the current parsed entity frame.
+ * - Merges matching sound indices, spatializes their origins and caps stereo totals to Quake II's 255 range.
+ *
+ * Porting notes:
+ * - Uses the typed client parse-entity ring length instead of the C `MAX_PARSE_ENTITIES` mask constant.
+ */
 export function S_AddLoopSounds(context: ClientSndDmaContext): void {
   if (context.cl_paused?.value) {
     return;
@@ -908,6 +921,16 @@ export function S_AddLoopSounds(context: ClientSndDmaContext): void {
   }
 }
 
+/**
+ * Original name: S_RawSamples
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Streams cinematic or network voice samples into the raw sample ring.
+ * - Preserves the original mono/stereo and 8/16-bit conversion paths, including simple rate scaling.
+ */
 export function S_RawSamples(
   context: ClientSndDmaContext,
   samples: number,
@@ -965,6 +988,15 @@ export function S_RawSamples(
   }
 }
 
+/**
+ * Original name: S_Update
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Updates listener vectors, refreshes dynamic channel spatialization, regenerates loop sounds and advances mixing.
+ */
 export function S_Update(context: ClientSndDmaContext, origin: vec3_t, forward: vec3_t, right: vec3_t, up: vec3_t): void {
   if (!context.state.sound_started) {
     return;
@@ -1015,6 +1047,15 @@ export function S_Update(context: ClientSndDmaContext, origin: vec3_t, forward: 
   S_Update_(context);
 }
 
+/**
+ * Original name: GetSoundtime
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Converts the DMA sample cursor into monotonically increasing sound time and tracks DMA buffer wraps.
+ */
 export function GetSoundtime(context: ClientSndDmaContext): void {
   const fullsamples = Math.trunc(context.sound.state.dma.samples / Math.max(1, context.sound.state.dma.channels));
   const samplepos = SNDDMA_GetDMAPos(context.sound);
@@ -1033,6 +1074,15 @@ export function GetSoundtime(context: ClientSndDmaContext): void {
   context.state.soundtime = context.state.buffers * fullsamples + Math.trunc(samplepos / Math.max(1, context.sound.state.dma.channels));
 }
 
+/**
+ * Original name: S_Update_
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Begins DMA painting, updates sound time, clamps mix-ahead to the DMA buffer and submits mixed samples.
+ */
 export function S_Update_(context: ClientSndDmaContext): void {
   if (!context.state.sound_started) {
     return;

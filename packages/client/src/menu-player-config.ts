@@ -50,20 +50,56 @@ const rate_tbl = [2500, 3200, 5000, 10000, 25000, 0];
 const rate_names = ["28.8 Modem", "33.6 Modem", "Single ISDN", "Dual ISDN/Cable", "T1/LAN", "User defined", null];
 const handedness = ["right", "left", "center", null];
 
+/**
+ * Original name: DownloadOptionsFunc
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Opens the download-options menu from the player-config action.
+ */
 function DownloadOptionsFunc(context: ClientMenuContext): void {
   M_Menu_DownloadOptions_f(context);
 }
 
+/**
+ * Original name: HandednessCallback
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Writes the current handedness spin-control value to the `hand` userinfo cvar.
+ */
 function HandednessCallback(context: ClientMenuContext): void {
   Cvar_SetValue(context.cvar, "hand", context.state.s_player_handedness_box.curvalue);
 }
 
+/**
+ * Original name: RateCallback
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Writes the selected preset rate unless the "User defined" row is selected.
+ */
 function RateCallback(context: ClientMenuContext): void {
   if (context.state.s_player_rate_box.curvalue !== rate_tbl.length - 1) {
     Cvar_SetValue(context.cvar, "rate", rate_tbl[context.state.s_player_rate_box.curvalue] ?? 0);
   }
 }
 
+/**
+ * Original name: ModelCallback
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Replaces the skin spin-control entries for the selected model and resets the skin cursor.
+ */
 function ModelCallback(context: ClientMenuContext): void {
   context.state.s_player_skin_box.itemnames = skinItemNames(context.state.s_pmi[context.state.s_player_model_box.curvalue]);
   context.state.s_player_skin_box.curvalue = 0;

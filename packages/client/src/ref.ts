@@ -226,6 +226,18 @@ export interface refimport_t {
   Vid_NewWindow: (width: number, height: number) => void;
 }
 
+/**
+ * Original name: GetRefAPI_t
+ * Source: client/ref.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Represents the single linker-level renderer entry point that accepts the import table and returns the export table.
+ *
+ * Porting notes:
+ * - TypeScript modules expose this as a callable type; the concrete `GetRefAPI` implementation lives in the renderer adapter.
+ */
 export type GetRefAPI_t = (imports: refimport_t) => refexport_t;
 
 /**
@@ -328,6 +340,13 @@ export function createRefDef(): refdef_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create a no-op renderer export table for tests, menus and hosts before a concrete refresh backend is attached.
+ *
+ * Constraints:
+ * - Must preserve the complete `client/ref.h` `refexport_t` surface and expose `API_VERSION` through `api_version`.
+ */
 export function createRefExport(): refexport_t {
   return {
     api_version: API_VERSION,
@@ -355,6 +374,13 @@ export function createRefExport(): refexport_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create a no-op renderer import table that concrete renderer hosts can partially override.
+ *
+ * Constraints:
+ * - Must preserve the complete `client/ref.h` `refimport_t` surface with inert default callbacks.
+ */
 export function createRefImport(): refimport_t {
   return {
     Sys_Error: () => {},

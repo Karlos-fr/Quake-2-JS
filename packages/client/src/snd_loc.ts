@@ -37,6 +37,9 @@ export const MAX_RAW_SAMPLES = 8192;
  * Source: client/snd_loc.h
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores one mixed stereo sample pair in the portable paint/raw sample buffers.
  */
 export interface portable_samplepair_t {
   left: number;
@@ -69,6 +72,12 @@ export interface sfxcache_t {
  * Source: client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Tracks one registered sound effect, its decoded cache, and optional alias target.
+ *
+ * Porting notes:
+ * - `name[MAX_QPATH]` and `truename` are represented as strings; `cache` remains nullable like the C pointer.
  */
 export interface sfx_t {
   name: string;
@@ -107,6 +116,12 @@ export interface playsound_t {
  * Source: client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Describes the active DMA-style output buffer and playback cursor used by the mixer.
+ *
+ * Porting notes:
+ * - `buffer` is a nullable `Uint8Array` owned by the host DMA adapter.
  */
 export interface dma_t {
   channels: number;
@@ -123,6 +138,12 @@ export interface dma_t {
  * Source: client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Stores one active mixer channel, including volume, entity ownership, origin and loop/autosound state.
+ *
+ * Porting notes:
+ * - Pointer fields are nullable object references; vector fields preserve the Quake numeric tuple layout.
  */
 export interface channel_t {
   sfx: sfx_t | null;
@@ -145,6 +166,9 @@ export interface channel_t {
  * Source: client/snd_loc.h
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Carries parsed WAV metadata returned by `GetWavinfo` and consumed by `S_LoadSound`.
  */
 export interface wavinfo_t {
   rate: number;
@@ -216,10 +240,31 @@ export interface ClientSoundLocalContext {
   hooks: ClientSoundLocalHooks;
 }
 
+/**
+ * Original name: portable_samplepair_t zero-initialization
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Creates the TypeScript equivalent of a zeroed C `portable_samplepair_t`.
+ */
 export function createPortableSamplePair(): portable_samplepair_t {
   return { left: 0, right: 0 };
 }
 
+/**
+ * Original name: sfxcache_t zero-initialization
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates an empty sound cache block with Quake-compatible scalar defaults.
+ *
+ * Porting notes:
+ * - Uses an empty `Uint8Array` until `S_LoadSound` installs decoded PCM bytes.
+ */
 export function createSfxCache(): sfxcache_t {
   return {
     length: 0,
@@ -231,6 +276,15 @@ export function createSfxCache(): sfxcache_t {
   };
 }
 
+/**
+ * Original name: sfx_t zero-initialization
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates an unregistered sound effect record with null pointer fields.
+ */
 export function createSfx(): sfx_t {
   return {
     name: "",
@@ -240,6 +294,15 @@ export function createSfx(): sfx_t {
   };
 }
 
+/**
+ * Original name: playsound_t zero-initialization
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates an empty scheduled playsound node suitable for pending/free linked lists.
+ */
 export function createPlaySound(): playsound_t {
   return {
     prev: null,
@@ -255,6 +318,15 @@ export function createPlaySound(): playsound_t {
   };
 }
 
+/**
+ * Original name: dma_t zero-initialization
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates an uninitialized DMA descriptor whose backend buffer is absent.
+ */
 export function createDmaState(): dma_t {
   return {
     channels: 0,
@@ -267,6 +339,15 @@ export function createDmaState(): dma_t {
   };
 }
 
+/**
+ * Original name: channel_t zero-initialization
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates an inactive mixer channel with zeroed volumes, ownership and spatial state.
+ */
 export function createChannel(): channel_t {
   return {
     sfx: null,
@@ -285,6 +366,15 @@ export function createChannel(): channel_t {
   };
 }
 
+/**
+ * Original name: wavinfo_t zero-initialization
+ * Source: client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Creates the empty metadata value used when no valid WAV data is available.
+ */
 export function createWavInfo(): wavinfo_t {
   return {
     rate: 0,

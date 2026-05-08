@@ -10,58 +10,58 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/snd_loc.h` | struct | `portable_samplepair_t` | `packages/client/src/snd_loc.ts` | `portable_samplepair_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `left` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `right` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | struct | `sfxcache_t` | `packages/client/src/snd_loc.ts` | `sfxcache_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `length` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `loopstart` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `speed` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `width` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `stereo` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `data` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | struct | `sfx_s` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `name` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `registration_sequence` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `truename` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | struct | `playsound_s` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `sfx` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `volume` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `attenuation` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `entnum` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `entchannel` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `fixed_origin` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `origin` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `begin` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | struct | `dma_t` | `packages/client/src/snd_loc.ts` | `dma_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `channels` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `samples` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `submission_chunk` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `samplepos` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `samplebits` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `speed` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `buffer` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | struct | `channel_t` | `packages/client/src/snd_loc.ts` | `channel_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `sfx` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `leftvol` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `rightvol` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `end` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `pos` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `looping` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `entnum` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `entchannel` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `origin` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `dist_mult` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `master_vol` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `fixed_origin` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `autosound` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | struct | `wavinfo_t` | `packages/client/src/snd_loc.ts` | `wavinfo_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `rate` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `width` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `channels` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `loopstart` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `samples` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_loc.h` | global | `dataofs` | `packages/client/src/snd_loc.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | struct | `portable_samplepair_t` | `packages/client/src/snd_loc.ts` | `portable_samplepair_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `left` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `portable_samplepair_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `right` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `portable_samplepair_t`. |
+| `Quake-2-master/client/snd_loc.h` | struct | `sfxcache_t` | `packages/client/src/snd_loc.ts` | `sfxcache_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `length` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfxcache_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `loopstart` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfxcache_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `speed` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfxcache_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `width` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfxcache_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `stereo` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfxcache_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `data` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfxcache_t`; `data[1]` est porte en `Uint8Array`. |
+| `Quake-2-master/client/snd_loc.h` | struct | `sfx_s` | `packages/client/src/snd_loc.ts` | `sfx_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `name` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfx_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `registration_sequence` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfx_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `truename` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `sfx_t`. |
+| `Quake-2-master/client/snd_loc.h` | struct | `playsound_s` | `packages/client/src/snd_loc.ts` | `playsound_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `sfx` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `volume` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `attenuation` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `entnum` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `entchannel` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `fixed_origin` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `origin` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `begin` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `playsound_t`. |
+| `Quake-2-master/client/snd_loc.h` | struct | `dma_t` | `packages/client/src/snd_loc.ts` | `dma_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `channels` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `dma_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `samples` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `dma_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `submission_chunk` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `dma_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `samplepos` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `dma_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `samplebits` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `dma_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `speed` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `dma_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `buffer` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `dma_t`; `byte *` est porte en `Uint8Array | null`. |
+| `Quake-2-master/client/snd_loc.h` | struct | `channel_t` | `packages/client/src/snd_loc.ts` | `channel_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `sfx` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `leftvol` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `rightvol` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `end` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `pos` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `looping` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `entnum` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `entchannel` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `origin` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `dist_mult` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `master_vol` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `fixed_origin` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `autosound` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `channel_t`. |
+| `Quake-2-master/client/snd_loc.h` | struct | `wavinfo_t` | `packages/client/src/snd_loc.ts` | `wavinfo_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_loc.h` | global | `rate` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `width` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `channels` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `loopstart` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `samples` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
+| `Quake-2-master/client/snd_loc.h` | global | `dataofs` | `packages/client/src/snd_loc.ts` |  | Non applicable | A redecouper | Champ couvert par `wavinfo_t`. |
 | `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Init` | `packages/client/src/snd_loc.ts` | `SNDDMA_Init` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_GetDMAPos` | `packages/client/src/snd_loc.ts` | `SNDDMA_GetDMAPos` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_loc.h` | function | `SNDDMA_Shutdown` | `packages/client/src/snd_loc.ts` | `SNDDMA_Shutdown` | A verifier | A redecouper |  |

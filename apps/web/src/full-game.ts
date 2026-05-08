@@ -18,7 +18,9 @@ import {
   createVirtualFilesystem,
   FS_AddGameDirectory,
   FS_Gamedir,
+  FS_ListFiles,
   FS_LoadFile,
+  FS_NextPath,
   FS_SetGamedir,
   readMountedFile,
   type VirtualFilesystem
@@ -132,7 +134,8 @@ import {
   M_Menu_Main_f,
   createClientMenuContext,
   type ClientMenuContext,
-  type ClientMenuMapEntry
+  type ClientMenuMapEntry,
+  type PlayerModelInfo
 } from "../../../packages/client/src/menu.js";
 import { createClientQMenuContext } from "../../../packages/client/src/qmenu.js";
 import {
@@ -275,6 +278,9 @@ const STARTUP_CINEMATICS = [
 
 const LOGICAL_WIDTH = 640;
 const LOGICAL_HEIGHT = 480;
+const FULL_GAME_SFF_HIDDEN = 0x02;
+const FULL_GAME_SFF_SUBDIR = 0x08;
+const FULL_GAME_SFF_SYSTEM = 0x10;
 
 type DrawCommand =
   | { type: "pic"; x: number; y: number; name: string; width?: number; height?: number }
@@ -572,6 +578,145 @@ function readFullGameMapList(filesystem: VirtualFilesystem): ClientMenuMapEntry[
   }
 
   return entries.length > 0 ? entries : null;
+}
+
+/**
+ * Original name: IconOfSkinExists
+ * Source: client/menu.c
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Operates on normalized browser filesystem paths while preserving the original
+ *   "skin.pcx must have skin_i.pcx" rule.
+ */
+function fullGameIconOfSkinExists(skinPath: string, pcxfiles: string[]): boolean {
+  const dotIndex = skinPath.lastIndexOf(".");
+  const iconPath = `${dotIndex >= 0 ? skinPath.slice(0, dotIndex) : skinPath}_i.pcx`.toLowerCase();
+  return pcxfiles.some((file) => file.toLowerCase() === iconPath);
+}
+
+function fullGamePathBasename(path: string): string {
+  const slash = Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\"));
+  return slash >= 0 ? path.slice(slash + 1) : path;
+}
+
+function fullGameStripExtension(path: string): string {
+  const basename = fullGamePathBasename(path);
+  const dot = basename.lastIndexOf(".");
+  return dot >= 0 ? basename.slice(0, dot) : basename;
+}
+
+function fullGameModelDirectoryName(directoryPath: string): string {
+  return fullGamePathBasename(directoryPath).toLowerCase();
+}
+
+function addFullGamePlayerModel(models: Map<string, PlayerModelInfo>, directory: string, skins: string[]): void {
+  if (skins.length === 0 || models.has(directory)) {
+    return;
+  }
+
+  models.set(directory, {
+    directory,
+    displayname: directory.slice(0, 15),
+    skins
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Enumerate player model directories from mounted PAK archives for the browser menu adapter.
+ *
+ * Constraints:
+ * - Mirrors the `PlayerConfig_ScanDirectories` ownership boundary without adding filesystem APIs to the menu port.
+ */
+function readFullGamePakPlayerModels(filesystem: VirtualFilesystem): PlayerModelInfo[] {
+  const byDirectory = new Map<string, Set<string>>();
+  const hasTris = new Set<string>();
+  const hasIcon = new Set<string>();
+
+  for (const search of filesystem.searchPaths) {
+    if (!search.pack) {
+      continue;
+    }
+
+    for (const entry of search.pack.archive.entries) {
+      const name = entry.normalizedName;
+      const match = /^players\/([^/]+)\/([^/]+)\.pcx$/.exec(name);
+      if (name.match(/^players\/[^/]+\/tris\.md2$/)) {
+        hasTris.add(name.split("/")[1]);
+      } else if (match) {
+        const [, directory, skinName] = match;
+        if (skinName.endsWith("_i")) {
+          hasIcon.add(`${directory}/${skinName.slice(0, -2)}`);
+        } else {
+          let skins = byDirectory.get(directory);
+          if (!skins) {
+            skins = new Set<string>();
+            byDirectory.set(directory, skins);
+          }
+          skins.add(skinName);
+        }
+      }
+    }
+  }
+
+  const models = new Map<string, PlayerModelInfo>();
+  for (const [directory, skins] of byDirectory) {
+    if (!hasTris.has(directory)) {
+      continue;
+    }
+
+    addFullGamePlayerModel(
+      models,
+      directory,
+      [...skins].filter((skin) => hasIcon.has(`${directory}/${skin}`)).sort()
+    );
+  }
+
+  return [...models.values()];
+}
+
+/**
+ * Original name: PlayerConfig_ScanDirectories
+ * Source: client/menu.c
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Supplies the browser `getPlayerModels` hook used by the ported menu block.
+ * - Checks loose mounted directories first, then PAK entries so the stock `pak0.pak`
+ *   player models are available in `apps/web`.
+ */
+function readFullGamePlayerModels(filesystem: VirtualFilesystem): PlayerModelInfo[] | null {
+  const models = new Map<string, PlayerModelInfo>();
+  let path: string | null = null;
+
+  while ((path = FS_NextPath(filesystem, path)) !== null) {
+    const dirnames = FS_ListFiles(filesystem, `${path}/players/*.*`, FULL_GAME_SFF_SUBDIR, 0);
+
+    for (const dirname of dirnames) {
+      const directory = fullGameModelDirectoryName(dirname);
+      if (FS_ListFiles(filesystem, `${dirname}/tris.md2`, 0, FULL_GAME_SFF_SUBDIR | FULL_GAME_SFF_HIDDEN | FULL_GAME_SFF_SYSTEM).length === 0) {
+        continue;
+      }
+
+      const pcxfiles = FS_ListFiles(filesystem, `${dirname}/*.pcx`, 0, FULL_GAME_SFF_SUBDIR | FULL_GAME_SFF_HIDDEN | FULL_GAME_SFF_SYSTEM);
+      const skins = pcxfiles
+        .filter((file) => !file.toLowerCase().endsWith("_i.pcx"))
+        .filter((file) => fullGameIconOfSkinExists(file, pcxfiles))
+        .map(fullGameStripExtension)
+        .sort();
+      addFullGamePlayerModel(models, directory, skins);
+    }
+  }
+
+  for (const model of readFullGamePakPlayerModels(filesystem)) {
+    addFullGamePlayerModel(models, model.directory, model.skins);
+  }
+
+  const list = [...models.values()];
+  return list.length > 0 ? list : null;
 }
 
 function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage): FullGameRuntime {
@@ -1243,7 +1388,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       },
       getSaveSlots: () => saveStorage.getSaveSlots(FS_Gamedir(filesystem)),
       getMapList: () => readFullGameMapList(filesystem),
-      getPlayerModels: () => null,
+      getPlayerModels: () => readFullGamePlayerModels(filesystem),
       onClearNotify: () => Con_ClearNotify(consoleContext.con),
       onQuit: () => printToConsole("Quit demande.")
     }
@@ -2496,6 +2641,11 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
     return;
   }
 
+  if (key === K_ESCAPE && isFullGameAutomaticLevelLoad(runtime)) {
+    runtime.mouse.suppressNextEscapeKeyUp = true;
+    return;
+  }
+
   if (runtime.mode === "game" && runtime.menu.keys.state.key_dest === keydest_t.key_game) {
     Key_Event(runtime.menu.keys, key, true, runtime.client.cls.realtime);
     executeRuntimeCommandBuffer(runtime, page);
@@ -2539,6 +2689,10 @@ function syncFullGameKeyDestination(runtime: FullGameRuntime, page: FullGamePage
   const keyDest = runtime.menu.keys.state.key_dest as keydest_t;
 
   if (keyDest === keydest_t.key_menu && runtime.mode === "game") {
+    if (isFullGameAutomaticLevelLoad(runtime)) {
+      return;
+    }
+
     releaseFullGameMouseLook(runtime, page);
     runtime.mode = "menu";
     page.status.textContent = "Menu principal Quake II.";
@@ -2680,6 +2834,12 @@ function shouldRoutePointerUnlockAsEscape(runtime: FullGameRuntime): boolean {
     && runtime.client.cl.refresh_prepped
     && !runtime.isAuthoritativeLevelLoading()
     && runtime.client.cl.screen.scr_draw_loading === 0;
+}
+
+function isFullGameAutomaticLevelLoad(runtime: FullGameRuntime): boolean {
+  return runtime.isAuthoritativeLevelLoading()
+    || runtime.client.cl.screen.scr_draw_loading !== 0
+    || (runtime.client.cls.state !== connstate_t.ca_active && runtime.serverHost.hasActiveGameMap());
 }
 
 function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRuntime, page: FullGamePage): void {

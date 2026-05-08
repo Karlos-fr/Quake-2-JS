@@ -184,17 +184,17 @@
 | `Quake-2-master/client/client.h` | function | `CL_BubbleTrail2` | `packages/client/src/cl_newfx.ts` | `CL_BubbleTrail2` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ParticleSteamEffect` | `packages/client/src/cl_newfx.ts` | `CL_ParticleSteamEffect` | Valide | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_TrackerTrail` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Tracker_Explode` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_TagTrail` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ColorFlash` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Tracker_Shell` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_MonsterPlasma_Shell` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ColorExplosionParticles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParticleSmokeEffect` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Widowbeamout` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Nukeblast` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_WidowSplash` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_TrackerTrail` | `packages/client/src/cl_newfx.ts` | `CL_TrackerTrail` | Valide | A redecouper | Corrige: branchement `EF_TRACKER` via `CL_ExecutePacketEntityEffects`. |
+| `Quake-2-master/client/client.h` | function | `CL_Tracker_Explode` | `packages/client/src/cl_newfx.ts` | `CL_Tracker_Explode` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_TagTrail` | `packages/client/src/cl_newfx.ts` | `CL_TagTrail` | Valide | A redecouper | Corrige: branchement `EF_TAGTRAIL` via `CL_ExecutePacketEntityEffects`. |
+| `Quake-2-master/client/client.h` | function | `CL_ColorFlash` | `packages/client/src/cl_newfx.ts` | `CL_ColorFlash` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Tracker_Shell` | `packages/client/src/cl_newfx.ts` | `CL_Tracker_Shell` | Valide | A redecouper | Corrige: branchement `EF_TRACKERTRAIL` sans `EF_TRACKER` via `CL_ExecutePacketEntityEffects`. |
+| `Quake-2-master/client/client.h` | function | `CL_MonsterPlasma_Shell` | `packages/client/src/cl_newfx.ts` | `CL_MonsterPlasma_Shell` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ColorExplosionParticles` | `packages/client/src/cl_newfx.ts` | `CL_ColorExplosionParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParticleSmokeEffect` | `packages/client/src/cl_newfx.ts` | `CL_ParticleSmokeEffect` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Widowbeamout` | `packages/client/src/cl_newfx.ts` | `CL_Widowbeamout` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Nukeblast` | `packages/client/src/cl_newfx.ts` | `CL_Nukeblast` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_WidowSplash` | `packages/client/src/cl_newfx.ts` | `CL_WidowSplash` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ParseEntityBits` | `packages/client/src/cl_parse.ts` | `CL_ParseEntityBits` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ParseDelta` | `packages/client/src/cl_parse.ts` | `CL_ParseDelta` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ParseFrame` | `packages/client/src/cl_parse.ts` | `CL_ParseFrame` | Valide | A redecouper |  |

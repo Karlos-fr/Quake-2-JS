@@ -74,9 +74,11 @@ import {
   EF_HYPERBLASTER,
   EF_IONRIPPER,
   EF_PLASMA,
+  EF_TAGTRAIL,
   EF_TELEPORTER,
   EF_TRAP,
   EF_TRACKER,
+  EF_TRACKERTRAIL,
   type entity_state_t,
   entity_event_t,
   temp_event_t,
@@ -101,6 +103,9 @@ import {
   CL_ForceWall,
   CL_ParticleSmokeEffect,
   CL_ParticleSteamEffect,
+  CL_TagTrail,
+  CL_TrackerTrail,
+  CL_Tracker_Shell,
   CL_WidowSplash
 } from "./cl_newfx.js";
 import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type cparticle_t } from "./client.js";
@@ -1382,6 +1387,14 @@ export function CL_ExecutePacketEntityEffects(
       CL_FlagTrail(runtime, centity.lerp_origin, entity.origin, 242);
     } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_FLAG2) !== 0) {
       CL_FlagTrail(runtime, centity.lerp_origin, entity.origin, 115);
+    } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_TAGTRAIL) !== 0) {
+      CL_TagTrail(runtime, centity.lerp_origin, entity.origin, 220);
+    } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_TRACKERTRAIL) !== 0) {
+      if ((effects & EF_TRACKER) === 0) {
+        CL_Tracker_Shell(runtime, centity.lerp_origin);
+      }
+    } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_TRACKER) !== 0) {
+      CL_TrackerTrail(runtime, centity.lerp_origin, entity.origin, 0);
     }
   }
 }

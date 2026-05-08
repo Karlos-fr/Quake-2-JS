@@ -46,25 +46,81 @@ const samplePair = createPortableSamplePair();
 assert.deepEqual(samplePair, { left: 0, right: 0 }, "createPortableSamplePair mismatch");
 
 const cache = createSfxCache();
-assert.equal(cache.loopstart, -1, "createSfxCache loopstart mismatch");
-assert.equal(cache.data.length, 0, "createSfxCache data mismatch");
+assert.deepEqual({
+  length: cache.length,
+  loopstart: cache.loopstart,
+  speed: cache.speed,
+  width: cache.width,
+  stereo: cache.stereo,
+  dataLength: cache.data.length
+}, {
+  length: 0,
+  loopstart: -1,
+  speed: 0,
+  width: 0,
+  stereo: 0,
+  dataLength: 0
+}, "createSfxCache layout/default mismatch");
 
 const sfx = createSfx();
-assert.equal(sfx.name, "", "createSfx name mismatch");
-assert.equal(sfx.cache, null, "createSfx cache mismatch");
+assert.deepEqual(sfx, {
+  name: "",
+  registration_sequence: 0,
+  cache: null,
+  truename: null
+}, "createSfx layout/default mismatch");
 
 const playSound = createPlaySound();
-assert.equal(playSound.sfx, null, "createPlaySound sfx mismatch");
-assert.deepEqual(playSound.origin, [0, 0, 0], "createPlaySound origin mismatch");
+assert.deepEqual(playSound, {
+  prev: null,
+  next: null,
+  sfx: null,
+  volume: 0,
+  attenuation: 0,
+  entnum: 0,
+  entchannel: 0,
+  fixed_origin: false,
+  origin: [0, 0, 0],
+  begin: 0
+}, "createPlaySound layout/default mismatch");
 
 const dma = createDmaState();
-assert.equal(dma.buffer, null, "createDmaState buffer mismatch");
+assert.deepEqual(dma, {
+  channels: 0,
+  samples: 0,
+  submission_chunk: 0,
+  samplepos: 0,
+  samplebits: 0,
+  speed: 0,
+  buffer: null
+}, "createDmaState layout/default mismatch");
 
 const channel = createChannel();
-assert.equal(channel.master_vol, 0, "createChannel master_vol mismatch");
+assert.deepEqual(channel, {
+  sfx: null,
+  leftvol: 0,
+  rightvol: 0,
+  end: 0,
+  pos: 0,
+  looping: 0,
+  entnum: 0,
+  entchannel: 0,
+  origin: [0, 0, 0],
+  dist_mult: 0,
+  master_vol: 0,
+  fixed_origin: false,
+  autosound: false
+}, "createChannel layout/default mismatch");
 
 const wavInfo = createWavInfo();
-assert.equal(wavInfo.loopstart, -1, "createWavInfo loopstart mismatch");
+assert.deepEqual(wavInfo, {
+  rate: 0,
+  width: 0,
+  channels: 0,
+  loopstart: -1,
+  samples: 0,
+  dataofs: 0
+}, "createWavInfo layout/default mismatch");
 
 const callLog: string[] = [];
 const context = createClientSoundLocalContext({
@@ -121,6 +177,9 @@ const context = createClientSoundLocalContext({
 assert.equal(context.state.channels.length, MAX_CHANNELS, "channels length mismatch");
 assert.equal(context.state.s_rawsamples.length, MAX_RAW_SAMPLES, "raw sample length mismatch");
 assert.equal(context.state.s_pendingplays.next, null, "pending plays default mismatch");
+assert.deepEqual(context.state.channels[0], createChannel(), "sound-local channel state mismatch");
+assert.deepEqual(context.state.dma, createDmaState(), "sound-local dma state mismatch");
+assert.deepEqual(context.state.s_rawsamples[0], createPortableSamplePair(), "sound-local raw sample state mismatch");
 
 sfx.name = "misc/menu1.wav";
 

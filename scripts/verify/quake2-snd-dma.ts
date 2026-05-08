@@ -44,17 +44,31 @@ import {
   S_StartSound as S_DMA_StartSound,
   S_StopAllSounds as S_DMA_StopAllSounds,
   S_Update as S_DMA_Update,
+  S_Update_ as S_DMA_Update_,
   GetSoundtime as S_DMA_GetSoundtime
 } from "../../packages/client/src/snd_dma.js";
 
 let dmaPos = 0;
+let beginPaintingCalls = 0;
+let submitCalls = 0;
+let lastPaintEndtime = 0;
 
 const client = createClientRuntime();
 const cmd = createCommandRuntime();
 const cvar = createCvarRuntime();
 const local = createClientSoundLocalContext({
   onSNDDMA_Init: () => true,
-  onSNDDMA_GetDMAPos: () => dmaPos
+  onSNDDMA_GetDMAPos: () => dmaPos,
+  onSNDDMA_BeginPainting: () => {
+    beginPaintingCalls += 1;
+  },
+  onSNDDMA_Submit: () => {
+    submitCalls += 1;
+  },
+  onS_PaintChannels: (endtime) => {
+    lastPaintEndtime = endtime;
+    local.state.paintedtime = endtime;
+  }
 });
 const context = createClientSndDmaContext(client, cmd, cvar, local);
 
@@ -208,17 +222,47 @@ assert.equal(context.sound.state.s_rawend, 2, "S_RawSamples rawend mismatch");
 assert.equal(context.sound.state.s_rawsamples[0].left, -128 << 16, "S_RawSamples mono8 sample 0 mismatch");
 assert.equal(context.sound.state.s_rawsamples[1].right, 127 << 16, "S_RawSamples mono8 sample 1 mismatch");
 
+context.sound.state.s_rawend = 0;
+context.sound.state.paintedtime = 0;
+context.sound.state.dma.speed = 11025;
+S_DMA_RawSamples(context, 2, 22050, 2, 2, new Uint8Array([
+  0x01, 0x00, 0x02, 0x00,
+  0x03, 0x00, 0x04, 0x00
+]));
+assert.equal(context.sound.state.s_rawend, 1, "S_RawSamples stereo16 resample rawend mismatch");
+assert.equal(context.sound.state.s_rawsamples[0].left, 1 << 8, "S_RawSamples stereo16 left mismatch");
+assert.equal(context.sound.state.s_rawsamples[0].right, 2 << 8, "S_RawSamples stereo16 right mismatch");
+
 context.state.buffers = 0;
 context.state.oldsamplepos = 6;
 context.sound.state.dma.channels = 2;
 context.sound.state.dma.samples = 8;
+context.sound.state.dma.speed = 11025;
 dmaPos = 2;
 S_DMA_GetSoundtime(context);
 assert.equal(context.state.buffers, 1, "GetSoundtime wrap mismatch");
 assert.equal(context.state.soundtime, 5, "GetSoundtime computed mismatch");
 
+context.state.soundtime = 0;
+context.state.buffers = 0;
+context.state.oldsamplepos = 0;
+context.sound.state.paintedtime = 0;
+context.sound.state.dma.channels = 2;
+context.sound.state.dma.samples = 16;
+context.sound.state.dma.submission_chunk = 4;
+context.sound.state.dma.speed = 20;
+context.sound.state.dma.buffer = new Uint8Array(16);
+dmaPos = 0;
+beginPaintingCalls = 0;
+submitCalls = 0;
+lastPaintEndtime = 0;
+S_DMA_Update_(context);
+assert.equal(beginPaintingCalls, 1, "S_Update_ should begin DMA painting");
+assert.equal(lastPaintEndtime, 4, "S_Update_ should mix to the aligned mix-ahead endtime");
+assert.equal(submitCalls, 1, "S_Update_ should submit DMA after painting");
+
 S_DMA_ClearBuffer(context);
-assert.deepEqual(Array.from(context.sound.state.dma.buffer ?? []), new Array(8).fill(0x80), "S_ClearBuffer mismatch");
+assert.deepEqual(Array.from(context.sound.state.dma.buffer?.slice(0, 16) ?? []), new Array(16).fill(0x80), "S_ClearBuffer mismatch");
 
 S_DMA_Shutdown(context);
 assert.equal(context.state.sound_started, 0, "S_Shutdown sound_started mismatch");

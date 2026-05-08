@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc `CL_ClearEffects`, `CL_ClearTEnts`, `CL_BlasterTrail`, `CL_QuadTrail`, `CL_RailTrail`, `CL_BubbleTrail`, `CL_FlagTrail`, `CL_IonripperTrail`, puis effets Rogue adjacents jusqu'a `CL_ParticleSteamEffect`.
-- Verdict du lot: Valide pour les fonctions portees et branchees; proprietaires TS corriges dans la matrice (`cl_fx.ts`, `cl_tent.ts`, `cl_newfx.ts`).
+- Dernier lot traite: bloc Rogue `CL_TrackerTrail`, `CL_Tracker_Explode`, `CL_TagTrail`, `CL_ColorFlash`, `CL_Tracker_Shell`, `CL_MonsterPlasma_Shell`, `CL_ColorExplosionParticles`, `CL_ParticleSmokeEffect`, puis `CL_Widowbeamout`, `CL_Nukeblast`, `CL_WidowSplash`.
+- Verdict du lot: Valide; proprietaire TS corrige dans la matrice (`cl_newfx.ts`) et branchements packet-entities Rogue ajoutes pour `EF_TRACKER`, `EF_TAGTRAIL` et `EF_TRACKERTRAIL` sans `EF_TRACKER`.
 
 ## Preuves session
 
@@ -63,7 +63,15 @@
 - Runtime: les trails projectile sont atteints via `CL_BuildRefreshFrame` / `CL_ExecutePacketEntityEffects`; les temp entities passent via `CL_ParseServerMessage`, `CL_AddTEntPacket` et `CL_ExecuteTempEntityEffects`; les clears sont appeles lors du parse serveur/changement d'etat client.
 - `apps/web`: le navigateur declenche et consomme ce bloc via les render sources full-game/local-controller et le flux `CL_BuildActionEffects`/`applyAuthoritativeVisualEffects`; pas de logique parallele masquant les particules, dlights, beams, force walls ou sustains du runtime.
 - `renderer-three`: applicable et branche pour particules (`particle-sync`), dlights (`three-dlight-sync`), beams heatbeam (`three-beam-sync`), force walls/sustains visibles via le debug layer web et refresh frame; `gl-world-scene-adapter` consomme aussi camera/scene/refdef pour ces sorties.
+- Session Rogue tracker/widow/nuke/smoke: source lue `Quake-2-master/client/client.h` lignes 403-413 et definitions `Quake-2-master/client/cl_newfx.c` `CL_ColorFlash`, `CL_TrackerTrail`, `CL_Tracker_Shell`, `CL_MonsterPlasma_Shell`, `CL_Widowbeamout`, `CL_Nukeblast`, `CL_WidowSplash`, `CL_Tracker_Explode`, `CL_TagTrail`, `CL_ColorExplosionParticles`, `CL_ParticleSmokeEffect`; flux C compares dans `client/cl_ents.c` et `client/cl_tent.c`.
+- Cibles lues session Rogue tracker/widow/nuke/smoke: `packages/client/src/cl_newfx.ts`, `packages/client/src/cl_fx.ts`, `packages/client/src/cl_tent.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/refresh.ts`, `packages/client/src/index.ts`, `apps/web/src`, `packages/renderer-three/src`.
+- Corrections session Rogue tracker/widow/nuke/smoke: `packages/client/src/cl_fx.ts` branche maintenant `EF_TAGTRAIL` vers `CL_TagTrail`, `EF_TRACKERTRAIL` sans `EF_TRACKER` vers `CL_Tracker_Shell`, et `EF_TRACKER` seul vers `CL_TrackerTrail`; `scripts/verify/quake2-cl-newfx.ts` couvre ces branches packet-entities.
+- Tests lances session Rogue tracker/widow/nuke/smoke: `npm run verify:cl-newfx`, `npm run verify:client:header`, `npm run verify:particle-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:render-source`, `npm run verify:web-render-order`, `npm run verify:dlight-sync`.
+- Test tente non bloquant session Rogue tracker/widow/nuke/smoke: `npm run typecheck` echoue hors lot sur `apps/web/src/full-game.ts` qui importe `SFF_HIDDEN`, `SFF_SUBDIR`, `SFF_SYSTEM` depuis `packages/qcommon/src/index.js` alors que ces exports sont absents.
+- Runtime: les fonctions du lot sont atteignables depuis `CL_ParseServerMessage`/`CL_ParseTEnt` pour les temp entities (`TE_CHAINFIST_SMOKE`, `TE_TRACKER_EXPLOSION`, `TE_FLASHLIGHT`, `TE_MONSTER_HEATBEAM`, `TE_WIDOWBEAMOUT`, `TE_NUKEBLAST`, `TE_WIDOWSPLASH`) et depuis `CL_BuildRefreshFrame`/`CL_ExecutePacketEntityEffects` pour les trails packet-entities Rogue (`EF_TRACKER`, `EF_TAGTRAIL`, `EF_TRACKERTRAIL`).
+- `apps/web`: applicable et branche via les render sources full-game/local-session/local-controller qui consomment `ClientRefreshFrame`; `verify:full-game:render-source`, `verify:web-render-order` et `verify:full-game:three-renderer` confirment que le navigateur ne contourne pas le flux runtime pour ces particules/dlights/sustains.
+- `renderer-three`: applicable et branche pour les sorties visibles du lot: particules via `particle-sync`, dlights via `three-dlight-sync`/`gl_light`, sustains et beams via `CL_BuildTEntRefresh` et `three-beam-sync`/`gl-world-scene-adapter`; tests `verify:particle-sync`, `verify:dlight-sync` et `verify:full-game:three-renderer` passes.
 
 ## Prochain lot recommande
 
-Continuer par le bloc Rogue suivant a partir de `CL_TrackerTrail`, puis `CL_Tracker_Explode`, `CL_TagTrail`, `CL_ColorFlash`, `CL_Tracker_Shell`, `CL_MonsterPlasma_Shell`, `CL_ColorExplosionParticles`, `CL_ParticleSmokeEffect`; garder `CL_Widowbeamout`, `CL_Nukeblast`, `CL_WidowSplash` dans un lot separe si le bloc devient trop large.
+Continuer apres le bloc Rogue par les prototypes client suivants restes `A verifier`: `CL_Quit_f`, `IN_Accumulate`, `CL_ParseLayout`, `CL_Init`, `CL_FixUpGender`, `CL_Disconnect`, `CL_Disconnect_f`, puis `CL_GetChallengePacket` si le lot reste coherent.

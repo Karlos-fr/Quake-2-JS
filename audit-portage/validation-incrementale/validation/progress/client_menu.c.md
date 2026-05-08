@@ -2,6 +2,17 @@
 
 ## Session 2026-05-08
 
+- Lot traite: bloc player config initial (`s_player_name_field`, `s_player_model_box`, `s_player_skin_box`, `s_player_handedness_box`, `s_player_rate_box`, `s_player_download_action`, `MAX_DISPLAYNAME`, `MAX_PLAYERMODELS`, `playermodelinfo_s`, champs `nskins`/`displayname`/`directory`, `s_pmnames`, `s_numplayermodels`, `rate_tbl`, `rate_names`, callbacks `DownloadOptionsFunc`, `HandednessCallback`, `RateCallback`, `ModelCallback`, plus `FreeFileList`, `IconOfSkinExists`, `PlayerConfig_ScanDirectories` et locaux associes).
+- Matrice mise a jour: 222 `Valide`, 0 `Partiel`, 111 `Non applicable`, 29 `A verifier`.
+- Corrections appliquees: ajout des commentaires d'en-tete de portage manquants sur les callbacks player-config dans `packages/client/src/menu-player-config.ts`; branchement `apps/web` de `getPlayerModels` dans `apps/web/src/full-game.ts` via `readFullGamePlayerModels(filesystem)`, avec scan loose `FS_NextPath`/`FS_ListFiles`, scan des PAK montes et verification skin/icon type `IconOfSkinExists`; renforcement de `scripts/verify/quake2-full-game-three-renderer.ts`.
+- Runtime: le menu player-config est atteignable via `M_Init` (`menu_playerconfig`), `M_Menu_Multiplayer_f`/`PlayerSetupFunc`, `M_PushMenu`, `M_Draw`, `M_Keydown` et callbacks qmenu; les callbacks download/handedness/rate/model modifient les cvars ou menus comme le C.
+- apps/web: manque corrige pendant cette session. Le navigateur ne renvoie plus `getPlayerModels: () => null`; il fournit maintenant les modeles/skins issus du filesystem Quake monte, y compris `pak0.pak`, au runtime menu porte.
+- renderer-three: pas de sortie renderer-three directe produite par les entites validees dans ce lot. Elles preparent la liste modeles/skins et les callbacks; la preview visible (`PlayerConfig_MenuDraw`, `RegisterModel`/`RegisterSkin`, `onPlayerConfigPreview`, icone) reste dans le prochain lot et devra etre jugee explicitement sans masquer le branchement renderer/web.
+- Tests lances:
+  - `npm run verify:menu` OK
+  - `npm run verify:full-game:three-renderer` OK
+  - `npm run typecheck` OK
+
 - Lot traite: gros bloc start-server/DM options/download options/address book (`StartServer_MenuDraw`, `StartServer_MenuKey`, `M_Menu_StartServer_f`, `dmoptions_statusbar`, `DMFlagCallback`, `DMOptions_MenuInit/Draw/Key`, `M_Menu_DMOptions_f`, `DownloadCallback`, `DownloadOptions_MenuInit/Draw/Key`, `M_Menu_DownloadOptions_f`, `NUM_ADDRESSBOOK_ENTRIES`, `s_addressbook_fields`, `AddressBook_MenuInit/Key/Draw`, `M_Menu_AddressBook_f` et locaux associes).
 - Matrice mise a jour: 199 `Valide`, 0 `Partiel`, 99 `Non applicable`, 64 `A verifier`.
 - Corrections appliquees: renforcement du harness `scripts/verify/quake2-menu.ts` pour couvrir explicitement le nettoyage ESC de `StartServer_MenuKey`, les flags DM/Rogue de `DMFlagCallback`, le rendu du carnet d'adresses et les callbacks download existants.
@@ -56,4 +67,4 @@
 
 ## Prochain lot recommande
 
-Continuer avec le bloc player config: `s_player_name_field`, `s_player_model_box`, `s_player_skin_box`, `s_player_handedness_box`, `s_player_rate_box`, `s_player_download_action`, `MAX_DISPLAYNAME`, `MAX_PLAYERMODELS`, `playermodelinfo_s`, listes `s_pmnames`/`rate_tbl`/`rate_names`, callbacks `DownloadOptionsFunc`, `HandednessCallback`, `RateCallback`, `ModelCallback`, puis `PlayerConfig_ScanDirectories` si le lot reste coherent.
+Continuer avec le bloc player config restant: `PlayerConfig_MenuInit` et ses locaux (`name`, `team`, `skin`, `currentdirectory`, `currentskin`, `currentdirectoryindex`, `currentskinindex`, `hand`, `handedness`, `i`, `j`), puis `PlayerConfig_MenuDraw` si le lot reste coherent pour couvrir la preview visible complete.

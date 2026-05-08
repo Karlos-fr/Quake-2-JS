@@ -13,7 +13,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { createEntity, createParticle, createRefDef, createRefImport } from "../../packages/client/src/ref.js";
+import { API_VERSION, createEntity, createParticle, createRefDef, createRefImport } from "../../packages/client/src/ref.js";
 import { createCvarRuntime, Cvar_Get } from "../../packages/qcommon/src/cvar.js";
 import { RDF_NOWORLDMODEL, RF_FULLBRIGHT, RF_TRANSLUCENT } from "../../packages/qcommon/src/index.js";
 import {
@@ -726,7 +726,7 @@ const api = GetRefAPI(runtime, refImport, {
     swapInitCalled = true;
   }
 });
-assert.equal(api.api_version > 0, true, "GetRefAPI api version mismatch");
+assert.equal(api.api_version, API_VERSION, "GetRefAPI api version mismatch");
 assert.equal(swapInitCalled, true, "GetRefAPI swap init mismatch");
 assert.equal(api.Init(null, null), true, "GetRefAPI Init mismatch");
 assert.deepEqual(api.DrawGetPicSize("pics/test"), { width: 64, height: 32 }, "GetRefAPI DrawGetPicSize mismatch");

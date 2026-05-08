@@ -57,6 +57,7 @@
 | `Quake-2-master/client/ref.h` | global | `num_dlights` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `num_particles` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | macro | `API_VERSION` | `packages/client/src/ref.ts` | `API_VERSION` | Valide | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `refexport_t` | `packages/client/src/ref.ts` | `refexport_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `api_version` | `packages/client/src/ref.ts` | `API_VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `refimport_t` | `packages/client/src/ref.ts` | `refimport_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `refexport_t` | `packages/client/src/ref.ts` | `refexport_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `api_version` | `packages/client/src/ref.ts` | `API_VERSION` | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `refimport_t` | `packages/client/src/ref.ts` | `refimport_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | typedef | `GetRefAPI_t` | `packages/client/src/ref.ts` | `GetRefAPI_t` | Valide | A redecouper |  |

@@ -10,23 +10,23 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/snd_mem.c` | global | `cache_full_cycle` | `packages/client/src/snd_mem.ts` | `cache_full_cycle` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `S_Alloc` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `ResampleSfx` | `packages/client/src/snd_mem.ts` | `ResampleSfx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `outcount` | `packages/client/src/snd_mem.ts` | `outcount` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `srcsample` | `packages/client/src/snd_mem.ts` | `srcsample` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts` | `stepscale` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `sample` | `packages/client/src/snd_mem.ts` | `sample` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `S_LoadSound` | `packages/client/src/snd_mem.ts` | `S_LoadSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `namebuffer` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `data` | `packages/client/src/snd_mem.ts` | `data` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `len` | `packages/client/src/snd_mem.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts` | `stepscale` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `size` | `packages/client/src/snd_dma.ts` | `size` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `data_p` | `packages/client/src/snd_mem.ts` | `data_p` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `cache_full_cycle` | `packages/client/src/snd_mem.ts` | `cache_full_cycle` | Valide | A redecouper | Preuves: comparaison C/TS et `npm run verify:snd-mem`; global conserve, aucun usage runtime original trouve. |
+| `Quake-2-master/client/snd_mem.c` | function | `S_Alloc` | `packages/client/src/snd_mem.ts` |  | Non applicable | A redecouper | Declaration C orpheline sans definition ni appel dans le depot original; aucune entite TS proprietaire attendue. |
+| `Quake-2-master/client/snd_mem.c` | function | `ResampleSfx` | `packages/client/src/snd_mem.ts` | `ResampleSfx` | Valide | A redecouper | Preuves: `npm run verify:snd-mem`; en-tete verifie; runtime via `S_LoadSound`. |
+| `Quake-2-master/client/snd_mem.c` | global | `outcount` | `packages/client/src/snd_mem.ts` | `outcount` | Non applicable | A redecouper | Variable locale C de `ResampleSfx`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `srcsample` | `packages/client/src/snd_mem.ts` | `srcsample` | Non applicable | A redecouper | Variable locale C de `ResampleSfx`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts` | `stepscale` | Non applicable | A redecouper | Variable locale C de `ResampleSfx`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts` | `i` | Non applicable | A redecouper | Variable locale C de boucle dans `ResampleSfx`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `sample` | `packages/client/src/snd_mem.ts` | `sample` | Non applicable | A redecouper | Variable locale C de `ResampleSfx`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | function | `S_LoadSound` | `packages/client/src/snd_mem.ts` | `S_LoadSound` | Valide | A redecouper | Preuves: `npm run verify:snd-mem`, `npm run verify:snd-loc:header`; en-tete verifie; web hook fichier verifie. |
+| `Quake-2-master/client/snd_mem.c` | global | `namebuffer` | `packages/client/src/snd_mem.ts` |  | Non applicable | A redecouper | Buffer local C de `S_LoadSound`, remplace par `resolvedName`; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `data` | `packages/client/src/snd_mem.ts` | `data` | Non applicable | A redecouper | Variable locale C de `S_LoadSound`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `len` | `packages/client/src/snd_mem.ts` | `len` | Non applicable | A redecouper | Variable locale C de `S_LoadSound`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts` | `stepscale` | Non applicable | A redecouper | Variable locale C de `S_LoadSound`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `size` | `packages/client/src/snd_dma.ts` | `size` | Non applicable | A redecouper | Variable locale C de `S_LoadSound`, remplacee par `data.length`; pas d'ownership `snd_dma.ts`. |
+| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | Non applicable | A redecouper | Variable locale C de `S_LoadSound`, portee dans le corps TS; preuves: `npm run verify:snd-mem`. |
+| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | Non applicable | A redecouper | Doublon de variable locale C genere par la matrice, couvert avec `S_LoadSound`. |
+| `Quake-2-master/client/snd_mem.c` | global | `data_p` | `packages/client/src/snd_mem.ts` | `data_p` | Partiel | A redecouper | Remplace par `IffParseState.data_p` et exerce via `S_LoadSound`; validation complete reportee au lot parser WAV `GetLittle*`/chunks/`GetWavinfo`. |
 | `Quake-2-master/client/snd_mem.c` | global | `iff_end` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_mem.c` | global | `last_chunk` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_mem.c` | global | `iff_data` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |

@@ -48,6 +48,10 @@ assert.ok(source.includes("M_AddToServerList"), "full-game should route connecti
 assert.ok(source.includes("onAddToServerList"), "full-game should expose the cl_main status-response hook to the web adapter");
 assert.ok(source.includes("getMapList: () => readFullGameMapList(filesystem)"), "full-game start-server menu should read maps.lst through the ported menu hook");
 assert.ok(source.includes("FS_LoadFile(filesystem, \"maps.lst\")"), "full-game map list hook should load maps.lst from the mounted Quake filesystem");
+assert.ok(source.includes("getPlayerModels: () => readFullGamePlayerModels(filesystem)"), "full-game player-config menu should enumerate player models through the ported menu hook");
+assert.ok(source.includes("FS_ListFiles(filesystem, `${path}/players/*.*`, FULL_GAME_SFF_SUBDIR, 0)"), "full-game player-model hook should scan loose player model directories");
+assert.ok(source.includes("readFullGamePakPlayerModels(filesystem)"), "full-game player-model hook should include stock PAK player models");
+assert.ok(source.includes("fullGameIconOfSkinExists"), "full-game player-model hook should preserve the skin icon existence check");
 assert.equal(source.includes("syncFullGamePredictionToAuthoritativeFrame"), false, "full-game should not add a non-original prediction resync path");
 assert.ok(source.includes("CL_BuildActionEffects"), "full-game should play client-side muzzleflash and temp-entity sounds");
 assert.ok(source.includes("CL_BuildEntityEventEffects"), "full-game should play client-side entity event sounds");
@@ -80,6 +84,8 @@ assert.ok(source.includes("runtime.client.cl.screen.scr_draw_loading !== 0"), "f
 assert.ok(source.includes("shouldRoutePointerUnlockAsEscape"), "full-game should guard browser pointer-lock loss before synthesizing Escape");
 assert.ok(source.includes("!runtime.isAuthoritativeLevelLoading()"), "automatic level loads must not convert pointer-lock loss into Escape/menu input");
 assert.ok(source.includes("runtime.client.cl.refresh_prepped"), "pointer-lock Escape routing should only happen once the active view is prepared");
+assert.ok(source.includes("if (key === K_ESCAPE && isFullGameAutomaticLevelLoad(runtime))"), "browser Escape events during automatic level loads must not open the menu");
+assert.ok(source.includes("if (isFullGameAutomaticLevelLoad(runtime)) {\n      return;\n    }\n\n    releaseFullGameMouseLook"), "automatic level loads must not switch the page into menu mode");
 assert.ok(source.includes("runtime.gameRenderer === null"), "full-game should keep the 2D loading overlay while the renderer is pending");
 assert.ok(renderLoopSource.includes("getRenderableViewportSize"), "full-game render loop should guard against zero-sized hidden viewports");
 assert.ok(renderLoopSource.includes("Math.max(1, width)"), "full-game render loop should never pass zero width to Three");

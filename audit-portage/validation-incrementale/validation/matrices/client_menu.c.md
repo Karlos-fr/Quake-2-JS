@@ -308,41 +308,41 @@
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `AddressBook_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuDraw` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_AddressBook_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_AddressBook_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_name_field` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_model_box` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_skin_box` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_handedness_box` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_rate_box` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_download_action` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | macro | `MAX_DISPLAYNAME` | `packages/client/src/menu-player-config.ts` | `MAX_DISPLAYNAME` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | macro | `MAX_PLAYERMODELS` | `packages/client/src/menu-player-config.ts` | `MAX_PLAYERMODELS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | struct | `playermodelinfo_s` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `nskins` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `displayname` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `directory` | `packages/client/src/menu-player-config.ts` | `directory` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_pmnames` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_numplayermodels` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `rate_tbl` | `packages/client/src/menu-player-config.ts` | `rate_tbl` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | table | `rate_tbl` | `packages/client/src/menu-player-config.ts` | `rate_tbl` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `rate_names` | `packages/client/src/menu-player-config.ts` | `rate_names` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DownloadOptionsFunc` | `packages/client/src/menu-player-config.ts` | `DownloadOptionsFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `HandednessCallback` | `packages/client/src/menu-player-config.ts` | `HandednessCallback` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `RateCallback` | `packages/client/src/menu-player-config.ts` | `RateCallback` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `ModelCallback` | `packages/client/src/menu-player-config.ts` | `ModelCallback` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `FreeFileList` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `IconOfSkinExists` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `PlayerConfig_ScanDirectories` | `packages/client/src/menu-player-config.ts` | `PlayerConfig_ScanDirectories` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `findname` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `ndirs` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `path` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `npcxfiles` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `nskins` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `strcmp` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_name_field` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_name_field` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_model_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_model_box` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_skin_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_skin_box` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_handedness_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_handedness_box` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_rate_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_rate_box` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_download_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_download_action` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | macro | `MAX_DISPLAYNAME` | `packages/client/src/menu-player-config.ts` | `MAX_DISPLAYNAME` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | macro | `MAX_PLAYERMODELS` | `packages/client/src/menu-player-config.ts` | `MAX_PLAYERMODELS` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | struct | `playermodelinfo_s` | `packages/client/src/menu-types.ts` | `PlayerModelInfo` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `nskins` | `packages/client/src/menu-types.ts` | `PlayerModelInfo.skins.length` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `displayname` | `packages/client/src/menu-types.ts` | `PlayerModelInfo.displayname` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `directory` | `packages/client/src/menu-types.ts` | `PlayerModelInfo.directory` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_pmnames` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_pmnames` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_numplayermodels` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_numplayermodels` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `rate_tbl` | `packages/client/src/menu-player-config.ts` | `rate_tbl` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | table | `rate_tbl` | `packages/client/src/menu-player-config.ts` | `rate_tbl` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `rate_names` | `packages/client/src/menu-player-config.ts` | `rate_names` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `DownloadOptionsFunc` | `packages/client/src/menu-player-config.ts` | `DownloadOptionsFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `HandednessCallback` | `packages/client/src/menu-player-config.ts` | `HandednessCallback` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `RateCallback` | `packages/client/src/menu-player-config.ts` | `RateCallback` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `ModelCallback` | `packages/client/src/menu-player-config.ts` | `ModelCallback` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `FreeFileList` | `packages/client/src/menu-player-config.ts` | `clearPlayerModels` | Non applicable | A redecouper | Original frees C allocations; JS uses GC and clears temporary model state on escape. |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `FreeFileList`; C allocation cleanup has no direct TS loop. |
+| `Quake-2-master/client/menu.c` | function | `IconOfSkinExists` | `apps/web/src/full-game.ts` | `fullGameIconOfSkinExists` | Valide | A redecouper | Browser adapter preserves the skin/icon pairing before feeding `getPlayerModels`. |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `IconOfSkinExists`; covered by adapter validation. |
+| `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local buffer inside `IconOfSkinExists`; replaced by string construction in adapter. |
+| `Quake-2-master/client/menu.c` | function | `PlayerConfig_ScanDirectories` | `packages/client/src/menu-player-config.ts` | `PlayerConfig_ScanDirectories` | Valide | A redecouper | `apps/web` hook now supplies loose/PAK player models via `readFullGamePlayerModels`. |
+| `Quake-2-master/client/menu.c` | global | `findname` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local filesystem pattern inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
+| `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local path/name buffer inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
+| `Quake-2-master/client/menu.c` | global | `ndirs` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local directory count inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
+| `Quake-2-master/client/menu.c` | global | `path` | `apps/web/src/full-game.ts` | `path` | Non applicable | A redecouper | Local FS_NextPath cursor inside browser adapter; covered by `PlayerConfig_ScanDirectories`. |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `PlayerConfig_ScanDirectories`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `npcxfiles` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local PCX count inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
+| `Quake-2-master/client/menu.c` | global | `nskins` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local valid-skin count inside `PlayerConfig_ScanDirectories`; represented by filtered `skins.length`. |
+| `Quake-2-master/client/menu.c` | function | `strcmp` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | C library comparison inside scan/sort logic; not a menu-owned function. |
 | `Quake-2-master/client/menu.c` | function | `PlayerConfig_MenuInit` | `packages/client/src/menu-player-config.ts` | `PlayerConfig_MenuInit` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `name` | `packages/client/src/menu.ts` | `name` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `team` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |

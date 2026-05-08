@@ -85,25 +85,25 @@
 | `Quake-2-master/client/snd_dma.c` | global | `clear` | `packages/client/src/snd_dma.ts` | `clear` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_StopAllSounds` | `packages/client/src/snd_dma.ts` | `S_StopAllSounds` | Valide | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_AddLoopSounds` | `packages/client/src/snd_dma.ts` | `S_AddLoopSounds` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `sounds` | `packages/client/src/snd_dma.ts` | `sounds` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `num` | `packages/client/src/snd_dma.ts` | `num` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `ent` | `packages/client/src/snd_dma.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_RawSamples` | `packages/client/src/snd_dma.ts` | `S_RawSamples` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `scale` | `packages/client/src/snd_dma.ts` | `scale` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Update` | `packages/client/src/snd_dma.ts` | `S_Update` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `total` | `packages/client/src/snd_dma.ts` | `total` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `GetSoundtime` | `packages/client/src/snd_dma.ts` | `GetSoundtime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `samplepos` | `packages/client/src/snd_dma.ts` | `samplepos` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `buffers` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `oldsamplepos` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `fullsamples` | `packages/client/src/snd_dma.ts` | `fullsamples` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Update_` | `packages/client/src/snd_dma.ts` | `S_Update_` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `endtime` | `packages/client/src/snd_dma.ts` | `endtime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `samps` | `packages/client/src/snd_dma.ts` | `samps` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_AddLoopSounds` | `packages/client/src/snd_dma.ts` | `S_AddLoopSounds` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `sounds` | `packages/client/src/snd_dma.ts` | `sounds` | Non applicable | A redecouper | Variable locale de `S_AddLoopSounds`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | Non applicable | A redecouper | Variable locale de `S_AddLoopSounds`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `num` | `packages/client/src/snd_dma.ts` | `num` | Non applicable | A redecouper | Variable locale de `S_AddLoopSounds`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `ent` | `packages/client/src/snd_dma.ts` | `ent` | Non applicable | A redecouper | Variable locale de `S_AddLoopSounds`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_RawSamples` | `packages/client/src/snd_dma.ts` | `S_RawSamples` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper | Variable locale de `S_RawSamples`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `scale` | `packages/client/src/snd_dma.ts` | `scale` | Non applicable | A redecouper | Variable locale de `S_RawSamples`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Update` | `packages/client/src/snd_dma.ts` | `S_Update` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper | Variable locale de `S_Update`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `total` | `packages/client/src/snd_dma.ts` | `total` | Non applicable | A redecouper | Variable locale de `S_Update`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `GetSoundtime` | `packages/client/src/snd_dma.ts` | `GetSoundtime` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `samplepos` | `packages/client/src/snd_dma.ts` | `samplepos` | Non applicable | A redecouper | Variable locale de `GetSoundtime`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `buffers` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper | Static locale C conservee dans `ClientSndDmaState.buffers`, pas une entite globale proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `oldsamplepos` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper | Static locale C conservee dans `ClientSndDmaState.oldsamplepos`, pas une entite globale proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `fullsamples` | `packages/client/src/snd_dma.ts` | `fullsamples` | Non applicable | A redecouper | Variable locale de `GetSoundtime`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Update_` | `packages/client/src/snd_dma.ts` | `S_Update_` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `endtime` | `packages/client/src/snd_dma.ts` | `endtime` | Non applicable | A redecouper | Variable locale de `S_Update_`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | global | `samps` | `packages/client/src/snd_dma.ts` | `samps` | Non applicable | A redecouper | Variable locale de `S_Update_`, pas une entite proprietaire. |
 | `Quake-2-master/client/snd_dma.c` | function | `S_Play` | `packages/client/src/snd_dma.ts` | `S_Play` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `name` | `packages/client/src/snd_dma.ts` | `name` | A verifier | A redecouper |  |

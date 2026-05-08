@@ -30,10 +30,10 @@ import {
   CL_WidowSplash,
   CL_Widowbeamout
 } from "../../packages/client/src/cl_newfx.js";
-import { CL_AddDLights, CL_AddParticles, CL_ExecuteTempEntityEffects } from "../../packages/client/src/cl_fx.js";
+import { CL_AddDLights, CL_AddParticles, CL_ExecutePacketEntityEffects, CL_ExecuteTempEntityEffects } from "../../packages/client/src/cl_fx.js";
 import { connstate_t, createClientRuntime, createClientSustain, type ClientRuntime } from "../../packages/client/src/client.js";
 import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
-import { temp_event_t, VIDREF_SOFT, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { EF_TAGTRAIL, EF_TRACKER, EF_TRACKERTRAIL, temp_event_t, VIDREF_SOFT, type vec3_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -46,6 +46,7 @@ function main(): void {
   verifySteamSmokeAndBlasterParticles();
   verifyTrackerWidowNukeAndColorParticles();
   verifyTempEntityRuntimeBranches();
+  verifyPacketEntityRogueBranches();
   verifyRefreshFrameParticleConsumption();
   console.log("quake2-cl-newfx: ok");
 }
@@ -320,6 +321,47 @@ function verifyTempEntityRuntimeBranches(): void {
 
   assert.ok(collectActiveParticles(runtime).length > 0, "cl_newfx temp-entity trails should mutate the runtime particle pool");
   assert.equal(CL_AddDLights(runtime).some((light) => light.sourceEntity === 3), true, "TE_FLASHLIGHT should reach runtime dlights");
+}
+
+function verifyPacketEntityRogueBranches(): void {
+  let runtime = createClientRuntime();
+  runtime.cl.time = 8900;
+  runtime.cl_entities[12].lerp_origin = [0, 0, 0];
+  withMockRandom(0, () => CL_ExecutePacketEntityEffects(runtime, [{
+    number: 12,
+    effects: EF_TAGTRAIL,
+    origin: [10, 0, 0],
+    modelindex: 1
+  }]));
+  let particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "EF_TAGTRAIL should reach CL_TagTrail from packet entities");
+  assert.ok(particles.every((particle) => particle.color === 220), "EF_TAGTRAIL color should match the Rogue constant");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8910;
+  runtime.cl_entities[13].lerp_origin = [0, 0, 0];
+  withMockRandom(0, () => CL_ExecutePacketEntityEffects(runtime, [{
+    number: 13,
+    effects: EF_TRACKERTRAIL,
+    origin: [10, 0, 0],
+    modelindex: 1
+  }]));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 300, "EF_TRACKERTRAIL without EF_TRACKER should reach CL_Tracker_Shell");
+  assert.ok(particles.every((particle) => particle.alphavel === -10000), "EF_TRACKERTRAIL shell should use instant particles");
+
+  runtime = createClientRuntime();
+  runtime.cl.time = 8920;
+  runtime.cl_entities[14].lerp_origin = [0, 0, 0];
+  withMockRandom(0, () => CL_ExecutePacketEntityEffects(runtime, [{
+    number: 14,
+    effects: EF_TRACKER,
+    origin: [9, 0, 0],
+    modelindex: 1
+  }]));
+  particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "EF_TRACKER should reach CL_TrackerTrail from packet entities");
+  assert.ok(particles.every((particle) => particle.color === 0), "EF_TRACKER trail color should match the Rogue constant");
 }
 
 function verifyRefreshFrameParticleConsumption(): void {
