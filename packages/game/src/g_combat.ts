@@ -17,8 +17,8 @@
  */
 
 import { AngleVectors, MASK_SOLID, temp_event_t, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
-import { Info_ValueForKey } from "../../qcommon/src/common.js";
 import { FoundTarget, visible } from "./g_ai.js";
+import { OnSameTeam } from "./g_cmds.js";
 import { AI_DUCKED, AI_GOOD_GUY, AI_SOUND_TARGET, FL_FLY, FL_SWIM } from "./g_local.js";
 import {
   DAMAGE_BULLET,
@@ -740,6 +740,8 @@ export function T_Damage(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
  * Category: New
  * Purpose: Compute one vec3 dot product for the strict `CheckPowerArmor` screen-facing test.
  */
@@ -748,40 +750,8 @@ function dotProduct(left: vec3_t, right: vec3_t): number {
 }
 
 /**
- * Category: New
- * Purpose: Mirror the original `ClientTeam` parsing from `g_cmds.c` so combat can apply source-faithful friendly-fire rules.
- */
-function ClientTeam(ent: GameEntity, runtime: GameRuntime): string {
-  if (!ent.client) {
-    return "";
-  }
-
-  const skin = Info_ValueForKey(ent.client.pers.userinfo, "skin");
-  const slash = skin.indexOf("/");
-  if (slash < 0) {
-    return skin;
-  }
-
-  if ((runtime.dmflags & DF_MODELTEAMS) !== 0) {
-    return skin.slice(0, slash);
-  }
-
-  return skin.slice(slash + 1);
-}
-
-/**
- * Category: New
- * Purpose: Preserve the original `OnSameTeam` helper used by combat friendly-fire logic.
- */
-function OnSameTeam(ent1: GameEntity, ent2: GameEntity, runtime: GameRuntime): boolean {
-  if ((runtime.dmflags & (DF_MODELTEAMS | DF_SKINTEAMS)) === 0) {
-    return false;
-  }
-
-  return ClientTeam(ent1, runtime) === ClientTeam(ent2, runtime);
-}
-
-/**
+ * Original name: N/A
+ * Source declaree: N/A (local trace helper)
  * Category: New
  * Purpose: Run one `MASK_SOLID` trace step used by the strict `CanDamage` port.
  */
@@ -796,6 +766,8 @@ function traceCanDamage(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local temp-entity adapter)
  * Category: New
  * Purpose: Emit one combat temp-entity through the same structured effect path already used elsewhere in the port.
  */

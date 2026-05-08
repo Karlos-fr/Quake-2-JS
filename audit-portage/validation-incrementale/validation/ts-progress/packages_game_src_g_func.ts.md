@@ -1,8 +1,8 @@
 # Progress TS - packages/game/src/g_func.ts
 
 - Statut: En cours
-- Dernier lot valide: constantes privees initiales `ACCELERATION_DISTANCE_SCALE`, `TRAIN_START_ON`, `TRAIN_TOGGLE`, `TRAIN_BLOCK_STOPS`, `SECRET_ALWAYS_SHOOT`, `SECRET_1ST_LEFT`, `SECRET_1ST_DOWN`, `MOVE_SOUND_CHANNEL`.
-- Prochain lot recommande: traiter les helpers locaux audio/mouvement `emitMoverSound`, `startMoverLoop`, `stopMoverLoop`, puis reprendre les lignes `Entete incomplet`.
+- Dernier lot valide: helpers locaux audio/mouvement `emitMoverSound`, `startMoverLoop`, `stopMoverLoop`.
+- Prochain lot recommande: reprendre les lignes `Entete incomplet`, en commencant par `computeDoorDistance`, `parseDoorMovedir`, `parseDistance`.
 - Tests de reference:
   - `npm run verify:g-func`
   - `npm run typecheck`
@@ -14,3 +14,4 @@
   - Les notes generiques des lignes `Couvert C/H` ont ete videes dans la matrice TS; les preuves detaillees restent dans la matrice C/H.
   - 2026-05-08: `TRAIN_START_ON`, `TRAIN_TOGGLE`, `TRAIN_BLOCK_STOPS`, `SECRET_ALWAYS_SHOOT`, `SECRET_1ST_LEFT` et `SECRET_1ST_DOWN` sont marques `Couvert C/H` par croisement avec les macros `Valide` de `game_g_func.c.md`.
   - 2026-05-08: `ACCELERATION_DISTANCE_SCALE` et `MOVE_SOUND_CHANNEL` sont classes `Category: New` avec `Original name: N/A` et `Source: N/A (local helper)`; ce sont des factorisations locales respectivement de la formule `AccelerationDistance` et du canal sonore `CHAN_NO_PHS_ADD+CHAN_VOICE`.
+  - 2026-05-08: `emitMoverSound`, `startMoverLoop` et `stopMoverLoop` sont classes `Category: New` avec `Original name: N/A` et `Source: N/A (local helper)`; ce sont des factorisations locales des blocs C repetes de sons start/end et `s.sound` des movers, sans doublon TS ni export.

@@ -1053,14 +1053,38 @@ export function ai_run(self: GameEntity, dist: number, runtime: GameRuntime): vo
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Provides a local copy-returning vector subtraction helper for AI expressions.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Provides a local vector length helper for AI distance checks.
+ */
 function vectorLength(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Provides a local copy-returning normalizer for AI facing checks.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = vectorLength(vector);
   if (length === 0) {
@@ -1070,6 +1094,14 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Provides a local dot product helper for AI facing checks.
+ */
 function dotProduct(left: vec3_t, right: vec3_t): number {
   return left[0] * right[0] + left[1] * right[1] + left[2] * right[2];
 }

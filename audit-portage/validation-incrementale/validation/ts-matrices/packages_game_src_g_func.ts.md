@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_func.ts`
 - Symboles TS: 103
 - Couvert C/H: 81
-- Reste a auditer: 20
+- Reste a auditer: 17
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -92,9 +92,9 @@
 | `packages/game/src/g_func.ts` | function | `SP_func_door_secret` | oui | `SP_func_door_secret` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_func.ts` | function | `use_killbox` | oui | `use_killbox` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_func.ts` | function | `SP_func_killbox` | oui | `SP_func_killbox` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_func.ts` | function | `emitMoverSound` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | function | `startMoverLoop` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | function | `stopMoverLoop` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_func.ts` | function | `emitMoverSound` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Factorisation locale de `gi.sound` mover avec canal `CHAN_NO_PHS_ADD+CHAN_VOICE`; entete ajoute. |
+| `packages/game/src/g_func.ts` | function | `startMoverLoop` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Helper local pour les blocs C de demarrage mover: skip `FL_TEAMSLAVE`, son start, puis `s.sound`. |
+| `packages/game/src/g_func.ts` | function | `stopMoverLoop` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Helper local pour les blocs C d'arret mover: skip `FL_TEAMSLAVE`, son end, puis clear `s.sound`. |
 | `packages/game/src/g_func.ts` | function | `computeDoorDistance` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/game/src/g_func.ts` | function | `parseDoorMovedir` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/game/src/g_func.ts` | function | `parseDistance` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

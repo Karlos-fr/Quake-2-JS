@@ -2401,6 +2401,15 @@ export function SP_func_killbox(ent: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, ent);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Centralize the repeated `gi.sound` mover call used by doors, plats, trains, and water.
+ */
 function emitMoverSound(runtime: GameRuntime, self: GameEntity, soundIndex: number): void {
   if (!soundIndex) {
     return;
@@ -2419,6 +2428,15 @@ function emitMoverSound(runtime: GameRuntime, self: GameEntity, soundIndex: numb
   });
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Preserve the source mover start pattern: skip team slaves, play `sound_start`, then set `s.sound`.
+ */
 function startMoverLoop(self: GameEntity, runtime: GameRuntime): void {
   if ((self.flags & FL_TEAMSLAVE) !== 0) {
     return;
@@ -2428,6 +2446,15 @@ function startMoverLoop(self: GameEntity, runtime: GameRuntime): void {
   self.s.sound = self.moveinfo.sound_middle;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Preserve the source mover stop pattern: skip team slaves, play `sound_end`, then clear `s.sound`.
+ */
 function stopMoverLoop(self: GameEntity, runtime: GameRuntime): void {
   if ((self.flags & FL_TEAMSLAVE) !== 0) {
     return;

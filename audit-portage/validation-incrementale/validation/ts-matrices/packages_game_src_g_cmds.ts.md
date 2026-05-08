@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_cmds.ts`
 - Symboles TS: 41
 - Couvert C/H: 25
-- Reste a auditer: 13
+- Reste a auditer: 9
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -37,10 +37,10 @@
 | `packages/game/src/g_cmds.ts` | function | `Cmd_Say_f` | oui | `Cmd_Say_f` | `Quake-2-master/game/g_cmds.c` | Ported | [`game_g_cmds.c.md`](../matrices/game_g_cmds.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_cmds.ts` | function | `Cmd_PlayerList_f` | oui | `Cmd_PlayerList_f` | `Quake-2-master/game/g_cmds.c` | Ported | [`game_g_cmds.c.md`](../matrices/game_g_cmds.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_cmds.ts` | function | `ClientCommand` | oui | `ClientCommand` | `Quake-2-master/game/g_cmds.c` | Ported | [`game_g_cmds.c.md`](../matrices/game_g_cmds.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_cmds.ts` | function | `cheatsAllowed` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `giveSpawnedItem` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `callItemUse` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_cmds.ts` | function | `callItemDrop` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_cmds.ts` | function | `cheatsAllowed` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `giveSpawnedItem` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `callItemUse` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | function | `callItemDrop` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_cmds.ts` | function | `scanWeapon` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_cmds.ts` | function | `isFloodBlocked` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_cmds.ts` | function | `buildHelpData` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

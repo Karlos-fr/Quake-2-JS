@@ -1,8 +1,8 @@
 # Progress TS - packages/game/src/g_ai.ts
 
 - Statut: En cours
-- Dernier lot valide: globals/cache AI `enemy_vis`, `enemy_infront`, `enemy_range`, `enemy_yaw` confirmes `Couvert C/H`; constante locale `ATTACK_TRACE_MASK` classee `New`.
-- Prochain lot recommande: classer les helpers locaux encore `A verifier` (`subtractVec3`, `vectorLength`, `normalizeVec3`, `dotProduct`, puis helpers collision/PHS).
+- Dernier lot valide: helpers locaux vectoriels `subtractVec3`, `vectorLength`, `normalizeVec3`, `dotProduct` classes `New`.
+- Prochain lot recommande: classer les helpers locaux collision/PHS encore `A verifier` (`setEntityOrigin`, `inPHS`, `pointArea`, `getEntityArea`, `areasConnected`, `randomInt`).
 - Tests de reference: `npm run verify:g-ai`, `npm run typecheck`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`.
 - Blocages: aucun pour les lignes `Couvert C/H`.
 
@@ -22,3 +22,12 @@
 - Ownership/doublons: proprietaire attendu `packages/game/src/g_ai.ts`; aucun doublon `enemy_*` hors variantes locales boss; `ATTACK_TRACE_MASK` est une constante locale non exportee qui nomme l'expression inline de `M_CheckAttack`.
 - Integration: runtime via `ai_checkattack`, `M_CheckAttack`, `ai_run_*` et callbacks monstres depuis `G_RunFrame`; `apps/web` et `renderer-three` n'ont pas d'integration directe attendue pour ces caches internes AI.
 - Tests: `npm run verify:g-ai`, `npm run typecheck`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer` OK.
+
+## Session helpers vectoriels locaux
+
+- Lignes traitees: `subtractVec3`, `vectorLength`, `normalizeVec3`, `dotProduct`.
+- Verdict: `Valide` / `Category: New`; metadonnees `Original name: N/A`, `Source declaree: N/A (local vector helper)` ajoutees aux en-tetes et a la matrice.
+- Preuves: usages lus dans `packages/game/src/g_ai.ts`; equivalents C `VectorSubtract`, `VectorLength`, `VectorNormalize`, `DotProduct` identifies dans `Quake-2-master/game/q_shared.h`/`.c`; port proprietaire confirme dans `packages/math/src/q_shared.ts` et matrices `game_q_shared.h.md`/`game_q_shared.c.md`.
+- Ownership/doublons: helpers non exportes, limites a `g_ai.ts`; ils ne revendiquent pas le portage proprietaire des operations `q_shared`.
+- Integration: runtime via les fonctions AI deja branchees (`FindTarget`, `ai_checkattack`, `ai_run`, callbacks monstres); aucune integration directe `apps/web` ou `renderer-three` attendue pour ces helpers de calcul internes.
+- Tests: `npm run verify:g-ai`, `npm run typecheck` OK.

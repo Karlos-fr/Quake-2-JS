@@ -4,20 +4,20 @@
 
 - Fichier TS: `packages/game/src/g_items.ts`
 - Symboles TS: 74
-- Couvert C/H: 47
-- Reste a auditer: 27
+- Couvert C/H: 53
+- Reste a auditer: 20
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `packages/game/src/g_items.ts` | value | `HEALTH_IGNORE_MAX` | non | `HEALTH_IGNORE_MAX` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_items.ts` | value | `HEALTH_TIMED` | non | `HEALTH_TIMED` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_items.ts` | value | `jacket_armor_index` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `combat_armor_index` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `body_armor_index` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `power_screen_index` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `power_shield_index` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | value | `quad_drop_timeout_hack` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_items.ts` | function | `cacheItemIndices` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_items.ts` | value | `jacket_armor_index` | non | `jacket_armor_index` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_items.ts` | value | `combat_armor_index` | non | `combat_armor_index` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_items.ts` | value | `body_armor_index` | non | `body_armor_index` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_items.ts` | value | `power_screen_index` | non | `power_screen_index` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_items.ts` | value | `power_shield_index` | non | `power_shield_index` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_items.ts` | value | `quad_drop_timeout_hack` | non | `quad_drop_timeout_hack` | `Quake-2-master/game/g_items.c` | Ported | [`game_g_items.c.md`](../matrices/game_g_items.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_items.ts` | function | `cacheItemIndices` | non | `N/A` | `N/A (local cache helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_items.ts` | type | `GameItemPickupKind` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_items.ts` | type | `GameItemUseKind` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_items.ts` | type | `GameItemDropKind` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

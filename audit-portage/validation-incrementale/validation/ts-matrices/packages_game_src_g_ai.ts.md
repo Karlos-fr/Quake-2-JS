@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_ai.ts`
 - Symboles TS: 34
 - Couvert C/H: 23
-- Reste a auditer: 11
+- Reste a auditer: 7
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,10 +33,10 @@
 | `packages/game/src/g_ai.ts` | function | `ai_run_slide` | oui | `ai_run_slide` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_ai.ts` | function | `ai_checkattack` | oui | `ai_checkattack` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_ai.ts` | function | `ai_run` | oui | `ai_run` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_ai.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `vectorLength` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | function | `dotProduct` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_ai.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide | Helper local non exporte; le port proprietaire de `VectorSubtract` reste `packages/math/src/q_shared.ts`. Tests: `verify:g-ai`, `typecheck` OK. |
+| `packages/game/src/g_ai.ts` | function | `vectorLength` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide | Helper local non exporte; le port proprietaire de `VectorLength` reste `packages/math/src/q_shared.ts`. Tests: `verify:g-ai`, `typecheck` OK. |
+| `packages/game/src/g_ai.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide | Helper local non exporte; le port proprietaire de `VectorNormalize` reste `packages/math/src/q_shared.ts`. Tests: `verify:g-ai`, `typecheck` OK. |
+| `packages/game/src/g_ai.ts` | function | `dotProduct` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide | Helper local non exporte; le port proprietaire de `DotProduct` reste `packages/math/src/q_shared.ts`. Tests: `verify:g-ai`, `typecheck` OK. |
 | `packages/game/src/g_ai.ts` | function | `setEntityOrigin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_ai.ts` | function | `inPHS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_ai.ts` | function | `pointArea` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

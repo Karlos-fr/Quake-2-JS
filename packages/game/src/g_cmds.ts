@@ -962,6 +962,12 @@ export function ClientCommand(context: GameCommandContext, ent: GameEntity): voi
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Share the repeated `deathmatch && !sv_cheats` gate used by the cheat commands in `g_cmds.c`.
+ */
 function cheatsAllowed(ent: GameEntity, context: GameCommandContext): boolean {
   if (context.runtime.deathmatch && (context.cvars?.sv_cheats?.value ?? 0) === 0) {
     cprintf(context, ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
@@ -970,6 +976,12 @@ function cheatsAllowed(ent: GameEntity, context: GameCommandContext): boolean {
   return true;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Factor the local `it_ent` spawn/touch/free sequence used by `Cmd_Give_f`.
+ */
 function giveSpawnedItem(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const it_ent = G_Spawn(runtime);
   it_ent.classname = item.classname;
@@ -980,6 +992,12 @@ function giveSpawnedItem(ent: GameEntity, item: GameItemDefinition, runtime: Gam
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Dispatch string-backed item `use` callbacks to their ported TypeScript owners.
+ */
 function callItemUse(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   switch (item.use) {
     case "Use_PowerArmor":
@@ -1008,6 +1026,12 @@ function callItemUse(ent: GameEntity, item: GameItemDefinition, runtime: GameRun
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ * Purpose: Dispatch string-backed item `drop` callbacks to their ported TypeScript owners.
+ */
 function callItemDrop(ent: GameEntity, item: GameItemDefinition, context: GameCommandContext): void {
   switch (item.drop) {
     case "Drop_Weapon":

@@ -1,8 +1,8 @@
 # Progress TS - packages/game/src/g_combat.ts
 
 - Statut: En cours
-- Dernier lot valide: helpers/adapters death-use (`GameCombatHooks`, `MonsterDeathUseDispatcher`, `defaultMonsterDeathUse`, `setDefaultMonsterDeathUse`) classes.
-- Prochain lot recommande: traiter les helpers locaux avec entete incomplet, en commencant par `dotProduct`, `ClientTeam`, `OnSameTeam`, `traceCanDamage` et `emitCombatTempEntity`.
+- Dernier lot valide: helpers locaux combat (`dotProduct`, `traceCanDamage`, `emitCombatTempEntity`) classes; doublon local `ClientTeam`/`OnSameTeam` retire au profit du port proprietaire `g_cmds.ts`.
+- Prochain lot recommande: traiter les helpers locaux avec entete incomplet restants, en commencant par `addVec3`, `subtractVec3`, `scaleVec3`, `vectorLength` et `normalizeVec3`.
 - Tests de reference: `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run verify:p-view`, `npm run verify:particle-sync`, `npm run typecheck`.
 - Blocages: aucun pour les lignes `Couvert C/H`.
 
@@ -24,3 +24,13 @@
 - Ownership/doublons: references limitees a `packages/game/src/g_combat.ts` et enregistrement depuis `packages/game/src/g_monster.ts`; aucune logique `monster_death_use` dupliquee dans ce lot.
 - Integration: runtime integre via `T_Damage` -> `Killed` -> registre `defaultMonsterDeathUse` alimente par `g_monster.ts`; `apps/web` et `renderer-three` n'ont pas d'integration directe attendue pour ce registre local.
 - Tests: `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run verify:g-monster`, `npm run typecheck`.
+
+## Session helpers locaux combat
+
+- Lignes traitees: `dotProduct`, `ClientTeam`, `OnSameTeam`, `traceCanDamage`, `emitCombatTempEntity`.
+- Verdict: `Valide` pour `dotProduct`, `traceCanDamage` et `emitCombatTempEntity`; `ClientTeam`/`OnSameTeam` retires de `g_combat.ts` car leur port proprietaire est `packages/game/src/g_cmds.ts`.
+- Preuves: matrice C/H `game_g_combat.c.md` ouverte pour `CanDamage`, `CheckPowerArmor`, `T_Damage` et `SpawnDamage`; matrice C/H `game_g_cmds.c.md` ouverte et confirme `ClientTeam`/`OnSameTeam` proprietaires dans `g_cmds.ts`.
+- En-tetes: metadonnees ajoutees avec `Original name: N/A`, `Source declaree: N/A (...)`, `Category: New` pour les trois helpers conserves.
+- Ownership/doublons: suppression du doublon prive `ClientTeam`/`OnSameTeam`; `T_Damage` importe maintenant `OnSameTeam` depuis `g_cmds.ts`.
+- Integration: runtime integre via `T_Damage`, `CheckPowerArmor`, `CanDamage` et `SpawnDamage`; `apps/web` consomme les effets via le runtime server/game; `renderer-three` consomme indirectement les temp entities/particules, aucune integration directe supplementaire attendue pour ces helpers locaux.
+- Tests: `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run verify:g-cmds`, `npm run typecheck`.

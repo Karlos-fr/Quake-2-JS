@@ -109,13 +109,61 @@ const HEALTH_IGNORE_MAX = 1;
  * Fidelity level: Strict
  */
 const HEALTH_TIMED = 2;
+
+/**
+ * Original name: jacket_armor_index
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let jacket_armor_index = 0;
+
+/**
+ * Original name: combat_armor_index
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let combat_armor_index = 0;
+
+/**
+ * Original name: body_armor_index
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let body_armor_index = 0;
+
+/**
+ * Original name: power_screen_index
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let power_screen_index = 0;
+
+/**
+ * Original name: power_shield_index
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let power_shield_index = 0;
+
+/**
+ * Original name: quad_drop_timeout_hack
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let quad_drop_timeout_hack = 0;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local cache helper)
+ * Category: New
+ * Purpose: Populate the module-local item index caches that replace C static globals initialized by `SetItemNames`.
+ */
 function cacheItemIndices(): void {
   if (jacket_armor_index !== 0) {
     return;
@@ -378,23 +426,21 @@ export function GetGameItems(): readonly GameItemDefinition[] {
  * - Returns the currently active armor item index from the client inventory using the original priority order.
  */
 export function ArmorIndex(ent: GameEntity): number {
+  cacheItemIndices();
   if (!ent.client) {
     return 0;
   }
 
-  const jacketArmor = FindItem("Jacket Armor");
-  if (jacketArmor && ent.client.pers.inventory[jacketArmor.index] > 0) {
-    return jacketArmor.index;
+  if (ent.client.pers.inventory[jacket_armor_index] > 0) {
+    return jacket_armor_index;
   }
 
-  const combatArmor = FindItem("Combat Armor");
-  if (combatArmor && ent.client.pers.inventory[combatArmor.index] > 0) {
-    return combatArmor.index;
+  if (ent.client.pers.inventory[combat_armor_index] > 0) {
+    return combat_armor_index;
   }
 
-  const bodyArmor = FindItem("Body Armor");
-  if (bodyArmor && ent.client.pers.inventory[bodyArmor.index] > 0) {
-    return bodyArmor.index;
+  if (ent.client.pers.inventory[body_armor_index] > 0) {
+    return body_armor_index;
   }
 
   return 0;
@@ -410,6 +456,7 @@ export function ArmorIndex(ent: GameEntity): number {
  * - Returns the active power-armor type for one client entity using the original flag and inventory checks.
  */
 export function PowerArmorType(ent: GameEntity): number {
+  cacheItemIndices();
   const client = ent.client;
   if (!client) {
     return POWER_ARMOR_NONE;
@@ -419,13 +466,11 @@ export function PowerArmorType(ent: GameEntity): number {
     return POWER_ARMOR_NONE;
   }
 
-  const powerShield = FindItem("Power Shield");
-  if (powerShield && client.pers.inventory[powerShield.index] > 0) {
+  if (client.pers.inventory[power_shield_index] > 0) {
     return POWER_ARMOR_SHIELD;
   }
 
-  const powerScreen = FindItem("Power Screen");
-  if (powerScreen && client.pers.inventory[powerScreen.index] > 0) {
+  if (client.pers.inventory[power_screen_index] > 0) {
     return POWER_ARMOR_SCREEN;
   }
 

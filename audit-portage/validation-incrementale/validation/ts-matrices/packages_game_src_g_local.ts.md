@@ -4,39 +4,39 @@
 
 - Fichier TS: `packages/game/src/g_local.ts`
 - Symboles TS: 137
-- Couvert C/H: 5
-- Reste a auditer: 132
+- Couvert C/H: 33
+- Reste a auditer: 104
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_local.ts` | value | `GAMEVERSION` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `svc_muzzleflash` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `svc_muzzleflash2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `svc_temp_entity` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `svc_layout` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `svc_inventory` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `svc_stufftext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FALL_TIME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_EASY` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_MEDIUM` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_HARD` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_DEATHMATCH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_COOP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FL_FLY` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FL_SWIM` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FL_INWATER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FL_IMMUNE_SLIME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FL_IMMUNE_LAVA` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FL_PARTIALGROUND` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `FL_WATERJUMP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `TAG_GAME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `TAG_LEVEL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `MELEE_DISTANCE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `BODY_QUEUE_SIZE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `RANGE_MELEE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `RANGE_NEAR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `RANGE_MID` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `RANGE_FAR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_local.ts` | value | `GAMEVERSION` | oui | `GAMEVERSION` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `svc_muzzleflash` | oui | `svc_muzzleflash` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `svc_muzzleflash2` | oui | `svc_muzzleflash2` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `svc_temp_entity` | oui | `svc_temp_entity` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `svc_layout` | oui | `svc_layout` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `svc_inventory` | oui | `svc_inventory` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `svc_stufftext` | oui | `svc_stufftext` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FALL_TIME` | oui | `FALL_TIME` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_EASY` | oui | `SPAWNFLAG_NOT_EASY` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_MEDIUM` | oui | `SPAWNFLAG_NOT_MEDIUM` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_HARD` | oui | `SPAWNFLAG_NOT_HARD` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_DEATHMATCH` | oui | `SPAWNFLAG_NOT_DEATHMATCH` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `SPAWNFLAG_NOT_COOP` | oui | `SPAWNFLAG_NOT_COOP` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FL_FLY` | oui | `FL_FLY` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FL_SWIM` | oui | `FL_SWIM` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FL_INWATER` | oui | `FL_INWATER` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FL_IMMUNE_SLIME` | oui | `FL_IMMUNE_SLIME` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FL_IMMUNE_LAVA` | oui | `FL_IMMUNE_LAVA` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FL_PARTIALGROUND` | oui | `FL_PARTIALGROUND` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `FL_WATERJUMP` | oui | `FL_WATERJUMP` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `TAG_GAME` | oui | `TAG_GAME` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `TAG_LEVEL` | oui | `TAG_LEVEL` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Doublon local non exporte detecte dans `packages/game/src/g_utils.ts`; a traiter dans la matrice de `g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `MELEE_DISTANCE` | oui | `MELEE_DISTANCE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `BODY_QUEUE_SIZE` | oui | `BODY_QUEUE_SIZE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Doublon local non exporte detecte dans `packages/game/src/g_utils.ts`; a traiter dans la matrice de `g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `RANGE_MELEE` | oui | `RANGE_MELEE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `RANGE_NEAR` | oui | `RANGE_NEAR` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `RANGE_MID` | oui | `RANGE_MID` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_local.ts` | value | `RANGE_FAR` | oui | `RANGE_FAR` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_local.ts` | value | `GIB_ORGANIC` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_local.ts` | value | `GIB_METALLIC` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/g_local.ts` | value | `AI_STAND_GROUND` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
