@@ -76,6 +76,10 @@ import {
   type GameRuntime
 } from "./runtime.js";
 import {
+  ARMOR_BODY,
+  ARMOR_COMBAT,
+  ARMOR_JACKET,
+  ARMOR_SHARD,
   ITEM_NO_TOUCH,
   ITEM_TARGETS_USED,
   ITEM_TRIGGER_SPAWN,
@@ -90,18 +94,21 @@ import { ValidateSelectedItem } from "./g_cmds.js";
 import { G_FreeEdict, G_UseTargets, G_ProjectSource } from "./g_utils.js";
 import { Pickup_Weapon, Use_Weapon } from "./p_weapon.js";
 
+/**
+ * Original name: HEALTH_IGNORE_MAX
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const HEALTH_IGNORE_MAX = 1;
+
+/**
+ * Original name: HEALTH_TIMED
+ * Source: Quake-2-master/game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const HEALTH_TIMED = 2;
-const ARMOR_JACKET = 1;
-const ARMOR_COMBAT = 2;
-const ARMOR_BODY = 3;
-const ARMOR_SHARD = 4;
-const AMMO_SHELLS = ammo_t.AMMO_SHELLS;
-const AMMO_BULLETS = ammo_t.AMMO_BULLETS;
-const AMMO_CELLS = ammo_t.AMMO_CELLS;
-const AMMO_ROCKETS = ammo_t.AMMO_ROCKETS;
-const AMMO_SLUGS = ammo_t.AMMO_SLUGS;
-const AMMO_GRENADES = ammo_t.AMMO_GRENADES;
 let jacket_armor_index = 0;
 let combat_armor_index = 0;
 let body_armor_index = 0;
@@ -242,17 +249,17 @@ const rawItemlist: readonly RawGameItemDefinition[] = [
   { classname: "weapon_supershotgun", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_SuperShotgun", pickupName: "Super Shotgun", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_shotg2/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_shotg2/tris.md2", icon: "w_sshotgun", countWidth: 0, quantity: 2, ammo: "Shells", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_SUPERSHOTGUN, tag: 0, precaches: "weapons/sshotf1b.wav" },
   { classname: "weapon_machinegun", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_Machinegun", pickupName: "Machinegun", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_machn/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_machn/tris.md2", icon: "w_machinegun", countWidth: 0, quantity: 1, ammo: "Bullets", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_MACHINEGUN, tag: 0, precaches: "weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav" },
   { classname: "weapon_chaingun", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_Chaingun", pickupName: "Chaingun", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_chain/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_chain/tris.md2", icon: "w_chaingun", countWidth: 0, quantity: 1, ammo: "Bullets", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_CHAINGUN, tag: 0, precaches: "weapons/chngnu1a.wav weapons/chngnl1a.wav weapons/machgf3b.wav weapons/chngnd1a.wav" },
-  { classname: "ammo_grenades", pickup: "Pickup_Ammo", use: "Use_Weapon", drop: "Drop_Ammo", weaponThink: "Weapon_Grenade", pickupName: "Grenades", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/grenades/medium/tris.md2", worldModelFlags: 0, viewModel: "models/weapons/v_handgr/tris.md2", icon: "a_grenades", countWidth: 3, quantity: 5, ammo: "grenades", flags: IT_AMMO | IT_WEAPON, weapmodel: WEAP_GRENADES, tag: AMMO_GRENADES, precaches: "weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav" },
+  { classname: "ammo_grenades", pickup: "Pickup_Ammo", use: "Use_Weapon", drop: "Drop_Ammo", weaponThink: "Weapon_Grenade", pickupName: "Grenades", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/grenades/medium/tris.md2", worldModelFlags: 0, viewModel: "models/weapons/v_handgr/tris.md2", icon: "a_grenades", countWidth: 3, quantity: 5, ammo: "grenades", flags: IT_AMMO | IT_WEAPON, weapmodel: WEAP_GRENADES, tag: ammo_t.AMMO_GRENADES, precaches: "weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav" },
   { classname: "weapon_grenadelauncher", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_GrenadeLauncher", pickupName: "Grenade Launcher", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_launch/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_launch/tris.md2", icon: "w_glauncher", countWidth: 0, quantity: 1, ammo: "Grenades", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_GRENADELAUNCHER, tag: 0, precaches: "models/objects/grenade/tris.md2 weapons/grenlf1a.wav weapons/grenlr1b.wav weapons/grenlb1b.wav" },
   { classname: "weapon_rocketlauncher", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_RocketLauncher", pickupName: "Rocket Launcher", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_rocket/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_rocket/tris.md2", icon: "w_rlauncher", countWidth: 0, quantity: 1, ammo: "Rockets", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_ROCKETLAUNCHER, tag: 0, precaches: "models/objects/rocket/tris.md2 weapons/rockfly.wav weapons/rocklf1a.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2" },
   { classname: "weapon_hyperblaster", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_HyperBlaster", pickupName: "HyperBlaster", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_hyperb/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_hyperb/tris.md2", icon: "w_hyperblaster", countWidth: 0, quantity: 1, ammo: "Cells", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_HYPERBLASTER, tag: 0, precaches: "weapons/hyprbu1a.wav weapons/hyprbl1a.wav weapons/hyprbf1a.wav weapons/hyprbd1a.wav misc/lasfly.wav" },
   { classname: "weapon_railgun", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_Railgun", pickupName: "Railgun", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_rail/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_rail/tris.md2", icon: "w_railgun", countWidth: 0, quantity: 1, ammo: "Slugs", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_RAILGUN, tag: 0, precaches: "weapons/rg_hum.wav" },
   { classname: "weapon_bfg", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_BFG", pickupName: "BFG10K", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_bfg/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_bfg/tris.md2", icon: "w_bfg", countWidth: 0, quantity: 50, ammo: "Cells", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_BFG, tag: 0, precaches: "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav" },
-  { classname: "ammo_shells", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Shells", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/shells/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_shells", countWidth: 3, quantity: 10, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: AMMO_SHELLS, precaches: "" },
-  { classname: "ammo_bullets", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Bullets", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/bullets/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_bullets", countWidth: 3, quantity: 50, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: AMMO_BULLETS, precaches: "" },
-  { classname: "ammo_cells", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Cells", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/cells/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_cells", countWidth: 3, quantity: 50, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: AMMO_CELLS, precaches: "" },
-  { classname: "ammo_rockets", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Rockets", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/rockets/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_rockets", countWidth: 3, quantity: 5, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: AMMO_ROCKETS, precaches: "" },
-  { classname: "ammo_slugs", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Slugs", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/slugs/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_slugs", countWidth: 3, quantity: 10, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: AMMO_SLUGS, precaches: "" },
+  { classname: "ammo_shells", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Shells", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/shells/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_shells", countWidth: 3, quantity: 10, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: ammo_t.AMMO_SHELLS, precaches: "" },
+  { classname: "ammo_bullets", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Bullets", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/bullets/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_bullets", countWidth: 3, quantity: 50, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: ammo_t.AMMO_BULLETS, precaches: "" },
+  { classname: "ammo_cells", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Cells", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/cells/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_cells", countWidth: 3, quantity: 50, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: ammo_t.AMMO_CELLS, precaches: "" },
+  { classname: "ammo_rockets", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Rockets", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/rockets/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_rockets", countWidth: 3, quantity: 5, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: ammo_t.AMMO_ROCKETS, precaches: "" },
+  { classname: "ammo_slugs", pickup: "Pickup_Ammo", use: null, drop: "Drop_Ammo", weaponThink: null, pickupName: "Slugs", pickupSound: "misc/am_pkup.wav", worldModel: "models/items/ammo/slugs/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "a_slugs", countWidth: 3, quantity: 10, ammo: null, flags: IT_AMMO, weapmodel: 0, tag: ammo_t.AMMO_SLUGS, precaches: "" },
   { classname: "item_quad", pickup: "Pickup_Powerup", use: "Use_Quad", drop: "Drop_General", weaponThink: null, pickupName: "Quad Damage", pickupSound: "items/pkup.wav", worldModel: "models/items/quaddama/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "p_quad", countWidth: 2, quantity: 60, ammo: null, flags: IT_POWERUP, weapmodel: 0, tag: 0, precaches: "items/damage.wav items/damage2.wav items/damage3.wav" },
   { classname: "item_invulnerability", pickup: "Pickup_Powerup", use: "Use_Invulnerability", drop: "Drop_General", weaponThink: null, pickupName: "Invulnerability", pickupSound: "items/pkup.wav", worldModel: "models/items/invulner/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "p_invulnerability", countWidth: 2, quantity: 300, ammo: null, flags: IT_POWERUP, weapmodel: 0, tag: 0, precaches: "items/protect.wav items/protect2.wav items/protect4.wav" },
   { classname: "item_silencer", pickup: "Pickup_Powerup", use: "Use_Silencer", drop: "Drop_General", weaponThink: null, pickupName: "Silencer", pickupSound: "items/pkup.wav", worldModel: "models/items/silencer/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "p_silencer", countWidth: 2, quantity: 60, ammo: null, flags: IT_POWERUP, weapmodel: 0, tag: 0, precaches: "" },
@@ -1072,8 +1079,8 @@ export function Drop_Ammo(ent: GameEntity, item: GameItemDefinition, runtime: Ga
 
   if (
     client.pers.weapon &&
-    client.pers.weapon.tag === AMMO_GRENADES &&
-    item.tag === AMMO_GRENADES &&
+    client.pers.weapon.tag === ammo_t.AMMO_GRENADES &&
+    item.tag === ammo_t.AMMO_GRENADES &&
     client.pers.inventory[index] - dropped.count <= 0
   ) {
     runtime.log({
@@ -1692,17 +1699,17 @@ function getArmorInfoByIndex(index: number): GameItemArmorInfo | null {
 
 function getAmmoMax(client: NonNullable<GameEntity["client"]>, tag: number): number {
   switch (tag) {
-    case AMMO_BULLETS:
+    case ammo_t.AMMO_BULLETS:
       return client.pers.max_bullets;
-    case AMMO_SHELLS:
+    case ammo_t.AMMO_SHELLS:
       return client.pers.max_shells;
-    case AMMO_ROCKETS:
+    case ammo_t.AMMO_ROCKETS:
       return client.pers.max_rockets;
-    case AMMO_GRENADES:
+    case ammo_t.AMMO_GRENADES:
       return client.pers.max_grenades;
-    case AMMO_CELLS:
+    case ammo_t.AMMO_CELLS:
       return client.pers.max_cells;
-    case AMMO_SLUGS:
+    case ammo_t.AMMO_SLUGS:
       return client.pers.max_slugs;
     default:
       return 0;

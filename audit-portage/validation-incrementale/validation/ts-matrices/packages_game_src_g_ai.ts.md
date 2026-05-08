@@ -4,16 +4,16 @@
 
 - Fichier TS: `packages/game/src/g_ai.ts`
 - Symboles TS: 34
-- Couvert C/H: 19
-- Reste a auditer: 15
+- Couvert C/H: 23
+- Reste a auditer: 11
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_ai.ts` | value | `enemy_vis` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | value | `enemy_infront` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | value | `enemy_range` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | value | `enemy_yaw` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_ai.ts` | value | `ATTACK_TRACE_MASK` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_ai.ts` | value | `enemy_vis` | non | `enemy_vis` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_ai.ts` | value | `enemy_infront` | non | `enemy_infront` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_ai.ts` | value | `enemy_range` | non | `enemy_range` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_ai.ts` | value | `enemy_yaw` | non | `enemy_yaw` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_ai.ts` | value | `ATTACK_TRACE_MASK` | non | `N/A` | `N/A (local trace mask)` | New |  | TS sans lien source | Valide | Constante locale factorisant le masque inline de `M_CheckAttack`; tests de reference OK. |
 | `packages/game/src/g_ai.ts` | function | `AI_SetSightClient` | oui | `AI_SetSightClient` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_ai.ts` | function | `ai_move` | oui | `ai_move` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_ai.ts` | function | `ai_stand` | oui | `ai_stand` | `Quake-2-master/game/g_ai.c` | Ported | [`game_g_ai.c.md`](../matrices/game_g_ai.c.md) | Couvert C/H | Couvert C/H |  |

@@ -75,6 +75,8 @@ export function getLittleFloat(buffer: Uint8Array, offset: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Write a signed byte into a byte buffer.
  *
@@ -86,6 +88,8 @@ export function setSignedByte(buffer: Uint8Array, offset: number, value: number)
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Write an unsigned byte into a byte buffer.
  *
@@ -97,6 +101,8 @@ export function setUnsignedByte(buffer: Uint8Array, offset: number, value: numbe
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Write a little-endian signed short into a byte buffer.
  *
@@ -108,6 +114,8 @@ export function setLittleShort(buffer: Uint8Array, offset: number, value: number
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Write a little-endian signed long into a byte buffer.
  *
@@ -119,6 +127,8 @@ export function setLittleLong(buffer: Uint8Array, offset: number, value: number)
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Write a little-endian float into a byte buffer.
  *

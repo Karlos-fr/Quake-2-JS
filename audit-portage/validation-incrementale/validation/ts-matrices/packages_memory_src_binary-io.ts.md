@@ -5,7 +5,7 @@
 - Fichier TS: `packages/memory/src/binary-io.ts`
 - Symboles TS: 10
 - Couvert C/H: 0
-- Reste a auditer: 5
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -14,8 +14,8 @@
 | `packages/memory/src/binary-io.ts` | function | `getLittleShort` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
 | `packages/memory/src/binary-io.ts` | function | `getLittleLong` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
 | `packages/memory/src/binary-io.ts` | function | `getLittleFloat` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
-| `packages/memory/src/binary-io.ts` | function | `setSignedByte` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `setUnsignedByte` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `setLittleShort` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `setLittleLong` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `setLittleFloat` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/memory/src/binary-io.ts` | function | `setSignedByte` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `setUnsignedByte` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `setLittleShort` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `setLittleLong` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `setLittleFloat` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |

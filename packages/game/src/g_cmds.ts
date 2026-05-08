@@ -83,6 +83,8 @@ import type { GameEntity, GameRuntime } from "./runtime.js";
 import type { GameItemDefinition } from "./g_items.js";
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (explicit TS runtime context)
  * Category: New
  * Purpose: Carry the global cvars that `g_cmds.c` read directly in the original game DLL.
  */
@@ -96,12 +98,16 @@ export interface GameCommandCvars {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (explicit TS runtime context)
  * Category: New
  * Purpose: Group optional side-effect hooks shared with HUD/player/weapon command paths.
  */
 export interface GameCommandHooks extends GameHudHooks, GamePlayerClientHooks, GameWeaponHooks {}
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (explicit TS runtime context)
  * Category: New
  * Purpose: Provide the explicit runtime and engine import surface used by the command dispatcher.
  */

@@ -68,11 +68,46 @@ import { M_ChangeYaw, M_MoveToGoal, M_walkmove } from "./m_move.js";
 import { PlayerTrail_PickFirst, PlayerTrail_PickNext } from "./p_trail.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
+/**
+ * Original name: enemy_vis
+ * Source: Quake-2-master/game/g_ai.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let enemy_vis = false;
+
+/**
+ * Original name: enemy_infront
+ * Source: Quake-2-master/game/g_ai.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let enemy_infront = false;
+
+/**
+ * Original name: enemy_range
+ * Source: Quake-2-master/game/g_ai.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let enemy_range = RANGE_FAR;
+
+/**
+ * Original name: enemy_yaw
+ * Source: Quake-2-master/game/g_ai.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 let enemy_yaw = 0;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local trace mask)
+ * Category: New
+ *
+ * Purpose:
+ * - Names the inline `M_CheckAttack` trace contents mask from the C source.
+ */
 const ATTACK_TRACE_MASK =
   CONTENTS_SOLID |
   CONTENTS_MONSTER |

@@ -4,19 +4,19 @@
 
 - Fichier TS: `packages/game/src/g_func.ts`
 - Symboles TS: 103
-- Couvert C/H: 75
-- Reste a auditer: 28
+- Couvert C/H: 81
+- Reste a auditer: 20
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_func.ts` | value | `ACCELERATION_DISTANCE_SCALE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | value | `TRAIN_START_ON` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | value | `TRAIN_TOGGLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | value | `TRAIN_BLOCK_STOPS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | value | `SECRET_ALWAYS_SHOOT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | value | `SECRET_1ST_LEFT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | value | `SECRET_1ST_DOWN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_func.ts` | value | `MOVE_SOUND_CHANNEL` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_func.ts` | value | `ACCELERATION_DISTANCE_SCALE` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Facteur local de la formule portee par `accelerationDistance`; entete ajoute. |
+| `packages/game/src/g_func.ts` | value | `TRAIN_START_ON` | non | `TRAIN_START_ON` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_func.ts` | value | `TRAIN_TOGGLE` | non | `TRAIN_TOGGLE` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_func.ts` | value | `TRAIN_BLOCK_STOPS` | non | `TRAIN_BLOCK_STOPS` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_func.ts` | value | `SECRET_ALWAYS_SHOOT` | non | `SECRET_ALWAYS_SHOOT` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_func.ts` | value | `SECRET_1ST_LEFT` | non | `SECRET_1ST_LEFT` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_func.ts` | value | `SECRET_1ST_DOWN` | non | `SECRET_1ST_DOWN` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_func.ts` | value | `MOVE_SOUND_CHANNEL` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Constante locale pour l'expression C repetee `CHAN_NO_PHS_ADD+CHAN_VOICE`; entete ajoute. |
 | `packages/game/src/g_func.ts` | function | `Move_Done` | oui | `Move_Done` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_func.ts` | function | `Move_Final` | oui | `Move_Final` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_func.ts` | function | `Move_Begin` | oui | `Move_Begin` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Couvert C/H | Couvert C/H |  |

@@ -5,14 +5,14 @@
 - Fichier TS: `packages/game/src/g_combat.ts`
 - Symboles TS: 25
 - Couvert C/H: 9
-- Reste a auditer: 16
+- Reste a auditer: 12
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_combat.ts` | interface | `GameCombatHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_combat.ts` | type | `MonsterDeathUseDispatcher` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_combat.ts` | value | `defaultMonsterDeathUse` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_combat.ts` | function | `setDefaultMonsterDeathUse` | oui |  |  | Adapter |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_combat.ts` | interface | `GameCombatHooks` | oui | `N/A` | `N/A (runtime hook contract)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_combat.ts` | type | `MonsterDeathUseDispatcher` | non | `N/A` | `N/A (local adapter type)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_combat.ts` | value | `defaultMonsterDeathUse` | non | `N/A` | `N/A (local adapter state)` | New |  | TS sans lien source documente | Valide |  |
+| `packages/game/src/g_combat.ts` | function | `setDefaultMonsterDeathUse` | oui | `N/A` | `N/A (local adapter registration)` | Adapter |  | TS sans lien source documente | Valide | Adapte le port proprietaire `monster_death_use` de `packages/game/src/g_monster.ts` sans cycle d'import. |
 | `packages/game/src/g_combat.ts` | function | `CheckPowerArmor` | oui | `CheckPowerArmor` | `Quake-2-master/game/g_combat.c` | Ported | [`game_g_combat.c.md`](../matrices/game_g_combat.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_combat.ts` | function | `CheckArmor` | oui | `CheckArmor` | `Quake-2-master/game/g_combat.c` | Ported | [`game_g_combat.c.md`](../matrices/game_g_combat.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_combat.ts` | function | `CanDamage` | oui | `CanDamage` | `Quake-2-master/game/g_combat.c` | Ported | [`game_g_combat.c.md`](../matrices/game_g_combat.c.md) | Couvert C/H | Couvert C/H |  |

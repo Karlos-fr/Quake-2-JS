@@ -68,13 +68,72 @@ import {
 } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Names the division-by-two factor used by the `AccelerationDistance` macro port.
+ */
 const ACCELERATION_DISTANCE_SCALE = 0.5;
+
+/**
+ * Original name: TRAIN_START_ON
+ * Source: Quake-2-master/game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const TRAIN_START_ON = 1;
+
+/**
+ * Original name: TRAIN_TOGGLE
+ * Source: Quake-2-master/game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const TRAIN_TOGGLE = 2;
+
+/**
+ * Original name: TRAIN_BLOCK_STOPS
+ * Source: Quake-2-master/game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const TRAIN_BLOCK_STOPS = 4;
+
+/**
+ * Original name: SECRET_ALWAYS_SHOOT
+ * Source: Quake-2-master/game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const SECRET_ALWAYS_SHOOT = 1;
+
+/**
+ * Original name: SECRET_1ST_LEFT
+ * Source: Quake-2-master/game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const SECRET_1ST_LEFT = 2;
+
+/**
+ * Original name: SECRET_1ST_DOWN
+ * Source: Quake-2-master/game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const SECRET_1ST_DOWN = 4;
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Names the repeated mover sound channel expression from `game/g_func.c`.
+ */
 const MOVE_SOUND_CHANNEL = CHAN_NO_PHS_ADD + CHAN_VOICE;
 
 /**

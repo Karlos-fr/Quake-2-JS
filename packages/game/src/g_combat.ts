@@ -50,6 +50,8 @@ import { findradius } from "./g_utils.js";
 import { ArmorIndex, FindItem, GetArmorInfoByItem, GetItemByIndex, PowerArmorType } from "./g_items.js";
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (runtime hook contract)
  * Category: New
  * Purpose: Keep the not-yet-ported damage core explicit while porting the autonomous combat helpers around it.
  *
@@ -101,11 +103,25 @@ export interface GameCombatHooks {
   ) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local adapter type)
+ * Category: New
+ * Purpose: Describe the registered callback used to dispatch the ported `monster_death_use` without importing `g_monster.ts`.
+ */
 type MonsterDeathUseDispatcher = (targ: GameEntity, runtime: GameRuntime) => void;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local adapter state)
+ * Category: New
+ * Purpose: Store the runtime callback registered by `g_monster.ts` for `Killed` monster death-use dispatch.
+ */
 var defaultMonsterDeathUse: MonsterDeathUseDispatcher | undefined;
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local adapter registration)
  * Category: Adapter
  * Purpose: Let `g_monster.ts` provide the original `monster_death_use` callback without a hard import cycle.
  */

@@ -5,13 +5,13 @@
 - Fichier TS: `packages/game/src/g_cmds.ts`
 - Symboles TS: 41
 - Couvert C/H: 25
-- Reste a auditer: 16
+- Reste a auditer: 13
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_cmds.ts` | interface | `GameCommandCvars` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_cmds.ts` | interface | `GameCommandHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_cmds.ts` | interface | `GameCommandContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/g_cmds.ts` | interface | `GameCommandCvars` | oui | `N/A` | `N/A (explicit TS runtime context)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | interface | `GameCommandHooks` | oui | `N/A` | `N/A (explicit TS runtime context)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_cmds.ts` | interface | `GameCommandContext` | oui | `N/A` | `N/A (explicit TS runtime context)` | New |  | TS sans lien source | Valide |  |
 | `packages/game/src/g_cmds.ts` | function | `ClientTeam` | oui | `ClientTeam` | `Quake-2-master/game/g_cmds.c` | Ported | [`game_g_cmds.c.md`](../matrices/game_g_cmds.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_cmds.ts` | function | `OnSameTeam` | oui | `OnSameTeam` | `Quake-2-master/game/g_cmds.c` | Ported | [`game_g_cmds.c.md`](../matrices/game_g_cmds.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_cmds.ts` | function | `SelectNextItem` | oui | `SelectNextItem` | `Quake-2-master/game/g_cmds.c` | Ported | [`game_g_cmds.c.md`](../matrices/game_g_cmds.c.md) | Couvert C/H | Couvert C/H |  |
