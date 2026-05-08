@@ -6,7 +6,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: resolve(__dirname, "index.html"),
-        demo: resolve(__dirname, "demo.html"),
         "full-game": resolve(__dirname, "full-game.html")
       }
     }
