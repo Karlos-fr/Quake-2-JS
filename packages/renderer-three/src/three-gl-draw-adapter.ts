@@ -75,7 +75,8 @@ export function createThreeGlDrawAdapter(): ThreeGlDrawAdapter {
     blendEnabled: false,
     alphaTestEnabled: true,
     color: [1, 1, 1, 1] as [number, number, number, number],
-    paletteRgb: null as Uint8Array | null
+    paletteRgb: null as Uint8Array | null,
+    drawOrder: 0
   };
 
   scene.add(root);
@@ -109,10 +110,16 @@ export function createThreeGlDrawAdapter(): ThreeGlDrawAdapter {
           return;
         }
 
-        root.add(createTexturedQuad(quad, texture, state.viewportHeight, state.alphaTestEnabled, state.blendEnabled));
+        const mesh = createTexturedQuad(quad, texture, state.viewportHeight, state.alphaTestEnabled, state.blendEnabled);
+        mesh.renderOrder = state.drawOrder;
+        state.drawOrder += 1;
+        root.add(mesh);
       },
       drawSolidQuad: (x, y, width, height) => {
-        root.add(createSolidQuad(x, y, width, height, state.viewportHeight, state.color, state.blendEnabled));
+        const mesh = createSolidQuad(x, y, width, height, state.viewportHeight, state.color, state.blendEnabled);
+        mesh.renderOrder = state.drawOrder;
+        state.drawOrder += 1;
+        root.add(mesh);
       },
       uploadRawTexture: (upload) => {
         const texture = createTextureFromUpload(upload, state.paletteRgb);
@@ -164,6 +171,7 @@ export function createThreeGlDrawAdapter(): ThreeGlDrawAdapter {
     },
     clear: () => {
       clearGroup(root);
+      state.drawOrder = 0;
     },
     setTexture: (texnum, texture) => {
       applyStoredFilter(texture, filterState.get(texnum));

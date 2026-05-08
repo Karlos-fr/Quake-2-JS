@@ -132,6 +132,7 @@ import {
   M_Keydown,
   M_AddToServerList,
   M_Menu_Main_f,
+  NUM_CURSOR_FRAMES,
   createClientMenuContext,
   type ClientMenuContext,
   type ClientMenuMapEntry,
@@ -148,6 +149,7 @@ import {
   SCR_RunConsole,
   SCR_StopCinematic
 } from "../../../packages/client/src/cl_scrn.js";
+import type { ClientHudPictureCommand } from "../../../packages/client/src/cl_scrn.js";
 import { CL_RegisterSounds } from "../../../packages/client/src/sound.js";
 import type {
   ClientParseHooks,
@@ -303,7 +305,7 @@ type DrawCommand =
 interface FullGamePage {
   root: HTMLElement;
   gameViewport: HTMLDivElement;
-  menuBackdrop: HTMLDivElement;
+  frontendViewport: HTMLDivElement;
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   status: HTMLElement;
@@ -324,6 +326,7 @@ interface FullGameRuntime {
   filesystem: VirtualFilesystem;
   configStorage: WebConfigStorage;
   saveStorage: WebSaveStorage;
+  canvasRef: refexport_t;
   drawCommands: DrawCommand[];
   assets: CanvasAssetCache;
   audio: QuakeWebAudioAdapter;
@@ -335,6 +338,8 @@ interface FullGameRuntime {
   qcommonHost: QcommonHostRuntime;
   inputDevice: ClientInputDeviceContext;
   serverHost: FullGameServerHost;
+  frontendRenderer: FullGameFrontendRendererState | null;
+  frontendRendererPromise: Promise<FullGameFrontendRendererState> | null;
   gameRenderer: FullGameRendererState | null;
   gameRendererPromise: Promise<FullGameRendererState> | null;
   gameRendererPromiseMapPath: string | null;
@@ -348,6 +353,7 @@ interface FullGameRuntime {
   shutdownClient: () => void;
   finishConfigBootstrap: () => void;
   captureClipboardText: (text: string) => void;
+  attachMenuRendererRef: (ref: refexport_t | null) => void;
   beginAuthoritativeConnection: (mapRequest: string) => void;
   isAuthoritativeLevelLoading: () => boolean;
   shouldPumpAuthoritativeFrame: () => boolean;
@@ -370,7 +376,19 @@ interface FullGameRendererState {
   renderer: ActiveRenderer;
   renderLoop: FullGameRenderLoop;
   camera: ReturnType<typeof createCamera>;
+  ref: refexport_t;
   consoleCanvas: HTMLCanvasElement;
+}
+
+interface FullGameFrontendRendererState {
+  renderer: ActiveRenderer;
+  glDrawAdapter: ReturnType<typeof createThreeGlDrawAdapter>;
+  refGlHost: ReturnType<typeof createRefGlHost>;
+  ref: refexport_t;
+}
+
+interface FullGameMenuRef extends refexport_t {
+  setTarget: (target: refexport_t | null) => void;
 }
 
 interface FullGameMouseState {
@@ -392,13 +410,21 @@ async function bootstrap(): Promise<void> {
     page.status.textContent = "Chargement des assets Quake II...";
     const filesystem = await createMountedFilesystem();
     const runtime = createFullGameRuntime(filesystem, page);
+    page.status.textContent = "Initialisation du renderer frontend...";
+    await ensureFullGameFrontendRenderer(runtime, page);
     void runtime.audio.unlock();
 
     resizeCanvas(page);
-    window.addEventListener("resize", () => resizeCanvas(page));
+    window.addEventListener("resize", () => {
+      resizeCanvas(page);
+      if (runtime.frontendRenderer) {
+        resizeFullGameFrontendRenderer(page, runtime.frontendRenderer);
+      }
+    });
     window.addEventListener("beforeunload", () => {
       runtime.finishConfigBootstrap();
       runtime.shutdownClient();
+      disposeFullGameFrontendRenderer(runtime);
       Qcommon_Shutdown(runtime.qcommon);
     });
     window.addEventListener("pointerdown", (event) => handlePointerDown(event, runtime, page), { capture: true });
@@ -472,13 +498,14 @@ function createPage(root: HTMLElement): FullGamePage {
   gameViewport.style.zIndex = "0";
   gameViewport.style.display = "none";
 
-  const menuBackdrop = document.createElement("div");
-  menuBackdrop.style.position = "absolute";
-  menuBackdrop.style.inset = "0";
-  menuBackdrop.style.background = "rgba(0, 0, 0, 0.58)";
-  menuBackdrop.style.zIndex = "1";
-  menuBackdrop.style.display = "none";
-  menuBackdrop.style.pointerEvents = "none";
+  const frontendViewport = document.createElement("div");
+  frontendViewport.style.position = "absolute";
+  frontendViewport.style.inset = "0";
+  frontendViewport.style.background = "#000";
+  frontendViewport.style.overflow = "hidden";
+  frontendViewport.style.zIndex = "1";
+  frontendViewport.style.display = "none";
+  frontendViewport.style.pointerEvents = "none";
 
   const canvas = document.createElement("canvas");
   canvas.width = LOGICAL_WIDTH;
@@ -524,14 +551,14 @@ function createPage(root: HTMLElement): FullGamePage {
     throw new Error("Canvas 2D indisponible.");
   }
 
-  shell.append(gameViewport, menuBackdrop, canvas, log);
+  shell.append(gameViewport, frontendViewport, canvas, log);
   root.append(shell);
   canvas.focus();
 
   return {
     root: shell,
     gameViewport,
-    menuBackdrop,
+    frontendViewport,
     canvas,
     context,
     status,
@@ -882,6 +909,8 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     }
   });
   let sndDmaContext: ClientSndDmaContext | null = null;
+  let frontendRenderer: FullGameFrontendRendererState | null = null;
+  let frontendRendererPromise: Promise<FullGameFrontendRendererState> | null = null;
   let gameRenderer: FullGameRendererState | null = null;
   let gameRendererPromise: Promise<FullGameRendererState> | null = null;
   let gameRendererPromiseMapPath: string | null = null;
@@ -913,7 +942,8 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     }
   });
 
-  const ref = createCanvasRef(filesystem, assets, drawCommands);
+  const canvasRef = createCanvasRef(filesystem, assets, drawCommands);
+  const menuRef = createMirroredMenuRef(canvasRef);
   const keys = createClientKeyContext({
     cmd,
     cvar,
@@ -945,7 +975,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   };
   const prepClientRefresh = (): void => {
     const options = {
-      ref,
+      ref: canvasRef,
       viewportWidth: LOGICAL_WIDTH,
       viewportHeight: LOGICAL_HEIGHT,
       crosshairValue: Cvar_VariableValue(cvar, "crosshair"),
@@ -1347,9 +1377,9 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onSetGameDir: (gamedir: string) => {
       QcommonCvar_Set(cvar, "game", gamedir);
     },
-    registerModel: (path: string) => ref.RegisterModel(path),
-    registerSkin: (path: string) => ref.RegisterSkin(path),
-    registerPic: (path: string) => ref.RegisterPic(path),
+    registerModel: (path: string) => canvasRef.RegisterModel(path),
+    registerSkin: (path: string) => canvasRef.RegisterSkin(path),
+    registerPic: (path: string) => canvasRef.RegisterPic(path),
     registerSound: registerAuthoritativeSound
   });
   const shouldPumpAuthoritativeFrame = (): boolean => (
@@ -1437,10 +1467,10 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     getMilliseconds: () => client.cls.realtime,
     getClipboardData: () => qcommonHost.hooks.sysGetClipboardData?.() ?? null,
     onDrawChar: (command) => {
-      ref.DrawChar(command.x, command.y, command.c);
+      menuRef.DrawChar(command.x, command.y, command.c);
     },
     onDrawFill: (command) => {
-      ref.DrawFill(command.x, command.y, command.w, command.h, command.c);
+      menuRef.DrawFill(command.x, command.y, command.w, command.h, command.c);
     }
   });
   let videoMenu: ClientVidMenuController | null = null;
@@ -1505,7 +1535,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     cmd,
     cvar,
     vid,
-    ref,
+    ref: menuRef,
     hooks: {
       startLocalSound: (name) => {
         startAuthoritativeLocalSound(name);
@@ -1608,6 +1638,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     filesystem,
     configStorage,
     saveStorage,
+    canvasRef,
     drawCommands,
     assets,
     audio,
@@ -1619,6 +1650,18 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     qcommonHost,
     inputDevice,
     serverHost,
+    get frontendRenderer() {
+      return frontendRenderer;
+    },
+    set frontendRenderer(value) {
+      frontendRenderer = value;
+    },
+    get frontendRendererPromise() {
+      return frontendRendererPromise;
+    },
+    set frontendRendererPromise(value) {
+      frontendRendererPromise = value;
+    },
     get consoleRenderedInThree() {
       return consoleRenderedInThree;
     },
@@ -1653,6 +1696,9 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     shutdownClient,
     finishConfigBootstrap,
     captureClipboardText,
+    attachMenuRendererRef: (ref) => {
+      menuRef.setTarget(ref);
+    },
     beginAuthoritativeConnection,
     isAuthoritativeLevelLoading: () => authoritativeLevelLoading,
     shouldPumpAuthoritativeFrame,
@@ -1982,6 +2028,92 @@ function createCanvasRef(
   return ref;
 }
 
+function createMirroredMenuRef(canvasRef: refexport_t): FullGameMenuRef {
+  let target: refexport_t | null = null;
+  const ref = createRefExport() as FullGameMenuRef;
+
+  ref.setTarget = (nextTarget) => {
+    target = nextTarget;
+  };
+  ref.Init = (hinstance, wndproc) => target?.Init(hinstance, wndproc) ?? canvasRef.Init(hinstance, wndproc);
+  ref.Shutdown = () => {
+    target?.Shutdown();
+    canvasRef.Shutdown();
+  };
+  ref.BeginRegistration = (map) => {
+    target?.BeginRegistration(map);
+    canvasRef.BeginRegistration(map);
+  };
+  ref.RegisterModel = (name) => target?.RegisterModel(name) ?? canvasRef.RegisterModel(name);
+  ref.RegisterSkin = (name) => target?.RegisterSkin(name) ?? canvasRef.RegisterSkin(name);
+  ref.RegisterPic = (name) => target?.RegisterPic(name) ?? canvasRef.RegisterPic(name);
+  ref.SetSky = (name, rotate, axis) => {
+    target?.SetSky(name, rotate, axis);
+    canvasRef.SetSky(name, rotate, axis);
+  };
+  ref.EndRegistration = () => {
+    target?.EndRegistration();
+    canvasRef.EndRegistration();
+  };
+  ref.RenderFrame = (fd) => {
+    target?.RenderFrame(fd);
+    canvasRef.RenderFrame(fd);
+  };
+  ref.DrawGetPicSize = (name) => {
+    const targetSize = target?.DrawGetPicSize(name);
+    if (targetSize && targetSize.width > 0 && targetSize.height > 0) {
+      return targetSize;
+    }
+    return canvasRef.DrawGetPicSize(name);
+  };
+  ref.DrawPic = (x, y, name) => {
+    target?.DrawPic(x, y, name);
+    canvasRef.DrawPic(x, y, name);
+  };
+  ref.DrawStretchPic = (x, y, width, height, name) => {
+    target?.DrawStretchPic(x, y, width, height, name);
+    canvasRef.DrawStretchPic(x, y, width, height, name);
+  };
+  ref.DrawChar = (x, y, c) => {
+    target?.DrawChar(x, y, c);
+    canvasRef.DrawChar(x, y, c);
+  };
+  ref.DrawTileClear = (x, y, width, height, name) => {
+    target?.DrawTileClear(x, y, width, height, name);
+    canvasRef.DrawTileClear(x, y, width, height, name);
+  };
+  ref.DrawFill = (x, y, width, height, c) => {
+    target?.DrawFill(x, y, width, height, c);
+    canvasRef.DrawFill(x, y, width, height, c);
+  };
+  ref.DrawFadeScreen = () => {
+    target?.DrawFadeScreen();
+    canvasRef.DrawFadeScreen();
+  };
+  ref.DrawStretchRaw = (x, y, width, height, cols, rows, data) => {
+    target?.DrawStretchRaw(x, y, width, height, cols, rows, data);
+    canvasRef.DrawStretchRaw(x, y, width, height, cols, rows, data);
+  };
+  ref.CinematicSetPalette = (palette) => {
+    target?.CinematicSetPalette(palette);
+    canvasRef.CinematicSetPalette(palette);
+  };
+  ref.BeginFrame = (cameraSeparation) => {
+    target?.BeginFrame(cameraSeparation);
+    canvasRef.BeginFrame(cameraSeparation);
+  };
+  ref.EndFrame = () => {
+    target?.EndFrame();
+    canvasRef.EndFrame();
+  };
+  ref.AppActivate = (activate) => {
+    target?.AppActivate(activate);
+    canvasRef.AppActivate(activate);
+  };
+
+  return ref;
+}
+
 function startNextCinematic(runtime: FullGameRuntime, page: FullGamePage): void {
   if (runtime.currentCinematicIndex >= STARTUP_CINEMATICS.length) {
     enterMainMenu(runtime, page);
@@ -2043,7 +2175,7 @@ function enterMainMenu(runtime: FullGameRuntime, page: FullGamePage): void {
   runtime.menu.keys.state.key_dest = keydest_t.key_menu;
   M_Menu_Main_f(runtime.menu);
   page.status.textContent = "Menu principal Quake II.";
-  page.status.style.display = "block";
+  page.status.style.display = "none";
 }
 
 function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void {
@@ -2072,8 +2204,6 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
     drawGameFrame(runtime, page, delta / 1000);
   } else if (shouldDrawAttractLoopMenuOverlay(runtime)) {
     drawGameFrame(runtime, page, delta / 1000);
-    clearOverlayCanvas(page);
-    drawMenuFrame(runtime, page);
   } else if (runtime.mode === "loading") {
     if (!shouldHideAttractLoopLoading(runtime)) {
       drawLoadingFrame(runtime, page);
@@ -2180,7 +2310,7 @@ function syncFullGameActiveView(runtime: FullGameRuntime, page: FullGamePage, ga
   if (runtime.menu.keys.state.key_dest === keydest_t.key_menu) {
     runtime.mode = "menu";
     page.status.textContent = "Menu principal Quake II.";
-    page.status.style.display = "block";
+    page.status.style.display = "none";
     return;
   }
 
@@ -2208,7 +2338,7 @@ function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void 
   });
 
   runtime.drawCommands.length = 0;
-  SCR_DrawCinematicRef(runtime.client, runtime.menu.ref, {
+  SCR_DrawCinematicRef(runtime.client, runtime.canvasRef, {
     viewportWidth: LOGICAL_WIDTH,
     viewportHeight: LOGICAL_HEIGHT,
     keyDest: "game"
@@ -2233,20 +2363,88 @@ function drawMenuFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   runtime.menu.qmenu.state.drawFills.length = 0;
   runtime.menu.qmenu.state.drawStrings.length = 0;
 
+  const renderer = runtime.frontendRenderer;
+  if (renderer) {
+    resizeFullGameFrontendRenderer(page, renderer);
+    renderer.glDrawAdapter.clear();
+  }
+
   if (runtime.menu.keys.state.key_dest === keydest_t.key_console) {
     page.status.style.display = "none";
   } else {
-    page.status.style.display = "block";
+    page.status.style.display = "none";
     M_Draw(runtime.menu);
   }
 
-  drawCapturedCommands(page, runtime);
+  if (!renderer) {
+    drawCapturedCommands(page, runtime);
+    return;
+  }
+
+  renderer.renderer.autoClear = true;
+  renderer.renderer.clear();
+  renderer.renderer.render(renderer.glDrawAdapter.scene, renderer.glDrawAdapter.camera);
 }
 
 function drawLoadingFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   runtime.drawCommands.length = 0;
-  SCR_DrawLoading(runtime.client);
-  drawCenteredPicture(page, runtime, "loading");
+  const loadingCommand = SCR_DrawLoading(runtime.client) ?? createFullGameAutosizedPictureCommand("loading");
+  const renderer = runtime.frontendRenderer;
+  renderer?.glDrawAdapter.clear();
+
+  if (!renderer) {
+    drawCenteredPicture(page, runtime, loadingCommand.pic);
+    return;
+  }
+
+  resizeFullGameFrontendRenderer(page, renderer);
+  drawFullGamePictureRef(
+    renderer.ref,
+    loadingCommand,
+    LOGICAL_WIDTH,
+    LOGICAL_HEIGHT
+  );
+  renderer.renderer.autoClear = true;
+  renderer.renderer.clear();
+  renderer.renderer.render(renderer.glDrawAdapter.scene, renderer.glDrawAdapter.camera);
+}
+
+function drawFullGamePictureRef(
+  ref: refexport_t,
+  command: ClientHudPictureCommand,
+  viewportWidth: number,
+  viewportHeight: number
+): void {
+  const requestedWidth = command.bounds.width;
+  const requestedHeight = command.bounds.height;
+  const needsSize = requestedWidth <= 0 || requestedHeight <= 0 || command.x < 0 || command.y < 0;
+  const nativeSize = needsSize ? ref.DrawGetPicSize(command.pic) : { width: requestedWidth, height: requestedHeight };
+  const width = requestedWidth > 0 ? requestedWidth : nativeSize.width;
+  const height = requestedHeight > 0 ? requestedHeight : nativeSize.height;
+  const x = command.x < 0 ? (viewportWidth - width) / 2 : command.x;
+  const y = command.y < 0 ? (viewportHeight - height) / 2 : command.y;
+
+  if (requestedWidth > 0 && requestedHeight > 0) {
+    ref.DrawStretchPic(x, y, requestedWidth, requestedHeight, command.pic);
+    return;
+  }
+
+  ref.DrawPic(x, y, command.pic);
+}
+
+function createFullGameAutosizedPictureCommand(pic: string): ClientHudPictureCommand {
+  return {
+    type: "picture",
+    x: -1,
+    y: -1,
+    pic,
+    bounds: {
+      x: -1,
+      y: -1,
+      width: 0,
+      height: 0
+    }
+  };
 }
 
 function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSeconds: number): void {
@@ -2285,12 +2483,43 @@ function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSecond
   const consoleCanvas = runtime.menu.keys.state.key_dest === keydest_t.key_console
     ? prepareConsoleCanvasOverlay(runtime, page, renderer)
     : null;
+  const drawAttractLoopMenu = shouldDrawAttractLoopMenuOverlay(runtime);
   renderer.renderLoop.renderFrame({
     source,
     elapsedSeconds: runtime.client.cl.time * 0.001,
-    ...(consoleCanvas ? { canvasOverlay: consoleCanvas } : {})
+    ...(consoleCanvas ? { canvasOverlay: consoleCanvas } : {}),
+    ...(drawAttractLoopMenu
+      ? {
+          drawOverlay: ({ viewportWidth, viewportHeight }) => {
+            drawMenuOverlayRef(runtime, renderer.ref, viewportWidth, viewportHeight);
+          }
+        }
+      : {})
   });
   runtime.consoleRenderedInThree = consoleCanvas !== null;
+}
+
+function drawMenuOverlayRef(runtime: FullGameRuntime, ref: refexport_t, viewportWidth: number, viewportHeight: number): void {
+  runtime.drawCommands.length = 0;
+  runtime.menu.qmenu.state.drawChars.length = 0;
+  runtime.menu.qmenu.state.drawFills.length = 0;
+  runtime.menu.qmenu.state.drawStrings.length = 0;
+
+  const previousWidth = runtime.menu.vid.viddef.width;
+  const previousHeight = runtime.menu.vid.viddef.height;
+  runtime.menu.vid.viddef.width = viewportWidth;
+  runtime.menu.vid.viddef.height = viewportHeight;
+  runtime.attachMenuRendererRef(ref);
+  try {
+    if (runtime.menu.keys.state.key_dest === keydest_t.key_menu) {
+      M_Draw(runtime.menu);
+    }
+  } finally {
+    runtime.menu.vid.viddef.width = previousWidth;
+    runtime.menu.vid.viddef.height = previousHeight;
+    runtime.attachMenuRendererRef(runtime.frontendRenderer?.ref ?? null);
+    runtime.drawCommands.length = 0;
+  }
 }
 
 function ensureFullGameRenderer(
@@ -2351,6 +2580,152 @@ function disposeFullGameRenderer(renderer: FullGameRendererState): void {
   renderer.renderLoop.dispose();
   renderer.renderer.domElement.remove();
   renderer.renderer.dispose();
+}
+
+async function ensureFullGameFrontendRenderer(
+  runtime: FullGameRuntime,
+  page: FullGamePage
+): Promise<FullGameFrontendRendererState> {
+  if (runtime.frontendRenderer) {
+    return runtime.frontendRenderer;
+  }
+
+  if (runtime.frontendRendererPromise) {
+    return runtime.frontendRendererPromise;
+  }
+
+  runtime.frontendRendererPromise = createFullGameFrontendRenderer(runtime, page)
+    .then((renderer) => {
+      runtime.frontendRenderer = renderer;
+      runtime.frontendRendererPromise = null;
+      runtime.attachMenuRendererRef(renderer.ref);
+      resizeFullGameFrontendRenderer(page, renderer);
+      warmFullGameFrontendPics(renderer.ref);
+      return renderer;
+    })
+    .catch((error) => {
+      runtime.frontendRendererPromise = null;
+      const message = error instanceof Error ? error.message : `${error}`;
+      Con_Print(runtime.console.con, `renderer frontend Three indisponible: ${message}\n`, runtime.client.cls.realtime);
+      Con_SyncConsoleToKeys(runtime.console);
+      throw error;
+    });
+
+  return runtime.frontendRendererPromise;
+}
+
+function warmFullGameFrontendPics(ref: refexport_t): void {
+  for (const pic of [
+    "loading",
+    "m_main_game",
+    "m_main_game_sel",
+    "m_main_multiplayer",
+    "m_main_multiplayer_sel",
+    "m_main_options",
+    "m_main_options_sel",
+    "m_main_video",
+    "m_main_video_sel",
+    "m_main_quit",
+    "m_main_quit_sel",
+    "m_main_plaque",
+    "m_main_logo"
+  ]) {
+    ref.RegisterPic(pic);
+  }
+
+  for (let index = 0; index < NUM_CURSOR_FRAMES; index += 1) {
+    ref.RegisterPic(`m_cursor${index}`);
+  }
+}
+
+async function createFullGameFrontendRenderer(
+  runtime: FullGameRuntime,
+  page: FullGamePage
+): Promise<FullGameFrontendRendererState> {
+  page.frontendViewport.replaceChildren();
+  const rendererBundle = await createRenderer();
+  const rendererCanvas = rendererBundle.renderer.domElement;
+  rendererCanvas.style.position = "absolute";
+  rendererCanvas.style.left = "50%";
+  rendererCanvas.style.top = "50%";
+  rendererCanvas.style.transform = "translate(-50%, -50%)";
+  rendererCanvas.style.width = `${LOGICAL_WIDTH}px`;
+  rendererCanvas.style.height = `${LOGICAL_HEIGHT}px`;
+  rendererCanvas.style.display = "block";
+  rendererCanvas.style.imageRendering = "auto";
+  page.frontendViewport.append(rendererCanvas);
+
+  const glDrawAdapter = createThreeGlDrawAdapter();
+  const imageRuntime = createGlImageRuntime({
+    loadFile: (path) => readMountedFile(runtime.filesystem, path)?.bytes ?? null,
+    ...glDrawAdapter.imageHooks
+  });
+  const refGlHost = createRefGlHost({
+    createQglProvider: () => createObjectQglProvider(createNoopQglBindings()),
+    imageRuntime,
+    drawHooks: glDrawAdapter.drawHooks,
+    hooks: {
+      glimpInit: () => true,
+      glimpShutdown: () => undefined,
+      glimpSetMode: () => ({
+        err: 0,
+        width: page.frontendViewport.clientWidth || window.innerWidth || LOGICAL_WIDTH,
+        height: page.frontendViewport.clientHeight || window.innerHeight || LOGICAL_HEIGHT
+      }),
+      glimpBeginFrame: () => undefined,
+      glimpEndFrame: () => undefined
+    },
+    imports: createFullGameRefImports((message) => {
+      if (shouldSuppressFullGameConsoleLine(message)) {
+        return;
+      }
+
+      Con_Print(runtime.console.con, `${message}\n`, runtime.client.cls.realtime);
+      Con_SyncConsoleToKeys(runtime.console);
+    })
+  });
+  refGlHost.init();
+
+  return {
+    renderer: rendererBundle.renderer,
+    glDrawAdapter,
+    refGlHost,
+    ref: refGlHost.api
+  };
+}
+
+function resizeFullGameFrontendRenderer(page: FullGamePage, renderer: FullGameFrontendRendererState): void {
+  const size = getContainedLogicalViewportSize(page.frontendViewport);
+  renderer.renderer.setSize(size.width, size.height, false);
+  renderer.renderer.domElement.style.width = `${size.width}px`;
+  renderer.renderer.domElement.style.height = `${size.height}px`;
+  renderer.glDrawAdapter.setViewport(LOGICAL_WIDTH, LOGICAL_HEIGHT);
+}
+
+function getContainedLogicalViewportSize(viewport: HTMLElement): { width: number; height: number } {
+  const bounds = viewport.getBoundingClientRect();
+  const availableWidth = Math.max(1, Math.round(bounds.width || viewport.clientWidth || window.innerWidth || LOGICAL_WIDTH));
+  const availableHeight = Math.max(1, Math.round(bounds.height || viewport.clientHeight || window.innerHeight || LOGICAL_HEIGHT));
+  const scale = Math.max(1, Math.floor(Math.min(availableWidth / LOGICAL_WIDTH, availableHeight / LOGICAL_HEIGHT)));
+
+  return {
+    width: LOGICAL_WIDTH * scale,
+    height: LOGICAL_HEIGHT * scale
+  };
+}
+
+function disposeFullGameFrontendRenderer(runtime: FullGameRuntime): void {
+  const renderer = runtime.frontendRenderer;
+  if (!renderer) {
+    return;
+  }
+
+  renderer.glDrawAdapter.dispose();
+  renderer.refGlHost.shutdown();
+  renderer.renderer.domElement.remove();
+  renderer.renderer.dispose();
+  runtime.attachMenuRendererRef(null);
+  runtime.frontendRenderer = null;
 }
 
 async function createFullGameThreeRenderer(
@@ -2446,6 +2821,7 @@ async function createFullGameThreeRenderer(
     renderer: rendererBundle.renderer,
     renderLoop,
     camera,
+    ref: refGlHost.api,
     consoleCanvas: document.createElement("canvas")
   };
 }
@@ -2998,7 +3374,7 @@ function syncFullGameKeyDestination(runtime: FullGameRuntime, page: FullGamePage
     releaseFullGameMouseLook(runtime, page);
     runtime.mode = "menu";
     page.status.textContent = "Menu principal Quake II.";
-    page.status.style.display = "block";
+    page.status.style.display = "none";
     return;
   }
 
@@ -3204,10 +3580,17 @@ function syncFullGameViewportVisibility(runtime: FullGameRuntime, page: FullGame
     || runtime.isAuthoritativeLevelLoading()
     || runtime.client.cl.screen.scr_draw_loading !== 0;
   const gameVisible = runtime.mode === "game" || runtime.isAuthoritativeLevelLoading() || attractLoopMenuOverlay;
-  const overlayVisible = attractLoopMenuOverlay || !gameVisible || runtime.gameRenderer === null || loadingOverlayVisible;
+  const overlayVisible = !gameVisible || runtime.gameRenderer === null || loadingOverlayVisible;
+  const menuRenderedInFrontend = runtime.frontendRenderer !== null
+    && runtime.menu.keys.state.key_dest === keydest_t.key_menu
+    && runtime.mode === "menu"
+    && !attractLoopMenuOverlay;
+  const loadingRenderedInFrontend = runtime.frontendRenderer !== null
+    && loadingOverlayVisible
+    && runtime.menu.keys.state.key_dest !== keydest_t.key_console;
   page.gameViewport.style.display = gameVisible ? "block" : "none";
-  page.menuBackdrop.style.display = attractLoopMenuOverlay ? "block" : "none";
-  page.canvas.style.display = overlayVisible ? "block" : "none";
+  page.frontendViewport.style.display = menuRenderedInFrontend || loadingRenderedInFrontend ? "block" : "none";
+  page.canvas.style.display = overlayVisible && !menuRenderedInFrontend && !loadingRenderedInFrontend ? "block" : "none";
   page.canvas.style.background = attractLoopMenuOverlay ? "transparent" : "#000";
   page.canvas.style.objectFit = "contain";
   if (attractLoopMenuOverlay) {

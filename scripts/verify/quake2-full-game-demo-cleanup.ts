@@ -48,8 +48,23 @@ const fullGameSource = readFileSync(
   join(repoRoot, "apps", "web", "src", "full-game.ts"),
   "utf8"
 );
+const clientMenuSources = [
+  "menu.ts",
+  "menu-runtime.ts",
+  "menu-main-game.ts",
+  "menu-draw.ts",
+  "menu-types.ts",
+  "qmenu.ts"
+].map((file) => ({
+  file,
+  source: readFileSync(join(repoRoot, "packages", "client", "src", file), "utf8")
+}));
 const renderLoopSource = readFileSync(
   join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"),
+  "utf8"
+);
+const threeGlDrawAdapterSource = readFileSync(
+  join(repoRoot, "packages", "renderer-three", "src", "three-gl-draw-adapter.ts"),
   "utf8"
 );
 const webDemoLoopSource = readFileSync(
@@ -117,25 +132,92 @@ assert.equal(
   "full-game should enable the source polyblend overlay by default"
 );
 assert.equal(
-  fullGameSource.includes('page.canvas.style.background = attractLoopMenuOverlay ? "transparent" : "#000";'),
+  fullGameSource.includes("drawOverlay: ({ viewportWidth, viewportHeight }) =>"),
   true,
-  "the 2D menu canvas should stay transparent over paused attract demos"
+  "the attract-demo menu should be composed through the Three render overlay path"
 );
 assert.equal(
   fullGameSource.includes("menuBackdrop"),
-  true,
-  "the attract-demo menu fade should use a full-viewport HTML backdrop"
+  false,
+  "the attract-demo menu fade should not use an HTML backdrop"
 );
 assert.equal(
-  fullGameSource.includes('page.canvas.style.objectFit = "contain";'),
+  fullGameSource.includes("drawMenuOverlayRef(runtime, renderer.ref, viewportWidth, viewportHeight);"),
   true,
-  "the attract-demo menu canvas should keep the source 4:3 aspect instead of stretching"
+  "the attract-demo menu should draw through the active game renderer ref"
 );
 assert.equal(
-  fullGameSource.includes("Math.min(window.innerWidth, window.innerHeight * LOGICAL_WIDTH / LOGICAL_HEIGHT, 960)"),
+  fullGameSource.includes('page.frontendViewport.style.display = menuRenderedInFrontend || loadingRenderedInFrontend ? "block" : "none";'),
   true,
-  "the attract-demo menu canvas should cap its displayed size on wide viewports"
+  "the standalone menu and loading plaque should use the frontend Three renderer"
 );
+assert.equal(
+  fullGameSource.includes("ref: menuRef"),
+  true,
+  "full-game should give the source menu a refexport_t bridge instead of web/Three-specific menu state"
+);
+assert.equal(
+  fullGameSource.includes("renderer.glDrawAdapter.scene"),
+  true,
+  "standalone menu rendering should render the ref_gl draw adapter scene"
+);
+assert.equal(
+  fullGameSource.includes("renderer.glDrawAdapter.setViewport(LOGICAL_WIDTH, LOGICAL_HEIGHT);"),
+  true,
+  "standalone menu/loading drawing should keep the original 640x480 logical viewport"
+);
+assert.equal(
+  fullGameSource.includes("getContainedLogicalViewportSize(page.frontendViewport)"),
+  true,
+  "standalone menu/loading frontend canvas should be centered in a contained 4:3 viewport"
+);
+assert.equal(
+  fullGameSource.includes("runtime.menu.vid.viddef.width = viewportWidth;"),
+  true,
+  "attract-loop menu overlay should temporarily use the active game viewport width"
+);
+assert.equal(
+  fullGameSource.includes("const loadingCommand = SCR_DrawLoading(runtime.client) ?? createFullGameAutosizedPictureCommand(\"loading\");"),
+  true,
+  "the loading plaque should still be sourced from SCR_DrawLoading before adapter fallback"
+);
+assert.equal(
+  fullGameSource.includes("drawFullGamePictureRef("),
+  true,
+  "the loading plaque should draw through refexport_t instead of canvas-only helpers"
+);
+assert.equal(
+  fullGameSource.includes("const loadingRenderedInFrontend = runtime.frontendRenderer !== null"),
+  true,
+  "the frontend Three layer should be visible for loading plaques"
+);
+assert.equal(
+  fullGameSource.includes("new Mesh") || fullGameSource.includes("PlaneGeometry") || fullGameSource.includes("MeshBasicMaterial"),
+  false,
+  "full-game must not build ad hoc Three meshes for the source menu"
+);
+assert.equal(
+  threeGlDrawAdapterSource.includes("Adapt the ported `ref_gl/gl_draw.c` hook surface"),
+  true,
+  "Three menu primitives should stay behind the ref_gl draw adapter"
+);
+assert.equal(
+  threeGlDrawAdapterSource.includes("mesh.renderOrder = state.drawOrder"),
+  true,
+  "ref_gl draw adapter should preserve immediate-mode quad order for transparent menu artwork"
+);
+assert.equal(
+  fullGameSource.includes("warmFullGameFrontendPics(renderer.ref);"),
+  true,
+  "frontend renderer should warm menu/loading pics before the first visible menu frame"
+);
+for (const { file, source } of clientMenuSources) {
+  assert.equal(
+    source.includes("renderer-three") || source.includes("apps/web") || source.includes('from "three"') || source.includes("from 'three'"),
+    false,
+    `${file} must not depend on web or Three adapters`
+  );
+}
 assert.equal(
   fullGameSource.includes("onPlayCinematic: (name: string) =>"),
   true,
