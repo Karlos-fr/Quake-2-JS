@@ -142,11 +142,28 @@ assert.equal(clientState.tents.sustains.length, MAX_SUSTAINS, "createClientState
 
 const clientStatic = createClientStatic();
 assert.equal(clientStatic.state, connstate_t.ca_disconnected, "createClientStatic state mismatch");
+assert.equal(clientStatic.realtime, 0, "createClientStatic realtime mismatch");
+assert.equal(clientStatic.frametime, 0, "createClientStatic frametime mismatch");
+assert.equal(clientStatic.framecount, 0, "createClientStatic framecount mismatch");
+assert.equal(clientStatic.disable_screen, 0, "createClientStatic disable_screen mismatch");
+assert.equal(clientStatic.disable_servercount, 0, "createClientStatic disable_servercount mismatch");
 assert.equal(clientStatic.servername, "", "createClientStatic servername mismatch");
+assert.equal(clientStatic.connect_time, 0, "createClientStatic connect_time mismatch");
 assert.equal(clientStatic.quakePort, 0, "createClientStatic quakePort mismatch");
+assert.equal(clientStatic.serverProtocol, 0, "createClientStatic serverProtocol mismatch");
+assert.equal(clientStatic.challenge, 0, "createClientStatic challenge mismatch");
 assert.equal(clientStatic.download, null, "createClientStatic download handle mismatch");
+assert.equal(clientStatic.downloadtempname, "", "createClientStatic downloadtempname mismatch");
+assert.equal(clientStatic.downloadname, "", "createClientStatic downloadname mismatch");
+assert.equal(clientStatic.downloadnumber, 0, "createClientStatic downloadnumber mismatch");
 assert.equal(clientStatic.downloadtype, dltype_t.dl_none, "createClientStatic downloadtype mismatch");
+assert.equal(clientStatic.downloadpercent, 0, "createClientStatic downloadpercent mismatch");
+assert.equal(clientStatic.demorecording, false, "createClientStatic demorecording mismatch");
+assert.equal(clientStatic.demowaiting, false, "createClientStatic demowaiting mismatch");
 assert.equal(clientStatic.demofile, null, "createClientStatic demofile mismatch");
+assert.equal(clientStatic.netchan.message.maxsize, 1384, "createClientStatic netchan message size mismatch");
+assert.equal(clientStatic.precache.precache_check, 0, "createClientStatic precache_check mismatch");
+assert.equal("key_dest" in clientStatic, false, "client_static_t key_dest should remain split into keys.ts");
 
 const runtime = createClientRuntime();
 assert.equal(runtime.cl_parse_entities.length, MAX_PARSE_ENTITIES, "createClientRuntime parse_entities length mismatch");

@@ -67,28 +67,28 @@
 | `Quake-2-master/client/client.h` | global | `servercount` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_state_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | global | `gamedir` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_state_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | global | `playernum` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_state_t` couvert par la ligne structure. |
-| `Quake-2-master/client/client.h` | enum | `connstate_t` | `packages/client/src/client.ts` | `connstate_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | enum | `dltype_t` | `packages/client/src/client.ts` | `dltype_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | enum | `keydest_t` | `packages/client/src/keys.ts` | `keydest_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | struct | `client_static_t` | `packages/client/src/client.ts` | `client_static_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `framecount` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `realtime` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `frametime` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `disable_screen` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `disable_servercount` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `servername` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `connect_time` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `quakePort` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `serverProtocol` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `challenge` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `download` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `downloadtempname` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `downloadname` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `downloadnumber` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `downloadpercent` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `demorecording` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `demowaiting` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | global | `demofile` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | enum | `connstate_t` | `packages/client/src/client.ts` | `connstate_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | enum | `dltype_t` | `packages/client/src/client.ts` | `dltype_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | enum | `keydest_t` | `packages/client/src/keys.ts` | `keydest_t` | Valide | A redecouper | Split TS volontaire: `keydest_t` reste dans `keys.ts` avec commentaire d'entete ported. |
+| `Quake-2-master/client/client.h` | struct | `client_static_t` | `packages/client/src/client.ts` | `client_static_t` | Valide | A redecouper | Commentaire d'entete TS corrige; `key_dest` reste couvert par `keydest_t`/`client_key_state_t` dans `keys.ts`. |
+| `Quake-2-master/client/client.h` | global | `framecount` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `realtime` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `frametime` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `disable_screen` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `disable_servercount` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `servername` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `connect_time` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `quakePort` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `serverProtocol` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `challenge` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `download` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `downloadtempname` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `downloadname` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `downloadnumber` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `downloadpercent` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `demorecording` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `demowaiting` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
+| `Quake-2-master/client/client.h` | global | `demofile` | `packages/client/src/client.ts` |  | Non applicable | A redecouper | Champ de `client_static_t` couvert par la ligne structure. |
 | `Quake-2-master/client/client.h` | global | `cl_stereo_separation` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | global | `cl_stereo` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | global | `cl_gun` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |

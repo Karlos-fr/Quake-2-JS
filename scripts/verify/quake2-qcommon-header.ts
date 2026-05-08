@@ -115,6 +115,7 @@ import {
   Com_BlockChecksum,
   Com_DPrintf,
   Com_Error,
+  Com_Error_f,
   Com_Quit,
   Com_ServerState,
   Com_SetServerState,
@@ -875,20 +876,71 @@ assert.equal(misc.zone_allocations.size, 0, "Qcommon_Shutdown should release tra
 const lifecycleCalls: string[] = [];
 const lifecyclePrints: string[] = [];
 const lifecycleCommandRuntime = createCommandRuntime();
+const lifecycleCvars = createCvarRuntime();
+const lifecycleGlobals = createQcommonGlobals();
 const lifecycleRuntime = createQcommonMiscRuntime({
   onPrintf: (message) => lifecyclePrints.push(message),
   onInit: () => lifecycleCalls.push("init"),
   onFrame: (msec) => lifecycleCalls.push(`frame:${msec}`),
   onShutdown: () => lifecycleCalls.push("shutdown")
 });
-Qcommon_Init(lifecycleRuntime, lifecycleCommandRuntime);
+Qcommon_Init(lifecycleRuntime, {
+  cmd: lifecycleCommandRuntime,
+  cvar: lifecycleCvars,
+  globals: lifecycleGlobals
+});
 assert.equal(Cmd_Exists(lifecycleCommandRuntime, "z_stats"), true, "Qcommon_Init should register z_stats");
+assert.equal(Cmd_Exists(lifecycleCommandRuntime, "error"), true, "Qcommon_Init should register error");
+assert.equal(lifecycleGlobals.host_speeds?.string, "0", "Qcommon_Init host_speeds mismatch");
+assert.equal(lifecycleGlobals.log_stats?.string, "0", "Qcommon_Init log_stats mismatch");
+assert.equal(lifecycleGlobals.developer?.string, "0", "Qcommon_Init developer mismatch");
+assert.equal(lifecycleGlobals.timescale?.string, "1", "Qcommon_Init timescale mismatch");
+assert.equal(lifecycleGlobals.fixedtime?.string, "0", "Qcommon_Init fixedtime mismatch");
+assert.equal(lifecycleGlobals.logfile_active?.string, "0", "Qcommon_Init logfile mismatch");
+assert.equal(lifecycleGlobals.showtrace?.string, "0", "Qcommon_Init showtrace mismatch");
+assert.equal(lifecycleGlobals.dedicated?.flags, CVAR_NOSET, "Qcommon_Init dedicated flags mismatch");
+assert.equal(Cvar_VariableString(lifecycleCvars, "version"), "3.19 portable TypeScript TypeScript", "Qcommon_Init version string mismatch");
 Z_TagMalloc(lifecycleRuntime, 6, 12);
 Cmd_ExecuteString(lifecycleCommandRuntime, "z_stats");
 assert.deepEqual(lifecyclePrints, ["6 bytes in 1 blocks\n"], "z_stats command output mismatch");
-Qcommon_Frame(lifecycleRuntime, 33.8);
+assert.throws(
+  () => Cmd_ExecuteString(lifecycleCommandRuntime, "error forced"),
+  /forced/,
+  "Com_Error_f command should throw the command argument"
+);
+lifecycleGlobals.fixedtime!.value = 20;
+lifecycleGlobals.fixedtime!.string = "20";
+Qcommon_Frame(lifecycleRuntime, 33.8, { globals: lifecycleGlobals });
+lifecycleGlobals.fixedtime!.value = 0;
+lifecycleGlobals.fixedtime!.string = "0";
+lifecycleGlobals.timescale!.value = 0.25;
+lifecycleGlobals.timescale!.string = "0.25";
+Qcommon_Frame(lifecycleRuntime, 2, { globals: lifecycleGlobals });
+lifecycleGlobals.showtrace!.value = 1;
+lifecycleGlobals.c_traces = 3;
+lifecycleGlobals.c_brush_traces = 2;
+lifecycleGlobals.c_pointcontents = 5;
+Qcommon_Frame(lifecycleRuntime, 4, { globals: lifecycleGlobals });
+assert.equal(lifecycleGlobals.c_traces, 0, "Qcommon_Frame should reset c_traces");
+assert.equal(lifecycleGlobals.c_brush_traces, 0, "Qcommon_Frame should reset c_brush_traces");
+assert.equal(lifecycleGlobals.c_pointcontents, 0, "Qcommon_Frame should reset c_pointcontents");
+lifecycleGlobals.showtrace!.value = 0;
+lifecycleGlobals.log_stats!.modified = true;
+lifecycleGlobals.log_stats!.value = 1;
+Qcommon_Frame(lifecycleRuntime, 5, { globals: lifecycleGlobals });
+assert.equal(lifecycleGlobals.log_stats_file, "stats.log", "Qcommon_Frame should open stats log marker");
+lifecycleGlobals.log_stats!.modified = true;
+lifecycleGlobals.log_stats!.value = 0;
+Qcommon_Frame(lifecycleRuntime, 6, { globals: lifecycleGlobals });
+assert.equal(lifecycleGlobals.log_stats_file, null, "Qcommon_Frame should close stats log marker");
 Qcommon_Shutdown(lifecycleRuntime);
-assert.deepEqual(lifecycleCalls, ["init", "frame:33", "shutdown"], "Qcommon lifecycle hook order mismatch");
+assert.deepEqual(lifecycleCalls, ["init", "frame:20", "frame:1", "frame:1", "frame:1", "frame:1", "shutdown"], "Qcommon lifecycle hook order mismatch");
+assert.ok(lifecyclePrints.includes("   3 traces     5 points\n"), "Qcommon_Frame showtrace output mismatch");
+assert.throws(
+  () => Com_Error_f(createQcommonMiscRuntime(), lifecycleCommandRuntime),
+  /forced/,
+  "Com_Error_f direct call mismatch"
+);
 
 assert.throws(
   () => Com_Error(createQcommonMiscRuntime(), ERR_DROP, "boom"),

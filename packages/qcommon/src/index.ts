@@ -92,6 +92,7 @@ export {
   Com_BlockChecksum,
   Com_DPrintf,
   Com_Error,
+  Com_Error_f,
   Com_Quit,
   Com_ServerState,
   Com_SetServerState,

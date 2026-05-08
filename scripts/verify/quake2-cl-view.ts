@@ -27,6 +27,7 @@ import {
   V_AddLightStyle,
   V_AddParticle,
   V_ClearScene,
+  V_Init,
   V_RenderView,
   V_TestEntities,
   V_TestLights,
@@ -37,8 +38,8 @@ import {
   connstate_t
 } from "../../packages/client/src/index.js";
 import { createConsoleState } from "../../packages/client/src/console.js";
-import { createCommandRuntime } from "../../packages/qcommon/src/cmd.js";
-import { createCvarRuntime } from "../../packages/qcommon/src/cvar.js";
+import { Cmd_ExecuteString, createCommandRuntime } from "../../packages/qcommon/src/cmd.js";
+import { Cvar_SetValue, createCvarRuntime } from "../../packages/qcommon/src/cvar.js";
 import { MAX_DLIGHTS, MAX_ENTITIES, MAX_PARTICLES, createEntity, createRefExport } from "../../packages/client/src/ref.js";
 import { CS_CDTRACK, CS_IMAGES, CS_MODELS, CS_PLAYERSKINS, CS_SKY, CS_SKYAXIS, CS_SKYROTATE, pmtype_t } from "../../packages/qcommon/src/index.js";
 
@@ -47,11 +48,13 @@ main();
 function main(): void {
   verifySceneStagingHelpersMirrorClView();
   verifyPrepRefreshRegistersLevelAssets();
+  verifyViewInitRegistersCommandsAndCvars();
   verifyCalcViewValuesInterpolatesWeaponRelevantMotion();
   verifyCalcViewValuesMatchesDroppedFrameAndTeleportFallbacks();
   verifyBuildRefreshFrameActiveGuardAndSoundOrigin();
   verifyRenderViewResolvesDefaultEntityModelsAndSkins();
   verifyRenderViewAppliesViewWeaponDebugOverrides();
+  verifyRenderViewTogglesCrosshairBlendStereoAndStats();
   verifyRenderViewHidesWeaponForWideFovAndComputesFovY();
   console.log("quake2-cl-view: ok");
 }
@@ -280,12 +283,53 @@ function verifyPrepRefreshRegistersLevelAssets(): void {
   assert.ok(log.includes("sky:space:30:0,0,1"), "CL_PrepRefresh SetSky mismatch");
   assert.ok(log.includes("end"), "CL_PrepRefresh EndRegistration mismatch");
   assert.ok(log.indexOf("end") < log.lastIndexOf("update"), "CL_PrepRefresh final update ordering mismatch");
+  assert.equal(log.filter((entry) => entry === "pump").length, 6, "CL_PrepRefresh should pump events for each model/image/clientinfo item");
+  assert.ok(log.indexOf("pump") < log.indexOf("print:#w_blaster.md2\r"), "CL_PrepRefresh should keep model-loop order deterministic");
+  assert.ok(log.includes("print:                                     \r"), "CL_PrepRefresh should clear status text after weapon model entries");
   assert.ok(registeredModels.includes("models/objects/explode/tris.md2"), "CL_PrepRefresh tent model registration mismatch");
   assert.ok(registeredPics.includes("w_machinegun"), "CL_PrepRefresh tent pic registration mismatch");
   assert.ok(registeredSkins.includes("players/male/major.pcx"), "CL_PrepRefresh client skin registration mismatch");
 
   void commandRuntime;
   void cvarRuntime;
+}
+
+function verifyViewInitRegistersCommandsAndCvars(): void {
+  const runtime = createClientRuntime();
+  const cmd = createCommandRuntime();
+  const cvar = createCvarRuntime();
+  const context = createClientViewContext(runtime, cmd, cvar);
+
+  runtime.cl.frame.valid = true;
+  runtime.cl.frame.serverframe = 1;
+  runtime.cl.frame.playerstate.viewangles = [10, 20, 30];
+  runtime.cl.frame.playerstate.kick_angles = [1, 2, 3];
+  runtime.cl.frame.playerstate.viewoffset = [4, 8, 12];
+  runtime.cl.frame.playerstate.pmove.origin = [80, 160, 240];
+  runtime.cl.frame.playerstate.fov = 90;
+  runtime.cl.frames[0] = { ...runtime.cl.frame, valid: true, serverframe: 0 };
+
+  V_Init(context);
+
+  assert.equal(context.crosshair?.name, "crosshair", "V_Init crosshair cvar mismatch");
+  assert.equal(context.cl_testparticles?.name, "cl_testparticles", "V_Init cl_testparticles cvar mismatch");
+  assert.equal(context.cl_testentities?.name, "cl_testentities", "V_Init cl_testentities cvar mismatch");
+  assert.equal(context.cl_testlights?.name, "cl_testlights", "V_Init cl_testlights cvar mismatch");
+  assert.equal(context.cl_testblend?.name, "cl_testblend", "V_Init cl_testblend cvar mismatch");
+  assert.equal(context.cl_stats?.name, "cl_stats", "V_Init cl_stats cvar mismatch");
+
+  Cmd_ExecuteString(cmd, "gun_next");
+  Cmd_ExecuteString(cmd, "gun_next");
+  Cmd_ExecuteString(cmd, "gun_prev");
+  assert.deepEqual(runtime.output.slice(0, 3), ["frame 1", "frame 2", "frame 1"], "V_Init gun frame commands mismatch");
+
+  Cmd_ExecuteString(cmd, "gun_model debug");
+  assert.equal(context.debug.gun_model, "models/debug/tris.md2", "V_Gun_Model_f registered command path mismatch");
+  Cmd_ExecuteString(cmd, "gun_model");
+  assert.equal(context.debug.gun_model, null, "V_Gun_Model_f should clear model without one argument");
+
+  Cmd_ExecuteString(cmd, "viewpos");
+  assert.equal(runtime.output.at(-1), "(14 28 42) : 2", "V_Viewpos_f command output mismatch");
 }
 
 function verifyRenderViewResolvesDefaultEntityModelsAndSkins(): void {
@@ -456,6 +500,89 @@ function verifyRenderViewAppliesViewWeaponDebugOverrides(): void {
   });
   assert.ok(hidden, "V_RenderView hidden gun render should still return one refdef");
   assert.equal(hidden?.refdef.num_entities, 0, "V_RenderView cl_gun=0 should hide the view weapon");
+}
+
+function verifyRenderViewTogglesCrosshairBlendStereoAndStats(): void {
+  const runtime = createClientRuntime();
+  const cmd = createCommandRuntime();
+  const cvar = createCvarRuntime();
+  const context = createClientViewContext(runtime, cmd, cvar);
+
+  V_Init(context);
+  runtime.cls.state = connstate_t.ca_active;
+  runtime.cl.refresh_prepped = true;
+  runtime.cl.force_refdef = true;
+  runtime.cl.frame.valid = true;
+  runtime.cl.time = 640;
+  runtime.cl.frame.playerstate.rdflags = 3;
+  runtime.cl.frame.areabits = new Uint8Array([9, 8, 7]);
+  runtime.cl.screen.scr_vrect = { x: 10, y: 20, width: 320, height: 200 };
+  runtime.cl.screen.crosshair_pic = "ch1";
+  runtime.cl.screen.crosshair_width = 16;
+  runtime.cl.screen.crosshair_height = 24;
+  Cvar_SetValue(cvar, "crosshair", 1);
+  Cvar_SetValue(cvar, "cl_testblend", 1);
+  Cvar_SetValue(cvar, "cl_stats", 1);
+  context.crosshair!.modified = true;
+
+  let touched = 0;
+  const rendered = V_RenderView(context, {
+    stereoSeparation: 2,
+    addEntities: false,
+    addParticles: false,
+    addLights: false,
+    buildRefreshFrame: () => ({
+      view: {
+        vieworg: [1, 2, 3],
+        viewangles: [0, 0, 0],
+        forward: [1, 0, 0],
+        right: [0, 1, 0],
+        up: [0, 0, 1],
+        fov_x: 90,
+        blend: [0.1, 0.2, 0.3, 0.4]
+      },
+      areabits: new Uint8Array([9, 8, 7]),
+      entities: [
+        {
+          entityNumber: 1,
+          modelindex: 1,
+          frame: 0,
+          oldframe: 0,
+          backlerp: 0,
+          origin: [1, 1, 1],
+          oldorigin: [1, 1, 1],
+          angles: [0, 0, 0],
+          skinnum: 0,
+          alpha: 1,
+          flags: 0,
+          customPlayerSkin: false,
+          customWeaponModel: false,
+          linkedModelSlot: 0
+        }
+      ],
+      lights: [{ origin: [2, 2, 2], color: [1, 0, 0], intensity: 100, kind: "test" }],
+      particles: [{ origin: [3, 3, 3], color: 8, alpha: 0.5 }],
+      lightStyles: [],
+      beams: [],
+      explosions: [],
+      forceWalls: [],
+      sustains: []
+    }),
+    renderFrame: () => {
+      touched += 1;
+    }
+  });
+
+  assert.ok(rendered, "V_RenderView toggle render should return one refdef");
+  assert.equal(touched, 1, "V_RenderView should call renderFrame once");
+  assert.deepEqual(rendered?.refdef.blend, [1, 0.5, 0.25, 0.5], "V_RenderView cl_testblend mismatch");
+  assert.deepEqual(rendered?.refdef.vieworg, [1 + 1 / 16, 4 + 1 / 16, 3 + 1 / 16], "V_RenderView stereo/vieworg offset mismatch");
+  assert.equal(rendered?.refdef.num_entities, 0, "V_RenderView addEntities false mismatch");
+  assert.equal(rendered?.refdef.num_particles, 0, "V_RenderView addParticles false mismatch");
+  assert.equal(rendered?.refdef.num_dlights, 0, "V_RenderView addLights false mismatch");
+  assert.equal(rendered?.statsLine, "ent:0  lt:0  part:0", "V_RenderView stats should reflect disabled render lists");
+  assert.deepEqual(rendered?.crosshair, { x: 162, y: 108, pic: "ch1" }, "SCR_DrawCrosshair centered command mismatch");
+  assert.equal(context.crosshair?.modified, false, "SCR_DrawCrosshair should clear modified crosshair cvar");
 }
 
 function verifyCalcViewValuesInterpolatesWeaponRelevantMotion(): void {

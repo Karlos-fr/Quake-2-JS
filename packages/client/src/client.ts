@@ -551,15 +551,17 @@ export enum dltype_t {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the persistent client connection/download/demo state from `client.h`.
+ * Original name: client_static_t
+ * Source: client/client.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must keep connection, download and demo fields explicit across map changes.
+ * Behavior:
+ * - Preserves persistent client connection, timing, download, netchan and demo state across server connections.
  *
  * Porting notes:
  * - `key_dest` remains owned by `keys.ts` to keep the keyboard state cluster grouped with `keys.c`.
- * - File handles stay abstract as `unknown`.
+ * - File handles stay abstract as `unknown`; `precache` is the TypeScript-owned resumable download traversal adapter.
  */
 export interface client_static_t {
   state: connstate_t;

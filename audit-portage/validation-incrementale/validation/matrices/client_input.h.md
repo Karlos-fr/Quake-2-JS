@@ -10,9 +10,9 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/input.h` | function | `IN_Init` | `packages/client/src/input.ts` | `IN_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/input.h` | function | `IN_Shutdown` | `packages/client/src/input.ts` | `IN_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/input.h` | function | `IN_Commands` | `packages/client/src/input.ts` | `IN_Commands` | A verifier | A redecouper |  |
-| `Quake-2-master/client/input.h` | function | `IN_Frame` | `packages/client/src/input.ts` | `IN_Frame` | A verifier | A redecouper |  |
-| `Quake-2-master/client/input.h` | function | `IN_Move` | `packages/client/src/input.ts` | `IN_Move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/input.h` | function | `IN_Activate` | `packages/client/src/input.ts` | `IN_Activate` | A verifier | A redecouper |  |
+| `Quake-2-master/client/input.h` | function | `IN_Init` | `packages/client/src/input.ts` | `IN_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/input.h` | function | `IN_Shutdown` | `packages/client/src/input.ts` | `IN_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/client/input.h` | function | `IN_Commands` | `packages/client/src/input.ts` | `IN_Commands` | Valide | A redecouper |  |
+| `Quake-2-master/client/input.h` | function | `IN_Frame` | `packages/client/src/input.ts` | `IN_Frame` | Valide | A redecouper |  |
+| `Quake-2-master/client/input.h` | function | `IN_Move` | `packages/client/src/input.ts` | `IN_Move` | Valide | A redecouper |  |
+| `Quake-2-master/client/input.h` | function | `IN_Activate` | `packages/client/src/input.ts` | `IN_Activate` | Valide | A redecouper |  |

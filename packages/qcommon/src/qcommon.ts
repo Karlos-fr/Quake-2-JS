@@ -17,10 +17,11 @@
  */
 
 import type { byte, qboolean } from "./q_shared.js";
+import { CVAR_NOSET, CVAR_SERVERINFO, type CvarRuntime, Cvar_Get } from "./cvar.js";
 import type { cvar_t } from "./cvar.js";
 import type { sizebuf_t } from "../../memory/src/index.js";
 import { createSizeBuffer, SZ_Clear, SZ_Write } from "../../memory/src/index.js";
-import { Cmd_AddCommand, type CommandRuntime } from "./cmd.js";
+import { Cbuf_AddText, Cbuf_Execute, Cmd_AddCommand, Cmd_Argv, type CommandRuntime } from "./cmd.js";
 import { MSG_BeginReading } from "./messages.js";
 export { Com_BlockChecksum } from "./md4.js";
 
@@ -355,6 +356,13 @@ export interface QcommonGlobals {
   host_speeds: cvar_t | null;
   log_stats: cvar_t | null;
   log_stats_file: string | null;
+  timescale: cvar_t | null;
+  fixedtime: cvar_t | null;
+  logfile_active: cvar_t | null;
+  showtrace: cvar_t | null;
+  c_traces: number;
+  c_brush_traces: number;
+  c_pointcontents: number;
   time_before_game: number;
   time_after_game: number;
   time_before_ref: number;
@@ -517,6 +525,13 @@ export function createQcommonGlobals(): QcommonGlobals {
     host_speeds: null,
     log_stats: null,
     log_stats_file: null,
+    timescale: null,
+    fixedtime: null,
+    logfile_active: null,
+    showtrace: null,
+    c_traces: 0,
+    c_brush_traces: 0,
+    c_pointcontents: 0,
     time_before_game: 0,
     time_after_game: 0,
     time_before_ref: 0,
@@ -1193,6 +1208,52 @@ export function Z_Stats_f(runtime: QcommonMiscRuntime): string {
   return message;
 }
 
+export interface QcommonLifecycleOptions {
+  cmd?: CommandRuntime;
+  cvar?: CvarRuntime;
+  globals?: QcommonGlobals;
+  now?: () => number;
+  consoleInput?: () => string | null;
+  endLoadingPlaque?: () => void;
+  dedicatedDefault?: "0" | "1";
+}
+
+function normalizeLifecycleOptions(options?: CommandRuntime | QcommonLifecycleOptions): QcommonLifecycleOptions {
+  if (!options) {
+    return {};
+  }
+
+  if ("cmd_text" in options) {
+    return { cmd: options };
+  }
+
+  return options;
+}
+
+function requireLifecycleCvar(cvar: cvar_t | null, name: string): cvar_t {
+  if (!cvar) {
+    throw new Error(`Qcommon_Init: failed to create ${name}`);
+  }
+
+  return cvar;
+}
+
+/**
+ * Original name: Com_Error_f
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Throws a fatal qcommon error using the command's first argument.
+ *
+ * Porting notes:
+ * - Takes explicit misc and command runtimes instead of reading file-static globals.
+ */
+export function Com_Error_f(runtime: QcommonMiscRuntime, cmd: CommandRuntime): never {
+  return Com_Error(runtime, ERR_FATAL, Cmd_Argv(cmd, 1));
+}
+
 /**
  * Original name: Qcommon_Init
  * Source: qcommon/common.c
@@ -1200,17 +1261,37 @@ export function Z_Stats_f(runtime: QcommonMiscRuntime): string {
  * Fidelity level: Close
  *
  * Behavior:
- * - Marks the qcommon bootstrap stage as initialized.
+ * - Marks the qcommon bootstrap stage as initialized, registers lifecycle commands and creates core qcommon cvars when runtimes are supplied.
  *
  * Porting notes:
  * - The full subsystem call chain remains distributed across the narrower ports already attached to `cmd`, `cvar`, `filesystem` and `runtime`.
+ * - Accepts either the historical command runtime argument or an options bag with command, cvar and qcommon-global state.
  */
-export function Qcommon_Init(runtime: QcommonMiscRuntime, cmd?: CommandRuntime): void {
+export function Qcommon_Init(runtime: QcommonMiscRuntime, options?: CommandRuntime | QcommonLifecycleOptions): void {
+  const lifecycle = normalizeLifecycleOptions(options);
   runtime.initialized = true;
-  if (cmd) {
-    Cmd_AddCommand(cmd, "z_stats", () => {
+  if (lifecycle.cmd) {
+    Cmd_AddCommand(lifecycle.cmd, "z_stats", () => {
       Z_Stats_f(runtime);
     });
+    Cmd_AddCommand(lifecycle.cmd, "error", () => {
+      Com_Error_f(runtime, lifecycle.cmd!);
+    });
+  }
+  if (lifecycle.cvar && lifecycle.globals) {
+    lifecycle.globals.host_speeds = requireLifecycleCvar(Cvar_Get(lifecycle.cvar, "host_speeds", "0", 0), "host_speeds");
+    lifecycle.globals.log_stats = requireLifecycleCvar(Cvar_Get(lifecycle.cvar, "log_stats", "0", 0), "log_stats");
+    lifecycle.globals.developer = requireLifecycleCvar(Cvar_Get(lifecycle.cvar, "developer", "0", 0), "developer");
+    lifecycle.globals.timescale = requireLifecycleCvar(Cvar_Get(lifecycle.cvar, "timescale", "1", 0), "timescale");
+    lifecycle.globals.fixedtime = requireLifecycleCvar(Cvar_Get(lifecycle.cvar, "fixedtime", "0", 0), "fixedtime");
+    lifecycle.globals.logfile_active = requireLifecycleCvar(Cvar_Get(lifecycle.cvar, "logfile", "0", 0), "logfile");
+    lifecycle.globals.showtrace = requireLifecycleCvar(Cvar_Get(lifecycle.cvar, "showtrace", "0", 0), "showtrace");
+    lifecycle.globals.dedicated = requireLifecycleCvar(
+      Cvar_Get(lifecycle.cvar, "dedicated", lifecycle.dedicatedDefault ?? "0", CVAR_NOSET),
+      "dedicated"
+    );
+    const version = `${VERSION.toFixed(2)} ${CPUSTRING} TypeScript ${BUILDSTRING}`;
+    Cvar_Get(lifecycle.cvar, "version", version, CVAR_SERVERINFO | CVAR_NOSET);
   }
   runtime.hooks.onInit?.();
 }
@@ -1222,11 +1303,65 @@ export function Qcommon_Init(runtime: QcommonMiscRuntime, cmd?: CommandRuntime):
  * Fidelity level: Close
  *
  * Behavior:
- * - Records one qcommon frame tick and forwards it to the optional host hook.
+ * - Applies qcommon frame cvars, pumps console/command input, records one frame tick and forwards it to the optional host hook.
+ *
+ * Porting notes:
+ * - Server and client frame bodies remain behind `onFrame` because the TypeScript host owns their concrete runtime objects.
+ * - `log_stats_file` is represented as a marker string instead of a native file handle.
  */
-export function Qcommon_Frame(runtime: QcommonMiscRuntime, msec: number): void {
-  runtime.last_frame_msec = msec | 0;
+export function Qcommon_Frame(runtime: QcommonMiscRuntime, msec: number, options?: QcommonLifecycleOptions): void {
+  const lifecycle = normalizeLifecycleOptions(options);
+  let frameMsec = msec;
+
+  if (lifecycle.globals?.log_stats?.modified) {
+    lifecycle.globals.log_stats.modified = false;
+    lifecycle.globals.log_stats_file = lifecycle.globals.log_stats.value ? "stats.log" : null;
+  }
+
+  const fixedtime = lifecycle.globals?.fixedtime?.value ?? 0;
+  const timescale = lifecycle.globals?.timescale?.value ?? 0;
+  if (fixedtime !== 0) {
+    frameMsec = fixedtime;
+  } else if (timescale !== 0) {
+    frameMsec *= timescale;
+    if (frameMsec < 1) {
+      frameMsec = 1;
+    }
+  }
+
+  if ((lifecycle.globals?.showtrace?.value ?? 0) !== 0) {
+    runtime.hooks.onPrintf?.(
+      `${lifecycle.globals!.c_traces.toString().padStart(4)} traces  ${lifecycle.globals!.c_pointcontents.toString().padStart(4)} points\n`
+    );
+    lifecycle.globals!.c_traces = 0;
+    lifecycle.globals!.c_brush_traces = 0;
+    lifecycle.globals!.c_pointcontents = 0;
+  }
+
+  if (lifecycle.cmd) {
+    while (true) {
+      const text = lifecycle.consoleInput?.() ?? null;
+      if (!text) {
+        break;
+      }
+      Cbuf_AddText(lifecycle.cmd, `${text}\n`);
+    }
+    Cbuf_Execute(lifecycle.cmd);
+  }
+
+  const hostSpeeds = lifecycle.globals?.host_speeds?.value ?? 0;
+  const timeBefore = hostSpeeds && lifecycle.now ? lifecycle.now() : 0;
+  runtime.last_frame_msec = frameMsec | 0;
   runtime.hooks.onFrame?.(runtime.last_frame_msec);
+  if (hostSpeeds && lifecycle.now) {
+    const timeAfter = lifecycle.now();
+    const all = timeAfter - timeBefore;
+    const gm = lifecycle.globals!.time_after_game - lifecycle.globals!.time_before_game;
+    const rf = lifecycle.globals!.time_after_ref - lifecycle.globals!.time_before_ref;
+    runtime.hooks.onPrintf?.(
+      `all:${all.toString().padStart(3)} sv:${"0".padStart(3)} gm:${gm.toString().padStart(3)} cl:${all.toString().padStart(3)} rf:${rf.toString().padStart(3)}\n`
+    );
+  }
 }
 
 /**

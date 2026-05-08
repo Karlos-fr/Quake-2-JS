@@ -27,10 +27,11 @@ assert.ok(source.includes("createClientPredictionCollisionSource(client, serverH
 assert.ok(source.includes("createQcommonMiscRuntime"), "full-game should create the qcommon lifecycle runtime");
 assert.ok(source.includes("createQcommonHostRuntime"), "full-game should create the qcommon system host runtime");
 assert.ok(
-  source.includes("Qcommon_Init(qcommon)") || source.includes("Qcommon_Init(qcommon, cmd)"),
+  source.includes("Qcommon_Init(qcommon, {"),
   "full-game should initialize through the qcommon lifecycle adapter"
 );
-assert.ok(source.includes("Qcommon_Frame(qcommon, milliseconds)"), "full-game authoritative frame should run through Qcommon_Frame");
+assert.ok(source.includes("Qcommon_Frame(qcommon, milliseconds, {"), "full-game authoritative frame should run through Qcommon_Frame");
+assert.ok(source.includes("globals: qcommonGlobals"), "full-game should pass qcommon globals through the lifecycle adapter");
 assert.ok(source.includes("Qcommon_Shutdown(runtime.qcommon)"), "full-game should shut down the qcommon lifecycle adapter");
 assert.ok(source.includes("Sys_AppActivate(runtime.qcommonHost)"), "full-game should route browser activation through the qcommon system hook");
 assert.ok(source.includes("host: qcommonHost"), "full-game keys should consume qcommon system hooks");
@@ -61,6 +62,7 @@ assert.ok(source.includes("runtime.isAuthoritativeLevelLoading() && !runtime.aut
 assert.ok(source.includes("shouldReconnectForAuthoritativeMap"), "full-game should detect server-side automatic map changes");
 assert.ok(source.includes("normalizeFullGameMapName"), "full-game should compare server and client map names before reconnecting");
 assert.ok(source.includes("runtime.beginAuthoritativeConnection(serverMapRequest)"), "automatic server map changes should restart the authoritative client handshake");
+assert.equal(source.includes("if (runtime.isAuthoritativeLevelLoading()) {\n    return false;\n  }\n\n  const serverMap = normalizeFullGameMapName(serverMapRequest);"), false, "loading state must not suppress automatic map reconnect detection");
 assert.ok(source.includes("M_ForceMenuOff(menuContext)"), "full-game level loads should close the main menu when a map transition begins");
 assert.ok(source.includes("onBeginLoadingPlaque: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "client changing commands should leave menu mode during level loads");
 assert.ok(source.includes("onBeginLoading: () => {\n      authoritativeLevelLoading = true;\n      client.cl.screen.scr_draw_loading = 1;\n      forceGameInputForLevelLoad();"), "server map changes should leave menu mode during level loads");

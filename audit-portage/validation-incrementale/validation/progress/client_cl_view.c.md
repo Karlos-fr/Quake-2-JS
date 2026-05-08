@@ -2,29 +2,30 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot valide: scene staging initial et debug visible: `r_numdlights`, `r_numentities`, `r_numparticles`, `V_ClearScene`, `V_AddEntity`, `V_AddParticle`, `V_AddLight`, `V_AddLightStyle`, `V_TestParticles`, `V_TestEntities`, `V_TestLights`.
-- Verdict du lot: Valide apres comparaison C/TS, correction de parite `memset` pour `V_TestEntities`/`V_TestLights`, verification runtime/web/renderer et tests.
+- Statut: Termine
+- Dernier lot valide: lot final elargi autour de `CL_PrepRefresh`, registration/loading assets, pics/crosshair, modeles et inline models, weapon models, images, clientinfo, sky, temp entities, notify/update/CD, puis `CalcFov`, commandes debug gun, `SCR_DrawCrosshair`, `V_RenderView`, `V_Viewpos_f` et `V_Init`.
+- Verdict du lot: Valide apres comparaison C/TS, corrections de parite dans `CL_PrepRefresh` et `V_RenderView`, verification runtime/web/renderer et tests.
 
 ## Checklist appliquee
 
-- Identification: entites de `client/cl_view.c` mappees vers `packages/client/src/view.ts`; buffers globaux portes dans `ClientViewScene`; pas de doublon proprietaire trouve pour les fonctions du lot.
-- Comparaison C/H vs TS: entrees/sorties, compteurs, limites `MAX_*`, copies de vecteurs, lightstyle `white`, grilles debug particules/entites/lumieres comparees.
-- Commentaires d'en-tete: les fonctions portees du lot ont `Original name`, `Source`, `Category`, `Fidelity level` et `Behavior`.
-- Runtime: les helpers sont atteignables via `V_RenderView` et `CL_BuildRefreshFrame` quand `CL_Frame`/flux client actif produit une frame; les helpers de debug sont declenches par les cvars `cl_testparticles`, `cl_testentities`, `cl_testlights`.
-- apps/web: le navigateur consomme `CL_BuildRefreshFrame` via `full-game`, `full-game-render-source`, `full-game-local-session` et `local-client-controller`; pas de logique parallele masquant ce lot.
-- renderer-three: les sorties visibles du lot sont consommees par `refresh-entity-sync`, `particle-sync` et `three-dlight-sync`; les lightstyles/refdef passent via le flux refresh/world adapter.
-- Tests: `npx tsx ./scripts/verify/quake2-cl-view.ts`, `npm run verify:refresh-entity:alias-flags`, `npm run verify:refresh-entity:sprite`, `npm run verify:refresh-entity:weapon`, `npm run verify:particle-sync`, `npm run verify:dlight-sync`, `npm run typecheck`.
+- Identification: toutes les entrees restantes de `client/cl_view.c` ont ete rapprochees de `packages/client/src/view.ts`; les variables locales generees `mapname`, `i`, `name`, `rotate`, `axis`, `a`, `x` et `name` de `V_Gun_Model_f` sont marquees `Non applicable` avec justification dans la matrice.
+- Comparaison C/H vs TS: `CL_PrepRefresh` compare pour garde map chargee, dirty points, extraction mapname, ordre `SCR_UpdateScreen`/registration/pump, `SCR_TouchPics`, temp entities, modeles inline et weapon models, images, clientinfo, baseclientinfo, sky, `EndRegistration`, `Con_ClearNotify`, refresh flags et CD track. `V_RenderView` compare pour gardes active/prepped, timedemo, frame valide, scene build, toggles debug, stereo, offset 1/16, viewport, FOV, areabits, toggles add, rdflags, sort/staging, render, stats, dirty points et crosshair.
+- Commentaires d'en-tete: les fonctions portees du fichier ont `Original name`, `Source`, `Category`, `Fidelity level`, `Behavior` et notes de portage quand utile.
+- Runtime: `CL_PrepRefresh` est atteint depuis le flux precache/loading full-game; `V_Init` enregistre commandes/cvars; `V_RenderView` et `CL_BuildRefreshFrame` alimentent le flux client actif depuis les boucles de frame/render.
+- apps/web: `apps/web` declenche `CL_PrepRefresh` dans `full-game.ts`, initialise `V_Init`, et consomme `CL_BuildRefreshFrame` via `full-game-render-source`, `full-game-local-session`, `full-game-render-loop` et `local-client-controller`; pas de logique parallele masquant ce lot.
+- renderer-three: les sorties visibles du lot sont consommees par camera/refdef, world scene adapter, `refresh-entity-sync`, `particle-sync`, `three-beam-sync` et `three-dlight-sync`; les modeles, skins, frames, particules, beams, dlights, areabits et camera sont couverts.
+- Tests: `npm run verify:cl-view`, `npm run verify:refresh-entity:alias-flags`, `npm run verify:refresh-entity:sprite`, `npm run verify:refresh-entity:weapon`, `npm run verify:particle-sync`, `npm run verify:dlight-sync`, `npm run verify:beam-sync`, `npm run verify:full-game:render-source`, `npm run verify:full-game:authoritative-handshake`, `npm run verify:full-game:authoritative-input`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
 
 ## Corrections
 
-- `packages/client/src/view.ts`: `V_TestEntities` recree maintenant chaque `entity_t` de test comme le `memset` C avant de remplir origine/model/skin.
-- `packages/client/src/view.ts`: `V_TestLights` recree chaque `dlight_t` de test comme le `memset` C avant de remplir origine/couleur/intensite.
-- `scripts/verify/quake2-cl-view.ts`: ajout d'un harness cible pour les helpers de scene, limites, copies defensives et remise a zero debug.
+- `packages/client/src/view.ts`: `CL_PrepRefresh` appelle maintenant `onUpdateScreen` et `onPumpEvents` pour chaque modele, y compris les inline models `*`, et conserve le clear de ligne apres les weapon models `#`, comme le C.
+- `packages/client/src/view.ts`: `V_RenderView` calcule la ligne `cl_stats` depuis les compteurs du `refdef` final afin de respecter les toggles `addEntities`, `addParticles` et `addLights`.
+- `packages/client/src/view.ts`: commentaires d'en-tete renforces pour `V_Gun_Next_f`, `V_Gun_Prev_f`, `V_Gun_Model_f` et `V_Viewpos_f`.
+- `scripts/verify/quake2-cl-view.ts`: ajout de preuves pour `V_Init`, les commandes debug gun/viewpos, cvars, l'ordre de `CL_PrepRefresh`, crosshair, stereo, blend, stats et toggles de rendu.
 
 ## Prochain lot recommande
 
-Traiter `CL_PrepRefresh` et ses locaux generes (`mapname`, `i`, `name`, `rotate`, `axis`) avec le flux registration/loading: dirty points, map registration, pics/crosshair, modeles/inline models, weapon models, images, clientinfo, sky, temp entities, notify clear, update screen, CD track.
+Aucun pour `client/cl_view.c`: toutes les entrees sont maintenant `Valide` ou `Non applicable`.
 
 ## Blocages
 

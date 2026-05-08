@@ -592,7 +592,8 @@ export {
   IN_Init,
   IN_Move,
   IN_Shutdown,
-  createClientInputDeviceContext
+  createClientInputDeviceContext,
+  createClientInputDeviceMainHooks
 } from "./input.js";
 export {
   applyLocalMovementMode,

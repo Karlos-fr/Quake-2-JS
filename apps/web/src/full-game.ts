@@ -54,6 +54,7 @@ import {
   AngleVectors,
   CM_InlineModel,
   createCommandRuntime,
+  createQcommonGlobals,
   createQcommonHostRuntime,
   createQcommonMiscRuntime,
   createCvarRuntime,
@@ -149,6 +150,13 @@ import type {
 } from "../../../packages/client/src/cl_parse.js";
 import type { ClientEntityEvent } from "../../../packages/client/src/cl_ents.js";
 import { CL_InitInput, createClientInputContext, createClientSendCmdBridge } from "../../../packages/client/src/cl_input.js";
+import {
+  IN_Activate,
+  IN_Shutdown,
+  createClientInputDeviceContext,
+  createClientInputDeviceMainHooks,
+  type ClientInputDeviceContext
+} from "../../../packages/client/src/input.js";
 import {
   CL_Frame,
   CL_InitLocal,
@@ -305,6 +313,7 @@ interface FullGameRuntime {
   gameBridge: FullGameCommandBridgeState;
   qcommon: QcommonMiscRuntime;
   qcommonHost: QcommonHostRuntime;
+  inputDevice: ClientInputDeviceContext;
   serverHost: FullGameServerHost;
   gameRenderer: FullGameRendererState | null;
   gameRendererPromise: Promise<FullGameRendererState> | null;
@@ -369,6 +378,7 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("beforeunload", () => {
       runtime.finishConfigBootstrap();
       runtime.writeConfiguration();
+      IN_Shutdown(runtime.inputDevice);
       Qcommon_Shutdown(runtime.qcommon);
     });
     window.addEventListener("pointerdown", (event) => handlePointerDown(event, runtime, page), { capture: true });
@@ -386,8 +396,14 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("mousedown", (event) => handleMouseButton(event, true, runtime, page));
     window.addEventListener("mouseup", (event) => handleMouseButton(event, false, runtime, page));
     window.addEventListener("wheel", (event) => handleMouseWheel(event, runtime, page), { passive: false });
-    window.addEventListener("focus", () => Sys_AppActivate(runtime.qcommonHost));
-    window.addEventListener("blur", () => resetFullGameMouseLook(runtime));
+    window.addEventListener("focus", () => {
+      Sys_AppActivate(runtime.qcommonHost);
+      IN_Activate(runtime.inputDevice, true);
+    });
+    window.addEventListener("blur", () => {
+      resetFullGameMouseLook(runtime);
+      IN_Activate(runtime.inputDevice, false);
+    });
 
     page.status.textContent = "Lecture de l'intro...";
     startNextCinematic(runtime, page);
@@ -575,6 +591,9 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   });
   const qcommonHooks: QcommonMiscRuntime["hooks"] = {};
   const qcommon = createQcommonMiscRuntime(qcommonHooks);
+  const qcommonGlobals = createQcommonGlobals();
+  const inputDevice = createClientInputDeviceContext();
+  const inputDeviceMainHooks = createClientInputDeviceMainHooks(inputDevice);
   let clipboardText = "";
   const qcommonHost = createQcommonHostRuntime({
     sysConsoleOutput: printToConsole,
@@ -930,9 +949,11 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onWriteConfigFile: (path, contents) => configStorage.writeText(path, contents)
   });
   const inputContext = createClientInputContext(client, cmd, cvar, {
-    qnet: localTransport.clientQnet
+    qnet: localTransport.clientQnet,
+    inputDevice
   });
   CL_InitInput(inputContext);
+  inputDeviceMainHooks.onInputInit();
   const sendClientCommand = createClientSendCmdBridge(inputContext, {
     getFrameOptions: () => ({
       anykeydown: keys.state.anykeydown > 0,
@@ -988,6 +1009,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     });
   };
   const createAuthoritativeClientHooks = (withReadPackets: boolean) => ({
+    ...inputDeviceMainHooks,
     getMilliseconds: () => client.cls.realtime,
     qnet: localTransport.clientQnet,
     serverRunning: () => serverHost.hasActiveGameMap(),
@@ -1054,7 +1076,11 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     CL_ReadPackets(mainContext!, createAuthoritativeClientHooks(false));
   };
   const pumpAuthoritativeFrame = (milliseconds: number): void => {
-    Qcommon_Frame(qcommon, milliseconds);
+    Qcommon_Frame(qcommon, milliseconds, {
+      cmd,
+      cvar,
+      globals: qcommonGlobals
+    });
   };
   const authoritativeGameReady = (): boolean => (
     serverHost.hasActiveGameMap()
@@ -1095,7 +1121,11 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       beginAuthoritativeConnection(map);
     }
   });
-  Qcommon_Init(qcommon, cmd);
+  Qcommon_Init(qcommon, {
+    cmd,
+    cvar,
+    globals: qcommonGlobals
+  });
 
   consoleContext = createClientConsoleContext({
     client,
@@ -1244,6 +1274,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     gameBridge,
     qcommon,
     qcommonHost,
+    inputDevice,
     serverHost,
     get consoleRenderedInThree() {
       return consoleRenderedInThree;
@@ -1680,10 +1711,6 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
 }
 
 function shouldReconnectForAuthoritativeMap(runtime: FullGameRuntime, serverMapRequest: string): boolean {
-  if (runtime.isAuthoritativeLevelLoading()) {
-    return false;
-  }
-
   const serverMap = normalizeFullGameMapName(serverMapRequest);
   const clientMap = getFullGameClientWorldMapName(runtime);
   return serverMap !== null && clientMap !== null && serverMap !== clientMap;

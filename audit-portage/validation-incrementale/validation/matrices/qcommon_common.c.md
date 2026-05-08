@@ -153,10 +153,10 @@
 | `Quake-2-master/qcommon/common.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | Non applicable | A redecouper | Variable locale de `COM_BlockSequenceCRCByte`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | Partiel | A redecouper | Fonction portee/testee, mais les flux visuels client encore attendus passent par des helpers locaux au lieu du helper qcommon. |
 | `Quake-2-master/qcommon/common.c` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | Partiel | A redecouper | Fonction portee/testee, mais les flux particules client visibles encore attendus passent par des helpers locaux au lieu du helper qcommon. |
-| `Quake-2-master/qcommon/common.c` | function | `Com_Error_f` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Qcommon_Frame` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Frame` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `c_pointcontents` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Qcommon_Shutdown` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Shutdown` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Com_Error_f` | `packages/qcommon/src/qcommon.ts` | `Com_Error_f` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local de construction de la cvar `version`; couvert par `Qcommon_Init`. |
+| `Quake-2-master/qcommon/common.c` | function | `Qcommon_Frame` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Frame` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local console input de `Qcommon_Frame`; couvert par l'option `consoleInput`. |
+| `Quake-2-master/qcommon/common.c` | global | `c_pointcontents` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Externe defini dans `qcommon/cmodel.c`; seule la remise a zero showtrace est couverte par `Qcommon_Frame`. |
+| `Quake-2-master/qcommon/common.c` | function | `Qcommon_Shutdown` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Shutdown` | Valide | A redecouper |  |

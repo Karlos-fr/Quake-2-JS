@@ -534,6 +534,9 @@ export function CalcFov(fov_x: number, width: number, height: number): number {
  * Source: client/cl_view.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances the debug gun frame counter and returns the same status text printed by the C command.
  */
 export function V_Gun_Next_f(state: ClientViewDebugState): string {
   state.gun_frame += 1;
@@ -545,6 +548,9 @@ export function V_Gun_Next_f(state: ClientViewDebugState): string {
  * Source: client/cl_view.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Rewinds the debug gun frame counter, clamps it at zero, and returns the original status text.
  */
 export function V_Gun_Prev_f(state: ClientViewDebugState): string {
   state.gun_frame -= 1;
@@ -559,6 +565,12 @@ export function V_Gun_Prev_f(state: ClientViewDebugState): string {
  * Source: client/cl_view.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Clears the debug gun model without one argument, otherwise builds the original `models/%s/tris.md2` path.
+ *
+ * Porting notes:
+ * - Stores the model path for renderer-neutral refresh assembly instead of calling `re.RegisterModel` directly.
  */
 export function V_Gun_Model_f(state: ClientViewDebugState, modelName: string | null): string | null {
   if (!modelName) {
@@ -575,6 +587,9 @@ export function V_Gun_Model_f(state: ClientViewDebugState, modelName: string | n
  * Source: client/cl_view.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Formats the current view origin and yaw as the original `viewpos` command output.
  */
 export function V_Viewpos_f(view: Pick<ClientViewValues, "vieworg" | "viewangles">): string {
   return `(${Math.trunc(view.vieworg[0])} ${Math.trunc(view.vieworg[1])} ${Math.trunc(view.vieworg[2])}) : ${Math.trunc(view.viewangles[1])}`;
@@ -724,23 +739,21 @@ export function CL_PrepRefresh(
     const displayName = name.slice(0, 37);
     if (!name.startsWith("*")) {
       options.onPrint?.(`${displayName}\r`);
-      options.onUpdateScreen?.();
-      options.onPumpEvents?.();
     }
+    options.onUpdateScreen?.();
+    options.onPumpEvents?.();
 
     if (name.startsWith("#")) {
       if (runtime.cl.num_cl_weaponmodels < MAX_CLIENTWEAPONMODELS) {
         runtime.cl.cl_weaponmodels[runtime.cl.num_cl_weaponmodels] = name.slice(1);
         runtime.cl.num_cl_weaponmodels += 1;
       }
-      modelCount += 1;
-      continue;
+    } else {
+      runtime.cl.model_draw[index] = options.ref?.RegisterModel(name) ?? name;
+      runtime.cl.model_clip[index] = name.startsWith("*")
+        ? (options.inlineModel?.(name) ?? null)
+        : null;
     }
-
-    runtime.cl.model_draw[index] = options.ref?.RegisterModel(name) ?? name;
-    runtime.cl.model_clip[index] = name.startsWith("*")
-      ? (options.inlineModel?.(name) ?? null)
-      : null;
 
     if (!name.startsWith("*")) {
       options.onPrint?.("                                     \r");
@@ -880,7 +893,7 @@ export function V_RenderView(
   const crosshair = SCR_DrawCrosshair(runtime, vrect, context.crosshair);
   const statsLine =
     (context.cl_stats?.value ?? 0) !== 0
-      ? `ent:${context.scene.r_numentities}  lt:${context.scene.r_numdlights}  part:${context.scene.r_numparticles}`
+      ? `ent:${context.refdef.num_entities}  lt:${context.refdef.num_dlights}  part:${context.refdef.num_particles}`
       : null;
 
   return {

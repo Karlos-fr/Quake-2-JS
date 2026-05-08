@@ -127,6 +127,18 @@ export const K_MWHEELDOWN = 239;
 export const K_MWHEELUP = 240;
 export const K_PAUSE = 255;
 
+/**
+ * Original name: keydest_t
+ * Source: client/client.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects which keyboard consumer receives input: game, console, chat message or menu.
+ *
+ * Porting notes:
+ * - Kept in `keys.ts` because the TypeScript port owns keyboard state with the `keys.c` cluster.
+ */
 export enum keydest_t {
   key_game,
   key_console,

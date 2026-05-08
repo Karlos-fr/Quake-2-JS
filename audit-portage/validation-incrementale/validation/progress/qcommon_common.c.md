@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: `COM_BlockSequenceCheckByte`, table `chktbl`, `COM_BlockSequenceCRCByte` et locaux `n`/`p`/`x`/`chkb`/`crc`; `frand`/`crand` restent `Partiel` pour integration client visible.
-- Prochain lot recommande: `Com_Error_f`, `Qcommon_Init` et son local `s`, puis `Qcommon_Frame` et son local `s` si le lot reste coherent.
+- Dernier lot valide: lifecycle qcommon `Com_Error_f`, `Qcommon_Init`, local `s` de version, `Qcommon_Frame`, local `s` console input, remise a zero showtrace de `c_pointcontents`, et `Qcommon_Shutdown`; `frand`/`crand` restent `Partiel` pour integration client visible.
+- Prochain lot recommande: reprendre le debut de matrice encore `A verifier`: bloc impression/redirection et globals associes `MAXPRINTMSG`, `realtime`, `host_speeds`, `log_stats`, `developer`, `timescale`, `fixedtime`, `logfile_active`, `showtrace`, `dedicated`, `server_state`, `time_before_game`/`time_after_game`/`time_before_ref`/`time_after_ref`, `rd_target`/`rd_buffer`/`rd_buffersize`, puis `Com_BeginRedirect`/`Com_EndRedirect`/`Com_Printf` si le lot reste coherent.
 
 ## Preuves session
 
@@ -18,6 +18,16 @@
 ## Tests
 
 - `npm run verify:qcommon:header`: OK
+- `npm run verify:cmd`: OK
+- `npm run verify:cvar`: OK
+- `npm run verify:full-game:server-host`: OK
+- `npm run verify:full-game:authoritative-input`: OK
+- `npm run verify:full-game:commands`: OK
+- `npm run verify:full-game:render-source`: OK
+- `npm run verify:full-game:three-renderer`: OK
+- `npm run verify:server:runtime`: OK
+- `npm run typecheck`: OK
+- `npm run verify:qcommon:header`: OK
 - `npm run verify:cl-input`: OK
 - `npm run verify:server:user`: OK
 - `npm run verify:full-game:authoritative-input`: OK
@@ -30,6 +40,18 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-08 - Lifecycle qcommon init/frame/shutdown
+
+- Lot traite: `Com_Error_f`, `Qcommon_Init`, local `s` de version, `Qcommon_Frame`, local `s` console input, `c_pointcontents` dans la branche `showtrace`, et `Qcommon_Shutdown`.
+- Source C relue: `Com_Error_f` appelle `Com_Error(ERR_FATAL, "%s", Cmd_Argv(1))`; `Qcommon_Init` initialise argv/commandes/cvars, enregistre `z_stats` et `error`, cree les cvars `host_speeds`, `log_stats`, `developer`, `timescale`, `fixedtime`, `logfile`, `showtrace`, `dedicated`, puis `version`; `Qcommon_Frame` gere `log_stats`, applique `fixedtime`/`timescale`, imprime et remet a zero les compteurs showtrace, pompe la console, execute le command buffer, appelle le frame hook, et imprime `host_speeds`; `Qcommon_Shutdown` est vide cote C.
+- Cible TS relue/corrigee: `packages/qcommon/src/qcommon.ts` expose maintenant `Com_Error_f`, etend `Qcommon_Init` avec un contexte optionnel `cmd`/`cvar`/`globals`, enregistre `error`, cree les cvars qcommon du lot, et etend `Qcommon_Frame` avec `cmd`, `consoleInput`, `globals`, `fixedtime`/`timescale`, `showtrace`, `log_stats` et sortie `host_speeds`. Les anciens appels `Qcommon_Init(runtime, cmd)` restent acceptes.
+- Ownership/doublons: ownership confirme dans `packages/qcommon/src/qcommon.ts`; la matrice corrige la cible de `Com_Error_f`. Aucun doublon proprietaire trouve. Les deux `s` sont des locaux de fonction. `c_pointcontents` est defini dans `qcommon/cmodel.c`, donc marque `Non applicable` pour ownership `common.c`, avec la remise a zero couverte par `Qcommon_Frame`.
+- Runtime verifie: `Qcommon_Init` branche `z_stats` et `error`; `Qcommon_Frame` reste la racine frame appelee par le host web, execute le command buffer fourni, applique les cvars temporelles et appelle le hook frame; `Qcommon_Shutdown` libere les allocations zone suivies.
+- apps/web verifie/corrige: `apps/web/src/full-game.ts` cree maintenant `qcommonGlobals`, passe `cmd`/`cvar`/`globals` a `Qcommon_Init` et `Qcommon_Frame`, donc le navigateur declenche les cvars/commandes qcommon portees au lieu d'un lifecycle nu. La modification preexistante sur `shouldReconnectForAuthoritativeMap` est conservee.
+- renderer-three verifie: aucune sortie renderer directe n'est produite par `Com_Error_f`/`Qcommon_Init`/`Qcommon_Shutdown`; `Qcommon_Frame` est la racine qui produit indirectement les frames client/serveur, camera, entites, areabits et scene consommees par le render-source et `renderer-three`.
+- Tests renforces: `scripts/verify/quake2-qcommon-header.ts` couvre `Com_Error_f`, la commande `error`, les cvars creees par `Qcommon_Init`, la version, `fixedtime`, `timescale`, `showtrace`, `log_stats`, et shutdown; `scripts/verify/quake2-full-game-three-renderer.ts` verifie le passage de `qcommonGlobals` au lifecycle web.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cmd`, `npm run verify:cvar`, `npm run verify:full-game:server-host`, `npm run verify:full-game:authoritative-input`, `npm run verify:full-game:commands`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:server:runtime`, `npm run typecheck`.
 
 ## Session - 2026-05-08 - Checksum sequence et frand/crand
 
@@ -97,6 +119,7 @@
 
 ## Decisions
 
+- `c_pointcontents` n'est pas proprietaire de `common.c`: il est defini dans `qcommon/cmodel.c`; la validation de ce lot couvre seulement la consommation/remise a zero dans la branche `showtrace` de `Qcommon_Frame`.
 - Correction appliquee: ajout du rejet TypeScript pour `to.number >= MAX_EDICTS`, equivalent au `Com_Error(ERR_FATAL, "Entity number >= MAX_EDICTS")` original.
 - Tests renforces: encodage complet des champs entity delta, skip sans `force`, ecriture forcee et garde-fou `MAX_EDICTS`.
 

@@ -32,32 +32,32 @@
 | `Quake-2-master/client/console.c` | function | `Con_CheckResize` | `packages/client/src/console.ts` | `Con_CheckResize` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | global | `tbuf` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Variable locale de `Con_CheckResize`. |
 | `Quake-2-master/client/console.c` | function | `Con_Init` | `packages/client/src/console.ts` | `Con_Init` | Valide | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_Linefeed` | `packages/client/src/console.ts` | `Con_Linefeed` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_Print` | `packages/client/src/console.ts` | `Con_Print` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `y` | `packages/client/src/console.ts` | `y` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `cr` | `packages/client/src/console.ts` | `cr` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_CenteredPrint` | `packages/client/src/console.ts` | `Con_CenteredPrint` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `l` | `packages/client/src/console.ts` | `l` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `buffer` | `packages/client/src/console.ts` | `buffer` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_DrawInput` | `packages/client/src/console.ts` | `Con_DrawInput` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `y` | `packages/client/src/console.ts` | `y` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `i` | `packages/client/src/console.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_DrawNotify` | `packages/client/src/console.ts` | `Con_DrawNotify` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `i` | `packages/client/src/console.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `time` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `s` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `skip` | `packages/client/src/console.ts` | `skip` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | function | `Con_DrawConsole` | `packages/client/src/console.ts` | `Con_DrawConsole` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `rows` | `packages/client/src/console.ts` | `rows` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `row` | `packages/client/src/console.ts` | `row` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `lines` | `packages/client/src/console.ts` | `lines` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `version` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `dlbar` | `packages/client/src/console.ts` | `dlbar` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `n` | `packages/client/src/console.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.c` | global | `dlbar` | `packages/client/src/console.ts` | `dlbar` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_Linefeed` | `packages/client/src/console.ts` | `Con_Linefeed` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | function | `Con_Print` | `packages/client/src/console.ts` | `Con_Print` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `y` | `packages/client/src/console.ts` | `y` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
+| `Quake-2-master/client/console.c` | global | `cr` | `packages/client/src/console.ts` | `conPrintCarriageReturn` | Valide | A redecouper | Static local C porte en etat prive TS pour preserver le retour chariot entre appels. |
+| `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
+| `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
+| `Quake-2-master/client/console.c` | function | `Con_CenteredPrint` | `packages/client/src/console.ts` | `Con_CenteredPrint` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `l` | `packages/client/src/console.ts` | `l` | Non applicable | A redecouper | Variable locale de `Con_CenteredPrint`. |
+| `Quake-2-master/client/console.c` | global | `buffer` | `packages/client/src/console.ts` | `buffer` | Non applicable | A redecouper | Variable locale de `Con_CenteredPrint`. |
+| `Quake-2-master/client/console.c` | function | `Con_DrawInput` | `packages/client/src/console.ts` | `Con_DrawInput` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `y` | `packages/client/src/console.ts` | `y` | Non applicable | A redecouper | Variable locale de `Con_DrawInput`. |
+| `Quake-2-master/client/console.c` | global | `i` | `packages/client/src/console.ts` | `i` | Non applicable | A redecouper | Variable locale de `Con_DrawInput`. |
+| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | Non applicable | A redecouper | Variable locale de `Con_DrawInput`. |
+| `Quake-2-master/client/console.c` | function | `Con_DrawNotify` | `packages/client/src/console.ts` | `Con_DrawNotify` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | Non applicable | A redecouper | Variable locale de `Con_DrawNotify`. |
+| `Quake-2-master/client/console.c` | global | `i` | `packages/client/src/console.ts` | `i` | Non applicable | A redecouper | Variable locale de `Con_DrawNotify`. |
+| `Quake-2-master/client/console.c` | global | `time` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Variable locale de `Con_DrawNotify`. |
+| `Quake-2-master/client/console.c` | global | `s` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Variable locale de `Con_DrawNotify`. |
+| `Quake-2-master/client/console.c` | global | `skip` | `packages/client/src/console.ts` | `skip` | Non applicable | A redecouper | Variable locale de `Con_DrawNotify`. |
+| `Quake-2-master/client/console.c` | function | `Con_DrawConsole` | `packages/client/src/console.ts` | `Con_DrawConsole` | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | global | `rows` | `packages/client/src/console.ts` | `rows` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `row` | `packages/client/src/console.ts` | `row` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `lines` | `packages/client/src/console.ts` | `lines` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `version` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `dlbar` | `packages/client/src/console.ts` | `dlbar` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `text` | `packages/client/src/console.ts` | `text` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `n` | `packages/client/src/console.ts` | `n` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |
+| `Quake-2-master/client/console.c` | global | `dlbar` | `packages/client/src/console.ts` | `dlbar` | Non applicable | A redecouper | Variable locale de `Con_DrawConsole`. |

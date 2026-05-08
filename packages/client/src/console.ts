@@ -38,9 +38,40 @@ import {
 import { MAXCMDLINE, keydest_t, type ClientKeyContext } from "./keys.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
+/**
+ * Original name: NUM_CON_TIMES
+ * Source: client/console.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Keeps the same number of transparent notify timestamps as the C console.
+ */
 export const NUM_CON_TIMES = 4;
+
+/**
+ * Original name: CON_TEXTSIZE
+ * Source: client/console.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Keeps the fixed scrollback text buffer capacity from the C `console_t`.
+ */
 export const CON_TEXTSIZE = 32768;
 
+/**
+ * Original name: console_t
+ * Source: client/console.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Preserves the console state fields and fixed-size buffer/timestamp arrays from the C header.
+ *
+ * Porting notes:
+ * - The C global `con` is represented through explicit `ClientConsoleContext` ownership.
+ */
 export interface console_t {
   initialized: qboolean;
   text: string[];
@@ -133,6 +164,8 @@ export interface ClientConsoleContextOptions {
   filesystem?: VirtualFilesystem;
   hooks?: ClientConsoleHooks;
 }
+
+let conPrintCarriageReturn = false;
 
 /**
  * Category: New
@@ -392,6 +425,9 @@ function Con_Linefeed(con: console_t): void {
  *
  * Behavior:
  * - Appends console text while preserving word wrap, carriage returns and notify timestamps.
+ *
+ * Porting notes:
+ * - Preserves the original function-static carriage-return state across calls.
  */
 export function Con_Print(con: console_t, txt: string, realtime: number): void {
   if (!con.initialized || con.linewidth <= 0 || con.totallines <= 0) {
@@ -399,7 +435,6 @@ export function Con_Print(con: console_t, txt: string, realtime: number): void {
   }
 
   let index = 0;
-  let cr = false;
   let mask = 0;
 
   if (txt[0] === "\u0001" || txt[0] === "\u0002") {
@@ -424,9 +459,9 @@ export function Con_Print(con: console_t, txt: string, realtime: number): void {
 
     index += 1;
 
-    if (cr) {
+    if (conPrintCarriageReturn) {
       con.current -= 1;
-      cr = false;
+      conPrintCarriageReturn = false;
     }
 
     if (con.x === 0) {
@@ -442,7 +477,7 @@ export function Con_Print(con: console_t, txt: string, realtime: number): void {
         break;
       case "\r":
         con.x = 0;
-        cr = true;
+        conPrintCarriageReturn = true;
         break;
       default: {
         const y = mod(con.current, con.totallines);

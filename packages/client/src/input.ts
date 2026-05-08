@@ -45,6 +45,20 @@ export interface ClientInputDeviceContext {
 }
 
 /**
+ * Category: Adapter
+ * Purpose: Expose the `client/input.h` device procedures through the hook names used by the `cl_main.c` frame port.
+ *
+ * Constraints:
+ * - Must keep the source-level split between init, shutdown, command injection and per-frame polling.
+ */
+export interface ClientInputDeviceMainHooks {
+  onInputInit: () => void;
+  onInputShutdown: () => void;
+  onInputCommands: () => void;
+  onInputFrame: () => void;
+}
+
+/**
  * Category: New
  * Purpose: Create the context used by the `client/input.h` procedure ports.
  *
@@ -149,4 +163,20 @@ export function IN_Move(context: ClientInputDeviceContext, cmd: usercmd_t): void
  */
 export function IN_Activate(context: ClientInputDeviceContext, active: qboolean): void {
   context.hooks.onActivate?.(active);
+}
+
+/**
+ * Category: Adapter
+ * Purpose: Bridge `client/input.h` procedures into the high-level `cl_main.c` lifecycle hooks.
+ *
+ * Constraints:
+ * - Must call the ported `IN_*` functions rather than reaching into host hooks directly.
+ */
+export function createClientInputDeviceMainHooks(context: ClientInputDeviceContext): ClientInputDeviceMainHooks {
+  return {
+    onInputInit: () => IN_Init(context),
+    onInputShutdown: () => IN_Shutdown(context),
+    onInputCommands: () => IN_Commands(context),
+    onInputFrame: () => IN_Frame(context)
+  };
 }

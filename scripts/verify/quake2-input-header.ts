@@ -19,7 +19,8 @@ import {
   IN_Init,
   IN_Move,
   IN_Shutdown,
-  createClientInputDeviceContext
+  createClientInputDeviceContext,
+  createClientInputDeviceMainHooks
 } from "../../packages/client/src/index.js";
 
 const callLog: string[] = [];
@@ -77,5 +78,19 @@ assert.equal(IN_Frame(noOpContext), undefined, "IN_Frame no-op mismatch");
 assert.equal(IN_Move(noOpContext, cmd), undefined, "IN_Move no-op mismatch");
 assert.equal(IN_Activate(noOpContext, true), undefined, "IN_Activate no-op mismatch");
 assert.equal(IN_Shutdown(noOpContext), undefined, "IN_Shutdown no-op mismatch");
+
+const bridgedCalls: string[] = [];
+const bridgedContext = createClientInputDeviceContext({
+  onInit: () => bridgedCalls.push("init"),
+  onShutdown: () => bridgedCalls.push("shutdown"),
+  onCommands: () => bridgedCalls.push("commands"),
+  onFrame: () => bridgedCalls.push("frame")
+});
+const mainHooks = createClientInputDeviceMainHooks(bridgedContext);
+mainHooks.onInputInit();
+mainHooks.onInputFrame();
+mainHooks.onInputCommands();
+mainHooks.onInputShutdown();
+assert.deepEqual(bridgedCalls, ["init", "frame", "commands", "shutdown"], "input.h main hook bridge mismatch");
 
 console.log("quake2-input-header: ok");
