@@ -258,32 +258,32 @@
 | `Quake-2-master/client/client.h` | function | `V_AddParticle` | `packages/client/src/view.ts` | `V_AddParticle` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `V_AddLight` | `packages/client/src/view.ts` | `V_AddLight` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `V_AddLightStyle` | `packages/client/src/view.ts` | `V_AddLightStyle` | Valide | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RegisterTEntSounds` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RegisterTEntModels` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_SmokeAndFlash` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_InitPrediction` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_PredictMove` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_CheckPredictionError` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_AllocDlight` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_BigTeleportParticles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_RocketTrail` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_DiminishingTrail` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_FlyEffect` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_BfgParticles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_AddParticles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_EntityEvent` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_TrapParticles` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `M_Init` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `M_Keydown` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `M_Draw` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `M_Menu_Main_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `M_ForceMenuOff` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `M_AddToServerList` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_ParseInventory` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_KeyInventory` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_DrawInventory` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_PredictMovement` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `x86_TimerStart` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `x86_TimerStop` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `x86_TimerInit` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `x86_TimerGetHistogram` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_RegisterTEntSounds` | `packages/client/src/cl_tent.ts` | `CL_RegisterTEntSounds` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_RegisterTEntModels` | `packages/client/src/cl_tent.ts` | `CL_RegisterTEntModels` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_SmokeAndFlash` | `packages/client/src/cl_tent.ts` | `CL_SmokeAndFlash` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_InitPrediction` |  |  | Non applicable | A redecouper | Prototype header sans definition ni appel dans `client/*`; pas de port officiel attendu. |
+| `Quake-2-master/client/client.h` | function | `CL_PredictMove` |  |  | Non applicable | A redecouper | Prototype header sans definition ni appel dans `client/*`; le comportement de prediction defini par le C est `CL_PredictMovement`. |
+| `Quake-2-master/client/client.h` | function | `CL_CheckPredictionError` | `packages/client/src/view.ts` | `CL_CheckPredictionError` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_AllocDlight` | `packages/client/src/cl_fx.ts` | `CL_AllocDlight` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_BigTeleportParticles` | `packages/client/src/cl_fx.ts` | `CL_BigTeleportParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_RocketTrail` | `packages/client/src/cl_fx.ts` | `CL_RocketTrail` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_DiminishingTrail` | `packages/client/src/cl_fx.ts` | `CL_DiminishingTrail` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_FlyEffect` | `packages/client/src/cl_fx.ts` | `CL_FlyEffect` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_BfgParticles` | `packages/client/src/cl_fx.ts` | `CL_BfgParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_AddParticles` | `packages/client/src/cl_fx.ts` | `CL_AddParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_EntityEvent` | `packages/client/src/cl_fx.ts` | `CL_BuildEntityEventEffects` | Valide | A redecouper | Export public header `CL_EntityEvent` ajoute comme alias de l'adapter structure. |
+| `Quake-2-master/client/client.h` | function | `CL_TrapParticles` | `packages/client/src/cl_fx.ts` | `CL_TrapParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `M_Init` | `packages/client/src/menu.ts` | `M_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `M_Keydown` | `packages/client/src/menu.ts` | `M_Keydown` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `M_Draw` | `packages/client/src/menu.ts` | `M_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `M_Menu_Main_f` | `packages/client/src/menu.ts` | `M_Menu_Main_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `M_ForceMenuOff` | `packages/client/src/menu.ts` | `M_ForceMenuOff` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `M_AddToServerList` | `packages/client/src/menu.ts` | `M_AddToServerList` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_ParseInventory` | `packages/client/src/cl_parse.ts` | `CL_ParseInventory` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_KeyInventory` |  |  | Non applicable | A redecouper | Prototype header sans definition ni appel dans `client/*`; la navigation inventaire active passe par `M_Keydown`/HUD. |
+| `Quake-2-master/client/client.h` | function | `CL_DrawInventory` | `packages/client/src/cl_inv.ts` | `CL_DrawInventory` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_PredictMovement` | `packages/client/src/view.ts` | `CL_PredictMovement` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `x86_TimerStart` |  |  | Non applicable | A redecouper | Profiling x86 assembly helper, unreachable from normal client runtime and excluded from browser/TS runtime. |
+| `Quake-2-master/client/client.h` | function | `x86_TimerStop` |  |  | Non applicable | A redecouper | Profiling x86 assembly helper, unreachable from normal client runtime and excluded from browser/TS runtime. |
+| `Quake-2-master/client/client.h` | function | `x86_TimerInit` |  |  | Non applicable | A redecouper | Profiling x86 assembly helper, unreachable from normal client runtime and excluded from browser/TS runtime. |
+| `Quake-2-master/client/client.h` | function | `x86_TimerGetHistogram` |  |  | Non applicable | A redecouper | Profiling x86 assembly helper, unreachable from normal client runtime and excluded from browser/TS runtime. |

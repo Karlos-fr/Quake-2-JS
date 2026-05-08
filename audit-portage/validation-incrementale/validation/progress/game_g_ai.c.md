@@ -187,3 +187,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: aucun dans cette matrice; demander au coordinateur de centraliser `AVANCEMENT_GLOBAL.md` et de passer `game/g_ai.c` a `Termine`.
+
+## Session 2026-05-08 - reconciliation documentaire
+
+- Lot traite: reconciliation de l'etat `game_g_ai.c.md`; aucun nouveau lot fonctionnel ouvert.
+- Verdict: matrice deja fermee; toutes les lignes sont `Valide` ou `Non applicable`.
+- Corrections TS: aucune.
+- Preuves: verification de la matrice sans statut ouvert; la ligne globale contenait encore un prochain lot historique deja ferme (`ai_stand`, `ai_walk`, `ai_charge`, `ai_turn`, `FindTarget`).
+- Integration: runtime, `apps/web` et `renderer-three` deja documentes dans les sessions de validation des entites; aucun nouveau symbole ou branchement attendu pour cette reconciliation.
+- Tests: `npm run verify:g-ai` OK.
+- Blocage: aucun.
+- Prochain lot recommande: aucun pour `game/g_ai.c`; reprendre un autre fichier depuis `AVANCEMENT_GLOBAL.md`.

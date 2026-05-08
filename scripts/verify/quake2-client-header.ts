@@ -19,14 +19,19 @@ import {
   CL_AddDLights,
   CL_AddEntities,
   CL_AddLightStyles,
+  CL_AddParticles,
   CL_AddTEnts,
+  CL_AllocDlight,
   CL_BlasterParticles2,
   CL_BlasterTrail,
   CL_BlasterTrail2,
+  CL_BfgParticles,
+  CL_BigTeleportParticles,
   CL_BubbleTrail,
   CL_BubbleTrail2,
   CL_BuildRefreshFrame,
   CL_BaseMove,
+  CL_CheckPredictionError,
   CL_ClearState,
   CL_DebugTrail,
   CL_Disconnect,
@@ -39,6 +44,7 @@ import {
   CL_ParseDelta,
   CL_ParseEntityBits,
   CL_ParseFrame,
+  CL_ParseInventory,
   CL_ParseLayout,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
@@ -48,10 +54,12 @@ import {
   CL_Download_f,
   CL_PingServers_f,
   CL_PrepRefresh,
+  CL_PredictMovement,
   CL_Flashlight,
   CL_FlameEffects,
   CL_ForceWall,
   CL_FlagTrail,
+  CL_FlyEffect,
   CL_GenericParticleEffect,
   CL_Heatbeam,
   CL_IonripperTrail,
@@ -61,14 +69,28 @@ import {
   CL_RailTrail,
   CL_ReadPackets,
   CL_RegisterSounds,
+  CL_RegisterTEntModels,
+  CL_RegisterTEntSounds,
   CL_RequestNextDownload,
+  CL_RocketTrail,
   CL_RunDLights,
   CL_RunLightStyles,
   CL_SendCmd,
   CL_SetLightstyle,
+  CL_SmokeAndFlash,
   SHOWNET,
   CL_SmokeTrail,
   CL_Snd_Restart_f,
+  CL_DiminishingTrail,
+  CL_DrawInventory,
+  CL_EntityEvent,
+  CL_TrapParticles,
+  M_AddToServerList,
+  M_Draw,
+  M_ForceMenuOff,
+  M_Init,
+  M_Keydown,
+  M_Menu_Main_f,
   V_AddEntity,
   V_AddLight,
   V_AddLightStyle,
@@ -177,12 +199,41 @@ assert.equal(typeof V_AddEntity, "function", "V_AddEntity export mismatch");
 assert.equal(typeof V_AddParticle, "function", "V_AddParticle export mismatch");
 assert.equal(typeof V_AddLight, "function", "V_AddLight export mismatch");
 assert.equal(typeof V_AddLightStyle, "function", "V_AddLightStyle export mismatch");
+assert.equal(typeof CL_RegisterTEntSounds, "function", "CL_RegisterTEntSounds export mismatch");
+assert.equal(typeof CL_RegisterTEntModels, "function", "CL_RegisterTEntModels export mismatch");
+assert.equal(typeof CL_SmokeAndFlash, "function", "CL_SmokeAndFlash export mismatch");
+assert.equal(typeof CL_CheckPredictionError, "function", "CL_CheckPredictionError export mismatch");
+assert.equal(typeof CL_AllocDlight, "function", "CL_AllocDlight export mismatch");
+assert.equal(typeof CL_BigTeleportParticles, "function", "CL_BigTeleportParticles export mismatch");
+assert.equal(typeof CL_RocketTrail, "function", "CL_RocketTrail export mismatch");
+assert.equal(typeof CL_DiminishingTrail, "function", "CL_DiminishingTrail export mismatch");
+assert.equal(typeof CL_FlyEffect, "function", "CL_FlyEffect export mismatch");
+assert.equal(typeof CL_BfgParticles, "function", "CL_BfgParticles export mismatch");
+assert.equal(typeof CL_AddParticles, "function", "CL_AddParticles export mismatch");
+assert.equal(typeof CL_EntityEvent, "function", "CL_EntityEvent export mismatch");
+assert.equal(typeof CL_TrapParticles, "function", "CL_TrapParticles export mismatch");
+assert.equal(typeof M_Init, "function", "M_Init export mismatch");
+assert.equal(typeof M_Keydown, "function", "M_Keydown export mismatch");
+assert.equal(typeof M_Draw, "function", "M_Draw export mismatch");
+assert.equal(typeof M_Menu_Main_f, "function", "M_Menu_Main_f export mismatch");
+assert.equal(typeof M_ForceMenuOff, "function", "M_ForceMenuOff export mismatch");
+assert.equal(typeof M_AddToServerList, "function", "M_AddToServerList export mismatch");
+assert.equal(typeof CL_ParseInventory, "function", "CL_ParseInventory export mismatch");
+assert.equal(typeof CL_DrawInventory, "function", "CL_DrawInventory export mismatch");
+assert.equal(typeof CL_PredictMovement, "function", "CL_PredictMovement export mismatch");
 assert.equal("CL_RunParticles" in clientIndex, false, "CL_RunParticles is an unused original header declaration without a C definition");
 assert.equal("IN_Accumulate" in clientIndex, false, "IN_Accumulate is an unused original header declaration without a C definition");
 assert.equal("CL_GetChallengePacket" in clientIndex, false, "CL_GetChallengePacket is an unused original header declaration without a C definition");
 assert.equal("CL_SendMove" in clientIndex, false, "CL_SendMove is an unused original header declaration without a C definition");
 assert.equal("CL_ReadFromServer" in clientIndex, false, "CL_ReadFromServer is an unused original header declaration without a C definition");
 assert.equal("CL_WriteToServer" in clientIndex, false, "CL_WriteToServer is an unused original header declaration without a C definition");
+assert.equal("CL_InitPrediction" in clientIndex, false, "CL_InitPrediction is an unused original header declaration without a C definition");
+assert.equal("CL_PredictMove" in clientIndex, false, "CL_PredictMove is an unused original header declaration without a C definition");
+assert.equal("CL_KeyInventory" in clientIndex, false, "CL_KeyInventory is an unused original header declaration without a C definition");
+assert.equal("x86_TimerStart" in clientIndex, false, "x86_TimerStart is an x86 profiling helper excluded from the browser runtime");
+assert.equal("x86_TimerStop" in clientIndex, false, "x86_TimerStop is an x86 profiling helper excluded from the browser runtime");
+assert.equal("x86_TimerInit" in clientIndex, false, "x86_TimerInit is an x86 profiling helper excluded from the browser runtime");
+assert.equal("x86_TimerGetHistogram" in clientIndex, false, "x86_TimerGetHistogram is an x86 profiling helper excluded from the browser runtime");
 
 assert.equal(connstate_t.ca_uninitialized, 0, "connstate_t ca_uninitialized mismatch");
 assert.equal(connstate_t.ca_disconnected, 1, "connstate_t ca_disconnected mismatch");

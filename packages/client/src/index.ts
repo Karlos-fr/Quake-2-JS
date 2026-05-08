@@ -261,6 +261,7 @@ export {
   CL_ParseLightning,
   CL_LoadClientinfo,
   CL_ParseClientinfo,
+  CL_ParseInventory,
   CL_ParseLayout,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
@@ -703,6 +704,7 @@ export {
   CL_AddDLights,
   CL_AddLightStyles,
   CL_AddParticles,
+  CL_AllocDlight,
   CL_BlasterParticles,
   CL_BlasterTrail,
   CL_BlueBlasterParticles,
@@ -724,7 +726,13 @@ export {
   CL_RailTrail,
   CL_TeleporterParticles,
   CL_TeleportParticles,
-  CL_BigTeleportParticles
+  CL_BigTeleportParticles,
+  CL_BfgParticles,
+  CL_BuildEntityEventEffects as CL_EntityEvent,
+  CL_DiminishingTrail,
+  CL_FlyEffect,
+  CL_RocketTrail,
+  CL_TrapParticles
 } from "./cl_fx.js";
 export {
   CL_Flashlight,
