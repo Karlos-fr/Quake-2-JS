@@ -292,6 +292,8 @@ assert.deepEqual(button.moveinfo.start_origin, [0, 0, 0], "SP_func_button start 
 assert.deepEqual(button.moveinfo.end_origin, [60, 0, 0], "SP_func_button end origin mismatch");
 assert.deepEqual(button.moveinfo.start_angles, [0, 0, 0], "SP_func_button start angles mismatch");
 assert.deepEqual(button.moveinfo.end_angles, [0, 0, 0], "SP_func_button end angles mismatch");
+assert.deepEqual(button.angles, [0, 0, 0], "SP_func_button must clear runtime angles after G_SetMovedir");
+assert.deepEqual(button.s.angles, [0, 0, 0], "SP_func_button must clear render angles after G_SetMovedir");
 assert.equal((button.s.effects & EF_ANIM01) !== 0, true, "SP_func_button initial animation mismatch");
 assert.equal(button.moveinfo.sound_start > 0, true, "SP_func_button default sound mismatch");
 assert.equal(button.touch, button_touch, "SP_func_button untargeted non-shootable touch mismatch");
@@ -394,6 +396,8 @@ assert.equal(shootButton.max_health, 10, "SP_func_button shootable max health mi
 assert.equal(shootButton.takedamage, damage_t.DAMAGE_YES, "SP_func_button shootable damage flag mismatch");
 assert.equal(shootButton.die, button_killed, "SP_func_button shootable die callback mismatch");
 assert.equal(shootButton.touch, undefined, "SP_func_button shootable must not get touch callback");
+assert.deepEqual(shootButton.angles, [0, 0, 0], "SP_func_button shootable must not keep editor yaw in runtime angles");
+assert.deepEqual(shootButton.s.angles, [0, 0, 0], "SP_func_button shootable must not keep editor yaw in render angles");
 shootButton.health = 4;
 const shooter = entity("attacker", 33);
 button_killed(shootButton, null, shooter, 10, runtime);

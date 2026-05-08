@@ -1507,6 +1507,7 @@ export function button_killed(self: GameEntity, _inflictor: GameEntity | null, a
  */
 export function SP_func_button(ent: GameEntity, runtime: GameRuntime): void {
   G_SetMovedir(ent.s.angles, ent.movedir);
+  ent.angles = [...ent.s.angles];
   ent.movetype = MOVETYPE_STOP;
   ent.solid = SOLID_BSP;
   if (ent.model) {
