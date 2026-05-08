@@ -80,6 +80,12 @@ export function createWebConfigStorage(storage: WebStorageLike | null = getDefau
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web config overlay)
+ * Category: New
+ * Purpose: Resolve logical config text through browser persistence before falling back to mounted files.
+ */
 export function readWebConfigOrMountedText(
   storage: WebConfigStorage,
   filesystem: VirtualFilesystem,
@@ -106,10 +112,22 @@ export function readWebConfigOrMountedText(
   return null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web storage key)
+ * Category: New
+ * Purpose: Map a logical Quake file path to the browser storage namespace.
+ */
 export function toConfigStorageKey(path: string): string {
   return `${STORAGE_PREFIX}${normalizeConfigPath(path)}`;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web config lookup helper)
+ * Category: New
+ * Purpose: Build storage and mounted-file candidates for current gamedir-aware config lookup.
+ */
 function buildConfigReadCandidates(path: string, gamedir: string): { storage: string[]; mounted: string[] } {
   const storage = path.includes("/")
     ? [path]
@@ -124,14 +142,32 @@ function buildConfigReadCandidates(path: string, gamedir: string): { storage: st
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web path helper)
+ * Category: New
+ * Purpose: Normalize browser-facing logical config paths before storage and VFS lookup.
+ */
 function normalizeConfigPath(path: string): string {
   return path.replaceAll("\\", "/").replace(/^\/+/, "").replace(/\/+/g, "/").toLowerCase();
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local collection helper)
+ * Category: New
+ * Purpose: Preserve first candidate order while removing empty values and duplicates.
+ */
 function unique(values: string[]): string[] {
   return Array.from(new Set(values.filter((value) => value.length > 0)));
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (browser storage adapter)
+ * Category: New
+ * Purpose: Access browser localStorage behind a replaceable adapter boundary.
+ */
 function getDefaultStorage(): WebStorageLike | null {
   try {
     return globalThis.localStorage ?? null;

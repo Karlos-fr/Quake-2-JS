@@ -25,12 +25,16 @@ import type { BspMap } from "../../../packages/formats/src/index.js";
 import type { LocalClientController } from "./local-client-controller.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (web renderer bootstrap)
  * Category: New
  * Purpose: Describe the active Three.js renderer used by the browser demo.
  */
 export type ActiveRenderer = WebGPURenderer | WebGLRenderer;
 
 /**
+ * Original name: N/A
+ * Source: N/A (web renderer bootstrap)
  * Category: New
  * Purpose: Create the preferred Three.js renderer with WebGPU first and WebGL fallback.
  *
@@ -57,6 +61,8 @@ export async function createRenderer(): Promise<{ renderer: ActiveRenderer; labe
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web renderer bootstrap)
  * Category: New
  * Purpose: Create a minimal lit scene around the generated BSP group.
  *
@@ -78,6 +84,8 @@ export function createScene(group: Group): Scene {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web renderer bootstrap)
  * Category: New
  * Purpose: Create the main perspective camera used for the map preview.
  *
@@ -91,6 +99,8 @@ export function createCamera(): PerspectiveCamera {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web renderer bootstrap)
  * Category: New
  * Purpose: Resolve the compiled render origin used for one BSP inline model group.
  *
@@ -117,6 +127,8 @@ export function getInlineModelRenderOrigin(map: BspMap, modelIndex: number): [nu
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web renderer bootstrap)
  * Category: New
  * Purpose: Format one optional Quake II sky snapshot for the lightweight web debug overlay.
  *
@@ -132,6 +144,8 @@ export function formatSkySnapshot(skySnapshot: LocalClientController["skySnapsho
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web renderer bootstrap)
  * Category: New
  * Purpose: Parse one Quake-style entity origin string into a numeric tuple.
  */

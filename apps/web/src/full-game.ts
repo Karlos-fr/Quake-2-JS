@@ -304,6 +304,15 @@ const FULL_GAME_SFF_HIDDEN = 0x02;
 const FULL_GAME_SFF_SUBDIR = 0x08;
 const FULL_GAME_SFF_SYSTEM = 0x10;
 
+/**
+ * Original name: N/A
+ * Source: N/A (web adapter types)
+ * Category: New
+ * Purpose: Shape the browser page, canvas command queue, runtime aggregate, renderer state, audio debug state, and mouse state.
+ *
+ * Porting notes:
+ * - These declarations describe apps/web integration state; they are not C/H-owned runtime entities.
+ */
 type DrawCommand =
   | { type: "pic"; x: number; y: number; name: string; width?: number; height?: number }
   | { type: "char"; x: number; y: number; code: number }
@@ -412,6 +421,15 @@ interface FullGameMouseState {
 
 void bootstrap();
 
+/**
+ * Original name: N/A
+ * Source: N/A (web app bootstrap)
+ * Category: New
+ * Purpose: Mount assets, assemble the browser page, wire DOM events, and start the full-game frame loop.
+ *
+ * Porting notes:
+ * - This is the web host entry point around the ported client/qcommon/menu subsystems.
+ */
 async function bootstrap(): Promise<void> {
   const app = requireApp();
   const page = createPage(app);
@@ -479,6 +497,15 @@ async function bootstrap(): Promise<void> {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web page adapter)
+ * Category: New
+ * Purpose: Locate and construct the browser DOM/canvas shell used by the full-game host.
+ *
+ * Porting notes:
+ * - These helpers own DOM setup only; they do not replace a C/H gameplay or renderer owner.
+ */
 function requireApp(): HTMLElement {
   const app = document.querySelector<HTMLElement>("#app");
   if (!app) {
@@ -576,6 +603,15 @@ function createPage(root: HTMLElement): FullGamePage {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web filesystem bootstrap)
+ * Category: New
+ * Purpose: Load browser-accessible Quake II assets and mount them into the virtual filesystem.
+ *
+ * Porting notes:
+ * - This is apps/web asset plumbing around the filesystem port.
+ */
 async function createMountedFilesystem(): Promise<VirtualFilesystem> {
   const pakBytes = await fetchFirstBytes(BASEQ2_PAK_CANDIDATES);
   const looseVideos = new Map<string, Uint8Array>();
@@ -780,6 +816,15 @@ function readFullGamePlayerModels(filesystem: VirtualFilesystem): PlayerModelInf
   return list.length > 0 ? list : null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web runtime assembly)
+ * Category: New
+ * Purpose: Assemble ported client, qcommon, menu, sound, config, save, server, and renderer adapters for the browser host.
+ *
+ * Porting notes:
+ * - The owned C/H behavior remains in packages/client, packages/qcommon, packages/server, and packages/renderer-three.
+ */
 function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage): FullGameRuntime {
   const client = createClientRuntime();
   const mouse: FullGameMouseState = {
@@ -1718,6 +1763,15 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console filter)
+ * Category: New
+ * Purpose: Keep browser console presentation focused by hiding noisy renderer capability lines.
+ *
+ * Porting notes:
+ * - This filters apps/web display output only; it does not replace the ported console implementation.
+ */
 function shouldSuppressFullGameConsoleLine(line: string): boolean {
   const trimmed = line.trim();
   return trimmed === "Begin() from Player"
@@ -1735,6 +1789,12 @@ function shouldSuppressFullGameConsoleLine(line: string): boolean {
     || trimmed.startsWith("...WGL_");
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web download adapter)
+ * Category: New
+ * Purpose: Represent browser-local download writes while client parsing owns the protocol behavior.
+ */
 type WebDownloadHandle = {
   path: string;
   chunks: Uint8Array[];
@@ -1787,6 +1847,15 @@ function concatDownloadChunks(chunks: Uint8Array[]): Uint8Array {
   return output;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web audio adapter)
+ * Category: New
+ * Purpose: Bridge the ported sound DMA state to WebAudio playback, listener data, and debug output.
+ *
+ * Porting notes:
+ * - The sound mixer and client sound ownership stay in packages/client; these functions adapt that state for the browser.
+ */
 function initializeWebSoundDma(sound: ClientSoundLocalContext, audio: QuakeWebAudioAdapter): boolean {
   const context = audio.context;
   if (!context) {
@@ -1932,6 +2001,15 @@ function getRequestedSoundRate(sound: ClientSoundLocalContext, fallback: number)
   return Math.max(11025, Math.trunc(fallback));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web config bootstrap)
+ * Category: New
+ * Purpose: Seed browser-host defaults and commands needed before user config files can run.
+ *
+ * Porting notes:
+ * - Uses qcommon/client command and cvar ports instead of replacing their ownership.
+ */
 function queueFullGameConfigBootstrap(cmd: ReturnType<typeof createCommandRuntime>): void {
   Cbuf_AddText(cmd, "exec default.cfg\n");
   Cbuf_AddText(cmd, "bind 1 \"use Blaster\"\n");

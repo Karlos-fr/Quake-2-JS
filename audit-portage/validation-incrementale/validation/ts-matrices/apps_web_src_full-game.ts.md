@@ -5,7 +5,7 @@
 - Fichier TS: `apps/web/src/full-game.ts`
 - Symboles TS: 94
 - Couvert C/H: 0
-- Reste a auditer: 89
+- Reste a auditer: 64
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -14,31 +14,31 @@
 | `apps/web/src/full-game.ts` | value | `STARTUP_CINEMATICS` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
 | `apps/web/src/full-game.ts` | value | `LOGICAL_WIDTH` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
 | `apps/web/src/full-game.ts` | value | `LOGICAL_HEIGHT` | non | `N/A` | `N/A (web adapter)` | New |  | TS sans lien source | Valide |  |
-| `apps/web/src/full-game.ts` | type | `DrawCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | interface | `FullGamePage` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | interface | `CanvasAssetCache` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | interface | `FullGameRuntime` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | interface | `FullGameAudioDebugState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | interface | `FullGameRendererState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | interface | `FullGameMouseState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `bootstrap` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `requireApp` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `createPage` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `createMountedFilesystem` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `fetchFirstBytes` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `createFullGameRuntime` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `shouldSuppressFullGameConsoleLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `initializeWebSoundDma` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `getWebSoundDmaPosition` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `playIssuedWebSound` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `formatWebAudioInfo` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `buildFullGameAudioListener` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `isSfx` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `describeAuthoritativeSound` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `getRequestedSoundRate` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `queueFullGameConfigBootstrap` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `registerFullGameToggleConsoleCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `seedMenuCvars` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game.ts` | type | `DrawCommand` | non | `N/A` | `N/A (web adapter types)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | interface | `FullGamePage` | non | `N/A` | `N/A (web adapter types)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | interface | `CanvasAssetCache` | non | `N/A` | `N/A (web adapter types)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | interface | `FullGameRuntime` | non | `N/A` | `N/A (web adapter types)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | interface | `FullGameAudioDebugState` | non | `N/A` | `N/A (web adapter types)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | interface | `FullGameRendererState` | non | `N/A` | `N/A (web adapter types)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | interface | `FullGameMouseState` | non | `N/A` | `N/A (web adapter types)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `bootstrap` | non | `N/A` | `N/A (web app bootstrap)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `requireApp` | non | `N/A` | `N/A (web page adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `createPage` | non | `N/A` | `N/A (web page adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `createMountedFilesystem` | non | `N/A` | `N/A (web filesystem bootstrap)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `fetchFirstBytes` | non | `N/A` | `N/A (web filesystem bootstrap)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `createFullGameRuntime` | non | `N/A` | `N/A (web runtime assembly)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `shouldSuppressFullGameConsoleLine` | non | `N/A` | `N/A (web console filter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `initializeWebSoundDma` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `getWebSoundDmaPosition` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `playIssuedWebSound` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `formatWebAudioInfo` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `buildFullGameAudioListener` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `isSfx` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `describeAuthoritativeSound` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `getRequestedSoundRate` | non | `N/A` | `N/A (web audio adapter)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `queueFullGameConfigBootstrap` | non | `N/A` | `N/A (web config bootstrap)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `registerFullGameToggleConsoleCommand` | non | `N/A` | `N/A (web config bootstrap)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `seedMenuCvars` | non | `N/A` | `N/A (web config bootstrap)` | New |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `createCanvasRef` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `startNextCinematic` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `enterMainMenu` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

@@ -5,7 +5,7 @@
 - Fichier TS: `apps/web/src/web-config-storage.ts`
 - Symboles TS: 10
 - Couvert C/H: 0
-- Reste a auditer: 6
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -13,9 +13,9 @@
 | `apps/web/src/web-config-storage.ts` | interface | `WebConfigStorage` | oui | N/A | N/A (web adapter contract) | New |  | TS sans lien source | Valide | |
 | `apps/web/src/web-config-storage.ts` | interface | `WebStorageLike` | oui | N/A | N/A (browser storage adapter) | New |  | TS sans lien source | Valide | |
 | `apps/web/src/web-config-storage.ts` | function | `createWebConfigStorage` | oui | N/A | N/A (web storage adapter) | New |  | TS sans lien source | Valide | |
-| `apps/web/src/web-config-storage.ts` | function | `readWebConfigOrMountedText` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-config-storage.ts` | function | `toConfigStorageKey` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-config-storage.ts` | function | `buildConfigReadCandidates` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-config-storage.ts` | function | `normalizeConfigPath` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-config-storage.ts` | function | `unique` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/web-config-storage.ts` | function | `getDefaultStorage` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/web-config-storage.ts` | function | `readWebConfigOrMountedText` | oui | N/A | N/A (web config overlay) | New |  | TS sans lien source | Valide | |
+| `apps/web/src/web-config-storage.ts` | function | `toConfigStorageKey` | oui | N/A | N/A (web storage key) | New |  | TS sans lien source | Valide | |
+| `apps/web/src/web-config-storage.ts` | function | `buildConfigReadCandidates` | non | N/A | N/A (web config lookup helper) | New |  | TS sans lien source | Valide | |
+| `apps/web/src/web-config-storage.ts` | function | `normalizeConfigPath` | non | N/A | N/A (web path helper) | New |  | TS sans lien source | Valide | |
+| `apps/web/src/web-config-storage.ts` | function | `unique` | non | N/A | N/A (local collection helper) | New |  | TS sans lien source | Valide | |
+| `apps/web/src/web-config-storage.ts` | function | `getDefaultStorage` | non | N/A | N/A (browser storage adapter) | New |  | TS sans lien source | Valide | |

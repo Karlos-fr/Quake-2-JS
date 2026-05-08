@@ -39,6 +39,8 @@ import { type ActiveRenderer } from "./web-render-bootstrap.js";
 import type { WebShell } from "./web-shell.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (web demo adapter)
  * Category: New
  * Purpose: Describe the browser-side objects needed to run the current Quake2JS demo loop.
  *
@@ -67,6 +69,8 @@ export interface WebDemoLoopOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web demo adapter)
  * Category: New
  * Purpose: Start the current browser demo resize wiring and animation loop around the already-created runtime and renderer objects.
  *

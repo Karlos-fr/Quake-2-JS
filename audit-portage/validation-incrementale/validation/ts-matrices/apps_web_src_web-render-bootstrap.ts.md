@@ -5,14 +5,14 @@
 - Fichier TS: `apps/web/src/web-render-bootstrap.ts`
 - Symboles TS: 7
 - Couvert C/H: 0
-- Reste a auditer: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/web-render-bootstrap.ts` | type | `ActiveRenderer` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-render-bootstrap.ts` | function | `createRenderer` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-render-bootstrap.ts` | function | `createScene` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-render-bootstrap.ts` | function | `createCamera` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-render-bootstrap.ts` | function | `getInlineModelRenderOrigin` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-render-bootstrap.ts` | function | `formatSkySnapshot` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-render-bootstrap.ts` | function | `parseEntityOrigin` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `apps/web/src/web-render-bootstrap.ts` | type | `ActiveRenderer` | oui | N/A | N/A (web renderer bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-render-bootstrap.ts` | function | `createRenderer` | oui | N/A | N/A (web renderer bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-render-bootstrap.ts` | function | `createScene` | oui | N/A | N/A (web renderer bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-render-bootstrap.ts` | function | `createCamera` | oui | N/A | N/A (web renderer bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-render-bootstrap.ts` | function | `getInlineModelRenderOrigin` | oui | N/A | N/A (web renderer bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-render-bootstrap.ts` | function | `formatSkySnapshot` | oui | N/A | N/A (web renderer bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-render-bootstrap.ts` | function | `parseEntityOrigin` | non | N/A | N/A (web renderer bootstrap) | New |  | Hors C/H | Valide |  |

@@ -88,6 +88,8 @@ const BASEQ2_PAK_CANDIDATES = [
 const DEFAULT_MAP_PATH = "maps/base1.bsp";
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (web app bootstrap)
  * Category: New
  * Purpose: Start the Quake2JS browser demo with live map loading and renderer initialization.
  *
@@ -97,6 +99,8 @@ const DEFAULT_MAP_PATH = "maps/base1.bsp";
 void bootstrap();
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (web app bootstrap)
  * Category: New
  * Purpose: Initialize the DOM, renderer, scene and runtime demo data.
  *
@@ -309,6 +313,15 @@ async function bootstrap(): Promise<void> {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web ref_gl adapter)
+ * Category: New
+ * Purpose: Provide inert QGL bindings so the ported `ref_gl` host can initialize under Three.js.
+ *
+ * Constraints:
+ * - Must satisfy the required QGL procedure table without becoming a native OpenGL port.
+ */
 function createNoopQglBindings(): Record<string, unknown> {
   const bindings: Record<string, unknown> = {};
   for (const name of QGL_REQUIRED_PROCEDURES) {
@@ -332,6 +345,16 @@ function createNoopQglBindings(): Record<string, unknown> {
   return bindings;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web ref imports)
+ * Category: New
+ * Purpose: Provide the browser demo services consumed by the ported `ref_gl` import table.
+ *
+ * Constraints:
+ * - Must delegate cvar operations to the qcommon cvar runtime.
+ * - Must keep browser status reporting separate from renderer ownership.
+ */
 function createWebRefImports(onStatus: (message: string) => void): Partial<refimport_t> {
   const cvarRuntime = createCvarRuntime();
   const cvars = new Map<string, cvar_t>();
@@ -370,6 +393,12 @@ function createWebRefImports(onStatus: (message: string) => void): Partial<refim
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web ref imports helper)
+ * Category: New
+ * Purpose: Convert nullable qcommon cvar creation results into explicit browser demo errors.
+ */
 function requireCvar(cvar: cvar_t | null, name: string): cvar_t {
   if (!cvar) {
     throw new Error(`Unable to create cvar ${name}`);

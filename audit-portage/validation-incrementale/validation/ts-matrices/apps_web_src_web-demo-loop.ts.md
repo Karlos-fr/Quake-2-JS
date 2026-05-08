@@ -5,9 +5,9 @@
 - Fichier TS: `apps/web/src/web-demo-loop.ts`
 - Symboles TS: 2
 - Couvert C/H: 0
-- Reste a auditer: 2
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/web-demo-loop.ts` | interface | `WebDemoLoopOptions` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-demo-loop.ts` | function | `startWebDemoLoop` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `apps/web/src/web-demo-loop.ts` | interface | `WebDemoLoopOptions` | oui | `N/A` | `N/A (web demo adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/web-demo-loop.ts` | function | `startWebDemoLoop` | oui | `N/A` | `N/A (web demo adapter)` | New |  | TS sans lien source | Valide |  |

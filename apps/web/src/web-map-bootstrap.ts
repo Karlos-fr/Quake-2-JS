@@ -9,9 +9,11 @@
  * - packages/filesystem
  */
 
-import { mountPak } from "../../../packages/filesystem/src/index.js";
+import type { mountPak } from "../../../packages/filesystem/src/index.js";
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (web map bootstrap)
  * Category: New
  * Purpose: Read the requested BSP map path from the browser URL.
  *
@@ -25,6 +27,8 @@ export function getRequestedMapPath(defaultMapPath: string): string {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (web map bootstrap)
  * Category: New
  * Purpose: Persist one selected BSP path in the URL and reload the demo on that level.
  *
@@ -38,6 +42,8 @@ export function setRequestedMapPath(mapPath: string): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (web map bootstrap)
  * Category: New
  * Purpose: Try several pak0.pak URLs until one succeeds.
  *
@@ -65,6 +71,8 @@ export async function loadFirstAvailablePak(candidates: string[]): Promise<Uint8
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (web map bootstrap)
  * Category: New
  * Purpose: Extract the BSP level list exposed by the currently mounted Quake II PAK archive.
  *
@@ -80,6 +88,8 @@ export function listPakMapPaths(mountedPak: ReturnType<typeof mountPak>): string
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (web map bootstrap)
  * Category: New
  * Purpose: Format one BSP path into a compact UI label for the top-right map selector.
  */

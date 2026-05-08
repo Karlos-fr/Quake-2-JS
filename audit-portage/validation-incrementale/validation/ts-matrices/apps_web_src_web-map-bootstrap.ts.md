@@ -5,12 +5,12 @@
 - Fichier TS: `apps/web/src/web-map-bootstrap.ts`
 - Symboles TS: 5
 - Couvert C/H: 0
-- Reste a auditer: 5
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/web-map-bootstrap.ts` | function | `getRequestedMapPath` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-map-bootstrap.ts` | function | `setRequestedMapPath` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-map-bootstrap.ts` | function | `loadFirstAvailablePak` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-map-bootstrap.ts` | function | `listPakMapPaths` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/web-map-bootstrap.ts` | function | `getDisplayMapName` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `apps/web/src/web-map-bootstrap.ts` | function | `getRequestedMapPath` | oui | N/A | N/A (web map bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-map-bootstrap.ts` | function | `setRequestedMapPath` | oui | N/A | N/A (web map bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-map-bootstrap.ts` | function | `loadFirstAvailablePak` | oui | N/A | N/A (web map bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-map-bootstrap.ts` | function | `listPakMapPaths` | oui | N/A | N/A (web map bootstrap) | New |  | Hors C/H | Valide |  |
+| `apps/web/src/web-map-bootstrap.ts` | function | `getDisplayMapName` | oui | N/A | N/A (web map bootstrap) | New |  | Hors C/H | Valide | Helper homonyme local dans `apps/web/src/web-shell.ts`; doublon UI non C/H a traiter avec la matrice `web-shell.ts`. |
