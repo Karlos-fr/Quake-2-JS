@@ -170,6 +170,7 @@ export function applyMd2Frame(meshInstance: Md2MeshInstance, frameIndex: number)
   }
 
   positionAttribute.needsUpdate = true;
+  refreshMd2GeometryBounds(meshInstance.mesh.geometry);
   meshInstance.mesh.geometry.computeVertexNormals();
 }
 
@@ -222,6 +223,7 @@ export function applyMd2LerpedFrame(
   }
 
   positionAttribute.needsUpdate = true;
+  refreshMd2GeometryBounds(meshInstance.mesh.geometry);
   meshInstance.mesh.geometry.computeVertexNormals();
 }
 
@@ -323,7 +325,20 @@ export function applyMd2AliasFrameLerp(meshInstance: Md2MeshInstance, entityStat
   }
 
   positionAttribute.needsUpdate = true;
+  refreshMd2GeometryBounds(meshInstance.mesh.geometry);
   meshInstance.mesh.geometry.computeVertexNormals();
+}
+
+/**
+ * Category: New
+ * Purpose: Keep Three.js render culling in sync with the current MD2 animation pose.
+ *
+ * Constraints:
+ * - Must run after mutating the shared position buffer, before WebGL/WebGPU sees the mesh.
+ */
+function refreshMd2GeometryBounds(geometry: BufferGeometry): void {
+  geometry.computeBoundingSphere();
+  geometry.computeBoundingBox();
 }
 
 /**

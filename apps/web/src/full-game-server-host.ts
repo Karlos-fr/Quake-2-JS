@@ -386,6 +386,7 @@ function createPlaceholderGameExports(): game_export_t {
     WriteLevel: () => undefined,
     ReadLevel: () => undefined,
     ClientConnect: () => true,
+    ClientConnectRejectMessage: () => "",
     ClientBegin: () => undefined,
     ClientUserinfoChanged: () => undefined,
     ClientDisconnect: () => undefined,

@@ -14,9 +14,9 @@
 | `Quake-2-master/client/vid.h` | struct | `viddef_t` | `packages/client/src/vid.ts` | `viddef_t` | Valide | A redecouper |  |
 | `Quake-2-master/client/vid.h` | field | `width` | `packages/client/src/vid.ts` | `viddef_t.width` | Valide | A redecouper |  |
 | `Quake-2-master/client/vid.h` | field | `height` | `packages/client/src/vid.ts` | `viddef_t.height` | Valide | A redecouper |  |
-| `Quake-2-master/client/vid.h` | function | `VID_Init` | `packages/client/src/vid.ts` | `VID_Init` | Partiel | A redecouper | Hook TS valide, mais branchement runtime normal `CL_Init`/`apps/web` vers `VID_Init(vid)` absent. |
-| `Quake-2-master/client/vid.h` | function | `VID_Shutdown` | `packages/client/src/vid.ts` | `VID_Shutdown` | Partiel | A redecouper | Hook TS valide, mais branchement runtime normal `CL_Shutdown`/`apps/web` vers `VID_Shutdown(vid)` absent. |
-| `Quake-2-master/client/vid.h` | function | `VID_CheckChanges` | `packages/client/src/vid.ts` | `VID_CheckChanges` | Partiel | A redecouper | Hook TS valide, mais `apps/web` ne branche pas le check video depuis `CL_Frame`; prochaine action: brancher ou justifier l'adapter. |
+| `Quake-2-master/client/vid.h` | function | `VID_Init` | `packages/client/src/vid.ts` | `VID_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_Shutdown` | `packages/client/src/vid.ts` | `VID_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_CheckChanges` | `packages/client/src/vid.ts` | `VID_CheckChanges` | Valide | A redecouper |  |
 | `Quake-2-master/client/vid.h` | function | `VID_MenuInit` | `packages/client/src/vid.ts` | `VID_MenuInit` | Valide | A redecouper |  |
 | `Quake-2-master/client/vid.h` | function | `VID_MenuDraw` | `packages/client/src/vid.ts` | `VID_MenuDraw` | Valide | A redecouper |  |
 | `Quake-2-master/client/vid.h` | function | `VID_MenuKey` | `packages/client/src/vid.ts` | `VID_MenuKey` | Valide | A redecouper |  |

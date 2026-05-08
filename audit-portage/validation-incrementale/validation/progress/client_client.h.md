@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: declarations runtime/input `CL_ClearState`, `CL_ReadPackets`, `CL_ReadFromServer`, `CL_WriteToServer`, `CL_BaseMove`, `IN_CenterView`, `CL_KeyState`.
-- Verdict du lot: `CL_ClearState`, `CL_ReadPackets`, `CL_BaseMove`, `IN_CenterView` et `CL_KeyState` valides comme declarations header avec proprietaires TS reels; `CL_ReadFromServer` et `CL_WriteToServer` non applicables car prototypes sans definition ni appel C.
+- Dernier lot traite: `Key_KeynumToString`, `CL_WriteDemoMessage`, `CL_Stop_f`, `CL_Record_f`.
+- Verdict du lot: `Valide`; `Key_KeynumToString` est strictement porte dans `keys.ts`, et les fonctions demo sont portees dans `cl_main.ts` avec IO hook-based. Correction appliquee: `CL_InitLocal` enregistre maintenant les commandes runtime `record` et `stop`.
 
 ## Preuves session
 
@@ -86,7 +86,16 @@
 - Runtime: `CL_ClearState` est atteint par `CL_Disconnect` et `CL_ParseServerData`, `CL_ReadPackets` par `CL_Frame` et les hooks full-game, `CL_BaseMove`/`CL_KeyState` par `CL_CreateCmd` puis `CL_SendCmd`, et `IN_CenterView` par la commande `centerview` enregistree dans `CL_InitInput`.
 - `apps/web`: applicable pour lecture reseau et input; le flux full-game appelle `CL_ReadPackets`, branche le bridge `CL_SendCmd` et transmet l'input runtime. Le manque pointer-lock detecte par deux harness web reste ouvert hors perimetre et ne remplace pas le flux runtime valide par `authoritative-input`.
 - `renderer-three`: pas de sortie directe pour `CL_ClearState`/`CL_ReadPackets`; les sorties visibles attendues du sous-lot input sont la camera/viewangles et les frames de scene, consommees via `ClientRefreshFrame`, `syncThreeCameraToRefresh`, `gl-world-scene-adapter`, `refresh-entity-sync`, `particle-sync`, `three-beam-sync` et `three-dlight-sync`. Le test `three-renderer` est bloque avant ces assertions par le meme manque pointer-lock web hors mission.
+- Session keys/demo: source lue `Quake-2-master/client/client.h` lignes 495-502 et definitions comparees dans `client/keys.c` (`Key_KeynumToString`) et `client/cl_main.c` (`CL_WriteDemoMessage`, `CL_Stop_f`, `CL_Record_f`).
+- Cibles lues session keys/demo: `packages/client/src/keys.ts`, `packages/client/src/cl_main.ts`, `packages/client/src/index.ts`, `scripts/verify/quake2-keys.ts`, `scripts/verify/quake2-cl-main.ts`, `apps/web/src/full-game.ts`, `apps/web/src/full-game-server-host.ts`, `packages/renderer-three/src`.
+- Corrections session keys/demo: `packages/client/src/cl_main.ts` branche maintenant `record` vers `CL_Record_f` et `stop` vers `CL_Stop_f` dans `CL_InitLocal`; `scripts/verify/quake2-cl-main.ts` verifie l'enregistrement des deux commandes.
+- Tests lances session keys/demo: `npm run verify:keys`, `npm run verify:keys:header`, `npm run verify:client:header`, `npm run verify:cl-main`, `npm run verify:full-game:input-bindings`, `npm run verify:full-game:demo-cleanup`, `npm run verify:full-game:render-source`.
+- Tests lances apres correction session keys/demo: `npm run verify:cl-main`, `npm run verify:client:header`, `npm run verify:keys`, `npm run verify:full-game:demo-cleanup`.
+- Tests tentes non bloquants session keys/demo: `npm run verify:full-game:three-renderer` echoue hors lot sur l'attente pointer-lock `pointer lock should accept the clicked renderer viewport child`; `npm run typecheck` echoue hors lot dans `apps/web/src/full-game.ts` avec `Cannot find name 'activateFullGameSound'` sur deux references existantes hors fichiers modifies par cette session.
+- Runtime: `Key_KeynumToString` est atteint par les flux bindings/menu/inventaire; `CL_Record_f` et `CL_Stop_f` sont maintenant atteints depuis les commandes console `record`/`stop`; `CL_WriteDemoMessage` reste appele par `CL_ParseServerMessage` quand `cls.demorecording` est actif et `demowaiting` leve.
+- `apps/web`: applicable et branche pour les bindings HUD via `buildFullGameHudBindings`/`Key_KeynumToString`; les commandes demo restent exposees par le runtime client porte et le nettoyage demo web est couvert par `verify:full-game:demo-cleanup`, sans logique parallele masquant `record`/`stop`.
+- `renderer-three`: pas de sortie scene directe attendue pour conversion de touches ou ecriture de fichier demo; les effets visibles indirects passent par les frames normales deja verifiees par `verify:full-game:render-source`. `verify:full-game:three-renderer` reste bloque avant verification scene par le manque pointer-lock hors lot.
 
 ## Prochain lot recommande
 
-Continuer avec `Key_KeynumToString`, puis le bloc coherent suivant `CL_WriteDemoMessage`, `CL_Stop_f`, `CL_Record_f`; ensuite traiter `svc_strings` et `CL_ParseServerMessage` avec leur ownership `cl_parse.c`.
+Traiter `svc_strings` et `CL_ParseServerMessage` avec leur ownership `cl_parse.c` / `packages/client/src/cl_parse.ts`, uniquement si aucune autre mission active ne touche cette cible; sinon continuer avec le prochain bloc header non lie a `cl_parse.ts`.

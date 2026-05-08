@@ -443,6 +443,7 @@ export {
   SCR_AddDirtyPoint,
   SCR_BuildHudDrawCommands,
   SCR_DrawHudRef,
+  SCR_DrawConsole,
   SCR_DrawLoading,
   SCR_DrawNet,
   SCR_DrawPause,
@@ -468,6 +469,8 @@ export {
   SCR_SizeDown,
   SCR_SizeUp,
   SCR_StopCinematic,
+  SCR_TileClear,
+  SCR_TileClearRef,
   SCR_TouchPics,
   SCR_UpdateScreen,
   SizeHUDString,
@@ -926,8 +929,10 @@ export type {
   ClientPauseOverlayState,
   ClientScreenContext,
   ClientScreenBuildOptions,
+  ClientScreenConsolePlan,
   ClientScreenFrame,
-  ClientScreenHudState
+  ClientScreenHudState,
+  ClientTileClearCommand
 } from "./cl_scrn.js";
 export type { ClientInputContext, ClientInputFrameOptions, ClientInputHooks, ClientSendCmdBridgeOptions } from "./cl_input.js";
 export type { ClientInputDeviceContext, ClientInputDeviceHooks } from "./input.js";

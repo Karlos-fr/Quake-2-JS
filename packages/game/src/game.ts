@@ -254,6 +254,11 @@ export interface game_export_t {
   WriteLevel: (filename: string) => void;
   ReadLevel: (filename: string) => void;
   ClientConnect: (ent: edict_t, userinfo: string) => qboolean;
+  /**
+   * Category: Adapter
+   * Purpose: Expose the rejection text that the original C `ClientConnect` wrote into mutable `userinfo` as `rejmsg`.
+   */
+  ClientConnectRejectMessage?: () => string;
   ClientBegin: (ent: edict_t) => void;
   ClientUserinfoChanged: (ent: edict_t, userinfo: string) => void;
   ClientDisconnect: (ent: edict_t) => void;

@@ -352,7 +352,8 @@ export function gib_touch(
   const { right } = AngleVectors(normalAngles);
   self.s.angles = vectoangles(right);
 
-  if (runtime.assets.modelPaths[self.s.modelindex - 1] === "models/objects/gibs/sm_meat/tris.md2") {
+  const smMeatIndex = runtime.sm_meat_index || runtime.assets.modelIndexByPath.get("models/objects/gibs/sm_meat/tris.md2") || 0;
+  if (self.s.modelindex === smMeatIndex || runtime.assets.modelPaths[self.s.modelindex - 1] === "models/objects/gibs/sm_meat/tris.md2") {
     self.s.frame += 1;
     self.think = gib_think;
     self.nextthink = runtime.time + FRAMETIME;

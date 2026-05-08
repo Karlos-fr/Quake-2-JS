@@ -241,10 +241,10 @@
 | `Quake-2-master/client/client.h` | function | `CL_BaseMove` | `packages/client/src/cl_input.ts` | `CL_BaseMove` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `IN_CenterView` | `packages/client/src/cl_input.ts` | `IN_CenterView` | Valide | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_KeyState` | `packages/client/src/cl_input.ts` | `CL_KeyState` | Valide | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `Key_KeynumToString` | `packages/client/src/keys.ts` | `Key_KeynumToString` | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_WriteDemoMessage` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Stop_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/client.h` | function | `CL_Record_f` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `Key_KeynumToString` | `packages/client/src/keys.ts` | `Key_KeynumToString` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_WriteDemoMessage` | `packages/client/src/cl_main.ts` | `CL_WriteDemoMessage` | Valide | A redecouper |  |
+| `Quake-2-master/client/client.h` | function | `CL_Stop_f` | `packages/client/src/cl_main.ts` | `CL_Stop_f` | Valide | A redecouper | Corrige: `CL_InitLocal` enregistre `stop`. |
+| `Quake-2-master/client/client.h` | function | `CL_Record_f` | `packages/client/src/cl_main.ts` | `CL_Record_f` | Valide | A redecouper | Corrige: `CL_InitLocal` enregistre `record`. |
 | `Quake-2-master/client/client.h` | global | `svc_strings` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_ParseServerMessage` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/client.h` | function | `CL_LoadClientinfo` | `packages/client/src/client.ts` |  | A verifier | A redecouper |  |

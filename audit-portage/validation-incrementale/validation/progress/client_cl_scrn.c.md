@@ -2,31 +2,32 @@
 
 ## Statut
 
-Partiel.
+Termine.
 
 ## Lot valide
 
-Bloc ecran/HUD/loading/console screen elargi :
-`SCR_Init`, cvars/globals ecran, `CL_AddNetgraph`, `SCR_DebugGraph`, `SCR_DrawDebugGraph`, center print, vrect/size/sky, loading plaque, console scroll, dirty rects, HUD strings/fields/layouts, stats/layout, et snapshot `SCR_UpdateScreen`.
+Bloc ecran/HUD/loading/console screen complet :
+`SCR_Init`, cvars/globals ecran, `CL_AddNetgraph`, `SCR_DebugGraph`, `SCR_DrawDebugGraph`, center print, vrect/size/sky, loading plaque, console scroll/draw orchestration, dirty rects et `SCR_TileClear`, HUD strings/fields/layouts, stats/layout, `SCR_TimeRefresh_f`, et `SCR_UpdateScreen` avec guards d'initialisation, stereo `BeginFrame`/`RenderFrame`/`EndFrame` et pont `refexport_t`.
 
 ## Corrections
 
 - `SCR_BeginLoadingPlaque` respecte maintenant les gardes C `developer`, etat deconnecte et console ouverte.
 - `SCR_BeginLoadingPlaque` expose les callbacks host pour stop sons, stop CDAudio et flush screen avant `disable_screen`.
 - Tests `verify:cl-scrn` et `verify:screen:header` renforces sur ces branches.
+- `SCR_TileClear` porte le clear `backtile` avec union dirty/current/old dirty et chemin `SCR_TileClearRef`.
+- `SCR_DrawConsole` porte l'orchestration proprietaire `cl_scrn.c` sous forme de plan console, l'execution `Con_*` restant owned par `console.c`.
+- `SCR_TimeRefresh_f` drive maintenant le sweep 128 frames via `BeginFrame`/`RenderFrame`/`EndFrame`.
+- `SCR_UpdateScreen` verifie `scr_initialized`/`con.initialized` via options runtime, clamp la separation stereo et drive les frames stereo sur un `refexport_t` fourni.
 
 ## Integration
 
-- Runtime : branchements confirmes via `SCR_Init` commandes/cvars, `CL_ParseServerMessage -> CL_AddNetgraph`, `CL_Frame`/hooks web et `SCR_UpdateScreen`.
-- `apps/web` : HUD/layout/loading consommes via `createFullGameServerRenderSource`, `full-game-render-loop` et `full-game.ts`.
-- `renderer-three` : overlays HUD/loading/console passent par `SCR_DrawHudRef`, `createRefGlHost`, `gl_draw` et `three-gl-draw-adapter`; pas de sortie monde/camera nouvelle dans ce lot.
+- Runtime : branchements confirmes via `SCR_Init` commandes/cvars, `CL_ParseServerMessage -> CL_AddNetgraph`, `CL_Frame`/hooks web, `SCR_UpdateScreen`, `SCR_TimeRefresh_f` et `refexport_t`.
+- `apps/web` : HUD/layout/loading/console consommes via `createFullGameServerRenderSource`, `full-game-render-loop` et `full-game.ts`; le rendu monde full-game reste volontairement split par `CL_BuildRefreshFrame` et adapters Three, verifie par `verify:web-render-order`.
+- `renderer-three` : `BeginFrame`/`EndFrame` et `DrawTileClear` consommes par `createRefGlHost`, `gl_rmain`, `gl_draw` et `three-gl-draw-adapter`; pas de nouvelle sortie modele/frame/particule/beam/dlight/temp entity/areabits/camera non branchee dans ce lot.
 
 ## Reliquats
 
-- `SCR_TimeRefresh_f` : commande et garde actifs, mais sweep renderer 128 frames a couvrir/brancher.
-- `SCR_DrawConsole` : orchestration console proprietaire `cl_scrn.c` encore partielle, actuellement portee par les flux web/console.
-- `SCR_TileClear` : dirty rects portes, mais clear `backtile` pour viewsize reduit reste a brancher.
-- `SCR_UpdateScreen` : snapshot/HUD/loading valide, mais il reste a fermer stereo BeginFrame/EndFrame, guard `scr_initialized`/`con.initialized`, `SCR_TileClear` et `SCR_DrawConsole`.
+Aucun reliquat `A verifier` ou `Partiel` restant dans `client_cl_scrn.c.md`.
 
 ## Tests
 
@@ -38,6 +39,8 @@ Bloc ecran/HUD/loading/console screen elargi :
 - `npm run verify:three-gl-draw-adapter`
 - `npm run typecheck`
 
+Note session 2026-05-08 : `npm run verify:full-game:three-renderer` echoue sur `pointer lock should accept the clicked renderer viewport child`, assertion apps/web non liee aux entites `cl_scrn.c` traitees ici.
+
 ## Prochain lot recommande
 
-Fermer les reliquats proprietaires `SCR_TileClear`, `SCR_DrawConsole`, `SCR_TimeRefresh_f`, puis completer `SCR_UpdateScreen` avec stereo/BeginFrame/EndFrame et guards d'initialisation.
+Aucun pour `client/cl_scrn.c`; reprendre le prochain fichier `En cours` ou `Partiel` dans `AVANCEMENT_GLOBAL.md`.

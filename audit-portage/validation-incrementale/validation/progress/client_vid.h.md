@@ -2,10 +2,11 @@
 
 ## Etat
 
-- Statut: Partiel
-- Lot traite pendant cette session: tout `client/vid.h`.
+- Statut: Termine
+- Lot traite pendant cette session: reliquats lifecycle `VID_Init`, `VID_CheckChanges`, `VID_Shutdown`.
 - Entites validees: `vrect_s` via `vrect_t`, `viddef_t`, `viddef_t.width`, `viddef_t.height`, `VID_MenuInit`, `VID_MenuDraw`, `VID_MenuKey`.
-- Entites partielles: `VID_Init`, `VID_Shutdown`, `VID_CheckChanges`.
+- Entites validees pendant cette session: `VID_Init`, `VID_CheckChanges`, `VID_Shutdown`.
+- Entites partielles: aucune.
 
 ## Preuves de validation
 
@@ -14,21 +15,20 @@
 - Ownership: `vid.ts` est le point d'attache du header; `vrect_t` est defini dans `cl_scrn.ts` car partage avec `screen.h`, puis reexporte par `vid.ts`; le menu concret vit dans `vid-menu.ts` comme adapter de `win32/vid_menu.c`.
 - Commentaires d'en-tete verifies et ajustes pour `ClientVidHooks`, `ClientVidContext`, `createVidDef`, `createClientVidContext`, `ClientVidMenuHooks`, `ClientVidMenuController`, `createClientVidMenuController` et `vrect_t`.
 - Runtime: `M_Menu_Video_f` appelle `VID_MenuInit`, `VID_MenuDraw` et `VID_MenuKey`; le controleur `vid-menu.ts` reproduit le menu video Win32 via cvars, dessin de la banniere, navigation et retour sonore.
-- Runtime partiel: `CL_Frame`, `CL_Init` et `CL_Shutdown` exposent des hooks video (`onVideoCheckChanges`, `onVideoInit`, `onVideoShutdown`), mais les wrappers `VID_CheckChanges`, `VID_Init` et `VID_Shutdown` ne sont pas branches dans le flux normal pendant cette session.
-- `apps/web`: `full-game.ts` cree `ClientVidContext`, initialise `vid.viddef` a `LOGICAL_WIDTH`/`LOGICAL_HEIGHT` et branche `createClientVidMenuController` pour le menu video; les hooks lifecycle `VID_Init`, `VID_CheckChanges`, `VID_Shutdown` restent absents.
-- `renderer-three`: le header client ne produit pas directement modeles, frames, particules, beams, dlights, areabits ou scene; la sortie visible attendue est indirecte via `vrect_t`/refdef et via le contexte renderer `ref_gl/gl_local.h`. `ref-gl-host.ts` synchronise bien le `vid` renderer vers draw/rmisc, mais cela ne ferme pas le manque lifecycle client.
+- Runtime: `CL_Init`, `CL_Frame` et `CL_Shutdown` conservent les positions source des hooks video (`onVideoInit`, `onVideoCheckChanges`, `onVideoShutdown`); `apps/web/src/full-game.ts` branche le contexte video vers les wrappers `VID_Init(vid)`, `VID_CheckChanges(vid)` et `VID_Shutdown(vid)`.
+- `apps/web`: `full-game.ts` cree `ClientVidContext`, initialise les cvars video web (`vid_ref`, `vid_xpos`, `vid_ypos`, `vid_fullscreen`, `vid_gamma`, `win_noalttab`), enregistre `vid_restart`/`vid_front`, synchronise `vid.viddef` a `LOGICAL_WIDTH`/`LOGICAL_HEIGHT`, route le check video depuis `CL_Frame`, puis route le teardown navigateur via `CL_Shutdown` et `VID_Shutdown`.
+- `renderer-three`: le header client ne produit pas directement modeles, frames, particules, beams, dlights, temp entities, areabits, camera ou scene; la sortie visible attendue reste indirecte via dimensions video/refdef et via le contexte renderer `ref_gl/gl_local.h`. `verify:ref-gl-host` confirme la synchronisation renderer existante.
 
 ## Tests lances
 
 - `npm run verify:ref-gl-host`: passe.
+- `npm run verify:vid:header`: passe et verifie aussi les branchements statiques `apps/web` pour `VID_Init`, `VID_CheckChanges`, `CL_Shutdown` et `VID_Shutdown`.
+- `npm run verify:cl-main`: passe.
+- `npm run verify:menu`: passe.
+- `npm run typecheck`: passe.
+- `npm run verify:full-game:three-renderer`: bloque hors lot sur l'assertion deja connue `pointer lock should accept the clicked renderer viewport child`.
 - Harnais direct `vid.ts` via `npx tsx -`: passe (`vid-direct: ok`).
 - Harnais direct `vid-menu.ts` via `npx tsx -`: passe (`vid-menu-direct: ok`).
-- Harnais statique web/renderer via `npx tsx -`: passe (`vid-web-renderer-static: ok`) et confirme le manque `VID_Init`/`VID_CheckChanges`/`VID_Shutdown` dans `apps/web`.
-- `npm run verify:vid:header`: bloque hors lot sur `packages/game/src/g_main.ts:615` (`Expected "}" but found ")"`).
-- `npm run verify:menu`: bloque hors lot sur `packages/game/src/g_main.ts:615`.
-- `npm run verify:cl-main`: bloque hors lot sur `packages/game/src/g_main.ts:615`.
-- `npm run verify:full-game:three-renderer`: bloque hors lot sur l'assertion `pointer lock should accept the clicked renderer viewport child`.
-- `npm run typecheck`: bloque hors lot sur `packages/game/src/g_main.ts(615,6): error TS1005: ',' expected`.
 - `git diff --check` sur les fichiers touches: passe; avertissements CRLF seulement.
 
 ## Corrections appliquees
@@ -38,21 +38,24 @@
 - `packages/client/src/vid-menu.ts`: metadonnees de commentaires ajoutees pour l'adapter menu video.
 - `packages/client/src/cl_scrn.ts`: note de portage ajoutant la correspondance `vrect_s` -> `vrect_t`.
 - `scripts/verify/quake2-vid-header.ts`: assertions de forme ajoutees pour `vrect_t` et `viddef_t`.
+- `apps/web/src/full-game.ts`: branche `VID_Init(vid)`, `VID_CheckChanges(vid)` depuis le hook de frame, et `VID_Shutdown(vid)` via `CL_Shutdown` au teardown navigateur; l'adapter web garde les dimensions logiques et les cvars video en etat.
+- `scripts/verify/quake2-vid-header.ts`: assertions statiques ajoutees pour le branchement lifecycle `apps/web`.
+- `packages/client/src/cl_main.ts`: typage `getPartialDownloadSize` resserre pour conserver la compatibilite `ClientParseHooks` sous `exactOptionalPropertyTypes`.
 
 ## Decisions
 
 - `vrect_s` est valide sous le nom public `vrect_t`: le tag C n'est pas l'API consommee, et le typedef est partage par `vid.h` et `screen.h`.
 - `width` et `height` ne sont pas des globals du header; ils sont les champs de `viddef_t`.
-- `VID_Init`, `VID_Shutdown` et `VID_CheckChanges` restent `Partiel`: le port public et les hooks sont presents, mais le branchement runtime attendu depuis `CL_Init`/`CL_Frame`/`CL_Shutdown` et le host web n'est pas ferme.
+- `VID_Init`, `VID_Shutdown` et `VID_CheckChanges` sont valides: le port public, les commentaires, les hooks runtime et le branchement web sont prouves dans cette session.
 - `VID_MenuInit`, `VID_MenuDraw` et `VID_MenuKey` sont valides: wrappers, menu runtime, controller web et comportement cle/retour sonore ont ete compares et prouves.
 
 ## Prochain lot recommande
 
-Aucun lot restant dans `client_vid.h.md` cote entites `A verifier`. Prochaine action de coordination: traiter le reliquat lifecycle video en branchant ou documentant explicitement `VID_Init(vid)`, `VID_CheckChanges(vid)` et `VID_Shutdown(vid)` dans le flux client/web, puis relancer les tests officiels apres correction des blocages hors lot `packages/game/src/g_main.ts` et `verify:full-game:three-renderer`.
+Aucun lot restant dans `client_vid.h.md`: toutes les lignes sont `Valide`.
 
 ## Proposition AVANCEMENT_GLOBAL
 
-Mettre la ligne `Quake-2-master/client/vid.h` a `Partiel` avec `Entites=10`, `Validees=7`, `Partielles=3`, `Manquantes=0`, `Non conformes=0`, `Non applicables=0`, `Progress=progress/client_vid.h.md`, `Prochain lot=Brancher ou justifier explicitement VID_Init/VID_CheckChanges/VID_Shutdown dans le lifecycle client/web; relancer verify:vid:header, verify:menu, verify:cl-main, verify:full-game:three-renderer et typecheck apres correction des blocages hors lot.`
+Mettre la ligne `Quake-2-master/client/vid.h` a `Termine` avec `Entites=10`, `Validees=10`, `Partielles=0`, `Manquantes=0`, `Non conformes=0`, `Non applicables=0`, `Progress=progress/client_vid.h.md`, `Prochain lot=Aucun lot restant dans client_vid.h.md: toutes les lignes sont Valide.`
 
 ## Consolidation coordinateur - 2026-05-08
 

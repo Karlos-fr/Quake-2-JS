@@ -623,7 +623,8 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
     newcl.challenge = challenge;
 
     if (!context.ge.ClientConnect(ent, userinfo)) {
-      const rejmsg = Info_ValueForKey(userinfo, "rejmsg");
+      const exportedRejmsg = context.ge.ClientConnectRejectMessage?.() ?? "";
+      const rejmsg = exportedRejmsg.length > 0 ? exportedRejmsg : Info_ValueForKey(userinfo, "rejmsg");
       if (rejmsg.length > 0) {
         Netchan_OutOfBandPrint(context.qnet, netsrc_t.NS_SERVER, adr, `print\n${rejmsg}\nConnection refused.\n`);
       } else {

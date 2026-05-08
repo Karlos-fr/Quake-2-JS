@@ -229,7 +229,7 @@ export function G_SetClientSound(ent: GameEntity, runtime: GameRuntime): void {
   const weaponClassname = client.pers.weapon?.classname ?? "";
 
   if (ent.waterlevel !== 0 && (ent.watertype & (CONTENTS_LAVA | CONTENTS_SLIME)) !== 0) {
-    ent.s.sound = registerGameSound(runtime, "player/fry.wav");
+    ent.s.sound = runtime.snd_fry || registerGameSound(runtime, "player/fry.wav");
   } else if (weaponClassname === "weapon_railgun") {
     ent.s.sound = registerGameSound(runtime, "weapons/rg_hum.wav");
   } else if (weaponClassname === "weapon_bfg") {

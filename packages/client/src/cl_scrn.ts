@@ -75,6 +75,7 @@ import {
   type ClientInventoryBindingMap
 } from "./cl_inv.js";
 import type { refexport_t } from "./ref.js";
+import { createRefDef, type refdef_t } from "./ref.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
 export type {
@@ -149,7 +150,48 @@ export type ClientHudFillCommand = HudFillCommand;
  * Category: New
  * Purpose: Union the current HUD draw primitives produced by the screen port.
  */
-export type ClientHudDrawCommand = HudDrawCommand;
+export type ClientHudDrawCommand = HudDrawCommand | ClientTileClearCommand;
+
+/**
+ * Original name: SCR_TileClear / re.DrawTileClear call
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Describes one tiled `backtile` clear rectangle emitted outside the active 3D view.
+ *
+ * Porting notes:
+ * - Kept as a command for snapshot consumers and mirrored by `SCR_TileClearRef` for `refexport_t`.
+ */
+export interface ClientTileClearCommand {
+  type: "tileClear";
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  pic: string;
+  bounds: ClientHudBounds;
+}
+
+/**
+ * Original name: SCR_DrawConsole
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Captures the console branch selected by screen state before the console module performs drawing.
+ *
+ * Porting notes:
+ * - `Con_DrawConsole`, `Con_DrawNotify` and `Con_CheckResize` stay owned by `console.c`; this function owns the `cl_scrn.c` orchestration.
+ */
+export interface ClientScreenConsolePlan {
+  mode: "full" | "half" | "scroll" | "notify" | "none";
+  frac: number;
+  fill: ClientHudFillCommand | null;
+  drawNotify: boolean;
+}
 
 /**
  * Category: New
@@ -261,6 +303,11 @@ export interface ClientScreenBuildOptions {
   keyDest?: "game" | "console" | "message" | "menu";
   disableScreenMs?: number;
   currentTimeMs?: number;
+  consoleInitialized?: boolean;
+  cl_stereo?: number;
+  cl_stereo_separation?: number;
+  ref?: refexport_t;
+  renderFrame?: (cameraSeparation: number) => refdef_t;
 }
 
 /**
@@ -628,6 +675,7 @@ export function SCR_Init(context: ClientScreenContext): void {
   context.scr_graphscale = Cvar_Get(context.cvar, "graphscale", "1", 0);
   context.scr_graphshift = Cvar_Get(context.cvar, "graphshift", "0", 0);
   context.crosshair = Cvar_Get(context.cvar, "crosshair", "0", CVAR_ARCHIVE);
+  context.client.cl.screen.scr_initialized = true;
 
   Cmd_AddCommand(context.cmd, "sizeup", () => {
     SCR_SizeUp(context);
@@ -1600,6 +1648,206 @@ export function SCR_DirtyScreen(runtime: ClientRuntime, viewportWidth: number, v
 }
 
 /**
+ * Original name: SCR_TileClear
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Clears disturbed `backtile` regions outside the rendered view when the view is smaller than full screen.
+ * - Preserves dirty-rectangle unioning across the current and two previous frames for page-flip safety.
+ *
+ * Porting notes:
+ * - Emits tile-clear commands; `SCR_TileClearRef` applies the same commands through `refexport_t`.
+ */
+export function SCR_TileClear(
+  runtime: ClientRuntime,
+  options: {
+    viewportWidth: number;
+    viewportHeight: number;
+    scr_drawall?: number;
+    scr_viewsize?: number;
+  }
+): ClientTileClearCommand[] {
+  if ((options.scr_drawall ?? 0) !== 0) {
+    SCR_DirtyScreen(runtime, options.viewportWidth, options.viewportHeight);
+  }
+
+  if (runtime.cl.screen.scr_con_current === 1.0) {
+    return [];
+  }
+  if ((options.scr_viewsize ?? 100) === 100) {
+    return [];
+  }
+  if (runtime.cl.cinematic.cinematictime > 0) {
+    return [];
+  }
+
+  const clear = { ...runtime.cl.screen.scr_dirty };
+  for (let index = 0; index < 2; index += 1) {
+    const oldDirty = runtime.cl.screen.scr_old_dirty[index];
+    if (oldDirty.x1 < clear.x1) {
+      clear.x1 = oldDirty.x1;
+    }
+    if (oldDirty.x2 > clear.x2) {
+      clear.x2 = oldDirty.x2;
+    }
+    if (oldDirty.y1 < clear.y1) {
+      clear.y1 = oldDirty.y1;
+    }
+    if (oldDirty.y2 > clear.y2) {
+      clear.y2 = oldDirty.y2;
+    }
+  }
+
+  runtime.cl.screen.scr_old_dirty[1] = { ...runtime.cl.screen.scr_old_dirty[0] };
+  runtime.cl.screen.scr_old_dirty[0] = { ...runtime.cl.screen.scr_dirty };
+  runtime.cl.screen.scr_dirty = { x1: 9999, y1: 9999, x2: -9999, y2: -9999 };
+
+  let clearX1 = clear.x1;
+  let clearY1 = clear.y1;
+  let clearX2 = clear.x2;
+  let clearY2 = clear.y2;
+  const consoleTop = runtime.cl.screen.scr_con_current * options.viewportHeight;
+  if (consoleTop >= clearY1) {
+    clearY1 = consoleTop;
+  }
+  if (clearY2 <= clearY1) {
+    return [];
+  }
+
+  const viewTop = runtime.cl.screen.scr_vrect.y;
+  const viewBottom = viewTop + runtime.cl.screen.scr_vrect.height - 1;
+  const viewLeft = runtime.cl.screen.scr_vrect.x;
+  const viewRight = viewLeft + runtime.cl.screen.scr_vrect.width - 1;
+  const commands: ClientTileClearCommand[] = [];
+  const pushClear = (x: number, y: number, width: number, height: number): void => {
+    if (width <= 0 || height <= 0) {
+      return;
+    }
+    commands.push({
+      type: "tileClear",
+      x,
+      y,
+      width,
+      height,
+      pic: "backtile",
+      bounds: { x, y, width, height }
+    });
+  };
+
+  if (clearY1 < viewTop) {
+    const i = clearY2 < viewTop - 1 ? clearY2 : viewTop - 1;
+    pushClear(clearX1, clearY1, clearX2 - clearX1 + 1, i - clearY1 + 1);
+    clearY1 = viewTop;
+  }
+  if (clearY2 > viewBottom) {
+    const i = clearY1 > viewBottom + 1 ? clearY1 : viewBottom + 1;
+    pushClear(clearX1, i, clearX2 - clearX1 + 1, clearY2 - i + 1);
+    clearY2 = viewBottom;
+  }
+  if (clearX1 < viewLeft) {
+    const i = clearX2 < viewLeft - 1 ? clearX2 : viewLeft - 1;
+    pushClear(clearX1, clearY1, i - clearX1 + 1, clearY2 - clearY1 + 1);
+    clearX1 = viewLeft;
+  }
+  if (clearX2 > viewRight) {
+    const i = clearX1 > viewRight + 1 ? clearX1 : viewRight + 1;
+    pushClear(i, clearY1, clearX2 - i + 1, clearY2 - clearY1 + 1);
+  }
+
+  return commands;
+}
+
+/**
+ * Original name: SCR_TileClear
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies the tiled clear rectangles through the renderer export table.
+ */
+export function SCR_TileClearRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  options: {
+    viewportWidth: number;
+    viewportHeight: number;
+    scr_drawall?: number;
+    scr_viewsize?: number;
+  }
+): ClientTileClearCommand[] {
+  const commands = SCR_TileClear(runtime, options);
+  for (const command of commands) {
+    ref.DrawTileClear(command.x, command.y, command.width, command.height, command.pic);
+  }
+  return commands;
+}
+
+/**
+ * Original name: SCR_DrawConsole
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Selects full, half, scrolling, notify or no console draw according to connection and key state.
+ *
+ * Porting notes:
+ * - The console module owns the actual `Con_*` rendering; this mirrors the screen module's branch logic for adapters.
+ */
+export function SCR_DrawConsole(
+  runtime: ClientRuntime,
+  options: {
+    keyDest?: "game" | "console" | "message" | "menu";
+    viewportWidth?: number;
+    viewportHeight?: number;
+  } = {}
+): ClientScreenConsolePlan {
+  const viewportWidth = options.viewportWidth ?? 320;
+  const viewportHeight = options.viewportHeight ?? 240;
+
+  if (runtime.cls.state === connstate_t.ca_disconnected || runtime.cls.state === connstate_t.ca_connecting) {
+    return { mode: "full", frac: 1.0, fill: null, drawNotify: false };
+  }
+
+  if (runtime.cls.state !== connstate_t.ca_active || !runtime.cl.refresh_prepped) {
+    return {
+      mode: "half",
+      frac: 0.5,
+      fill: {
+        type: "fill",
+        x: 0,
+        y: viewportHeight / 2,
+        width: viewportWidth,
+        height: viewportHeight / 2,
+        color: 0,
+        bounds: {
+          x: 0,
+          y: viewportHeight / 2,
+          width: viewportWidth,
+          height: viewportHeight / 2
+        }
+      },
+      drawNotify: false
+    };
+  }
+
+  if (runtime.cl.screen.scr_con_current !== 0) {
+    return { mode: "scroll", frac: runtime.cl.screen.scr_con_current, fill: null, drawNotify: false };
+  }
+
+  const drawNotify = options.keyDest === "game" || options.keyDest === "message";
+  return {
+    mode: drawNotify ? "notify" : "none",
+    frac: 0,
+    fill: null,
+    drawNotify
+  };
+}
+
+/**
  * Category: New
  * Purpose: Build the first renderer-agnostic client HUD/screen snapshot.
  *
@@ -1651,7 +1899,7 @@ export function SCR_BuildScreenState(runtime: ClientRuntime, options: ClientScre
  * - Builds the current screen snapshot in the same high-level order as the original screen loop.
  *
  * Porting notes:
- * - Keeps renderer begin/end frame plumbing outside this runtime-facing snapshot builder.
+ * - Can either emit a renderer-neutral snapshot or drive a supplied `refexport_t` for the legacy frame boundaries.
  * - Returns `null` while the loading plaque disable timer is active, mirroring the original early return.
  */
 export function SCR_UpdateScreen(
@@ -1671,8 +1919,32 @@ export function SCR_UpdateScreen(
     }
   }
 
+  if (!context.client.cl.screen.scr_initialized || options.consoleInitialized === false) {
+    return null;
+  }
+
+  let stereoSeparation = Math.max(0, Math.min(1, options.cl_stereo_separation ?? 0));
+  const numframes = (options.cl_stereo ?? 0) !== 0 ? 2 : 1;
+  const separations = numframes === 2 ? [-stereoSeparation / 2, stereoSeparation / 2] : [0];
+  const beginFrame = (separation: number): void => {
+    options.ref?.BeginFrame(separation);
+  };
+  const renderFrame = (separation: number): void => {
+    if (!options.ref || !options.renderFrame) {
+      return;
+    }
+    options.ref.RenderFrame(options.renderFrame(separation));
+  };
+  const endFrame = (): void => {
+    options.ref?.EndFrame();
+  };
+
   if (context.client.cl.screen.scr_draw_loading === 2) {
+    for (const separation of separations) {
+      beginFrame(separation);
+    }
     const loadingCommand = SCR_DrawLoading(context.client);
+    endFrame();
     return {
       vrect: context.client.cl.screen.scr_vrect,
       commands: loadingCommand ? [loadingCommand] : [],
@@ -1686,7 +1958,13 @@ export function SCR_UpdateScreen(
   }
 
   if (context.client.cl.cinematic.cinematictime > 0) {
-    return buildActiveCinematicScreenFrame(context.client, options, viewportWidth, viewportHeight);
+    for (const separation of separations) {
+      beginFrame(separation);
+      renderFrame(separation);
+    }
+    const frame = buildActiveCinematicScreenFrame(context.client, options, viewportWidth, viewportHeight);
+    endFrame();
+    return frame;
   }
 
   const vrect = SCR_CalcVrect(context.client, viewportWidth, viewportHeight, context.scr_viewsize?.value ?? 100);
@@ -1706,15 +1984,48 @@ export function SCR_UpdateScreen(
     viewportWidth,
     viewportHeight
   });
-  const commands = SCR_BuildHudDrawCommands(context.client, {
-    viewportWidth,
-    viewportHeight,
-    active: context.client.cls.state === connstate_t.ca_active,
-    refreshPrepped: context.client.cl.refresh_prepped
-  }, {
-    screenState,
-    showPause: (context.scr_showpause?.value ?? 1) !== 0
-  });
+  const commands: ClientHudDrawCommand[] = [];
+  for (const separation of separations) {
+    beginFrame(separation);
+    if (options.ref) {
+      SCR_TileClearRef(context.client, options.ref, {
+        viewportWidth,
+        viewportHeight,
+        scr_drawall: context.scr_drawall?.value ?? 0,
+        scr_viewsize: context.scr_viewsize?.value ?? 100
+      });
+    } else {
+      commands.push(...SCR_TileClear(context.client, {
+        viewportWidth,
+        viewportHeight,
+        scr_drawall: context.scr_drawall?.value ?? 0,
+        scr_viewsize: context.scr_viewsize?.value ?? 100
+      }));
+    }
+    renderFrame(separation);
+  }
+
+  if (options.ref) {
+    SCR_DrawHudRef(context.client, options.ref, {
+      viewportWidth,
+      viewportHeight,
+      active: context.client.cls.state === connstate_t.ca_active,
+      refreshPrepped: context.client.cl.refresh_prepped
+    }, {
+      screenState,
+      showPause: (context.scr_showpause?.value ?? 1) !== 0
+    });
+  } else {
+    commands.push(...SCR_BuildHudDrawCommands(context.client, {
+      viewportWidth,
+      viewportHeight,
+      active: context.client.cls.state === connstate_t.ca_active,
+      refreshPrepped: context.client.cl.refresh_prepped
+    }, {
+      screenState,
+      showPause: (context.scr_showpause?.value ?? 1) !== 0
+    }));
+  }
 
   if ((context.scr_timegraph?.value ?? 0) !== 0) {
     SCR_DebugGraph(context.client, context.client.cls.frametime * 300, 0);
@@ -1727,6 +2038,8 @@ export function SCR_UpdateScreen(
       graphshift: context.scr_graphshift?.value ?? 0
     }));
   }
+
+  endFrame();
 
   return {
     vrect,
@@ -1788,12 +2101,44 @@ function buildActiveCinematicScreenFrame(
  * Porting notes:
  * - Reports the timing numbers to the caller instead of driving the renderer directly.
  */
-export function SCR_TimeRefresh_f(context: ClientScreenContext): { seconds: number; fps: number } | null {
+export function SCR_TimeRefresh_f(
+  context: ClientScreenContext,
+  options: {
+    ref?: refexport_t;
+    nowMs?: () => number;
+    buildRefdef?: (yawDegrees: number) => refdef_t;
+  } = {}
+): { seconds: number; fps: number } | null {
   if (context.client.cls.state !== connstate_t.ca_active) {
     return null;
   }
 
-  const seconds = 128 / 60;
+  const hasClock = options.nowMs !== undefined;
+  const start = options.nowMs?.() ?? 0;
+  const makeRefdef = options.buildRefdef ?? ((yawDegrees: number): refdef_t => {
+    const refdef = createRefDef();
+    refdef.viewangles[1] = yawDegrees;
+    return refdef;
+  });
+
+  if (options.ref) {
+    if (Cmd_Argc(context.cmd) === 2) {
+      options.ref.BeginFrame(0);
+      for (let index = 0; index < 128; index += 1) {
+        options.ref.RenderFrame(makeRefdef(index / 128.0 * 360.0));
+      }
+      options.ref.EndFrame();
+    } else {
+      for (let index = 0; index < 128; index += 1) {
+        options.ref.BeginFrame(0);
+        options.ref.RenderFrame(makeRefdef(index / 128.0 * 360.0));
+        options.ref.EndFrame();
+      }
+    }
+  }
+
+  const stop = options.nowMs?.() ?? (start + 128 / 60 * 1000);
+  const seconds = hasClock ? Math.max((stop - start) / 1000.0, Number.EPSILON) : 128 / 60;
   return {
     seconds,
     fps: 128 / seconds

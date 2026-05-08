@@ -11,6 +11,7 @@
  */
 
 import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
 
 import type { viddef_t, vrect_t } from "../../packages/client/src/index.js";
 import {
@@ -70,5 +71,11 @@ assert.deepEqual(callLog, ["init", "check", "menu-init", "menu-draw", "menu-key:
 
 const noOp = createClientVidContext();
 assert.equal(VID_MenuKey(noOp, 27), null, "VID_MenuKey default mismatch");
+
+const webHost = readFileSync("apps/web/src/full-game.ts", "utf8");
+assert.equal(webHost.includes("VID_Init(vid)"), true, "apps/web should call VID_Init for the full-game video context");
+assert.equal(webHost.includes("VID_CheckChanges(vid)"), true, "apps/web should route CL_Frame video checks through VID_CheckChanges");
+assert.equal(webHost.includes("CL_Shutdown(mainContext"), true, "apps/web should route browser teardown through CL_Shutdown");
+assert.equal(webHost.includes("VID_Shutdown(vid)"), true, "apps/web should route CL_Shutdown video teardown through VID_Shutdown");
 
 console.log("quake2-vid-header: ok");

@@ -394,6 +394,26 @@ function verifyConnectionlessChallengeAndConnect(): void {
   assert.equal(freeClient.challenge, challenge, "SVC_DirectConnect should persist the accepted challenge");
   assert.equal(freeClient.lastconnect, 654321, "SVC_DirectConnect should stamp lastconnect");
   assert.equal(freeClient.name, "RemoteUser", "SVC_DirectConnect should parse userinfo through SV_UserinfoChanged");
+
+  freeClient.state = client_state_t.cs_free;
+  ge.ClientConnect = () => false;
+  ge.ClientConnectRejectMessage = () => "Password required or incorrect.";
+  const rejectedRemote = createIpAdr(10, 10, 0, 2, 27951);
+  queueConnectionlessPacket(rejectedRemote, "getchallenge");
+  transmitted.length = 0;
+  processed = main.SV_ReadPackets();
+  const rejectedChallenge = Number.parseInt(decodePacketPayload(transmitted[0]?.data ?? new Uint8Array()).split(" ")[1] ?? "0", 10);
+  transmitted.length = 0;
+  queueConnectionlessPacket(rejectedRemote, `connect 34 1338 ${rejectedChallenge} "\\name\\Rejected"`);
+  processed = main.SV_ReadPackets();
+  assert.equal(processed, 1, "SV_ReadPackets should drain one rejected connect packet");
+  assert.equal(
+    decodePacketPayload(transmitted[0]?.data ?? new Uint8Array()),
+    "print\nPassword required or incorrect.\nConnection refused.\n",
+    "SVC_DirectConnect should print the game-export rejection message"
+  );
+  ge.ClientConnect = () => true;
+  ge.ClientConnectRejectMessage = () => "";
 }
 
 function verifyConnectionlessRcon(): void {
@@ -652,6 +672,7 @@ function createGameExports(): game_export_t {
     WriteLevel: () => {},
     ReadLevel: () => {},
     ClientConnect: () => true,
+    ClientConnectRejectMessage: () => "",
     ClientBegin: () => {},
     ClientUserinfoChanged: () => {
       userinfoChangedCalls += 1;

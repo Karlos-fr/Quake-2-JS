@@ -149,6 +149,7 @@ import {
 } from "../../../packages/client/src/cl_scrn.js";
 import { CL_RegisterSounds } from "../../../packages/client/src/sound.js";
 import type {
+  ClientParseHooks,
   ClientMuzzleFlash2Packet,
   ClientMuzzleFlashPacket,
   ClientTempEntityPacket
@@ -166,6 +167,7 @@ import {
   CL_Frame,
   CL_InitLocal,
   CL_ReadPackets,
+  CL_Shutdown,
   CL_WriteConfiguration,
   Cmd_ForwardToServer as CL_Cmd_ForwardToServer,
   createClientMainContext,
@@ -191,7 +193,9 @@ import {
   S_Init as S_DMA_Init,
   S_IssueReadyPlaysounds as S_DMA_IssueReadyPlaysounds,
   S_IssuePlaysound as S_DMA_IssuePlaysound,
+  S_RawSamples as S_DMA_RawSamples,
   S_RegisterSound as S_DMA_RegisterSound,
+  S_Shutdown as S_DMA_Shutdown,
   S_StartLocalSound as S_DMA_StartLocalSound,
   S_StartSound as S_DMA_StartSound,
   S_StopAllSounds as S_DMA_StopAllSounds,
@@ -212,7 +216,12 @@ import { createRefExport, type refexport_t, type refimport_t } from "../../../pa
 import { createClientRuntime, connstate_t, type ClientRuntime } from "../../../packages/client/src/client.js";
 import type { ClientRefreshFrame } from "../../../packages/client/src/index.js";
 import { createClientVidMenuController, type ClientVidMenuController } from "../../../packages/client/src/vid-menu.js";
-import { createClientVidContext } from "../../../packages/client/src/vid.js";
+import {
+  VID_CheckChanges,
+  VID_Init,
+  VID_Shutdown,
+  createClientVidContext
+} from "../../../packages/client/src/vid.js";
 import {
   createFullGameCommandBridgeState,
   registerFullGameCommandBridge,
@@ -333,6 +342,7 @@ interface FullGameRuntime {
   flushClientOutput: () => void;
   updateClientAudio: () => void;
   writeConfiguration: () => boolean;
+  shutdownClient: () => void;
   finishConfigBootstrap: () => void;
   captureClipboardText: (text: string) => void;
   beginAuthoritativeConnection: (mapRequest: string) => void;
@@ -385,8 +395,7 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("resize", () => resizeCanvas(page));
     window.addEventListener("beforeunload", () => {
       runtime.finishConfigBootstrap();
-      runtime.writeConfiguration();
-      IN_Shutdown(runtime.inputDevice);
+      runtime.shutdownClient();
       Qcommon_Shutdown(runtime.qcommon);
     });
     window.addEventListener("pointerdown", (event) => handlePointerDown(event, runtime, page), { capture: true });
@@ -407,10 +416,12 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("focus", () => {
       Sys_AppActivate(runtime.qcommonHost);
       IN_Activate(runtime.inputDevice, true);
+      activateFullGameSound(runtime, true);
     });
     window.addEventListener("blur", () => {
       resetFullGameMouseLook(runtime);
       IN_Activate(runtime.inputDevice, false);
+      activateFullGameSound(runtime, false);
     });
 
     page.status.textContent = "Lecture de l'intro...";
@@ -903,17 +914,19 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     now: () => client.cls.realtime,
     onPrint: printToConsole
   });
-  const fileExists = (path: string): boolean => readMountedFile(filesystem, path) !== undefined;
-  const loadBinaryFile = (path: string): Uint8Array | null => readMountedFile(filesystem, path)?.bytes ?? null;
+  const fileExists = (path: string): boolean => readMountedFile(filesystem, path) !== undefined || saveStorage.exists(path);
+  const loadBinaryFile = (path: string): Uint8Array | null => readMountedFile(filesystem, path)?.bytes ?? saveStorage.readBinary(path);
+  const downloadFileHooks = createWebDownloadFileHooks(saveStorage);
   const getMapInfo = (path: string): { checksum: number | null; textureNames: string[] } | null => {
     const file = readMountedFile(filesystem, path);
-    if (!file) {
+    const bytes = file?.bytes ?? saveStorage.readBinary(path);
+    if (!bytes) {
       return null;
     }
 
-    const map = parseBsp(file.bytes, file.path);
+    const map = parseBsp(bytes, file?.path ?? path);
     return {
-      checksum: Com_BlockChecksum(file.bytes, file.bytes.length),
+      checksum: Com_BlockChecksum(bytes, bytes.length),
       textureNames: map.texinfo.map((texinfo) => texinfo.texture)
     };
   };
@@ -963,6 +976,35 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
         S_DMA_StopAllSounds(context);
       }
     });
+  };
+  const initAuthoritativeSound = (): void => {
+    if (!sndDmaContext) {
+      return;
+    }
+
+    S_DMA_Init(sndDmaContext);
+  };
+  const shutdownAuthoritativeSound = (): void => {
+    if (!sndDmaContext) {
+      return;
+    }
+
+    S_DMA_Shutdown(sndDmaContext);
+  };
+  const stopAllAuthoritativeSounds = (): void => {
+    if (!sndDmaContext) {
+      return;
+    }
+
+    S_DMA_StopAllSounds(sndDmaContext);
+    audio.stopAll();
+  };
+  const startAuthoritativeLocalSound = (name: string): void => {
+    if (!sndDmaContext) {
+      return;
+    }
+
+    S_DMA_StartLocalSound(sndDmaContext, name);
   };
   const resolveAuthoritativeSfx = (sound: unknown): sfx_t | null => {
     if (isSfx(sound)) {
@@ -1091,6 +1133,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     allowDownload: false,
     fileExists,
     loadBinaryFile,
+    getPartialDownloadSize: (path: string) => saveStorage.readBinary(path)?.byteLength ?? null,
     getMapInfo,
     onPrepRefresh: prepClientRefresh,
     onRegisterSounds: registerAuthoritativeSounds,
@@ -1098,7 +1141,14 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       client.cl.screen.scr_draw_loading = 0;
     },
     onPrint: printToConsole,
-    onDisconnect: () => printToConsole("Disconnected."),
+    onDisconnect: () => {
+      stopAllAuthoritativeSounds();
+      printToConsole("Disconnected.");
+    },
+    onSoundShutdown: shutdownAuthoritativeSound,
+    onSoundInit: initAuthoritativeSound,
+    onStopAllSounds: stopAllAuthoritativeSounds,
+    onStartLocalSound: startAuthoritativeLocalSound,
     onQuit: () => printToConsole("Quit demande."),
     onBeginLoadingPlaque: () => {
       authoritativeLevelLoading = true;
@@ -1202,6 +1252,11 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onStufftext: (text: string) => {
       Cbuf_AddText(cmd, text);
     },
+    onSoundShutdown: shutdownAuthoritativeSound,
+    onSoundInit: initAuthoritativeSound,
+    onStopAllSounds: stopAllAuthoritativeSounds,
+    onStartLocalSound: startAuthoritativeLocalSound,
+    onDisconnect: stopAllAuthoritativeSounds,
     onExecuteCommandBuffer: () => {
       Cbuf_Execute(cmd);
     },
@@ -1214,6 +1269,9 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onPredictMovement: predictAuthoritativeClientMovement,
     onPrepRefresh: prepClientRefresh,
     onRegisterSounds: registerAuthoritativeSounds,
+    onVideoCheckChanges: () => {
+      VID_CheckChanges(vid);
+    },
     hostSpeedsEnabled: () => (qcommonGlobals.host_speeds?.value ?? 0) !== 0,
     onHostSpeedTimeBeforeRef: (milliseconds: number) => {
       qcommonGlobals.time_before_ref = milliseconds;
@@ -1229,6 +1287,8 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       }
     },
     onStartSound: startAuthoritativeSound,
+    getPartialDownloadSize: (path: string) => saveStorage.readBinary(path)?.byteLength ?? null,
+    ...downloadFileHooks,
     onMuzzleFlash: (packet: ClientMuzzleFlashPacket) => {
       applyAuthoritativeActionEffects(CL_BuildActionEffects(packet, client));
     },
@@ -1349,7 +1409,39 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     }
   });
   let videoMenu: ClientVidMenuController | null = null;
+  const syncWebVideoState = (): void => {
+    vid.viddef.width = LOGICAL_WIDTH;
+    vid.viddef.height = LOGICAL_HEIGHT;
+
+    for (const name of ["vid_ref", "vid_fullscreen", "vid_gamma", "vid_xpos", "vid_ypos", "win_noalttab"]) {
+      const variable = Cvar_Get(cvar, name, name === "vid_ref" ? "gl" : "0", CVAR_ARCHIVE);
+      if (variable !== null) {
+        variable.modified = false;
+      }
+    }
+  };
   const vid = createClientVidContext({
+    onInit: () => {
+      Cvar_Get(cvar, "vid_ref", "gl", CVAR_ARCHIVE);
+      Cvar_Get(cvar, "vid_xpos", "3", CVAR_ARCHIVE);
+      Cvar_Get(cvar, "vid_ypos", "22", CVAR_ARCHIVE);
+      Cvar_Get(cvar, "vid_fullscreen", "0", CVAR_ARCHIVE);
+      Cvar_Get(cvar, "vid_gamma", "1", CVAR_ARCHIVE);
+      Cvar_Get(cvar, "win_noalttab", "0", CVAR_ARCHIVE);
+      if (!Cmd_Exists(cmd, "vid_restart")) {
+        Cmd_AddCommand(cmd, "vid_restart", () => {
+          VID_CheckChanges(vid);
+        });
+      }
+      if (!Cmd_Exists(cmd, "vid_front")) {
+        Cmd_AddCommand(cmd, "vid_front", () => undefined);
+      }
+      VID_CheckChanges(vid);
+    },
+    onShutdown: () => {
+      videoMenu = null;
+    },
+    onCheckChanges: syncWebVideoState,
     onMenuInit: () => {
       if (!menuContext) {
         return;
@@ -1367,8 +1459,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     },
     onMenuKey: (key) => videoMenu?.VID_MenuKey(key) ?? null
   });
-  vid.viddef.width = LOGICAL_WIDTH;
-  vid.viddef.height = LOGICAL_HEIGHT;
+  VID_Init(vid);
   keys.hooks.onPrint = printToConsole;
   Key_Init(keys);
 
@@ -1382,9 +1473,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     ref,
     hooks: {
       startLocalSound: (name) => {
-        if (sndDmaContext) {
-          S_DMA_StartLocalSound(sndDmaContext, name);
-        }
+        startAuthoritativeLocalSound(name);
       },
       getSaveSlots: () => saveStorage.getSaveSlots(FS_Gamedir(filesystem)),
       getMapList: () => readFullGameMapList(filesystem),
@@ -1434,6 +1523,30 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     return result !== null;
   };
   writeConfigurationNow = writeConfiguration;
+  const shutdownClient = (): void => {
+    if (!mainContext) {
+      return;
+    }
+
+    CL_Shutdown(mainContext, {
+      keyContext: keys,
+      getGameDir: () => FS_Gamedir(filesystem),
+      onWriteConfigFile: (path, contents) => configStorage.writeText(path, contents),
+      onPrint: printToConsole,
+      onCDAudioShutdown: () => {
+        cdAudio.stop();
+      },
+      onSoundShutdown: () => {
+        S_DMA_Shutdown(sndDma);
+      },
+      onInputShutdown: () => {
+        IN_Shutdown(inputDevice);
+      },
+      onVideoShutdown: () => {
+        VID_Shutdown(vid);
+      }
+    });
+  };
   const finishConfigBootstrap = (): void => {
     if (!configBootstrapPending) {
       return;
@@ -1501,6 +1614,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     flushClientOutput,
     updateClientAudio,
     writeConfiguration,
+    shutdownClient,
     finishConfigBootstrap,
     captureClipboardText,
     beginAuthoritativeConnection,
@@ -1527,6 +1641,58 @@ function shouldSuppressFullGameConsoleLine(line: string): boolean {
     || trimmed.startsWith("...ignoring ")
     || trimmed.startsWith("...GL_")
     || trimmed.startsWith("...WGL_");
+}
+
+type WebDownloadHandle = {
+  path: string;
+  chunks: Uint8Array[];
+};
+
+function createWebDownloadFileHooks(saveStorage: WebSaveStorage): Pick<
+  ClientParseHooks,
+  "onCreateDownloadPath" | "onOpenDownloadFile" | "onWriteDownloadBytes" | "onCloseDownloadFile" | "onRenameDownloadFile"
+> {
+  return {
+    onCreateDownloadPath: (path) => {
+      saveStorage.createPath(path);
+    },
+    onOpenDownloadFile: (path, mode) => {
+      const chunks: Uint8Array[] = [];
+      if (mode === "append") {
+        const existing = saveStorage.readBinary(path);
+        if (existing) {
+          chunks.push(existing);
+        }
+      }
+      return { path, chunks } satisfies WebDownloadHandle;
+    },
+    onWriteDownloadBytes: (handle, bytes) => {
+      (handle as WebDownloadHandle).chunks.push(new Uint8Array(bytes));
+    },
+    onCloseDownloadFile: (handle) => {
+      const download = handle as WebDownloadHandle;
+      saveStorage.writeBinary(download.path, concatDownloadChunks(download.chunks));
+    },
+    onRenameDownloadFile: (oldPath, newPath) => {
+      const bytes = saveStorage.readBinary(oldPath);
+      if (!bytes || !saveStorage.writeBinary(newPath, bytes)) {
+        return false;
+      }
+      saveStorage.remove(oldPath);
+      return true;
+    }
+  };
+}
+
+function concatDownloadChunks(chunks: Uint8Array[]): Uint8Array {
+  const total = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const output = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    output.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return output;
 }
 
 function initializeWebSoundDma(sound: ClientSoundLocalContext, audio: QuakeWebAudioAdapter): boolean {
@@ -1567,6 +1733,27 @@ function playIssuedWebSound(context: ClientSndDmaContext, audio: QuakeWebAudioAd
   if (issued) {
     audio.playChannel(issued);
   }
+}
+
+function queueFullGameRawSamples(
+  runtime: FullGameRuntime,
+  count: number,
+  sampleRate: number,
+  sampleWidth: number,
+  channels: number,
+  samples: Uint8Array
+): void {
+  S_DMA_RawSamples(runtime.sndDma, count, sampleRate, sampleWidth, channels, samples);
+  runtime.audio.queueRawSamples(count, sampleRate, sampleWidth, channels, samples);
+}
+
+function activateFullGameSound(runtime: FullGameRuntime, active: boolean): void {
+  if (active) {
+    void runtime.audio.resume().catch(() => undefined);
+    return;
+  }
+
+  void runtime.audio.pause().catch(() => undefined);
 }
 
 function formatWebAudioInfo(
@@ -1665,6 +1852,7 @@ function queueFullGameConfigBootstrap(cmd: ReturnType<typeof createCommandRuntim
   Cbuf_AddText(cmd, "bind 8 \"use HyperBlaster\"\n");
   Cbuf_AddText(cmd, "bind 9 \"use Railgun\"\n");
   Cbuf_AddText(cmd, "bind 0 \"use BFG10K\"\n");
+  Cbuf_AddText(cmd, "bind g \"use grenades\"\n");
   Cbuf_AddText(cmd, "bind w +forward\n");
   Cbuf_AddText(cmd, "bind s +back\n");
   Cbuf_AddText(cmd, "bind a +moveleft\n");
@@ -1769,7 +1957,7 @@ function startNextCinematic(runtime: FullGameRuntime, page: FullGamePage): void 
   const started = SCR_PlayCinematic(runtime.client, name, {
     loadBinaryFile: (path) => readMountedFile(runtime.filesystem, path)?.bytes ?? null,
     onCinematicRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
-      runtime.audio.queueRawSamples(count, sampleRate, sampleWidth, channels, samples);
+      queueFullGameRawSamples(runtime, count, sampleRate, sampleWidth, channels, samples);
     },
     onCinematicSoundRestart: () => {
       runtime.audio.stopRaw();
@@ -1918,7 +2106,7 @@ function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void 
   }, {
     loadBinaryFile: (path) => readMountedFile(runtime.filesystem, path)?.bytes ?? null,
     onCinematicRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
-      runtime.audio.queueRawSamples(count, sampleRate, sampleWidth, channels, samples);
+      queueFullGameRawSamples(runtime, count, sampleRate, sampleWidth, channels, samples);
     },
     onCinematicSoundRestart: () => {
       runtime.audio.stopRaw();

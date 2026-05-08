@@ -19,11 +19,11 @@
 | `Quake-2-master/client/cl_parse.c` | global | `filename` | `packages/client/src/download.ts` |  | Non applicable | A redecouper | Local C de `CL_Download_f`; pas une entite proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_RegisterSounds` | `packages/client/src/sound.ts` | `CL_RegisterSounds` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/sound.ts` |  | Non applicable | A redecouper | Local C de `CL_RegisterSounds`; pas une entite proprietaire. |
-| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseDownload` | `packages/client/src/cl_parse.ts` | `CL_ParseDownload` | Partiel | A redecouper | Parse, percent, `nextdl` et cleanup corriges; reste a brancher adapter write/rename fichier pour fidelite C complete. |
+| `Quake-2-master/client/cl_parse.c` | function | `CL_ParseDownload` | `packages/client/src/cl_parse.ts` | `CL_ParseDownload` | Valide | A redecouper | Hook IO write/close/rename ajoute dans `cl_parse.ts`; preuve `npm run verify:cl-parse`, `npm run verify:full-game:server-host`, `npm run verify:full-game:render-source`, `npm run typecheck`. |
 | `Quake-2-master/client/cl_parse.c` | global | `name` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de `CL_ParseDownload`; pas une entite proprietaire. |
-| `Quake-2-master/client/cl_parse.c` | global | `r` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par le reliquat Partiel. |
-| `Quake-2-master/client/cl_parse.c` | global | `oldn` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par le reliquat Partiel. |
-| `Quake-2-master/client/cl_parse.c` | global | `newn` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par le reliquat Partiel. |
+| `Quake-2-master/client/cl_parse.c` | global | `r` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par les hooks rename valides. |
+| `Quake-2-master/client/cl_parse.c` | global | `oldn` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par les hooks rename valides. |
+| `Quake-2-master/client/cl_parse.c` | global | `newn` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par les hooks rename valides. |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_ParseServerData` | `packages/client/src/cl_parse.ts` | `CL_ParseServerData` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `fs_gamedirvar` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `str` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper |  |

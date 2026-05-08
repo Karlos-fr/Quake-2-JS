@@ -835,6 +835,8 @@ export interface GameRuntime {
   body_que: number;
   power_cubes: number;
   meansOfDeath: number;
+  sm_meat_index: number;
+  snd_fry: number;
   autosaved: boolean;
   intermissiontime: number;
   exitintermission: number;
@@ -1310,6 +1312,8 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     body_que: 0,
     power_cubes: 0,
     meansOfDeath: 0,
+    sm_meat_index: 0,
+    snd_fry: 0,
     autosaved: false,
     intermissiontime: 0,
     exitintermission: 0,

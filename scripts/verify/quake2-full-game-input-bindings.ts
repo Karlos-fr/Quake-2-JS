@@ -55,6 +55,7 @@ for (const expected of [
   "bind q +moveleft",
   "bind 6 \\\"use Grenade Launcher\\\"",
   "bind 8 \\\"use HyperBlaster\\\"",
+  "bind g \\\"use grenades\\\"",
   "window.addEventListener(\"wheel\"",
   "case \"Shift\": return K_SHIFT",
   "case \"Control\": return K_CTRL",
@@ -103,7 +104,7 @@ assert.ok(
 );
 
 for (const expected of [
-  "requestFullGamePointerLock(runtime, page, event.target)",
+  "requestFullGamePointerLock(runtime, page)",
   "document.addEventListener(\"pointerlockchange\"",
   "window.addEventListener(\"pointerlockerror\"",
   "handleMouseMove(event, runtime, page)",
@@ -114,7 +115,7 @@ for (const expected of [
   "inputDevice",
   "IN_Activate(runtime.inputDevice, true)",
   "IN_Activate(runtime.inputDevice, false)",
-  "IN_Shutdown(runtime.inputDevice)",
+  "IN_Shutdown(inputDevice)",
   "runtime.mouse.lookActive = true",
   "isFullGamePointerLocked(page)",
   "isFullGameMouseLookActive(runtime, page, event)",

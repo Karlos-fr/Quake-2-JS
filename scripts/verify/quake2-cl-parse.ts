@@ -492,6 +492,73 @@ assert.equal(runtime.cls.download, null, "CL_ParseDownload final block should cl
 assert.equal(runtime.cls.downloadpercent, 0, "CL_ParseDownload percent reset mismatch");
 assert.equal(requestedDownloads, 2, "CL_ParseDownload final next-request mismatch");
 
+type TestDownloadHandle = { path: string; chunks: number[] };
+const openedDownloadPaths: string[] = [];
+const closedDownloadPaths: string[] = [];
+const renamedDownloadPaths: string[] = [];
+const downloadWrites: number[] = [];
+resetIncoming(runtime);
+runtime.cl.gamedir = "rogue";
+runtime.cls.download = null;
+runtime.cls.downloadname = "maps/unit.bsp";
+runtime.cls.downloadtempname = "maps/unit.tmp";
+MSG_WriteShort(runtime.net_message, 4);
+MSG_WriteByte(runtime.net_message, 100);
+MSG_WriteByte(runtime.net_message, 1);
+MSG_WriteByte(runtime.net_message, 2);
+MSG_WriteByte(runtime.net_message, 3);
+MSG_WriteByte(runtime.net_message, 4);
+runtime.net_message.readcount = 0;
+CL_ParseDownload(runtime, {
+  onOpenDownloadFile: (path) => {
+    openedDownloadPaths.push(path);
+    return { path, chunks: [] } satisfies TestDownloadHandle;
+  },
+  onWriteDownloadBytes: (handle, bytes) => {
+    downloadWrites.push(...bytes);
+    (handle as TestDownloadHandle).chunks.push(...bytes);
+  },
+  onCloseDownloadFile: (handle) => {
+    closedDownloadPaths.push((handle as TestDownloadHandle).path);
+  },
+  onRenameDownloadFile: (oldPath, newPath) => {
+    renamedDownloadPaths.push(`${oldPath}->${newPath}`);
+    return true;
+  },
+  onRequestNextDownload: () => {
+    requestedDownloads += 1;
+  }
+});
+assert.deepEqual(openedDownloadPaths, ["rogue/maps/unit.tmp"], "CL_ParseDownload should open the resolved temp path");
+assert.deepEqual(downloadWrites, [1, 2, 3, 4], "CL_ParseDownload should write payload bytes to the active download");
+assert.deepEqual(closedDownloadPaths, ["rogue/maps/unit.tmp"], "CL_ParseDownload final block should close the temp file");
+assert.deepEqual(renamedDownloadPaths, ["rogue/maps/unit.tmp->rogue/maps/unit.bsp"], "CL_ParseDownload should rename temp path to final path");
+
+const failedOpenPrints: string[] = [];
+resetIncoming(runtime);
+runtime.cls.download = null;
+runtime.cls.downloadname = "sound/fail.wav";
+runtime.cls.downloadtempname = "sound/fail.tmp";
+MSG_WriteShort(runtime.net_message, 2);
+MSG_WriteByte(runtime.net_message, 100);
+MSG_WriteByte(runtime.net_message, 9);
+MSG_WriteByte(runtime.net_message, 10);
+runtime.net_message.readcount = 0;
+const failedOpenDownload = CL_ParseDownload(runtime, {
+  onOpenDownloadFile: () => null,
+  onPrint: (line) => {
+    failedOpenPrints.push(line);
+  },
+  onRequestNextDownload: () => {
+    requestedDownloads += 1;
+  }
+});
+assert.deepEqual([...failedOpenDownload.bytes], [9, 10], "CL_ParseDownload failed open should consume payload bytes");
+assert.equal(runtime.cls.download, null, "CL_ParseDownload failed open should leave no active handle");
+assert.equal(failedOpenPrints.includes("Failed to open sound/fail.tmp\n"), true, "CL_ParseDownload failed open print mismatch");
+
+runtime.cl.gamedir = "";
+
 runtime.cls.realtime = 300;
 runtime.cls.netchan.incoming_acknowledged = 0;
 runtime.cl.cmd_time[0] = 0;

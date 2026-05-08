@@ -155,7 +155,7 @@ export interface ClientMainHooks extends ClientParseHooks {
   qnet?: QcommonNetRuntime | null;
   keyContext?: ClientKeyContext | null;
   fileExists?: ClientDownloadHooks["fileExists"];
-  getPartialDownloadSize?: ClientDownloadHooks["getPartialDownloadSize"];
+  getPartialDownloadSize?: NonNullable<ClientDownloadHooks["getPartialDownloadSize"]>;
   allowDownload?: ClientPrecacheHooks["allowDownload"];
   allowDownloadMaps?: ClientPrecacheHooks["allowDownloadMaps"];
   allowDownloadModels?: ClientPrecacheHooks["allowDownloadModels"];
@@ -1642,11 +1642,17 @@ export function CL_InitLocal(context: ClientMainContext, hooks: ClientMainHooks 
   registerCommand(context.cmd, "reconnect", () => {
     CL_Reconnect_f(context, hooks);
   });
+  registerCommand(context.cmd, "record", () => {
+    CL_Record_f(context, hooks);
+  });
   registerCommand(context.cmd, "setenv", () => {
     CL_Setenv_f(context, hooks);
   });
   registerCommand(context.cmd, "snd_restart", () => {
     CL_Snd_Restart_f(context, hooks);
+  });
+  registerCommand(context.cmd, "stop", () => {
+    CL_Stop_f(context, hooks);
   });
   registerCommand(context.cmd, "userinfo", () => {
     CL_Userinfo_f(context, hooks);

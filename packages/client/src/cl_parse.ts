@@ -154,6 +154,12 @@ export interface ClientParseHooks {
   onParticleEffect?: (packet: ClientParticleEffectPacket) => void;
   onTempEntity?: (packet: ClientTempEntityPacket) => void;
   onDownloadBlock?: (block: ClientDownloadBlock) => void;
+  getPartialDownloadSize?: ((path: string) => number | null) | undefined;
+  onCreateDownloadPath?: (path: string) => void;
+  onOpenDownloadFile?: (path: string, mode: "write" | "append") => unknown | null;
+  onWriteDownloadBytes?: (handle: unknown, bytes: Uint8Array) => boolean | void;
+  onCloseDownloadFile?: (handle: unknown) => void;
+  onRenameDownloadFile?: (oldPath: string, newPath: string) => boolean | void;
   onRequestNextDownload?: () => void;
   onWriteDemoMessage?: () => void;
   onEntityEvent?: (event: ClientEntityEvent) => void;
@@ -629,7 +635,7 @@ export function SHOWNET(runtime: ClientRuntime, text: string, hooks: ClientParse
  * - Parses one download block from the server and updates in-progress download state.
  *
  * Porting notes:
- * - Defers temp-file writes and rename logic to future platform adapters.
+ * - Uses hook-based file IO for `FS_CreatePath`, `fopen`, `fwrite`, `fclose` and `rename`.
  */
 export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientDownloadBlock {
   const size = MSG_ReadShort(runtime.net_message);
@@ -637,6 +643,9 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
 
   if (size === -1) {
     emitPrint(runtime, "Server does not have this file.\n", hooks);
+    if (runtime.cls.download) {
+      hooks.onCloseDownloadFile?.(runtime.cls.download);
+    }
     runtime.cls.download = null;
     runtime.cls.downloadpercent = 0;
     const missingBlock: ClientDownloadBlock = {
@@ -650,11 +659,30 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
     return missingBlock;
   }
 
-  const bytes = MSG_ReadData(runtime.net_message, size);
-  runtime.cls.downloadpercent = percent;
-  if (percent === 100) {
-    runtime.cls.downloadpercent = 0;
+  const tempPath = resolveDownloadFileName(runtime, runtime.cls.downloadtempname);
+  if (!runtime.cls.download && hooks.onOpenDownloadFile) {
+    hooks.onCreateDownloadPath?.(tempPath);
+    const resumeSize = hooks.getPartialDownloadSize?.(tempPath) ?? null;
+    const opened = hooks.onOpenDownloadFile(tempPath, resumeSize !== null && resumeSize > 0 ? "append" : "write");
+    if (!opened) {
+      const skipped = MSG_ReadData(runtime.net_message, size);
+      emitPrint(runtime, `Failed to open ${runtime.cls.downloadtempname}\n`, hooks);
+      hooks.onRequestNextDownload?.();
+      return {
+        size,
+        percent,
+        bytes: skipped,
+        missing: false
+      };
+    }
+    runtime.cls.download = opened;
   }
+
+  const bytes = MSG_ReadData(runtime.net_message, size);
+  if (runtime.cls.download) {
+    hooks.onWriteDownloadBytes?.(runtime.cls.download, bytes);
+  }
+  runtime.cls.downloadpercent = percent;
 
   const block: ClientDownloadBlock = {
     size,
@@ -664,12 +692,34 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
   };
   hooks.onDownloadBlock?.(block);
   if (percent === 100) {
+    if (runtime.cls.download) {
+      hooks.onCloseDownloadFile?.(runtime.cls.download);
+      const finalPath = resolveDownloadFileName(runtime, runtime.cls.downloadname);
+      const renamed = hooks.onRenameDownloadFile?.(tempPath, finalPath);
+      if (renamed === false) {
+        emitPrint(runtime, "failed to rename.\n", hooks);
+      }
+    }
     runtime.cls.download = null;
+    runtime.cls.downloadpercent = 0;
     hooks.onRequestNextDownload?.();
   } else {
     CL_WriteStringCmd(runtime, "nextdl");
   }
   return block;
+}
+
+/**
+ * Category: Adapter
+ * Purpose: Resolve `CL_ParseDownload` temp/final names without importing `CL_DownloadFileName` and creating a module cycle.
+ *
+ * Constraints:
+ * - Must mirror `CL_DownloadFileName` from `download.ts`.
+ */
+function resolveDownloadFileName(runtime: ClientRuntime, filename: string): string {
+  const gameDir = runtime.cl.gamedir.length > 0 ? runtime.cl.gamedir : BASEDIRNAME;
+  const root = filename.startsWith("players") ? BASEDIRNAME : gameDir;
+  return `${root}/${filename}`;
 }
 
 /**

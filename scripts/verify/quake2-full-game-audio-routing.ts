@@ -84,6 +84,17 @@ function verifyServerHostPreservesRegisteredSoundHandles(): void {
 function verifyFullGameUsesDmaForAuthoritativeSfx(): void {
   assert.ok(fullGameSource.includes("S_StartLocalSound as S_DMA_StartLocalSound"), "menu/local sounds should import the DMA local sound entrypoint");
   assert.ok(fullGameSource.includes("S_DMA_StartLocalSound(sndDmaContext, name)"), "menu/local sounds should route through DMA");
+  assert.ok(fullGameSource.includes("onStartLocalSound: startAuthoritativeLocalSound"), "chat local sounds should route CL_ParseServerMessage PRINT_CHAT through DMA");
+  assert.ok(fullGameSource.includes("S_RawSamples as S_DMA_RawSamples"), "cinematic raw samples should import the DMA raw sample entrypoint");
+  assert.ok(fullGameSource.includes("S_DMA_RawSamples(runtime.sndDma"), "cinematic raw samples should enter the ported DMA raw sample ring");
+  assert.ok(fullGameSource.includes("onSoundShutdown: shutdownAuthoritativeSound"), "snd_restart should shut down the DMA sound backend");
+  assert.ok(fullGameSource.includes("onSoundInit: initAuthoritativeSound"), "snd_restart should reinitialize the DMA sound backend");
+  assert.ok(fullGameSource.includes("runtime.shutdownClient()"), "full-game beforeunload should run the client shutdown path");
+  assert.ok(fullGameSource.includes("onSoundShutdown: () => {\n        S_DMA_Shutdown(sndDma);"), "client shutdown should relay S_Shutdown to the DMA sound backend");
+  assert.ok(fullGameSource.includes("onStopAllSounds: stopAllAuthoritativeSounds"), "reconnect should relay S_StopAllSounds to the DMA sound backend");
+  assert.ok(fullGameSource.includes("onDisconnect: stopAllAuthoritativeSounds"), "disconnect should clear the active DMA/WebAudio sound outputs");
+  assert.ok(fullGameSource.includes("activateFullGameSound(runtime, true)"), "focus should reactivate browser audio for S_Activate semantics");
+  assert.ok(fullGameSource.includes("activateFullGameSound(runtime, false)"), "blur should deactivate browser audio for S_Activate semantics");
   assert.ok(fullGameSource.includes("S_DMA_StartSound("), "server svc_sound packets should route through DMA");
   assert.ok(fullGameSource.includes("const issued = S_DMA_IssuePlaysound(context, ps);"), "Web bridge should use the channel returned by DMA issue");
   assert.ok(fullGameSource.includes("audio.playChannel(issued)"), "Web bridge should play DMA-issued channels");

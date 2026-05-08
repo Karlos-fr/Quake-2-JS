@@ -288,6 +288,18 @@ assert.equal(spawnpointContext.runtime.spawnpoint, "unit_start", "SpawnEntities 
 assert.equal(spawnpointContext.game.spawnpoint, "unit_start", "SpawnEntities must persist spawnpoint in game_locals_t");
 assert.equal(spawnpointContext.runtime.maxclients, spawnpointContext.game.maxclients, "SpawnEntities must keep runtime/game maxclients in sync");
 assert.equal(spawnpointContext.runtime.maxentities, spawnpointContext.game.maxentities, "SpawnEntities must keep runtime/game maxentities in sync");
+assert.ok(spawnpointContext.runtime.sm_meat_index > 0, "SP_worldspawn must store the g_main.c sm_meat_index global equivalent");
+assert.equal(
+  spawnpointContext.runtime.assets.modelIndexByPath.get("models/objects/gibs/sm_meat/tris.md2"),
+  spawnpointContext.runtime.sm_meat_index,
+  "sm_meat_index must point at the small meat gib model"
+);
+assert.ok(spawnpointContext.runtime.snd_fry > 0, "SP_worldspawn must store the g_main.c snd_fry global equivalent");
+assert.equal(
+  spawnpointContext.runtime.assets.soundPaths[spawnpointContext.runtime.snd_fry - 1],
+  "player/fry.wav",
+  "snd_fry must point at the lava/slime fry sound"
+);
 
 const preservedClient = api.edicts[1]!.client!;
 api.edicts[1]!.inuse = true;
@@ -455,16 +467,19 @@ assert.equal(
   false,
   "ClientConnect must reject banned IPs through the g_svcmds filter"
 );
+assert.equal(connectApi.ClientConnectRejectMessage?.(), "Banned.", "ClientConnect must expose banned rejection text for the server ABI");
 assert.equal(
   connectApi.ClientConnect(connectRuntime.entities[1]!, "\\name\\bad\\password\\wrong\\ip\\198.51.100.1:27910"),
   false,
   "ClientConnect must reject an incorrect player password"
 );
+assert.equal(connectApi.ClientConnectRejectMessage?.(), "Password required or incorrect.", "ClientConnect must expose player password rejection text");
 assert.equal(
   connectApi.ClientConnect(connectRuntime.entities[1]!, "\\name\\good\\password\\secret\\ip\\198.51.100.1:27910"),
   true,
   "ClientConnect must accept a player with the correct password"
 );
+assert.equal(connectApi.ClientConnectRejectMessage?.(), "", "ClientConnect must clear rejection text after acceptance");
 assert.equal(connectRuntime.entities[1]!.client!.pers.connected, true, "ClientConnect must mark accepted players connected");
 assert.equal(connectRuntime.entities[1]!.client!.pers.netname, "good", "ClientConnect must apply accepted userinfo");
 assert.equal(configstrings.get(CS_PLAYERSKINS), "good\\", "ClientConnect must publish the accepted player skin configstring through gi.configstring");
@@ -476,11 +491,13 @@ assert.equal(
   false,
   "ClientConnect must reject an incorrect spectator password"
 );
+assert.equal(connectApi.ClientConnectRejectMessage?.(), "Spectator password required or incorrect.", "ClientConnect must expose spectator password rejection text");
 assert.equal(
   connectApi.ClientConnect(connectRuntime.entities[2]!, "\\name\\spec\\spectator\\watch\\ip\\198.51.100.2:27910"),
   false,
   "ClientConnect must reject spectators over maxspectators"
 );
+assert.equal(connectApi.ClientConnectRejectMessage?.(), "Server spectator limit is full.", "ClientConnect must expose spectator limit rejection text");
 setCvar("maxspectators", "2", CVAR_SERVERINFO);
 assert.equal(
   connectApi.ClientConnect(connectRuntime.entities[2]!, "\\name\\spec\\spectator\\watch\\ip\\198.51.100.2:27910"),

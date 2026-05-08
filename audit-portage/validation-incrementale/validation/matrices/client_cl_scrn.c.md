@@ -12,7 +12,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_con_current` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_conlines` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | global | `scr_initialized` | `packages/client/src/cl_scrn.ts` |  | Partiel | A redecouper | Initialisation presente via SCR_Init/context, mais SCR_UpdateScreen ne porte pas encore le guard scr_initialized/con.initialized. |
+| `Quake-2-master/client/cl_scrn.c` | global | `scr_initialized` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_draw_loading` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_vrect` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_viewsize` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
@@ -30,7 +30,7 @@
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_drawall` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | struct | `dirty_t` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `crosshair_pic` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TimeRefresh_f` | `packages/client/src/cl_scrn.ts` | `SCR_TimeRefresh_f` | Partiel | A redecouper | Commande branchee et garde ca_active presents; le sweep renderer 128 frames reste a couvrir/brancher. |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TimeRefresh_f` | `packages/client/src/cl_scrn.ts` | `SCR_TimeRefresh_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_Loading_f` | `packages/client/src/cl_scrn.ts` | `SCR_Loading_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `CL_AddNetgraph` | `packages/client/src/cl_scrn.ts` | `CL_AddNetgraph` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
@@ -72,18 +72,18 @@
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawLoading` | `packages/client/src/cl_scrn.ts` | `SCR_DrawLoading` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_RunConsole` | `packages/client/src/cl_scrn.ts` | `SCR_RunConsole` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_conlines` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawConsole` | `packages/client/src/cl_scrn.ts` |  | Partiel | A redecouper | Console rendering orchestre cote web/console; il manque une fonction SCR_DrawConsole portee proprietaire cl_scrn.c. |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawConsole` | `packages/client/src/cl_scrn.ts` | `SCR_DrawConsole` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_BeginLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_BeginLoadingPlaque` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_draw_loading` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_EndLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_EndLoadingPlaque` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_Loading_f` | `packages/client/src/cl_scrn.ts` | `SCR_Loading_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `entitycmpfnc` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TimeRefresh_f` | `packages/client/src/cl_scrn.ts` | `SCR_TimeRefresh_f` | Partiel | A redecouper | Commande branchee et garde ca_active presents; le sweep renderer 128 frames reste a couvrir/brancher. |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TimeRefresh_f` | `packages/client/src/cl_scrn.ts` | `SCR_TimeRefresh_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `time` | `packages/client/src/cl_scrn.ts` | `time` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_AddDirtyPoint` | `packages/client/src/cl_scrn.ts` | `SCR_AddDirtyPoint` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DirtyScreen` | `packages/client/src/cl_scrn.ts` | `SCR_DirtyScreen` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TileClear` | `packages/client/src/cl_scrn.ts` |  | Partiel | A redecouper | Dirty rects portes, mais le tile clear backtile du viewsize < 100 reste a brancher. |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TileClear` | `packages/client/src/cl_scrn.ts` | `SCR_TileClear` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | macro | `STAT_MINUS` | `packages/client/src/cl_scrn.ts` | `STAT_MINUS` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | macro | `ICON_WIDTH` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
@@ -116,7 +116,7 @@
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawStats` | `packages/client/src/cl_scrn.ts` | `SCR_DrawStats` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | macro | `STAT_LAYOUTS` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawLayout` | `packages/client/src/cl_scrn.ts` | `SCR_DrawLayout` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_UpdateScreen` | `packages/client/src/cl_scrn.ts` | `SCR_UpdateScreen` | Partiel | A redecouper | Snapshot/HUD/loading/runtime web valides; restent stereo BeginFrame/EndFrame complet, SCR_TileClear et SCR_DrawConsole proprietaire. |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_UpdateScreen` | `packages/client/src/cl_scrn.ts` | `SCR_UpdateScreen` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `numframes` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `separation` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |

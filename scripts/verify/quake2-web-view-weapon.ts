@@ -187,6 +187,19 @@ function verifyRealPakWeaponModels(): void {
     camera.updateProjectionMatrix();
     sync.attachToCamera(camera);
 
+    sync.apply(runtime, createWeaponRefreshFrame({
+      modelindex: 1,
+      frame: 0,
+      oldframe: 0,
+      origin: vieworg,
+      oldorigin: vieworg,
+      angles: viewangles
+    }));
+    const activatingMesh = findMd2Mesh(sync.viewWeaponRoot.children[0]);
+    activatingMesh.geometry.computeBoundingSphere();
+    const activatingBounds = activatingMesh.geometry.boundingSphere?.clone();
+    assert.ok(activatingBounds, `${modelPath} should expose cached activation-frame bounds`);
+
     const stats = sync.apply(runtime, createWeaponRefreshFrame({
       modelindex: 1,
       frame: readyFrame,
@@ -201,6 +214,15 @@ function verifyRealPakWeaponModels(): void {
     assert.equal(sync.viewWeaponRoot.children.length, 1, `${modelPath} should attach to the view weapon root`);
 
     const weaponRoot = sync.viewWeaponRoot.children[0] as Mesh;
+    const readyMesh = findMd2Mesh(weaponRoot);
+    const readyBounds = readyMesh.geometry.boundingSphere;
+    assert.ok(readyBounds, `${modelPath} should refresh ready-frame bounds after animation`);
+    assert.equal(
+      readyBounds.center.distanceTo(activatingBounds.center) > 0.01 || Math.abs(readyBounds.radius - activatingBounds.radius) > 0.01,
+      true,
+      `${modelPath} should not keep stale activation-frame bounds after switching frames`
+    );
+
     const projected = collectProjectedMeshVertices(camera, weaponRoot);
     const projectedBounds = summarizeProjectedBounds(projected);
     const localBounds = summarizeLocalMeshBounds(weaponRoot);
@@ -218,6 +240,19 @@ function verifyRealPakWeaponModels(): void {
 
     sync.dispose();
   }
+}
+
+function findMd2Mesh(root: unknown): Mesh {
+  assert.ok(root instanceof Mesh || (typeof root === "object" && root !== null && "traverse" in root), "weapon root missing");
+  let found: Mesh | null = null;
+  (root as { traverse: (callback: (object: unknown) => void) => void }).traverse((object) => {
+    if (found || !(object instanceof Mesh) || !object.name.startsWith("md2:")) {
+      return;
+    }
+    found = object;
+  });
+  assert.ok(found, "weapon MD2 mesh missing");
+  return found;
 }
 
 function createWeaponRefreshFrame(overrides: Partial<ClientRefreshFrame["entities"][number]> = {}): ClientRefreshFrame {

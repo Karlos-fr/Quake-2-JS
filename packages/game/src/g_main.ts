@@ -150,6 +150,7 @@ export interface GameMainContext {
   serverCommands: GameServerCommandState;
   cvars: GameMainCvars;
   hooks: GameMainHooks;
+  lastClientConnectRejectMessage: string;
 }
 
 /**
@@ -525,6 +526,7 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
     WriteLevel: (filename) => WriteLevel(context, filename),
     ReadLevel: (filename) => ReadLevel(context, filename),
     ClientConnect: (ent, userinfo) => ClientConnect(ent, userinfo, context.runtime, createClientConnectHooks(context)),
+    ClientConnectRejectMessage: () => context.lastClientConnectRejectMessage,
     ClientBegin: (ent) => ClientBegin(ent, context.runtime, createClientUserinfoHooks(context)),
     ClientUserinfoChanged: (ent, userinfo) => {
       ClientUserinfoChanged(ent, userinfo, context.runtime, createClientUserinfoHooks(context));
@@ -563,12 +565,18 @@ function createClientConnectHooks(context: GameMainContext): GameMainHooks {
   return {
     ...createClientUserinfoHooks(context),
     validateConnect: (ent, userinfo, runtime) => {
+      context.lastClientConnectRejectMessage = "";
       const validation = validateClientConnect(context, userinfo);
       if (!validation.accepted) {
+        context.lastClientConnectRejectMessage = validation.reason ?? "";
         return validation;
       }
 
-      return userValidateConnect?.(ent, userinfo, runtime) ?? validation;
+      const userValidation = userValidateConnect?.(ent, userinfo, runtime) ?? validation;
+      if (!userValidation.accepted) {
+        context.lastClientConnectRejectMessage = userValidation.reason ?? "";
+      }
+      return userValidation;
     }
   };
 }
@@ -744,6 +752,7 @@ export function createGameMainContext(imports: game_import_t, options: GameMainC
     level: createLevelLocals(),
     serverCommands: createGameServerCommandState(),
     cvars: createGameMainCvars(),
+    lastClientConnectRejectMessage: "",
     hooks: {
       emitLayout: (ent, layout) => {
         imports.WriteByte(svc_layout);

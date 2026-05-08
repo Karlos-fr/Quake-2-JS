@@ -364,6 +364,25 @@ assert.equal(
   "key-6 Grenade Launcher use path should select the launcher view model"
 );
 
+Cbuf_AddText(cmd, "use grenades\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 12; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+playerState = client.cl.frame.playerstate;
+assert.equal(
+  client.cl.configstrings[CS_MODELS + playerState.gunindex],
+  "models/weapons/v_handgr/tris.md2",
+  "default g bind use grenades path should select the hand grenade view model"
+);
+
 Cbuf_AddText(cmd, "use HyperBlaster\n");
 Cbuf_Execute(cmd);
 

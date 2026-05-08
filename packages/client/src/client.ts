@@ -368,6 +368,7 @@ export interface client_tent_state_t {
  * - Must keep center-print and loading-plaque state explicit for later UI adapters.
  */
 export interface client_screen_state_t {
+  scr_initialized: boolean;
   scr_con_current: number;
   scr_conlines: number;
   scr_centerstring: string;
@@ -898,6 +899,7 @@ export function createClientTentState(): client_tent_state_t {
  */
 export function createClientScreenState(): client_screen_state_t {
   return {
+    scr_initialized: false,
     scr_con_current: 0,
     scr_conlines: 0,
     scr_centerstring: "",

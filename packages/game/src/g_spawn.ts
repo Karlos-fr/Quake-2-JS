@@ -172,6 +172,7 @@ import {
   createRuntimeEntity,
   createGameRuntimeFromBspEntities,
   freeGameEntity,
+  registerGameModel,
   registerGameSound
 } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
@@ -977,6 +978,7 @@ function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, m
   }
 
   precacheWorldspawnSounds(context);
+  precacheWorldspawnModels(context);
 }
 
 /**
@@ -992,7 +994,7 @@ function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, m
  * - The local gameplay runtime owns stable sound indices; `gi.soundindex` is also called so server-backed integrations can populate `CS_SOUNDS`.
  */
 function precacheWorldspawnSounds(context: GameMainContext): void {
-  precacheGameSound(context, "player/fry.wav");
+  context.runtime.snd_fry = precacheGameSound(context, "player/fry.wav");
 
   const blaster = FindItem("Blaster");
   if (blaster) {
@@ -1010,9 +1012,29 @@ function precacheWorldspawnSounds(context: GameMainContext): void {
   }
 }
 
-function precacheGameSound(context: GameMainContext, path: string): void {
-  registerGameSound(context.runtime, path);
+function precacheGameSound(context: GameMainContext, path: string): number {
+  const runtimeIndex = registerGameSound(context.runtime, path);
   context.gi.soundindex(path);
+  return runtimeIndex;
+}
+
+/**
+ * Original name: SP_worldspawn gib precache block
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the small meat gib model and stores the `sm_meat_index` global equivalent used by `g_misc.c`.
+ */
+function precacheWorldspawnModels(context: GameMainContext): void {
+  context.runtime.sm_meat_index = precacheGameModel(context, "models/objects/gibs/sm_meat/tris.md2");
+}
+
+function precacheGameModel(context: GameMainContext, path: string): number {
+  const runtimeIndex = registerGameModel(context.runtime, path);
+  context.gi.modelindex(path);
+  return runtimeIndex;
 }
 
 function buildInitialServerEntityList(maxclients: number): BspEntity[] {

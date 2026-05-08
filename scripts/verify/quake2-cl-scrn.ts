@@ -18,10 +18,14 @@ import {
   CL_AddNetgraph,
   createClientScreenContext,
   SCR_BeginLoadingPlaque,
+  SCR_DrawConsole,
   SCR_DrawLoading,
   SCR_Init,
+  SCR_TileClear,
+  SCR_TimeRefresh_f,
   SCR_UpdateScreen
 } from "../../packages/client/src/cl_scrn.js";
+import { createRefDef, type refdef_t } from "../../packages/client/src/ref.js";
 import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
 import { Cmd_ExecuteString, Cmd_Exists, createCommandRuntime } from "../../packages/qcommon/src/cmd.js";
 import { createCvarRuntime } from "../../packages/qcommon/src/cvar.js";
@@ -142,5 +146,131 @@ assert.deepEqual(
   ],
   "CL_AddNetgraph samples mismatch"
 );
+
+client.cl.screen.scr_vrect = { x: 160, y: 120, width: 320, height: 240 };
+client.cl.screen.scr_dirty = { x1: 0, y1: 0, x2: 639, y2: 479 };
+client.cl.screen.scr_old_dirty = [
+  { x1: 9999, y1: 9999, x2: -9999, y2: -9999 },
+  { x1: 9999, y1: 9999, x2: -9999, y2: -9999 }
+];
+client.cl.screen.scr_con_current = 0;
+client.cl.cinematic.cinematictime = 0;
+const tileClears = SCR_TileClear(client, {
+  viewportWidth: 640,
+  viewportHeight: 480,
+  scr_viewsize: 80
+});
+assert.deepEqual(
+  tileClears,
+  [
+    { type: "tileClear", x: 0, y: 0, width: 640, height: 120, pic: "backtile", bounds: { x: 0, y: 0, width: 640, height: 120 } },
+    { type: "tileClear", x: 0, y: 360, width: 640, height: 120, pic: "backtile", bounds: { x: 0, y: 360, width: 640, height: 120 } },
+    { type: "tileClear", x: 0, y: 120, width: 160, height: 240, pic: "backtile", bounds: { x: 0, y: 120, width: 160, height: 240 } },
+    { type: "tileClear", x: 480, y: 120, width: 160, height: 240, pic: "backtile", bounds: { x: 480, y: 120, width: 160, height: 240 } }
+  ],
+  "SCR_TileClear backtile rectangles mismatch"
+);
+assert.deepEqual(client.cl.screen.scr_dirty, { x1: 9999, y1: 9999, x2: -9999, y2: -9999 }, "SCR_TileClear dirty reset mismatch");
+
+client.cls.state = connstate_t.ca_connected;
+client.cl.refresh_prepped = false;
+assert.equal(SCR_DrawConsole(client, { viewportWidth: 640, viewportHeight: 480 }).mode, "half", "SCR_DrawConsole connected fallback mismatch");
+client.cls.state = connstate_t.ca_active;
+client.cl.refresh_prepped = true;
+client.cl.screen.scr_con_current = 0.25;
+assert.equal(SCR_DrawConsole(client, { keyDest: "game" }).frac, 0.25, "SCR_DrawConsole scroll frac mismatch");
+client.cl.screen.scr_con_current = 0;
+assert.equal(SCR_DrawConsole(client, { keyDest: "message" }).drawNotify, true, "SCR_DrawConsole notify branch mismatch");
+
+const refCalls: string[] = [];
+const renderedYaws: number[] = [];
+const ref = {
+  api_version: 3,
+  Init: () => true,
+  Shutdown: () => {},
+  BeginRegistration: () => {},
+  RegisterModel: () => null,
+  RegisterSkin: () => null,
+  RegisterPic: () => null,
+  SetSky: () => {},
+  EndRegistration: () => {},
+  RenderFrame: (fd: refdef_t) => {
+    refCalls.push("render");
+    renderedYaws.push(fd.viewangles[1]);
+  },
+  DrawGetPicSize: () => ({ width: 0, height: 0 }),
+  DrawPic: () => {},
+  DrawStretchPic: () => {},
+  DrawChar: () => {},
+  DrawTileClear: () => {},
+  DrawFill: () => {},
+  DrawFadeScreen: () => {},
+  DrawStretchRaw: () => {},
+  CinematicSetPalette: () => {},
+  BeginFrame: (cameraSeparation: number) => {
+    refCalls.push(`begin:${cameraSeparation}`);
+  },
+  EndFrame: () => {
+    refCalls.push("end");
+  },
+  AppActivate: () => {}
+};
+
+client.cls.state = connstate_t.ca_active;
+let fakeNow = 1000;
+const timeRefresh = SCR_TimeRefresh_f(context, {
+  ref,
+  nowMs: () => {
+    const value = fakeNow;
+    fakeNow += 500;
+    return value;
+  }
+});
+assert.equal(timeRefresh?.seconds, 0.5, "SCR_TimeRefresh_f timing mismatch");
+assert.equal(timeRefresh?.fps, 256, "SCR_TimeRefresh_f fps mismatch");
+assert.equal(refCalls.filter((call) => call === "render").length, 128, "SCR_TimeRefresh_f render sweep count mismatch");
+assert.equal(refCalls.filter((call) => call === "begin:0").length, 128, "SCR_TimeRefresh_f BeginFrame count mismatch");
+assert.equal(refCalls.filter((call) => call === "end").length, 128, "SCR_TimeRefresh_f EndFrame count mismatch");
+assert.equal(renderedYaws[0], 0, "SCR_TimeRefresh_f first yaw mismatch");
+assert.equal(renderedYaws[127], 127 / 128 * 360, "SCR_TimeRefresh_f last yaw mismatch");
+
+client.cl.screen.scr_initialized = false;
+assert.equal(SCR_UpdateScreen(context, { consoleInitialized: true }), null, "SCR_UpdateScreen scr_initialized guard mismatch");
+client.cl.screen.scr_initialized = true;
+assert.equal(SCR_UpdateScreen(context, { consoleInitialized: false }), null, "SCR_UpdateScreen console initialized guard mismatch");
+
+const stereoCalls: string[] = [];
+client.cl.refresh_prepped = true;
+client.cl.screen.scr_dirty = { x1: 0, y1: 0, x2: 639, y2: 479 };
+context.scr_viewsize!.value = 80;
+SCR_UpdateScreen(context, {
+  viewportWidth: 640,
+  viewportHeight: 480,
+  keyDest: "game",
+  cl_stereo: 1,
+  cl_stereo_separation: 1.5,
+  consoleInitialized: true,
+  ref: {
+    ...ref,
+    BeginFrame: (cameraSeparation: number) => {
+      stereoCalls.push(`begin:${cameraSeparation}`);
+    },
+    EndFrame: () => {
+      stereoCalls.push("end");
+    },
+    RenderFrame: () => {
+      stereoCalls.push("render");
+    },
+    DrawTileClear: (x, y, w, h, name) => {
+      stereoCalls.push(`tile:${x}:${y}:${w}:${h}:${name}`);
+    }
+  },
+  renderFrame: () => createRefDef()
+});
+assert.equal(stereoCalls[0], "begin:-0.5", "SCR_UpdateScreen stereo left BeginFrame mismatch");
+assert.equal(stereoCalls.includes("begin:0.5"), true, "SCR_UpdateScreen stereo right BeginFrame mismatch");
+assert.equal(stereoCalls.filter((call) => call === "render").length, 2, "SCR_UpdateScreen stereo render count mismatch");
+assert.equal(stereoCalls.at(-1), "end", "SCR_UpdateScreen EndFrame ordering mismatch");
+assert.equal(stereoCalls.some((call) => call.startsWith("tile:")), true, "SCR_UpdateScreen should tile clear through ref");
 
 console.log("quake2-cl-scrn: ok");
