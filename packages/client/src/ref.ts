@@ -252,6 +252,13 @@ export function createEntity(): entity_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create the zero-initialized `dlight_t` state used by renderer-facing client code.
+ *
+ * Constraints:
+ * - Must preserve every `client/ref.h` `dlight_t` field with C zero startup values.
+ */
 export function createDlight(): dlight_t {
   return {
     origin: [0, 0, 0],
@@ -260,6 +267,13 @@ export function createDlight(): dlight_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create the zero-initialized `particle_t` state used by renderer-facing client code.
+ *
+ * Constraints:
+ * - Must preserve every `client/ref.h` `particle_t` field with C zero startup values.
+ */
 export function createParticle(): particle_t {
   return {
     origin: [0, 0, 0],
@@ -268,6 +282,13 @@ export function createParticle(): particle_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create the zero-initialized `lightstyle_t` state used by renderer-facing client code.
+ *
+ * Constraints:
+ * - Must preserve every `client/ref.h` `lightstyle_t` field with C zero startup values.
+ */
 export function createLightstyle(): lightstyle_t {
   return {
     rgb: [0, 0, 0],
@@ -275,6 +296,14 @@ export function createLightstyle(): lightstyle_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create the zero-initialized `refdef_t` frame definition used by refresh/render adapters.
+ *
+ * Constraints:
+ * - Must preserve every `client/ref.h` `refdef_t` field with C zero/null startup values.
+ * - Must allocate the fixed `MAX_LIGHTSTYLES` lightstyle table expected by renderer paths.
+ */
 export function createRefDef(): refdef_t {
   return {
     x: 0,

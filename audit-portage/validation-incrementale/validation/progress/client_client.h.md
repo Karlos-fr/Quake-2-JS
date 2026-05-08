@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc `DrawString`, `DrawAltString`, `CL_CheckOrDownloadFile`, `CL_AddNetgraph`, `cl_sustain`/`MAX_SUSTAINS`, `CL_ParticleSteamEffect2`, `CL_TeleporterParticles`, `CL_ParticleEffect*`, `particle_s`, `PARTICLE_GRAVITY`, `BLASTER_PARTICLE_COLOR`, `INSTANT_PARTICLE`.
-- Verdict du lot: Valide pour les fonctions, structures et constantes portees; `Non applicable` pour les champs couverts par `client_sustain_t`/`cparticle_t` et pour `BLASTER_PARTICLE_COLOR`, macro source non referencee par le C.
+- Dernier lot traite: bloc `CL_ClearEffects`, `CL_ClearTEnts`, `CL_BlasterTrail`, `CL_QuadTrail`, `CL_RailTrail`, `CL_BubbleTrail`, `CL_FlagTrail`, `CL_IonripperTrail`, puis effets Rogue adjacents jusqu'a `CL_ParticleSteamEffect`.
+- Verdict du lot: Valide pour les fonctions portees et branchees; proprietaires TS corriges dans la matrice (`cl_fx.ts`, `cl_tent.ts`, `cl_newfx.ts`).
 
 ## Preuves session
 
@@ -22,6 +22,10 @@
 - Cibles lues session console/download/netgraph/particules: `packages/client/src/console.ts`, `packages/client/src/download.ts`, `packages/client/src/precache.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_scrn.ts`, `packages/client/src/client.ts`, `packages/client/src/cl_fx.ts`, `packages/client/src/cl_newfx.ts`, `packages/client/src/cl_tent.ts`, `packages/client/src/refresh.ts`, `apps/web/src`, `packages/renderer-three/src`.
 - Tests lances session console/download/netgraph/particules: `npm run verify:console`, `npm run verify:client:header`, `npm run verify:cl-main`, `npm run verify:cl-scrn`, `npm run verify:cl-newfx`, `npm run verify:cl-tent`, `npm run verify:particle-sync`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
 - Test tente non bloquant session console/download/netgraph/particules: `npm run verify:cl-fx` echoue sur le cas historique deja connu `EF_ROCKET should expose the original rocket dlight to refresh`.
+- Session clears/trails/newfx: source lue `Quake-2-master/client/client.h` lignes 379-402; definitions comparees dans `client/cl_fx.c`, `client/cl_tent.c`, `client/cl_newfx.c`.
+- Cibles lues session clears/trails/newfx: `packages/client/src/cl_fx.ts`, `packages/client/src/cl_tent.ts`, `packages/client/src/cl_newfx.ts`, `packages/client/src/refresh.ts`, `packages/client/src/index.ts`, `apps/web/src/full-game.ts`, `apps/web/src/full-game-local-session.ts`, `apps/web/src/local-client-controller.ts`, `apps/web/src/refresh-debug-layer.ts`, `packages/renderer-three/src/particle-sync.ts`, `packages/renderer-three/src/three-dlight-sync.ts`, `packages/renderer-three/src/three-beam-sync.ts`, `packages/renderer-three/src/gl-world-scene-adapter.ts`.
+- Tests lances session clears/trails/newfx: `npm run verify:client:header`, `npm run verify:cl-newfx`, `npm run verify:cl-tent`, `npm run verify:particle-sync`, `npm run verify:dlight-sync`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:beam-sync`, `npm run typecheck`.
+- Test tente non bloquant session clears/trails/newfx: `npm run verify:cl-fx` echoue sur le cas historique hors lot `EF_ROCKET should expose the original rocket dlight to refresh`; les assertions du meme script situees avant `CL_RocketTrail` couvrent `CL_ClearEffects`, `CL_BlasterTrail`, `CL_QuadTrail`, `CL_FlagTrail`, `CL_RailTrail`, `CL_IonripperTrail` et `CL_BubbleTrail`.
 
 ## Decisions
 
@@ -53,7 +57,13 @@
 - `cl_sustain_t` est represente par `client_sustain_t`; le commentaire d'en-tete a ete corrige pour documenter `Original name`, `Source`, `Category: Ported`, le renommage et l'identite de thinker. `MAX_SUSTAINS` vaut 32 et dimensionne `runtime.cl.tents.sustains`.
 - `CL_ParticleSteamEffect2` est porte dans `cl_newfx.ts`, branche via `CL_ParseTEnt`/`assignSteamSustain` puis `CL_ProcessSustain`; les sorties particules atteignent `CL_BuildRefreshFrame`, `apps/web` et `renderer-three` via `particle-sync`.
 - `CL_TeleporterParticles`, `CL_ParticleEffect`, `CL_ParticleEffect2`, `CL_ParticleEffect3`, `cparticle_t`, `PARTICLE_GRAVITY` et `INSTANT_PARTICLE` sont portes dans le flux particules client; `BLASTER_PARTICLE_COLOR` est une macro source non referencee par le C, les couleurs blaster litterales restant couvertes par `cl_fx`.
+- `CL_ClearEffects` reste owned par `cl_fx.ts` et appelle `CL_ClearParticles`, `CL_ClearDlights`, `CL_ClearLightStyles` dans l'ordre C; `CL_ClearTEnts` reste owned par `cl_tent.ts` et reinitialise beams, player beams, explosions, lasers, sustains, temp lights, force walls et registrations.
+- `CL_BlasterTrail`, `CL_QuadTrail`, `CL_RailTrail`, `CL_BubbleTrail`, `CL_FlagTrail`, `CL_IonripperTrail` sont portes dans `cl_fx.ts`; `CL_BlasterTrail`, `CL_QuadTrail`, `CL_FlagTrail`, `CL_IonripperTrail` sont maintenant reexportes par `packages/client/src/index.ts` et couverts par `verify:client:header`.
+- `CL_BlasterParticles2`, `CL_BlasterTrail2`, `CL_DebugTrail`, `CL_SmokeTrail`, `CL_Flashlight`, `CL_ForceWall`, `CL_FlameEffects`, `CL_GenericParticleEffect`, `CL_BubbleTrail2`, `CL_Heatbeam`, `CL_ParticleSteamEffect` sont portes dans `cl_newfx.ts`; la signature runtime de `CL_Heatbeam` ajoute `right/up` car l'appel TS consomme les vecteurs de vue deja calcules par `CL_AddPlayerBeams`.
+- Runtime: les trails projectile sont atteints via `CL_BuildRefreshFrame` / `CL_ExecutePacketEntityEffects`; les temp entities passent via `CL_ParseServerMessage`, `CL_AddTEntPacket` et `CL_ExecuteTempEntityEffects`; les clears sont appeles lors du parse serveur/changement d'etat client.
+- `apps/web`: le navigateur declenche et consomme ce bloc via les render sources full-game/local-controller et le flux `CL_BuildActionEffects`/`applyAuthoritativeVisualEffects`; pas de logique parallele masquant les particules, dlights, beams, force walls ou sustains du runtime.
+- `renderer-three`: applicable et branche pour particules (`particle-sync`), dlights (`three-dlight-sync`), beams heatbeam (`three-beam-sync`), force walls/sustains visibles via le debug layer web et refresh frame; `gl-world-scene-adapter` consomme aussi camera/scene/refdef pour ces sorties.
 
 ## Prochain lot recommande
 
-Continuer par `CL_ClearEffects`, `CL_ClearTEnts`, puis les premiers trails/effects adjacents (`CL_BlasterTrail`, `CL_QuadTrail`, `CL_RailTrail`, `CL_BubbleTrail`, `CL_FlagTrail`) si le lot reste coherent.
+Continuer par le bloc Rogue suivant a partir de `CL_TrackerTrail`, puis `CL_Tracker_Explode`, `CL_TagTrail`, `CL_ColorFlash`, `CL_Tracker_Shell`, `CL_MonsterPlasma_Shell`, `CL_ColorExplosionParticles`, `CL_ParticleSmokeEffect`; garder `CL_Widowbeamout`, `CL_Nukeblast`, `CL_WidowSplash` dans un lot separe si le bloc devient trop large.

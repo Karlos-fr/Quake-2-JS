@@ -72,18 +72,39 @@ assert.equal(entity.skin, null, "createEntity skin mismatch");
 assert.equal(entity.flags, 0, "createEntity flags mismatch");
 
 const dlight = createRefDlight();
+assert.deepEqual(dlight.origin, [0, 0, 0], "createDlight origin mismatch");
 assert.deepEqual(dlight.color, [0, 0, 0], "createDlight color mismatch");
+assert.equal(dlight.intensity, 0, "createDlight intensity mismatch");
 
 const particle = createRefParticle();
+assert.deepEqual(particle.origin, [0, 0, 0], "createParticle origin mismatch");
 assert.equal(particle.color, 0, "createParticle color mismatch");
+assert.equal(particle.alpha, 0, "createParticle alpha mismatch");
 
 const lightstyle = createRefLightstyle();
 assert.deepEqual(lightstyle.rgb, [0, 0, 0], "createLightstyle rgb mismatch");
+assert.equal(lightstyle.white, 0, "createLightstyle white mismatch");
 
 const refdef = createRefDef();
+assert.equal(refdef.x, 0, "createRefDef x mismatch");
+assert.equal(refdef.y, 0, "createRefDef y mismatch");
+assert.equal(refdef.width, 0, "createRefDef width mismatch");
+assert.equal(refdef.height, 0, "createRefDef height mismatch");
+assert.equal(refdef.fov_x, 0, "createRefDef fov_x mismatch");
+assert.equal(refdef.fov_y, 0, "createRefDef fov_y mismatch");
+assert.deepEqual(refdef.vieworg, [0, 0, 0], "createRefDef vieworg mismatch");
+assert.deepEqual(refdef.viewangles, [0, 0, 0], "createRefDef viewangles mismatch");
+assert.deepEqual(refdef.blend, [0, 0, 0, 0], "createRefDef blend mismatch");
+assert.equal(refdef.time, 0, "createRefDef time mismatch");
+assert.equal(refdef.rdflags, 0, "createRefDef rdflags mismatch");
 assert.equal(refdef.lightstyles.length, REF_MAX_LIGHTSTYLES, "createRefDef lightstyles length mismatch");
 assert.equal(refdef.areabits, null, "createRefDef areabits mismatch");
 assert.equal(refdef.num_entities, 0, "createRefDef num_entities mismatch");
+assert.deepEqual(refdef.entities, [], "createRefDef entities mismatch");
+assert.equal(refdef.num_dlights, 0, "createRefDef num_dlights mismatch");
+assert.deepEqual(refdef.dlights, [], "createRefDef dlights mismatch");
+assert.equal(refdef.num_particles, 0, "createRefDef num_particles mismatch");
+assert.deepEqual(refdef.particles, [], "createRefDef particles mismatch");
 
 const refExport = createRefExport();
 assert.equal(refExport.api_version, API_VERSION, "createRefExport api_version mismatch");

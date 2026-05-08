@@ -2,9 +2,9 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot valide: screen header runtime/HUD principal hors cinematic: `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `scr_con_current`, `scr_conlines`, `sb_lines`, `scr_viewsize`, `crosshair`, `scr_vrect`, `crosshair_pic`.
-- Prochain lot recommande: `SCR_AddDirtyPoint` et `SCR_DirtyScreen`, puis traiter les fonctions cinematic dans un lot separe.
+- Statut: Termine
+- Dernier lot valide: dirty rect et cinematic header: `SCR_AddDirtyPoint`, `SCR_DirtyScreen`, `SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`.
+- Prochain lot recommande: aucun pour `client/screen.h`; toutes les lignes sont `Valide`.
 
 ## Session 2026-05-08
 
@@ -31,3 +31,28 @@ Tests lances:
 ## Blocages
 
 - Aucun blocage pour le lot courant.
+
+## Session 2026-05-08 - cloture header
+
+Checklist appliquee sur le lot valide:
+
+- Source C/H comparee: declarations `Quake-2-master/client/screen.h`, dirty rect dans `Quake-2-master/client/cl_scrn.c`, cinematics dans `Quake-2-master/client/cl_cin.c`.
+- Cible TS comparee: facade `packages/client/src/cl_scrn.ts`, logique cinematic proprietaire `packages/client/src/cl_cin.ts`, etat runtime dans `packages/client/src/client.ts`.
+- Commentaires d'en-tete verifies pour `SCR_AddDirtyPoint`, `SCR_DirtyScreen`, `SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_DrawCinematicRef`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`; la separation facade `screen.h` / port `cl_cin.c` est documentee dans les commentaires et la matrice.
+- Ownership verifie: dirty rect dans `cl_scrn.ts`; cinematic dans `cl_cin.ts` avec exports facade `cl_scrn.ts`; pas de doublon proprietaire concurrent detecte.
+- Runtime verifie: dirty rect appele par HUD/view/menu/console; cinematics atteignables depuis `CL_ParseServerData`, `CL_Frame` via `onRunCinematic`, skip input via `CL_SendCmd`, et commandes `nextserver`.
+- `apps/web` verifie: le flux full-game charge PCX/CIN depuis le filesystem monte, transmet audio brut, stoppe CD audio, execute `SCR_RunCinematic`, puis dessine via `SCR_DrawCinematicRef` et l'adapter ref/canvas.
+- `packages/renderer-three` verifie: les sorties visibles attendues sont images cinematic, palette et raw upload; elles sont consommees via `ref_gl` (`CinematicSetPalette`, `DrawStretchRaw`), `ref-gl-host`, `gl_draw` et `three-gl-draw-adapter`. Pas de sortie modele/frame/particule/beam/dlight/temp entity/areabits/camera/scene propre a ce lot.
+- Correction appliquee: aucune correction de code necessaire pendant cette session.
+
+Tests lances:
+
+- `npm run verify:screen:header`
+- `npm run verify:cinematic:audio-sync`
+- `npm run verify:cl-scrn`
+- `npm run verify:ref-gl-host`
+- `npm run verify:gl-draw`
+- `npm run verify:three-gl-draw-adapter`
+- `npm run verify:full-game:three-renderer`
+- `npm run verify:web-render-order`
+- `npm run typecheck`

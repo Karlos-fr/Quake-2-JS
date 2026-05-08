@@ -28,7 +28,9 @@ import {
   createClientSndDmaContext,
   S_AliasName as S_DMA_AliasName,
   S_AddLoopSounds as S_DMA_AddLoopSounds,
+  S_BeginRegistration as S_DMA_BeginRegistration,
   S_ClearBuffer as S_DMA_ClearBuffer,
+  S_EndRegistration as S_DMA_EndRegistration,
   S_FindName as S_DMA_FindName,
   S_Init as S_DMA_Init,
   S_IssuePlaysound as S_DMA_IssuePlaysound,
@@ -38,6 +40,7 @@ import {
   S_RegisterSound as S_DMA_RegisterSound,
   S_Shutdown as S_DMA_Shutdown,
   S_SpatializeOrigin as S_DMA_SpatializeOrigin,
+  S_StartLocalSound as S_DMA_StartLocalSound,
   S_StartSound as S_DMA_StartSound,
   S_StopAllSounds as S_DMA_StopAllSounds,
   S_Update as S_DMA_Update,
@@ -93,9 +96,36 @@ const fallback = S_DMA_RegisterSexedSound(context, 1, "*death.wav");
 assert.equal(fallback?.name, "#players/female/death.wav", "S_RegisterSexedSound alias filename mismatch");
 assert.equal(fallback?.truename, "player/male/death.wav", "S_RegisterSexedSound fallback mismatch");
 
-const registered = S_DMA_RegisterSound(context, "misc/step.wav");
+let registered = S_DMA_RegisterSound(context, "misc/step.wav");
 assert.equal(registered?.name, "misc/step.wav", "S_RegisterSound mismatch");
 assert.ok(registered, "S_RegisterSound should return a sound effect");
+registered!.cache = createCachedSfx(32);
+
+let loadCount = 0;
+local.hooks.onS_LoadSound = (sfxToLoad) => {
+  loadCount += 1;
+  if (!sfxToLoad.cache) {
+    sfxToLoad.cache = createCachedSfx(16);
+  }
+  return sfxToLoad.cache;
+};
+
+const stale = S_DMA_FindName(context, "misc/stale.wav", true);
+assert.ok(stale, "S_FindName should create stale registration probe");
+stale!.registration_sequence = context.state.s_registration_sequence - 1;
+stale!.cache = createCachedSfx(8);
+S_DMA_BeginRegistration(context);
+const current = S_DMA_RegisterSound(context, "misc/current.wav");
+assert.equal(context.state.s_registering, true, "S_BeginRegistration should set registering flag");
+assert.equal(current?.registration_sequence, context.state.s_registration_sequence, "S_RegisterSound should stamp current sequence");
+assert.equal(loadCount, 0, "S_RegisterSound should defer loading while registering");
+S_DMA_EndRegistration(context);
+assert.equal(context.state.s_registering, false, "S_EndRegistration should clear registering flag");
+assert.equal(stale?.name, "", "S_EndRegistration should clear stale sounds");
+assert.equal(loadCount > 0, true, "S_EndRegistration should load current sounds");
+
+registered = S_DMA_RegisterSound(context, "misc/step.wav");
+assert.ok(registered, "S_RegisterSound should recreate a playback sound after registration cleanup");
 registered!.cache = createCachedSfx(32);
 
 S_DMA_StopAllSounds(context);
@@ -121,6 +151,12 @@ assert.equal(issuedFromReturn, issuedChannel, "S_IssuePlaysound should return th
 assert.equal(issuedChannel?.entnum, 9, "S_IssuePlaysound channel entnum mismatch");
 assert.equal(issuedChannel?.entchannel, 2, "S_IssuePlaysound channel entchannel mismatch");
 assert.equal(issuedChannel?.end, context.sound.state.paintedtime + 32, "S_IssuePlaysound channel end mismatch");
+
+S_DMA_StartLocalSound(context, "misc/talk.wav");
+const localQueued = context.sound.state.s_pendingplays.next;
+assert.ok(localQueued && localQueued !== context.sound.state.s_pendingplays, "S_StartLocalSound should queue one local playsound");
+assert.equal(localQueued?.entnum, client.cl.playernum + 1, "S_StartLocalSound should use the listener entity");
+assert.equal(localQueued?.volume, 255, "S_StartLocalSound should queue full volume");
 
 const overrideTarget = issuedChannel!;
 overrideTarget.end = 9999;

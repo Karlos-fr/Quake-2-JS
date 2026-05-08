@@ -848,6 +848,9 @@ export function Menu_Draw(context: ClientQMenuContext, menu: menuframework_s): v
  *
  * Behavior:
  * - Encodes one left-to-right bright menu draw request.
+ *
+ * Porting notes:
+ * - Returns a structured draw command instead of calling `Draw_Char` directly; the runtime path emits the same glyph stream through `emitDrawString`.
  */
 export function Menu_DrawString(x: number, y: number, text: string): MenuDrawStringCommand {
   return { x, y, text, dark: false, rightToLeft: false };
@@ -861,6 +864,9 @@ export function Menu_DrawString(x: number, y: number, text: string): MenuDrawStr
  *
  * Behavior:
  * - Encodes one left-to-right darkened menu draw request.
+ *
+ * Porting notes:
+ * - Returns a structured draw command instead of calling `Draw_Char` directly; the runtime path emits the same glyph stream through `emitDrawString`.
  */
 export function Menu_DrawStringDark(x: number, y: number, text: string): MenuDrawStringCommand {
   return { x, y, text, dark: true, rightToLeft: false };
@@ -874,6 +880,9 @@ export function Menu_DrawStringDark(x: number, y: number, text: string): MenuDra
  *
  * Behavior:
  * - Encodes one right-to-left bright menu draw request.
+ *
+ * Porting notes:
+ * - Returns a structured draw command instead of calling `Draw_Char` directly; the runtime path emits the same glyph stream through `emitDrawString`.
  */
 export function Menu_DrawStringR2L(x: number, y: number, text: string): MenuDrawStringCommand {
   return { x, y, text, dark: false, rightToLeft: true };
@@ -887,6 +896,9 @@ export function Menu_DrawStringR2L(x: number, y: number, text: string): MenuDraw
  *
  * Behavior:
  * - Encodes one right-to-left darkened menu draw request.
+ *
+ * Porting notes:
+ * - Returns a structured draw command instead of calling `Draw_Char` directly; the runtime path emits the same glyph stream through `emitDrawString`.
  */
 export function Menu_DrawStringR2LDark(x: number, y: number, text: string): MenuDrawStringCommand {
   return { x, y, text, dark: true, rightToLeft: true };

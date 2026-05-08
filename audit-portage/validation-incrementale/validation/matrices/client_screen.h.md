@@ -27,10 +27,10 @@
 | `Quake-2-master/client/screen.h` | global | `crosshair` | `packages/client/src/cl_scrn.ts` | `crosshair` | Valide | A redecouper |  |
 | `Quake-2-master/client/screen.h` | global | `scr_vrect` | `packages/client/src/client.ts` | `scr_vrect` | Valide | A redecouper |  |
 | `Quake-2-master/client/screen.h` | global | `crosshair_pic` | `packages/client/src/client.ts` | `crosshair_pic` | Valide | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_AddDirtyPoint` | `packages/client/src/cl_scrn.ts` | `SCR_AddDirtyPoint` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_DirtyScreen` | `packages/client/src/cl_scrn.ts` | `SCR_DirtyScreen` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_PlayCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_PlayCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_DrawCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_DrawCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_RunCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_RunCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_StopCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_StopCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/screen.h` | function | `SCR_FinishCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_FinishCinematic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_AddDirtyPoint` | `packages/client/src/cl_scrn.ts` | `SCR_AddDirtyPoint` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_DirtyScreen` | `packages/client/src/cl_scrn.ts` | `SCR_DirtyScreen` | Valide | A redecouper |  |
+| `Quake-2-master/client/screen.h` | function | `SCR_PlayCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_PlayCinematic` | Valide | A redecouper | Facade `screen.h` dans `cl_scrn.ts`; logique proprietaire portee dans `packages/client/src/cl_cin.ts`. |
+| `Quake-2-master/client/screen.h` | function | `SCR_DrawCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_DrawCinematic` | Valide | A redecouper | Facade `screen.h` dans `cl_scrn.ts`; logique proprietaire portee dans `packages/client/src/cl_cin.ts`. |
+| `Quake-2-master/client/screen.h` | function | `SCR_RunCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_RunCinematic` | Valide | A redecouper | Facade `screen.h` dans `cl_scrn.ts`; logique proprietaire portee dans `packages/client/src/cl_cin.ts`. |
+| `Quake-2-master/client/screen.h` | function | `SCR_StopCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_StopCinematic` | Valide | A redecouper | Facade `screen.h` dans `cl_scrn.ts`; logique proprietaire portee dans `packages/client/src/cl_cin.ts`. |
+| `Quake-2-master/client/screen.h` | function | `SCR_FinishCinematic` | `packages/client/src/cl_scrn.ts` | `SCR_FinishCinematic` | Valide | A redecouper | Facade `screen.h` dans `cl_scrn.ts`; logique proprietaire portee dans `packages/client/src/cl_cin.ts`. |

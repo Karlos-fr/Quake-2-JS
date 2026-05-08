@@ -77,6 +77,9 @@ assert.ok(source.includes("onBeginLoading: () => {\n      authoritativeLevelLoad
 assert.ok(source.includes("elapsedSeconds: runtime.client.cl.time * 0.001"), "full-game should pass absolute client time to ref_gl world rendering");
 assert.ok(source.includes("const gameVisible = runtime.mode === \"game\" || runtime.isAuthoritativeLevelLoading()"), "full-game should keep the render viewport visible during automatic level loads");
 assert.ok(source.includes("runtime.client.cl.screen.scr_draw_loading !== 0"), "full-game should show the loading plaque as an overlay without hiding the game viewport");
+assert.ok(source.includes("shouldRoutePointerUnlockAsEscape"), "full-game should guard browser pointer-lock loss before synthesizing Escape");
+assert.ok(source.includes("!runtime.isAuthoritativeLevelLoading()"), "automatic level loads must not convert pointer-lock loss into Escape/menu input");
+assert.ok(source.includes("runtime.client.cl.refresh_prepped"), "pointer-lock Escape routing should only happen once the active view is prepared");
 assert.ok(source.includes("runtime.gameRenderer === null"), "full-game should keep the 2D loading overlay while the renderer is pending");
 assert.ok(renderLoopSource.includes("getRenderableViewportSize"), "full-game render loop should guard against zero-sized hidden viewports");
 assert.ok(renderLoopSource.includes("Math.max(1, width)"), "full-game render loop should never pass zero width to Three");

@@ -122,7 +122,13 @@ for (const expected of [
   "pointerLockEscapeArmed",
   "const shouldRouteEscape = runtime.mouse.pointerLockEscapeArmed",
   "routeFullGameEscapeToClient(runtime, page);",
-  "key === K_ESCAPE\n    && runtime.mode === \"game\"",
+  "key === K_ESCAPE\n    && shouldRoutePointerUnlockAsEscape(runtime)",
+  "function shouldRoutePointerUnlockAsEscape(runtime: FullGameRuntime): boolean",
+  "runtime.mode === \"game\"",
+  "runtime.client.cls.state === connstate_t.ca_active",
+  "runtime.client.cl.refresh_prepped",
+  "!runtime.isAuthoritativeLevelLoading()",
+  "runtime.client.cl.screen.scr_draw_loading === 0",
   "suppressNextEscapeKeyUp"
 ]) {
   assert.ok(fullGameSource.includes(expected), `full-game mouse look path should include ${expected}`);

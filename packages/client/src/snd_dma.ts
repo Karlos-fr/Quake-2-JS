@@ -370,11 +370,29 @@ export function S_AliasName(context: ClientSndDmaContext, aliasname: string, tru
   return sfx;
 }
 
+/**
+ * Original name: S_BeginRegistration
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Starts a new registration sequence and defers loading until `S_EndRegistration`.
+ */
 export function S_BeginRegistration(context: ClientSndDmaContext): void {
   context.state.s_registration_sequence += 1;
   context.state.s_registering = true;
 }
 
+/**
+ * Original name: S_RegisterSound
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Finds or creates a sound effect and loads it immediately outside registration passes.
+ */
 export function S_RegisterSound(context: ClientSndDmaContext, name: string): sfx_t | null {
   if (!context.state.sound_started) {
     return null;
@@ -394,6 +412,18 @@ export function S_RegisterSound(context: ClientSndDmaContext, name: string): sfx
   return sfx;
 }
 
+/**
+ * Original name: S_EndRegistration
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Drops stale sounds, pages current cached sounds and loads the current registration set.
+ *
+ * Porting notes:
+ * - Uses nullable cache references instead of `Z_Free`; `Com_PageInMemory` is called when a system hook exists.
+ */
 export function S_EndRegistration(context: ClientSndDmaContext): void {
   for (let i = 0; i < context.state.num_sfx; i += 1) {
     const sfx = context.state.known_sfx[i];
@@ -426,6 +456,15 @@ export function S_EndRegistration(context: ClientSndDmaContext): void {
   context.state.s_registering = false;
 }
 
+/**
+ * Original name: S_PickChannel
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reuses a matching entity channel or chooses the least-lived non-player channel.
+ */
 export function S_PickChannel(context: ClientSndDmaContext, entnum: number, entchannel: number): channel_t | null {
   if (entchannel < 0) {
     sndDmaError(context, ERR_DROP, "S_PickChannel: entchannel<0");
@@ -469,6 +508,15 @@ export function S_PickChannel(context: ClientSndDmaContext, entnum: number, entc
   return ch;
 }
 
+/**
+ * Original name: S_SpatializeOrigin
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Computes stereo left/right volume from listener vectors and distance attenuation.
+ */
 export function S_SpatializeOrigin(
   context: ClientSndDmaContext,
   origin: vec3_t,
@@ -521,6 +569,15 @@ export function S_SpatializeOrigin(
   return { left, right };
 }
 
+/**
+ * Original name: S_Spatialize
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Updates a channel's volumes from either a fixed origin or an entity sound origin hook.
+ */
 export function S_Spatialize(context: ClientSndDmaContext, ch: channel_t): void {
   if (ch.entnum === context.client.cl.playernum + 1) {
     ch.leftvol = ch.master_vol;
@@ -537,6 +594,12 @@ export function S_Spatialize(context: ClientSndDmaContext, ch: channel_t): void 
   ch.rightvol = volumes.right;
 }
 
+/**
+ * Original name: S_AllocPlaysound
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 export function S_AllocPlaysound(context: ClientSndDmaContext): playsound_t | null {
   const ps = context.state.s_freeplays.next;
   if (!ps || ps === context.state.s_freeplays) {
@@ -547,11 +610,26 @@ export function S_AllocPlaysound(context: ClientSndDmaContext): playsound_t | nu
   return ps;
 }
 
+/**
+ * Original name: S_FreePlaysound
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 export function S_FreePlaysound(context: ClientSndDmaContext, ps: playsound_t): void {
   unlinkPlaySound(ps);
   insertAfter(context.state.s_freeplays, ps);
 }
 
+/**
+ * Original name: S_IssuePlaysound
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Assigns a queued playsound to a mixer channel, spatializes it, and frees the queued node.
+ */
 export function S_IssuePlaysound(context: ClientSndDmaContext, ps: playsound_t): channel_t | null {
   if ((context.sound.state.s_show?.value ?? 0) !== 0) {
     sndDmaPrintf(context, `Issue ${ps.begin}\n`);
@@ -581,6 +659,18 @@ export function S_IssuePlaysound(context: ClientSndDmaContext, ps: playsound_t):
   return ch;
 }
 
+/**
+ * Original name: S_RegisterSexedSound
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves player-model-specific sounds and falls back to the male sound alias.
+ *
+ * Porting notes:
+ * - Probes existence through the sound-local filesystem hooks.
+ */
 export function S_RegisterSexedSound(context: ClientSndDmaContext, entNumber: number, base: string): sfx_t | null {
   let model = "";
   const configIndex = CS_PLAYERSKINS + entNumber - 1;
@@ -696,6 +786,15 @@ export function S_IssueReadyPlaysounds(context: ClientSndDmaContext): channel_t[
   return issued;
 }
 
+/**
+ * Original name: S_StartLocalSound
+ * Source: client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers a local UI sound and queues it on the listener entity at full volume.
+ */
 export function S_StartLocalSound(context: ClientSndDmaContext, sound: string): void {
   if (!context.state.sound_started) {
     return;

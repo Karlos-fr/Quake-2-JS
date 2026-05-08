@@ -270,44 +270,44 @@
 | `Quake-2-master/client/menu.c` | global | `longname` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local map token inside `StartServer_MenuInit`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local formatted map label inside `StartServer_MenuInit`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | function | `strcpy` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | C library call used inside `StartServer_MenuInit`, not a menu-owned function. |
-| `Quake-2-master/client/menu.c` | function | `StartServer_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuDraw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `StartServer_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `M_Menu_StartServer_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_StartServer_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `dmoptions_statusbar` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DMFlagCallback` | `packages/client/src/menu-multiplayer.ts` | `DMFlagCallback` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `flags` | `packages/client/src/menu-multiplayer.ts` | `flags` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `bit` | `packages/client/src/menu-multiplayer.ts` | `bit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DMOptions_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `DMOptions_MenuInit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `yes_no_names` | `packages/client/src/menu-multiplayer.ts` | `yes_no_names` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `teamplay_names` | `packages/client/src/menu-multiplayer.ts` | `teamplay_names` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `dmflags` | `packages/client/src/menu-multiplayer.ts` | `dmflags` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `y` | `packages/client/src/menu.ts` | `y` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DMOptions_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `DMOptions_MenuDraw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DMOptions_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `DMOptions_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `M_Menu_DMOptions_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_DMOptions_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DownloadCallback` | `packages/client/src/menu-multiplayer.ts` | `DownloadCallback` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DownloadOptions_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `DownloadOptions_MenuInit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `yes_no_names` | `packages/client/src/menu-multiplayer.ts` | `yes_no_names` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `y` | `packages/client/src/menu.ts` | `y` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DownloadOptions_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `DownloadOptions_MenuDraw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `DownloadOptions_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `DownloadOptions_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `M_Menu_DownloadOptions_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_DownloadOptions_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | macro | `NUM_ADDRESSBOOK_ENTRIES` | `packages/client/src/menu-types.ts` | `NUM_ADDRESSBOOK_ENTRIES` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_addressbook_fields` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `AddressBook_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuInit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `adr` | `packages/client/src/menu-multiplayer.ts` | `adr` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `AddressBook_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `index` | `packages/client/src/menu.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `AddressBook_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuDraw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `M_Menu_AddressBook_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_AddressBook_f` | A verifier | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `StartServer_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuDraw` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `StartServer_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `StartServer_MenuKey` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `StartServer_MenuKey`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
+| `Quake-2-master/client/menu.c` | function | `M_Menu_StartServer_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_StartServer_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `dmoptions_statusbar` | `packages/client/src/menu-types.ts` | `ClientMenuState.dmoptions_statusbar` | Valide | A redecouper | Ported as split menu context state. |
+| `Quake-2-master/client/menu.c` | function | `DMFlagCallback` | `packages/client/src/menu-multiplayer.ts` | `DMFlagCallback` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `flags` | `packages/client/src/menu-multiplayer.ts` | `flags` | Non applicable | A redecouper | Local variable inside `DMFlagCallback`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `bit` | `packages/client/src/menu-multiplayer.ts` | `bit` | Non applicable | A redecouper | Local variable inside `DMFlagCallback`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `DMOptions_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `DMOptions_MenuInit` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `yes_no_names` | `packages/client/src/menu-multiplayer.ts` | `yes_no_names` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `teamplay_names` | `packages/client/src/menu-multiplayer.ts` | `teamplay_names` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `dmflags` | `packages/client/src/menu-multiplayer.ts` | `dmflags` | Non applicable | A redecouper | Local variable inside `DMOptions_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `y` | `packages/client/src/menu.ts` | `y` | Non applicable | A redecouper | Local layout accumulator inside `DMOptions_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `DMOptions_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `DMOptions_MenuDraw` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `DMOptions_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `DMOptions_MenuKey` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
+| `Quake-2-master/client/menu.c` | function | `M_Menu_DMOptions_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_DMOptions_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `DownloadCallback` | `packages/client/src/menu-multiplayer.ts` | `DownloadCallback` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `DownloadOptions_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `DownloadOptions_MenuInit` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `yes_no_names` | `packages/client/src/menu-multiplayer.ts` | `yes_no_names` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `y` | `packages/client/src/menu.ts` | `y` | Non applicable | A redecouper | Local layout accumulator inside `DownloadOptions_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `DownloadOptions_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `DownloadOptions_MenuDraw` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `DownloadOptions_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `DownloadOptions_MenuKey` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
+| `Quake-2-master/client/menu.c` | function | `M_Menu_DownloadOptions_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_DownloadOptions_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | macro | `NUM_ADDRESSBOOK_ENTRIES` | `packages/client/src/menu-types.ts` | `NUM_ADDRESSBOOK_ENTRIES` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_addressbook_fields` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_addressbook_fields` | Valide | A redecouper | Ported as split menu context state. |
+| `Quake-2-master/client/menu.c` | function | `AddressBook_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuInit` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `AddressBook_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `adr` | `packages/client/src/menu-multiplayer.ts` | `adr` | Non applicable | A redecouper | Local cvar pointer inside `AddressBook_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local cvar-name buffer inside `AddressBook_MenuInit`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `AddressBook_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuKey` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `index` | `packages/client/src/menu.ts` | `index` | Non applicable | A redecouper | Local loop variable inside `AddressBook_MenuKey`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | global | `buffer` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local cvar-name buffer inside `AddressBook_MenuKey`; covered by function validation. |
+| `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
+| `Quake-2-master/client/menu.c` | function | `AddressBook_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuDraw` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `M_Menu_AddressBook_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_AddressBook_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `s_player_name_field` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `s_player_model_box` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `s_player_skin_box` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |

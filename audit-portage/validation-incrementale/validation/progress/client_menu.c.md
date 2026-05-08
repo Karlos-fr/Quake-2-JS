@@ -2,6 +2,19 @@
 
 ## Session 2026-05-08
 
+- Lot traite: gros bloc start-server/DM options/download options/address book (`StartServer_MenuDraw`, `StartServer_MenuKey`, `M_Menu_StartServer_f`, `dmoptions_statusbar`, `DMFlagCallback`, `DMOptions_MenuInit/Draw/Key`, `M_Menu_DMOptions_f`, `DownloadCallback`, `DownloadOptions_MenuInit/Draw/Key`, `M_Menu_DownloadOptions_f`, `NUM_ADDRESSBOOK_ENTRIES`, `s_addressbook_fields`, `AddressBook_MenuInit/Key/Draw`, `M_Menu_AddressBook_f` et locaux associes).
+- Matrice mise a jour: 199 `Valide`, 0 `Partiel`, 99 `Non applicable`, 64 `A verifier`.
+- Corrections appliquees: renforcement du harness `scripts/verify/quake2-menu.ts` pour couvrir explicitement le nettoyage ESC de `StartServer_MenuKey`, les flags DM/Rogue de `DMFlagCallback`, le rendu du carnet d'adresses et les callbacks download existants.
+- Runtime: start-server, DM options, download options et address book atteignables via `M_Init` (`menu_startserver`, `menu_dmoptions`, `menu_downloadoptions`, `menu_addressbook`), via les callbacks multiplayer/start-server/player-config, puis `M_PushMenu`, `M_Draw`, `M_Keydown` et `Default_MenuKey`; `dmflags`, `allow_download*` et `adr0..adr8` sont bien modifies par les callbacks portes.
+- apps/web: integration presente via `apps/web/src/full-game.ts`, `createClientMenuContext`, commandes console, mapping input et hook `getMapList`; le navigateur consomme les menus par le runtime porte et ne remplace pas ce bloc par une logique parallele.
+- renderer-three: pas de sortie scene 3D directe attendue pour ce lot. Les entites produisent du menu 2D, des commandes, cvars et champs texte; aucune sortie modeles, frames, images de scene, particules, beams, dlights, temp entities, areabits, camera ou scene n'est attendue dans `packages/renderer-three`.
+- Tests lances:
+  - `npm run verify:menu` OK
+  - `npm run verify:full-game:commands` OK
+  - `npm run verify:full-game:three-renderer` OK
+  - `npm run verify:web-render-order` OK
+  - `npm run typecheck` OK
+
 - Lot traite: bloc join-server complet et debut start-server (`MAX_LOCAL_SERVERS`, `NO_SERVER_STRING`, etats join-server, `M_AddToServerList`, `JoinServerFunc`, `AddressBookFunc`, `NullCursorDraw`, `SearchLocalGames`, `SearchLocalGamesFunc`, `JoinServer_MenuInit`, `JoinServer_MenuDraw`, `JoinServer_MenuKey`, `M_Menu_JoinServer_f`, puis `nummaps`, `DMOptionsFunc`, `RulesChangeFunc`, `StartServerActionFunc`, `StartServer_MenuInit` et locaux associes).
 - Matrice mise a jour: 176 `Valide`, 0 `Partiel`, 84 `Non applicable`, 102 `A verifier`.
 - Corrections appliquees: branchement `apps/web` du menu start-server corrige dans `apps/web/src/full-game.ts` avec lecture/parsing de `maps.lst` via `FS_LoadFile` et `COM_Parse`; ajout d'une assertion anti-regression dans `scripts/verify/quake2-full-game-three-renderer.ts`.
@@ -43,4 +56,4 @@
 
 ## Prochain lot recommande
 
-Continuer le bloc start-server: `StartServer_MenuDraw`, `StartServer_MenuKey`, `M_Menu_StartServer_f` et les `Default_MenuKey`/locaux associes, puis enchainer sur `dmoptions_statusbar`, `DMFlagCallback`, `DMOptions_MenuInit/Draw/Key`, `M_Menu_DMOptions_f` si le lot reste coherent.
+Continuer avec le bloc player config: `s_player_name_field`, `s_player_model_box`, `s_player_skin_box`, `s_player_handedness_box`, `s_player_rate_box`, `s_player_download_action`, `MAX_DISPLAYNAME`, `MAX_PLAYERMODELS`, `playermodelinfo_s`, listes `s_pmnames`/`rate_tbl`/`rate_names`, callbacks `DownloadOptionsFunc`, `HandednessCallback`, `RateCallback`, `ModelCallback`, puis `PlayerConfig_ScanDirectories` si le lot reste coherent.

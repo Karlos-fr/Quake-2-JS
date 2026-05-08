@@ -38,25 +38,25 @@
 | `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `flags` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | macro | `ENTITY_FLAGS` | `packages/client/src/ref.ts` | `ENTITY_FLAGS` | Valide | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `dlight_t` | `packages/client/src/ref.ts` | `dlight_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `intensity` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `particle_t` | `packages/client/src/ref.ts` | `particle_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `lightstyle_t` | `packages/client/src/ref.ts` | `lightstyle_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `rgb` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `white` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `refdef_t` | `packages/client/src/ref.ts` | `refdef_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `vieworg` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `viewangles` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `blend` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `time` | `packages/client/src/cl_scrn.ts` | `time` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `rdflags` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `areabits` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `num_entities` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `num_dlights` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `num_particles` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `API_VERSION` | `packages/client/src/ref.ts` | `API_VERSION` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `dlight_t` | `packages/client/src/ref.ts` | `dlight_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `intensity` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `particle_t` | `packages/client/src/ref.ts` | `particle_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `color` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `lightstyle_t` | `packages/client/src/ref.ts` | `lightstyle_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `rgb` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `white` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `refdef_t` | `packages/client/src/ref.ts` | `refdef_t` | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `vieworg` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `viewangles` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `blend` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `time` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `rdflags` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `areabits` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `num_entities` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `num_dlights` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `num_particles` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `API_VERSION` | `packages/client/src/ref.ts` | `API_VERSION` | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | struct | `refexport_t` | `packages/client/src/ref.ts` | `refexport_t` | A verifier | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `api_version` | `packages/client/src/ref.ts` | `API_VERSION` | A verifier | A redecouper |  |
 | `Quake-2-master/client/ref.h` | struct | `refimport_t` | `packages/client/src/ref.ts` | `refimport_t` | A verifier | A redecouper |  |

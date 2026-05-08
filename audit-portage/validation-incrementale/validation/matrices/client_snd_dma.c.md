@@ -10,81 +10,81 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Play` | `packages/client/src/snd_dma.ts` | `S_Play` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_SoundList` | `packages/client/src/snd_dma.ts` | `S_SoundList` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Update_` | `packages/client/src/snd_dma.ts` | `S_Update_` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_StopAllSounds` | `packages/client/src/snd_dma.ts` | `S_StopAllSounds` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | macro | `SOUND_FULLVOLUME` | `packages/client/src/snd_dma.ts` | `SOUND_FULLVOLUME` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | macro | `SOUND_LOOPATTENUATE` | `packages/client/src/snd_dma.ts` | `SOUND_LOOPATTENUATE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_registration_sequence` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `channels` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `snd_initialized` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `sound_started` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `dma` | `packages/client/src/snd_mix.ts` | `dma` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `listener_origin` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `listener_forward` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `listener_right` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `listener_up` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_registering` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `soundtime` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `paintedtime` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | macro | `MAX_SFX` | `packages/client/src/snd_dma.ts` | `MAX_SFX` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `known_sfx` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `num_sfx` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | macro | `MAX_PLAYSOUNDS` | `packages/client/src/snd_dma.ts` | `MAX_PLAYSOUNDS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_beginofs` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_volume` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_testsound` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_loadas8bit` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_khz` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_show` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_mixahead` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_primary` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s_rawend` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_SoundInfo_f` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Init` | `packages/client/src/snd_dma.ts` | `S_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `cv` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Shutdown` | `packages/client/src/snd_dma.ts` | `S_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_FindName` | `packages/client/src/snd_dma.ts` | `S_FindName` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_AliasName` | `packages/client/src/snd_dma.ts` | `S_AliasName` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `s` | `packages/client/src/snd_mix.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_BeginRegistration` | `packages/client/src/snd_dma.ts` | `S_BeginRegistration` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_RegisterSound` | `packages/client/src/snd_dma.ts` | `S_RegisterSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_EndRegistration` | `packages/client/src/snd_dma.ts` | `S_EndRegistration` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `size` | `packages/client/src/snd_dma.ts` | `size` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_PickChannel` | `packages/client/src/snd_dma.ts` | `S_PickChannel` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `ch_idx` | `packages/client/src/snd_dma.ts` | `ch_idx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `first_to_die` | `packages/client/src/snd_dma.ts` | `first_to_die` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `life_left` | `packages/client/src/snd_dma.ts` | `life_left` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_SpatializeOrigin` | `packages/client/src/snd_dma.ts` | `S_SpatializeOrigin` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `dot` | `packages/client/src/snd_dma.ts` | `dot` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `dist` | `packages/client/src/snd_dma.ts` | `dist` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `source_vec` | `packages/client/src/snd_dma.ts` | `source_vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_Spatialize` | `packages/client/src/snd_dma.ts` | `S_Spatialize` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `origin` | `packages/client/src/snd_dma.ts` | `origin` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_AllocPlaysound` | `packages/client/src/snd_dma.ts` | `S_AllocPlaysound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_FreePlaysound` | `packages/client/src/snd_dma.ts` | `S_FreePlaysound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_IssuePlaysound` | `packages/client/src/snd_dma.ts` | `S_IssuePlaysound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_RegisterSexedSound` | `packages/client/src/snd_dma.ts` | `S_RegisterSexedSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `n` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `p` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `f` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `model` | `packages/client/src/snd_dma.ts` | `model` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `sexedFilename` | `packages/client/src/snd_dma.ts` | `sexedFilename` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `maleFilename` | `packages/client/src/snd_dma.ts` | `maleFilename` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_StartSound` | `packages/client/src/snd_dma.ts` | `S_StartSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `vol` | `packages/client/src/snd_dma.ts` | `vol` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `start` | `packages/client/src/snd_dma.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_StartLocalSound` | `packages/client/src/snd_dma.ts` | `S_StartLocalSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_ClearBuffer` | `packages/client/src/snd_dma.ts` | `S_ClearBuffer` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `clear` | `packages/client/src/snd_dma.ts` | `clear` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `clear` | `packages/client/src/snd_dma.ts` | `clear` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `S_StopAllSounds` | `packages/client/src/snd_dma.ts` | `S_StopAllSounds` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Play` | `packages/client/src/snd_dma.ts` | `S_Play` | Non applicable | A redecouper | Declaration forward C; implementation a valider dans sa ligne proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_SoundList` | `packages/client/src/snd_dma.ts` | `S_SoundList` | Non applicable | A redecouper | Declaration forward C; implementation a valider dans sa ligne proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Update_` | `packages/client/src/snd_dma.ts` | `S_Update_` | Non applicable | A redecouper | Declaration forward C; implementation a valider dans sa ligne proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_StopAllSounds` | `packages/client/src/snd_dma.ts` | `S_StopAllSounds` | Non applicable | A redecouper | Declaration forward C; implementation validee dans sa ligne proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | macro | `SOUND_FULLVOLUME` | `packages/client/src/snd_dma.ts` | `SOUND_FULLVOLUME` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | macro | `SOUND_LOOPATTENUATE` | `packages/client/src/snd_dma.ts` | `SOUND_LOOPATTENUATE` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `s_registration_sequence` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `channels` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState.channels` (`snd_loc.ts`) et branche dans le contexte `snd_dma`. |
+| `Quake-2-master/client/snd_dma.c` | global | `snd_initialized` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `sound_started` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `dma` | `packages/client/src/snd_mix.ts` | `dma` | Valide | A redecouper | Deplace dans `ClientSoundLocalState.dma` (`snd_loc.ts`) et consomme par `snd_dma`/web audio. |
+| `Quake-2-master/client/snd_dma.c` | global | `listener_origin` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `listener_forward` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `listener_right` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `listener_up` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_registering` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `soundtime` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `paintedtime` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState.paintedtime`. |
+| `Quake-2-master/client/snd_dma.c` | macro | `MAX_SFX` | `packages/client/src/snd_dma.ts` | `MAX_SFX` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `known_sfx` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `num_sfx` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | macro | `MAX_PLAYSOUNDS` | `packages/client/src/snd_dma.ts` | `MAX_PLAYSOUNDS` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `s_beginofs` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `s_volume` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_testsound` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_loadas8bit` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_khz` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_show` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_mixahead` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_primary` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | global | `s_rawend` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Deplace dans `ClientSoundLocalState`. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_SoundInfo_f` | `packages/client/src/snd_dma.ts` |  | Valide | A redecouper | Renomme `S_SoundInfo`; entete TS conserve `Original name: S_SoundInfo_f`. |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Init` | `packages/client/src/snd_dma.ts` | `S_Init` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `cv` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Shutdown` | `packages/client/src/snd_dma.ts` | `S_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_FindName` | `packages/client/src/snd_dma.ts` | `S_FindName` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_AliasName` | `packages/client/src/snd_dma.ts` | `S_AliasName` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `s` | `packages/client/src/snd_mix.ts` | `s` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_BeginRegistration` | `packages/client/src/snd_dma.ts` | `S_BeginRegistration` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_RegisterSound` | `packages/client/src/snd_dma.ts` | `S_RegisterSound` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_EndRegistration` | `packages/client/src/snd_dma.ts` | `S_EndRegistration` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `size` | `packages/client/src/snd_dma.ts` | `size` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_PickChannel` | `packages/client/src/snd_dma.ts` | `S_PickChannel` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `ch_idx` | `packages/client/src/snd_dma.ts` | `ch_idx` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `first_to_die` | `packages/client/src/snd_dma.ts` | `first_to_die` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `life_left` | `packages/client/src/snd_dma.ts` | `life_left` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_SpatializeOrigin` | `packages/client/src/snd_dma.ts` | `S_SpatializeOrigin` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `dot` | `packages/client/src/snd_dma.ts` | `dot` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `dist` | `packages/client/src/snd_dma.ts` | `dist` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `source_vec` | `packages/client/src/snd_dma.ts` | `source_vec` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_Spatialize` | `packages/client/src/snd_dma.ts` | `S_Spatialize` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `origin` | `packages/client/src/snd_dma.ts` | `origin` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_AllocPlaysound` | `packages/client/src/snd_dma.ts` | `S_AllocPlaysound` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_FreePlaysound` | `packages/client/src/snd_dma.ts` | `S_FreePlaysound` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_IssuePlaysound` | `packages/client/src/snd_dma.ts` | `S_IssuePlaysound` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_RegisterSexedSound` | `packages/client/src/snd_dma.ts` | `S_RegisterSexedSound` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `n` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `p` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `f` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `model` | `packages/client/src/snd_dma.ts` | `model` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `sexedFilename` | `packages/client/src/snd_dma.ts` | `sexedFilename` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `maleFilename` | `packages/client/src/snd_dma.ts` | `maleFilename` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_StartSound` | `packages/client/src/snd_dma.ts` | `S_StartSound` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `vol` | `packages/client/src/snd_dma.ts` | `vol` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `start` | `packages/client/src/snd_dma.ts` | `start` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_StartLocalSound` | `packages/client/src/snd_dma.ts` | `S_StartLocalSound` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_ClearBuffer` | `packages/client/src/snd_dma.ts` | `S_ClearBuffer` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `clear` | `packages/client/src/snd_dma.ts` | `clear` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `clear` | `packages/client/src/snd_dma.ts` | `clear` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `S_StopAllSounds` | `packages/client/src/snd_dma.ts` | `S_StopAllSounds` | Valide | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_AddLoopSounds` | `packages/client/src/snd_dma.ts` | `S_AddLoopSounds` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `sounds` | `packages/client/src/snd_dma.ts` | `sounds` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | A verifier | A redecouper |  |

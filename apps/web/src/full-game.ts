@@ -2620,8 +2620,7 @@ function handleKeyUp(event: KeyboardEvent, runtime: FullGameRuntime, page: FullG
   }
 
   if (key === K_ESCAPE
-    && runtime.mode === "game"
-    && runtime.menu.keys.state.key_dest === keydest_t.key_game
+    && shouldRoutePointerUnlockAsEscape(runtime)
     && !isFullGamePointerLocked(page)) {
     event.preventDefault();
     routeFullGameEscapeToClient(runtime, page);
@@ -2650,8 +2649,7 @@ function handlePointerDown(event: PointerEvent, runtime: FullGameRuntime, page: 
 
 function handlePointerLockChange(runtime: FullGameRuntime, page: FullGamePage): void {
   const shouldRouteEscape = runtime.mouse.pointerLockEscapeArmed
-    && runtime.mode === "game"
-    && runtime.menu.keys.state.key_dest === keydest_t.key_game;
+    && shouldRoutePointerUnlockAsEscape(runtime);
 
   runtime.mouse.pointerLocked = isFullGamePointerLocked(page);
   if (runtime.mouse.pointerLocked) {
@@ -2673,6 +2671,15 @@ function routeFullGameEscapeToClient(runtime: FullGameRuntime, page: FullGamePag
   Key_Event(runtime.menu.keys, K_ESCAPE, true, runtime.client.cls.realtime);
   executeRuntimeCommandBuffer(runtime, page);
   syncFullGameKeyDestination(runtime, page);
+}
+
+function shouldRoutePointerUnlockAsEscape(runtime: FullGameRuntime): boolean {
+  return runtime.mode === "game"
+    && runtime.menu.keys.state.key_dest === keydest_t.key_game
+    && runtime.client.cls.state === connstate_t.ca_active
+    && runtime.client.cl.refresh_prepped
+    && !runtime.isAuthoritativeLevelLoading()
+    && runtime.client.cl.screen.scr_draw_loading === 0;
 }
 
 function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRuntime, page: FullGamePage): void {

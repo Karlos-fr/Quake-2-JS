@@ -18,10 +18,26 @@ import { strict as assert } from "node:assert";
 import {
   Cmd_ExecuteString,
   Cvar_Set,
+  DF_ALLOW_EXIT,
+  DF_FIXED_FOV,
+  DF_FORCE_RESPAWN,
+  DF_INFINITE_AMMO,
+  DF_INSTANT_ITEMS,
   DF_MODELTEAMS,
+  DF_NO_ARMOR,
   DF_NO_FALLING,
+  DF_NO_FRIENDLY_FIRE,
+  DF_NO_HEALTH,
+  DF_NO_ITEMS,
   DF_NO_MINES,
+  DF_NO_NUKES,
+  DF_NO_SPHERES,
+  DF_NO_STACK_DOUBLE,
+  DF_QUAD_DROP,
+  DF_SAME_LEVEL,
   DF_SKINTEAMS,
+  DF_SPAWN_FARTHEST,
+  DF_WEAPONS_STAY,
   createCommandRuntime,
   createCvarRuntime,
   createNetAdr,
@@ -36,6 +52,7 @@ import {
   K_LEFTARROW,
   K_RIGHTARROW,
   K_UPARROW,
+  DMFlagCallback,
   M_Draw,
   M_ForceMenuOff,
   M_Init,
@@ -48,6 +65,8 @@ import {
   M_Menu_Main_f,
   M_Menu_Quit_f,
   M_Menu_SaveGame_f,
+  M_Menu_StartServer_f,
+  StartServer_MenuKey,
   Key_SetBinding,
   createClientKeyContext,
   createClientMenuContext,
@@ -284,6 +303,9 @@ M_Keydown(menu, K_ENTER);
 assert.equal(menu.state.m_menudepth, 4, "address book action should push the address book menu");
 assert.equal(menu.state.s_addressbook_menu.nitems, 9, "AddressBook_MenuInit item count mismatch");
 assert.equal(menu.state.s_addressbook_fields[0].buffer, "quake.example.net", "AddressBook_MenuInit should load adr cvar values");
+drawPics.length = 0;
+M_Draw(menu);
+assert.ok(drawPics.some((entry) => entry.name === "m_banner_addressbook"), "AddressBook_MenuDraw should draw the address-book banner");
 menu.state.s_addressbook_fields[0].buffer = "192.168.0.42";
 M_Keydown(menu, K_ESCAPE);
 assert.equal(cvar.cvar_vars.find((entry) => entry.name === "adr0")?.string, "192.168.0.42", "AddressBook_MenuKey escape should persist adr cvars");
@@ -326,6 +348,28 @@ qmenu.state.drawStrings.length = 0;
 M_Draw(menu);
 assert.ok(qmenu.state.drawStrings.some((entry) => entry.text === "falling damage"), "DMOptions_MenuDraw should draw falling damage");
 
+const assertDmFlagCallback = (item: { curvalue: number }, curvalue: number, flag: number, message: string): void => {
+  Cvar_Set(cvar, "dmflags", "0");
+  item.curvalue = curvalue;
+  DMFlagCallback(menu, item);
+  assert.equal((Number(cvar.cvar_vars.find((entry) => entry.name === "dmflags")?.string) & flag) !== 0, true, message);
+};
+
+assertDmFlagCallback(menu.state.s_weapons_stay_box, 1, DF_WEAPONS_STAY, "weapons stay should set DF_WEAPONS_STAY");
+assertDmFlagCallback(menu.state.s_instant_powerups_box, 1, DF_INSTANT_ITEMS, "instant powerups should set DF_INSTANT_ITEMS");
+assertDmFlagCallback(menu.state.s_powerups_box, 0, DF_NO_ITEMS, "disallowing powerups should set DF_NO_ITEMS");
+assertDmFlagCallback(menu.state.s_health_box, 0, DF_NO_HEALTH, "disallowing health should set DF_NO_HEALTH");
+assertDmFlagCallback(menu.state.s_armor_box, 0, DF_NO_ARMOR, "disallowing armor should set DF_NO_ARMOR");
+assertDmFlagCallback(menu.state.s_spawn_farthest_box, 1, DF_SPAWN_FARTHEST, "spawn farthest should set DF_SPAWN_FARTHEST");
+assertDmFlagCallback(menu.state.s_samelevel_box, 1, DF_SAME_LEVEL, "same map should set DF_SAME_LEVEL");
+assertDmFlagCallback(menu.state.s_force_respawn_box, 1, DF_FORCE_RESPAWN, "force respawn should set DF_FORCE_RESPAWN");
+assertDmFlagCallback(menu.state.s_allow_exit_box, 1, DF_ALLOW_EXIT, "allow exit should set DF_ALLOW_EXIT");
+assertDmFlagCallback(menu.state.s_infinite_ammo_box, 1, DF_INFINITE_AMMO, "infinite ammo should set DF_INFINITE_AMMO");
+assertDmFlagCallback(menu.state.s_fixed_fov_box, 1, DF_FIXED_FOV, "fixed FOV should set DF_FIXED_FOV");
+assertDmFlagCallback(menu.state.s_quad_drop_box, 1, DF_QUAD_DROP, "quad drop should set DF_QUAD_DROP");
+assertDmFlagCallback(menu.state.s_friendlyfire_box, 0, DF_NO_FRIENDLY_FIRE, "disabling friendly fire should set DF_NO_FRIENDLY_FIRE");
+Cvar_Set(cvar, "dmflags", "0");
+
 menu.state.s_dmoptions_menu.cursor = 0;
 M_Keydown(menu, K_LEFTARROW);
 assert.equal(Number(cvar.cvar_vars.find((entry) => entry.name === "dmflags")?.string), DF_NO_FALLING, "falling damage toggle should set DF_NO_FALLING");
@@ -343,15 +387,29 @@ assert.equal((dmflagsValue & DF_SKINTEAMS) === 0, true, "teamplay by model shoul
 
 M_Keydown(menu, K_ESCAPE);
 assert.equal(menu.state.m_menudepth, 3, "escape from DMOptions should return to start server");
+menu.state.mapnames = ["Outer Base\nBUNK1", "Installation\nBASE2"];
+menu.state.nummaps = 2;
+menu.state.s_startmap_list.itemnames = menu.state.mapnames;
+StartServer_MenuKey(menu, K_ESCAPE);
+assert.equal(menu.state.nummaps, 0, "StartServer_MenuKey escape should clear the map count");
+assert.deepEqual(menu.state.mapnames, [], "StartServer_MenuKey escape should release formatted map names");
+assert.equal(menu.state.s_startmap_list.itemnames, null, "StartServer_MenuKey escape should detach start-map itemnames");
+M_Menu_StartServer_f(menu);
 
 developerSearchpath = 2;
 Cvar_Set(cvar, "dmflags", "0");
 M_Menu_DMOptions_f(menu);
 assert.equal(menu.state.s_dmoptions_menu.nitems, 19, "DMOptions_MenuInit Rogue item count mismatch");
 assert.equal(menu.state.s_no_mines_box.generic.name, "remove mines", "DMOptions_MenuInit should add Rogue remove mines option");
+assert.equal(menu.state.s_no_nukes_box.generic.name, "remove nukes", "DMOptions_MenuInit should add Rogue remove nukes option");
+assert.equal(menu.state.s_stack_double_box.generic.name, "2x/4x stacking off", "DMOptions_MenuInit should add Rogue stacking option");
+assert.equal(menu.state.s_no_spheres_box.generic.name, "remove spheres", "DMOptions_MenuInit should add Rogue remove spheres option");
 menu.state.s_dmoptions_menu.cursor = 15;
 M_Keydown(menu, K_RIGHTARROW);
 assert.equal(Number(cvar.cvar_vars.find((entry) => entry.name === "dmflags")?.string), DF_NO_MINES, "Rogue remove mines should set DF_NO_MINES");
+assertDmFlagCallback(menu.state.s_no_nukes_box, 1, DF_NO_NUKES, "Rogue remove nukes should set DF_NO_NUKES");
+assertDmFlagCallback(menu.state.s_stack_double_box, 1, DF_NO_STACK_DOUBLE, "Rogue stacking off should set DF_NO_STACK_DOUBLE");
+assertDmFlagCallback(menu.state.s_no_spheres_box, 1, DF_NO_SPHERES, "Rogue remove spheres should set DF_NO_SPHERES");
 M_Keydown(menu, K_ESCAPE);
 developerSearchpath = 0;
 

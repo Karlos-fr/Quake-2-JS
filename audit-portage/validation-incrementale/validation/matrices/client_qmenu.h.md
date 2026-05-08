@@ -42,32 +42,32 @@
 | `Quake-2-master/client/qmenu.h` | global | `localdata` | `packages/client/src/qmenu.ts` | `localdata` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `flags` | `packages/client/src/qmenu.ts` | `flags` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `statusbar` | `packages/client/src/qmenu.ts` | `statusbar` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | struct | `menufield_s` | `packages/client/src/qmenu.ts` | `menufield_s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `buffer` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` | `cursor` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `length` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `visible_length` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `visible_offset` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | struct | `menuslider_s` | `packages/client/src/qmenu.ts` | `menuslider_s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `minvalue` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `maxvalue` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `curvalue` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `range` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | struct | `menulist_s` | `packages/client/src/qmenu.ts` | `menulist_s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `curvalue` | `packages/client/src/qmenu.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | struct | `menuaction_s` | `packages/client/src/qmenu.ts` | `menuaction_s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | struct | `menuseparator_s` | `packages/client/src/qmenu.ts` | `menuseparator_s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Field_Key` | `packages/client/src/qmenu.ts` | `Field_Key` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_AddItem` | `packages/client/src/qmenu.ts` | `Menu_AddItem` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_AdjustCursor` | `packages/client/src/qmenu.ts` | `Menu_AdjustCursor` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_Center` | `packages/client/src/qmenu.ts` | `Menu_Center` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_Draw` | `packages/client/src/qmenu.ts` | `Menu_Draw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_ItemAtCursor` | `packages/client/src/qmenu.ts` | `Menu_ItemAtCursor` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_SelectItem` | `packages/client/src/qmenu.ts` | `Menu_SelectItem` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_SetStatusBar` | `packages/client/src/qmenu.ts` | `Menu_SetStatusBar` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_SlideItem` | `packages/client/src/qmenu.ts` | `Menu_SlideItem` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_TallySlots` | `packages/client/src/qmenu.ts` | `Menu_TallySlots` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawString` | `packages/client/src/qmenu.ts` | `Menu_DrawString` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawStringDark` | `packages/client/src/qmenu.ts` | `Menu_DrawStringDark` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawStringR2L` | `packages/client/src/qmenu.ts` | `Menu_DrawStringR2L` | A verifier | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawStringR2LDark` | `packages/client/src/qmenu.ts` | `Menu_DrawStringR2LDark` | A verifier | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | struct | `menufield_s` | `packages/client/src/qmenu.ts` | `menufield_s` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `buffer` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` | `cursor` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `length` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `visible_length` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `visible_offset` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | struct | `menuslider_s` | `packages/client/src/qmenu.ts` | `menuslider_s` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `minvalue` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `maxvalue` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `curvalue` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `range` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | struct | `menulist_s` | `packages/client/src/qmenu.ts` | `menulist_s` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `curvalue` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | struct | `menuaction_s` | `packages/client/src/qmenu.ts` | `menuaction_s` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | struct | `menuseparator_s` | `packages/client/src/qmenu.ts` | `menuseparator_s` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Field_Key` | `packages/client/src/qmenu.ts` | `Field_Key` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_AddItem` | `packages/client/src/qmenu.ts` | `Menu_AddItem` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_AdjustCursor` | `packages/client/src/qmenu.ts` | `Menu_AdjustCursor` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_Center` | `packages/client/src/qmenu.ts` | `Menu_Center` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_Draw` | `packages/client/src/qmenu.ts` | `Menu_Draw` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_ItemAtCursor` | `packages/client/src/qmenu.ts` | `Menu_ItemAtCursor` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_SelectItem` | `packages/client/src/qmenu.ts` | `Menu_SelectItem` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_SetStatusBar` | `packages/client/src/qmenu.ts` | `Menu_SetStatusBar` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_SlideItem` | `packages/client/src/qmenu.ts` | `Menu_SlideItem` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_TallySlots` | `packages/client/src/qmenu.ts` | `Menu_TallySlots` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawString` | `packages/client/src/qmenu.ts` | `Menu_DrawString` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawStringDark` | `packages/client/src/qmenu.ts` | `Menu_DrawStringDark` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawStringR2L` | `packages/client/src/qmenu.ts` | `Menu_DrawStringR2L` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | function | `Menu_DrawStringR2LDark` | `packages/client/src/qmenu.ts` | `Menu_DrawStringR2LDark` | Valide | A redecouper |  |

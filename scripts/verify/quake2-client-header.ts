@@ -20,7 +20,13 @@ import {
   CL_AddEntities,
   CL_AddLightStyles,
   CL_AddTEnts,
+  CL_BlasterParticles2,
+  CL_BlasterTrail,
+  CL_BlasterTrail2,
+  CL_BubbleTrail,
+  CL_BubbleTrail2,
   CL_BuildRefreshFrame,
+  CL_DebugTrail,
   CL_ParseConfigString,
   CL_ParseDelta,
   CL_ParseEntityBits,
@@ -29,10 +35,21 @@ import {
   CL_ParseMuzzleFlash2,
   CL_ParseTEnt,
   CL_PrepRefresh,
+  CL_Flashlight,
+  CL_FlameEffects,
+  CL_ForceWall,
+  CL_FlagTrail,
+  CL_GenericParticleEffect,
+  CL_Heatbeam,
+  CL_IonripperTrail,
+  CL_ParticleSteamEffect,
+  CL_QuadTrail,
+  CL_RailTrail,
   CL_RegisterSounds,
   CL_RunDLights,
   CL_RunLightStyles,
   CL_SetLightstyle,
+  CL_SmokeTrail,
   INSTANT_PARTICLE,
   MAX_CLIENTWEAPONMODELS,
   MAX_DLIGHTS,
@@ -83,6 +100,23 @@ assert.equal(typeof CL_RunLightStyles, "function", "CL_RunLightStyles export mis
 assert.equal(typeof CL_AddDLights, "function", "CL_AddDLights export mismatch");
 assert.equal(typeof CL_AddLightStyles, "function", "CL_AddLightStyles export mismatch");
 assert.equal(typeof CL_AddTEnts, "function", "CL_AddTEnts export mismatch");
+assert.equal(typeof CL_BlasterTrail, "function", "CL_BlasterTrail export mismatch");
+assert.equal(typeof CL_QuadTrail, "function", "CL_QuadTrail export mismatch");
+assert.equal(typeof CL_RailTrail, "function", "CL_RailTrail export mismatch");
+assert.equal(typeof CL_BubbleTrail, "function", "CL_BubbleTrail export mismatch");
+assert.equal(typeof CL_FlagTrail, "function", "CL_FlagTrail export mismatch");
+assert.equal(typeof CL_IonripperTrail, "function", "CL_IonripperTrail export mismatch");
+assert.equal(typeof CL_BlasterParticles2, "function", "CL_BlasterParticles2 export mismatch");
+assert.equal(typeof CL_BlasterTrail2, "function", "CL_BlasterTrail2 export mismatch");
+assert.equal(typeof CL_DebugTrail, "function", "CL_DebugTrail export mismatch");
+assert.equal(typeof CL_SmokeTrail, "function", "CL_SmokeTrail export mismatch");
+assert.equal(typeof CL_Flashlight, "function", "CL_Flashlight export mismatch");
+assert.equal(typeof CL_ForceWall, "function", "CL_ForceWall export mismatch");
+assert.equal(typeof CL_FlameEffects, "function", "CL_FlameEffects export mismatch");
+assert.equal(typeof CL_GenericParticleEffect, "function", "CL_GenericParticleEffect export mismatch");
+assert.equal(typeof CL_BubbleTrail2, "function", "CL_BubbleTrail2 export mismatch");
+assert.equal(typeof CL_Heatbeam, "function", "CL_Heatbeam export mismatch");
+assert.equal(typeof CL_ParticleSteamEffect, "function", "CL_ParticleSteamEffect export mismatch");
 assert.equal(typeof CL_PrepRefresh, "function", "CL_PrepRefresh export mismatch");
 assert.equal(typeof CL_RegisterSounds, "function", "CL_RegisterSounds export mismatch");
 assert.equal(CL_AddEntities, CL_BuildRefreshFrame, "CL_AddEntities should expose CL_BuildRefreshFrame adapter");
