@@ -47,6 +47,7 @@ const validationErrors: Array<"name" | "value"> = [];
 const writeProtected: string[] = [];
 const latchedChanges: string[] = [];
 const gameDirChanges: string[] = [];
+const variableSets: Array<[string, string, string]> = [];
 let autoexecCount = 0;
 
 const cvar = createCvarRuntime({
@@ -54,6 +55,7 @@ const cvar = createCvarRuntime({
   onInfoValidationError: (kind) => validationErrors.push(kind),
   onWriteProtected: (name) => writeProtected.push(name),
   onLatchedChange: (name) => latchedChanges.push(name),
+  onVariableSet: (variable, previousValue) => variableSets.push([variable.name, previousValue, variable.string]),
   onGameDirChange: (value) => gameDirChanges.push(value),
   onExecAutoexec: () => {
     autoexecCount += 1;
@@ -122,6 +124,7 @@ assert.equal(cvar.userinfo_modified, false, "creating userinfo cvar should not m
 Cvar_Set(cvar, "rate", "30000");
 assert.equal(Cvar_VariableString(cvar, "rate"), "30000", "Cvar_Set mismatch");
 assert.equal(cvar.userinfo_modified, true, "userinfo modification flag mismatch");
+assert.deepEqual(variableSets.at(-1), ["rate", "25000", "30000"], "Cvar_Set variable hook mismatch");
 
 const beforeInvalidSetPrints = printed.length;
 Cvar_Set(cvar, "rate", "30;000");

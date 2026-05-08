@@ -84,6 +84,15 @@ assert.ok(
   fullGameSource.includes("function syncFullGameActiveView"),
   "full-game active view sync should keep runtime.mode aligned with key_dest"
 );
+assert.equal(
+  fullGameSource.includes("bind q +moveleft\\n\");\n  Cbuf_AddText(cmd, \"exec config.cfg\\n\");"),
+  true,
+  "full-game default weapon binds must be queued before config.cfg so stored user bindings win"
+);
+assert.ok(
+  fullGameSource.includes("runtime.finishConfigBootstrap();"),
+  "full-game should finish one-time config bootstrap after the initial command buffer runs"
+);
 assert.ok(
   fullGameSource.includes("pendingAuthoritativeMapRequest = null;\n    gameBridge.requestedMap = null;"),
   "full-game should clear completed map requests so menu New Game can restart the same map"

@@ -35,6 +35,7 @@ import {
   Cmd_RemoveCommand,
   Cbuf_AddText,
   Cbuf_Execute,
+  CVAR_ARCHIVE,
   Cvar_Command,
   Cvar_Init,
   Cvar_Get,
@@ -300,6 +301,7 @@ interface FullGameRuntime {
   flushClientOutput: () => void;
   updateClientAudio: () => void;
   writeConfiguration: () => boolean;
+  finishConfigBootstrap: () => void;
   beginAuthoritativeConnection: (mapRequest: string) => void;
   shouldPumpAuthoritativeFrame: () => boolean;
   pumpAuthoritativeFrame: (milliseconds: number) => void;
@@ -348,6 +350,7 @@ async function bootstrap(): Promise<void> {
     resizeCanvas(page);
     window.addEventListener("resize", () => resizeCanvas(page));
     window.addEventListener("beforeunload", () => {
+      runtime.finishConfigBootstrap();
       runtime.writeConfiguration();
     });
     window.addEventListener("pointerdown", (event) => handlePointerDown(event, runtime, page), { capture: true });
@@ -514,6 +517,10 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   client.cls.state = connstate_t.ca_disconnected;
   let consoleContext: ClientConsoleContext | null = null;
   let mainContext: ClientMainContext | null = null;
+  let configAutosaveEnabled = false;
+  let configBootstrapPending = true;
+  let configAutosaveTimer: ReturnType<typeof setTimeout> | null = null;
+  let writeConfigurationNow: () => boolean = () => false;
   const printToConsole = (line: string): void => {
     if (shouldSuppressFullGameConsoleLine(line)) {
       return;
@@ -544,6 +551,25 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       Cbuf_AddText(cmd, "exec autoexec.cfg\n");
     }
   });
+  const scheduleConfigAutosave = (): void => {
+    if (!configAutosaveEnabled) {
+      return;
+    }
+
+    if (configAutosaveTimer !== null) {
+      clearTimeout(configAutosaveTimer);
+    }
+
+    configAutosaveTimer = setTimeout(() => {
+      configAutosaveTimer = null;
+      writeConfigurationNow();
+    }, 400);
+  };
+  cvar.hooks.onVariableSet = (variable) => {
+    if ((variable.flags & CVAR_ARCHIVE) !== 0) {
+      scheduleConfigAutosave();
+    }
+  };
   const cmd = createCommandRuntime({
     onPrint: printToConsole,
     loadTextFile: (path) => readWebConfigOrMountedText(configStorage, filesystem, path),
@@ -630,7 +656,14 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   });
 
   const ref = createCanvasRef(filesystem, assets, drawCommands);
-  const keys = createClientKeyContext({ cmd, cvar, client });
+  const keys = createClientKeyContext({
+    cmd,
+    cvar,
+    client,
+    hooks: {
+      onSetBinding: () => scheduleConfigAutosave()
+    }
+  });
   const localTransport = createFullGameLocalTransport({
     now: () => client.cls.realtime,
     onPrint: printToConsole
@@ -1078,6 +1111,19 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     });
     return result !== null;
   };
+  writeConfigurationNow = writeConfiguration;
+  const finishConfigBootstrap = (): void => {
+    if (!configBootstrapPending) {
+      return;
+    }
+
+    configBootstrapPending = false;
+    const configPath = `${FS_Gamedir(filesystem)}/config.cfg`;
+    if (configStorage.readText(configPath) === null) {
+      writeConfiguration();
+    }
+    configAutosaveEnabled = true;
+  };
   registerWebConfigCommands(cmd, {
     writeConfiguration,
     onPrint: printToConsole
@@ -1130,6 +1176,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     flushClientOutput,
     updateClientAudio,
     writeConfiguration,
+    finishConfigBootstrap,
     beginAuthoritativeConnection,
     shouldPumpAuthoritativeFrame,
     pumpAuthoritativeFrame,
@@ -1281,8 +1328,6 @@ function getRequestedSoundRate(sound: ClientSoundLocalContext, fallback: number)
 
 function queueFullGameConfigBootstrap(cmd: ReturnType<typeof createCommandRuntime>): void {
   Cbuf_AddText(cmd, "exec default.cfg\n");
-  Cbuf_AddText(cmd, "exec config.cfg\n");
-  Cbuf_AddText(cmd, "exec autoexec.cfg\n");
   Cbuf_AddText(cmd, "bind 1 \"use Blaster\"\n");
   Cbuf_AddText(cmd, "bind 2 \"use Shotgun\"\n");
   Cbuf_AddText(cmd, "bind 3 \"use Super Shotgun\"\n");
@@ -1299,6 +1344,8 @@ function queueFullGameConfigBootstrap(cmd: ReturnType<typeof createCommandRuntim
   Cbuf_AddText(cmd, "bind d +moveright\n");
   Cbuf_AddText(cmd, "bind z +forward\n");
   Cbuf_AddText(cmd, "bind q +moveleft\n");
+  Cbuf_AddText(cmd, "exec config.cfg\n");
+  Cbuf_AddText(cmd, "exec autoexec.cfg\n");
 }
 
 function registerFullGameToggleConsoleCommand(
@@ -1318,28 +1365,33 @@ function seedMenuCvars(cvar: ReturnType<typeof createCvarRuntime>): void {
   Cvar_Get(cvar, "coop", "0", 0);
   Cvar_Get(cvar, "gamerules", "0", 0);
   Cvar_Get(cvar, "skill", "1", 0);
-  Cvar_Get(cvar, "name", "Player", 1);
-  Cvar_Get(cvar, "skin", "male/grunt", 1);
-  Cvar_Get(cvar, "hand", "0", 1);
-  Cvar_Get(cvar, "rate", "25000", 1);
-  Cvar_Get(cvar, "s_volume", "0.7", 1);
-  Cvar_Get(cvar, "lookspring", "0", 1);
-  Cvar_Get(cvar, "lookstrafe", "0", 1);
-  Cvar_Get(cvar, "freelook", "1", 1);
-  Cvar_Get(cvar, "crosshair", "0", 1);
-  Cvar_Get(cvar, "s_khz", "22", 1);
-  Cvar_Get(cvar, "vid_ref", "gl", 1);
-  Cvar_Get(cvar, "vid_fullscreen", "0", 1);
-  Cvar_Get(cvar, "vid_gamma", "1", 1);
+  Cvar_Get(cvar, "name", "Player", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "skin", "male/grunt", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "hand", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "rate", "25000", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "s_volume", "0.7", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "lookspring", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "lookstrafe", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "freelook", "1", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "crosshair", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "in_joystick", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "cd_nocd", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "s_khz", "22", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "s_loadas8bit", "1", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "s_primary", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "vid_ref", "gl", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "vid_fullscreen", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "vid_gamma", "1", CVAR_ARCHIVE);
   Cvar_Get(cvar, "intensity", "2", 0);
-  Cvar_Get(cvar, "viewsize", "100", 1);
-  Cvar_Get(cvar, "gl_driver", "opengl32", 0);
-  Cvar_Get(cvar, "gl_picmip", "0", 0);
-  Cvar_Get(cvar, "gl_mode", "3", 0);
-  Cvar_Get(cvar, "gl_ext_palettedtexture", "1", 1);
-  Cvar_Get(cvar, "gl_finish", "0", 1);
-  Cvar_Get(cvar, "sw_mode", "0", 0);
-  Cvar_Get(cvar, "sw_stipplealpha", "0", 1);
+  Cvar_Get(cvar, "viewsize", "100", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "gl_driver", "opengl32", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "gl_picmip", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "gl_mode", "3", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "gl_ext_palettedtexture", "1", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "gl_finish", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "sw_mode", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "sw_stipplealpha", "0", CVAR_ARCHIVE);
+  Cvar_Get(cvar, "win_noalttab", "0", CVAR_ARCHIVE);
 }
 
 function createCanvasRef(
@@ -1464,6 +1516,7 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
 
 function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePage): void {
   Cbuf_Execute(runtime.menu.cmd);
+  runtime.finishConfigBootstrap();
   const enteredLoading = syncFullGameLoadingState(runtime.client, runtime.gameBridge, {
     onBeginLoading: () => {
       runtime.mode = "loading";

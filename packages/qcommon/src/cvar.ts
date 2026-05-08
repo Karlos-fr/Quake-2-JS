@@ -42,6 +42,7 @@ export interface CvarHooks {
   onInfoValidationError?: (kind: "name" | "value") => void;
   onWriteProtected?: (name: string) => void;
   onLatchedChange?: (name: string) => void;
+  onVariableSet?: (variable: cvar_t, previousValue: string) => void;
   onGameDirChange?: (value: string) => void;
   onExecAutoexec?: () => void;
   onPrint?: (line: string) => void;
@@ -596,8 +597,10 @@ export function Cvar_Set2(runtime: CvarRuntime, var_name: string, value: string,
     runtime.userinfo_modified = true;
   }
 
+  const previousValue = variable.string;
   variable.string = value;
   variable.value = parseCvarFloat(variable.string);
+  runtime.hooks.onVariableSet?.(variable, previousValue);
   return variable;
 }
 
