@@ -401,6 +401,14 @@ assert.equal(
   "models/weapons/v_launch/tris.md2",
   "key-6 Grenade Launcher use path should select the launcher view model"
 );
+const grenadeLauncherRenderFrame = createFullGameServerRenderSource(client, { cvar }).refreshFrame;
+const grenadeLauncherViewWeapon = grenadeLauncherRenderFrame?.entities.find((entity) => (entity.flags & RF_WEAPONMODEL) !== 0) ?? null;
+assert.ok(grenadeLauncherViewWeapon, "Grenade Launcher should append a first-person weapon render entity");
+assert.equal(
+  client.cl.configstrings[CS_MODELS + grenadeLauncherViewWeapon.modelindex],
+  "models/weapons/v_launch/tris.md2",
+  "Grenade Launcher render entity should resolve to the launcher view model"
+);
 
 Cbuf_AddText(cmd, "use grenades\n");
 Cbuf_Execute(cmd);
