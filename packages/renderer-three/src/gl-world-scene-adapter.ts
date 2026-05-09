@@ -1193,7 +1193,7 @@ function drawInlineBrushModels(
 
     setCurrentModel(runtime, binding.model);
     R_DrawBrushModel(runtime, {
-      frame: 0,
+      frame: snapshot.frame ?? 0,
       origin: [snapshot.origin[0], snapshot.origin[1], snapshot.origin[2]],
       angles: [snapshot.angles[0], snapshot.angles[1], snapshot.angles[2]],
       flags: snapshot.flags ?? 0

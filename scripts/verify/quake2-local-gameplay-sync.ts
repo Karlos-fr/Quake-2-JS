@@ -59,12 +59,14 @@ function verifyBrushModelSnapshotInterpolationUsesPreviousTime(): void {
       model: "*1",
       origin: [0, 10, 20],
       angles: [0, 350, 30],
+      frame: 1,
       flags: 2
     }],
     currentSnapshots: [{
       model: "*1",
       origin: [10, 30, 60],
       angles: [90, 10, 50],
+      frame: 3,
       flags: 4
     }],
     previousTime: 1,
@@ -79,6 +81,7 @@ function verifyBrushModelSnapshotInterpolationUsesPreviousTime(): void {
   assertNumber(snapshot!.angles[0], 45, "brush model interpolation must LerpAngle pitch");
   assertNumber(snapshot!.angles[1], 360, "brush model interpolation must LerpAngle wrapped yaw");
   assertNumber(snapshot!.angles[2], 40, "brush model interpolation must LerpAngle roll");
+  assertNumber(snapshot!.frame ?? -1, 3, "brush model interpolation must keep current texture frame");
   assertNumber(snapshot!.flags ?? 0, 4, "brush model interpolation must keep current render flags");
 }
 

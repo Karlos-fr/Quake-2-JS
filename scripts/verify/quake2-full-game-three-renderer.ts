@@ -11,6 +11,7 @@ const repoRoot = process.cwd();
 const source = normalizeLineEndings(readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8"));
 const renderLoopSource = normalizeLineEndings(readFileSync(join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"), "utf8"));
 const menuPlayerConfigSource = normalizeLineEndings(readFileSync(join(repoRoot, "packages", "client", "src", "menu-player-config.ts"), "utf8"));
+const worldSceneAdapterSource = normalizeLineEndings(readFileSync(join(repoRoot, "packages", "renderer-three", "src", "gl-world-scene-adapter.ts"), "utf8"));
 
 assert.ok(source.includes("createFullGameRenderLoop"), "full-game should instantiate the shared Three/ref_gl render loop");
 assert.ok(source.includes("createFullGameServerRenderSource"), "full-game should build render frames from the authoritative client state");
@@ -95,6 +96,7 @@ assert.ok(source.includes("runtime.gameRenderer === null"), "full-game should ke
 assert.ok(renderLoopSource.includes("getRenderableViewportSize"), "full-game render loop should guard against zero-sized hidden viewports");
 assert.ok(renderLoopSource.includes("Math.max(1, width)"), "full-game render loop should never pass zero width to Three");
 assert.ok(renderLoopSource.includes("Math.max(1, height)"), "full-game render loop should never pass zero height to Three");
+assert.ok(worldSceneAdapterSource.includes("frame: snapshot.frame ?? 0"), "inline brush model rendering should preserve snapshot frames for animated textures");
 assert.equal(source.includes("FullGameLocalSession"), false, "full-game should not depend on the legacy local-session type");
 assert.equal(source.includes("createFullGameLocalSession"), false, "full-game should not create the legacy local-session harness");
 

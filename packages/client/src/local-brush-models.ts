@@ -10,7 +10,7 @@
  * - packages/qcommon
  */
 
-import { LerpAngle } from "../../qcommon/src/index.js";
+import { EF_ANIM01, EF_ANIM23, EF_ANIM_ALL, EF_ANIM_ALLFAST, LerpAngle } from "../../qcommon/src/index.js";
 import { SOLID_TRIGGER, SVF_NOCLIENT, type GameRuntime } from "../../game/src/index.js";
 import type { BrushModelInterpolationState } from "./local-gameplay-sync.js";
 
@@ -22,12 +22,14 @@ import type { BrushModelInterpolationState } from "./local-gameplay-sync.js";
  *
  * Constraints:
  * - Must use the original Quake II `*N` model naming convention.
+ * - Must carry the renderer frame used by animated brush textures.
  * - Must stay renderer-neutral so runtime code never imports renderer adapters.
  */
 export interface BrushModelSnapshot {
   model: string | undefined;
   origin: [number, number, number];
   angles: [number, number, number];
+  frame?: number;
   flags?: number;
 }
 
@@ -60,6 +62,7 @@ export function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapsh
       model: entity.model,
       origin: [...entity.origin],
       angles: [...entity.angles],
+      frame: resolveBrushModelFrame(runtime.time, entity.s.frame, entity.s.effects),
       flags: entity.s.renderfx
     });
   }
@@ -137,6 +140,9 @@ export function buildInterpolatedBrushModelSnapshots(
         LerpAngle(previousSnapshot.angles[2], currentSnapshot.angles[2], lerpFraction)
       ]
     };
+    if (currentSnapshot.frame !== undefined) {
+      nextSnapshot.frame = currentSnapshot.frame;
+    }
     if (currentSnapshot.flags !== undefined) {
       nextSnapshot.flags = currentSnapshot.flags;
     }
@@ -166,10 +172,41 @@ export function cloneBrushModelSnapshot(snapshot: BrushModelSnapshot): BrushMode
     origin: [...snapshot.origin],
     angles: [...snapshot.angles]
   };
+  if (snapshot.frame !== undefined) {
+    clone.frame = snapshot.frame;
+  }
   if (snapshot.flags !== undefined) {
     clone.flags = snapshot.flags;
   }
   return clone;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
+ * Category: New
+ * Purpose: Resolve the client-facing brush-model frame used by ref_gl animated texture selection.
+ *
+ * Constraints:
+ * - Must mirror the EF_ANIM frame overrides from `CL_AddPacketEntities`.
+ */
+function resolveBrushModelFrame(timeSeconds: number, stateFrame: number, effects: number): number {
+  const autoanim = Math.trunc(2 * timeSeconds);
+
+  if ((effects & EF_ANIM01) !== 0) {
+    return autoanim & 1;
+  }
+  if ((effects & EF_ANIM23) !== 0) {
+    return 2 + (autoanim & 1);
+  }
+  if ((effects & EF_ANIM_ALL) !== 0) {
+    return autoanim;
+  }
+  if ((effects & EF_ANIM_ALLFAST) !== 0) {
+    return Math.trunc(timeSeconds * 10);
+  }
+
+  return stateFrame;
 }
 
 /**

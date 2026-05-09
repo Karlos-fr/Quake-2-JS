@@ -12,6 +12,7 @@ import {
   Cmd_Init,
   Cvar_Get,
   Cvar_Init,
+  EF_ANIM23,
   RF_TRANSLUCENT,
   createCommandRuntime,
   createCvarRuntime
@@ -48,25 +49,28 @@ brushEntity.number = 12;
 brushEntity.modelindex = 2;
 brushEntity.origin = [64, 128, 16];
 brushEntity.angles = [0, 90, 0];
+brushEntity.frame = 1;
+brushEntity.effects = EF_ANIM23;
 brushEntity.renderfx = RF_TRANSLUCENT;
+client.cl_entities[12]!.current = {
+  ...brushEntity,
+  origin: [...brushEntity.origin],
+  angles: [...brushEntity.angles],
+  old_origin: [...brushEntity.origin]
+};
+client.cl_entities[12]!.prev = {
+  ...client.cl_entities[12]!.current,
+  origin: [...brushEntity.origin],
+  angles: [...brushEntity.angles],
+  old_origin: [...brushEntity.origin],
+  frame: 0
+};
 
 const aliasEntity = client.cl_parse_entities[1];
 aliasEntity.number = 13;
 aliasEntity.modelindex = 3;
 aliasEntity.origin = [1, 2, 3];
 aliasEntity.angles = [4, 5, 6];
-
-const snapshots = buildServerBackedBrushModelSnapshots(client);
-assert.deepEqual(
-  snapshots,
-  [{
-    model: "*1",
-    origin: [64, 128, 16],
-    angles: [0, 90, 0],
-    flags: RF_TRANSLUCENT
-  }],
-  "server-backed brush snapshots should come from inline model configstrings"
-);
 
 client.cl.sound_precache[4] = "world/wind2.wav";
 const registeredSound = createSfx();
@@ -84,7 +88,19 @@ Cmd_Init(cmd);
 Cvar_Init(cvar, cmd);
 Cvar_Get(cvar, "gl_shadows", "1", 0);
 
-const source = createFullGameServerRenderSource(client, { cvar });
+const source = createFullGameServerRenderSource(client, { cvar, predictMovement: false, drawGun: false });
+const snapshots = buildServerBackedBrushModelSnapshots(client, source.refreshFrame);
+assert.deepEqual(
+  snapshots,
+  [{
+    model: "*1",
+    origin: [64, 128, 16],
+    angles: [0, 90, 0],
+    frame: 3,
+    flags: RF_TRANSLUCENT
+  }],
+  "server-backed brush snapshots should use refresh-frame animation frames from inline model configstrings"
+);
 assert.equal(source.runtime, client, "render source should expose the parsed client runtime");
 assert.equal(source.skySnapshot?.name, "unit1_", "render source should expose the parsed sky config");
 assert.equal(source.getCvarValue("gl_shadows"), 1, "render source should read renderer cvars");

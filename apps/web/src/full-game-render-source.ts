@@ -21,6 +21,7 @@ import { SCR_BuildScreenState } from "../../../packages/client/src/cl_scrn.js";
 import { CL_BuildSkySnapshot } from "../../../packages/client/src/sky.js";
 import type {
   BrushModelSnapshot,
+  ClientRefreshFrame,
   ClientRuntime
 } from "../../../packages/client/src/index.js";
 import type { FullGameRenderSource } from "./full-game-render-loop.js";
@@ -77,7 +78,7 @@ export function createFullGameServerRenderSource(
     refreshFrame,
     screenState: SCR_BuildScreenState(runtime),
     skySnapshot: CL_BuildSkySnapshot(runtime),
-    getBrushModelSnapshots: () => buildServerBackedBrushModelSnapshots(runtime),
+    getBrushModelSnapshots: () => buildServerBackedBrushModelSnapshots(runtime, refreshFrame),
     getCvarValue: (name) => Cvar_VariableValue(options.cvar, name),
     resolveSoundPath: (soundIndex) => resolveClientSoundPath(runtime, soundIndex)
   };
@@ -92,9 +93,30 @@ export function createFullGameServerRenderSource(
  * Constraints:
  * - Must use the original `CS_MODELS + modelindex` configstring as the model name source.
  * - Must include only BSP inline models whose names follow the Quake II `*N` convention.
+ * - Must preserve the client refresh frame number that drives ref_gl animated brush textures.
  */
-export function buildServerBackedBrushModelSnapshots(client: ClientRuntime): BrushModelSnapshot[] {
+export function buildServerBackedBrushModelSnapshots(client: ClientRuntime, refreshFrame?: ClientRefreshFrame | null): BrushModelSnapshot[] {
   const snapshots: BrushModelSnapshot[] = [];
+
+  if (refreshFrame) {
+    for (const entity of refreshFrame.entities) {
+      const model = resolveClientModelPath(client, entity.modelindex);
+      if (!model?.startsWith("*")) {
+        continue;
+      }
+
+      snapshots.push({
+        model,
+        origin: [...entity.origin],
+        angles: [...entity.angles],
+        frame: entity.frame,
+        flags: entity.flags
+      });
+    }
+
+    return snapshots;
+  }
+
   const frame = client.cl.frame;
   const parseEntities = client.cl_parse_entities;
 
@@ -110,6 +132,7 @@ export function buildServerBackedBrushModelSnapshots(client: ClientRuntime): Bru
       model,
       origin: [...entity.origin],
       angles: [...entity.angles],
+      frame: entity.frame,
       flags: entity.renderfx
     });
   }
