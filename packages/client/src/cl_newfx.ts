@@ -19,6 +19,15 @@ import { AngleVectors, VIDREF_GL, VIDREF_SOFT, crand, frand, type vec3_t } from 
 import { INSTANT_PARTICLE, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./client.js";
 import { MakeNormalVectors, type ClientActionEffect } from "./cl_fx.js";
 
+/**
+ * Original name: PARTICLE_GRAVITY
+ * Source: client/client.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Mirrors the shared particle gravity macro for Rogue `cl_newfx.c` effects.
+ */
 const PARTICLE_GRAVITY = 40;
 
 /**

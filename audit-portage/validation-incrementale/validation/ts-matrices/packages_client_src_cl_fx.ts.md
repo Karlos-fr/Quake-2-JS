@@ -4,35 +4,35 @@
 
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Symboles TS: 124
-- Couvert C/H: 0
-- Reste a auditer: 124
+- Couvert C/H: 15
+- Reste a auditer: 100
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/cl_fx.ts` | value | `PARTICLE_GRAVITY` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | value | `FLY_BEAM_LENGTH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | value | `flyAvelocities` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | interface | `ClientLightStyle` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | interface | `ClientActionEffect` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | interface | `ClientPacketEntityEffectSource` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ParticleEffect` | oui | `CL_ParticleEffect` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ParticleEffect2` | oui | `CL_ParticleEffect2` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ParticleEffect3` | oui | `CL_ParticleEffect3` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlueBlasterParticles` | oui | `CL_BlueBlasterParticles` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlueBlasterParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlueBlasterParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BuildMuzzleFlashEffects` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ClearLightStyles` | oui | `CL_ClearLightStyles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_RunLightStyles` | oui | `CL_RunLightStyles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_SetLightstyle` | oui | `CL_SetLightstyle` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_AddLightStyles` | oui | `CL_AddLightStyles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ClearDlights` | oui | `CL_ClearDlights` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_AllocDlight` | oui | `CL_AllocDlight` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_NewDlight` | oui | `CL_NewDlight` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_RunDLights` | oui | `CL_RunDLights` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_AddDLights` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ClearParticles` | oui | `CL_ClearParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ClearEffects` | oui | `CL_ClearEffects` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/cl_fx.ts` | value | `PARTICLE_GRAVITY` | non | `PARTICLE_GRAVITY` | `Quake-2-master/client/cl_fx.c` | Ported |  | Source inconnue | Valide | Macro source verifiee directement; absente de la matrice C/H. |
+| `packages/client/src/cl_fx.ts` | value | `FLY_BEAM_LENGTH` | non | `BEAMLENGTH` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | value | `flyAvelocities` | non | `avelocities` | `Quake-2-master/client/cl_fx.c` | Ported |  | Source inconnue | Valide | Global source verifie directement; absent de la matrice C/H. |
+| `packages/client/src/cl_fx.ts` | interface | `ClientLightStyle` | oui | `N/A` | `N/A (runtime descriptor)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | interface | `ClientActionEffect` | oui | `N/A` | `N/A (runtime descriptor)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | interface | `ClientPacketEntityEffectSource` | oui | `N/A` | `N/A (runtime descriptor)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ParticleEffect` | oui | `CL_ParticleEffect` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ParticleEffect2` | oui | `CL_ParticleEffect2` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ParticleEffect3` | oui | `CL_ParticleEffect3` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlueBlasterParticles` | oui | `CL_BlueBlasterParticles` | `Quake-2-master/client/cl_tent.c` | Adapter | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Adapter local | Valide | Declaration source seulement; adapter vers `CL_BlasterParticles`. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlueBlasterParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlueBlasterParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BuildMuzzleFlashEffects` | oui | `N/A` | `N/A (runtime effect builder)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ClearLightStyles` | oui | `CL_ClearLightStyles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_RunLightStyles` | oui | `CL_RunLightStyles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_SetLightstyle` | oui | `CL_SetLightstyle` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_AddLightStyles` | oui | `CL_AddLightStyles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ClearDlights` | oui | `CL_ClearDlights` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_AllocDlight` | oui | `CL_AllocDlight` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_NewDlight` | oui | `CL_NewDlight` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_RunDLights` | oui | `CL_RunDLights` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_AddDLights` | oui | `CL_AddDLights` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ClearParticles` | oui | `CL_ClearParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ClearEffects` | oui | `CL_ClearEffects` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_fx.ts` | function | `CL_BuildMuzzleFlash2Effects` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_fx.ts` | function | `CL_BuildTempEntityEffects` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_fx.ts` | function | `CL_ExecuteTempEntityEffects` | oui | `CL_ParseTEnt` | `Quake-2-master/client/cl_tent.c and client/cl_newfx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |

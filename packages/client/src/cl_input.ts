@@ -48,6 +48,8 @@ import { SCR_FinishCinematic } from "./cl_scrn.js";
 import { CMD_BACKUP, connstate_t, type ClientRuntime, createKbutton, type kbutton_t } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (context object)
  * Category: New
  * Purpose: Hold the client input button state and the cvars used by the first `cl_input.c` port.
  *
@@ -92,6 +94,8 @@ export interface ClientInputContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime hook contract)
  * Category: New
  * Purpose: Describe cross-file callbacks needed by the `cl_input.c` packet path.
  *
@@ -103,6 +107,8 @@ export interface ClientInputHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (frame options)
  * Category: New
  * Purpose: Describe the host-side frame and key-state values needed by `CL_FinishMove`.
  *
@@ -115,6 +121,8 @@ export interface ClientInputFrameOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime bridge options)
  * Category: New
  * Purpose: Describe the runtime-side options used by the concrete `cl_main.c` -> `cl_input.c` bridge.
  *
@@ -126,6 +134,8 @@ export interface ClientSendCmdBridgeOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (context factory)
  * Category: New
  * Purpose: Create the client input context used by the first `cl_input.c` port.
  *
@@ -609,6 +619,15 @@ export function CL_CreateCmd(context: ClientInputContext, options: ClientInputFr
   return cmd;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Copy a `usercmd_t` value before storing it in rolling client command state.
+ *
+ * Constraints:
+ * - Must not retain the mutable `angles` array by reference.
+ */
 function cloneUsercmd(cmd: usercmd_t): usercmd_t {
   return {
     msec: cmd.msec,
@@ -622,6 +641,15 @@ function cloneUsercmd(cmd: usercmd_t): usercmd_t {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Create the zero command used as the first delta base in `CL_SendCmd`.
+ *
+ * Constraints:
+ * - Must match C's zeroed `usercmd_t nullcmd` local.
+ */
 function createNullUsercmd(): usercmd_t {
   return {
     msec: 0,
@@ -804,6 +832,8 @@ export function CL_InitInput(context: ClientInputContext): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (frame-time setter)
  * Category: New
  * Purpose: Update the current frame time used by the input command builder.
  *
@@ -815,6 +845,8 @@ export function CL_SetInputFrameTime(context: ClientInputContext, sys_frame_time
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime bridge)
  * Category: New
  * Purpose: Build the concrete runtime bridge that lets the `cl_main.c` port call the `cl_input.c` packet path.
  *

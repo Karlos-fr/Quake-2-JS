@@ -3,8 +3,8 @@
 ## Etat
 
 - Statut: En cours
-- Dernier lot traite: `createCanvasRef`, `startNextCinematic`, `enterMainMenu`, `frame`, `executeRuntimeCommandBuffer`, `syncFullGameActiveView`, `drawCinematicFrame`, `drawMenuFrame`, `drawLoadingFrame`, `drawGameFrame`, `ensureFullGameRenderer`, `disposeFullGameRenderer`, `createFullGameThreeRenderer`, `syncThreeCameraToRefresh`, `getAuthoritativeMapPath`
-- Verdict: 15 symboles `Valide`; boucle full-game, orchestration loading/menu/game et adapters renderer `Category: New`, sans proprietaire C/H attendu.
+- Dernier lot traite: `drawConsoleFrame`, `prepareConsoleCanvasOverlay`, `drawConsoleSnapshotToCanvas`, `drawConsoleSnapshotCanvas`, `drawOpaqueConsoleBackground`, `drawConsoleFrameRef`, `drawConsoleTextRef`, `drawConsoleText`, `drawConsoleTextFallback`, `drawCapturedCommands`, `drawCenteredPicture`, `drawRawIndexedImage`, `drawGlyph`, `drawPaletteFill`
+- Verdict: 14 symboles `Valide`; adapters/helpers web console et canvas, sans proprietaire C/H attendu.
 
 ## Preuves de la session
 
@@ -17,6 +17,9 @@
 - Checklist TS appliquee au lot rendu/loading: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web canvas ref adapter)`, `N/A (web full-game loop)`, `N/A (web render orchestration)`, `N/A (web renderer adapter)`, `Category: New`, absence de matrice C/H liee.
 - Helpers contigus examines: `startFullGameAttractLoop`, `shouldDrawFullGameLoadingFrame`, `shouldDrawAttractLoopMenuOverlay`, `shouldHideAttractLoopLoading`, `drawFullGamePictureRef`, `createFullGameAutosizedPictureCommand`, `drawMenuOverlayRef`, `ensureFullGameFrontendRenderer`, `warmFullGameFrontendPics`, `warmFullGameMenuPics`, `createFullGameFrontendRenderer`, `resizeFullGameFrontendRenderer`, `getContainedLogicalViewportSize`, `disposeFullGameFrontendRenderer`. Ils restent hors matrice TS courante sauf en-tetes ajoutes pour les helpers de loading inclus dans le flux.
 - Correction du verify renderer: l'ancienne preuve cherchait `drawCenteredPicture(page, runtime, "loading")`; le code valide maintenant la plaque issue de `SCR_DrawLoading` via `loadingCommand.pic` sur le fallback canvas et via `drawFullGamePictureRef` sur le frontend ref_gl.
+- Checklist TS appliquee au lot console/canvas: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web console adapter)`, `N/A (web console canvas helper)`, `N/A (web ref console adapter)`, `N/A (web console canvas adapter)`, `N/A (web console fallback)`, `N/A (web captured draw adapter)` et `N/A (web canvas draw adapter/helper)`, categories `Adapter` ou `New`, absence de matrice C/H liee pour ces symboles web.
+- Croisement ownership: les proprietaires C/H restent `packages/client/src/console.ts` pour `Con_DrawConsole`, `packages/client/src/cl_scrn.ts` pour `SCR_RunConsole`/`SCR_DrawConsole`, et `packages/renderer-three/src/gl_draw.ts` pour `Draw_Char`, `Draw_Fill`, `Draw_Pic`, `Draw_StretchRaw`; le lot `apps/web` consomme ces sorties ou rejoue des commandes capturees sans se presenter comme portage proprietaire.
+- Recherche de doublons/ownership: aucun doublon proprietaire detecte dans `apps/web/src/full-game.ts`; `drawGlyph`, `drawPaletteFill` et `drawRawIndexedImage` sont des adapters canvas de secours et non les proprietaires `ref_gl`.
 
 ## Jugement integration
 
@@ -29,6 +32,9 @@
 - Runtime: lot rendu/loading integre via `Cbuf_Execute`, `SCR_PlayCinematic`, `SCR_RunCinematic`, `SCR_DrawLoading`, `M_Draw`, `Qcommon_Frame` et la source de rendu client; le comportement porteur reste dans les packages client/qcommon/server.
 - apps/web: integre dans la boucle `requestAnimationFrame`, les viewports DOM, le status browser, les commandes loading/menu et les fallbacks canvas.
 - renderer-three: integre via `createRefGlHost`, `createFullGameRenderLoop`, les adapters Three (`world`, `sky`, entites, particules, beams, dlights, polyblend) et `syncThreeCameraToRefresh`; ce lot ne revendique pas d'ownership `ref_gl`, seulement l'assemblage web.
+- Runtime: lot console/canvas integre comme adapter; il appelle les producteurs portes `SCR_RunConsole` et `Con_DrawConsole` et consomme les commandes de dessin deja emises par le client/menu au lieu de dupliquer l'etat runtime.
+- apps/web: applicable et integre; rendu console via canvas fallback, overlay Three, chemin `refexport_t` frontend et replay des commandes capturees sont branches dans la boucle full-game.
+- renderer-three: applicable indirectement; l'overlay console est transmis au render loop Three et les vrais ports `Draw_*` restent dans `packages/renderer-three/src/gl_draw.ts`.
 
 ## Tests lances
 
@@ -37,7 +43,11 @@
 - `npm run verify:full-game:commands` passe.
 - `npm run verify:full-game:three-renderer` passe; l'assertion obsolete sur `drawCenteredPicture(page, runtime, "loading")` a ete corrigee pour le flux loading actuel.
 - `npm run verify:full-game:demo-cleanup` passe.
+- `npm run verify:full-game:console-background` passe.
+- `npm run verify:full-game:commands` passe.
+- `npm run verify:full-game:three-renderer` passe.
+- `npm run typecheck` passe.
 
 ## Prochain lot recommande
 
-Traiter le bloc console/canvas suivant: `drawConsoleFrame`, `prepareConsoleCanvasOverlay`, `drawConsoleSnapshotToCanvas`, `drawConsoleSnapshotCanvas`, `drawOpaqueConsoleBackground`, `drawConsoleFrameRef`, `drawConsoleTextRef`, `drawConsoleText`, `drawConsoleTextFallback`, `drawCapturedCommands`, `drawCenteredPicture`, `drawRawIndexedImage`, `drawGlyph`, `drawPaletteFill`.
+Traiter le bloc assets/input suivant: `loadPictureCanvas`, `loadGlyphCanvas`, `resolvePictureFile`, `pcxToCanvas`, `handleKeyDown`, `syncFullGameKeyDestination`, `toggleFullGameConsole`, `toggleFullGameConsoleContext`, `printFullGameWebAudioInfo`, `isConsoleToggleDomKey`.

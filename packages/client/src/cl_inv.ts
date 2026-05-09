@@ -29,9 +29,17 @@ import type {
 import type { refexport_t } from "./ref.js";
 import type { ClientRuntime } from "./client.js";
 
+/**
+ * Original name: DISPLAY_ITEMS
+ * Source: Quake-2-master/client/cl_inv.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const DISPLAY_ITEMS = 17;
 
 /**
+ * Original name: N/A
+ * Source: N/A (local binding map for client/cl_inv.c)
  * Category: New
  * Purpose: Carry the optional key binding metadata needed by the inventory screen port.
  *
@@ -43,6 +51,8 @@ export interface ClientInventoryBindingMap {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local draw context for client/cl_inv.c)
  * Category: New
  * Purpose: Carry the viewport and activation state needed by `CL_DrawInventory`.
  *
@@ -56,13 +66,16 @@ export interface ClientInventoryContext {
 }
 
 /**
- * Original name: N/A
- * Source: N/A (refexport_t adapter for client/cl_inv.c Inv_DrawString)
- * Category: Adapter
+ * Original name: Inv_DrawString
+ * Source: Quake-2-master/client/cl_inv.c
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits one left-aligned inventory text draw command.
+ * - Emits one left-aligned inventory text draw command equivalent to the original renderer loop.
+ *
+ * Porting notes:
+ * - The command path defers the per-character draw loop to the HUD renderer adapter.
  */
 export function Inv_DrawString(x: number, y: number, text: string): HudTextCommand {
   return {
@@ -83,9 +96,9 @@ export function Inv_DrawString(x: number, y: number, text: string): HudTextComma
 }
 
 /**
- * Original name: Inv_DrawString
- * Source: client/cl_inv.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (refexport_t adapter for client/cl_inv.c Inv_DrawString)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -99,7 +112,7 @@ export function Inv_DrawStringRef(ref: refexport_t, x: number, y: number, text: 
 
 /**
  * Original name: SetStringHighBit
- * Source: client/cl_inv.c
+ * Source: Quake-2-master/client/cl_inv.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -115,9 +128,9 @@ export function SetStringHighBit(text: string): string {
 }
 
 /**
- * Original name: N/A
- * Source: N/A (refexport_t adapter for client/cl_inv.c CL_DrawInventory)
- * Category: Adapter
+ * Original name: CL_DrawInventory
+ * Source: Quake-2-master/client/cl_inv.c
+ * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
@@ -204,9 +217,9 @@ export function CL_DrawInventory(
 }
 
 /**
- * Original name: CL_DrawInventory
- * Source: client/cl_inv.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (refexport_t adapter for client/cl_inv.c CL_DrawInventory)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -277,6 +290,8 @@ export function CL_DrawInventoryRef(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local HUD picture command helper)
  * Category: New
  * Purpose: Create one inventory picture command that defers native size resolution to the renderer.
  */

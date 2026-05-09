@@ -3081,6 +3081,12 @@ function getAuthoritativeMapPath(runtime: FullGameRuntime): string | null {
   return getFullGameServerMapPath(runtime.client, runtime.serverHost.currentMapRequest);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console adapter)
+ * Category: Adapter
+ * Purpose: Bridge the ported console fraction/snapshot producers to the active web renderer.
+ */
 function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   const frac = SCR_RunConsole(runtime.client, {
     keyDest: "console"
@@ -3106,6 +3112,12 @@ function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   drawConsoleSnapshotCanvas(runtime, page, snapshot);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console adapter)
+ * Category: Adapter
+ * Purpose: Build a transparent console canvas overlay for the Three renderer compositor.
+ */
 function prepareConsoleCanvasOverlay(
   runtime: FullGameRuntime,
   page: FullGamePage,
@@ -3125,6 +3137,12 @@ function prepareConsoleCanvasOverlay(
   return renderer.consoleCanvas;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console canvas helper)
+ * Category: New
+ * Purpose: Resize and clear the reusable browser canvas before drawing a console snapshot.
+ */
 function drawConsoleSnapshotToCanvas(
   runtime: FullGameRuntime,
   page: FullGamePage,
@@ -3150,6 +3168,12 @@ function drawConsoleSnapshotToCanvas(
   drawConsoleSnapshotCanvas(runtime, overlayPage, snapshot);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console adapter)
+ * Category: Adapter
+ * Purpose: Render the structured `Con_DrawConsole` snapshot through browser canvas primitives.
+ */
 function drawConsoleSnapshotCanvas(
   runtime: FullGameRuntime,
   page: FullGamePage,
@@ -3187,6 +3211,8 @@ function drawConsoleSnapshotCanvas(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web console canvas helper)
  * Category: New
  * Purpose: Preserve Quake II's opaque `conback` console area when compositing the browser canvas overlay.
  *
@@ -3200,6 +3226,12 @@ function drawOpaqueConsoleBackground(page: FullGamePage, snapshot: ConsoleDrawCo
   page.context.fillRect(0, 0, snapshot.background.width, snapshot.lines);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web ref console adapter)
+ * Category: Adapter
+ * Purpose: Bridge the structured console snapshot to a `refexport_t` implementation.
+ */
 function drawConsoleFrameRef(
   runtime: FullGameRuntime,
   ref: refexport_t,
@@ -3237,6 +3269,12 @@ function drawConsoleFrameRef(
   drawConsoleTextRef(ref, snapshot.version);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web ref console adapter)
+ * Category: Adapter
+ * Purpose: Convert console text snapshot rows into `DrawChar` calls on a ref export.
+ */
 function drawConsoleTextRef(ref: refexport_t, command: ConsoleTextCommand): void {
   const highBit = command.variant === "alt" ? 128 : 0;
   for (let index = 0; index < command.text.length; index += 1) {
@@ -3244,6 +3282,12 @@ function drawConsoleTextRef(ref: refexport_t, command: ConsoleTextCommand): void
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console canvas adapter)
+ * Category: Adapter
+ * Purpose: Draw console text snapshot rows with the Quake glyph atlas on a browser canvas.
+ */
 function drawConsoleText(page: FullGamePage, runtime: FullGameRuntime, command: ConsoleTextCommand): void {
   if (!loadGlyphCanvas(runtime.filesystem, runtime.assets)) {
     drawConsoleTextFallback(page, command);
@@ -3263,6 +3307,12 @@ function drawConsoleText(page: FullGamePage, runtime: FullGameRuntime, command: 
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console fallback)
+ * Category: New
+ * Purpose: Keep console text visible when the Quake glyph atlas is not available yet.
+ */
 function drawConsoleTextFallback(page: FullGamePage, command: ConsoleTextCommand): void {
   const text = command.text
     .replace(/[\u0080-\u00ff]/g, (char) => String.fromCharCode(char.charCodeAt(0) & 0x7f))
@@ -3277,6 +3327,12 @@ function drawConsoleTextFallback(page: FullGamePage, command: ConsoleTextCommand
   page.context.fillText(text, command.x, command.y);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web captured draw adapter)
+ * Category: Adapter
+ * Purpose: Replay renderer-neutral draw commands captured from the ported client/menu code on canvas.
+ */
 function drawCapturedCommands(page: FullGamePage, runtime: FullGameRuntime): void {
   for (const command of runtime.drawCommands) {
     switch (command.type) {
@@ -3317,6 +3373,12 @@ function drawCapturedCommands(page: FullGamePage, runtime: FullGameRuntime): voi
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas draw helper)
+ * Category: New
+ * Purpose: Draw a loaded Quake picture centered in the logical web viewport.
+ */
 function drawCenteredPicture(page: FullGamePage, runtime: FullGameRuntime, name: string): void {
   const image = loadPictureCanvas(runtime.filesystem, runtime.assets, name);
   if (!image) {
@@ -3332,6 +3394,12 @@ function drawCenteredPicture(page: FullGamePage, runtime: FullGameRuntime, name:
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas draw adapter)
+ * Category: Adapter
+ * Purpose: Convert a captured indexed raw-image draw command into browser RGBA image data.
+ */
 function drawRawIndexedImage(
   page: FullGamePage,
   assets: CanvasAssetCache,
@@ -3359,6 +3427,12 @@ function drawRawIndexedImage(
   page.context.drawImage(temp, command.x, command.y, command.width, command.height);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas draw adapter)
+ * Category: Adapter
+ * Purpose: Draw one captured Quake glyph from the browser-side glyph atlas.
+ */
 function drawGlyph(
   page: FullGamePage,
   filesystem: VirtualFilesystem,
@@ -3378,6 +3452,12 @@ function drawGlyph(
   page.context.drawImage(glyphs, sx, sy, 8, 8, x, y, 8, 8);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas draw adapter)
+ * Category: Adapter
+ * Purpose: Fill a captured draw rectangle with the active Quake palette color on canvas.
+ */
 function drawPaletteFill(
   page: FullGamePage,
   assets: CanvasAssetCache,

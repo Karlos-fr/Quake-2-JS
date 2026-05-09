@@ -4,29 +4,29 @@
 
 - Fichier TS: `packages/client/src/cl_input.ts`
 - Symboles TS: 21
-- Couvert C/H: 0
-- Reste a auditer: 21
+- Couvert C/H: 11
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/cl_input.ts` | interface | `ClientInputContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_input.ts` | interface | `ClientInputHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_input.ts` | interface | `ClientInputFrameOptions` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_input.ts` | interface | `ClientSendCmdBridgeOptions` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_input.ts` | function | `createClientInputContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_input.ts` | function | `KeyDown` | oui | `KeyDown` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `KeyUp` | oui | `KeyUp` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_KeyState` | oui | `CL_KeyState` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_AdjustAngles` | oui | `CL_AdjustAngles` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_BaseMove` | oui | `CL_BaseMove` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_ClampPitch` | oui | `CL_ClampPitch` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_FinishMove` | oui | `CL_FinishMove` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_CreateCmd` | oui | `CL_CreateCmd` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `cloneUsercmd` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_input.ts` | function | `createNullUsercmd` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_input.ts` | function | `CL_SendCmd` | oui | `CL_SendCmd` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `IN_CenterView` | oui | `IN_CenterView` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_InitInput` | oui | `CL_InitInput` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_input.ts` | function | `CL_SetInputFrameTime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_input.ts` | function | `createClientSendCmdBridge` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_input.ts` | function | `bindButtonCommands` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_input.ts` | interface | `ClientInputContext` | oui | `N/A` | `N/A (context object)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | interface | `ClientInputHooks` | oui | `N/A` | `N/A (runtime hook contract)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | interface | `ClientInputFrameOptions` | oui | `N/A` | `N/A (frame options)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | interface | `ClientSendCmdBridgeOptions` | oui | `N/A` | `N/A (runtime bridge options)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | function | `createClientInputContext` | oui | `N/A` | `N/A (context factory)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | function | `KeyDown` | oui | `KeyDown` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `KeyUp` | oui | `KeyUp` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_KeyState` | oui | `CL_KeyState` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_AdjustAngles` | oui | `CL_AdjustAngles` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_BaseMove` | oui | `CL_BaseMove` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_ClampPitch` | oui | `CL_ClampPitch` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_FinishMove` | oui | `CL_FinishMove` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_CreateCmd` | oui | `CL_CreateCmd` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `cloneUsercmd` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | function | `createNullUsercmd` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | function | `CL_SendCmd` | oui | `CL_SendCmd` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H | `verify:cl-input` echoue en session sur une assertion de harness cinematic `client.net_message`; source C/TS ecrit `nextserver` dans `cls.netchan.message`. |
+| `packages/client/src/cl_input.ts` | function | `IN_CenterView` | oui | `IN_CenterView` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_InitInput` | oui | `CL_InitInput` | `Quake-2-master/client/cl_input.c` | Ported | [`client_cl_input.c.md`](../matrices/client_cl_input.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_input.ts` | function | `CL_SetInputFrameTime` | oui | `N/A` | `N/A (frame-time setter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | function | `createClientSendCmdBridge` | oui | `N/A` | `N/A (runtime bridge)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_input.ts` | function | `bindButtonCommands` | non | `N/A` | `N/A (stale generated symbol)` | New |  | TS sans lien source | Non applicable | Symbole absent de `packages/client/src/cl_input.ts` dans cette session; reste seulement dans les index d'audit generes obsoletes. |

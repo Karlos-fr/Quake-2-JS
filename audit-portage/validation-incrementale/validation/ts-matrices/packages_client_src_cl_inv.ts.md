@@ -4,17 +4,17 @@
 
 - Fichier TS: `packages/client/src/cl_inv.ts`
 - Symboles TS: 9
-- Couvert C/H: 0
-- Reste a auditer: 9
+- Couvert C/H: 4
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/cl_inv.ts` | value | `DISPLAY_ITEMS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_inv.ts` | interface | `ClientInventoryBindingMap` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_inv.ts` | interface | `ClientInventoryContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_inv.ts` | function | `Inv_DrawString` | oui | `Inv_DrawString` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_inv.ts` | function | `Inv_DrawStringRef` | oui | `Inv_DrawString` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_inv.ts` | function | `SetStringHighBit` | oui | `SetStringHighBit` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_inv.ts` | function | `CL_DrawInventory` | oui | `CL_DrawInventory` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_inv.ts` | function | `CL_DrawInventoryRef` | oui | `CL_DrawInventory` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_inv.ts` | function | `createPictureCommand` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_inv.ts` | value | `DISPLAY_ITEMS` | non | `DISPLAY_ITEMS` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_inv.ts` | interface | `ClientInventoryBindingMap` | oui | `N/A` | `N/A (local binding map for client/cl_inv.c)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_inv.ts` | interface | `ClientInventoryContext` | oui | `N/A` | `N/A (local draw context for client/cl_inv.c)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_inv.ts` | function | `Inv_DrawString` | oui | `Inv_DrawString` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_inv.ts` | function | `Inv_DrawStringRef` | oui | `N/A` | `N/A (refexport_t adapter for client/cl_inv.c Inv_DrawString)` | Adapter |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_inv.ts` | function | `SetStringHighBit` | oui | `SetStringHighBit` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_inv.ts` | function | `CL_DrawInventory` | oui | `CL_DrawInventory` | `Quake-2-master/client/cl_inv.c` | Ported | [`client_cl_inv.c.md`](../matrices/client_cl_inv.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_inv.ts` | function | `CL_DrawInventoryRef` | oui | `N/A` | `N/A (refexport_t adapter for client/cl_inv.c CL_DrawInventory)` | Adapter |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_inv.ts` | function | `createPictureCommand` | non | `N/A` | `N/A (local HUD picture command helper)` | New |  | TS sans lien source | Valide |  |

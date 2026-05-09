@@ -113,11 +113,33 @@ import {
 import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type cparticle_t } from "./client.js";
 import type { ClientDynamicLight, ClientRenderParticle } from "./refresh.js";
 
+/**
+ * Original name: PARTICLE_GRAVITY
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const PARTICLE_GRAVITY = 40;
+
+/**
+ * Original name: BEAMLENGTH
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const FLY_BEAM_LENGTH = 16;
+
+/**
+ * Original name: avelocities
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const flyAvelocities: vec3_t[] = [];
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime descriptor)
  * Category: New
  * Purpose: Describe one renderer-facing lightstyle value emitted by the `cl_fx.c` lightstyle port.
  *
@@ -130,6 +152,8 @@ export interface ClientLightStyle {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime descriptor)
  * Category: New
  * Purpose: Describe one normalized client action effect event ready for renderer/audio adapters.
  *
@@ -166,6 +190,12 @@ export interface ClientActionEffect {
   packet?: ClientMuzzleFlashPacket | ClientMuzzleFlash2Packet | ClientTempEntityPacket;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime descriptor)
+ * Category: New
+ * Purpose: Describe the packet-entity fields consumed by client-side effect trail integration.
+ */
 export interface ClientPacketEntityEffectSource {
   number: number;
   effects: number;
@@ -285,14 +315,14 @@ export function CL_ParticleEffect3(runtime: ClientRuntime, org: vec3_t, dir: vec
 /**
  * Original name: CL_BlueBlasterParticles
  * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
- * - Reuses the same blaster impact particle family for `TE_BLUEHYPERBLASTER` in this source tree.
+ * - Reuses the `CL_BlasterParticles` port for `TE_BLUEHYPERBLASTER` in this source tree.
  *
  * Porting notes:
- * - The shipped `cl_tent.c` switch calls `CL_BlasterParticles` directly for this case.
+ * - `client/cl_tent.c` declares this symbol but the shipped switch calls `CL_BlasterParticles` directly.
  */
 export function CL_BlueBlasterParticles(org: vec3_t, dir: vec3_t): ClientActionEffect[];
 export function CL_BlueBlasterParticles(runtime: ClientRuntime, org: vec3_t, dir: vec3_t): void;
@@ -309,6 +339,8 @@ export function CL_BlueBlasterParticles(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime effect builder)
  * Category: New
  * Purpose: Convert one parsed player muzzle flash packet into normalized effect events.
  *

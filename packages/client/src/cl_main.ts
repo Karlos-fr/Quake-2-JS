@@ -85,6 +85,8 @@ import { CL_RegisterSounds, type ClientSoundRegistrationHooks } from "./sound.js
 import { createClientPrecacheState, type ClientRuntime, connstate_t } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (client runtime context)
  * Category: New
  * Purpose: Group the client runtime with the command and cvar runtimes it depends on for `cl_main.c` style initialization.
  *
@@ -144,6 +146,8 @@ export interface ClientMainContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (host adapter hooks)
  * Category: New
  * Purpose: Describe host-side callbacks used by the partial `cl_main.c` port.
  *
@@ -232,6 +236,8 @@ export interface ClientMainHooks extends ClientParseHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (client runtime context factory)
  * Category: New
  * Purpose: Create the composite context used by the ported `cl_main.c` subset.
  *
@@ -1684,11 +1690,16 @@ export function CL_InitLocal(context: ClientMainContext, hooks: ClientMainHooks 
 }
 
 /**
- * Category: New
- * Purpose: Forward the current command line to the server-side string command channel.
+ * Original name: CL_ForwardToServer_f
+ * Source: client/cl_main.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must preserve the original no-forward behavior when the client is not connected.
+ * Behavior:
+ * - Validates connection state and forwards command arguments to the server string-command channel.
+ *
+ * Porting notes:
+ * - Uses the explicit command/runtime context instead of file-static globals.
  */
 export function CL_ForwardToServer_f(context: ClientMainContext, hooks: ClientMainHooks = {}): void {
   if (context.client.cls.state !== connstate_t.ca_connected && context.client.cls.state !== connstate_t.ca_active) {
@@ -1763,6 +1774,8 @@ export function CL_Pause_f(context: ClientMainContext, hooks: ClientMainHooks = 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local pause helper)
  * Category: New
  * Purpose: Toggle the paused cvar using the same value-flip behavior as the original pause command path.
  *
@@ -1777,6 +1790,12 @@ export function CL_TogglePause(context: ClientMainContext): void {
   Cvar_SetValue(context.cvar, "paused", context.cl_paused.value ? 0 : 1);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local command registration guard)
+ * Category: New
+ * Purpose: Register a command only when the command runtime does not already contain that name.
+ */
 function registerCommand(runtime: CommandRuntime, name: string, callback: (() => void) | null): void {
   if (Cmd_Exists(runtime, name)) {
     return;
