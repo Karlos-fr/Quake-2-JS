@@ -830,12 +830,10 @@ export function S_IssueReadyPlaysounds(context: ClientSndDmaContext): channel_t[
       break;
     }
 
-    unlinkPlaySound(ps);
     const channel = S_IssuePlaysound(context, ps);
     if (channel) {
       issued.push(channel);
     }
-    S_FreePlaysound(context, ps);
   }
 
   return issued;

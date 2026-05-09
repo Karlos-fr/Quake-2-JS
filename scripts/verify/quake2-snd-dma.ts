@@ -34,6 +34,7 @@ import {
   S_EndRegistration as S_DMA_EndRegistration,
   S_FindName as S_DMA_FindName,
   S_Init as S_DMA_Init,
+  S_IssueReadyPlaysounds as S_DMA_IssueReadyPlaysounds,
   S_IssuePlaysound as S_DMA_IssuePlaysound,
   S_PickChannel as S_DMA_PickChannel,
   S_RawSamples as S_DMA_RawSamples,
@@ -202,6 +203,29 @@ assert.equal(
   true,
   "S_Play should use the listener entity"
 );
+
+S_DMA_StopAllSounds(context);
+context.sound.state.paintedtime = 200;
+client.cls.state = connstate_t.ca_active;
+context.sound.state.listener_origin = [0, 0, 0];
+context.sound.state.listener_right = [1, 0, 0];
+S_DMA_StartSound(context, [3000, 0, 0], 0, 0, registered, 1, 1, 0);
+context.sound.state.listener_origin = [3000, 0, 0];
+let readyChannels = S_DMA_IssueReadyPlaysounds(context);
+assert.equal(readyChannels.length, 1, "S_IssueReadyPlaysounds should issue positioned sounds after listener movement");
+assert.equal(readyChannels[0].leftvol, 127, "S_IssueReadyPlaysounds should spatialize with the listener position at issue time");
+assert.equal(readyChannels[0].rightvol, 127, "S_IssueReadyPlaysounds right volume should use the listener position at issue time");
+
+S_DMA_StartSound(context, [0, 0, 0], 0, 0, registered, 1, 1, 0);
+readyChannels = S_DMA_IssueReadyPlaysounds(context);
+assert.equal(readyChannels.length, 1, "S_IssueReadyPlaysounds should issue the first immediate sound");
+assert.equal(readyChannels[0].sfx, registered, "S_IssueReadyPlaysounds first channel sfx mismatch");
+assert.equal(context.sound.state.s_pendingplays.next, context.sound.state.s_pendingplays, "S_IssueReadyPlaysounds should drain the first ready sound");
+S_DMA_StartSound(context, [0, 0, 0], 0, 0, dynamic, 1, 1, 0);
+readyChannels = S_DMA_IssueReadyPlaysounds(context);
+assert.equal(readyChannels.length, 1, "S_IssueReadyPlaysounds should preserve the playsound pool for a second immediate sound");
+assert.equal(readyChannels[0].sfx, dynamic, "S_IssueReadyPlaysounds second channel sfx mismatch");
+assert.equal(context.sound.state.s_pendingplays.next, context.sound.state.s_pendingplays, "S_IssueReadyPlaysounds should drain the second ready sound");
 
 S_DMA_StopAllSounds(context);
 Cmd_ExecuteString(cmd, "play misc/menu1");

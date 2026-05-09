@@ -100,8 +100,10 @@ function verifyFullGameUsesDmaForAuthoritativeSfx(): void {
   assert.ok(fullGameSource.includes("activateFullGameSound(runtime, true)"), "focus should reactivate browser audio for S_Activate semantics");
   assert.ok(fullGameSource.includes("activateFullGameSound(runtime, false)"), "blur should deactivate browser audio for S_Activate semantics");
   assert.ok(fullGameSource.includes("S_DMA_StartSound("), "server svc_sound packets should route through DMA");
+  assert.ok(fullGameSource.includes("syncAuthoritativeSoundListener();\n    S_DMA_StartSound("), "positioned one-shots should refresh the DMA listener before spatialization");
   assert.ok(fullGameSource.includes("const issued = S_DMA_IssuePlaysound(context, ps);"), "Web bridge should use the channel returned by DMA issue");
   assert.ok(fullGameSource.includes("audio.playChannel(issued)"), "Web bridge should play DMA-issued channels");
+  assert.ok(fullGameSource.includes("S_DMA_IssueReadyPlaysounds(sndDmaContext)"), "immediate one-shots should issue through DMA after S_StartSound queues them");
   assert.ok(fullGameSource.includes("audio.syncLoopChannels(sndDma.sound.state.channels)"), "entity loop sounds should sync from DMA autosound channels");
   assert.equal(fullGameSource.includes("startLocalSound: (name) => audio.playWav(filesystem, name)"), false, "full-game menu sounds must not bypass DMA through WAV playback");
   assert.equal(fullGameSource.includes("dr1_strt"), false, "door sounds must not have name-specific full-game bypasses");

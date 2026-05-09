@@ -397,6 +397,16 @@ function verifyExplosionTempEntityRuntimeBranch(): void {
   assert.equal(burst.color, 0xe0, "explosion particle metadata should preserve color base");
   assert.equal(burst.magnitude, 16, "explosion particle metadata should preserve origin jitter");
   assert.equal(burst.spacing, 192, "explosion particle metadata should preserve velocity span");
+  assert.ok(effects.some((effect) => effect.sound?.name === "weapons/rocklx1a.wav"), "TE_ROCKET_EXPLOSION should preserve original rocket explosion sound");
+
+  const groundedExplosionEffects = CL_BuildTempEntityEffects({
+    type: temp_event_t.TE_EXPLOSION2,
+    position: origin
+  });
+  assert.ok(
+    groundedExplosionEffects.some((effect) => effect.sound?.name === "weapons/grenlx1a.wav"),
+    "TE_EXPLOSION2 should preserve the original grounded/barrel explosion sound"
+  );
 }
 
 function verifyMonsterMuzzleFlash2Effects(): void {

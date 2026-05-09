@@ -1098,6 +1098,17 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     S_DMA_StopAllSounds(sndDmaContext);
     audio.stopAll();
   };
+  const syncAuthoritativeSoundListener = (): void => {
+    if (!sndDmaContext) {
+      return;
+    }
+
+    const listener = buildFullGameAudioListener(client);
+    sndDmaContext.sound.state.listener_origin = [...listener.origin];
+    sndDmaContext.sound.state.listener_forward = [...listener.forward];
+    sndDmaContext.sound.state.listener_right = [...listener.right];
+    sndDmaContext.sound.state.listener_up = [...listener.up];
+  };
   const startAuthoritativeLocalSound = (name: string): void => {
     if (!sndDmaContext) {
       return;
@@ -1139,6 +1150,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       audioDebug.lastMissingSound = audioDebug.lastServerSound;
     }
 
+    syncAuthoritativeSoundListener();
     S_DMA_StartSound(
       sndDmaContext,
       origin,
