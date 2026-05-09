@@ -20,6 +20,8 @@ import type { byte, qboolean, vec3_t } from "../../qcommon/src/index.js";
 import type { sfx_t } from "./snd_loc.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (public sound hook contract)
  * Category: New
  * Purpose: Describe the host-side implementations for the public sound procedures declared by `client/sound.h`.
  *
@@ -50,11 +52,22 @@ export interface ClientSoundPublicHooks {
   onGetEntitySoundOrigin?: (ent: number) => vec3_t;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (public sound hook contract)
+ * Category: New
+ * Purpose: Carry the hook bundle used by the public `client/sound.h` forwarding API.
+ *
+ * Constraints:
+ * - Must stay a thin context wrapper so concrete DMA/backend ownership remains in `snd_dma.ts`.
+ */
 export interface ClientSoundPublicContext {
   hooks: ClientSoundPublicHooks;
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (public sound hook contract)
  * Category: New
  * Purpose: Create the explicit context used by the public `client/sound.h` procedure forwards.
  *
@@ -272,6 +285,8 @@ export function CL_GetEntitySoundOrigin(context: ClientSoundPublicContext, ent: 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (raw sample helper)
  * Category: New
  * Purpose: Create a stable byte buffer used by `S_RawSamples` verification and adapters.
  *

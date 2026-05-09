@@ -1,6 +1,6 @@
 /**
  * File: vid.ts
- * Source: Quake II original / client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Purpose: Port the public Quake II video-driver declarations used by the client runtime.
  *
  * Porting policy:
@@ -19,7 +19,7 @@ export type { vrect_t } from "./cl_scrn.js";
 
 /**
  * Original name: viddef_t
- * Source: client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -94,7 +94,7 @@ export function createClientVidContext(hooks: ClientVidHooks = {}): ClientVidCon
 
 /**
  * Original name: VID_Init
- * Source: client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -107,7 +107,7 @@ export function VID_Init(context: ClientVidContext): void {
 
 /**
  * Original name: VID_Shutdown
- * Source: client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -120,7 +120,7 @@ export function VID_Shutdown(context: ClientVidContext): void {
 
 /**
  * Original name: VID_CheckChanges
- * Source: client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -133,7 +133,7 @@ export function VID_CheckChanges(context: ClientVidContext): void {
 
 /**
  * Original name: VID_MenuInit
- * Source: client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -146,7 +146,7 @@ export function VID_MenuInit(context: ClientVidContext): void {
 
 /**
  * Original name: VID_MenuDraw
- * Source: client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -159,7 +159,7 @@ export function VID_MenuDraw(context: ClientVidContext): void {
 
 /**
  * Original name: VID_MenuKey
- * Source: client/vid.h
+ * Source: Quake-2-master/client/vid.h
  * Category: Ported
  * Fidelity level: Close
  *

@@ -21,6 +21,8 @@ import { CL_RegisterTEntSounds } from "./cl_tent.js";
 import type { ClientRuntime } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (sound registration hooks)
  * Category: New
  * Purpose: Describe host-side callbacks used by the first client sound registration port.
  *
@@ -36,7 +38,7 @@ export interface ClientSoundRegistrationHooks {
 
 /**
  * Original name: CL_RegisterSounds
- * Source: client/cl_parse.c
+ * Source: Quake-2-master/client/cl_parse.c
  * Category: Ported
  * Fidelity level: Close
  *

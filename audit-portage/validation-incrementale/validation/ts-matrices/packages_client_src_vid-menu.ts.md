@@ -5,16 +5,16 @@
 - Fichier TS: `packages/client/src/vid-menu.ts`
 - Symboles TS: 9
 - Couvert C/H: 0
-- Reste a auditer: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/vid-menu.ts` | value | `SOFTWARE_MENU` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/vid-menu.ts` | value | `OPENGL_MENU` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/vid-menu.ts` | value | `REF_SOFT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/vid-menu.ts` | value | `REF_OPENGL` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/vid-menu.ts` | value | `REF_3DFX` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/vid-menu.ts` | value | `REF_POWERVR` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/vid-menu.ts` | interface | `ClientVidMenuHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/vid-menu.ts` | interface | `ClientVidMenuController` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/vid-menu.ts` | function | `createClientVidMenuController` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/vid-menu.ts` | value | `SOFTWARE_MENU` | non | `SOFTWARE_MENU` | `Quake-2-master/win32/vid_menu.c` | Ported |  | Hors matrice C/H | Valide |  |
+| `packages/client/src/vid-menu.ts` | value | `OPENGL_MENU` | non | `OPENGL_MENU` | `Quake-2-master/win32/vid_menu.c` | Ported |  | Hors matrice C/H | Valide |  |
+| `packages/client/src/vid-menu.ts` | value | `REF_SOFT` | non | `REF_SOFT` | `Quake-2-master/win32/vid_menu.c` | Ported |  | Hors matrice C/H | Valide |  |
+| `packages/client/src/vid-menu.ts` | value | `REF_OPENGL` | non | `REF_OPENGL` | `Quake-2-master/win32/vid_menu.c` | Ported |  | Hors matrice C/H | Valide |  |
+| `packages/client/src/vid-menu.ts` | value | `REF_3DFX` | non | `REF_3DFX` | `Quake-2-master/win32/vid_menu.c` | Ported |  | Hors matrice C/H | Valide |  |
+| `packages/client/src/vid-menu.ts` | value | `REF_POWERVR` | non | `REF_POWERVR` | `Quake-2-master/win32/vid_menu.c` | Ported |  | Hors matrice C/H | Valide |  |
+| `packages/client/src/vid-menu.ts` | interface | `ClientVidMenuHooks` | oui | `N/A` | `N/A (TypeScript adapter hooks for win32/vid_menu.c side effects)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/vid-menu.ts` | interface | `ClientVidMenuController` | oui | `N/A` | `N/A (TypeScript controller adapter for win32/vid_menu.c)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/vid-menu.ts` | function | `createClientVidMenuController` | oui | `N/A` | `N/A (TypeScript controller factory for win32/vid_menu.c)` | New |  | TS sans lien source | Valide |  |

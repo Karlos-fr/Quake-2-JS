@@ -4,25 +4,25 @@
 
 - Fichier TS: `packages/client/src/snd_mem.ts`
 - Symboles TS: 17
-- Couvert C/H: 0
-- Reste a auditer: 17
+- Couvert C/H: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/snd_mem.ts` | value | `cache_full_cycle` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mem.ts` | interface | `ClientSndMemHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_mem.ts` | interface | `IffParseState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mem.ts` | function | `ResampleSfx` | oui | `ResampleSfx` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `S_LoadSound` | oui | `S_LoadSound` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `DumpChunks` | oui | `DumpChunks` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `GetWavinfo` | oui | `GetWavinfo` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `GetLittleShort` | non | `GetLittleShort` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `GetLittleLong` | non | `GetLittleLong` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `FindNextChunk` | non | `FindNextChunk` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `FindChunk` | non | `FindChunk` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mem.ts` | function | `createIffParseState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mem.ts` | function | `readChunkName` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mem.ts` | function | `requireDataPointer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mem.ts` | function | `getSndMemHooks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mem.ts` | function | `getActiveDmaSpeed` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mem.ts` | function | `emitSndMemError` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/snd_mem.ts` | value | `cache_full_cycle` | oui | `cache_full_cycle` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | interface | `ClientSndMemHooks` | oui | `N/A` | `N/A (sound host hooks)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mem.ts` | interface | `IffParseState` | non | `N/A` | `N/A (local parser state)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mem.ts` | function | `ResampleSfx` | oui | `ResampleSfx` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `S_LoadSound` | oui | `S_LoadSound` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `DumpChunks` | oui | `DumpChunks` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `GetWavinfo` | oui | `GetWavinfo` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `GetLittleShort` | non | `GetLittleShort` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `GetLittleLong` | non | `GetLittleLong` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `FindNextChunk` | non | `FindNextChunk` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `FindChunk` | non | `FindChunk` | `Quake-2-master/client/snd_mem.c` | Ported | [`client_snd_mem.c.md`](../matrices/client_snd_mem.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mem.ts` | function | `createIffParseState` | non | `N/A` | `N/A (local parser helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mem.ts` | function | `readChunkName` | non | `N/A` | `N/A (local parser helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mem.ts` | function | `requireDataPointer` | non | `N/A` | `N/A (local parser helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mem.ts` | function | `getSndMemHooks` | non | `N/A` | `N/A (sound host hooks)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mem.ts` | function | `getActiveDmaSpeed` | non | `N/A` | `N/A (sound runtime guard)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mem.ts` | function | `emitSndMemError` | non | `N/A` | `N/A (sound host hooks)` | New |  | TS sans lien source | Valide |  |

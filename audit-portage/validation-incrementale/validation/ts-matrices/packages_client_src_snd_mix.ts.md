@@ -4,24 +4,24 @@
 
 - Fichier TS: `packages/client/src/snd_mix.ts`
 - Symboles TS: 16
-- Couvert C/H: 0
-- Reste a auditer: 16
+- Couvert C/H: 8
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/snd_mix.ts` | value | `PAINTBUFFER_SIZE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mix.ts` | interface | `ClientSoundMixState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_mix.ts` | function | `createClientSoundMixState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_mix.ts` | function | `S_WriteLinearBlastStereo16` | oui | `S_WriteLinearBlastStereo16` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mix.ts` | function | `S_TransferStereo16` | oui | `S_TransferStereo16` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mix.ts` | function | `S_TransferPaintBuffer` | oui | `S_TransferPaintBuffer` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mix.ts` | function | `S_PaintChannels` | oui | `S_PaintChannels` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mix.ts` | function | `S_InitScaletable` | oui | `S_InitScaletable` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mix.ts` | function | `S_PaintChannelFrom8` | oui | `S_PaintChannelFrom8` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mix.ts` | function | `S_PaintChannelFrom16` | oui | `S_PaintChannelFrom16` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_mix.ts` | function | `flattenPaintbuffer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mix.ts` | function | `clampPaintSample16` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mix.ts` | function | `toSignedByte` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mix.ts` | function | `clearOrPrimePaintbuffer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mix.ts` | function | `getPendingPlayHead` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_mix.ts` | function | `unlinkPendingPlay` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/snd_mix.ts` | value | `PAINTBUFFER_SIZE` | oui | `PAINTBUFFER_SIZE` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | interface | `ClientSoundMixState` | oui | `N/A` | `N/A (explicit mix state)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mix.ts` | function | `createClientSoundMixState` | oui | `N/A` | `N/A (explicit mix state)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mix.ts` | function | `S_WriteLinearBlastStereo16` | oui | `S_WriteLinearBlastStereo16` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | function | `S_TransferStereo16` | oui | `S_TransferStereo16` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | function | `S_TransferPaintBuffer` | oui | `S_TransferPaintBuffer` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | function | `S_PaintChannels` | oui | `S_PaintChannels` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | function | `S_InitScaletable` | oui | `S_InitScaletable` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | function | `S_PaintChannelFrom8` | oui | `S_PaintChannelFrom8` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | function | `S_PaintChannelFrom16` | oui | `S_PaintChannelFrom16` | `Quake-2-master/client/snd_mix.c` | Ported | [`client_snd_mix.c.md`](../matrices/client_snd_mix.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_mix.ts` | function | `flattenPaintbuffer` | non | `N/A` | `N/A (typed array helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mix.ts` | function | `clampPaintSample16` | non | `N/A` | `N/A (typed array helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mix.ts` | function | `toSignedByte` | non | `N/A` | `N/A (typed array helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mix.ts` | function | `clearOrPrimePaintbuffer` | non | `N/A` | `N/A (local mix helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mix.ts` | function | `getPendingPlayHead` | non | `N/A` | `N/A (pending sound list helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_mix.ts` | function | `unlinkPendingPlay` | non | `N/A` | `N/A (pending sound list helper)` | New |  | TS sans lien source | Valide |  |

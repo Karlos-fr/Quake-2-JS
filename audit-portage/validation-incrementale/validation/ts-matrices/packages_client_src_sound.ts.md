@@ -4,10 +4,10 @@
 
 - Fichier TS: `packages/client/src/sound.ts`
 - Symboles TS: 2
-- Couvert C/H: 0
-- Reste a auditer: 2
+- Couvert C/H: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/sound.ts` | interface | `ClientSoundRegistrationHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/sound.ts` | function | `CL_RegisterSounds` | oui | `CL_RegisterSounds` | `Quake-2-master/client/cl_parse.c` | Ported | [`client_cl_parse.c.md`](../matrices/client_cl_parse.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/sound.ts` | interface | `ClientSoundRegistrationHooks` | oui | `N/A` | `N/A (sound registration hooks)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/sound.ts` | function | `CL_RegisterSounds` | oui | `CL_RegisterSounds` | `Quake-2-master/client/cl_parse.c` | Ported | [`client_cl_parse.c.md`](../matrices/client_cl_parse.c.md) | Couvert C/H | Couvert C/H |  |

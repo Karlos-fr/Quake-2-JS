@@ -25,9 +25,20 @@ import type {
 } from "./snd_loc.js";
 import { MAX_CHANNELS, MAX_RAW_SAMPLES, S_IssuePlaysound, S_LoadSound } from "./snd_loc.js";
 
+/**
+ * Original name: PAINTBUFFER_SIZE
+ * Source: Quake-2-master/client/snd_mix.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the fixed number of portable sample pairs mixed before each DMA transfer chunk.
+ */
 export const PAINTBUFFER_SIZE = 2048;
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit mix state)
  * Category: New
  * Purpose: Store the mutable working buffers and scratch scalars used by the `snd_mix.c` port.
  *
@@ -43,6 +54,8 @@ export interface ClientSoundMixState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit mix state)
  * Category: New
  * Purpose: Create the default explicit mix state used by the `snd_mix.c` port.
  *
@@ -61,7 +74,7 @@ export function createClientSoundMixState(): ClientSoundMixState {
 
 /**
  * Original name: S_WriteLinearBlastStereo16
- * Source: client/snd_mix.c
+ * Source: Quake-2-master/client/snd_mix.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -83,7 +96,7 @@ export function S_WriteLinearBlastStereo16(
 
 /**
  * Original name: S_TransferStereo16
- * Source: client/snd_mix.c
+ * Source: Quake-2-master/client/snd_mix.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -125,7 +138,7 @@ export function S_TransferStereo16(context: ClientSoundLocalContext, endtime: nu
 
 /**
  * Original name: S_TransferPaintBuffer
- * Source: client/snd_mix.c
+ * Source: Quake-2-master/client/snd_mix.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -186,7 +199,7 @@ export function S_TransferPaintBuffer(context: ClientSoundLocalContext, endtime:
 
 /**
  * Original name: S_PaintChannels
- * Source: client/snd_mix.c
+ * Source: Quake-2-master/client/snd_mix.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -278,7 +291,7 @@ export function S_PaintChannels(context: ClientSoundLocalContext, endtime: numbe
 
 /**
  * Original name: S_InitScaletable
- * Source: client/snd_mix.c
+ * Source: Quake-2-master/client/snd_mix.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -302,7 +315,7 @@ export function S_InitScaletable(context: ClientSoundLocalContext): void {
 
 /**
  * Original name: S_PaintChannelFrom8
- * Source: client/snd_mix.c
+ * Source: Quake-2-master/client/snd_mix.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -339,7 +352,7 @@ export function S_PaintChannelFrom8(
 
 /**
  * Original name: S_PaintChannelFrom16
- * Source: client/snd_mix.c
+ * Source: Quake-2-master/client/snd_mix.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -368,6 +381,12 @@ export function S_PaintChannelFrom16(
   ch.pos += count;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (typed array helper)
+ * Category: New
+ * Purpose: Flatten the portable paintbuffer pairs into the interleaved sample view used by DMA transfers.
+ */
 function flattenPaintbuffer(paintbuffer: portable_samplepair_t[], sampleCount: number): Int32Array {
   const flattened = new Int32Array(sampleCount * 2);
   for (let i = 0; i < sampleCount; i += 1) {
@@ -378,6 +397,12 @@ function flattenPaintbuffer(paintbuffer: portable_samplepair_t[], sampleCount: n
   return flattened;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (typed array helper)
+ * Category: New
+ * Purpose: Clamp one mixed sample to the signed 16-bit DMA range.
+ */
 function clampPaintSample16(value: number): number {
   if (value > 0x7fff) {
     return 0x7fff;
@@ -388,10 +413,22 @@ function clampPaintSample16(value: number): number {
   return value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (typed array helper)
+ * Category: New
+ * Purpose: Reproduce C signed-char conversion for scale-table indexing.
+ */
 function toSignedByte(value: number): number {
   return (value << 24) >> 24;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local mix helper)
+ * Category: New
+ * Purpose: Initialize the current paintbuffer chunk from raw streaming samples or silence.
+ */
 function clearOrPrimePaintbuffer(context: ClientSoundLocalContext, end: number): void {
   const count = end - context.state.paintedtime;
 
@@ -421,6 +458,12 @@ function clearOrPrimePaintbuffer(context: ClientSoundLocalContext, end: number):
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (pending sound list helper)
+ * Category: New
+ * Purpose: Return the first pending playsound while tolerating null or self-linked sentinels.
+ */
 function getPendingPlayHead(sentinel: playsound_t): playsound_t | null {
   if (!sentinel.next || sentinel.next === sentinel) {
     return null;
@@ -429,6 +472,12 @@ function getPendingPlayHead(sentinel: playsound_t): playsound_t | null {
   return sentinel.next;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (pending sound list helper)
+ * Category: New
+ * Purpose: Detach one pending playsound from the explicit TypeScript list representation.
+ */
 function unlinkPendingPlay(sentinel: playsound_t, ps: playsound_t, fallbackNext: playsound_t | null): void {
   if (ps.prev) {
     ps.prev.next = ps.next;

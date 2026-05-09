@@ -57,11 +57,52 @@ import {
   type menuslider_s
 } from "./qmenu.js";
 
+/**
+ * Original name: SOFTWARE_MENU
+ * Source: Quake-2-master/win32/vid_menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const SOFTWARE_MENU = 0;
+
+/**
+ * Original name: OPENGL_MENU
+ * Source: Quake-2-master/win32/vid_menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const OPENGL_MENU = 1;
+
+/**
+ * Original name: REF_SOFT
+ * Source: Quake-2-master/win32/vid_menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const REF_SOFT = 0;
+
+/**
+ * Original name: REF_OPENGL
+ * Source: Quake-2-master/win32/vid_menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const REF_OPENGL = 1;
+
+/**
+ * Original name: REF_3DFX
+ * Source: Quake-2-master/win32/vid_menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const REF_3DFX = 2;
+
+/**
+ * Original name: REF_POWERVR
+ * Source: Quake-2-master/win32/vid_menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const REF_POWERVR = 3;
 
 /**

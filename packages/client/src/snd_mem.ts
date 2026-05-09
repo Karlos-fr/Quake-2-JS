@@ -19,9 +19,23 @@
 import { ERR_DROP } from "../../qcommon/src/index.js";
 import type { ClientSoundLocalContext, sfx_t, sfxcache_t, wavinfo_t } from "./snd_loc.js";
 
+/**
+ * Original name: cache_full_cycle
+ * Source: Quake-2-master/client/snd_mem.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the original sound-cache cycle global as the owner for `client/snd_mem.c`.
+ *
+ * Porting notes:
+ * - Kept exported for parity with the original symbol even though the current runtime does not mutate it.
+ */
 export let cache_full_cycle = 0;
 
 /**
+ * Original name: N/A
+ * Source: N/A (sound host hooks)
  * Category: New
  * Purpose: Carry the host callbacks needed by the `snd_mem.c` port.
  *
@@ -36,6 +50,12 @@ export interface ClientSndMemHooks {
   onComError?: (code: number, message: string) => never;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local parser state)
+ * Category: New
+ * Purpose: Replace the file-static RIFF parser pointers from `snd_mem.c` with explicit state.
+ */
 interface IffParseState {
   data_p: number | null;
   iff_end: number;
@@ -46,7 +66,7 @@ interface IffParseState {
 
 /**
  * Original name: ResampleSfx
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -116,7 +136,7 @@ export function ResampleSfx(
 
 /**
  * Original name: S_LoadSound
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -177,7 +197,7 @@ export function S_LoadSound(context: ClientSoundLocalContext, s: sfx_t): sfxcach
 
 /**
  * Original name: DumpChunks
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -212,7 +232,7 @@ export function DumpChunks(wav: Uint8Array, wavlength = wav.length): string[] {
 
 /**
  * Original name: GetWavinfo
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -308,7 +328,7 @@ export function GetWavinfo(
 
 /**
  * Original name: GetLittleShort
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -331,7 +351,7 @@ function GetLittleShort(wav: Uint8Array, state: IffParseState): number {
 
 /**
  * Original name: GetLittleLong
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -358,7 +378,7 @@ function GetLittleLong(wav: Uint8Array, state: IffParseState): number {
 
 /**
  * Original name: FindNextChunk
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -397,7 +417,7 @@ function FindNextChunk(wav: Uint8Array, state: IffParseState, name: string): voi
 
 /**
  * Original name: FindChunk
- * Source: client/snd_mem.c
+ * Source: Quake-2-master/client/snd_mem.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -412,6 +432,12 @@ function FindChunk(wav: Uint8Array, state: IffParseState, name: string): void {
   FindNextChunk(wav, state, name);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local parser helper)
+ * Category: New
+ * Purpose: Build explicit RIFF parser state for helpers that were file-static in C.
+ */
 function createIffParseState(wavlength: number): IffParseState {
   return {
     data_p: 0,
@@ -422,6 +448,12 @@ function createIffParseState(wavlength: number): IffParseState {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local parser helper)
+ * Category: New
+ * Purpose: Read a RIFF fourCC safely from a byte buffer.
+ */
 function readChunkName(wav: Uint8Array, offset: number): string {
   if (offset < 0 || offset + 4 > wav.length) {
     return "";
@@ -430,6 +462,12 @@ function readChunkName(wav: Uint8Array, offset: number): string {
   return String.fromCharCode(wav[offset], wav[offset + 1], wav[offset + 2], wav[offset + 3]);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local parser helper)
+ * Category: New
+ * Purpose: Guard the explicit RIFF parser cursor before little-endian reads.
+ */
 function requireDataPointer(state: IffParseState): number {
   if (state.data_p === null) {
     throw new Error("snd_mem: null data pointer");
@@ -438,6 +476,12 @@ function requireDataPointer(state: IffParseState): number {
   return state.data_p;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sound host hooks)
+ * Category: New
+ * Purpose: Project the broader sound-local hooks object into the callbacks used by `snd_mem.ts`.
+ */
 function getSndMemHooks(context: ClientSoundLocalContext): ClientSndMemHooks {
   const hooks: ClientSndMemHooks = {};
 
@@ -460,10 +504,22 @@ function getSndMemHooks(context: ClientSoundLocalContext): ClientSndMemHooks {
   return hooks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sound runtime guard)
+ * Category: New
+ * Purpose: Use the active DMA speed, or the input sample rate before DMA initialization has completed.
+ */
 function getActiveDmaSpeed(context: ClientSoundLocalContext, fallbackRate: number): number {
   return context.state.dma.speed > 0 ? context.state.dma.speed : fallbackRate;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sound host hooks)
+ * Category: New
+ * Purpose: Route fatal WAV parse errors through the injected host callback when available.
+ */
 function emitSndMemError(hooks: ClientSndMemHooks, code: number, message: string): never {
   if (hooks.onComError) {
     return hooks.onComError(code, message);
