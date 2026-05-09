@@ -4,59 +4,59 @@
 
 - Fichier TS: `packages/client/src/snd_dma.ts`
 - Symboles TS: 51
-- Couvert C/H: 0
-- Reste a auditer: 51
+- Couvert C/H: 30
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/snd_dma.ts` | value | `SOUND_FULLVOLUME` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | value | `SOUND_LOOPATTENUATE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | value | `MAX_SFX` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | value | `MAX_PLAYSOUNDS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | interface | `ClientSndDmaState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_dma.ts` | interface | `ClientSndDmaHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_dma.ts` | interface | `ClientSndDmaContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_dma.ts` | function | `createClientSndDmaState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_dma.ts` | function | `createClientSndDmaContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_dma.ts` | function | `S_SoundInfo` | oui | `S_SoundInfo_f` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_dma.ts` | function | `S_Init` | oui | `S_Init` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_dma.ts` | function | `S_Shutdown` | oui | `S_Shutdown` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_dma.ts` | function | `S_FindName` | oui | `S_FindName` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_dma.ts` | function | `S_AliasName` | oui | `S_AliasName` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_dma.ts` | function | `S_BeginRegistration` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_RegisterSound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_EndRegistration` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_PickChannel` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_SpatializeOrigin` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_Spatialize` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_AllocPlaysound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_FreePlaysound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_IssuePlaysound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_RegisterSexedSound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_StartSound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_IssueReadyPlaysounds` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_StartLocalSound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_ClearBuffer` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_StopAllSounds` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_AddLoopSounds` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_RawSamples` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_Update` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `GetSoundtime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_Update_` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_Play` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `S_SoundList` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `bindSoundLocalHooks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `registerSoundCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `removeSoundCommands` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `initializePlaySoundLists` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `insertPendingByBegin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `insertAfter` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `unlinkPlaySound` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `resetPlaySound` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `resetChannel` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `copyVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `toSignedByte` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `sndDmaPrintf` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `sndDmaDPrintf` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_dma.ts` | function | `sndDmaError` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/snd_dma.ts` | value | `SOUND_FULLVOLUME` | non | `SOUND_FULLVOLUME` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | value | `SOUND_LOOPATTENUATE` | non | `SOUND_LOOPATTENUATE` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | value | `MAX_SFX` | non | `MAX_SFX` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | value | `MAX_PLAYSOUNDS` | non | `MAX_PLAYSOUNDS` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | interface | `ClientSndDmaState` | oui | `N/A` | `N/A (explicit runtime state)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | interface | `ClientSndDmaHooks` | oui | `N/A` | `N/A (host callback contract)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | interface | `ClientSndDmaContext` | oui | `N/A` | `N/A (explicit runtime context)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `createClientSndDmaState` | oui | `N/A` | `N/A (state factory)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `createClientSndDmaContext` | oui | `N/A` | `N/A (context factory)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `S_SoundInfo` | oui | `S_SoundInfo_f` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_Init` | oui | `S_Init` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_Shutdown` | oui | `S_Shutdown` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_FindName` | oui | `S_FindName` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_AliasName` | oui | `S_AliasName` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_BeginRegistration` | oui | `S_BeginRegistration` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_RegisterSound` | oui | `S_RegisterSound` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_EndRegistration` | oui | `S_EndRegistration` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_PickChannel` | oui | `S_PickChannel` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_SpatializeOrigin` | oui | `S_SpatializeOrigin` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_Spatialize` | oui | `S_Spatialize` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_AllocPlaysound` | oui | `S_AllocPlaysound` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_FreePlaysound` | oui | `S_FreePlaysound` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_IssuePlaysound` | oui | `S_IssuePlaysound` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_RegisterSexedSound` | oui | `S_RegisterSexedSound` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_StartSound` | oui | `S_StartSound` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_IssueReadyPlaysounds` | oui | `N/A` | `N/A (web audio scheduling helper)` | New |  | TS sans lien source | Valide | Helper exporte pour l'adapter audio web; ownership C de l'emission reste `S_IssuePlaysound`/`S_PaintChannels`. |
+| `packages/client/src/snd_dma.ts` | function | `S_StartLocalSound` | oui | `S_StartLocalSound` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_ClearBuffer` | oui | `S_ClearBuffer` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_StopAllSounds` | oui | `S_StopAllSounds` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_AddLoopSounds` | oui | `S_AddLoopSounds` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_RawSamples` | oui | `S_RawSamples` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_Update` | oui | `S_Update` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `GetSoundtime` | oui | `GetSoundtime` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_Update_` | oui | `S_Update_` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_Play` | oui | `S_Play` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `S_SoundList` | oui | `S_SoundList` | `Quake-2-master/client/snd_dma.c` | Ported | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_dma.ts` | function | `bindSoundLocalHooks` | non | `N/A` | `N/A (local hook binding)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `registerSoundCommand` | non | `N/A` | `N/A (command registration helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `removeSoundCommands` | non | `N/A` | `N/A (command cleanup helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `initializePlaySoundLists` | non | `N/A` | `N/A (playsound list helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `insertPendingByBegin` | non | `N/A` | `N/A (playsound list helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `insertAfter` | non | `N/A` | `N/A (linked-list helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `unlinkPlaySound` | non | `N/A` | `N/A (linked-list helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `resetPlaySound` | non | `N/A` | `N/A (state reset helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `resetChannel` | non | `N/A` | `N/A (state reset helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `copyVec3` | non | `N/A` | `N/A (vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `toSignedByte` | non | `N/A` | `N/A (sample conversion helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `sndDmaPrintf` | non | `N/A` | `N/A (console adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `sndDmaDPrintf` | non | `N/A` | `N/A (console adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/snd_dma.ts` | function | `sndDmaError` | non | `N/A` | `N/A (error adapter)` | New |  | TS sans lien source | Valide |  |

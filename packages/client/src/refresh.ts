@@ -59,6 +59,8 @@ import { CL_CalcViewValues, CL_UpdateLerpFraction, type ClientViewOptions, type 
 import { connstate_t, type ClientRuntime } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh frame payload)
  * Category: New
  * Purpose: Describe one render-facing entity emitted by the first client refresh bridge.
  *
@@ -85,6 +87,8 @@ export interface ClientRenderEntity {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh frame payload)
  * Category: New
  * Purpose: Describe one dynamic light emitted by the first client refresh bridge.
  *
@@ -101,6 +105,8 @@ export interface ClientDynamicLight {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh frame payload)
  * Category: New
  * Purpose: Describe one renderer-facing particle emitted by the client particle integration pass.
  *
@@ -114,6 +120,8 @@ export interface ClientRenderParticle {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh frame payload)
  * Category: New
  * Purpose: Describe one structured refresh frame that mirrors the usable output of `CL_AddEntities`.
  *
@@ -133,6 +141,12 @@ export interface ClientRefreshFrame {
   sustains: ClientSustainRender[];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Build the inert refresh payload returned while the client is not active.
+ */
 function createEmptyRefreshFrame(runtime: ClientRuntime): ClientRefreshFrame {
   return {
     view: {
@@ -242,14 +256,18 @@ export function CL_BuildRefreshFrame(
 }
 
 /**
- * Original name: CL_AddExplosions -> V_AddEntity
- * Source: client/cl_tent.c
- * Category: Ported integration
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (refresh adapter for CL_AddExplosions output)
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Converts persistent temp explosions, including `TE_BLASTER` impact flashes,
  *   into regular refresh entities so renderer adapters draw their MD2/SP2 models.
+ *
+ * Porting notes:
+ * - The owner of `CL_AddExplosions` remains `packages/client/src/cl_tent.ts`;
+ *   this helper only adapts its structured output into the refresh entity list.
  */
 function appendTempExplosions(
   explosions: readonly ClientExplosionRender[],
@@ -373,6 +391,8 @@ function appendViewWeapon(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Convert one interpolated packet entity snapshot into a renderer-facing entity record.
  */
@@ -401,6 +421,8 @@ function createRenderEntity(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Emit the linked auxiliary models attached to one packet entity snapshot.
  */
@@ -428,6 +450,8 @@ function appendLinkedModels(snapshot: ClientInterpolatedEntity, entities: Client
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Emit linked models after the C `ent.skin`/`skinnum`/`flags`/`alpha` reset in `CL_AddPacketEntities`.
  */
@@ -446,6 +470,8 @@ function createLinkedRenderEntity(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Emit the player-owned flag/tracker lights that the original client handles before skipping the viewer model.
  */
@@ -462,6 +488,8 @@ function appendViewerLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Emit the first packet-entity-derived dynamic lights mirrored from `CL_AddPacketEntities`.
  */
@@ -557,6 +585,8 @@ function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Keep each client entity `lerp_origin` aligned with the latest refresh-facing interpolated origin.
  */
@@ -565,6 +595,8 @@ function updateEntityLerpOrigin(runtime: ClientRuntime, snapshot: ClientInterpol
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Build one dynamic light value with cloned vector/color semantics.
  */
@@ -585,6 +617,8 @@ function createLight(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Mirror the Rogue tracker trail pulse from `CL_AddPacketEntities`.
  */
@@ -593,6 +627,8 @@ function trackerPulseIntensity(clientTime: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Compute `origin + scale * direction` for light offsets.
  */

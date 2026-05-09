@@ -10,6 +10,8 @@
  */
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime-renderer contract)
  * Category: New
  * Purpose: Describe one 2D HUD draw rectangle in pixel coordinates.
  *
@@ -24,6 +26,8 @@ export interface HudBounds {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime-renderer contract)
  * Category: New
  * Purpose: Describe one image draw request emitted by the ported HUD logic.
  *
@@ -39,6 +43,8 @@ export interface HudPictureCommand {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime-renderer contract)
  * Category: New
  * Purpose: Describe one text draw request emitted by the ported HUD logic.
  *
@@ -57,6 +63,8 @@ export interface HudTextCommand {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime-renderer contract)
  * Category: New
  * Purpose: Describe one number-field draw request emitted by the Quake II HUD logic.
  *
@@ -75,6 +83,8 @@ export interface HudNumberCommand {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime-renderer contract)
  * Category: New
  * Purpose: Describe one generic fill rectangle used by HUD overlays and future debug visuals.
  *
@@ -92,6 +102,8 @@ export interface HudFillCommand {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime-renderer contract)
  * Category: New
  * Purpose: Union the HUD draw primitives emitted by the client runtime.
  */
@@ -102,6 +114,8 @@ export type HudDrawCommand =
   | HudFillCommand;
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime-renderer contract)
  * Category: New
  * Purpose: Describe one active Quake II sky state ready to cross the runtime-to-renderer bridge.
  *

@@ -4,43 +4,43 @@
 
 - Fichier TS: `packages/client/src/menu-options-keys.ts`
 - Symboles TS: 35
-- Couvert C/H: 0
-- Reste a auditer: 35
+- Couvert C/H: 34
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/menu-options-keys.ts` | value | `bindnames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | value | `yesno_names` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | value | `cd_music_items` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | value | `quality_items` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | value | `compatibility_items` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | value | `crosshair_names` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `M_UnbindCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `M_FindKeysForCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `KeyCursorDrawFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `DrawKeyBindingFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `KeyBindingFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `Keys_MenuInit` | oui | `Keys_MenuInit` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-options-keys.ts` | function | `Keys_MenuDraw` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `Keys_MenuKey` | oui | `Keys_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-options-keys.ts` | function | `M_Menu_Keys_f` | oui | `M_Menu_Keys_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-options-keys.ts` | function | `CrosshairFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `JoystickFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `CustomizeControlsFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `AlwaysRunFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `FreeLookFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `MouseSpeedFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `clampCvar` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `ControlsSetMenuItemValues` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `ControlsResetDefaultsFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `InvertMouseFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `LookspringFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `LookstrafeFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `UpdateVolumeFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `UpdateCDVolumeFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `ConsoleFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `UpdateSoundQualityFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `Options_MenuInit` | oui | `Options_MenuInit` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-options-keys.ts` | function | `Options_MenuDraw` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-options-keys.ts` | function | `Options_MenuKey` | oui | `Options_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-options-keys.ts` | function | `M_Menu_Options_f` | oui | `M_Menu_Options_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/menu-options-keys.ts` | value | `bindnames` | non | `bindnames` | `Quake-2-master/client/menu.c` | Ported |  | Source C/H verifiee directement | Valide | Matrice C/H sans ligne dediee; table comparee a `menu.c`. |
+| `packages/client/src/menu-options-keys.ts` | value | `yesno_names` | non | `yesno_names` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | value | `cd_music_items` | non | `cd_music_items` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | value | `quality_items` | non | `quality_items` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | value | `compatibility_items` | non | `compatibility_items` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | value | `crosshair_names` | non | `crosshair_names` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `M_UnbindCommand` | non | `M_UnbindCommand` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `M_FindKeysForCommand` | non | `M_FindKeysForCommand` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `KeyCursorDrawFunc` | non | `KeyCursorDrawFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `DrawKeyBindingFunc` | non | `DrawKeyBindingFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `KeyBindingFunc` | non | `KeyBindingFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `Keys_MenuInit` | oui | `Keys_MenuInit` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `Keys_MenuDraw` | non | `Keys_MenuDraw` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `Keys_MenuKey` | oui | `Keys_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `M_Menu_Keys_f` | oui | `M_Menu_Keys_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `CrosshairFunc` | non | `CrosshairFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `JoystickFunc` | non | `JoystickFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `CustomizeControlsFunc` | non | `CustomizeControlsFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `AlwaysRunFunc` | non | `AlwaysRunFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `FreeLookFunc` | non | `FreeLookFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `MouseSpeedFunc` | non | `MouseSpeedFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `ClampCvar` | non | `ClampCvar` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `ControlsSetMenuItemValues` | non | `ControlsSetMenuItemValues` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `ControlsResetDefaultsFunc` | non | `ControlsResetDefaultsFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `InvertMouseFunc` | non | `InvertMouseFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `LookspringFunc` | non | `LookspringFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `LookstrafeFunc` | non | `LookstrafeFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `UpdateVolumeFunc` | non | `UpdateVolumeFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `UpdateCDVolumeFunc` | non | `UpdateCDVolumeFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `ConsoleFunc` | non | `ConsoleFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `UpdateSoundQualityFunc` | non | `UpdateSoundQualityFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `Options_MenuInit` | oui | `Options_MenuInit` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `Options_MenuDraw` | non | `Options_MenuDraw` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `Options_MenuKey` | oui | `Options_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-options-keys.ts` | function | `M_Menu_Options_f` | oui | `M_Menu_Options_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |

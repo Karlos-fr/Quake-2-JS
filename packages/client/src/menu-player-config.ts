@@ -44,15 +44,44 @@ import {
 } from "./qmenu.js";
 import { CalcFov } from "./view.js";
 
+/**
+ * Original name: MAX_DISPLAYNAME
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 const MAX_DISPLAYNAME = 16;
+
+/**
+ * Original name: MAX_PLAYERMODELS
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 const MAX_PLAYERMODELS = 1024;
+
+/**
+ * Original name: rate_tbl
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 const rate_tbl = [2500, 3200, 5000, 10000, 25000, 0];
+
+/**
+ * Original name: rate_names
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 const rate_names = ["28.8 Modem", "33.6 Modem", "Single ISDN", "Dual ISDN/Cable", "T1/LAN", "User defined", null];
+
+/**
+ * Original name: handedness
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 const handedness = ["right", "left", "center", null];
 
 /**
  * Original name: DownloadOptionsFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -65,7 +94,7 @@ function DownloadOptionsFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: HandednessCallback
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -78,7 +107,7 @@ function HandednessCallback(context: ClientMenuContext): void {
 
 /**
  * Original name: RateCallback
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -93,7 +122,7 @@ function RateCallback(context: ClientMenuContext): void {
 
 /**
  * Original name: ModelCallback
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -105,6 +134,12 @@ function ModelCallback(context: ClientMenuContext): void {
   context.state.s_player_skin_box.curvalue = 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Normalize the player model records supplied by filesystem/browser hooks before menu use.
+ */
 function normalizePlayerModel(model: PlayerModelInfo): PlayerModelInfo | null {
   const directory = model.directory.trim();
   const skins = model.skins
@@ -122,11 +157,23 @@ function normalizePlayerModel(model: PlayerModelInfo): PlayerModelInfo | null {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Extract a file or directory basename from slash- or backslash-delimited paths.
+ */
 function stripPath(value: string): string {
   const slash = Math.max(value.lastIndexOf("/"), value.lastIndexOf("\\"));
   return slash >= 0 ? value.slice(slash + 1) : value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Remove the final filename extension from hook-supplied skin names.
+ */
 function stripExtension(value: string): string {
   const dot = value.lastIndexOf(".");
   return dot >= 0 ? value.slice(0, dot) : value;
@@ -134,7 +181,7 @@ function stripExtension(value: string): string {
 
 /**
  * Original name: PlayerConfig_ScanDirectories
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -164,7 +211,7 @@ export function PlayerConfig_ScanDirectories(context: ClientMenuContext): boolea
 
 /**
  * Original name: pmicmpfnc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -186,6 +233,12 @@ export function pmicmpfnc(a: PlayerModelInfo, b: PlayerModelInfo): number {
   return a.directory.localeCompare(b.directory);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Split the userinfo `skin` cvar into model directory and skin name with Quake II defaults.
+ */
 function splitSkin(value: string): { directory: string; skin: string } {
   const slash = value.search(/[\\/]/);
   if (slash >= 0) {
@@ -201,6 +254,12 @@ function splitSkin(value: string): { directory: string; skin: string } {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Convert a normalized player model skin list into qmenu's null-terminated itemnames array.
+ */
 function skinItemNames(model: PlayerModelInfo | undefined): Array<string | null> | null {
   if (!model) {
     return null;
@@ -211,7 +270,7 @@ function skinItemNames(model: PlayerModelInfo | undefined): Array<string | null>
 
 /**
  * Original name: PlayerConfig_MenuInit
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -382,7 +441,7 @@ export function PlayerConfig_MenuInit(context: ClientMenuContext): boolean {
 
 /**
  * Original name: PlayerConfig_MenuDraw
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -447,6 +506,15 @@ function PlayerConfig_MenuDraw(context: ClientMenuContext): void {
   }
 }
 
+/**
+ * Original name: FreeFileList
+ * Source: Quake-2-master/client/menu.c
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - JS garbage collection replaces the original allocation frees; this clears menu-owned temporary model arrays.
+ */
 function clearPlayerModels(context: ClientMenuContext): void {
   context.state.s_pmi = [];
   context.state.s_pmnames = [];
@@ -457,7 +525,7 @@ function clearPlayerModels(context: ClientMenuContext): void {
 
 /**
  * Original name: PlayerConfig_MenuKey
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -486,7 +554,7 @@ export function PlayerConfig_MenuKey(context: ClientMenuContext, key: number): s
 
 /**
  * Original name: M_Menu_PlayerConfig_f
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  *

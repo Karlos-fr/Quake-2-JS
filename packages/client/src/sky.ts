@@ -19,6 +19,8 @@ import type { QuakeSkySnapshot } from "./render-contracts.js";
 import type { ClientRuntime } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing client snapshot)
  * Category: New
  * Purpose: Build an optional renderer-facing snapshot from the active client sky state.
  *

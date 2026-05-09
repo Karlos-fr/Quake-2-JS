@@ -4,29 +4,29 @@
 
 - Fichier TS: `packages/client/src/menu-player-config.ts`
 - Symboles TS: 21
-- Couvert C/H: 0
-- Reste a auditer: 21
+- Couvert C/H: 14
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/menu-player-config.ts` | value | `MAX_DISPLAYNAME` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | value | `MAX_PLAYERMODELS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | value | `rate_tbl` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | value | `rate_names` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | value | `handedness` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `DownloadOptionsFunc` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `HandednessCallback` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `RateCallback` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `ModelCallback` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `normalizePlayerModel` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `stripPath` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `stripExtension` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_ScanDirectories` | oui | `PlayerConfig_ScanDirectories` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-player-config.ts` | function | `pmicmpfnc` | oui | `pmicmpfnc` | `Quake-2-master/client/menu.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/menu-player-config.ts` | function | `splitSkin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `skinItemNames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_MenuInit` | oui | `PlayerConfig_MenuInit` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_MenuDraw` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `clearPlayerModels` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_MenuKey` | oui | `PlayerConfig_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-player-config.ts` | function | `M_Menu_PlayerConfig_f` | oui | `M_Menu_PlayerConfig_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/menu-player-config.ts` | value | `MAX_DISPLAYNAME` | non | `MAX_DISPLAYNAME` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | value | `MAX_PLAYERMODELS` | non | `MAX_PLAYERMODELS` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | value | `rate_tbl` | non | `rate_tbl` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | value | `rate_names` | non | `rate_names` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | value | `handedness` | non | `handedness` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `DownloadOptionsFunc` | non | `DownloadOptionsFunc` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `HandednessCallback` | non | `HandednessCallback` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `RateCallback` | non | `RateCallback` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `ModelCallback` | non | `ModelCallback` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `normalizePlayerModel` | non | `N/A` | `N/A (local helper)` | New |  | Code nouveau | Valide |  |
+| `packages/client/src/menu-player-config.ts` | function | `stripPath` | non | `N/A` | `N/A (local helper)` | New |  | Code nouveau | Valide |  |
+| `packages/client/src/menu-player-config.ts` | function | `stripExtension` | non | `N/A` | `N/A (local helper)` | New |  | Code nouveau | Valide |  |
+| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_ScanDirectories` | oui | `PlayerConfig_ScanDirectories` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `pmicmpfnc` | oui | `pmicmpfnc` | `Quake-2-master/client/menu.c` | Ported |  | Source C verifiee | Valide | Matrice C/H sans ligne dediee; source C verifiee pendant la session. |
+| `packages/client/src/menu-player-config.ts` | function | `splitSkin` | non | `N/A` | `N/A (local helper)` | New |  | Code nouveau | Valide |  |
+| `packages/client/src/menu-player-config.ts` | function | `skinItemNames` | non | `N/A` | `N/A (local helper)` | New |  | Code nouveau | Valide |  |
+| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_MenuInit` | oui | `PlayerConfig_MenuInit` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_MenuDraw` | non | `PlayerConfig_MenuDraw` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `clearPlayerModels` | non | `FreeFileList` | `Quake-2-master/client/menu.c` | Adapter | [`client_menu.c.md`](../matrices/client_menu.c.md) | Adapter verifie | Valide | Adapter JS du nettoyage d'allocations C; la ligne C/H `FreeFileList` est Non applicable. |
+| `packages/client/src/menu-player-config.ts` | function | `PlayerConfig_MenuKey` | oui | `PlayerConfig_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-player-config.ts` | function | `M_Menu_PlayerConfig_f` | oui | `M_Menu_PlayerConfig_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |

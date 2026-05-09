@@ -1,6 +1,6 @@
 /**
  * File: menu-runtime.ts
- * Source: Quake II original / client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Purpose: Port the shared menu stack, command registration and global draw/key entry points from `menu.c`.
  */
 
@@ -293,6 +293,15 @@ export function Default_MenuKey(context: ClientMenuContext, menu: import("./qmen
   return sound;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Keeps menu command registration idempotent for browser and test runtimes that can initialize the menu more than once.
+ */
 function registerMenuCommand(context: ClientMenuContext, name: string, callback: () => void): void {
   if (!Cmd_Exists(context.cmd, name)) {
     Cmd_AddCommand(context.cmd, name, callback);

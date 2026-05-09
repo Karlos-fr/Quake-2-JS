@@ -5,14 +5,14 @@
 - Fichier TS: `packages/client/src/render-contracts.ts`
 - Symboles TS: 7
 - Couvert C/H: 0
-- Reste a auditer: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/render-contracts.ts` | interface | `HudBounds` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/render-contracts.ts` | interface | `HudPictureCommand` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/render-contracts.ts` | interface | `HudTextCommand` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/render-contracts.ts` | interface | `HudNumberCommand` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/render-contracts.ts` | interface | `HudFillCommand` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/render-contracts.ts` | type | `HudDrawCommand` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/render-contracts.ts` | interface | `QuakeSkySnapshot` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/render-contracts.ts` | interface | `HudBounds` | oui | `N/A` | `N/A (runtime-renderer contract)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/render-contracts.ts` | interface | `HudPictureCommand` | oui | `N/A` | `N/A (runtime-renderer contract)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/render-contracts.ts` | interface | `HudTextCommand` | oui | `N/A` | `N/A (runtime-renderer contract)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/render-contracts.ts` | interface | `HudNumberCommand` | oui | `N/A` | `N/A (runtime-renderer contract)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/render-contracts.ts` | interface | `HudFillCommand` | oui | `N/A` | `N/A (runtime-renderer contract)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/render-contracts.ts` | type | `HudDrawCommand` | oui | `N/A` | `N/A (runtime-renderer contract)` | New |  | Hors C/H | Valide |  |
+| `packages/client/src/render-contracts.ts` | interface | `QuakeSkySnapshot` | oui | `N/A` | `N/A (runtime-renderer contract)` | New |  | Hors C/H | Valide |  |

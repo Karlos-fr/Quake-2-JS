@@ -1,0 +1,23 @@
+# Progress TS - packages/client/src/refresh.ts
+
+- Statut: Termine
+- Dernier lot valide: fichier complet (18 symboles)
+- Prochain lot recommande: aucun pour `refresh.ts`; reprendre le doublon externe `CL_UpdateLerpFraction`/`CL_AddEntities` lors de l'audit de `packages/client/src/view.ts`.
+- Tests de reference:
+  - `npm run verify:cl-view` OK
+  - `npm run verify:cl-tent` OK
+  - `npm run verify:full-game:render-source` OK
+  - `npm run verify:full-game:three-renderer` OK
+  - `npm run verify:web-render-order` OK
+  - `npm run verify:dlight-sync` OK
+  - `npm run verify:refresh-entity:alias-flags` OK
+  - `npm run verify:refresh-entity:weapon` OK
+  - `npm run verify:particle-sync` OK
+  - `npm run typecheck` OK
+  - `npm run verify:entities:phase5` echoue dans le harness: `createSeededRuntime()` laisse `cls.state` a `ca_disconnected`, donc `CL_BuildRefreshFrame` retourne un frame vide avant le cas linked-models.
+- Decisions:
+  - `CL_BuildRefreshFrame`, `appendViewWeapon` et `CL_GetEntitySoundOrigin` sont les proprietaires attendus par `client_cl_ents.c.md` et sont marques `Couvert C/H`.
+  - Les interfaces et helpers de payload refresh sont `Category: New` avec `Original name: N/A` et `Source: N/A (...)` explicites.
+  - `appendTempExplosions` est un `Adapter` du resultat structure de `CL_AddExplosions`; le port proprietaire reste `packages/client/src/cl_tent.ts`.
+  - Le doublon detecte est externe a ce fichier: `packages/client/src/view.ts` declare encore `Original name: CL_AddEntities` pour le helper partiel `CL_UpdateLerpFraction`.
+- Blocages: aucun pour `refresh.ts`; le test `verify:entities:phase5` doit etre repris cote harness ou etat runtime attendu.

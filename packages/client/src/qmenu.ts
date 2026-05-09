@@ -60,8 +60,18 @@ export {
   K_UPARROW
 };
 
+/**
+ * Original name: MAXMENUITEMS
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export const MAXMENUITEMS = 64;
 
+/**
+ * Original name: MTYPE_*
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export const MTYPE_SLIDER = 0;
 export const MTYPE_LIST = 1;
 export const MTYPE_ACTION = 2;
@@ -69,17 +79,55 @@ export const MTYPE_SPINCONTROL = 3;
 export const MTYPE_SEPARATOR = 4;
 export const MTYPE_FIELD = 5;
 
+/**
+ * Original name: QMF_*
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export const QMF_LEFT_JUSTIFY = 0x00000001;
 export const QMF_GRAYED = 0x00000002;
 export const QMF_NUMBERSONLY = 0x00000004;
 
+/**
+ * Original name: RCOLUMN_OFFSET
+ * Source: Quake-2-master/client/qmenu.c
+ * Category: Ported
+ */
 const RCOLUMN_OFFSET = 16;
+
+/**
+ * Original name: LCOLUMN_OFFSET
+ * Source: Quake-2-master/client/qmenu.c
+ * Category: Ported
+ */
 const LCOLUMN_OFFSET = -16;
+
+/**
+ * Original name: SLIDER_RANGE
+ * Source: Quake-2-master/client/qmenu.c
+ * Category: Ported
+ */
 const SLIDER_RANGE = 10;
+
+/**
+ * Original name: N/A
+ * Source: N/A (runtime default)
+ * Category: New
+ * Purpose: Provide the qmenu fallback width before the host video state is attached.
+ */
 const DEFAULT_VID_WIDTH = 320;
+
+/**
+ * Original name: N/A
+ * Source: N/A (runtime default)
+ * Category: New
+ * Purpose: Provide the qmenu fallback height before the host video state is attached.
+ */
 const DEFAULT_VID_HEIGHT = 240;
 
 /**
+ * Original name: N/A
+ * Source: N/A (draw snapshot)
  * Category: New
  * Purpose: Encode one menu text draw request emitted by the `Menu_DrawString*` family.
  *
@@ -95,6 +143,8 @@ export interface MenuDrawStringCommand {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (draw snapshot)
  * Category: New
  * Purpose: Encode one low-level `Draw_Char` request emitted by `qmenu.c`.
  *
@@ -108,6 +158,8 @@ export interface MenuDrawCharCommand {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (draw snapshot)
  * Category: New
  * Purpose: Encode one low-level `Draw_Fill` request emitted by `qmenu.c`.
  *
@@ -122,6 +174,11 @@ export interface MenuDrawFillCommand {
   c: number;
 }
 
+/**
+ * Original name: _tag_menuframework
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export interface menuframework_s {
   x: number;
   y: number;
@@ -133,6 +190,11 @@ export interface menuframework_s {
   cursordraw: ((context: ClientQMenuContext, menu: menuframework_s) => void) | null;
 }
 
+/**
+ * Original name: menucommon_s
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export interface menucommon_s {
   type: number;
   name: string | null;
@@ -149,6 +211,11 @@ export interface menucommon_s {
   cursordraw: ((context: ClientQMenuContext, self: unknown) => void) | null;
 }
 
+/**
+ * Original name: menufield_s
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export interface menufield_s {
   generic: menucommon_s;
   buffer: string;
@@ -158,6 +225,11 @@ export interface menufield_s {
   visible_offset: number;
 }
 
+/**
+ * Original name: menuslider_s
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export interface menuslider_s {
   generic: menucommon_s;
   minvalue: number;
@@ -166,23 +238,46 @@ export interface menuslider_s {
   range: number;
 }
 
+/**
+ * Original name: menulist_s
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export interface menulist_s {
   generic: menucommon_s;
   curvalue: number;
   itemnames: Array<string | null> | null;
 }
 
+/**
+ * Original name: menuaction_s
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export interface menuaction_s {
   generic: menucommon_s;
 }
 
+/**
+ * Original name: menuseparator_s
+ * Source: Quake-2-master/client/qmenu.h
+ * Category: Ported
+ */
 export interface menuseparator_s {
   generic: menucommon_s;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript union helper)
+ * Category: New
+ * Purpose: Represent the C menu item pointer union with an explicit TypeScript type.
+ */
 export type MenuItem = menufield_s | menuslider_s | menulist_s | menuaction_s | menuseparator_s;
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime context)
  * Category: New
  * Purpose: Preserve the runtime globals and draw capture state used by the `qmenu.c` port.
  *
@@ -199,6 +294,8 @@ export interface ClientQMenuState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime hooks)
  * Category: New
  * Purpose: Expose only the remaining platform hooks needed by `qmenu.c`.
  *
@@ -213,6 +310,8 @@ export interface ClientQMenuHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime context)
  * Category: New
  * Purpose: Group the menu framework public state with the explicit runtime required by the `qmenu.c` port.
  *
@@ -224,6 +323,12 @@ export interface ClientQMenuContext {
   hooks: ClientQMenuHooks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime context factory)
+ * Category: New
+ * Purpose: Create the explicit qmenu runtime state that replaces the C globals.
+ */
 export function createClientQMenuContext(hooks: ClientQMenuHooks = {}): ClientQMenuContext {
   return {
     state: {
@@ -238,6 +343,12 @@ export function createClientQMenuContext(hooks: ClientQMenuHooks = {}): ClientQM
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
+ * Purpose: Create a `menuframework_s` value with Quake-style zero defaults.
+ */
 export function createMenuFramework(): menuframework_s {
   return {
     x: 0,
@@ -251,6 +362,12 @@ export function createMenuFramework(): menuframework_s {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
+ * Purpose: Create a `menucommon_s` value shared by all menu item structs.
+ */
 export function createMenuCommon(type = MTYPE_ACTION): menucommon_s {
   return {
     type,
@@ -269,6 +386,12 @@ export function createMenuCommon(type = MTYPE_ACTION): menucommon_s {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
+ * Purpose: Create a `menufield_s` value with editable-buffer defaults.
+ */
 export function createMenuField(): menufield_s {
   return {
     generic: createMenuCommon(MTYPE_FIELD),
@@ -280,6 +403,12 @@ export function createMenuField(): menufield_s {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
+ * Purpose: Create a `menuslider_s` value with numeric defaults.
+ */
 export function createMenuSlider(): menuslider_s {
   return {
     generic: createMenuCommon(MTYPE_SLIDER),
@@ -290,6 +419,12 @@ export function createMenuSlider(): menuslider_s {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
+ * Purpose: Create a `menulist_s` or spincontrol-compatible value.
+ */
 export function createMenuList(type = MTYPE_LIST): menulist_s {
   return {
     generic: createMenuCommon(type),
@@ -298,34 +433,70 @@ export function createMenuList(type = MTYPE_LIST): menulist_s {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
+ * Purpose: Create a `menuaction_s` value.
+ */
 export function createMenuAction(): menuaction_s {
   return {
     generic: createMenuCommon(MTYPE_ACTION)
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
+ * Purpose: Create a `menuseparator_s` value.
+ */
 export function createMenuSeparator(): menuseparator_s {
   return {
     generic: createMenuCommon(MTYPE_SEPARATOR)
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime timing hook)
+ * Category: New
+ * Purpose: Read menu time from the explicit runtime hook.
+ */
 function getMilliseconds(context: ClientQMenuContext): number {
   return context.hooks.getMilliseconds?.() ?? 0;
 }
 
+/**
+ * Original name: Draw_Char
+ * Source: Quake-2-master/client/qmenu.c
+ * Category: Adapter
+ * Purpose: Replace the C renderer macro with a captured draw-command sink.
+ */
 function emitDrawChar(context: ClientQMenuContext, x: number, y: number, c: number): void {
   const command = { x, y, c };
   context.state.drawChars.push(command);
   context.hooks.onDrawChar?.(command);
 }
 
+/**
+ * Original name: Draw_Fill
+ * Source: Quake-2-master/client/qmenu.c
+ * Category: Adapter
+ * Purpose: Replace the C renderer macro with a captured fill-command sink.
+ */
 function emitDrawFill(context: ClientQMenuContext, x: number, y: number, w: number, h: number, c: number): void {
   const command = { x, y, w, h, c };
   context.state.drawFills.push(command);
   context.hooks.onDrawFill?.(command);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (draw-command helper)
+ * Category: New
+ * Purpose: Share string-to-glyph emission for the four menu string variants.
+ */
 function emitDrawString(
   context: ClientQMenuContext,
   x: number,
@@ -353,6 +524,8 @@ function emitDrawString(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (callback draw helper)
  * Category: New
  * Purpose: Expose the low-level draw-char sink used by `qmenu.c` ownerdraw and cursordraw callbacks.
  *
@@ -364,6 +537,8 @@ export function QMenu_DrawChar(context: ClientQMenuContext, x: number, y: number
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (callback draw helper)
  * Category: New
  * Purpose: Expose one immediate bright menu string draw for `qmenu.c` ownerdraw callbacks.
  *
@@ -374,13 +549,19 @@ export function QMenu_DrawString(context: ClientQMenuContext, x: number, y: numb
   emitDrawString(context, x, y, text, false, false);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (field buffer helper)
+ * Category: New
+ * Purpose: Centralize the mutable C field buffer replacement.
+ */
 function setFieldBuffer(field: menufield_s, text: string): void {
   field.buffer = text;
 }
 
 /**
  * Original name: Action_DoEnter
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -393,7 +574,7 @@ function Action_DoEnter(a: menuaction_s): void {
 
 /**
  * Original name: Action_Draw
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -418,7 +599,7 @@ function Action_Draw(context: ClientQMenuContext, a: menuaction_s): void {
 
 /**
  * Original name: Field_DoEnter
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -436,7 +617,7 @@ function Field_DoEnter(f: menufield_s): qboolean {
 
 /**
  * Original name: Field_Draw
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -498,6 +679,12 @@ function Field_Draw(context: ClientQMenuContext, f: menufield_s): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (key normalization helper)
+ * Category: New
+ * Purpose: Isolate the keypad-to-ASCII remapping used by `Field_Key`.
+ */
 function normalizeKeypadKey(key: number): number {
   switch (key) {
     case K_KP_SLASH:
@@ -533,10 +720,22 @@ function normalizeKeypadKey(key: number): number {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (field validation helper)
+ * Category: New
+ * Purpose: Match the numeric-field branch in `Field_Key` without C locale helpers.
+ */
 function isDigitKey(key: number): boolean {
   return key >= 48 && key <= 57;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (clipboard helper)
+ * Category: New
+ * Purpose: Match the C paste delimiter handling before inserting clipboard text.
+ */
 function trimClipboardText(text: string): string {
   let end = text.length;
 
@@ -551,6 +750,12 @@ function trimClipboardText(text: string): string {
   return text.slice(0, end);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (clipboard helper)
+ * Category: New
+ * Purpose: Apply clipboard paste through the explicit qmenu runtime hook.
+ */
 function applyFieldPaste(context: ClientQMenuContext, field: menufield_s): qboolean {
   const clipboard = context.hooks.getClipboardData?.();
 
@@ -572,13 +777,19 @@ function applyFieldPaste(context: ClientQMenuContext, field: menufield_s): qbool
   return true;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (field buffer helper)
+ * Category: New
+ * Purpose: Replace the C `memmove` character deletion with immutable string slicing.
+ */
 function removeCharAt(text: string, index: number): string {
   return `${text.slice(0, index)}${text.slice(index + 1)}`;
 }
 
 /**
  * Original name: Field_Key
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -657,7 +868,7 @@ export function Field_Key(context: ClientQMenuContext, field: menufield_s, key: 
 
 /**
  * Original name: Menu_AddItem
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -680,7 +891,7 @@ export function Menu_AddItem(context: ClientQMenuContext, menu: menuframework_s,
 
 /**
  * Original name: Menu_AdjustCursor
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -726,7 +937,7 @@ export function Menu_AdjustCursor(context: ClientQMenuContext, menu: menuframewo
 
 /**
  * Original name: Menu_Center
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -744,7 +955,7 @@ export function Menu_Center(context: ClientQMenuContext, menu: menuframework_s):
 
 /**
  * Original name: Menu_DrawStatusBar
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -769,7 +980,7 @@ function Menu_DrawStatusBar(context: ClientQMenuContext, text: string | null): v
 
 /**
  * Original name: Menu_Draw
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -842,7 +1053,7 @@ export function Menu_Draw(context: ClientQMenuContext, menu: menuframework_s): v
 
 /**
  * Original name: Menu_DrawString
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -858,7 +1069,7 @@ export function Menu_DrawString(x: number, y: number, text: string): MenuDrawStr
 
 /**
  * Original name: Menu_DrawStringDark
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -874,7 +1085,7 @@ export function Menu_DrawStringDark(x: number, y: number, text: string): MenuDra
 
 /**
  * Original name: Menu_DrawStringR2L
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -890,7 +1101,7 @@ export function Menu_DrawStringR2L(x: number, y: number, text: string): MenuDraw
 
 /**
  * Original name: Menu_DrawStringR2LDark
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -906,7 +1117,7 @@ export function Menu_DrawStringR2LDark(x: number, y: number, text: string): Menu
 
 /**
  * Original name: Menu_ItemAtCursor
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -923,7 +1134,7 @@ export function Menu_ItemAtCursor(context: ClientQMenuContext, menu: menuframewo
 
 /**
  * Original name: Menu_SelectItem
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -954,7 +1165,7 @@ export function Menu_SelectItem(context: ClientQMenuContext, menu: menuframework
 
 /**
  * Original name: Menu_SetStatusBar
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -967,7 +1178,7 @@ export function Menu_SetStatusBar(context: ClientQMenuContext, menu: menuframewo
 
 /**
  * Original name: Menu_SlideItem
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -993,7 +1204,7 @@ export function Menu_SlideItem(context: ClientQMenuContext, menu: menuframework_
 
 /**
  * Original name: Menu_TallySlots
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1029,7 +1240,7 @@ export function Menu_TallySlots(context: ClientQMenuContext, menu: menuframework
 
 /**
  * Original name: Menulist_DoEnter
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1049,7 +1260,7 @@ function Menulist_DoEnter(l: menulist_s): void {
 
 /**
  * Original name: MenuList_Draw
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1099,7 +1310,7 @@ function MenuList_Draw(context: ClientQMenuContext, l: menulist_s): void {
 
 /**
  * Original name: Separator_Draw
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1121,7 +1332,7 @@ function Separator_Draw(context: ClientQMenuContext, s: menuseparator_s): void {
 
 /**
  * Original name: Slider_DoSlide
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1142,7 +1353,7 @@ function Slider_DoSlide(s: menuslider_s, dir: number): void {
 
 /**
  * Original name: Slider_Draw
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1198,7 +1409,7 @@ function Slider_Draw(context: ClientQMenuContext, s: menuslider_s): void {
 
 /**
  * Original name: SpinControl_DoEnter
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1220,7 +1431,7 @@ function SpinControl_DoEnter(s: menulist_s): void {
 
 /**
  * Original name: SpinControl_DoSlide
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1241,7 +1452,7 @@ function SpinControl_DoSlide(s: menulist_s, dir: number): void {
 
 /**
  * Original name: SpinControl_Draw
- * Source: client/qmenu.c
+ * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
  * Fidelity level: Strict
  *

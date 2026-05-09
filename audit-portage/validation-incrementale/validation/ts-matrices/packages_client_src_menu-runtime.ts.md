@@ -4,16 +4,16 @@
 
 - Fichier TS: `packages/client/src/menu-runtime.ts`
 - Symboles TS: 8
-- Couvert C/H: 0
-- Reste a auditer: 8
+- Couvert C/H: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/menu-runtime.ts` | function | `M_PushMenu` | oui | `M_PushMenu` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-runtime.ts` | function | `M_ForceMenuOff` | oui | `M_ForceMenuOff` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-runtime.ts` | function | `M_PopMenu` | oui | `M_PopMenu` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-runtime.ts` | function | `Default_MenuKey` | oui | `Default_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-runtime.ts` | function | `registerMenuCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-runtime.ts` | function | `M_Init` | oui | `M_Init` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-runtime.ts` | function | `M_Draw` | oui | `M_Draw` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-runtime.ts` | function | `M_Keydown` | oui | `M_Keydown` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/menu-runtime.ts` | function | `M_PushMenu` | oui | `M_PushMenu` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-runtime.ts` | function | `M_ForceMenuOff` | oui | `M_ForceMenuOff` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-runtime.ts` | function | `M_PopMenu` | oui | `M_PopMenu` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-runtime.ts` | function | `Default_MenuKey` | oui | `Default_MenuKey` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-runtime.ts` | function | `registerMenuCommand` | non | N/A | N/A (local helper) | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/menu-runtime.ts` | function | `M_Init` | oui | `M_Init` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-runtime.ts` | function | `M_Draw` | oui | `M_Draw` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-runtime.ts` | function | `M_Keydown` | oui | `M_Keydown` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |

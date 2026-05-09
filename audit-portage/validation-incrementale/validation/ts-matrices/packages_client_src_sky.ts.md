@@ -5,8 +5,8 @@
 - Fichier TS: `packages/client/src/sky.ts`
 - Symboles TS: 1
 - Couvert C/H: 0
-- Reste a auditer: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/sky.ts` | function | `CL_BuildSkySnapshot` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/sky.ts` | function | `CL_BuildSkySnapshot` | oui | N/A | N/A (renderer-facing client snapshot) | New |  | TS sans lien source | Valide |  |

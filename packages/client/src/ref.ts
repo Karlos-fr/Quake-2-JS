@@ -21,15 +21,46 @@ import { MAX_LIGHTSTYLES } from "../../qcommon/src/index.js";
 
 export { MAX_LIGHTSTYLES };
 
+/**
+ * Original name: model_s
+ * Source: Quake-2-master/client/ref.h
+ * Category: Adapter
+ * Purpose: Represent the renderer-owned opaque `struct model_s` handle exposed through `entity_t` and `refexport_t`.
+ */
 export type model_s = unknown;
+
+/**
+ * Original name: image_s
+ * Source: Quake-2-master/client/ref.h
+ * Category: Adapter
+ * Purpose: Represent the renderer-owned opaque `struct image_s` handle exposed through `entity_t` and `refexport_t`.
+ */
 export type image_s = unknown;
 
+/**
+ * Original name: MAX_DLIGHTS, MAX_ENTITIES, MAX_PARTICLES
+ * Source: Quake-2-master/client/ref.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_DLIGHTS = 32;
 export const MAX_ENTITIES = 128;
 export const MAX_PARTICLES = 4096;
 
+/**
+ * Original name: POWERSUIT_SCALE
+ * Source: Quake-2-master/client/ref.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const POWERSUIT_SCALE = 4.0;
 
+/**
+ * Original name: SHELL_*_COLOR
+ * Source: Quake-2-master/client/ref.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const SHELL_RED_COLOR = 0xF2;
 export const SHELL_GREEN_COLOR = 0xD0;
 export const SHELL_BLUE_COLOR = 0xF3;
@@ -41,12 +72,25 @@ export const SHELL_HALF_DAM_COLOR = 0x90;
 export const SHELL_CYAN_COLOR = 0x72;
 export const SHELL_WHITE_COLOR = 0xD7;
 
+/**
+ * Original name: ENTITY_FLAGS
+ * Source: Quake-2-master/client/ref.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const ENTITY_FLAGS = 68;
+
+/**
+ * Original name: API_VERSION
+ * Source: Quake-2-master/client/ref.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const API_VERSION = 3;
 
 /**
  * Original name: entity_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Close
  */
@@ -67,7 +111,7 @@ export interface entity_t {
 
 /**
  * Original name: dlight_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -79,7 +123,7 @@ export interface dlight_t {
 
 /**
  * Original name: particle_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -91,7 +135,7 @@ export interface particle_t {
 
 /**
  * Original name: lightstyle_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -102,7 +146,7 @@ export interface lightstyle_t {
 
 /**
  * Original name: refdef_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -135,6 +179,8 @@ export interface refdef_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (structured refexport result)
  * Category: New
  * Purpose: Replace `DrawGetPicSize` output pointers with a structured result.
  *
@@ -148,7 +194,7 @@ export interface RefPictureSize {
 
 /**
  * Original name: refexport_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -184,6 +230,8 @@ export interface refexport_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (structured refimport result)
  * Category: New
  * Purpose: Replace `Vid_GetModeInfo` output pointers with a structured result.
  *
@@ -197,7 +245,7 @@ export interface VidModeInfo {
 
 /**
  * Original name: refimport_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -228,7 +276,7 @@ export interface refimport_t {
 
 /**
  * Original name: GetRefAPI_t
- * Source: client/ref.h
+ * Source: Quake-2-master/client/ref.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -241,6 +289,8 @@ export interface refimport_t {
 export type GetRefAPI_t = (imports: refimport_t) => refexport_t;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing default factory)
  * Category: New
  * Purpose: Create the zero-initialized `entity_t` state used by renderer-facing client code.
  *
@@ -265,6 +315,8 @@ export function createEntity(): entity_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing default factory)
  * Category: New
  * Purpose: Create the zero-initialized `dlight_t` state used by renderer-facing client code.
  *
@@ -280,6 +332,8 @@ export function createDlight(): dlight_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing default factory)
  * Category: New
  * Purpose: Create the zero-initialized `particle_t` state used by renderer-facing client code.
  *
@@ -295,6 +349,8 @@ export function createParticle(): particle_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing default factory)
  * Category: New
  * Purpose: Create the zero-initialized `lightstyle_t` state used by renderer-facing client code.
  *
@@ -309,6 +365,8 @@ export function createLightstyle(): lightstyle_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing default factory)
  * Category: New
  * Purpose: Create the zero-initialized `refdef_t` frame definition used by refresh/render adapters.
  *
@@ -341,6 +399,8 @@ export function createRefDef(): refdef_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing no-op export factory)
  * Category: New
  * Purpose: Create a no-op renderer export table for tests, menus and hosts before a concrete refresh backend is attached.
  *
@@ -375,6 +435,8 @@ export function createRefExport(): refexport_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-facing no-op import factory)
  * Category: New
  * Purpose: Create a no-op renderer import table that concrete renderer hosts can partially override.
  *

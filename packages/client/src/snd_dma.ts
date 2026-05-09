@@ -64,12 +64,41 @@ import {
   createSfx
 } from "./snd_loc.js";
 
+/**
+ * Original name: SOUND_FULLVOLUME
+ * Source: Quake-2-master/client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const SOUND_FULLVOLUME = 80;
+
+/**
+ * Original name: SOUND_LOOPATTENUATE
+ * Source: Quake-2-master/client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const SOUND_LOOPATTENUATE = 0.003;
+
+/**
+ * Original name: MAX_SFX
+ * Source: Quake-2-master/client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const MAX_SFX = MAX_SOUNDS * 2;
+
+/**
+ * Original name: MAX_PLAYSOUNDS
+ * Source: Quake-2-master/client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const MAX_PLAYSOUNDS = 128;
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit runtime state)
  * Category: New
  * Purpose: Store the mutable globals owned by `snd_dma.c` in one explicit runtime state object.
  *
@@ -92,6 +121,8 @@ export interface ClientSndDmaState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (host callback contract)
  * Category: New
  * Purpose: Carry the extra host-side callbacks needed by the `snd_dma.c` port beyond the private `snd_loc.h` hooks.
  *
@@ -103,6 +134,8 @@ export interface ClientSndDmaHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit runtime context)
  * Category: New
  * Purpose: Bundle the client, qcommon and sound-local runtimes needed by the `snd_dma.c` port.
  *
@@ -121,6 +154,8 @@ export interface ClientSndDmaContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (state factory)
  * Category: New
  * Purpose: Create the default explicit runtime state for `snd_dma.c`.
  */
@@ -142,6 +177,8 @@ export function createClientSndDmaState(): ClientSndDmaState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (context factory)
  * Category: New
  * Purpose: Create the explicit context used by the `snd_dma.c` port and bind the private sound hooks it owns.
  */
@@ -173,7 +210,7 @@ export function createClientSndDmaContext(
 
 /**
  * Original name: S_SoundInfo_f
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -202,7 +239,7 @@ export function S_SoundInfo(context: ClientSndDmaContext): string[] {
 
 /**
  * Original name: S_Init
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -258,7 +295,7 @@ export function S_Init(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_Shutdown
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -290,7 +327,7 @@ export function S_Shutdown(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_FindName
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -341,7 +378,7 @@ export function S_FindName(context: ClientSndDmaContext, name: string | null, cr
 
 /**
  * Original name: S_AliasName
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -372,7 +409,7 @@ export function S_AliasName(context: ClientSndDmaContext, aliasname: string, tru
 
 /**
  * Original name: S_BeginRegistration
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -386,7 +423,7 @@ export function S_BeginRegistration(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_RegisterSound
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -414,7 +451,7 @@ export function S_RegisterSound(context: ClientSndDmaContext, name: string): sfx
 
 /**
  * Original name: S_EndRegistration
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -458,7 +495,7 @@ export function S_EndRegistration(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_PickChannel
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -510,7 +547,7 @@ export function S_PickChannel(context: ClientSndDmaContext, entnum: number, entc
 
 /**
  * Original name: S_SpatializeOrigin
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -571,7 +608,7 @@ export function S_SpatializeOrigin(
 
 /**
  * Original name: S_Spatialize
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -596,7 +633,7 @@ export function S_Spatialize(context: ClientSndDmaContext, ch: channel_t): void 
 
 /**
  * Original name: S_AllocPlaysound
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -612,7 +649,7 @@ export function S_AllocPlaysound(context: ClientSndDmaContext): playsound_t | nu
 
 /**
  * Original name: S_FreePlaysound
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -623,7 +660,7 @@ export function S_FreePlaysound(context: ClientSndDmaContext, ps: playsound_t): 
 
 /**
  * Original name: S_IssuePlaysound
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -661,7 +698,7 @@ export function S_IssuePlaysound(context: ClientSndDmaContext, ps: playsound_t):
 
 /**
  * Original name: S_RegisterSexedSound
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -706,7 +743,7 @@ export function S_RegisterSexedSound(context: ClientSndDmaContext, entNumber: nu
 
 /**
  * Original name: S_StartSound
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -777,6 +814,12 @@ export function S_StartSound(
   return ps;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web audio scheduling helper)
+ * Category: New
+ * Purpose: Let host adapters issue ready scheduled playsounds without duplicating the `snd_dma.c` queue rules.
+ */
 export function S_IssueReadyPlaysounds(context: ClientSndDmaContext): channel_t[] {
   const issued: channel_t[] = [];
   const sentinel = context.sound.state.s_pendingplays;
@@ -800,7 +843,7 @@ export function S_IssueReadyPlaysounds(context: ClientSndDmaContext): channel_t[
 
 /**
  * Original name: S_StartLocalSound
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -821,6 +864,15 @@ export function S_StartLocalSound(context: ClientSndDmaContext, sound: string): 
   S_StartSound(context, null, context.client.cl.playernum + 1, 0, sfx, 1, 1, 0);
 }
 
+/**
+ * Original name: S_ClearBuffer
+ * Source: Quake-2-master/client/snd_dma.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Clears the DMA buffer with the original 8-bit silence bias or 16-bit zero value.
+ */
 export function S_ClearBuffer(context: ClientSndDmaContext): void {
   if (!context.state.sound_started) {
     return;
@@ -838,7 +890,7 @@ export function S_ClearBuffer(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_StopAllSounds
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -861,7 +913,7 @@ export function S_StopAllSounds(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_AddLoopSounds
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -944,7 +996,7 @@ export function S_AddLoopSounds(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_RawSamples
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1011,7 +1063,7 @@ export function S_RawSamples(
 
 /**
  * Original name: S_Update
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1070,7 +1122,7 @@ export function S_Update(context: ClientSndDmaContext, origin: vec3_t, forward: 
 
 /**
  * Original name: GetSoundtime
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1097,7 +1149,7 @@ export function GetSoundtime(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_Update_
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1136,7 +1188,7 @@ export function S_Update_(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_Play
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1161,7 +1213,7 @@ export function S_Play(context: ClientSndDmaContext): void {
 
 /**
  * Original name: S_SoundList
- * Source: client/snd_dma.c
+ * Source: Quake-2-master/client/snd_dma.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1204,6 +1256,12 @@ export function S_SoundList(context: ClientSndDmaContext): { total: number; line
   return { total, lines };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local hook binding)
+ * Category: New
+ * Purpose: Connect `snd_loc.ts` declaration adapters back to the owning `snd_dma.c` procedures.
+ */
 function bindSoundLocalHooks(context: ClientSndDmaContext): void {
   if (!context.sound.hooks.onS_IssuePlaysound) {
     context.sound.hooks.onS_IssuePlaysound = (ps) => {
@@ -1220,12 +1278,24 @@ function bindSoundLocalHooks(context: ClientSndDmaContext): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (command registration helper)
+ * Category: New
+ * Purpose: Register one sound console command without replacing an existing command binding.
+ */
 function registerSoundCommand(context: ClientSndDmaContext, name: string, callback: () => void): void {
   if (!Cmd_Exists(context.cmd, name)) {
     Cmd_AddCommand(context.cmd, name, callback);
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (command cleanup helper)
+ * Category: New
+ * Purpose: Remove the console commands installed by `S_Init`.
+ */
 function removeSoundCommands(context: ClientSndDmaContext): void {
   if (Cmd_Exists(context.cmd, "play")) {
     Cmd_RemoveCommand(context.cmd, "play");
@@ -1241,6 +1311,12 @@ function removeSoundCommands(context: ClientSndDmaContext): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (playsound list helper)
+ * Category: New
+ * Purpose: Rebuild the free and pending playsound linked-list sentinels from the explicit state arrays.
+ */
 function initializePlaySoundLists(context: ClientSndDmaContext): void {
   for (const ps of context.state.s_playsounds) {
     resetPlaySound(ps);
@@ -1258,6 +1334,12 @@ function initializePlaySoundLists(context: ClientSndDmaContext): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (playsound list helper)
+ * Category: New
+ * Purpose: Insert a scheduled playsound into the pending list sorted by its begin time.
+ */
 function insertPendingByBegin(sentinel: playsound_t, ps: playsound_t): void {
   let sort = sentinel.next;
   while (sort && sort !== sentinel && sort.begin < ps.begin) {
@@ -1278,6 +1360,12 @@ function insertPendingByBegin(sentinel: playsound_t, ps: playsound_t): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (linked-list helper)
+ * Category: New
+ * Purpose: Insert one playsound node after a sentinel in the explicit linked-list representation.
+ */
 function insertAfter(sentinel: playsound_t, ps: playsound_t): void {
   const next = sentinel.next ?? sentinel;
   ps.next = next;
@@ -1286,6 +1374,12 @@ function insertAfter(sentinel: playsound_t, ps: playsound_t): void {
   sentinel.next = ps;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (linked-list helper)
+ * Category: New
+ * Purpose: Detach one playsound node from whichever list currently owns it.
+ */
 function unlinkPlaySound(ps: playsound_t): void {
   if (ps.prev) {
     ps.prev.next = ps.next;
@@ -1297,6 +1391,12 @@ function unlinkPlaySound(ps: playsound_t): void {
   ps.next = null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (state reset helper)
+ * Category: New
+ * Purpose: Reset one playsound node to the empty values expected before reuse.
+ */
 function resetPlaySound(ps: playsound_t): void {
   ps.prev = null;
   ps.next = null;
@@ -1312,6 +1412,12 @@ function resetPlaySound(ps: playsound_t): void {
   ps.begin = 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (state reset helper)
+ * Category: New
+ * Purpose: Reset one mixer channel using the same defaults as a freshly created channel.
+ */
 function resetChannel(channel: channel_t): void {
   const reset = createChannel();
   channel.sfx = reset.sfx;
@@ -1329,6 +1435,15 @@ function resetChannel(channel: channel_t): void {
   channel.autosound = reset.autosound;
 }
 
+/**
+ * Original name: CL_GetEntitySoundOrigin
+ * Source: Quake-2-master/client/sound.h
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reads entity sound origins from a host hook or the client entity lerp origin array.
+ */
 function getEntitySoundOrigin(context: ClientSndDmaContext, ent: number): vec3_t {
   const hooked = context.hooks.onGetEntitySoundOrigin?.(ent);
   if (hooked) {
@@ -1342,12 +1457,24 @@ function getEntitySoundOrigin(context: ClientSndDmaContext, ent: number): vec3_t
   return [...context.client.cl_entities[ent].lerp_origin];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (vector helper)
+ * Category: New
+ * Purpose: Copy a Quake vector without sharing the backing array.
+ */
 function copyVec3(source: vec3_t, target: vec3_t): void {
   target[0] = source[0];
   target[1] = source[1];
   target[2] = source[2];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (vector helper)
+ * Category: New
+ * Purpose: Normalize a Quake vector in place and return its original length.
+ */
 function normalizeVec3(vector: vec3_t): number {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {
@@ -1363,18 +1490,42 @@ function normalizeVec3(vector: vec3_t): number {
   return length;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sample conversion helper)
+ * Category: New
+ * Purpose: Reinterpret one unsigned byte as a signed 8-bit sample.
+ */
 function toSignedByte(value: number): number {
   return (value << 24) >> 24;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console adapter)
+ * Category: New
+ * Purpose: Route regular sound console output through the injected qcommon hook.
+ */
 function sndDmaPrintf(context: ClientSndDmaContext, message: string): void {
   context.sound.hooks.onComPrintf?.(message);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console adapter)
+ * Category: New
+ * Purpose: Route developer sound console output through the injected qcommon hook.
+ */
 function sndDmaDPrintf(context: ClientSndDmaContext, message: string): void {
   context.sound.hooks.onComDPrintf?.(message);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (error adapter)
+ * Category: New
+ * Purpose: Route sound fatal/drop errors through the injected qcommon hook or throw in tests.
+ */
 function sndDmaError(context: ClientSndDmaContext, code: number, message: string): never {
   if (context.sound.hooks.onComError) {
     return context.sound.hooks.onComError(code, message);

@@ -37,12 +37,37 @@ import { CL_CheckOrDownloadFile, type ClientDownloadHooks } from "./download.js"
 import { CL_WriteStringCmd } from "./cl_parse.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
+/**
+ * Original name: PLAYER_MULT
+ * Source declaree: Quake-2-master/client/cl_main.c
+ * Category: Ported
+ */
 export const PLAYER_MULT = 5;
+
+/**
+ * Original name: ENV_CNT
+ * Source declaree: Quake-2-master/client/cl_main.c
+ * Category: Ported
+ */
 export const ENV_CNT = CS_PLAYERSKINS + MAX_CLIENTS * PLAYER_MULT;
+
+/**
+ * Original name: TEXTURE_CNT
+ * Source declaree: Quake-2-master/client/cl_main.c
+ * Category: Ported
+ */
 export const TEXTURE_CNT = ENV_CNT + 13;
+
+/**
+ * Original name: env_suf
+ * Source declaree: Quake-2-master/client/cl_main.c
+ * Category: Ported
+ */
 export const env_suf = ["rt", "bk", "lf", "ft", "up", "dn"] as const;
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (client precache hook contract)
  * Category: New
  * Purpose: Describe the host-side services needed by the partial client precache port.
  *
@@ -335,6 +360,8 @@ export function CL_Precache_f(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Parse the Quake II `playerskins` configstring into model/skin components.
  */
@@ -358,6 +385,8 @@ function parsePlayerSkin(value: string): { model: string; skin: string } {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Parse one MD2 model defensively for precache skin enumeration.
  */
@@ -370,6 +399,8 @@ function tryParseMd2(bytes: Uint8Array, path: string): ReturnType<typeof parseMd
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (local helper)
  * Category: New
  * Purpose: Clamp one model/skin token to Quake-style path expectations.
  */

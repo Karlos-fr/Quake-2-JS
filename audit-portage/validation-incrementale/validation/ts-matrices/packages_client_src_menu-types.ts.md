@@ -4,34 +4,34 @@
 
 - Fichier TS: `packages/client/src/menu-types.ts`
 - Symboles TS: 26
-- Couvert C/H: 0
-- Reste a auditer: 26
+- Couvert C/H: 12
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/menu-types.ts` | value | `MAX_MENU_DEPTH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `MAIN_ITEMS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `NUM_CURSOR_FRAMES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `MAX_SAVEGAMES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `MAX_LOCAL_SERVERS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `NUM_ADDRESSBOOK_ENTRIES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `NO_SERVER_STRING` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `menu_in_sound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `menu_move_sound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | value | `menu_out_sound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | type | `MenuDrawFunction` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | type | `MenuKeyFunction` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `menulayer_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `ClientMenuMapEntry` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `ClientMenuSaveSlot` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `PlayerModelInfo` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `PlayerConfigPreview` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `ClientMenuState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `ClientMenuHooks` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | interface | `ClientMenuContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | function | `createClientMenuContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | function | `menuError` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | function | `syncMenuVideo` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | function | `getServerState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | function | `startLocalSound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/menu-types.ts` | function | `resetMenuFramework` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/menu-types.ts` | value | `MAX_MENU_DEPTH` | oui | `MAX_MENU_DEPTH` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `MAIN_ITEMS` | oui | `MAIN_ITEMS` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `NUM_CURSOR_FRAMES` | oui | `NUM_CURSOR_FRAMES` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `MAX_SAVEGAMES` | oui | `MAX_SAVEGAMES` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `MAX_LOCAL_SERVERS` | oui | `MAX_LOCAL_SERVERS` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `NUM_ADDRESSBOOK_ENTRIES` | oui | `NUM_ADDRESSBOOK_ENTRIES` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `NO_SERVER_STRING` | oui | `NO_SERVER_STRING` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `menu_in_sound` | oui | `menu_in_sound` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `menu_move_sound` | oui | `menu_move_sound` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | value | `menu_out_sound` | oui | `menu_out_sound` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | type | `MenuDrawFunction` | oui | `N/A` | `N/A (split menu type helper)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | type | `MenuKeyFunction` | oui | `N/A` | `N/A (split menu type helper)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | interface | `menulayer_t` | oui | `menulayer_t` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | interface | `ClientMenuMapEntry` | oui | `N/A` | `N/A (web menu data hook)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | interface | `ClientMenuSaveSlot` | oui | `N/A` | `N/A (save menu data hook)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | interface | `PlayerModelInfo` | oui | `playermodelinfo_s` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-types.ts` | interface | `PlayerConfigPreview` | oui | `N/A` | `N/A (player config preview hook)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | interface | `ClientMenuState` | oui | `N/A` | `N/A (split menu state container)` | Adapter | [`client_menu.c.md`](../matrices/client_menu.c.md) | Adapter local | Valide | Split container for validated `menu.c` globals; individual owner rows remain in `client_menu.c.md`. |
+| `packages/client/src/menu-types.ts` | interface | `ClientMenuHooks` | oui | `N/A` | `N/A (embedder hook contract)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | interface | `ClientMenuContext` | oui | `N/A` | `N/A (split menu runtime context)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | function | `createClientMenuContext` | oui | `N/A` | `N/A (split menu context factory)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | function | `menuError` | oui | `Com_Error` | `Quake-2-master/qcommon/common.c` | Adapter | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Adapter local | Valide | Adapter local; port proprietaire: `packages/qcommon/src/qcommon.ts`. |
+| `packages/client/src/menu-types.ts` | function | `syncMenuVideo` | oui | `N/A` | `N/A (split menu video sync helper)` | New |  | TS local helper | Valide |  |
+| `packages/client/src/menu-types.ts` | function | `getServerState` | oui | `Com_ServerState` | `Quake-2-master/qcommon/common.c` | Adapter | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Adapter local | Valide | Adapter local; port proprietaire: `packages/qcommon/src/qcommon.ts`. |
+| `packages/client/src/menu-types.ts` | function | `startLocalSound` | oui | `S_StartLocalSound` | `Quake-2-master/client/snd_dma.c` | Adapter | [`client_snd_dma.c.md`](../matrices/client_snd_dma.c.md) | Adapter local | Valide | Adapter local; port proprietaire: `packages/client/src/snd_dma.ts`. |
+| `packages/client/src/menu-types.ts` | function | `resetMenuFramework` | oui | `N/A` | `N/A (split menu framework reset helper)` | New |  | TS local helper | Valide |  |

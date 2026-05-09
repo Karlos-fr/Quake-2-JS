@@ -46,6 +46,12 @@ import {
   QMenu_DrawString
 } from "./qmenu.js";
 
+/**
+ * Original name: bindnames
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const bindnames: Array<[string, string]> = [
   ["+attack", "attack"],
   ["weapnext", "next weapon"],
@@ -72,15 +78,49 @@ const bindnames: Array<[string, string]> = [
   ["cmd help", "help computer"]
 ];
 
+/**
+ * Original name: yesno_names
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const yesno_names = ["no", "yes", null] as const;
+
+/**
+ * Original name: cd_music_items
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const cd_music_items = ["disabled", "enabled", null] as const;
+
+/**
+ * Original name: quality_items
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const quality_items = ["low", "high", null] as const;
+
+/**
+ * Original name: compatibility_items
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const compatibility_items = ["max compatibility", "max performance", null] as const;
+
+/**
+ * Original name: crosshair_names
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const crosshair_names = ["none", "cross", "dot", "angle", null] as const;
 
 /**
  * Original name: M_UnbindCommand
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -101,7 +141,7 @@ function M_UnbindCommand(context: ClientMenuContext, command: string): void {
 
 /**
  * Original name: M_FindKeysForCommand
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -130,7 +170,7 @@ function M_FindKeysForCommand(context: ClientMenuContext, command: string): [num
 
 /**
  * Original name: KeyCursorDrawFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -149,7 +189,7 @@ function KeyCursorDrawFunc(context: ClientMenuContext, menu: import("./qmenu.js"
 
 /**
  * Original name: DrawKeyBindingFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -177,7 +217,7 @@ function DrawKeyBindingFunc(context: ClientMenuContext, self: unknown): void {
 
 /**
  * Original name: KeyBindingFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -196,7 +236,7 @@ function KeyBindingFunc(context: ClientMenuContext, self: unknown): void {
 
 /**
  * Original name: Keys_MenuInit
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -235,7 +275,7 @@ export function Keys_MenuInit(context: ClientMenuContext): void {
 
 /**
  * Original name: Keys_MenuDraw
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -247,7 +287,7 @@ function Keys_MenuDraw(context: ClientMenuContext): void {
 
 /**
  * Original name: Keys_MenuKey
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -286,7 +326,7 @@ export function Keys_MenuKey(context: ClientMenuContext, key: number): string | 
 
 /**
  * Original name: M_Menu_Keys_f
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -301,7 +341,7 @@ export function M_Menu_Keys_f(context: ClientMenuContext): void {
 
 /**
  * Original name: CrosshairFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -311,7 +351,7 @@ function CrosshairFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: JoystickFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -321,7 +361,7 @@ function JoystickFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: CustomizeControlsFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -331,7 +371,7 @@ function CustomizeControlsFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: AlwaysRunFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -341,7 +381,7 @@ function AlwaysRunFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: FreeLookFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -351,7 +391,7 @@ function FreeLookFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: MouseSpeedFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -361,7 +401,7 @@ function MouseSpeedFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: ClampCvar
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -377,7 +417,7 @@ function ClampCvar(min: number, max: number, value: number): number {
 
 /**
  * Original name: ControlsSetMenuItemValues
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -412,7 +452,7 @@ function ControlsSetMenuItemValues(context: ClientMenuContext): void {
 
 /**
  * Original name: ControlsResetDefaultsFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -424,7 +464,7 @@ function ControlsResetDefaultsFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: InvertMouseFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -439,7 +479,7 @@ function InvertMouseFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: LookspringFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -449,7 +489,7 @@ function LookspringFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: LookstrafeFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -459,7 +499,7 @@ function LookstrafeFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: UpdateVolumeFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -469,7 +509,7 @@ function UpdateVolumeFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: UpdateCDVolumeFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -479,7 +519,7 @@ function UpdateCDVolumeFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: ConsoleFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -498,7 +538,7 @@ function ConsoleFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: UpdateSoundQualityFunc
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -524,7 +564,7 @@ function UpdateSoundQualityFunc(context: ClientMenuContext): void {
 
 /**
  * Original name: Options_MenuInit
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -677,7 +717,7 @@ export function Options_MenuInit(context: ClientMenuContext): void {
 
 /**
  * Original name: Options_MenuDraw
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -690,7 +730,7 @@ function Options_MenuDraw(context: ClientMenuContext): void {
 
 /**
  * Original name: Options_MenuKey
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -700,7 +740,7 @@ export function Options_MenuKey(context: ClientMenuContext, key: number): string
 
 /**
  * Original name: M_Menu_Options_f
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */

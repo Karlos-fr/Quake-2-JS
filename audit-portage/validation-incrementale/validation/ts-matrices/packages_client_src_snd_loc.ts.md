@@ -4,41 +4,41 @@
 
 - Fichier TS: `packages/client/src/snd_loc.ts`
 - Symboles TS: 33
-- Couvert C/H: 0
-- Reste a auditer: 33
+- Couvert C/H: 14
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/snd_loc.ts` | value | `MAX_CHANNELS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | value | `MAX_RAW_SAMPLES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | interface | `portable_samplepair_t` | oui | `portable_samplepair_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_loc.ts` | interface | `sfxcache_t` | oui | `sfxcache_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_loc.ts` | interface | `sfx_t` | oui | `sfx_t` | `Quake-2-master/client/snd_loc.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/snd_loc.ts` | interface | `playsound_t` | oui | `playsound_t` | `Quake-2-master/client/snd_loc.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/snd_loc.ts` | interface | `dma_t` | oui | `dma_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_loc.ts` | interface | `channel_t` | oui | `channel_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_loc.ts` | interface | `wavinfo_t` | oui | `wavinfo_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/snd_loc.ts` | interface | `ClientSoundLocalState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_loc.ts` | interface | `ClientSoundLocalHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/snd_loc.ts` | interface | `ClientSoundLocalContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createPortableSamplePair` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createSfxCache` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createSfx` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createPlaySound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createDmaState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createChannel` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createWavInfo` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `createClientSoundLocalContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `SNDDMA_Init` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `SNDDMA_GetDMAPos` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `SNDDMA_Shutdown` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `SNDDMA_BeginPainting` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `SNDDMA_Submit` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `GetWavinfo` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `S_InitScaletable` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `S_LoadSound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `S_IssuePlaysound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `S_PaintChannels` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `S_PickChannel` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `S_Spatialize` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/snd_loc.ts` | function | `getSoundNameCapacity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/snd_loc.ts` | value | `MAX_CHANNELS` | oui | `MAX_CHANNELS` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | value | `MAX_RAW_SAMPLES` | oui | `MAX_RAW_SAMPLES` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `portable_samplepair_t` | oui | `portable_samplepair_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `sfxcache_t` | oui | `sfxcache_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `sfx_t` | oui | `sfx_s` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `playsound_t` | oui | `playsound_s` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `dma_t` | oui | `dma_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `channel_t` | oui | `channel_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `wavinfo_t` | oui | `wavinfo_t` | `Quake-2-master/client/snd_loc.h` | Ported | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | interface | `ClientSoundLocalState` | oui | `snd_loc.h extern globals` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Extern globals regroupes | Valide | Regroupe les globals externes valides de `snd_loc.h` dans l'etat explicite TS. |
+| `packages/client/src/snd_loc.ts` | interface | `ClientSoundLocalHooks` | oui | `N/A` | `N/A (sound-local hook contract)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | interface | `ClientSoundLocalContext` | oui | `N/A` | `N/A (sound-local runtime context)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createPortableSamplePair` | oui | `N/A` | `N/A (TypeScript struct factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createSfxCache` | oui | `N/A` | `N/A (TypeScript struct factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createSfx` | oui | `N/A` | `N/A (TypeScript struct factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createPlaySound` | oui | `N/A` | `N/A (TypeScript struct factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createDmaState` | oui | `N/A` | `N/A (TypeScript struct factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createChannel` | oui | `N/A` | `N/A (TypeScript struct factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createWavInfo` | oui | `N/A` | `N/A (TypeScript struct factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `createClientSoundLocalContext` | oui | `N/A` | `N/A (sound-local context factory)` | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/snd_loc.ts` | function | `SNDDMA_Init` | oui | `SNDDMA_Init` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | function | `SNDDMA_GetDMAPos` | oui | `SNDDMA_GetDMAPos` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | function | `SNDDMA_Shutdown` | oui | `SNDDMA_Shutdown` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | function | `SNDDMA_BeginPainting` | oui | `SNDDMA_BeginPainting` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | function | `SNDDMA_Submit` | oui | `SNDDMA_Submit` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/snd_loc.ts` | function | `GetWavinfo` | oui | `GetWavinfo` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Prototype externe | Valide | Proprietaire fonctionnel: `packages/client/src/snd_mem.ts`. |
+| `packages/client/src/snd_loc.ts` | function | `S_InitScaletable` | oui | `S_InitScaletable` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Prototype externe | Valide | Proprietaire fonctionnel: `packages/client/src/snd_mix.ts`. |
+| `packages/client/src/snd_loc.ts` | function | `S_LoadSound` | oui | `S_LoadSound` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Prototype externe | Valide | Proprietaire fonctionnel: `packages/client/src/snd_mem.ts`. |
+| `packages/client/src/snd_loc.ts` | function | `S_IssuePlaysound` | oui | `S_IssuePlaysound` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Prototype externe | Valide | Proprietaire fonctionnel: `packages/client/src/snd_dma.ts`. |
+| `packages/client/src/snd_loc.ts` | function | `S_PaintChannels` | oui | `S_PaintChannels` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Prototype externe | Valide | Proprietaire fonctionnel: `packages/client/src/snd_mix.ts`. |
+| `packages/client/src/snd_loc.ts` | function | `S_PickChannel` | oui | `S_PickChannel` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Prototype externe | Valide | Proprietaire fonctionnel: `packages/client/src/snd_dma.ts`. |
+| `packages/client/src/snd_loc.ts` | function | `S_Spatialize` | oui | `S_Spatialize` | `Quake-2-master/client/snd_loc.h` | Adapter | [`client_snd_loc.h.md`](../matrices/client_snd_loc.h.md) | Prototype externe | Valide | Proprietaire fonctionnel: `packages/client/src/snd_dma.ts`. |
+| `packages/client/src/snd_loc.ts` | function | `getSoundNameCapacity` | oui | `N/A` | `N/A (MAX_QPATH helper)` | New |  | Hors C/H explicite | Valide |  |

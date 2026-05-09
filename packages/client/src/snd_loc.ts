@@ -31,7 +31,7 @@ import {
 
 /**
  * Original name: MAX_CHANNELS
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -42,7 +42,7 @@ export const MAX_CHANNELS = 32;
 
 /**
  * Original name: MAX_RAW_SAMPLES
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -53,7 +53,7 @@ export const MAX_RAW_SAMPLES = 8192;
 
 /**
  * Original name: portable_samplepair_t
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -67,7 +67,7 @@ export interface portable_samplepair_t {
 
 /**
  * Original name: sfxcache_t
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -87,8 +87,8 @@ export interface sfxcache_t {
 }
 
 /**
- * Original name: sfx_t
- * Source: client/snd_loc.h
+ * Original name: sfx_s
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -106,8 +106,8 @@ export interface sfx_t {
 }
 
 /**
- * Original name: playsound_t
- * Source: client/snd_loc.h
+ * Original name: playsound_s
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -132,7 +132,7 @@ export interface playsound_t {
 
 /**
  * Original name: dma_t
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -154,7 +154,7 @@ export interface dma_t {
 
 /**
  * Original name: channel_t
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -182,7 +182,7 @@ export interface channel_t {
 
 /**
  * Original name: wavinfo_t
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -199,7 +199,11 @@ export interface wavinfo_t {
 }
 
 /**
- * Category: New
+ * Original name: snd_loc.h extern globals
+ * Source: Quake-2-master/client/snd_loc.h
+ * Category: Adapter
+ * Fidelity level: Close
+ *
  * Purpose: Group the public `snd_loc.h` globals in one explicit client sound-local state object.
  *
  * Constraints:
@@ -228,6 +232,8 @@ export interface ClientSoundLocalState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (sound-local hook contract)
  * Category: New
  * Purpose: Describe the host-side implementations for the private sound procedures declared by `snd_loc.h`.
  *
@@ -254,16 +260,24 @@ export interface ClientSoundLocalHooks {
   onS_Spatialize?: (channel: channel_t) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sound-local runtime context)
+ * Category: New
+ * Purpose: Pair the explicit sound-local state bundle with host and cross-module hooks.
+ *
+ * Constraints:
+ * - Must not claim ownership of the `snd_dma.c`, `snd_mem.c` or `snd_mix.c` procedure bodies.
+ */
 export interface ClientSoundLocalContext {
   state: ClientSoundLocalState;
   hooks: ClientSoundLocalHooks;
 }
 
 /**
- * Original name: portable_samplepair_t zero-initialization
- * Source: client/snd_loc.h
- * Category: Adapter
- * Fidelity level: Strict
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
  *
  * Behavior:
  * - Creates the TypeScript equivalent of a zeroed C `portable_samplepair_t`.
@@ -273,10 +287,9 @@ export function createPortableSamplePair(): portable_samplepair_t {
 }
 
 /**
- * Original name: sfxcache_t zero-initialization
- * Source: client/snd_loc.h
- * Category: Adapter
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
  *
  * Behavior:
  * - Creates an empty sound cache block with Quake-compatible scalar defaults.
@@ -296,10 +309,9 @@ export function createSfxCache(): sfxcache_t {
 }
 
 /**
- * Original name: sfx_t zero-initialization
- * Source: client/snd_loc.h
- * Category: Adapter
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
  *
  * Behavior:
  * - Creates an unregistered sound effect record with null pointer fields.
@@ -314,10 +326,9 @@ export function createSfx(): sfx_t {
 }
 
 /**
- * Original name: playsound_t zero-initialization
- * Source: client/snd_loc.h
- * Category: Adapter
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
  *
  * Behavior:
  * - Creates an empty scheduled playsound node suitable for pending/free linked lists.
@@ -338,10 +349,9 @@ export function createPlaySound(): playsound_t {
 }
 
 /**
- * Original name: dma_t zero-initialization
- * Source: client/snd_loc.h
- * Category: Adapter
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
  *
  * Behavior:
  * - Creates an uninitialized DMA descriptor whose backend buffer is absent.
@@ -359,10 +369,9 @@ export function createDmaState(): dma_t {
 }
 
 /**
- * Original name: channel_t zero-initialization
- * Source: client/snd_loc.h
- * Category: Adapter
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
  *
  * Behavior:
  * - Creates an inactive mixer channel with zeroed volumes, ownership and spatial state.
@@ -386,10 +395,9 @@ export function createChannel(): channel_t {
 }
 
 /**
- * Original name: wavinfo_t zero-initialization
- * Source: client/snd_loc.h
- * Category: Adapter
- * Fidelity level: Strict
+ * Original name: N/A
+ * Source: N/A (TypeScript struct factory)
+ * Category: New
  *
  * Behavior:
  * - Creates the empty metadata value used when no valid WAV data is available.
@@ -406,6 +414,8 @@ export function createWavInfo(): wavinfo_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (sound-local context factory)
  * Category: New
  * Purpose: Create the explicit state bundle that replaces the `snd_loc.h` extern globals.
  *
@@ -442,7 +452,7 @@ export function createClientSoundLocalContext(hooks: ClientSoundLocalHooks = {})
 
 /**
  * Original name: SNDDMA_Init
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -455,7 +465,7 @@ export function SNDDMA_Init(context: ClientSoundLocalContext): qboolean {
 
 /**
  * Original name: SNDDMA_GetDMAPos
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -468,7 +478,7 @@ export function SNDDMA_GetDMAPos(context: ClientSoundLocalContext): number {
 
 /**
  * Original name: SNDDMA_Shutdown
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -481,7 +491,7 @@ export function SNDDMA_Shutdown(context: ClientSoundLocalContext): void {
 
 /**
  * Original name: SNDDMA_BeginPainting
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -494,7 +504,7 @@ export function SNDDMA_BeginPainting(context: ClientSoundLocalContext): void {
 
 /**
  * Original name: SNDDMA_Submit
- * Source: client/snd_loc.h
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -506,8 +516,8 @@ export function SNDDMA_Submit(context: ClientSoundLocalContext): void {
 }
 
 /**
- * Original name: GetWavinfo declaration adapter
- * Source: client/snd_loc.h
+ * Original name: GetWavinfo
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -519,8 +529,8 @@ export function GetWavinfo(context: ClientSoundLocalContext, name: string, wav: 
 }
 
 /**
- * Original name: S_InitScaletable declaration adapter
- * Source: client/snd_loc.h
+ * Original name: S_InitScaletable
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -537,8 +547,8 @@ export function S_InitScaletable(context: ClientSoundLocalContext): void {
 }
 
 /**
- * Original name: S_LoadSound declaration adapter
- * Source: client/snd_loc.h
+ * Original name: S_LoadSound
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -550,8 +560,8 @@ export function S_LoadSound(context: ClientSoundLocalContext, sfx: sfx_t): sfxca
 }
 
 /**
- * Original name: S_IssuePlaysound declaration adapter
- * Source: client/snd_loc.h
+ * Original name: S_IssuePlaysound
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -563,8 +573,8 @@ export function S_IssuePlaysound(context: ClientSoundLocalContext, ps: playsound
 }
 
 /**
- * Original name: S_PaintChannels declaration adapter
- * Source: client/snd_loc.h
+ * Original name: S_PaintChannels
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -581,8 +591,8 @@ export function S_PaintChannels(context: ClientSoundLocalContext, endtime: numbe
 }
 
 /**
- * Original name: S_PickChannel declaration adapter
- * Source: client/snd_loc.h
+ * Original name: S_PickChannel
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -594,8 +604,8 @@ export function S_PickChannel(context: ClientSoundLocalContext, entnum: number, 
 }
 
 /**
- * Original name: S_Spatialize declaration adapter
- * Source: client/snd_loc.h
+ * Original name: S_Spatialize
+ * Source: Quake-2-master/client/snd_loc.h
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -607,6 +617,8 @@ export function S_Spatialize(context: ClientSoundLocalContext, channel: channel_
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (MAX_QPATH helper)
  * Category: New
  * Purpose: Return the fixed Quake II `MAX_QPATH`-sized name slot budget used by `sfx_t`.
  *

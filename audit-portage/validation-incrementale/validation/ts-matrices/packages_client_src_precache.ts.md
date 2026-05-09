@@ -4,18 +4,18 @@
 
 - Fichier TS: `packages/client/src/precache.ts`
 - Symboles TS: 10
-- Couvert C/H: 0
-- Reste a auditer: 10
+- Couvert C/H: 6
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/precache.ts` | value | `PLAYER_MULT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/precache.ts` | value | `ENV_CNT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/precache.ts` | value | `TEXTURE_CNT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/precache.ts` | value | `ENV_SUFFIXES` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/precache.ts` | interface | `ClientPrecacheHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/precache.ts` | function | `CL_RequestNextDownload` | oui | `CL_RequestNextDownload` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/precache.ts` | function | `CL_Precache_f` | oui | `CL_Precache_f` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/precache.ts` | function | `parsePlayerSkin` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/precache.ts` | function | `tryParseMd2` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/precache.ts` | function | `truncateQPath` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/precache.ts` | value | `PLAYER_MULT` | oui | `PLAYER_MULT` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/precache.ts` | value | `ENV_CNT` | oui | `ENV_CNT` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/precache.ts` | value | `TEXTURE_CNT` | oui | `TEXTURE_CNT` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/precache.ts` | value | `env_suf` | oui | `env_suf` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/precache.ts` | interface | `ClientPrecacheHooks` | oui | `N/A` | `N/A (client precache hook contract)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/precache.ts` | function | `CL_RequestNextDownload` | oui | `CL_RequestNextDownload` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/precache.ts` | function | `CL_Precache_f` | oui | `CL_Precache_f` | `Quake-2-master/client/cl_main.c` | Ported | [`client_cl_main.c.md`](../matrices/client_cl_main.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/precache.ts` | function | `parsePlayerSkin` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/precache.ts` | function | `tryParseMd2` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/precache.ts` | function | `truncateQPath` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |

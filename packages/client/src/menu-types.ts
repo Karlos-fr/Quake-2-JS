@@ -44,42 +44,136 @@ import type { refdef_t, entity_t } from "./ref.js";
 import { type ClientRuntime } from "./client.js";
 import { type ClientVidContext } from "./vid.js";
 
+/**
+ * Original name: MAX_MENU_DEPTH
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const MAX_MENU_DEPTH = 8;
+
+/**
+ * Original name: MAIN_ITEMS
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const MAIN_ITEMS = 5;
+
+/**
+ * Original name: NUM_CURSOR_FRAMES
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const NUM_CURSOR_FRAMES = 15;
+
+/**
+ * Original name: MAX_SAVEGAMES
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const MAX_SAVEGAMES = 15;
+
+/**
+ * Original name: MAX_LOCAL_SERVERS
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const MAX_LOCAL_SERVERS = 8;
+
+/**
+ * Original name: NUM_ADDRESSBOOK_ENTRIES
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const NUM_ADDRESSBOOK_ENTRIES = 9;
+
+/**
+ * Original name: NO_SERVER_STRING
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const NO_SERVER_STRING = "<no server>";
 
+/**
+ * Original name: menu_in_sound
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const menu_in_sound = "misc/menu1.wav";
+
+/**
+ * Original name: menu_move_sound
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const menu_move_sound = "misc/menu2.wav";
+
+/**
+ * Original name: menu_out_sound
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export const menu_out_sound = "misc/menu3.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (split menu type helper)
+ * Category: New
+ */
 export type MenuDrawFunction = (() => void) | null;
+
+/**
+ * Original name: N/A
+ * Source: N/A (split menu type helper)
+ * Category: New
+ */
 export type MenuKeyFunction = ((key: number) => string | null) | null;
 
+/**
+ * Original name: menulayer_t
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export interface menulayer_t {
   draw: MenuDrawFunction;
   key: MenuKeyFunction;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web menu data hook)
+ * Category: New
+ */
 export interface ClientMenuMapEntry {
   shortName: string;
   longName: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (save menu data hook)
+ * Category: New
+ */
 export interface ClientMenuSaveSlot {
   label: string;
   valid: qboolean;
 }
 
+/**
+ * Original name: playermodelinfo_s
+ * Source: Quake-2-master/client/menu.c
+ * Category: Ported
+ */
 export interface PlayerModelInfo {
   directory: string;
   displayname?: string;
   skins: string[];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (player config preview hook)
+ * Category: New
+ */
 export interface PlayerConfigPreview {
   refdef: refdef_t;
   entity: entity_t;
@@ -88,6 +182,11 @@ export interface PlayerConfigPreview {
   iconPath: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (split menu state container)
+ * Category: Adapter
+ */
 export interface ClientMenuState {
   m_main_cursor: number;
   m_game_cursor: number;
@@ -205,6 +304,11 @@ export interface ClientMenuState {
   player_config_yaw: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (embedder hook contract)
+ * Category: New
+ */
 export interface ClientMenuHooks {
   startLocalSound?: (name: string) => void;
   getServerState?: () => number;
@@ -223,6 +327,11 @@ export interface ClientMenuHooks {
   onQuit?: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (split menu runtime context)
+ * Category: New
+ */
 export interface ClientMenuContext {
   client: ClientRuntime;
   keys: ClientKeyContext;
@@ -237,6 +346,11 @@ export interface ClientMenuContext {
   misc?: QcommonMiscRuntime;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (split menu context factory)
+ * Category: New
+ */
 export function createClientMenuContext(options: {
   client: ClientRuntime;
   keys: ClientKeyContext;
@@ -379,6 +493,11 @@ export function createClientMenuContext(options: {
   };
 }
 
+/**
+ * Original name: Com_Error
+ * Source: Quake-2-master/qcommon/common.c
+ * Category: Adapter
+ */
 export function menuError(context: ClientMenuContext, message: string): never {
   if (context.misc) {
     return Com_Error(context.misc, ERR_FATAL, message);
@@ -387,11 +506,21 @@ export function menuError(context: ClientMenuContext, message: string): never {
   throw new Error(message);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (split menu video sync helper)
+ * Category: New
+ */
 export function syncMenuVideo(context: ClientMenuContext): void {
   context.qmenu.state.vidWidth = context.vid.viddef.width;
   context.qmenu.state.vidHeight = context.vid.viddef.height;
 }
 
+/**
+ * Original name: Com_ServerState
+ * Source: Quake-2-master/qcommon/common.c
+ * Category: Adapter
+ */
 export function getServerState(context: ClientMenuContext): number {
   if (context.hooks.getServerState) {
     return context.hooks.getServerState();
@@ -404,10 +533,20 @@ export function getServerState(context: ClientMenuContext): number {
   return 0;
 }
 
+/**
+ * Original name: S_StartLocalSound
+ * Source: Quake-2-master/client/snd_dma.c
+ * Category: Adapter
+ */
 export function startLocalSound(context: ClientMenuContext, name: string): void {
   context.hooks.startLocalSound?.(name);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (split menu framework reset helper)
+ * Category: New
+ */
 export function resetMenuFramework(menu: menuframework_s): void {
   menu.y = 0;
   menu.cursor = 0;

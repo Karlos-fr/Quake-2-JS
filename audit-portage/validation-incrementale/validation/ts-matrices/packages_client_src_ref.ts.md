@@ -4,43 +4,43 @@
 
 - Fichier TS: `packages/client/src/ref.ts`
 - Symboles TS: 35
-- Couvert C/H: 0
-- Reste a auditer: 35
+- Couvert C/H: 24
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/ref.ts` | type | `model_s` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | type | `image_s` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `MAX_DLIGHTS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `MAX_ENTITIES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `MAX_PARTICLES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `POWERSUIT_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_RED_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_GREEN_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_BLUE_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_RG_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_RB_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_BG_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_DOUBLE_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_HALF_DAM_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_CYAN_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `SHELL_WHITE_COLOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `ENTITY_FLAGS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | value | `API_VERSION` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | interface | `entity_t` | oui | `entity_t` | `Quake-2-master/client/ref.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/ref.ts` | interface | `dlight_t` | oui | `dlight_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/ref.ts` | interface | `particle_t` | oui | `particle_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/ref.ts` | interface | `lightstyle_t` | oui | `lightstyle_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/ref.ts` | interface | `refdef_t` | oui | `refdef_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/ref.ts` | interface | `RefPictureSize` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/ref.ts` | interface | `refexport_t` | oui | `refexport_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/ref.ts` | interface | `VidModeInfo` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/ref.ts` | interface | `refimport_t` | oui | `refimport_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/ref.ts` | type | `GetRefAPI_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | function | `createEntity` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | function | `createDlight` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | function | `createParticle` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | function | `createLightstyle` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | function | `createRefDef` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | function | `createRefExport` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/ref.ts` | function | `createRefImport` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/ref.ts` | type | `model_s` | oui | `model_s` | `Quake-2-master/client/ref.h` | Adapter |  | Type opaque ref.h | Valide |  |
+| `packages/client/src/ref.ts` | type | `image_s` | oui | `image_s` | `Quake-2-master/client/ref.h` | Adapter |  | Type opaque ref.h | Valide |  |
+| `packages/client/src/ref.ts` | value | `MAX_DLIGHTS` | oui | `MAX_DLIGHTS` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `MAX_ENTITIES` | oui | `MAX_ENTITIES` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `MAX_PARTICLES` | oui | `MAX_PARTICLES` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `POWERSUIT_SCALE` | oui | `POWERSUIT_SCALE` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_RED_COLOR` | oui | `SHELL_RED_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_GREEN_COLOR` | oui | `SHELL_GREEN_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_BLUE_COLOR` | oui | `SHELL_BLUE_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_RG_COLOR` | oui | `SHELL_RG_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_RB_COLOR` | oui | `SHELL_RB_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_BG_COLOR` | oui | `SHELL_BG_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_DOUBLE_COLOR` | oui | `SHELL_DOUBLE_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_HALF_DAM_COLOR` | oui | `SHELL_HALF_DAM_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_CYAN_COLOR` | oui | `SHELL_CYAN_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `SHELL_WHITE_COLOR` | oui | `SHELL_WHITE_COLOR` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `ENTITY_FLAGS` | oui | `ENTITY_FLAGS` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | value | `API_VERSION` | oui | `API_VERSION` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | interface | `entity_t` | oui | `entity_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H | C/H row is `entity_s`, typedefed as `entity_t`. |
+| `packages/client/src/ref.ts` | interface | `dlight_t` | oui | `dlight_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | interface | `particle_t` | oui | `particle_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | interface | `lightstyle_t` | oui | `lightstyle_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | interface | `refdef_t` | oui | `refdef_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | interface | `RefPictureSize` | oui | `N/A` | `N/A (structured refexport result)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | interface | `refexport_t` | oui | `refexport_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | interface | `VidModeInfo` | oui | `N/A` | `N/A (structured refimport result)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | interface | `refimport_t` | oui | `refimport_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | type | `GetRefAPI_t` | oui | `GetRefAPI_t` | `Quake-2-master/client/ref.h` | Ported | [`client_ref.h.md`](../matrices/client_ref.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/ref.ts` | function | `createEntity` | oui | `N/A` | `N/A (renderer-facing default factory)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | function | `createDlight` | oui | `N/A` | `N/A (renderer-facing default factory)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | function | `createParticle` | oui | `N/A` | `N/A (renderer-facing default factory)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | function | `createLightstyle` | oui | `N/A` | `N/A (renderer-facing default factory)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | function | `createRefDef` | oui | `N/A` | `N/A (renderer-facing default factory)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | function | `createRefExport` | oui | `N/A` | `N/A (renderer-facing no-op export factory)` | New |  | New explicite | Valide |  |
+| `packages/client/src/ref.ts` | function | `createRefImport` | oui | `N/A` | `N/A (renderer-facing no-op import factory)` | New |  | New explicite | Valide |  |
