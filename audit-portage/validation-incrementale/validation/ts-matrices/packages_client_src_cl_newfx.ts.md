@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_newfx.ts`
 - Symboles TS: 73
-- Couvert C/H: 36
-- Reste a auditer: 36
+- Couvert C/H: 57
+- Reste a auditer: 15
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -46,27 +46,27 @@
 | `packages/client/src/cl_newfx.ts` | function | `CL_GenericParticleEffect` | oui | `CL_GenericParticleEffect` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_newfx.ts` | function | `CL_GenericParticleEffect` | oui | `CL_GenericParticleEffect` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_newfx.ts` | function | `CL_GenericParticleEffect` | oui | `CL_GenericParticleEffect` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/cl_newfx.ts` | function | `CL_TrackerTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_TrackerTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_TrackerTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_Tracker_Shell` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_Tracker_Explode` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_TagTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_TagTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_TagTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_BlasterTrail2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_BlasterTrail2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_BlasterTrail2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_WidowSplash` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_WidowSplash` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_WidowSplash` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_ColorExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_ColorExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_ColorExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_Heatbeam` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_MonsterPlasma_Shell` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_Widowbeamout` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `CL_Nukeblast` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/cl_newfx.ts` | function | `CL_TrackerTrail` | oui | `CL_TrackerTrail` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_TrackerTrail` | oui | `CL_TrackerTrail` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_TrackerTrail` | oui | `CL_TrackerTrail` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_Tracker_Shell` | oui | `CL_Tracker_Shell` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_Tracker_Explode` | oui | `CL_Tracker_Explode` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_TagTrail` | oui | `CL_TagTrail` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_TagTrail` | oui | `CL_TagTrail` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_TagTrail` | oui | `CL_TagTrail` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_BlasterTrail2` | oui | `CL_BlasterTrail2` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_BlasterTrail2` | oui | `CL_BlasterTrail2` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_BlasterTrail2` | oui | `CL_BlasterTrail2` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_WidowSplash` | oui | `CL_WidowSplash` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_WidowSplash` | oui | `CL_WidowSplash` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_WidowSplash` | oui | `CL_WidowSplash` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_ColorExplosionParticles` | oui | `CL_ColorExplosionParticles` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_ColorExplosionParticles` | oui | `CL_ColorExplosionParticles` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_ColorExplosionParticles` | oui | `CL_ColorExplosionParticles` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_Heatbeam` | oui | `CL_Heatbeam` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_MonsterPlasma_Shell` | oui | `CL_MonsterPlasma_Shell` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_Widowbeamout` | oui | `CL_Widowbeamout` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `CL_Nukeblast` | oui | `CL_Nukeblast` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_newfx.ts` | function | `createTrailEffect` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/client/src/cl_newfx.ts` | function | `MakeNormalVectors` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/client/src/cl_newfx.ts` | function | `normalizeVector` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

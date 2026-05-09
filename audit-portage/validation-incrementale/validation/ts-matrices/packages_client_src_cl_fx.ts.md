@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Symboles TS: 124
-- Couvert C/H: 15
-- Reste a auditer: 100
+- Couvert C/H: 18
+- Reste a auditer: 86
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,20 +33,20 @@
 | `packages/client/src/cl_fx.ts` | function | `CL_AddDLights` | oui | `CL_AddDLights` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_fx.ts` | function | `CL_ClearParticles` | oui | `CL_ClearParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_fx.ts` | function | `CL_ClearEffects` | oui | `CL_ClearEffects` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/cl_fx.ts` | function | `CL_BuildMuzzleFlash2Effects` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BuildTempEntityEffects` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ExecuteTempEntityEffects` | oui | `CL_ParseTEnt` | `Quake-2-master/client/cl_tent.c and client/cl_newfx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ExecutePacketEntityEffects` | oui | `automatic particle trails in CL_AddPacketEntities` | `Quake-2-master/client/cl_ents.c` | Ported integration |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BuildParticleEffects` | oui | `CL_ParseParticles` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `CL_TeleporterParticles` | oui | `CL_TeleporterParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_TeleporterParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_TeleporterParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_LogoutEffect` | oui | `CL_LogoutEffect` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `CL_LogoutEffect` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_LogoutEffect` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui | `CL_ItemRespawnParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BuildMuzzleFlash2Effects` | oui | `N/A` | `N/A (runtime effect builder)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BuildTempEntityEffects` | oui | `N/A` | `N/A (runtime effect builder)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ExecuteTempEntityEffects` | oui | `CL_ParseTEnt` | `Quake-2-master/client/cl_tent.c` | Ported integration | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Adapter local | Valide | Split runtime executor; `CL_ParseTEnt` owner remains `cl_parse.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `CL_ExecutePacketEntityEffects` | oui | `CL_AddPacketEntities` | `Quake-2-master/client/cl_ents.c` | Ported integration | [`client_cl_ents.c.md`](../matrices/client_cl_ents.c.md) | Adapter local | Valide | Split runtime executor for packet-entity trail side effects; owner remains `cl_ents.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BuildParticleEffects` | oui | `N/A` | `N/A (runtime effect builder)` | New |  | TS sans lien source | Valide | `CL_ParseParticles` owner remains `cl_parse.ts`; this helper only builds action-effect metadata. |
+| `packages/client/src/cl_fx.ts` | function | `CL_TeleporterParticles` | oui | `CL_TeleporterParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_TeleporterParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_TeleporterParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_LogoutEffect` | oui | `CL_LogoutEffect` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_LogoutEffect` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_LogoutEffect` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui | `CL_ItemRespawnParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
 | `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui | `CL_ExplosionParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

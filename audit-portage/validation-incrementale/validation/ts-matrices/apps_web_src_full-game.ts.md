@@ -5,7 +5,7 @@
 - Fichier TS: `apps/web/src/full-game.ts`
 - Symboles TS: 94
 - Couvert C/H: 0
-- Reste a auditer: 35
+- Reste a auditer: 25
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -68,16 +68,16 @@
 | `apps/web/src/full-game.ts` | function | `drawRawIndexedImage` | non | `N/A` | `N/A (web canvas draw adapter)` | Adapter |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `drawGlyph` | non | `N/A` | `N/A (web canvas draw adapter)` | Adapter |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `drawPaletteFill` | non | `N/A` | `N/A (web canvas draw adapter)` | Adapter |  | Hors C/H | Valide |  |
-| `apps/web/src/full-game.ts` | function | `loadPictureCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `loadGlyphCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `resolvePictureFile` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `pcxToCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `handleKeyDown` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `syncFullGameKeyDestination` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `toggleFullGameConsole` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `toggleFullGameConsoleContext` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `printFullGameWebAudioInfo` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `isConsoleToggleDomKey` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game.ts` | function | `loadPictureCanvas` | non | `N/A` | `N/A (web canvas asset adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `loadGlyphCanvas` | non | `N/A` | `N/A (web canvas asset adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `resolvePictureFile` | non | `N/A` | `N/A (web canvas asset adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `pcxToCanvas` | non | `N/A` | `N/A (local canvas helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `handleKeyDown` | non | `N/A` | `N/A (web input adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `syncFullGameKeyDestination` | non | `N/A` | `N/A (web input adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `toggleFullGameConsole` | non | `N/A` | `N/A (web console adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `toggleFullGameConsoleContext` | non | `N/A` | `N/A (web console adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `printFullGameWebAudioInfo` | non | `N/A` | `N/A (web audio debug helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `isConsoleToggleDomKey` | non | `N/A` | `N/A (web input helper)` | New |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `handleKeyUp` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `handlePointerDown` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `handlePointerLockChange` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

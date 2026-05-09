@@ -645,6 +645,8 @@ export function CL_ClearEffects(runtime: ClientRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime effect builder)
  * Category: New
  * Purpose: Convert one parsed monster muzzle flash packet into normalized effect events.
  *
@@ -680,6 +682,8 @@ export function CL_BuildMuzzleFlash2Effects(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime effect builder)
  * Category: New
  * Purpose: Convert one parsed temporary entity packet into normalized effect events.
  *
@@ -1169,7 +1173,7 @@ export function CL_BuildTempEntityEffects(packet: ClientTempEntityPacket): Clien
 /**
  * Original name: CL_ParseTEnt
  * Source: client/cl_tent.c and client/cl_newfx.c
- * Category: Ported
+ * Category: Ported integration
  * Fidelity level: Close
  *
  * Behavior:
@@ -1370,7 +1374,7 @@ export function CL_ExecuteTempEntityEffects(runtime: ClientRuntime, packet: Clie
 }
 
 /**
- * Original name: automatic particle trails in CL_AddPacketEntities
+ * Original name: CL_AddPacketEntities
  * Source: client/cl_ents.c
  * Category: Ported integration
  * Fidelity level: Close
@@ -1434,16 +1438,16 @@ export function CL_ExecutePacketEntityEffects(
 }
 
 /**
- * Original name: CL_ParseParticles
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
+ * Original name: N/A
+ * Source: N/A (runtime effect builder)
+ * Category: New
+ * Fidelity level: NewTooling
  *
  * Behavior:
- * - Converts one auxiliary particle-effect packet into the same immediate logical effect family.
+ * - Converts one parsed auxiliary particle-effect packet into normalized effect metadata.
  *
  * Porting notes:
- * - Keeps this path separate from `CL_ParseTEnt` because the original parser is also separate.
+ * - `CL_ParseParticles` remains owned by `cl_parse.ts`; this helper only exposes the parsed packet as action-effect data.
  */
 export function CL_BuildParticleEffects(packet: ClientParticleEffectPacket): ClientActionEffect[] {
   return [{

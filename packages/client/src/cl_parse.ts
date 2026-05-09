@@ -118,6 +118,8 @@ import { CL_CheckPredictionError } from "./view.js";
 import { createClientCinematicState, createClientScreenState, createClientSkyState } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (parser adapter hooks)
  * Category: New
  * Purpose: Describe optional side-effect callbacks used while the client parser is still being ported incrementally.
  *
@@ -175,6 +177,8 @@ export interface ClientParseHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (typed sound packet)
  * Category: New
  * Purpose: Describe one parsed Quake II `svc_sound` payload before it is forwarded to an audio backend.
  *
@@ -193,6 +197,8 @@ export interface ClientSoundPacket {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (typed download packet)
  * Category: New
  * Purpose: Describe one parsed Quake II download block emitted by `svc_download`.
  *
@@ -207,6 +213,8 @@ export interface ClientDownloadBlock {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (typed muzzle-flash packet)
  * Category: New
  * Purpose: Describe one parsed `svc_muzzleflash` payload before client-side visual/audio effects are applied.
  *
@@ -220,6 +228,8 @@ export interface ClientMuzzleFlashPacket {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (typed muzzle-flash packet)
  * Category: New
  * Purpose: Describe one parsed `svc_muzzleflash2` payload.
  *
@@ -232,16 +242,14 @@ export interface ClientMuzzleFlash2Packet {
 }
 
 /**
- * Original name: CL_ParseParticles
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
+ * Original name: N/A
+ * Source: N/A (typed temp-entity packet)
+ * Category: New
  *
- * Behavior:
- * - Describes one auxiliary particle-effect payload read outside of `CL_ParseTEnt`.
+ * Purpose: Describe one auxiliary particle-effect payload read outside of `CL_ParseTEnt`.
  *
- * Porting notes:
- * - Preserves the original `pos`, `dir`, `color`, `count` field set exactly.
+ * Constraints:
+ * - Must preserve the original `pos`, `dir`, `color`, `count` field set exactly.
  */
 export interface ClientParticleEffectPacket {
   kind: "particle-effect";
@@ -252,6 +260,8 @@ export interface ClientParticleEffectPacket {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (typed temp-entity packet)
  * Category: New
  * Purpose: Describe one parsed `svc_temp_entity` payload in a renderer/audio-backend-friendly structure.
  *
@@ -710,6 +720,8 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
 }
 
 /**
+ * Original name: CL_DownloadFileName
+ * Source: client/cl_parse.c
  * Category: Adapter
  * Purpose: Resolve `CL_ParseDownload` temp/final names without importing `CL_DownloadFileName` and creating a module cycle.
  *
@@ -1117,6 +1129,8 @@ export function CL_ParseNuke(runtime: ClientRuntime): Partial<ClientTempEntityPa
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity packet helper)
  * Category: New
  * Purpose: Merge a specialized temp-entity payload into the currently allocated packet object.
  *
@@ -1616,6 +1630,8 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (outgoing command helper)
  * Category: New
  * Purpose: Write one string command into the client message buffer using the original `clc_stringcmd` envelope.
  *
@@ -1773,6 +1789,8 @@ function CL_ParsePacketEntities(runtime: ClientRuntime, oldframe: frame_t | null
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local print helper)
  * Category: New
  * Purpose: Emit parser output to both runtime capture and optional hooks.
  *
@@ -1784,6 +1802,15 @@ function emitPrint(runtime: ClientRuntime, text: string, hooks: ClientParseHooks
   hooks.onPrint?.(text);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local clientinfo parser helper)
+ * Category: New
+ * Purpose: Find the first model/skin separator accepted by the TS clientinfo parser.
+ *
+ * Constraints:
+ * - Must accept both slash styles while preserving the original first-separator behavior.
+ */
 function findModelSkinSeparator(value: string): number {
   const forwardSlash = value.indexOf("/");
   const backSlash = value.indexOf("\\");
@@ -1797,6 +1824,18 @@ function findModelSkinSeparator(value: string): number {
   return Math.min(forwardSlash, backSlash);
 }
 
+/**
+ * Original name: CL_LoadClientinfo / CL_PrepRefresh
+ * Source: client/cl_parse.c and client/cl_view.c
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers renderer resources for a parsed clientinfo entry and applies the original fallback model/skin rules.
+ *
+ * Porting notes:
+ * - Split from `CL_LoadClientinfo` so parsing remains available without a refresh backend.
+ */
 export function registerClientinfoResources(
   clientinfo: ClientRuntime["cl"]["clientinfo"][number],
   hooks: Pick<ClientParseHooks, "registerModel" | "registerSkin" | "registerPic">
@@ -1871,6 +1910,8 @@ function registerSkinWithNull(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local clear-state helper)
  * Category: New
  * Purpose: Produce the fields reset by `CL_ClearState` while preserving the outer runtime object.
  *
@@ -1970,6 +2011,8 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local sky config helper)
  * Category: New
  * Purpose: Synchronize the structured client sky state from the raw Quake II configstring slots.
  *
@@ -1984,6 +2027,8 @@ function syncClientSkyFromConfigstrings(runtime: ClientRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local sky config helper)
  * Category: New
  * Purpose: Parse the Quake II sky rotation configstring into a numeric value.
  *
@@ -1996,6 +2041,8 @@ function parseSkyRotate(value: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local sky config helper)
  * Category: New
  * Purpose: Parse the Quake II sky axis configstring into a three-component vector.
  *
@@ -2018,6 +2065,8 @@ function parseSkyAxis(value: string): [number, number, number] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local copy helper)
  * Category: New
  * Purpose: Copy one entity state into another while preserving tuple fields by value.
  *
@@ -2043,6 +2092,8 @@ function copyEntityState(source: ReturnType<typeof createEntityState>, target: R
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local copy helper)
  * Category: New
  * Purpose: Copy one player state into another while preserving nested arrays by value.
  *
@@ -2071,6 +2122,8 @@ function copyPlayerState(source: frame_t["playerstate"], target: frame_t["player
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local frame clone helper)
  * Category: New
  * Purpose: Clone one parsed frame so frame ring-buffer storage keeps value semantics.
  *

@@ -3,8 +3,8 @@
 ## Etat
 
 - Statut: En cours
-- Dernier lot traite: `drawConsoleFrame`, `prepareConsoleCanvasOverlay`, `drawConsoleSnapshotToCanvas`, `drawConsoleSnapshotCanvas`, `drawOpaqueConsoleBackground`, `drawConsoleFrameRef`, `drawConsoleTextRef`, `drawConsoleText`, `drawConsoleTextFallback`, `drawCapturedCommands`, `drawCenteredPicture`, `drawRawIndexedImage`, `drawGlyph`, `drawPaletteFill`
-- Verdict: 14 symboles `Valide`; adapters/helpers web console et canvas, sans proprietaire C/H attendu.
+- Dernier lot traite: `loadPictureCanvas`, `loadGlyphCanvas`, `resolvePictureFile`, `pcxToCanvas`, `handleKeyDown`, `syncFullGameKeyDestination`, `toggleFullGameConsole`, `toggleFullGameConsoleContext`, `printFullGameWebAudioInfo`, `isConsoleToggleDomKey`
+- Verdict: 10 symboles `Valide`; adapters/helpers web assets, input, console et audio debug, sans proprietaire C/H attendu.
 
 ## Preuves de la session
 
@@ -20,6 +20,9 @@
 - Checklist TS appliquee au lot console/canvas: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web console adapter)`, `N/A (web console canvas helper)`, `N/A (web ref console adapter)`, `N/A (web console canvas adapter)`, `N/A (web console fallback)`, `N/A (web captured draw adapter)` et `N/A (web canvas draw adapter/helper)`, categories `Adapter` ou `New`, absence de matrice C/H liee pour ces symboles web.
 - Croisement ownership: les proprietaires C/H restent `packages/client/src/console.ts` pour `Con_DrawConsole`, `packages/client/src/cl_scrn.ts` pour `SCR_RunConsole`/`SCR_DrawConsole`, et `packages/renderer-three/src/gl_draw.ts` pour `Draw_Char`, `Draw_Fill`, `Draw_Pic`, `Draw_StretchRaw`; le lot `apps/web` consomme ces sorties ou rejoue des commandes capturees sans se presenter comme portage proprietaire.
 - Recherche de doublons/ownership: aucun doublon proprietaire detecte dans `apps/web/src/full-game.ts`; `drawGlyph`, `drawPaletteFill` et `drawRawIndexedImage` sont des adapters canvas de secours et non les proprietaires `ref_gl`.
+- Checklist TS appliquee au lot assets/input: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web canvas asset adapter)`, `N/A (local canvas helper)`, `N/A (web input adapter)`, `N/A (web console adapter)`, `N/A (web audio debug helper)` et `N/A (web input helper)`, categories `Adapter` ou `New`, absence de matrice C/H liee.
+- Croisement C/H/ownership: les proprietaires restent `packages/renderer-three/src/gl_draw.ts` pour `Draw_FindPic`/`Draw_Char`/`Draw_Pic`, `packages/renderer-three/src/gl_image.ts` et `packages/formats/src/pcx.ts` pour le decodage PCX, `packages/client/src/keys.ts` pour `Key_Event`, `packages/client/src/console.ts` pour `Con_ToggleConsole_f` et `packages/client/src/menu-runtime.ts` pour `M_Keydown`. Le lot web route les evenements DOM et convertit des assets vers canvas sans revendiquer ces portages.
+- Recherche de doublons/ownership: les symboles du lot ne sont definis que dans `apps/web/src/full-game.ts`; aucun doublon de portage proprietaire ni mauvais package detecte.
 
 ## Jugement integration
 
@@ -35,6 +38,9 @@
 - Runtime: lot console/canvas integre comme adapter; il appelle les producteurs portes `SCR_RunConsole` et `Con_DrawConsole` et consomme les commandes de dessin deja emises par le client/menu au lieu de dupliquer l'etat runtime.
 - apps/web: applicable et integre; rendu console via canvas fallback, overlay Three, chemin `refexport_t` frontend et replay des commandes capturees sont branches dans la boucle full-game.
 - renderer-three: applicable indirectement; l'overlay console est transmis au render loop Three et les vrais ports `Draw_*` restent dans `packages/renderer-three/src/gl_draw.ts`.
+- Runtime: lot assets/input integre comme adapter; les touches DOM sont routees vers `Key_Event`, `M_Keydown`, `Con_ToggleConsole_f`, `SCR_StopCinematic` et `SCR_FinishCinematic` portes, sans dupliquer leur comportement.
+- apps/web: applicable et integre; le chargement PCX canvas alimente le fallback canvas et les hooks `refexport_t`, tandis que le keydown global pilote console, menu, cinematic et gameplay depuis `bootstrap`.
+- renderer-three: applicable indirectement; les chemins de rendu Three/ref_gl gardent leurs proprietaires `gl_draw`/`gl_image`, et ce lot fournit seulement les assets canvas de secours et le routage navigateur.
 
 ## Tests lances
 
@@ -47,7 +53,11 @@
 - `npm run verify:full-game:commands` passe.
 - `npm run verify:full-game:three-renderer` passe.
 - `npm run typecheck` passe.
+- `npm run verify:full-game:input-bindings` passe.
+- `npm run verify:full-game:audio-routing` passe.
+- `npm run verify:full-game:three-renderer` passe.
+- `npm run typecheck` passe.
 
 ## Prochain lot recommande
 
-Traiter le bloc assets/input suivant: `loadPictureCanvas`, `loadGlyphCanvas`, `resolvePictureFile`, `pcxToCanvas`, `handleKeyDown`, `syncFullGameKeyDestination`, `toggleFullGameConsole`, `toggleFullGameConsoleContext`, `printFullGameWebAudioInfo`, `isConsoleToggleDomKey`.
+Traiter le bloc input suivant: `handleKeyUp`, `handlePointerDown`, `handlePointerLockChange`, `routeFullGameEscapeToClient`, `handleMouseButton`, `handleMouseWheel`, `mapMouseButton`, `isTextInputTarget`, `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey`.

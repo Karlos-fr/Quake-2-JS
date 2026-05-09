@@ -93,15 +93,36 @@ export type {
   ClientInventoryBindingMap
 } from "./cl_inv.js";
 
+/**
+ * Original name: STAT_MINUS
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const STAT_MINUS = 10;
+
+/**
+ * Original name: CHAR_WIDTH
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const CHAR_WIDTH = 16;
 
+/**
+ * Original name: sb_nums
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const sb_nums = [
   ["num_0", "num_1", "num_2", "num_3", "num_4", "num_5", "num_6", "num_7", "num_8", "num_9", "num_minus"],
   ["anum_0", "anum_1", "anum_2", "anum_3", "anum_4", "anum_5", "anum_6", "anum_7", "anum_8", "anum_9", "anum_minus"]
 ] as const;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe one 2D HUD draw rectangle in pixel coordinates.
  *
@@ -111,6 +132,8 @@ const sb_nums = [
 export type ClientHudBounds = HudBounds;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe one image draw request emitted by the ported HUD logic.
  *
@@ -120,6 +143,8 @@ export type ClientHudBounds = HudBounds;
 export type ClientHudPictureCommand = HudPictureCommand;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe one text draw request emitted by the ported HUD logic.
  *
@@ -129,6 +154,8 @@ export type ClientHudPictureCommand = HudPictureCommand;
 export type ClientHudTextCommand = HudTextCommand;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe one number-field draw request emitted by `SCR_DrawField`.
  *
@@ -138,6 +165,8 @@ export type ClientHudTextCommand = HudTextCommand;
 export type ClientHudNumberCommand = HudNumberCommand;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Reserve one fill-style HUD draw request for later layout tokens and debug overlays.
  *
@@ -147,6 +176,8 @@ export type ClientHudNumberCommand = HudNumberCommand;
 export type ClientHudFillCommand = HudFillCommand;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Union the current HUD draw primitives produced by the screen port.
  */
@@ -194,6 +225,8 @@ export interface ClientScreenConsolePlan {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe the pixel footprint of one HUD string using Quake II sizing rules.
  *
@@ -207,6 +240,8 @@ export interface ClientHudStringMeasure {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Carry the screen dimensions and runtime gating needed to interpret Quake II HUD layout strings.
  *
@@ -221,6 +256,8 @@ export interface ClientHudLayoutContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe the active center-print text block tracked by the client screen layer.
  *
@@ -235,6 +272,8 @@ export interface ClientCenterPrintState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe the loading-plaque state exposed by the client screen layer.
  *
@@ -248,6 +287,8 @@ export interface ClientLoadingOverlayState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen entrypoint options)
  * Category: New
  * Purpose: Carry host state and callbacks needed by the ported loading-plaque entrypoint.
  *
@@ -263,6 +304,8 @@ export interface ClientLoadingPlaqueOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe the pause-overlay state exposed by the client screen layer.
  *
@@ -274,6 +317,8 @@ export interface ClientPauseOverlayState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe the network warning overlay state used by `SCR_DrawNet`.
  *
@@ -287,6 +332,8 @@ export interface ClientNetOverlayState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen snapshot build options)
  * Category: New
  * Purpose: Carry host/runtime inputs needed to build the full screen snapshot without coupling `screen.ts` to unrelated subsystems.
  *
@@ -330,6 +377,8 @@ export interface vrect_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen runtime context)
  * Category: New
  * Purpose: Group the client runtime with the command and cvar runtimes needed by the `cl_scrn.c` header-visible paths.
  *
@@ -357,6 +406,8 @@ export interface ClientScreenContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe the output of the current partial `SCR_UpdateScreen` port without binding it to one renderer backend.
  *
@@ -370,6 +421,8 @@ export interface ClientScreenFrame {
   cinematic: ClientCinematicSnapshot | null;
 }
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
  * Category: New
  * Purpose: Describe the first HUD-facing snapshot extracted from client screen state.
  *
@@ -407,6 +460,8 @@ export interface ClientScreenHudState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen runtime context factory)
  * Category: New
  * Purpose: Create the composite context used by the current `screen.h` / `cl_scrn.c` port stage.
  *
@@ -513,8 +568,8 @@ export function DrawHUDString(text: string, x: number, y: number, centerWidth: n
 /**
  * Original name: DrawHUDString
  * Source: client/cl_scrn.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Draws one HUD string through the renderer export table with Quake-style centering and XOR masking.
@@ -577,8 +632,8 @@ export function SCR_DrawField(x: number, y: number, color: number, width: number
 /**
  * Original name: SCR_DrawField
  * Source: client/cl_scrn.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Draws the Quake II number field digit pictures through `refexport_t`.
@@ -935,8 +990,8 @@ export function SCR_DrawLayout(runtime: ClientRuntime, context: ClientHudLayoutC
 /**
  * Original name: SCR_ExecuteLayoutString
  * Source: client/cl_scrn.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Interprets the Quake II HUD mini-language and draws through `refexport_t`.
@@ -1099,8 +1154,8 @@ export function SCR_ExecuteLayoutStringRef(
 /**
  * Original name: SCR_DrawStats
  * Source: client/cl_scrn.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  */
 export function SCR_DrawStatsRef(runtime: ClientRuntime, ref: refexport_t, context: ClientHudLayoutContext): void {
   SCR_ExecuteLayoutStringRef(runtime, ref, runtime.cl.configstrings[CS_STATUSBAR] ?? "", context);
@@ -1109,8 +1164,8 @@ export function SCR_DrawStatsRef(runtime: ClientRuntime, ref: refexport_t, conte
 /**
  * Original name: SCR_DrawLayout
  * Source: client/cl_scrn.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  */
 export function SCR_DrawLayoutRef(runtime: ClientRuntime, ref: refexport_t, context: ClientHudLayoutContext): void {
   if ((runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0) === 0) {
@@ -1121,6 +1176,8 @@ export function SCR_DrawLayoutRef(runtime: ClientRuntime, ref: refexport_t, cont
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen draw-command composer)
  * Category: New
  * Purpose: Compose the current Quake II HUD overlays in the same high-level order as `SCR_UpdateScreen`.
  *
@@ -1176,6 +1233,8 @@ export function SCR_BuildHudDrawCommands(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer adapter)
  * Category: New
  * Purpose: Draw the current Quake II HUD overlays through the original renderer export table order.
  *

@@ -3476,6 +3476,12 @@ function drawPaletteFill(
   page.context.fillRect(x, y, width, height);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas asset adapter)
+ * Category: Adapter
+ * Purpose: Resolve and decode one Quake pic asset into a cached canvas for the web fallback renderer.
+ */
 function loadPictureCanvas(
   filesystem: VirtualFilesystem,
   assets: CanvasAssetCache,
@@ -3505,6 +3511,12 @@ function loadPictureCanvas(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas asset adapter)
+ * Category: Adapter
+ * Purpose: Decode the Quake console glyph sheet into a cached canvas for DOM-backed text drawing.
+ */
 function loadGlyphCanvas(filesystem: VirtualFilesystem, assets: CanvasAssetCache): HTMLCanvasElement | null {
   if (assets.glyphs) {
     return assets.glyphs;
@@ -3521,6 +3533,12 @@ function loadGlyphCanvas(filesystem: VirtualFilesystem, assets: CanvasAssetCache
   return assets.glyphs;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas asset adapter)
+ * Category: Adapter
+ * Purpose: Apply Quake pic path fallback rules against the mounted browser filesystem.
+ */
 function resolvePictureFile(filesystem: VirtualFilesystem, name: string): ReturnType<typeof readMountedFile> {
   const normalized = name.replaceAll("\\", "/").replace(/^\/+/, "");
   const candidates = normalized.endsWith(".pcx")
@@ -3539,6 +3557,12 @@ function resolvePictureFile(filesystem: VirtualFilesystem, name: string): Return
   return undefined;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local canvas helper)
+ * Category: New
+ * Purpose: Materialize a decoded PCX RGBA buffer as a browser canvas.
+ */
 function pcxToCanvas(image: PcxImage): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = image.width;
@@ -3550,6 +3574,12 @@ function pcxToCanvas(image: PcxImage): HTMLCanvasElement {
   return canvas;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input adapter)
+ * Category: Adapter
+ * Purpose: Route DOM keydown events into the ported client, menu, console and cinematic input paths.
+ */
 function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: FullGamePage): void {
   if (isConsoleToggleDomKey(event)) {
     event.preventDefault();
@@ -3646,6 +3676,12 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input adapter)
+ * Category: Adapter
+ * Purpose: Mirror the ported key destination into the full-game browser mode and status UI.
+ */
 function syncFullGameKeyDestination(runtime: FullGameRuntime, page: FullGamePage): void {
   const keyDest = runtime.menu.keys.state.key_dest as keydest_t;
 
@@ -3670,10 +3706,22 @@ function syncFullGameKeyDestination(runtime: FullGameRuntime, page: FullGamePage
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console adapter)
+ * Category: Adapter
+ * Purpose: Toggle the ported console from the assembled full-game runtime.
+ */
 function toggleFullGameConsole(runtime: FullGameRuntime, page: FullGamePage): void {
   toggleFullGameConsoleContext(runtime.menu, runtime.console, page, runtime.client);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web console adapter)
+ * Category: Adapter
+ * Purpose: Invoke the ported console toggle and reflect the resulting key destination in the browser status UI.
+ */
 function toggleFullGameConsoleContext(
   menu: ClientMenuContext,
   consoleContext: ClientConsoleContext,
@@ -3690,12 +3738,24 @@ function toggleFullGameConsoleContext(
       : "";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web audio debug helper)
+ * Category: New
+ * Purpose: Print browser audio adapter diagnostics through the ported console.
+ */
 function printFullGameWebAudioInfo(runtime: FullGameRuntime): void {
   const info = formatWebAudioInfo(runtime.audio, runtime.sndDma, runtime.audioDebug);
   Con_Print(runtime.console.con, info, runtime.client.cls.realtime);
   Con_SyncConsoleToKeys(runtime.console);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input helper)
+ * Category: New
+ * Purpose: Recognize browser keyboard variants used for the Quake console toggle.
+ */
 function isConsoleToggleDomKey(event: KeyboardEvent): boolean {
   if (event.altKey || event.ctrlKey || event.metaKey) {
     return false;

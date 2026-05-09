@@ -4,48 +4,48 @@
 
 - Fichier TS: `packages/client/src/cl_tent.ts`
 - Symboles TS: 79
-- Couvert C/H: 0
-- Reste a auditer: 79
+- Couvert C/H: 4
+- Reste a auditer: 42
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_PARASITE_SEGMENT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_GRAPPLE_CABLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_LIGHTNING` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_HEATBEAM` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_MONSTER_HEATBEAM` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_EXPLODE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_SMOKE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_FLASH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_EXPLO4` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_EXPLO4_BIG` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_BFG_EXPLO` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_PARASITE_TIP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_POWERSCREEN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_LASER` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_GRENADE2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_V_MACHN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_V_HANDGR` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_V_SHOTG2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_GIB_BONE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_GIB_SM_MEAT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `MODEL_GIB_BONE2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `PIC_W_MACHINEGUN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `PIC_A_BULLETS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `PIC_I_HEALTH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | value | `PIC_A_GRENADES` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_tent.ts` | interface | `ClientBeamRender` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | interface | `ClientForceWallRender` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | interface | `ClientSustainRender` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | interface | `ClientExplosionRender` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | interface | `ClientTEntRefresh` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `CL_ClearTEnts` | oui | `CL_ClearTEnts` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_tent.ts` | function | `CL_RegisterTEntSounds` | oui | `CL_RegisterTEntSounds` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_tent.ts` | function | `CL_RegisterTEntModels` | oui | `CL_RegisterTEntModels` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_tent.ts` | function | `CL_AddTEntPacket` | oui | `CL_ParseTEnt` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_tent.ts` | function | `CL_BuildTEntRefresh` | oui | `CL_AddTEnts` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_tent.ts` | function | `CL_AddTEnts` | oui | `CL_AddTEnts` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_tent.ts` | function | `buildBeams` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_PARASITE_SEGMENT` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_GRAPPLE_CABLE` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_LIGHTNING` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_HEATBEAM` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_MONSTER_HEATBEAM` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_EXPLODE` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_SMOKE` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_FLASH` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_EXPLO4` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_EXPLO4_BIG` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_BFG_EXPLO` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_PARASITE_TIP` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_POWERSCREEN` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_LASER` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_GRENADE2` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_V_MACHN` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_V_HANDGR` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_V_SHOTG2` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_GIB_BONE` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_GIB_SM_MEAT` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `MODEL_GIB_BONE2` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `PIC_W_MACHINEGUN` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `PIC_A_BULLETS` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `PIC_I_HEALTH` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | value | `PIC_A_GRENADES` | non | N/A | N/A (local asset aliases) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | interface | `ClientBeamRender` | oui | N/A | N/A (refresh adapter contract) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | interface | `ClientForceWallRender` | oui | N/A | N/A (refresh adapter contract) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | interface | `ClientSustainRender` | oui | N/A | N/A (refresh adapter contract) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | interface | `ClientExplosionRender` | oui | N/A | N/A (refresh adapter contract) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | interface | `ClientTEntRefresh` | oui | N/A | N/A (refresh adapter contract) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_ClearTEnts` | oui | `CL_ClearTEnts` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_RegisterTEntSounds` | oui | `CL_RegisterTEntSounds` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_RegisterTEntModels` | oui | `CL_RegisterTEntModels` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_AddTEntPacket` | oui | `CL_ParseTEnt` | `Quake-2-master/client/cl_tent.c` | Adapter | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Adapter non proprietaire | Valide | Proprietaire C/H: `packages/client/src/cl_parse.ts` / `CL_ParseTEnt`; ici applique les paquets deja parses a l'etat persistent cl_tent. |
+| `packages/client/src/cl_tent.ts` | function | `CL_BuildTEntRefresh` | oui | `CL_AddTEnts` | `Quake-2-master/client/cl_tent.c` | Adapter | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Adapter non proprietaire | Valide | Wrapper structure pour refresh; proprietaire nominal conserve par `CL_AddTEnts`. |
+| `packages/client/src/cl_tent.ts` | function | `CL_AddTEnts` | oui | `CL_AddTEnts` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `buildBeams` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
 | `packages/client/src/cl_tent.ts` | function | `CL_AddBeams` | oui | `CL_AddBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_tent.ts` | function | `buildPlayerBeams` | non | `CL_AddPlayerBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
 | `packages/client/src/cl_tent.ts` | function | `CL_AddPlayerBeams` | oui | `CL_AddPlayerBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |

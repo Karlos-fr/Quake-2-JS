@@ -47,6 +47,12 @@ import {
   type client_explosion_t
 } from "./client.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local asset aliases)
+ * Category: New
+ * Purpose: Keep temp-entity model and picture identifiers explicit while the renderer handles asset resolution.
+ */
 const MODEL_PARASITE_SEGMENT = "models/monsters/parasite/segment/tris.md2";
 const MODEL_GRAPPLE_CABLE = "models/ctf/segment/tris.md2";
 const MODEL_LIGHTNING = "models/proj/lightning/tris.md2";
@@ -74,6 +80,8 @@ const PIC_I_HEALTH = "i_health";
 const PIC_A_GRENADES = "a_grenades";
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh adapter contract)
  * Category: New
  * Purpose: Describe one refresh-facing persistent beam reconstructed from temp-entity state.
  *
@@ -102,6 +110,8 @@ export interface ClientBeamRender {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh adapter contract)
  * Category: New
  * Purpose: Describe one refresh-facing force-wall segment emitted from `TE_FORCEWALL`.
  *
@@ -116,6 +126,8 @@ export interface ClientForceWallRender {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh adapter contract)
  * Category: New
  * Purpose: Describe one refresh-facing sustain effect emitted from `CL_ProcessSustain`.
  *
@@ -136,6 +148,8 @@ export interface ClientSustainRender {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh adapter contract)
  * Category: New
  * Purpose: Describe one refresh-facing persistent explosion reconstructed from temp-entity state.
  *
@@ -155,6 +169,8 @@ export interface ClientExplosionRender {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh adapter contract)
  * Category: New
  * Purpose: Group the refresh-facing temp-entity output ported from `CL_AddTEnts`.
  *
@@ -289,15 +305,16 @@ export function CL_RegisterTEntModels(runtime: ClientRuntime): { models: string[
 /**
  * Original name: CL_ParseTEnt
  * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Applies one parsed temp-entity packet to the persistent client temp-entity state.
  *
  * Porting notes:
- * - Reuses the already parsed packet representation from `parse.ts`.
+ * - Reuses the already parsed packet representation from `cl_parse.ts`.
  * - Covers the persistent state families first: beams, player beams, lasers, explosions and sustains.
+ * - `CL_ParseTEnt` remains owned by `cl_parse.ts`; this adapter applies parsed packet payloads to cl_tent state.
  */
 export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntityPacket): void {
   switch (packet.type) {
@@ -442,8 +459,8 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
 /**
  * Original name: CL_AddTEnts
  * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Builds refresh-facing temp-entity output from persistent temp state.
@@ -451,6 +468,7 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
  * Porting notes:
  * - Emits structured beams, explosions and dynamic lights instead of renderer calls.
  * - Executes sustain thinkers before returning renderer-facing sustain descriptors.
+ * - The public original-name wrapper is `CL_AddTEnts`; this helper exposes the structured refresh contract.
  */
 export function CL_BuildTEntRefresh(runtime: ClientRuntime): ClientTEntRefresh {
   const beams = [
@@ -486,6 +504,8 @@ export function CL_AddTEnts(runtime: ClientRuntime): ClientTEntRefresh {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Convert one active beam-family slot array into refresh-facing beam records.
  */
