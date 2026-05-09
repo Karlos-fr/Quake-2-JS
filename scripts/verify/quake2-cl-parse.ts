@@ -737,6 +737,10 @@ assert.equal(deltaTo.solid, 0x1234, "CL_ParseDelta should parse solid");
 
 const frameRuntime = createClientRuntime();
 frameRuntime.cls.serverProtocol = 34;
+frameRuntime.cls.state = connstate_t.ca_connected;
+frameRuntime.cls.disable_servercount = 1;
+frameRuntime.cl.servercount = 2;
+frameRuntime.cl.refresh_prepped = true;
 frameRuntime.cl.time = 400;
 frameRuntime.cl_entities[5].baseline.modelindex = 2;
 frameRuntime.cl_entities[5].baseline.origin = [10, 20, 30];
@@ -839,7 +843,13 @@ MSG_WriteByte(frameRuntime.net_message, 0);
 MSG_WriteByte(frameRuntime.net_message, 0);
 frameRuntime.net_message.readcount = 0;
 const frameEntityEvents: unknown[] = [];
-CL_ParseFrame(frameRuntime, { onEntityEvent: (event) => frameEntityEvents.push(event) });
+let endLoadingPlaqueCalls = 0;
+CL_ParseFrame(frameRuntime, {
+  onEntityEvent: (event) => frameEntityEvents.push(event),
+  onEndLoadingPlaque: () => {
+    endLoadingPlaqueCalls += 1;
+  }
+});
 assert.equal(frameRuntime.cl.frame.valid, true, "CL_ParseFrame should accept a valid delta frame");
 assert.equal(frameRuntime.cl.frame.parse_entities, 2, "CL_ParsePacketEntities should append after the previous parse ring");
 assert.equal(frameRuntime.cl.frame.num_entities, 3, "CL_ParsePacketEntities should include unchanged, baseline and event entities but not removed ones");
@@ -872,6 +882,7 @@ assert.equal(frameRuntime.cl.predicted_origin[0], 10, "CL_ParseFrame should seed
 assert.equal(frameRuntime.cl.predicted_origin[1], 20, "CL_ParseFrame should seed predicted origin Y from parsed playerstate");
 assert.equal(frameRuntime.cl.predicted_origin[2], 30, "CL_ParseFrame should seed predicted origin Z from parsed playerstate");
 assert.deepEqual(frameRuntime.cl.predicted_angles, [45, 90, -180], "CL_ParseFrame should seed predicted angles from parsed playerstate");
+assert.equal(endLoadingPlaqueCalls, 1, "CL_ParseFrame should end the loading plaque when the first active frame arrives after refresh prep");
 assert.equal(frameEntityEvents.length, 1, "CL_ParseFrame should fire parsed entity events through the runtime hook");
 
 console.log("quake2-cl-parse: ok");

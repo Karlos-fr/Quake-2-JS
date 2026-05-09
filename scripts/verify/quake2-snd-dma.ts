@@ -56,6 +56,7 @@ let beginPaintingCalls = 0;
 let submitCalls = 0;
 let lastPaintEndtime = 0;
 const printed: string[] = [];
+const debugPrinted: string[] = [];
 
 const client = createClientRuntime();
 const cmd = createCommandRuntime();
@@ -75,6 +76,9 @@ const local = createClientSoundLocalContext({
   },
   onComPrintf: (message) => {
     printed.push(message);
+  },
+  onComDPrintf: (message) => {
+    debugPrinted.push(message);
   }
 });
 const context = createClientSndDmaContext(client, cmd, cvar, local);
@@ -135,6 +139,14 @@ const stale = S_DMA_FindName(context, "misc/stale.wav", true);
 assert.ok(stale, "S_FindName should create stale registration probe");
 stale!.registration_sequence = context.state.s_registration_sequence - 1;
 stale!.cache = createCachedSfx(8);
+const staleChannel = context.sound.state.channels[1];
+staleChannel.sfx = stale;
+staleChannel.leftvol = 255;
+staleChannel.rightvol = 255;
+const stalePending = S_DMA_StartSound(context, [0, 0, 0], 12, 2, stale, 1, 1, 0.1);
+assert.ok(stalePending, "S_StartSound should queue stale registration fixture");
+client.cl.sound_precache[7] = stale;
+loadCount = 0;
 S_DMA_BeginRegistration(context);
 const current = S_DMA_RegisterSound(context, "misc/current.wav");
 assert.equal(context.state.s_registering, true, "S_BeginRegistration should set registering flag");
@@ -143,6 +155,9 @@ assert.equal(loadCount, 0, "S_RegisterSound should defer loading while registeri
 S_DMA_EndRegistration(context);
 assert.equal(context.state.s_registering, false, "S_EndRegistration should clear registering flag");
 assert.equal(stale?.name, "", "S_EndRegistration should clear stale sounds");
+assert.equal(staleChannel.sfx, null, "S_EndRegistration should clear channels referencing stale sounds before emptying them");
+assert.equal(pendingContainsSfx(context, stale!), false, "S_EndRegistration should remove pending playsounds referencing stale sounds");
+assert.equal(client.cl.sound_precache[7], null, "S_EndRegistration should clear stale sound precache handles");
 assert.equal(loadCount > 0, true, "S_EndRegistration should load current sounds");
 
 registered = S_DMA_RegisterSound(context, "misc/step.wav");
@@ -308,6 +323,42 @@ S_DMA_GetSoundtime(context);
 assert.equal(context.state.buffers, 1, "GetSoundtime wrap mismatch");
 assert.equal(context.state.soundtime, 5, "GetSoundtime computed mismatch");
 
+let hostDmaFrame = 42;
+local.hooks.onSNDDMA_GetDMAFrame = () => hostDmaFrame;
+S_DMA_GetSoundtime(context);
+assert.equal(context.state.soundtime, 42, "GetSoundtime host DMA frame mismatch");
+assert.equal(context.state.buffers, 10, "GetSoundtime host DMA frame buffers mismatch");
+assert.equal(context.state.oldsamplepos, 4, "GetSoundtime host DMA frame sample position mismatch");
+hostDmaFrame = 40;
+S_DMA_GetSoundtime(context);
+assert.equal(context.state.soundtime, 42, "GetSoundtime host DMA frame should remain monotonic");
+delete local.hooks.onSNDDMA_GetDMAFrame;
+
+hostDmaFrame = 75;
+local.hooks.onSNDDMA_GetDMAFrame = () => hostDmaFrame;
+context.state.soundtime = 0;
+context.state.buffers = 0;
+context.state.oldsamplepos = 0;
+context.sound.state.paintedtime = 0;
+context.sound.state.dma.channels = 2;
+context.sound.state.dma.samples = 16;
+context.sound.state.dma.submission_chunk = 4;
+context.sound.state.dma.speed = 20;
+context.sound.state.dma.buffer = new Uint8Array(16);
+debugPrinted.length = 0;
+beginPaintingCalls = 0;
+submitCalls = 0;
+lastPaintEndtime = 0;
+S_DMA_Update_(context);
+assert.equal(debugPrinted.includes("S_Update_ : overflow\n"), false, "S_Update_ should not print native DMA overflow for external host clocks");
+assert.equal(context.sound.state.paintedtime >= context.state.soundtime, true, "S_Update_ should resync painted time for external host clocks");
+context.client.cls.disable_screen = 1;
+hostDmaFrame = 90;
+S_DMA_Update(context, [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]);
+assert.equal(context.sound.state.paintedtime, context.state.soundtime, "S_Update should not accumulate external clock drift while screen is disabled");
+context.client.cls.disable_screen = 0;
+delete local.hooks.onSNDDMA_GetDMAFrame;
+
 context.state.soundtime = 0;
 context.state.buffers = 0;
 context.state.oldsamplepos = 0;
@@ -383,4 +434,15 @@ function collectPendingEntnums(testContext: typeof context): number[] {
     node = node.next;
   }
   return entnums;
+}
+
+function pendingContainsSfx(testContext: typeof context, sfx: NonNullable<typeof stale>): boolean {
+  let node = testContext.sound.state.s_pendingplays.next;
+  while (node && node !== testContext.sound.state.s_pendingplays) {
+    if (node.sfx === sfx) {
+      return true;
+    }
+    node = node.next;
+  }
+  return false;
 }

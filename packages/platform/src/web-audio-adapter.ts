@@ -13,6 +13,8 @@
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import type { channel_t, sfx_t, sfxcache_t } from "../../client/src/snd_loc.js";
 
+const MAX_ACTIVE_SFX_SOURCES = 96;
+
 export interface WebAudioAdapterLogHooks {
   onInfo?: (message: string) => void;
   onWarning?: (message: string) => void;
@@ -136,7 +138,6 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
   let masterVolume = 1;
   let sfxVolume = 1;
   let nextRawStartTime = 0;
-  let rawChunkLogCount = 0;
 
   if (context && masterGain) {
     masterGain.gain.value = 1;
@@ -229,14 +230,14 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       stopActiveSources(activeSources);
       activeLoops.clear();
       for (const active of activeWavLoops.values()) {
-        stopSource(active.source);
+        stopActiveSource(active);
       }
       activeWavLoops.clear();
       adapter.stopRaw();
     },
     stopRaw: () => {
       for (const source of activeRawSources.splice(0)) {
-        stopSource(source);
+        stopRawSource(source);
       }
       nextRawStartTime = context ? context.currentTime : 0;
     },
@@ -259,31 +260,37 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
         return;
       }
 
-      const buffer = getSfxAudioBuffer(context, sfxBufferCache, cache);
-      const key = playOptions.loopKey ?? makeChannelKey(playOptions.entnum ?? 0, playOptions.entchannel ?? 0);
-      if (key) {
-        stopMatchingSources(activeSources, key);
-      }
-
-      const active = createSpatialSource(context, sfxGain, buffer, {
-        leftVolume: playOptions.leftVolume ?? 255,
-        rightVolume: playOptions.rightVolume ?? 255,
-        key,
-        loop: playOptions.loop ?? cache.loopstart >= 0,
-        offsetSamples: playOptions.offsetSamples ?? 0
-      });
-      activeSources.push(active);
-      playedSfx += 1;
-      lastSfxName = sfx.name;
-      if (playOptions.loop && key) {
-        activeLoops.set(key, active);
-      }
-      active.source.onended = () => {
-        removeActiveSource(activeSources, active);
-        if (key && activeLoops.get(key) === active) {
-          activeLoops.delete(key);
+      try {
+        const buffer = getSfxAudioBuffer(context, sfxBufferCache, cache);
+        const key = playOptions.loopKey ?? makeChannelKey(playOptions.entnum ?? 0, playOptions.entchannel ?? 0);
+        if (key) {
+          stopMatchingSources(activeSources, activeLoops, key);
         }
-      };
+
+        trimActiveSfxSources(activeSources, activeLoops, MAX_ACTIVE_SFX_SOURCES - 1);
+        const active = createSpatialSource(context, sfxGain, buffer, {
+          leftVolume: playOptions.leftVolume ?? 255,
+          rightVolume: playOptions.rightVolume ?? 255,
+          key,
+          loop: playOptions.loop ?? cache.loopstart >= 0,
+          offsetSamples: playOptions.offsetSamples ?? 0
+        });
+        activeSources.push(active);
+        playedSfx += 1;
+        lastSfxName = sfx.name;
+        if (playOptions.loop && key) {
+          activeLoops.set(key, active);
+        }
+        active.source.onended = () => {
+          removeActiveSource(activeSources, active);
+          if (key && activeLoops.get(key) === active) {
+            activeLoops.delete(key);
+          }
+          disconnectActiveSource(active);
+        };
+      } catch {
+        // Browser source startup may fail transiently; Quake keeps running and later sounds can still play.
+      }
     },
     playChannel: (channel) => {
       if (!channel.sfx) {
@@ -312,23 +319,23 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
           continue;
         }
         adapter.playSfx(channel.sfx, {
-        leftVolume: channel.leftvol,
-        rightVolume: channel.rightvol,
-        entnum: channel.entnum,
-        entchannel: channel.entchannel,
-        loopKey: key,
-        loop: true,
-        offsetSamples: channel.pos
-      });
+          leftVolume: channel.leftvol,
+          rightVolume: channel.rightvol,
+          entnum: channel.entnum,
+          entchannel: channel.entchannel,
+          loopKey: key,
+          loop: true,
+          offsetSamples: channel.pos
+        });
       }
 
       for (const [key, active] of activeLoops) {
         if (wanted.has(key)) {
           continue;
         }
-        stopSource(active.source);
         activeLoops.delete(key);
         removeActiveSource(activeSources, active);
+        stopActiveSource(active);
       }
     },
     playWavAt: (filesystem, name, playOptions = {}) => {
@@ -365,8 +372,8 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
         if (wanted.has(key)) {
           continue;
         }
-        stopSource(active.source);
         activeWavLoops.delete(key);
+        stopActiveSource(active);
       }
     },
     queueRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
@@ -380,28 +387,32 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
         return;
       }
 
-      if (rawChunkLogCount < 3) {
-        logs.onInfo?.(`audio cin: ${count} samples, ${sampleRate} Hz, ${sampleWidth * 8} bit, ${channels} ch`);
-        rawChunkLogCount += 1;
-      }
+      let source: AudioBufferSourceNode | null = null;
+      try {
+        const audioBuffer = context.createBuffer(Math.max(1, channels), count, sampleRate);
+        writeRawSamplesToAudioBuffer(audioBuffer, count, sampleWidth, channels, samples);
 
-      const audioBuffer = context.createBuffer(Math.max(1, channels), count, sampleRate);
-      writeRawSamplesToAudioBuffer(audioBuffer, count, sampleWidth, channels, samples);
+        const rawSource = context.createBufferSource();
+        source = rawSource;
+        rawSource.buffer = audioBuffer;
+        rawSource.connect(masterGain);
+        rawSource.onended = () => {
+          const index = activeRawSources.indexOf(rawSource);
+          if (index >= 0) {
+            activeRawSources.splice(index, 1);
+          }
+          disconnectRawSource(rawSource);
+        };
 
-      const source = context.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(masterGain);
-      source.onended = () => {
-        const index = activeRawSources.indexOf(source);
-        if (index >= 0) {
-          activeRawSources.splice(index, 1);
+        const startTime = Math.max(context.currentTime + 0.02, nextRawStartTime);
+        rawSource.start(startTime);
+        nextRawStartTime = startTime + audioBuffer.duration;
+        activeRawSources.push(rawSource);
+      } catch {
+        if (source) {
+          disconnectRawSource(source);
         }
-      };
-
-      const startTime = Math.max(context.currentTime + 0.02, nextRawStartTime);
-      source.start(startTime);
-      nextRawStartTime = startTime + audioBuffer.duration;
-      activeRawSources.push(source);
+      }
     },
     playWav: (filesystem, name) => {
       if (!context || !sfxGain || !unlocked || context.state !== "running") {
@@ -502,6 +513,15 @@ function writeSfxCacheToAudioBuffer(audioBuffer: AudioBuffer, sfxCache: sfxcache
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio spatial playback adapter)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Build and start the WebAudio node chain used for a Quake positional sound.
+ */
 function createSpatialSource(
   context: AudioContext,
   destination: AudioNode,
@@ -536,7 +556,16 @@ function createSpatialSource(
   const offsetSeconds = buffer.sampleRate > 0
     ? Math.max(0, options.offsetSamples) / buffer.sampleRate
     : 0;
-  source.start(context.currentTime, Math.min(offsetSeconds, Math.max(0, buffer.duration - 0.001)));
+  try {
+    source.start(context.currentTime, Math.min(offsetSeconds, Math.max(0, buffer.duration - 0.001)));
+  } catch (error) {
+    disconnectAudioNode(source);
+    disconnectAudioNode(gain);
+    if (panner) {
+      disconnectAudioNode(panner);
+    }
+    throw error;
+  }
   return { source, gain, panner, key: options.key };
 }
 
@@ -608,20 +637,26 @@ async function playDecodedWav(
       return;
     }
 
-    const active = createSpatialSource(context, destination, buffer, {
-      leftVolume: options.leftVolume ?? 255,
-      rightVolume: options.rightVolume ?? 255,
-      key: options.loopKey ?? null,
-      loop: options.loop ?? false,
-      offsetSamples: 0
-    });
+    let active: ActiveSource;
+    try {
+      active = createSpatialSource(context, destination, buffer, {
+        leftVolume: options.leftVolume ?? 255,
+        rightVolume: options.rightVolume ?? 255,
+        key: options.loopKey ?? null,
+        loop: options.loop ?? false,
+        offsetSamples: 0
+      });
+    } catch {
+      return;
+    }
+    active.source.onended = () => {
+      if (options.loop && options.loopKey && options.activeLoops?.get(options.loopKey) === active) {
+        options.activeLoops.delete(options.loopKey);
+      }
+      disconnectActiveSource(active);
+    };
     if (options.loop && options.loopKey && options.activeLoops) {
       options.activeLoops.set(options.loopKey, active);
-      active.source.onended = () => {
-        if (options.activeLoops?.get(options.loopKey ?? "") === active) {
-          options.activeLoops.delete(options.loopKey ?? "");
-        }
-      };
     }
   } finally {
     if (options.loopKey) {
@@ -634,20 +669,36 @@ function makeChannelKey(entnum: number, entchannel: number): string | null {
   return entchannel !== 0 ? `${entnum}:${entchannel}` : null;
 }
 
-function stopMatchingSources(sources: ActiveSource[], key: string): void {
+function stopMatchingSources(sources: ActiveSource[], loops: Map<string, ActiveSource>, key: string): void {
   for (let index = sources.length - 1; index >= 0; index -= 1) {
     const active = sources[index];
     if (active.key !== key) {
       continue;
     }
-    stopSource(active.source);
+    if (loops.get(key) === active) {
+      loops.delete(key);
+    }
     sources.splice(index, 1);
+    stopActiveSource(active);
+  }
+}
+
+function trimActiveSfxSources(sources: ActiveSource[], loops: Map<string, ActiveSource>, maxSources: number): void {
+  for (let index = 0; sources.length > maxSources && index < sources.length;) {
+    const active = sources[index];
+    if (active.key && loops.get(active.key) === active) {
+      index += 1;
+      continue;
+    }
+
+    sources.splice(index, 1);
+    stopActiveSource(active);
   }
 }
 
 function stopActiveSources(sources: ActiveSource[]): void {
   for (const active of sources.splice(0)) {
-    stopSource(active.source);
+    stopActiveSource(active);
   }
 }
 
@@ -658,6 +709,90 @@ function removeActiveSource(sources: ActiveSource[], active: ActiveSource): void
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio lifecycle adapter)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Stop and detach a full WebAudio source chain owned by a Quake sound channel.
+ */
+function stopActiveSource(active: ActiveSource): void {
+  stopSource(active.source);
+  disconnectActiveSource(active);
+}
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio lifecycle adapter)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Disconnect ended or stopped WebAudio nodes so dense combat sounds do not leak graph nodes.
+ */
+function disconnectActiveSource(active: ActiveSource): void {
+  disconnectAudioNode(active.source);
+  disconnectAudioNode(active.gain);
+  if (active.panner) {
+    disconnectAudioNode(active.panner);
+  }
+}
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio lifecycle adapter)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Stop and detach a raw streaming source used by cinematics and loading audio.
+ */
+function stopRawSource(source: AudioBufferSourceNode): void {
+  stopSource(source);
+  disconnectRawSource(source);
+}
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio lifecycle adapter)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Disconnect a raw WebAudio source after playback or explicit stop.
+ */
+function disconnectRawSource(source: AudioBufferSourceNode): void {
+  disconnectAudioNode(source);
+}
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio lifecycle adapter)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Ignore browser-specific double-disconnect errors on already detached nodes.
+ */
+function disconnectAudioNode(node: AudioNode): void {
+  try {
+    node.disconnect();
+  } catch {
+    // The browser throws when a node is already disconnected; cleanup remains idempotent.
+  }
+}
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio lifecycle adapter)
+ * Category: New
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Stop a WebAudio buffer source while preserving Quake's idempotent stop paths.
+ */
 function stopSource(source: AudioBufferSourceNode): void {
   try {
     source.stop();

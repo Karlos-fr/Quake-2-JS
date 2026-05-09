@@ -243,6 +243,7 @@ export interface ClientSoundLocalState {
 export interface ClientSoundLocalHooks {
   onSNDDMA_Init?: () => qboolean;
   onSNDDMA_GetDMAPos?: () => number;
+  onSNDDMA_GetDMAFrame?: () => number;
   onSNDDMA_Shutdown?: () => void;
   onSNDDMA_BeginPainting?: () => void;
   onSNDDMA_Submit?: () => void;

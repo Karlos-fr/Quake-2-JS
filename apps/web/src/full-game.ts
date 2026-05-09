@@ -143,6 +143,7 @@ import {
   SCR_Init,
   SCR_DrawCinematicRef,
   SCR_DrawLoading,
+  SCR_EndLoadingPlaque,
   SCR_FinishCinematic,
   SCR_PlayCinematic,
   SCR_RunCinematic,
@@ -350,7 +351,6 @@ interface FullGameRuntime {
   audio: QuakeWebAudioAdapter;
   cdAudio: WebCDAudioAdapter;
   sndDma: ClientSndDmaContext;
-  audioDebug: FullGameAudioDebugState;
   gameBridge: FullGameCommandBridgeState;
   qcommon: QcommonMiscRuntime;
   qcommonHost: QcommonHostRuntime;
@@ -380,14 +380,6 @@ interface FullGameRuntime {
   authoritativeGameReady: () => boolean;
   markAuthoritativeGameActive: () => void;
   consoleRenderedInThree: boolean;
-}
-
-interface FullGameAudioDebugState {
-  serverStartSoundCalls: number;
-  serverResolvedSfx: number;
-  serverMissingSfx: number;
-  lastServerSound: string;
-  lastMissingSound: string;
 }
 
 interface FullGameRendererState {
@@ -479,7 +471,12 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("blur", () => {
       resetFullGameMouseLook(runtime);
       IN_Activate(runtime.inputDevice, false);
-      activateFullGameSound(runtime, false);
+      if (document.visibilityState === "hidden") {
+        activateFullGameSound(runtime, false);
+      }
+    });
+    document.addEventListener("visibilitychange", () => {
+      activateFullGameSound(runtime, document.visibilityState === "visible");
     });
 
     page.status.textContent = "Lancement de la boucle de demonstration...";
@@ -915,11 +912,6 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onPrint: printToConsole,
     loadTextFile: (path) => readWebConfigOrMountedText(configStorage, filesystem, path),
     executeUnknownCommand: (_name, text) => {
-      if (text.trim() === "webaudioinfo") {
-        printToConsole(formatWebAudioInfo(audio, sndDmaContext, audioDebug));
-        return true;
-      }
-
       const result = Cvar_Command(cvar, cmd);
       if (result.output) {
         printToConsole(result.output);
@@ -971,18 +963,38 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   let gameRendererPromise: Promise<FullGameRendererState> | null = null;
   let gameRendererPromiseMapPath: string | null = null;
   let consoleRenderedInThree = false;
-  const audioDebug: FullGameAudioDebugState = {
-    serverStartSoundCalls: 0,
-    serverResolvedSfx: 0,
-    serverMissingSfx: 0,
-    lastServerSound: "",
-    lastMissingSound: ""
+  let webSoundDmaFrameBase = 0;
+  let lastAudioResumeTime = 0;
+  /**
+   * Original name: N/A
+   * Source declaree: N/A (web audio recovery helper)
+   * Category: New
+   * Purpose: Resume a browser-suspended AudioContext during active gameplay without changing Quake sound ownership.
+   */
+  const resumeFullGameAudioIfNeeded = (): void => {
+    const contextState = audio.context?.state ?? "unavailable";
+    if (contextState === "running" || contextState === "unavailable" || contextState === "closed") {
+      return;
+    }
+
+    if (client.cls.realtime - lastAudioResumeTime < 500) {
+      return;
+    }
+
+    lastAudioResumeTime = client.cls.realtime;
+    void audio.resume().catch(() => undefined);
   };
   const soundLocal = createClientSoundLocalContext({
-    onSNDDMA_Init: () => initializeWebSoundDma(soundLocal, audio),
+    onSNDDMA_Init: () => {
+      const initialized = initializeWebSoundDma(soundLocal, audio);
+      webSoundDmaFrameBase = initialized ? getWebSoundDmaAbsoluteFrame(soundLocal, audio) : 0;
+      return initialized;
+    },
     onSNDDMA_GetDMAPos: () => getWebSoundDmaPosition(soundLocal, audio),
+    onSNDDMA_GetDMAFrame: () => getRelativeWebSoundDmaFrame(),
     onSNDDMA_Shutdown: () => {
       audio.stopAll();
+      webSoundDmaFrameBase = 0;
       soundLocal.state.dma.buffer = null;
       soundLocal.state.dma.samplepos = 0;
     },
@@ -997,6 +1009,37 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       playIssuedWebSound(sndDmaContext, audio, ps);
     }
   });
+  /**
+   * Original name: N/A
+   * Source declaree: N/A (web DMA timing adapter)
+   * Category: New
+   * Purpose: Read WebAudio DMA time relative to the latest point where the ported mixer could actually paint.
+   */
+  const getRelativeWebSoundDmaFrame = (): number => {
+    const absoluteFrame = getWebSoundDmaAbsoluteFrame(soundLocal, audio);
+    if (sndDmaContext?.state.soundtime === 0 && soundLocal.state.paintedtime === 0) {
+      webSoundDmaFrameBase = absoluteFrame;
+      return 0;
+    }
+
+    return Math.max(0, absoluteFrame - webSoundDmaFrameBase);
+  };
+  /**
+   * Original name: N/A
+   * Source declaree: N/A (web DMA timing adapter)
+   * Category: New
+   * Purpose: Keep WebAudio DMA time paused while Quake has disabled screen/audio painting for loading.
+   */
+  const pauseWebSoundDmaClockAtSoundtime = (): void => {
+    if (!sndDmaContext) {
+      return;
+    }
+
+    webSoundDmaFrameBase = Math.max(
+      0,
+      getWebSoundDmaAbsoluteFrame(soundLocal, audio) - sndDmaContext.state.soundtime
+    );
+  };
 
   const canvasRef = createCanvasRef(filesystem, assets, drawCommands);
   const menuRef = createMirroredMenuRef(canvasRef);
@@ -1047,7 +1090,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
         : null
     };
     if (CL_PrepRefresh(client, options)) {
-      client.cl.screen.scr_draw_loading = 0;
+      clearFullGameLoadingPlaque(client);
     }
   };
   const registerAuthoritativeSound = (path: string): sfx_t | string => {
@@ -1072,7 +1115,6 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       onRegisterSound: (path) => registerAuthoritativeSound(path),
       onEndRegistration: () => {
         S_DMA_EndRegistration(context);
-        S_DMA_StopAllSounds(context);
       }
     });
   };
@@ -1140,16 +1182,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       return;
     }
 
-    audioDebug.serverStartSoundCalls += 1;
-    audioDebug.lastServerSound = describeAuthoritativeSound(sound);
     const sfx = resolveAuthoritativeSfx(sound);
-    if (sfx?.cache) {
-      audioDebug.serverResolvedSfx += 1;
-    } else {
-      audioDebug.serverMissingSfx += 1;
-      audioDebug.lastMissingSound = audioDebug.lastServerSound;
-    }
-
     syncAuthoritativeSoundListener();
     S_DMA_StartSound(
       sndDmaContext,
@@ -1249,7 +1282,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     onPrepRefresh: prepClientRefresh,
     onRegisterSounds: registerAuthoritativeSounds,
     onBegin: () => {
-      client.cl.screen.scr_draw_loading = 0;
+      clearFullGameLoadingPlaque(client);
     },
     onPrint: printToConsole,
     onDisconnect: () => {
@@ -1267,7 +1300,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       forceGameInputForLevelLoad();
     },
     onEndLoadingPlaque: () => {
-      client.cl.screen.scr_draw_loading = 0;
+      clearFullGameLoadingPlaque(client);
     },
     onServerConnectRequest: (servername) => {
       printToConsole(`Connecting to ${servername}...`);
@@ -1436,8 +1469,11 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
         clFootsteps: client.cl.cl_footsteps
       }));
     },
+    onEndLoadingPlaque: () => {
+      clearFullGameLoadingPlaque(client);
+    },
     onBegin: () => {
-      client.cl.screen.scr_draw_loading = 0;
+      clearFullGameLoadingPlaque(client);
     },
     onPlayCdTrack: (track: number, looping: boolean) => {
       cdAudio.play(track, looping);
@@ -1477,7 +1513,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   const markAuthoritativeGameActive = (): void => {
     const wasLevelLoading = authoritativeLevelLoading;
     authoritativeLevelLoading = false;
-    client.cl.screen.scr_draw_loading = 0;
+    clearFullGameLoadingPlaque(client);
     if (wasLevelLoading
       && keys.state.key_dest !== keydest_t.key_console
       && keys.state.key_dest !== keydest_t.key_message) {
@@ -1639,7 +1675,16 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     }
   };
   const updateClientAudio = (): void => {
+    if (client.cls.state === connstate_t.ca_active
+      && keys.state.key_dest === keydest_t.key_game
+      && document.visibilityState === "visible") {
+      resumeFullGameAudioIfNeeded();
+    }
+
     const listener = buildFullGameAudioListener(client);
+    if (client.cls.disable_screen !== 0) {
+      pauseWebSoundDmaClockAtSoundtime();
+    }
     S_DMA_Update(sndDma, listener.origin, listener.forward, listener.right, listener.up);
     audio.syncLoopChannels(sndDma.sound.state.channels);
   };
@@ -1712,7 +1757,6 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     audio,
     cdAudio,
     sndDma,
-    audioDebug,
     gameBridge,
     qcommon,
     qcommonHost,
@@ -1905,6 +1949,31 @@ function getWebSoundDmaPosition(sound: ClientSoundLocalContext, audio: QuakeWebA
   return sound.state.dma.samplepos;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web DMA timing adapter)
+ * Category: New
+ * Purpose: Convert the browser AudioContext time into the absolute DMA frame used to establish a Quake sound start baseline.
+ */
+function getWebSoundDmaAbsoluteFrame(sound: ClientSoundLocalContext, audio: QuakeWebAudioAdapter): number {
+  const context = audio.context;
+  if (!context || sound.state.dma.speed <= 0) {
+    return 0;
+  }
+
+  return Math.trunc(context.currentTime * sound.state.dma.speed);
+}
+
+/**
+ * Original name: SCR_EndLoadingPlaque
+ * Source declaree: packages/client/src/cl_scrn.ts
+ * Category: Adapter
+ * Purpose: End the ported loading plaque through its owner so `disable_screen` is cleared with the draw flag.
+ */
+function clearFullGameLoadingPlaque(client: ClientRuntime): void {
+  SCR_EndLoadingPlaque(client);
+}
+
 function playIssuedWebSound(context: ClientSndDmaContext, audio: QuakeWebAudioAdapter, ps: playsound_t): void {
   const issued = S_DMA_IssuePlaysound(context, ps);
   if (issued) {
@@ -1931,31 +2000,6 @@ function activateFullGameSound(runtime: FullGameRuntime, active: boolean): void 
   }
 
   void runtime.audio.pause().catch(() => undefined);
-}
-
-function formatWebAudioInfo(
-  audio: QuakeWebAudioAdapter,
-  sndDma: ClientSndDmaContext | null,
-  debug?: FullGameAudioDebugState
-): string {
-  const contextState = audio.context?.state ?? "unavailable";
-  const channels = sndDma?.sound.state.channels ?? [];
-  const activeChannels = channels.filter((channel) => channel.sfx && (channel.leftvol > 0 || channel.rightvol > 0));
-  const activeNames = activeChannels
-    .slice(0, 8)
-    .map((channel) => `${channel.sfx?.name || "<empty>"}:${channel.sfx?.cache ? "cache" : "nocache"}(${channel.leftvol}/${channel.rightvol})`)
-    .join(", ");
-  const webDebug = audio.debug;
-
-  return [
-    `WebAudio: context=${contextState} unlocked=${audio.unlocked ? "1" : "0"} muted=${audio.muted ? "1" : "0"}`,
-    `DMA: started=${sndDma?.state.sound_started ?? 0} sfx=${sndDma?.state.num_sfx ?? 0} painted=${sndDma?.sound.state.paintedtime ?? 0}`,
-    `DMA channels: ${activeChannels.length}${activeNames ? ` :: ${activeNames}` : ""}`,
-    `WebAudio SFX: played=${webDebug.playedSfx} skippedNoCache=${webDebug.skippedSfxNoCache} pending=${webDebug.pendingSfx} active=${webDebug.activeSources} loops=${webDebug.activeLoops}`,
-    `WebAudio last: played=${webDebug.lastSfxName || "<none>"} skipped=${webDebug.lastSkippedSfxName || "<none>"}`,
-    `Server SFX: starts=${debug?.serverStartSoundCalls ?? 0} resolved=${debug?.serverResolvedSfx ?? 0} missing=${debug?.serverMissingSfx ?? 0}`,
-    `Server last: sound=${debug?.lastServerSound || "<none>"} missing=${debug?.lastMissingSound || "<none>"}`
-  ].join("\n");
 }
 
 function buildFullGameAudioListener(client: ClientRuntime): {
@@ -1991,16 +2035,6 @@ function isSfx(value: unknown): value is sfx_t {
     && "name" in value
     && typeof (value as { name?: unknown }).name === "string"
   );
-}
-
-function describeAuthoritativeSound(sound: unknown): string {
-  if (isSfx(sound)) {
-    return sound.name || "<empty>";
-  }
-  if (typeof sound === "string") {
-    return sound || "<empty>";
-  }
-  return "<null>";
 }
 
 function getRequestedSoundRate(sound: ClientSoundLocalContext, fallback: number): number {
@@ -2403,7 +2437,7 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
     }
     runtime.markAuthoritativeGameActive();
     runtime.mode = "cinematic";
-    runtime.client.cl.screen.scr_draw_loading = 0;
+    clearFullGameLoadingPlaque(runtime.client);
     if (runtime.serverHost.hasActiveAttractLoop()) {
       page.status.textContent = "Boucle de demonstration Quake II.";
       page.status.style.display = "block";
@@ -2505,7 +2539,7 @@ function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void 
       runtime.audio.stopRaw();
       runtime.mode = "loading";
       if (runtime.serverHost.hasActiveAttractLoop()) {
-        runtime.client.cl.screen.scr_draw_loading = 0;
+        clearFullGameLoadingPlaque(runtime.client);
       }
       return;
     }
@@ -3736,11 +3770,7 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   event.preventDefault();
   void runtime.audio.unlock();
   if (key === K_F10) {
-    if (event.ctrlKey) {
-      printFullGameWebAudioInfo(runtime);
-    } else {
-      toggleFullGameConsole(runtime, page);
-    }
+    toggleFullGameConsole(runtime, page);
     return;
   }
 
@@ -3755,7 +3785,7 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
         SCR_FinishCinematic(runtime.client);
         runtime.audio.stopRaw();
         runtime.mode = "loading";
-        runtime.client.cl.screen.scr_draw_loading = 0;
+        clearFullGameLoadingPlaque(runtime.client);
         return;
       }
 
@@ -3880,18 +3910,6 @@ function toggleFullGameConsoleContext(
     : client.cls.state !== connstate_t.ca_active
       ? "Menu principal Quake II."
       : "";
-}
-
-/**
- * Original name: N/A
- * Source: N/A (web audio debug helper)
- * Category: New
- * Purpose: Print browser audio adapter diagnostics through the ported console.
- */
-function printFullGameWebAudioInfo(runtime: FullGameRuntime): void {
-  const info = formatWebAudioInfo(runtime.audio, runtime.sndDma, runtime.audioDebug);
-  Con_Print(runtime.console.con, info, runtime.client.cls.realtime);
-  Con_SyncConsoleToKeys(runtime.console);
 }
 
 /**

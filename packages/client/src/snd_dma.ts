@@ -469,6 +469,7 @@ export function S_EndRegistration(context: ClientSndDmaContext): void {
     }
 
     if (sfx.registration_sequence !== context.state.s_registration_sequence) {
+      detachSfxReferences(context, sfx);
       sfx.cache = null;
       sfx.name = "";
       sfx.truename = null;
@@ -1074,6 +1075,10 @@ export function S_Update(context: ClientSndDmaContext, origin: vec3_t, forward: 
   }
 
   if (context.client.cls.disable_screen) {
+    if (hasExternalDmaFrameClock(context)) {
+      GetSoundtime(context);
+      context.sound.state.paintedtime = context.state.soundtime;
+    }
     S_ClearBuffer(context);
     return;
   }
@@ -1129,6 +1134,17 @@ export function S_Update(context: ClientSndDmaContext, origin: vec3_t, forward: 
  */
 export function GetSoundtime(context: ClientSndDmaContext): void {
   const fullsamples = Math.trunc(context.sound.state.dma.samples / Math.max(1, context.sound.state.dma.channels));
+  const hostDmaFrame = context.sound.hooks.onSNDDMA_GetDMAFrame?.();
+  if (hostDmaFrame !== undefined) {
+    const soundtime = Math.max(context.state.soundtime, Math.trunc(hostDmaFrame));
+    context.state.soundtime = soundtime;
+    context.state.buffers = fullsamples > 0 ? Math.trunc(soundtime / fullsamples) : 0;
+    context.state.oldsamplepos = fullsamples > 0
+      ? (soundtime % fullsamples) * Math.max(1, context.sound.state.dma.channels)
+      : 0;
+    return;
+  }
+
   const samplepos = SNDDMA_GetDMAPos(context.sound);
 
   if (samplepos < context.state.oldsamplepos) {
@@ -1167,7 +1183,9 @@ export function S_Update_(context: ClientSndDmaContext): void {
   GetSoundtime(context);
 
   if (context.sound.state.paintedtime < context.state.soundtime) {
-    sndDmaDPrintf(context, "S_Update_ : overflow\n");
+    if (!hasExternalDmaFrameClock(context)) {
+      sndDmaDPrintf(context, "S_Update_ : overflow\n");
+    }
     context.sound.state.paintedtime = context.state.soundtime;
   }
 
@@ -1329,6 +1347,51 @@ function initializePlaySoundLists(context: ClientSndDmaContext): void {
 
   for (const ps of context.state.s_playsounds) {
     insertAfter(context.state.s_freeplays, ps);
+  }
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (host DMA clock adapter)
+ * Category: New
+ * Purpose: Detect browser/host DMA clocks where elapsed output time may advance while Quake is not painting.
+ */
+function hasExternalDmaFrameClock(context: ClientSndDmaContext): boolean {
+  return context.sound.hooks.onSNDDMA_GetDMAFrame !== undefined;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript lifetime guard around `S_EndRegistration`)
+ * Category: New
+ * Purpose: Drop active channel and pending playsound references before a stale `sfx_t` is cleared.
+ *
+ * Constraints:
+ * - Preserve `S_EndRegistration` ownership while avoiding empty-name sound handles in the mixer.
+ */
+function detachSfxReferences(context: ClientSndDmaContext, sfx: sfx_t): void {
+  for (const channel of context.sound.state.channels) {
+    if (channel.sfx === sfx) {
+      resetChannel(channel);
+    }
+  }
+
+  const sentinel = context.sound.state.s_pendingplays;
+  let ps = sentinel.next;
+  while (ps && ps !== sentinel) {
+    const next = ps.next;
+    if (ps.sfx === sfx) {
+      unlinkPlaySound(ps);
+      resetPlaySound(ps);
+      insertAfter(context.state.s_freeplays, ps);
+    }
+    ps = next;
+  }
+
+  for (let i = 0; i < context.client.cl.sound_precache.length; i += 1) {
+    if (context.client.cl.sound_precache[i] === sfx) {
+      context.client.cl.sound_precache[i] = null;
+    }
   }
 }
 

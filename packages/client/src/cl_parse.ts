@@ -166,6 +166,7 @@ export interface ClientParseHooks {
   onWriteDemoMessage?: () => void;
   onEntityEvent?: (event: ClientEntityEvent) => void;
   onFrameParsed?: (frame: frame_t) => void;
+  onEndLoadingPlaque?: () => void;
   getShownet?: () => number;
   onNetDebugPrint?: (line: string) => void;
   registerModel?: (path: string) => unknown;
@@ -1470,6 +1471,9 @@ export function CL_ParseFrame(runtime: ClientRuntime, hooks: ClientParseHooks = 
       runtime.cl.predicted_origin[1] = runtime.cl.frame.playerstate.pmove.origin[1] * 0.125;
       runtime.cl.predicted_origin[2] = runtime.cl.frame.playerstate.pmove.origin[2] * 0.125;
       runtime.cl.predicted_angles = [...runtime.cl.frame.playerstate.viewangles];
+      if (runtime.cls.disable_servercount !== runtime.cl.servercount && runtime.cl.refresh_prepped) {
+        hooks.onEndLoadingPlaque?.();
+      }
     }
 
     runtime.cl.sound_prepped = true;
