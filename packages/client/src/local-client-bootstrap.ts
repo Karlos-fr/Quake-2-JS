@@ -30,6 +30,12 @@ import {
 } from "../../qcommon/src/index.js";
 import type { ClientRuntime } from "./client.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
+ * Category: New
+ * Purpose: Define the minimal statusbar layout used by the standalone local client before server-authored layout configstrings exist.
+ */
 const LOCAL_SINGLE_STATUSBAR =
   "yb -24 "
   + "xv 0 "
@@ -72,12 +78,20 @@ const LOCAL_SINGLE_STATUSBAR =
   + " pic 11 "
   + "endif ";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
+ * Category: New
+ * Purpose: Define the minimal scoreboard layout used by the standalone local client bootstrap.
+ */
 const LOCAL_SCOREBOARD_LAYOUT =
   "xv 0 yv 32 picn inventory "
   + "client 0 32 0 7 32 5 "
   + "client 0 64 1 3 48 3 ";
 
 /**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
  * Category: New
  * Purpose: Describe one local item-string entry used to seed `CS_ITEMS`.
  */
@@ -87,6 +101,8 @@ export interface LocalClientItemStringEntry {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
  * Category: New
  * Purpose: Describe one local inventory entry used to seed the standalone client mirror.
  */
@@ -96,6 +112,8 @@ export interface LocalClientInventoryEntry {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
  * Category: New
  * Purpose: Carry the runtime-only local HUD bootstrap data needed to seed the standalone client state.
  */
@@ -111,6 +129,8 @@ export interface LocalClientHudBootstrapData {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
  * Category: New
  * Purpose: Find one local client image index from the current configstring table without creating a duplicate registration path.
  *
@@ -128,6 +148,8 @@ export function findClientImageIndex(runtime: ClientRuntime, imageName: string):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
  * Category: New
  * Purpose: Seed the standalone client runtime with a minimal HUD bootstrap that still uses the real screen snapshot path.
  *
@@ -179,6 +201,8 @@ export function initializeLocalHudState(runtime: ClientRuntime, bootstrap: Local
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
  * Category: New
  * Purpose: Set or clear one `STAT_LAYOUTS` bit inside the standalone local client player-state stats.
  *
@@ -191,6 +215,8 @@ export function setLocalLayoutBit(runtime: ClientRuntime, bitMask: number, enabl
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local client HUD bootstrap)
  * Category: New
  * Purpose: Toggle one `STAT_LAYOUTS` bit inside the standalone local client player-state stats.
  *

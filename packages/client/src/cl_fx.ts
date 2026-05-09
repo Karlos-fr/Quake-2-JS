@@ -2810,6 +2810,12 @@ function promoteToEntityEvent(effect: ClientActionEffect): ClientActionEffect {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (shared trail particle helper)
+ * Category: New
+ * Purpose: Share the common stepped particle loop used by simple trail ports.
+ */
 function spawnSimpleTrailParticles(
   runtime: ClientRuntime,
   start: vec3_t,
@@ -2869,6 +2875,12 @@ function spawnSimpleTrailParticles(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (diminishing trail particle helper)
+ * Category: New
+ * Purpose: Share the runtime particle loop and `trailcount` decay used by `CL_DiminishingTrail`.
+ */
 function spawnDiminishingTrailParticles(
   runtime: ClientRuntime,
   start: vec3_t,
@@ -2925,6 +2937,12 @@ function spawnDiminishingTrailParticles(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (rail trail particle helper)
+ * Category: New
+ * Purpose: Share the runtime particle loop used by `CL_RailTrail`.
+ */
 function spawnRailTrailParticles(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void {
   const move = [...start] as vec3_t;
   const vec = subtractVec3(end, start);
@@ -3015,6 +3033,8 @@ function spawnIonripperTrailParticles(runtime: ClientRuntime, start: vec3_t, end
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (trail metadata helper)
  * Category: New
  * Purpose: Build one reusable trail descriptor between two positions.
  */
@@ -3036,6 +3056,8 @@ function createTrailEffect(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (muzzleflash effect helper)
  * Category: New
  * Purpose: Expand one muzzle-flash definition into one light event plus the original ordered sound side effects.
  */
@@ -3079,6 +3101,8 @@ function buildMuzzleFlashEffects(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
  * Category: New
  * Purpose: Normalize one vector in place when its length is non-zero.
  */
@@ -3093,6 +3117,8 @@ function normalizeVector(vector: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
  * Category: New
  * Purpose: Compute the cross product of two vectors.
  */
@@ -3106,7 +3132,7 @@ function crossProduct(a: vec3_t, b: vec3_t): vec3_t {
 
 /**
  * Original name: CL_LogoutEffect
- * Source: client/cl_fx.c
+ * Source: Quake-2-master/client/cl_fx.c
  * Category: Adapter
  * Fidelity level: Adapter
  *
@@ -3142,10 +3168,10 @@ function appendLogoutEffect(
 }
 
 /**
- * Original name: AngleVectors
- * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Strict
+ * Original name: CL_ParseMuzzleFlash
+ * Source: Quake-2-master/client/cl_fx.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Rebuilds the exact player muzzle-flash light origin from entity origin plus `forward` and `right` offsets.
@@ -3171,9 +3197,9 @@ function buildPlayerMuzzleFlashOrigin(runtime: ClientRuntime, entity: number): v
 
 /**
  * Original name: CL_ParseMuzzleFlash2
- * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Strict
+ * Source: Quake-2-master/client/cl_fx.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Rebuilds the exact monster muzzle-flash origin from `monster_flash_offset`, `forward` and `right`.
@@ -3198,9 +3224,9 @@ function buildMonsterMuzzleFlashOrigin(runtime: ClientRuntime, entity: number, f
 
 /**
  * Original name: CL_ParseMuzzleFlash
- * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Strict
+ * Source: Quake-2-master/client/cl_fx.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Reproduces the original randomized dlight radius rules for player muzzle flashes.
@@ -3226,9 +3252,9 @@ function getMuzzleFlashRadius(weaponId: number, silenced: boolean, fallbackRadiu
 
 /**
  * Original name: CL_ParseMuzzleFlash2
- * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Close
+ * Source: Quake-2-master/client/cl_fx.c
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Maps one monster muzzle-flash id to the original color, sound and side-effect family.
@@ -3332,6 +3358,8 @@ function getMuzzleFlash2Definition(flashNumber: number): {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (muzzleflash2 metadata helper)
  * Category: New
  * Purpose: Build one normalized monster muzzle-flash definition object.
  */

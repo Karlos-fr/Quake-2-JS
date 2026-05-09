@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/keys.ts`
 - Symboles TS: 131
-- Couvert C/H: 95
-- Reste a auditer: 29
+- Couvert C/H: 107
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -111,32 +111,32 @@
 | `packages/client/src/keys.ts` | function | `CompleteCommand` | oui | `CompleteCommand` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/keys.ts` | function | `Key_Console` | oui | `Key_Console` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/keys.ts` | function | `Key_Message` | oui | `Key_Message` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/keys.ts` | function | `Key_StringToKeynum` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_KeynumToString` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_SetBinding` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Unbind_f` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Unbindall_f` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Bind_f` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_WriteBindings` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Bindlist_f` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Init` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Event` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_ClearStates` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_GetKey` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `normalizeContextOptions` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `registerCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `translateKeypadConsoleKey` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `toUpperAscii` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `readClipboard` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `sanitizeClipboard` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `appendToEditLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `clampCommandLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `getEditLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `setEditLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `getHistoryLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `clearChatBuffer` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `emitButtonRelease` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `addText` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `printLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `toggleConsole` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `error` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/keys.ts` | function | `Key_StringToKeynum` | oui | `Key_StringToKeynum` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_KeynumToString` | oui | `Key_KeynumToString` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_SetBinding` | oui | `Key_SetBinding` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Unbind_f` | oui | `Key_Unbind_f` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Unbindall_f` | oui | `Key_Unbindall_f` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Bind_f` | oui | `Key_Bind_f` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_WriteBindings` | oui | `Key_WriteBindings` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Bindlist_f` | oui | `Key_Bindlist_f` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Init` | oui | `Key_Init` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Event` | oui | `Key_Event` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_ClearStates` | oui | `Key_ClearStates` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_GetKey` | oui | `Key_GetKey` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `normalizeContextOptions` | non | `N/A` | `N/A (context overload helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `registerCommand` | non | `N/A` | `N/A (command registration guard)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `translateKeypadConsoleKey` | non | `N/A` | `N/A (keypad translation helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `toUpperAscii` | non | `N/A` | `N/A (ASCII shift helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `readClipboard` | non | `N/A` | `N/A (clipboard adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `sanitizeClipboard` | non | `N/A` | `N/A (clipboard sanitizer)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `appendToEditLine` | non | `N/A` | `N/A (console edit helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `clampCommandLine` | non | `N/A` | `N/A (console line bound helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `getEditLine` | non | `N/A` | `N/A (console edit helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `setEditLine` | non | `N/A` | `N/A (console edit helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `getHistoryLine` | non | `N/A` | `N/A (console history helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `clearChatBuffer` | non | `N/A` | `N/A (chat buffer helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `emitButtonRelease` | non | `N/A` | `N/A (button release helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `addText` | non | `N/A` | `N/A (command buffer adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `printLine` | non | `N/A` | `N/A (console print adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `toggleConsole` | non | `N/A` | `N/A (console toggle adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `error` | non | `N/A` | `N/A (error adapter)` | New |  | TS sans lien source | Valide |  |

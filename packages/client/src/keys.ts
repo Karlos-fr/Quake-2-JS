@@ -1212,6 +1212,12 @@ export function Key_GetKey(context: ClientKeyContext): number {
   return context.state.key_waiting;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (context overload helper)
+ * Category: New
+ * Purpose: Normalize the public context factory overloads into one option bag.
+ */
 function normalizeContextOptions(optionsOrHooks: ClientKeyContextOptions | ClientKeyHooks): ClientKeyContextOptions {
   if ("hooks" in optionsOrHooks || "cmd" in optionsOrHooks || "cvar" in optionsOrHooks || "host" in optionsOrHooks || "client" in optionsOrHooks) {
     return optionsOrHooks as ClientKeyContextOptions;
@@ -1220,6 +1226,12 @@ function normalizeContextOptions(optionsOrHooks: ClientKeyContextOptions | Clien
   return { hooks: optionsOrHooks as ClientKeyHooks };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (command registration guard)
+ * Category: New
+ * Purpose: Register key commands without duplicating existing host commands.
+ */
 function registerCommand(runtime: CommandRuntime, name: string, handler: () => void): void {
   if (Cmd_Exists(runtime, name)) {
     return;
@@ -1227,6 +1239,12 @@ function registerCommand(runtime: CommandRuntime, name: string, handler: () => v
   Cmd_AddCommand(runtime, name, handler);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (keypad translation helper)
+ * Category: New
+ * Purpose: Convert keypad virtual keys to printable console characters.
+ */
 function translateKeypadConsoleKey(key: number): number {
   switch (key) {
     case K_KP_SLASH: return "/".charCodeAt(0);
@@ -1247,22 +1265,46 @@ function translateKeypadConsoleKey(key: number): number {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ASCII shift helper)
+ * Category: New
+ * Purpose: Apply console uppercase handling to printable ASCII keys.
+ */
 function toUpperAscii(key: number): number {
   const char = String.fromCharCode(key);
   return char.toUpperCase().charCodeAt(0);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (clipboard adapter)
+ * Category: New
+ * Purpose: Read clipboard text through injected hooks or the host system.
+ */
 function readClipboard(context: ClientKeyContext): string {
   return context.hooks.onGetClipboardData?.()
     ?? (context.host ? Sys_GetClipboardData(context.host) : null)
     ?? "";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (clipboard sanitizer)
+ * Category: New
+ * Purpose: Trim pasted console text at control characters rejected by keys.c.
+ */
 function sanitizeClipboard(clipboard: string): string {
   const newlineIndex = clipboard.search(/[\n\r\b]/u);
   return newlineIndex >= 0 ? clipboard.slice(0, newlineIndex) : clipboard;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console edit helper)
+ * Category: New
+ * Purpose: Append text to the active console input line within MAXCMDLINE.
+ */
 function appendToEditLine(context: ClientKeyContext, chunk: string): void {
   if (chunk.length === 0) {
     return;
@@ -1278,29 +1320,65 @@ function appendToEditLine(context: ClientKeyContext, chunk: string): void {
   setEditLine(context, next);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console line bound helper)
+ * Category: New
+ * Purpose: Keep console command lines within the original fixed buffer size.
+ */
 function clampCommandLine(line: string): string {
   return line.slice(0, MAXCMDLINE - 1);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console edit helper)
+ * Category: New
+ * Purpose: Return the active console input line with the Quake prompt fallback.
+ */
 function getEditLine(context: ClientKeyContext): string {
   return context.state.key_lines[context.state.edit_line] ?? "]";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console edit helper)
+ * Category: New
+ * Purpose: Store the active console input line and synchronize key_linepos.
+ */
 function setEditLine(context: ClientKeyContext, line: string): void {
   const clamped = clampCommandLine(line.length > 0 ? line : "]");
   context.state.key_lines[context.state.edit_line] = clamped;
   context.state.key_linepos = clamped.length;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console history helper)
+ * Category: New
+ * Purpose: Read a console history line with the Quake prompt fallback.
+ */
 function getHistoryLine(context: ClientKeyContext, index: number): string {
   return context.state.key_lines[index] ?? "]";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (chat buffer helper)
+ * Category: New
+ * Purpose: Reset the explicit chat buffer fields kept in the key context.
+ */
 function clearChatBuffer(state: client_key_state_t): void {
   state.chat_buffer = "";
   state.chat_bufferlen = 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (button release helper)
+ * Category: New
+ * Purpose: Emit matching minus commands for key-up transitions.
+ */
 function emitButtonRelease(context: ClientKeyContext, key: number, time: number): void {
   const binding = context.state.keybindings[key];
   if (binding?.startsWith("+")) {
@@ -1316,6 +1394,12 @@ function emitButtonRelease(context: ClientKeyContext, key: number, time: number)
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (command buffer adapter)
+ * Category: New
+ * Purpose: Route generated key command text to hooks or the command buffer.
+ */
 function addText(context: ClientKeyContext, text: string): void {
   if (context.hooks.onAddText) {
     context.hooks.onAddText(text);
@@ -1327,10 +1411,22 @@ function addText(context: ClientKeyContext, text: string): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console print adapter)
+ * Category: New
+ * Purpose: Route key command feedback through the injected print hook.
+ */
 function printLine(context: ClientKeyContext, line: string): void {
   context.hooks.onPrint?.(line);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console toggle adapter)
+ * Category: New
+ * Purpose: Toggle console state through host hooks or the local key context.
+ */
 function toggleConsole(context: ClientKeyContext): void {
   if (context.hooks.onToggleConsole) {
     context.hooks.onToggleConsole(context);
@@ -1341,6 +1437,12 @@ function toggleConsole(context: ClientKeyContext): void {
   context.state.key_dest = context.state.console_open ? keydest_t.key_console : keydest_t.key_game;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (error adapter)
+ * Category: New
+ * Purpose: Report key dispatcher errors through hooks or by throwing.
+ */
 function error(context: ClientKeyContext, message: string): never {
   if (context.hooks.onError) {
     return context.hooks.onError(message);

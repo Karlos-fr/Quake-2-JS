@@ -85,15 +85,65 @@ import { getPredictedViewheight } from "./local-loop.js";
 import type { ClientTempEntityPacket } from "./cl_parse.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Define the local player trigger hull used when mirroring predicted client movement into gameplay triggers.
+ */
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Define the local standing player trigger hull used when mirroring predicted client movement into gameplay triggers.
+ */
 const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Define the local ducked player trigger hull used when mirroring predicted client movement into gameplay triggers.
+ */
 const PLAYER_DUCKED_MAXS: vec3_t = [16, 16, 4];
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Define the local gib player hull used when prediction reports `PM_GIB`.
+ */
 const PLAYER_GIB_MINS: vec3_t = [-16, -16, 0];
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Define the local gib player hull used when prediction reports `PM_GIB`.
+ */
 const PLAYER_GIB_MAXS: vec3_t = [16, 16, 16];
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Define the initial local standing viewheight before prediction supplies a runtime value.
+ */
 const PLAYER_STAND_VIEWHEIGHT = 22;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Define the visual easing speed for local crouch and stand viewheight transitions.
+ */
 const LOCAL_VIEWHEIGHT_SMOOTH_SPEED = 120;
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Preserve the minimal local view-motion state required to feed the current first-person weapon bob and delta-angle formulas.
  *
@@ -107,6 +157,8 @@ export interface LocalViewMotionState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Preserve the previous and current brush-model poses required to interpolate moving BSP submodels across fixed local gameplay frames.
  *
@@ -121,6 +173,8 @@ export interface BrushModelInterpolationState<TSnapshot> {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Create the initial local view-motion state for the standalone prediction/gameplay bridge.
  */
@@ -133,6 +187,8 @@ export function createLocalViewMotionState(spawnYaw: number): LocalViewMotionSta
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Advance the local gameplay runtime on fixed Quake II frame boundaries while preserving interpolation snapshots.
  *
@@ -160,6 +216,8 @@ export function advanceLocalGameplayRuntime<TSnapshot>(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Keep the local gameplay player entity aligned with predicted movement and mirror the resulting weapon-facing state back into the client runtime.
  *
@@ -204,6 +262,8 @@ export function updateLocalGameplayPlayer(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Serialize the current local gameplay visual state into the client frame buffers consumed by the Quake II refresh path.
  *
@@ -268,6 +328,8 @@ export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Apply gameplay-originated configstring updates to the standalone local client.
  *
@@ -286,6 +348,8 @@ function syncLocalGameplayConfigstrings(runtime: ClientRuntime, gameplayRuntime:
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Seed the local client sky configstrings from BSP worldspawn metadata.
  *
@@ -310,6 +374,8 @@ export function initializeLocalSkyState(runtime: ClientRuntime, map: BspMap): vo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Convert the gameplay-side weapon bootstrap payload into the runtime-only client HUD bootstrap contract.
  *
@@ -339,6 +405,8 @@ export function toLocalClientHudBootstrap(bootstrap: {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Mirror the local gameplay player's weapon-facing `player_state_t` subset into the client frame.
  */
@@ -372,6 +440,8 @@ function syncLocalWeaponPlayerState(runtime: ClientRuntime, gameplayPlayer: Game
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Reproduce the current standalone first-person weapon bob, sway and kick transfer written into `player_state_t`.
  */
@@ -467,6 +537,8 @@ function updateLocalViewWeaponMotion(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Mirror the local gameplay asset registries into the client configstring slots consumed by refresh-side model resolution.
  */
@@ -492,6 +564,8 @@ function syncLocalGameplayAssetConfigstrings(runtime: ClientRuntime, gameplayRun
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Mirror the current inline BSP model clip registry into the client-side `model_clip` slots used by `cl_pred.c`.
  *
@@ -514,6 +588,8 @@ function syncLocalGameplayModelClip(runtime: ClientRuntime, gameplayRuntime: Gam
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Convert local gameplay one-shot visual events into the client effect pools consumed by refresh adapters.
  *
@@ -551,6 +627,12 @@ function syncLocalGameplayTransientEffects(runtime: ClientRuntime, gameplayRunti
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Convert one gameplay temp-entity event into the client packet shape consumed by temp-entity parsers.
+ */
 function buildLocalTempEntityPacket(event: ReturnType<typeof drainGameTempEntityEvents>[number]): ClientTempEntityPacket {
   const payload = event.payload;
   const origin = readPayloadVec3(payload, "origin") ?? [...event.origin] as vec3_t;
@@ -584,6 +666,12 @@ function buildLocalTempEntityPacket(event: ReturnType<typeof drainGameTempEntity
   return packet;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Read one optional vector payload field from a local gameplay temp-entity event.
+ */
 function readPayloadVec3(payload: Record<string, unknown>, key: string): vec3_t | null {
   const value = payload[key];
   if (!Array.isArray(value) || value.length !== 3) {
@@ -595,11 +683,23 @@ function readPayloadVec3(payload: Record<string, unknown>, key: string): vec3_t 
   return [value[0], value[1], value[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Read one optional numeric payload field from a local gameplay temp-entity event.
+ */
 function readPayloadNumber(payload: Record<string, unknown>, key: string): number | null {
   const value = payload[key];
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Convert a local event direction vector into the closest Quake II byte-normal index.
+ */
 function directionToByte(dir: vec3_t): number {
   let bestd = 0;
   let best = 0;
@@ -613,6 +713,12 @@ function directionToByte(dir: vec3_t): number {
   return best;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Apply client action effects generated by local gameplay events to the client refresh pools.
+ */
 function applyLocalGameplayActionEffects(runtime: ClientRuntime, effects: ClientActionEffect[]): void {
   for (const effect of effects) {
     if (effect.light && effect.position && effect.entity !== undefined) {
@@ -640,6 +746,12 @@ function applyLocalGameplayActionEffects(runtime: ClientRuntime, effects: Client
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Queue sounds produced by local gameplay visual effects through the gameplay sound-event bridge.
+ */
 function queueLocalGameplayActionSounds(gameplayRuntime: GameRuntime, effects: ClientActionEffect[]): void {
   for (const effect of effects) {
     if (!effect.sound) {
@@ -665,6 +777,8 @@ function queueLocalGameplayActionSounds(gameplayRuntime: GameRuntime, effects: C
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Collect the current gameplay entities that should surface through the client entity snapshot path.
  */
@@ -699,6 +813,8 @@ function collectVisibleGameplayEntityStates(gameplayRuntime: GameRuntime): entit
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Clone one entity state while preserving the exact field set used by Quake II packet entities.
  */
@@ -709,6 +825,8 @@ function cloneEntityState(state: entity_state_t): entity_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Copy one entity-state payload field-by-field without sharing tuple references.
  */
@@ -731,6 +849,8 @@ function copyEntityState(source: entity_state_t, target: entity_state_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Apply the predicted Quake II player hull to the local gameplay proxy so runtime collision and triggers use the same crouch state as prediction.
  */
@@ -749,6 +869,8 @@ function applyPredictedGameplayHull(gameplayPlayer: GameEntity, runtime: ClientR
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Clamp one numeric value into one closed interval for the current local weapon-motion adaptation.
  */
@@ -756,6 +878,12 @@ function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
+ * Category: New
+ * Purpose: Move one numeric value toward a target by a bounded step for local visual smoothing.
+ */
 function approachValue(current: number, target: number, step: number): number {
   if (current < target) {
     return Math.min(current + step, target);
@@ -769,6 +897,8 @@ function approachValue(current: number, target: number, step: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Parse one local BSP worldspawn `skyrotate` property into the standalone client bootstrap state.
  */
@@ -778,6 +908,8 @@ function parseLocalSkyRotate(value: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay sync bridge)
  * Category: New
  * Purpose: Parse one local BSP worldspawn `skyaxis` property into a three-component axis tuple.
  */

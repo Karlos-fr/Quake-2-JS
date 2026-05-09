@@ -27,6 +27,8 @@ import {
 import { createFrame, type ClientRuntime } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Describe the collision callbacks needed by the standalone local prediction bootstrap.
  *
@@ -39,6 +41,8 @@ export interface LocalClientCollisionAdapter {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Apply the standalone movement mode to both the authoritative frame and predicted pmove state.
  *
@@ -52,6 +56,8 @@ export function applyLocalMovementMode(runtime: ClientRuntime, ghostMode: boolea
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Snap the initial local player state onto a valid BSP position before the interactive loop starts.
  *
@@ -126,6 +132,8 @@ export function initializeLocalSpawnPrediction(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Copy the newest predicted state back into the local frame so a standalone client loop can chain prediction frame-to-frame.
  *
@@ -151,6 +159,8 @@ export function promoteLocalPredictedState(runtime: ClientRuntime, realtimeMs: n
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Build the current interpolated predicted view state that a renderer adapter can apply to its own camera abstraction.
  *
@@ -163,6 +173,8 @@ export function buildLocalPredictedViewState(runtime: ClientRuntime): ClientView
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Clone one command before storing it in the circular client command buffer.
  *
@@ -183,6 +195,8 @@ export function cloneLocalUsercmd(cmd: ClientRuntime["cl"]["cmd"]): ClientRuntim
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Derive the predicted eye height from the current packed pmove state.
  *
@@ -194,6 +208,8 @@ export function getPredictedViewheight(runtime: ClientRuntime): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-client helper)
  * Category: New
  * Purpose: Store the current local client frame into the Quake II frame history ring so interpolation can reuse a real previous frame.
  *

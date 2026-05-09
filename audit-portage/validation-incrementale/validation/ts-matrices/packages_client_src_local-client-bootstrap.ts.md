@@ -5,16 +5,16 @@
 - Fichier TS: `packages/client/src/local-client-bootstrap.ts`
 - Symboles TS: 9
 - Couvert C/H: 0
-- Reste a auditer: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/local-client-bootstrap.ts` | value | `LOCAL_SINGLE_STATUSBAR` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/local-client-bootstrap.ts` | value | `LOCAL_SCOREBOARD_LAYOUT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/local-client-bootstrap.ts` | interface | `LocalClientItemStringEntry` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-client-bootstrap.ts` | interface | `LocalClientInventoryEntry` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-client-bootstrap.ts` | interface | `LocalClientHudBootstrapData` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-client-bootstrap.ts` | function | `findClientImageIndex` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-client-bootstrap.ts` | function | `initializeLocalHudState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-client-bootstrap.ts` | function | `setLocalLayoutBit` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-client-bootstrap.ts` | function | `toggleLocalLayoutBit` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/local-client-bootstrap.ts` | value | `LOCAL_SINGLE_STATUSBAR` | non | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | value | `LOCAL_SCOREBOARD_LAYOUT` | non | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | interface | `LocalClientItemStringEntry` | oui | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | interface | `LocalClientInventoryEntry` | oui | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | interface | `LocalClientHudBootstrapData` | oui | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | function | `findClientImageIndex` | oui | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | function | `initializeLocalHudState` | oui | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | function | `setLocalLayoutBit` | oui | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/local-client-bootstrap.ts` | function | `toggleLocalLayoutBit` | oui | N/A | N/A (local client HUD bootstrap) | New |  | Nouveau TS | Valide |  |

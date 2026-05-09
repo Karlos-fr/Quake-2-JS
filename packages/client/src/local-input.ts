@@ -12,6 +12,8 @@
 import type { ClientInputContext } from "./index.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-input helper)
  * Category: New
  * Purpose: Mirror one standalone movement-key state map into the ported Quake II button structures consumed by `CL_CreateCmd`.
  *
@@ -32,6 +34,8 @@ export function syncLocalMovementButtons(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-input helper)
  * Category: New
  * Purpose: Apply one held/not-held boolean to a ported Quake II key button structure.
  *
@@ -58,6 +62,8 @@ export function setLocalButtonHeld(button: ClientInputContext["in_forward"], hel
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-input helper)
  * Category: New
  * Purpose: Clear all standalone movement states and their mirrored Quake button states after focus loss or visibility changes.
  *
@@ -81,6 +87,8 @@ export function clearLocalMovementState(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (standalone local-input helper)
  * Category: New
  * Purpose: Fully reset one mirrored Quake key button after an external focus interruption.
  *

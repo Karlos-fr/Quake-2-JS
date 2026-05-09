@@ -6,6 +6,13 @@
 
 ## Dernier lot traite
 
+- Lot: `spawnSimpleTrailParticles`, `spawnDiminishingTrailParticles`, `spawnRailTrailParticles`, `createTrailEffect`, `buildMuzzleFlashEffects`, `normalizeVector`, `crossProduct`, `appendLogoutEffect`, `buildPlayerMuzzleFlashOrigin`, `buildMonsterMuzzleFlashOrigin`, `getMuzzleFlashRadius`, `getMuzzleFlash2Definition`, `createMuzzleFlash2Definition`.
+- Verdict: les sept premiers symboles sont des helpers locaux `New` sans portage C/H proprietaire; les helpers muzzleflash sont des adapters prives autour de `CL_LogoutEffect`, `CL_ParseMuzzleFlash` et `CL_ParseMuzzleFlash2`, sans masquer les proprietaires C/H (`CL_LogoutEffect` dans `cl_fx.ts`, `CL_ParseMuzzleFlash*` dans `cl_parse.ts`).
+- Corrections: en-tetes TS completes avec `Original name`, `Source` et `Category`; matrice TS reclassant les helpers en `Valide` et les doublons muzzleflash en `Adapter local`.
+- Tests: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:audio-routing`, `npm run typecheck`.
+
+## Lots precedents
+
 - Lot: `CL_AddParticles`, `CL_BuildEntityEventEffects`, `CL_BuildActionEffects`, `getMuzzleFlashDefinition`, `getMuzzleFlash2Kind`, `getTempEntityKind`, `createMuzzleDefinition`, `createParticleBurst`, `createTempEntityMarker`, `createParticleEffectMarker`, `appendTempEntitySound`, `createEntityEventSound`, `promoteToEntityEvent`.
 - Verdict: `CL_AddParticles` et `CL_BuildEntityEventEffects` sont les proprietaires TS attendus deja valides dans `client_cl_fx.c.md`; les onze autres symboles sont des helpers/dispatchers locaux `New` sans portage C/H proprietaire.
 - Corrections: en-tetes TS et matrice TS completes pour les helpers `New` avec `Original name: N/A`, `Source declaree: N/A (...)`, `Category: New`; `CL_AddParticles` et `CL_BuildEntityEventEffects` rattaches au statut `Couvert C/H`.
@@ -33,7 +40,7 @@
 
 ## Prochain lot recommande
 
-Continuer avec `spawnSimpleTrailParticles`, `spawnDiminishingTrailParticles`, `spawnRailTrailParticles`, `createTrailEffect`, `buildMuzzleFlashEffects`, `normalizeVector` et `crossProduct`, puis reclasser les premiers doublons/adapters muzzleflash si le lot reste stable.
+Continuer avec `appendMuzzleFlash2Particles`, `appendMuzzleFlash2Sounds`, `isBetween`, `matchesAny`, `randomMachinegunSound`, `resetDlight`, `allocParticle`, `isClientRuntime`, puis les helpers vectoriels/particules restants si le lot reste stable.
 
 ## Blocages
 

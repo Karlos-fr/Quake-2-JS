@@ -5,11 +5,11 @@
 - Fichier TS: `packages/client/src/local-input.ts`
 - Symboles TS: 4
 - Couvert C/H: 0
-- Reste a auditer: 4
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/local-input.ts` | function | `syncLocalMovementButtons` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-input.ts` | function | `setLocalButtonHeld` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-input.ts` | function | `clearLocalMovementState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-input.ts` | function | `resetLocalButtonState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/local-input.ts` | function | `syncLocalMovementButtons` | oui | N/A | N/A (standalone local-input helper) | New |  | Non applicable | Valide |  |
+| `packages/client/src/local-input.ts` | function | `setLocalButtonHeld` | oui | N/A | N/A (standalone local-input helper) | New |  | Non applicable | Valide |  |
+| `packages/client/src/local-input.ts` | function | `clearLocalMovementState` | oui | N/A | N/A (standalone local-input helper) | New |  | Non applicable | Valide |  |
+| `packages/client/src/local-input.ts` | function | `resetLocalButtonState` | oui | N/A | N/A (standalone local-input helper) | New |  | Non applicable | Valide |  |

@@ -5,7 +5,7 @@
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Symboles TS: 124
 - Couvert C/H: 38
-- Reste a auditer: 31
+- Reste a auditer: 18
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -101,19 +101,19 @@
 | `packages/client/src/cl_fx.ts` | function | `appendTempEntitySound` | non | `N/A` | `N/A (temp-entity sound metadata helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_fx.ts` | function | `createEntityEventSound` | non | `N/A` | `N/A (entity-event sound metadata helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_fx.ts` | function | `promoteToEntityEvent` | non | `N/A` | `N/A (entity-event metadata helper)` | New |  | TS sans lien source | Valide |  |
-| `packages/client/src/cl_fx.ts` | function | `spawnSimpleTrailParticles` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `spawnDiminishingTrailParticles` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `spawnRailTrailParticles` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `createTrailEffect` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `buildMuzzleFlashEffects` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `normalizeVector` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `crossProduct` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `appendLogoutEffect` | non | `CL_LogoutEffect` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `buildPlayerMuzzleFlashOrigin` | non | `AngleVectors` | `Quake-2-master/client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_fx.ts` | function | `buildMonsterMuzzleFlashOrigin` | non | `CL_ParseMuzzleFlash2` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlashRadius` | non | `CL_ParseMuzzleFlash` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlash2Definition` | non | `CL_ParseMuzzleFlash2` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `createMuzzleFlash2Definition` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_fx.ts` | function | `spawnSimpleTrailParticles` | non | `N/A` | `N/A (shared trail particle helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `spawnDiminishingTrailParticles` | non | `N/A` | `N/A (diminishing trail particle helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `spawnRailTrailParticles` | non | `N/A` | `N/A (rail trail particle helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `createTrailEffect` | non | `N/A` | `N/A (trail metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `buildMuzzleFlashEffects` | non | `N/A` | `N/A (muzzleflash effect helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `normalizeVector` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `crossProduct` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `appendLogoutEffect` | non | `CL_LogoutEffect` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `CL_LogoutEffect`. |
+| `packages/client/src/cl_fx.ts` | function | `buildPlayerMuzzleFlashOrigin` | non | `CL_ParseMuzzleFlash` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `cl_parse.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `buildMonsterMuzzleFlashOrigin` | non | `CL_ParseMuzzleFlash2` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `cl_parse.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlashRadius` | non | `CL_ParseMuzzleFlash` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `cl_parse.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlash2Definition` | non | `CL_ParseMuzzleFlash2` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `cl_parse.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `createMuzzleFlash2Definition` | non | `N/A` | `N/A (muzzleflash2 metadata helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_fx.ts` | function | `appendMuzzleFlash2Particles` | non | `CL_ParticleEffect / CL_SmokeAndFlash` | `Quake-2-master/client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
 | `packages/client/src/cl_fx.ts` | function | `appendMuzzleFlash2Sounds` | non | `S_StartSound` | `Quake-2-master/client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
 | `packages/client/src/cl_fx.ts` | function | `isBetween` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

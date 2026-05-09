@@ -5,15 +5,15 @@
 - Fichier TS: `packages/client/src/local-loop.ts`
 - Symboles TS: 8
 - Couvert C/H: 0
-- Reste a auditer: 8
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/local-loop.ts` | interface | `LocalClientCollisionAdapter` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-loop.ts` | function | `applyLocalMovementMode` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-loop.ts` | function | `initializeLocalSpawnPrediction` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-loop.ts` | function | `promoteLocalPredictedState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-loop.ts` | function | `buildLocalPredictedViewState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-loop.ts` | function | `cloneLocalUsercmd` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-loop.ts` | function | `getPredictedViewheight` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-loop.ts` | function | `storeLocalClientFrame` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/local-loop.ts` | interface | `LocalClientCollisionAdapter` | oui | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-loop.ts` | function | `applyLocalMovementMode` | oui | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-loop.ts` | function | `initializeLocalSpawnPrediction` | oui | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-loop.ts` | function | `promoteLocalPredictedState` | oui | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-loop.ts` | function | `buildLocalPredictedViewState` | oui | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-loop.ts` | function | `cloneLocalUsercmd` | oui | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-loop.ts` | function | `getPredictedViewheight` | oui | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-loop.ts` | function | `storeLocalClientFrame` | non | `N/A` | `N/A (standalone local-client helper)` | New |  | TS sans lien source | Valide |  |
