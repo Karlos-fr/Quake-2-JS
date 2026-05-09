@@ -11,11 +11,13 @@
  */
 
 import {
+  buildInterpolatedBrushModelSnapshots,
   CL_BuildRefreshFrame,
   createLocalViewMotionState,
   createClientRuntime,
   syncLocalGameplayFrame,
-  updateLocalGameplayPlayer
+  updateLocalGameplayPlayer,
+  type BrushModelSnapshot
 } from "../../packages/client/src/index.js";
 import {
   attachGameClient,
@@ -47,7 +49,37 @@ function main(): void {
   verifyLocalCrouchViewheightIsSmoothed();
   verifyLocalPViewPlayerStateReachesClientFrame();
   verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin();
+  verifyBrushModelSnapshotInterpolationUsesPreviousTime();
   console.log("quake2-local-gameplay-sync: ok");
+}
+
+function verifyBrushModelSnapshotInterpolationUsesPreviousTime(): void {
+  const snapshots = buildInterpolatedBrushModelSnapshots({
+    previousSnapshots: [{
+      model: "*1",
+      origin: [0, 10, 20],
+      angles: [0, 350, 30],
+      flags: 2
+    }],
+    currentSnapshots: [{
+      model: "*1",
+      origin: [10, 30, 60],
+      angles: [90, 10, 50],
+      flags: 4
+    }],
+    previousTime: 1,
+    currentTime: 3
+  }, 2);
+  const snapshot = snapshots[0] as BrushModelSnapshot | undefined;
+
+  assertBoolean(Boolean(snapshot), true, "brush model interpolation must produce a snapshot");
+  assertNumber(snapshot!.origin[0], 5, "brush model interpolation must start from previousTime");
+  assertNumber(snapshot!.origin[1], 20, "brush model interpolation must linearly blend Y origin");
+  assertNumber(snapshot!.origin[2], 40, "brush model interpolation must linearly blend Z origin");
+  assertNumber(snapshot!.angles[0], 45, "brush model interpolation must LerpAngle pitch");
+  assertNumber(snapshot!.angles[1], 360, "brush model interpolation must LerpAngle wrapped yaw");
+  assertNumber(snapshot!.angles[2], 40, "brush model interpolation must LerpAngle roll");
+  assertNumber(snapshot!.flags ?? 0, 4, "brush model interpolation must keep current render flags");
 }
 
 function verifyLocalLightstyleConfigstringsReachRefreshFrame(): void {

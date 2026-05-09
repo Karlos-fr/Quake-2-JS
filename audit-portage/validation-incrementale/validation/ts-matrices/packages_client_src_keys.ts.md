@@ -4,113 +4,113 @@
 
 - Fichier TS: `packages/client/src/keys.ts`
 - Symboles TS: 131
-- Couvert C/H: 0
-- Reste a auditer: 131
+- Couvert C/H: 95
+- Reste a auditer: 29
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/keys.ts` | value | `KEY_ARRAY_SIZE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `MAXCMDLINE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `KEY_LINE_COUNT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_TAB` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_ENTER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_ESCAPE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_SPACE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_BACKSPACE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_UPARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_DOWNARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_LEFTARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_RIGHTARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_ALT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_CTRL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_SHIFT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_F12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_INS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_DEL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_PGDN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_PGUP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_HOME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_END` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_HOME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_UPARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_PGUP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_LEFTARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_RIGHTARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_END` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_DOWNARROW` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_PGDN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_ENTER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_INS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_DEL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_SLASH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_MINUS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_KP_PLUS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_MOUSE1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_MOUSE2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_MOUSE3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_JOY1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_JOY2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_JOY3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_JOY4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_AUX32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_MWHEELDOWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_MWHEELUP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `K_PAUSE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | enum | `keydest_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | interface | `keyname_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | interface | `client_key_state_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | interface | `KeyBindingWriter` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | interface | `ClientKeyHooks` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | interface | `ClientKeyContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | interface | `ClientKeyContextOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | value | `keynames` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `createClientKeyContext` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `CompleteCommand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Console` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/keys.ts` | function | `Key_Message` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/keys.ts` | value | `KEY_ARRAY_SIZE` | oui | `N/A` | `N/A (typed key array bound)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | value | `MAXCMDLINE` | oui | `MAXCMDLINE` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `KEY_LINE_COUNT` | oui | `N/A` | `N/A (typed console history bound)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | value | `K_TAB` | oui | `K_TAB` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_ENTER` | oui | `K_ENTER` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_ESCAPE` | oui | `K_ESCAPE` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_SPACE` | oui | `K_SPACE` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_BACKSPACE` | oui | `K_BACKSPACE` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_UPARROW` | oui | `K_UPARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_DOWNARROW` | oui | `K_DOWNARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_LEFTARROW` | oui | `K_LEFTARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_RIGHTARROW` | oui | `K_RIGHTARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_ALT` | oui | `K_ALT` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_CTRL` | oui | `K_CTRL` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_SHIFT` | oui | `K_SHIFT` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F1` | oui | `K_F1` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F2` | oui | `K_F2` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F3` | oui | `K_F3` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F4` | oui | `K_F4` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F5` | oui | `K_F5` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F6` | oui | `K_F6` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F7` | oui | `K_F7` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F8` | oui | `K_F8` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F9` | oui | `K_F9` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F10` | oui | `K_F10` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F11` | oui | `K_F11` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_F12` | oui | `K_F12` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_INS` | oui | `K_INS` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_DEL` | oui | `K_DEL` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_PGDN` | oui | `K_PGDN` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_PGUP` | oui | `K_PGUP` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_HOME` | oui | `K_HOME` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_END` | oui | `K_END` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_HOME` | oui | `K_KP_HOME` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_UPARROW` | oui | `K_KP_UPARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_PGUP` | oui | `K_KP_PGUP` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_LEFTARROW` | oui | `K_KP_LEFTARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_5` | oui | `K_KP_5` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_RIGHTARROW` | oui | `K_KP_RIGHTARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_END` | oui | `K_KP_END` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_DOWNARROW` | oui | `K_KP_DOWNARROW` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_PGDN` | oui | `K_KP_PGDN` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_ENTER` | oui | `K_KP_ENTER` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_INS` | oui | `K_KP_INS` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_DEL` | oui | `K_KP_DEL` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_SLASH` | oui | `K_KP_SLASH` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_MINUS` | oui | `K_KP_MINUS` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_KP_PLUS` | oui | `K_KP_PLUS` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_MOUSE1` | oui | `K_MOUSE1` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_MOUSE2` | oui | `K_MOUSE2` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_MOUSE3` | oui | `K_MOUSE3` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_JOY1` | oui | `K_JOY1` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_JOY2` | oui | `K_JOY2` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_JOY3` | oui | `K_JOY3` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_JOY4` | oui | `K_JOY4` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX1` | oui | `K_AUX1` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX2` | oui | `K_AUX2` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX3` | oui | `K_AUX3` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX4` | oui | `K_AUX4` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX5` | oui | `K_AUX5` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX6` | oui | `K_AUX6` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX7` | oui | `K_AUX7` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX8` | oui | `K_AUX8` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX9` | oui | `K_AUX9` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX10` | oui | `K_AUX10` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX11` | oui | `K_AUX11` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX12` | oui | `K_AUX12` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX13` | oui | `K_AUX13` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX14` | oui | `K_AUX14` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX15` | oui | `K_AUX15` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX16` | oui | `K_AUX16` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX17` | oui | `K_AUX17` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX18` | oui | `K_AUX18` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX19` | oui | `K_AUX19` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX20` | oui | `K_AUX20` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX21` | oui | `K_AUX21` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX22` | oui | `K_AUX22` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX23` | oui | `K_AUX23` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX24` | oui | `K_AUX24` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX25` | oui | `K_AUX25` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX26` | oui | `K_AUX26` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX27` | oui | `K_AUX27` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX28` | oui | `K_AUX28` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX29` | oui | `K_AUX29` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX30` | oui | `K_AUX30` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX31` | oui | `K_AUX31` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_AUX32` | oui | `K_AUX32` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_MWHEELDOWN` | oui | `K_MWHEELDOWN` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_MWHEELUP` | oui | `K_MWHEELUP` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | value | `K_PAUSE` | oui | `K_PAUSE` | `Quake-2-master/client/keys.h` | Ported | [`client_keys.h.md`](../matrices/client_keys.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | enum | `keydest_t` | oui | `keydest_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | interface | `keyname_t` | oui | `keyname_t` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | interface | `client_key_state_t` | oui | `key_lines, key_linepos, shift_down, anykeydown, edit_line, history_line, key_waiting, keybindings, consolekeys, menubound, keyshift, key_repeats, keydown, chat_team, chat_buffer, chat_bufferlen` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | interface | `KeyBindingWriter` | oui | `N/A` | `N/A (binding writer adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | interface | `ClientKeyHooks` | oui | `N/A` | `N/A (runtime hooks)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | interface | `ClientKeyContext` | oui | `N/A` | `N/A (explicit key runtime context)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | interface | `ClientKeyContextOptions` | oui | `N/A` | `N/A (context construction options)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | value | `keynames` | oui | `keynames` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `createClientKeyContext` | oui | `N/A` | `N/A (context factory)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/keys.ts` | function | `CompleteCommand` | oui | `CompleteCommand` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Console` | oui | `Key_Console` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/keys.ts` | function | `Key_Message` | oui | `Key_Message` | `Quake-2-master/client/keys.c` | Ported | [`client_keys.c.md`](../matrices/client_keys.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/keys.ts` | function | `Key_StringToKeynum` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/client/src/keys.ts` | function | `Key_KeynumToString` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/client/src/keys.ts` | function | `Key_SetBinding` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

@@ -6,10 +6,10 @@
 
 ## Dernier lot traite
 
-- Lot: `CL_FlyParticles`, `CL_FlyEffect`, `CL_FlyEffectRuntime`, `CL_BfgParticles`, `CL_TrapParticles`, `CL_BFGExplosionParticles`, `CL_TeleportParticles`, leurs surcharges TS presentes, et le helper runtime prive `spawnFlyParticles`.
-- Verdict: couvert C/H pour les six symboles proprietaires deja valides dans `client_cl_fx.c.md`; `CL_FlyEffectRuntime` et `spawnFlyParticles` classes adapters runtime prives; surcharges TS classees `Non applicable`.
-- Corrections: matrice TS mise a jour pour rattacher les proprietaires au statut `Couvert C/H`, expliciter les surcharges avec `Original name: N/A`, `Source declaree: N/A (TS overload)`, `Category: New`, et lever les faux doublons des adapters.
-- Tests: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Lot: `CL_AddParticles`, `CL_BuildEntityEventEffects`, `CL_BuildActionEffects`, `getMuzzleFlashDefinition`, `getMuzzleFlash2Kind`, `getTempEntityKind`, `createMuzzleDefinition`, `createParticleBurst`, `createTempEntityMarker`, `createParticleEffectMarker`, `appendTempEntitySound`, `createEntityEventSound`, `promoteToEntityEvent`.
+- Verdict: `CL_AddParticles` et `CL_BuildEntityEventEffects` sont les proprietaires TS attendus deja valides dans `client_cl_fx.c.md`; les onze autres symboles sont des helpers/dispatchers locaux `New` sans portage C/H proprietaire.
+- Corrections: en-tetes TS et matrice TS completes pour les helpers `New` avec `Original name: N/A`, `Source declaree: N/A (...)`, `Category: New`; `CL_AddParticles` et `CL_BuildEntityEventEffects` rattaches au statut `Couvert C/H`.
+- Tests: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:audio-routing`, `npm run typecheck`.
 
 ## Decisions
 
@@ -26,10 +26,14 @@
 - `CL_FlyParticles`, `CL_FlyEffect`, `CL_BfgParticles`, `CL_TrapParticles`, `CL_BFGExplosionParticles` et `CL_TeleportParticles` sont les symboles TS proprietaires attendus pour `client/cl_fx.c`; leurs lignes C/H sont deja `Valide` dans `client_cl_fx.c.md` avec preuves runtime, metadata `apps/web`, particules `renderer-three` et typecheck selon les effets concernes.
 - `CL_FlyEffectRuntime` et `spawnFlyParticles` sont des helpers/adapters runtime prives; ils ne remplacent pas les proprietaires C/H `CL_FlyEffect` et `CL_FlyParticles`.
 - Les signatures de surcharge TS de `CL_FlyParticles`, `CL_BFGExplosionParticles` et `CL_TeleportParticles` ne sont pas des portages proprietaires distincts.
+- `CL_AddParticles` est le proprietaire TS attendu pour l'avancement des particules refresh; la ligne C/H est `Valide` avec preuves particle-sync, ordre web-render, renderer Three et typecheck.
+- `CL_BuildEntityEventEffects` est le proprietaire TS attendu pour le port split de `CL_EntityEvent`; le flux est appele depuis `cl_ents.ts` et `apps/web` consomme aussi le builder pour les effets autoritatifs.
+- `CL_BuildActionEffects` est un dispatcher runtime `New`, pas un portage proprietaire de `CL_ParseMuzzleFlash`, `CL_ParseMuzzleFlash2`, `CL_ParseTEnt` ou `CL_ParseParticles`.
+- Les helpers `getMuzzleFlashDefinition`, `getMuzzleFlash2Kind`, `getTempEntityKind`, `createMuzzleDefinition`, `createParticleBurst`, `createTempEntityMarker`, `createParticleEffectMarker`, `appendTempEntitySound`, `createEntityEventSound` et `promoteToEntityEvent` sont des helpers locaux `New` de metadata/action effects.
 
 ## Prochain lot recommande
 
-Continuer avec `CL_AddParticles`, `CL_BuildEntityEventEffects`, puis `CL_BuildActionEffects` et les premiers helpers `New` a entete incomplete si le lot reste stable.
+Continuer avec `spawnSimpleTrailParticles`, `spawnDiminishingTrailParticles`, `spawnRailTrailParticles`, `createTrailEffect`, `buildMuzzleFlashEffects`, `normalizeVector` et `crossProduct`, puis reclasser les premiers doublons/adapters muzzleflash si le lot reste stable.
 
 ## Blocages
 

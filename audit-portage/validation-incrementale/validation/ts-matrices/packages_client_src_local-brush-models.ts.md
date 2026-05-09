@@ -5,15 +5,15 @@
 - Fichier TS: `packages/client/src/local-brush-models.ts`
 - Symboles TS: 8
 - Couvert C/H: 0
-- Reste a auditer: 8
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/local-brush-models.ts` | interface | `BrushModelSnapshot` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-brush-models.ts` | function | `buildBrushModelSnapshots` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-brush-models.ts` | function | `createBrushModelInterpolationState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-brush-models.ts` | function | `buildInterpolatedBrushModelSnapshots` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-brush-models.ts` | function | `cloneBrushModelSnapshots` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-brush-models.ts` | function | `cloneBrushModelSnapshot` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-brush-models.ts` | function | `lerpValue` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/local-brush-models.ts` | function | `clamp01` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/local-brush-models.ts` | interface | `BrushModelSnapshot` | oui | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-brush-models.ts` | function | `buildBrushModelSnapshots` | oui | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-brush-models.ts` | function | `createBrushModelInterpolationState` | oui | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-brush-models.ts` | function | `buildInterpolatedBrushModelSnapshots` | oui | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-brush-models.ts` | function | `cloneBrushModelSnapshots` | oui | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-brush-models.ts` | function | `cloneBrushModelSnapshot` | oui | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-brush-models.ts` | function | `lerpValue` | non | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/local-brush-models.ts` | function | `clamp01` | non | `N/A` | `N/A (local brush-model helper)` | New |  | TS sans lien source | Valide |  |

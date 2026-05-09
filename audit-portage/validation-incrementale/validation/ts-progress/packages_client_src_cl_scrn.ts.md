@@ -1,12 +1,13 @@
 # Progress TS - packages/client/src/cl_scrn.ts
 
-- Dernier lot traite: `SCR_TileClear`, `SCR_TileClearRef`, `SCR_DrawConsole`, `SCR_TimeRefresh_f`, `SCR_Sky_f`, plus les DTO rattaches au lot `ClientTileClearCommand` et `ClientScreenConsolePlan`.
-- Verdict lot: `SCR_TileClear`, `SCR_DrawConsole`, `SCR_TimeRefresh_f` et `SCR_Sky_f` sont proprietaires `packages/client/src/cl_scrn.ts` et `Couvert C/H` via `client_cl_scrn.c.md`; `SCR_TileClearRef` est `Valide` comme adapter `refexport_t`; `ClientTileClearCommand` et `ClientScreenConsolePlan` sont `Valide` comme DTO `New`.
+- Dernier lot traite: `SCR_StopCinematic`, `SCR_FinishCinematic`, `SCR_RunCinematic`, `SCR_DrawCinematic`, `SCR_DrawCinematicRef`, `SCR_PlayCinematic`, puis tous les helpers `New` a entete incomplete restants (`countCenterLines` a `createTextCommand`).
+- Verdict lot: les fonctions cinematic exportees par `cl_scrn.ts` sont des facades `screen.h` / adapters qui deleguent au proprietaire comportemental `packages/client/src/cl_cin.ts`; `SCR_DrawCinematicRef` est un adapter `refexport_t` sans source C/H directe. Les helpers HUD/layout/snapshot restants sont `New` avec `Original name: N/A`, `Source: N/A (...)`, `Category: New`.
 - Tests lances dans cette session:
   - `npm run verify:cl-scrn`: ok.
+  - `npm run verify:screen:header`: echec sur `SCR_PlayCinematic missing video should queue nextserver`; verification historique observee sur `net_message`, alors que le portage ecrit la commande sortante dans `cls.netchan.message` comme `SCR_FinishCinematic`/`cl_cin.ts`.
+  - `npm run verify:cinematic:audio-sync`: ok.
+  - `npm run verify:full-game:three-renderer`: ok.
   - `npm run typecheck`: ok.
-- Reference historique:
-  - `npm run verify:screen:header`: echec existant observe sur `SCR_PlayCinematic missing video should queue nextserver`; hors bloc traite.
 - Decisions:
   - `STAT_MINUS`, `CHAR_WIDTH`, `vrect_t` et les fonctions portees proprietaires du bloc sont marquees `Couvert C/H` uniquement quand une matrice C/H valide a ete consultee dans cette session.
   - `sb_nums` est valide directement depuis `client/cl_scrn.c`; aucune ligne C/H generee ne le couvre.
@@ -18,6 +19,9 @@
   - `SCR_BuildScreenState`, `buildActiveCinematicScreenFrame`, `buildCenterPrintSnapshot`, `buildLoadingSnapshot`, `buildPauseSnapshot` et `buildNetSnapshot` sont des helpers/snapshots renderer-neutral sans source C/H directe; leurs entetes et lignes de matrice indiquent `Original name: N/A` et `Source: N/A (...)`.
   - `ClientTileClearCommand` et `ClientScreenConsolePlan` ne sont pas des portages proprietaires C/H: entetes et matrice indiquent `Original name: N/A`, `Source: N/A (renderer-neutral screen DTO)`, `Category: New`.
   - `SCR_TileClearRef` ne masque pas le proprietaire `SCR_TileClear`: il applique les commandes via `refexport_t` et reste classe `Adapter`.
-  - Integration runtime: `SCR_Init` enregistre `timerefresh` et `sky`; `SCR_UpdateScreen` appelle `SCR_TileClear`/`SCR_TileClearRef` et expose le plan console/HUD.
-  - Integration apps-web/renderer-three: non applicable directement pour `SCR_DrawConsole` et `SCR_TimeRefresh_f`; le tile clear est consomme via commandes snapshot ou `refexport_t`; le sky met a jour l'etat client consomme par les snapshots/adapters sky existants.
-- Prochain lot recommande: continuer avec les doublons cinematics `SCR_StopCinematic`, `SCR_FinishCinematic`, `SCR_RunCinematic`, `SCR_DrawCinematic`, `SCR_DrawCinematicRef`, `SCR_PlayCinematic`, en verifiant l'ownership avec `packages/client/src/cl_cin.ts`.
+  - `SCR_StopCinematic`, `SCR_FinishCinematic`, `SCR_RunCinematic`, `SCR_DrawCinematic` et `SCR_PlayCinematic` ne sont pas proprietaires du portage `cl_cin.c` dans ce fichier: ils gardent l'API `screen.h` et deleguent a `packages/client/src/cl_cin.ts`, qui reste couvert par `client_cl_cin.c.md`.
+  - `SCR_DrawCinematicRef` n'a pas de symbole C/H direct: c'est une facade `refexport_t` de l'adapter raw porte dans `cl_cin.ts`.
+  - Les helpers `countCenterLines`, `resolveConfigstring`, `resolveImageStat`, `resolveSelectedItemName`, `applyHudXor`, `mapHudDigitToPic`, `tokenizeLayoutString`, `skipToEndif`, `executeClientLayoutBlock`, `executeClientLayoutBlockRef`, `executeCtfLayoutBlock`, `executeCtfLayoutBlockRef`, `drawPictureCommandRef`, `drawInlineStringRef`, `createPictureCommand`, `createAutosizedPictureCommand` et `createTextCommand` sont des helpers locaux HUD/layout/snapshot, non exportes, sans source C/H directe.
+  - Integration runtime: les facades cinematic sont appelees depuis `cl_parse`, `cl_input`, `full-game` et `SCR_UpdateScreen`; elles deleguent au runtime cinematic porte et conservent les hooks loading-plaque de `cl_scrn.ts`.
+  - Integration apps-web/renderer-three: `apps/web` consomme les facades publiques et le rendu cinematic via `SCR_DrawCinematicRef`; `renderer-three` reste adapter `refexport_t`/raw cinematic et ne remplace pas la logique client.
+- Prochain lot recommande: aucun pour `packages/client/src/cl_scrn.ts`; la matrice TS actuelle est terminee.

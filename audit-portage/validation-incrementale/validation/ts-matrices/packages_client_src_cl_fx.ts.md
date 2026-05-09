@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Symboles TS: 124
-- Couvert C/H: 36
-- Reste a auditer: 44
+- Couvert C/H: 38
+- Reste a auditer: 31
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -88,19 +88,19 @@
 | `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui | `CL_TeleportParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
 | `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_AddParticles` | oui | `CL_AddParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BuildEntityEventEffects` | oui | `CL_EntityEvent` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BuildActionEffects` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlashDefinition` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlash2Kind` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `getTempEntityKind` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `createMuzzleDefinition` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `createParticleBurst` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `createTempEntityMarker` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `createParticleEffectMarker` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `appendTempEntitySound` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `createEntityEventSound` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `promoteToEntityEvent` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_fx.ts` | function | `CL_AddParticles` | oui | `CL_AddParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BuildEntityEventEffects` | oui | `CL_EntityEvent` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BuildActionEffects` | oui | `N/A` | `N/A (runtime action dispatcher)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlashDefinition` | non | `N/A` | `N/A (muzzleflash metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `getMuzzleFlash2Kind` | non | `N/A` | `N/A (muzzleflash metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `getTempEntityKind` | non | `N/A` | `N/A (temp-entity metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `createMuzzleDefinition` | non | `N/A` | `N/A (muzzleflash metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `createParticleBurst` | non | `N/A` | `N/A (particle metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `createTempEntityMarker` | non | `N/A` | `N/A (temp-entity metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `createParticleEffectMarker` | non | `N/A` | `N/A (particle metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `appendTempEntitySound` | non | `N/A` | `N/A (temp-entity sound metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `createEntityEventSound` | non | `N/A` | `N/A (entity-event sound metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `promoteToEntityEvent` | non | `N/A` | `N/A (entity-event metadata helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_fx.ts` | function | `spawnSimpleTrailParticles` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/client/src/cl_fx.ts` | function | `spawnDiminishingTrailParticles` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/client/src/cl_fx.ts` | function | `spawnRailTrailParticles` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

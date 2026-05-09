@@ -22,6 +22,8 @@ import { CL_WriteStringCmd } from "./cl_parse.js";
 import type { ClientRuntime } from "./client.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (download host hooks)
  * Category: New
  * Purpose: Group the host-side services needed by the partial download port.
  *
@@ -139,6 +141,8 @@ export function CL_Download_f(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local filename helper)
  * Category: New
  * Purpose: Remove the last filename extension while preserving the rest of the path.
  */

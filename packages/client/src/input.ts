@@ -18,6 +18,8 @@
 import type { qboolean, usercmd_t } from "../../qcommon/src/index.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (input device hook contract)
  * Category: New
  * Purpose: Describe the host-side external input-device callbacks declared by `client/input.h`.
  *
@@ -34,6 +36,8 @@ export interface ClientInputDeviceHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (input device runtime context)
  * Category: New
  * Purpose: Hold the explicit runtime wrapper for the external input-device callbacks.
  *
@@ -45,6 +49,8 @@ export interface ClientInputDeviceContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (client main input adapter)
  * Category: Adapter
  * Purpose: Expose the `client/input.h` device procedures through the hook names used by the `cl_main.c` frame port.
  *
@@ -59,6 +65,8 @@ export interface ClientInputDeviceMainHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (input device context factory)
  * Category: New
  * Purpose: Create the context used by the `client/input.h` procedure ports.
  *
@@ -71,7 +79,7 @@ export function createClientInputDeviceContext(hooks: ClientInputDeviceHooks = {
 
 /**
  * Original name: IN_Init
- * Source: client/input.h
+ * Source: Quake-2-master/client/input.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -87,7 +95,7 @@ export function IN_Init(context: ClientInputDeviceContext): void {
 
 /**
  * Original name: IN_Shutdown
- * Source: client/input.h
+ * Source: Quake-2-master/client/input.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -103,7 +111,7 @@ export function IN_Shutdown(context: ClientInputDeviceContext): void {
 
 /**
  * Original name: IN_Commands
- * Source: client/input.h
+ * Source: Quake-2-master/client/input.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -119,7 +127,7 @@ export function IN_Commands(context: ClientInputDeviceContext): void {
 
 /**
  * Original name: IN_Frame
- * Source: client/input.h
+ * Source: Quake-2-master/client/input.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -135,7 +143,7 @@ export function IN_Frame(context: ClientInputDeviceContext): void {
 
 /**
  * Original name: IN_Move
- * Source: client/input.h
+ * Source: Quake-2-master/client/input.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -151,7 +159,7 @@ export function IN_Move(context: ClientInputDeviceContext, cmd: usercmd_t): void
 
 /**
  * Original name: IN_Activate
- * Source: client/input.h
+ * Source: Quake-2-master/client/input.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -166,6 +174,8 @@ export function IN_Activate(context: ClientInputDeviceContext, active: qboolean)
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (client main input adapter)
  * Category: Adapter
  * Purpose: Bridge `client/input.h` procedures into the high-level `cl_main.c` lifecycle hooks.
  *

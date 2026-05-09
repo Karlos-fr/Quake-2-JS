@@ -5,7 +5,7 @@
 - Fichier TS: `packages/client/src/cl_scrn.ts`
 - Symboles TS: 91
 - Couvert C/H: 32
-- Reste a auditer: 22
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -72,31 +72,31 @@
 | `packages/client/src/cl_scrn.ts` | function | `buildActiveCinematicScreenFrame` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_TimeRefresh_f` | oui | `SCR_TimeRefresh_f` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_Sky_f` | oui | `SCR_Sky_f` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_StopCinematic` | oui | `SCR_StopCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_FinishCinematic` | oui | `SCR_FinishCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_RunCinematic` | oui | `SCR_RunCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCinematic` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCinematicRef` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_PlayCinematic` | oui | `SCR_PlayCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_StopCinematic` | oui | `SCR_StopCinematic` | `Quake-2-master/client/screen.h` | Adapter | [`client_screen.h.md`](../matrices/client_screen.h.md) | Doublon resolu | Valide | Facade `screen.h`; proprietaire comportemental `packages/client/src/cl_cin.ts` `SCR_StopCinematic`. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_FinishCinematic` | oui | `SCR_FinishCinematic` | `Quake-2-master/client/screen.h` | Adapter | [`client_screen.h.md`](../matrices/client_screen.h.md) | Doublon resolu | Valide | Facade `screen.h`; proprietaire comportemental `packages/client/src/cl_cin.ts` `SCR_FinishCinematic`. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_RunCinematic` | oui | `SCR_RunCinematic` | `Quake-2-master/client/screen.h` | Adapter | [`client_screen.h.md`](../matrices/client_screen.h.md) | Doublon resolu | Valide | Facade `screen.h`; proprietaire comportemental `packages/client/src/cl_cin.ts` `SCR_RunCinematic`. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCinematic` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/screen.h` | Adapter | [`client_screen.h.md`](../matrices/client_screen.h.md) | Doublon resolu | Valide | Facade `screen.h`; proprietaire comportemental `packages/client/src/cl_cin.ts` `SCR_DrawCinematic`. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCinematicRef` | oui | `N/A` | `N/A (screen refexport_t cinematic facade)` | Adapter |  | TS sans lien source | Valide | Adapter `refexport_t`; proprietaire raw adapter `packages/client/src/cl_cin.ts` `SCR_DrawCinematicRef`. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_PlayCinematic` | oui | `SCR_PlayCinematic` | `Quake-2-master/client/screen.h` | Adapter | [`client_screen.h.md`](../matrices/client_screen.h.md) | Doublon resolu | Valide | Facade `screen.h`; proprietaire comportemental `packages/client/src/cl_cin.ts` `SCR_PlayCinematic`. |
 | `packages/client/src/cl_scrn.ts` | function | `buildCenterPrintSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_scrn.ts` | function | `buildLoadingSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_scrn.ts` | function | `buildPauseSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_CalcVrect` | non | `SCR_CalcVrect` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_scrn.ts` | function | `buildNetSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
-| `packages/client/src/cl_scrn.ts` | function | `countCenterLines` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `resolveConfigstring` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `resolveImageStat` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `resolveSelectedItemName` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `applyHudXor` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `mapHudDigitToPic` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `tokenizeLayoutString` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `skipToEndif` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `executeClientLayoutBlock` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `executeClientLayoutBlockRef` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `executeCtfLayoutBlock` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `executeCtfLayoutBlockRef` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `drawPictureCommandRef` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `drawInlineStringRef` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `createPictureCommand` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `createAutosizedPictureCommand` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `createTextCommand` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_scrn.ts` | function | `countCenterLines` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `resolveConfigstring` | non | `N/A` | `N/A (HUD configstring helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `resolveImageStat` | non | `N/A` | `N/A (HUD configstring helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `resolveSelectedItemName` | non | `N/A` | `N/A (HUD configstring helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `applyHudXor` | non | `N/A` | `N/A (HUD text helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `mapHudDigitToPic` | non | `N/A` | `N/A (HUD number helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `tokenizeLayoutString` | non | `N/A` | `N/A (HUD layout parser)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `skipToEndif` | non | `N/A` | `N/A (HUD layout parser)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `executeClientLayoutBlock` | non | `N/A` | `N/A (HUD layout command helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `executeClientLayoutBlockRef` | non | `N/A` | `N/A (HUD refexport_t layout helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `executeCtfLayoutBlock` | non | `N/A` | `N/A (HUD layout command helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `executeCtfLayoutBlockRef` | non | `N/A` | `N/A (HUD refexport_t layout helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `drawPictureCommandRef` | non | `N/A` | `N/A (HUD refexport_t draw helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `drawInlineStringRef` | non | `N/A` | `N/A (HUD refexport_t text helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `createPictureCommand` | non | `N/A` | `N/A (HUD draw-command factory)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `createAutosizedPictureCommand` | non | `N/A` | `N/A (HUD draw-command factory)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `createTextCommand` | non | `N/A` | `N/A (HUD draw-command factory)` | New |  | TS sans lien source | Valide |  |

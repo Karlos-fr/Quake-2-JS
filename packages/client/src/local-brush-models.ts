@@ -15,6 +15,8 @@ import { SOLID_TRIGGER, SVF_NOCLIENT, type GameRuntime } from "../../game/src/in
 import type { BrushModelInterpolationState } from "./local-gameplay-sync.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Describe one gameplay-owned inline model transform snapshot.
  *
@@ -30,6 +32,8 @@ export interface BrushModelSnapshot {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Extract the current inline brush model transforms from the local gameplay runtime.
  *
@@ -64,6 +68,8 @@ export function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapsh
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Create the initial brush-model interpolation state from the current gameplay runtime pose.
  *
@@ -82,6 +88,8 @@ export function createBrushModelInterpolationState(runtime: GameRuntime): BrushM
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Interpolate the current brush-model render pose from the last two gameplay snapshots like the original Quake II client entity path.
  *
@@ -103,7 +111,7 @@ export function buildInterpolatedBrushModelSnapshots(
   }
 
   const lerpFraction = interpolationState.currentTime > interpolationState.previousTime
-    ? clamp01((renderTimeSeconds - interpolationState.currentTime) / (interpolationState.currentTime - interpolationState.previousTime))
+    ? clamp01((renderTimeSeconds - interpolationState.previousTime) / (interpolationState.currentTime - interpolationState.previousTime))
     : 1;
 
   return currentSnapshots.map((currentSnapshot) => {
@@ -137,6 +145,8 @@ export function buildInterpolatedBrushModelSnapshots(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Clone one list of brush-model snapshots so interpolation state keeps value semantics across fixed frames.
  */
@@ -145,6 +155,8 @@ export function cloneBrushModelSnapshots(snapshots: BrushModelSnapshot[]): Brush
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Clone one brush-model snapshot without sharing mutable tuple references.
  */
@@ -161,6 +173,8 @@ export function cloneBrushModelSnapshot(snapshot: BrushModelSnapshot): BrushMode
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Interpolate one scalar with a clamped fraction.
  */
@@ -169,6 +183,8 @@ function lerpValue(previous: number, current: number, fraction: number): number 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local brush-model helper)
  * Category: New
  * Purpose: Clamp one interpolation fraction to the inclusive `[0, 1]` interval.
  */

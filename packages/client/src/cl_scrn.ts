@@ -2240,14 +2240,15 @@ export function SCR_Sky_f(context: ClientScreenContext): boolean {
 
 /**
  * Original name: SCR_StopCinematic
- * Source: client/cl_cin.c
- * Category: Ported
+ * Source: client/screen.h
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Clears the active cinematic state and returns the client to non-cinematic drawing.
  *
  * Porting notes:
+ * - Facade for the public `screen.h` API; behavioral ownership stays in `cl_cin.ts`.
  * - Defers sound backend restart side effects to host hooks.
  */
 export function SCR_StopCinematic(runtime: ClientRuntime, hooks: ClientScreenHooks = {}): void {
@@ -2256,12 +2257,15 @@ export function SCR_StopCinematic(runtime: ClientRuntime, hooks: ClientScreenHoo
 
 /**
  * Original name: SCR_FinishCinematic
- * Source: client/cl_cin.c
- * Category: Ported
+ * Source: client/screen.h
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
  * - Queues the original `nextserver` string command so the server can advance after a cinematic.
+ *
+ * Porting notes:
+ * - Facade for the public `screen.h` API; behavioral ownership stays in `cl_cin.ts`.
  */
 export function SCR_FinishCinematic(runtime: ClientRuntime): void {
   SCR_FinishCinematic_Impl(runtime);
@@ -2269,14 +2273,15 @@ export function SCR_FinishCinematic(runtime: ClientRuntime): void {
 
 /**
  * Original name: SCR_RunCinematic
- * Source: client/cl_cin.c
- * Category: Ported
+ * Source: client/screen.h
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Advances the active cinematic timeline for static `.pcx` and streamed `.cin` cinematics.
  *
  * Porting notes:
+ * - Facade for the public `screen.h` API; behavioral ownership stays in `cl_cin.ts`.
  * - Static PCX cinematics intentionally remain on screen until replaced or stopped, matching `cinematicframe == -1`.
  */
 export function SCR_RunCinematic(
@@ -2292,14 +2297,15 @@ export function SCR_RunCinematic(
 
 /**
  * Original name: SCR_DrawCinematic
- * Source: client/cl_cin.c
- * Category: Ported
+ * Source: client/screen.h
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Reports whether a cinematic is active and emits the current full-screen image draw command when available.
  *
  * Porting notes:
+ * - Facade for the public `screen.h` API; behavioral ownership stays in `cl_cin.ts`.
  * - Returns indexed-pixel snapshots so renderer adapters can upload static and streamed cinematic frames.
  */
 export function SCR_DrawCinematic(
@@ -2314,9 +2320,10 @@ export function SCR_DrawCinematic(
 }
 
 /**
- * Original name: SCR_DrawCinematic
- * Source: client/cl_cin.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (screen refexport_t cinematic facade)
+ * Category: Adapter
+ * Adapts: SCR_DrawCinematicRef from packages/client/src/cl_cin.ts
  * Fidelity level: Close
  *
  * Behavior:
@@ -2336,8 +2343,8 @@ export function SCR_DrawCinematicRef(
 
 /**
  * Original name: SCR_PlayCinematic
- * Source: client/cl_cin.c
- * Category: Ported
+ * Source: client/screen.h
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -2451,6 +2458,8 @@ function buildNetSnapshot(options: ClientScreenBuildOptions): ClientNetOverlaySt
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen snapshot helper)
  * Category: New
  * Purpose: Count the display lines of a center-print string using Quake-style newline rules.
  */
@@ -2469,6 +2478,8 @@ function countCenterLines(text: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD configstring helper)
  * Category: New
  * Purpose: Resolve one configstring-backed HUD reference safely.
  */
@@ -2482,6 +2493,8 @@ function resolveConfigstring(runtime: ClientRuntime, index: number | undefined):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD configstring helper)
  * Category: New
  * Purpose: Resolve one image-backed stat through the Quake II `CS_IMAGES` configstring range.
  */
@@ -2494,6 +2507,8 @@ function resolveImageStat(runtime: ClientRuntime, imageIndex: number | undefined
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD configstring helper)
  * Category: New
  * Purpose: Resolve the currently selected inventory item name through the `CS_ITEMS` configstring range.
  */
@@ -2506,6 +2521,8 @@ function resolveSelectedItemName(runtime: ClientRuntime, selectedItem: number | 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD text helper)
  * Category: New
  * Purpose: Apply the Quake II HUD XOR/high-bit transform to one string payload.
  */
@@ -2522,6 +2539,8 @@ function applyHudXor(text: string, xorMask: number): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD number helper)
  * Category: New
  * Purpose: Resolve one number-field digit to the corresponding Quake II HUD picture name.
  */
@@ -2536,6 +2555,8 @@ function mapHudDigitToPic(color: number): (char: string) => string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD layout parser)
  * Category: New
  * Purpose: Tokenize one Quake II HUD layout string while preserving quoted substrings.
  */
@@ -2578,6 +2599,8 @@ function tokenizeLayoutString(layout: string): string[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD layout parser)
  * Category: New
  * Purpose: Skip one simple `if ... endif` branch using the same flat matching style as the original code path.
  */
@@ -2593,6 +2616,8 @@ function skipToEndif(tokens: string[], currentIndex: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD layout command helper)
  * Category: New
  * Purpose: Emit the draw commands corresponding to one `client` layout block.
  */
@@ -2634,6 +2659,8 @@ function executeClientLayoutBlock(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD refexport_t layout helper)
  * Category: New
  * Purpose: Draw the contents of one `client` layout block through `refexport_t`.
  */
@@ -2675,6 +2702,8 @@ function executeClientLayoutBlockRef(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD layout command helper)
  * Category: New
  * Purpose: Emit the draw commands corresponding to one `ctf` layout block.
  */
@@ -2704,6 +2733,8 @@ function executeCtfLayoutBlock(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD refexport_t layout helper)
  * Category: New
  * Purpose: Draw the contents of one `ctf` layout block through `refexport_t`.
  */
@@ -2733,6 +2764,8 @@ function executeCtfLayoutBlockRef(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD refexport_t draw helper)
  * Category: New
  * Purpose: Draw one command-era HUD picture through `refexport_t` while preserving native sizing and centering.
  */
@@ -2760,6 +2793,8 @@ function drawPictureCommandRef(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD refexport_t text helper)
  * Category: New
  * Purpose: Draw one single-line string through `DrawChar`.
  */
@@ -2770,6 +2805,8 @@ function drawInlineStringRef(ref: refexport_t, x: number, y: number, text: strin
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD draw-command factory)
  * Category: New
  * Purpose: Create one HUD picture command that defers to the original picture's native size.
  *
@@ -2793,6 +2830,8 @@ function createPictureCommand(x: number, y: number, pic: string): ClientHudPictu
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD draw-command factory)
  * Category: New
  * Purpose: Create one HUD picture command that defers size resolution to the final Three.js texture.
  *
@@ -2816,6 +2855,8 @@ function createAutosizedPictureCommand(x: number, y: number, pic: string): Clien
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (HUD draw-command factory)
  * Category: New
  * Purpose: Create one plain HUD text command with the requested Quake-style variant.
  */

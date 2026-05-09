@@ -2458,6 +2458,8 @@ export function CL_BuildEntityEventEffects(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime action dispatcher)
  * Category: New
  * Purpose: Convert any parsed client action packet into normalized effect events.
  *
@@ -2481,6 +2483,8 @@ export function CL_BuildActionEffects(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (muzzleflash metadata helper)
  * Category: New
  * Purpose: Map one player muzzle flash weapon id to a first normalized definition.
  */
@@ -2598,6 +2602,8 @@ function getMuzzleFlashDefinition(weaponId: number, volume: number): {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (muzzleflash metadata helper)
  * Category: New
  * Purpose: Convert one monster muzzle flash id into a first coarse family name.
  */
@@ -2606,6 +2612,8 @@ function getMuzzleFlash2Kind(flashNumber: number): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (temp-entity metadata helper)
  * Category: New
  * Purpose: Convert one temp entity packet into a stable readable kind string.
  */
@@ -2617,6 +2625,8 @@ function getTempEntityKind(packet: ClientTempEntityPacket): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (muzzleflash metadata helper)
  * Category: New
  * Purpose: Build one reusable muzzle flash definition object.
  */
@@ -2648,6 +2658,8 @@ function createMuzzleDefinition(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (particle metadata helper)
  * Category: New
  * Purpose: Build one reusable particle-burst descriptor close to one original `cl_fx.c` family.
  */
@@ -2673,6 +2685,8 @@ function createParticleBurst(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (temp-entity metadata helper)
  * Category: New
  * Purpose: Build one lightweight temp-entity marker effect at a given position.
  */
@@ -2701,6 +2715,8 @@ function createTempEntityMarker(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (particle metadata helper)
  * Category: New
  * Purpose: Build one particle-effect marker using explicit direction and palette inputs.
  */
@@ -2727,6 +2743,8 @@ function createParticleEffectMarker(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (temp-entity sound metadata helper)
  * Category: New
  * Purpose: Append one positioned temp-entity sound effect when a source position exists.
  */
@@ -2754,6 +2772,8 @@ function appendTempEntitySound(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (entity-event sound metadata helper)
  * Category: New
  * Purpose: Build one structured entity-event sound effect payload.
  */
@@ -2778,6 +2798,8 @@ function createEntityEventSound(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (entity-event metadata helper)
  * Category: New
  * Purpose: Re-tag one existing particle effect as originating from `CL_EntityEvent`.
  */

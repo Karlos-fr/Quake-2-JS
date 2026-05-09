@@ -35,6 +35,16 @@ import {
 } from "../../qcommon/src/index.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (typed key array bound)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Names the original fixed `keybindings[256]` / key state array size for TS
+ *   allocation and bounds checks.
+ */
 export const KEY_ARRAY_SIZE = 256;
 /**
  * Original name: MAXCMDLINE
@@ -46,8 +56,27 @@ export const KEY_ARRAY_SIZE = 256;
  * - Caps editable console and chat command lines at the original fixed C buffer size.
  */
 export const MAXCMDLINE = 256;
+/**
+ * Original name: N/A
+ * Source: N/A (typed console history bound)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Names the original `key_lines[32]` history ring size for TS allocation.
+ */
 export const KEY_LINE_COUNT = 32;
 
+/**
+ * Original name: K_* key code macros
+ * Source: client/keys.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserve Quake II virtual key numbers passed to `Key_Event`, including
+ *   keypad, mouse, joystick, aux, wheel and pause codes.
+ */
 export const K_TAB = 9;
 export const K_ENTER = 13;
 export const K_ESCAPE = 27;
@@ -209,10 +238,29 @@ export interface client_key_state_t {
   con_totallines: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (binding writer adapter)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Provides the host-neutral write target used by `Key_WriteBindings`.
+ */
 export interface KeyBindingWriter {
   write: (chunk: string) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime hooks)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Injects command, UI, clipboard and menu side effects that were global C
+ *   calls in `keys.c`, keeping the key port testable and host-neutral.
+ */
 export interface ClientKeyHooks {
   onPrint?: (line: string) => void;
   onError?: (message: string) => never;
@@ -232,6 +280,16 @@ export interface ClientKeyHooks {
   onGetKey?: () => number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit key runtime context)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Carries the ported key state plus injected runtimes that replace C file
+ *   globals and direct engine calls.
+ */
 export interface ClientKeyContext {
   state: client_key_state_t;
   hooks: ClientKeyHooks;
@@ -241,6 +299,16 @@ export interface ClientKeyContext {
   client?: ClientRuntime;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (context construction options)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Allows callers to create an isolated `ClientKeyContext` with only the
+ *   runtimes and hooks available in that host.
+ */
 export interface ClientKeyContextOptions {
   hooks?: ClientKeyHooks;
   cmd?: CommandRuntime;
@@ -349,6 +417,16 @@ export const keynames: keyname_t[] = [
   { name: "SEMICOLON", keynum: ";".charCodeAt(0) }
 ];
 
+/**
+ * Original name: N/A
+ * Source: N/A (context factory)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Allocates the explicit TypeScript key context that replaces file-static
+ *   globals from `keys.c` and the related declarations in `keys.h`.
+ */
 export function createClientKeyContext(optionsOrHooks: ClientKeyContextOptions | ClientKeyHooks = {}): ClientKeyContext {
   const options = normalizeContextOptions(optionsOrHooks);
 
