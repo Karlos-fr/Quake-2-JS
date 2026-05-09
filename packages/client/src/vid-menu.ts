@@ -125,6 +125,7 @@ export interface ClientVidMenuController {
   VID_MenuInit: () => void;
   VID_MenuDraw: () => void;
   VID_MenuKey: (key: number) => string | null;
+  syncMenuOrigins: (viewportWidth: number, viewportHeight: number) => () => void;
 }
 
 /**
@@ -317,6 +318,43 @@ export function createClientVidMenuController(
     menu.cursordraw = null;
   }
 
+  /**
+   * Original name: N/A
+   * Source: N/A (web viewport adapter for win32/vid_menu.c)
+   * Category: Adapter
+   * Fidelity level: Adapter
+   *
+   * Purpose:
+   * - Reapply the original video-menu framework origin formulas after a host temporarily changes `viddef`.
+   *
+   * Porting notes:
+   * - Mirrors the `VID_MenuInit` sequence: `x = viddef.width * 0.50`, `Menu_Center`, then `x -= 8`.
+   * - Returns a restore callback so overlay-only coordinates do not leak back into the regular menu path.
+   */
+  function syncMenuOrigins(viewportWidth: number, viewportHeight: number): () => void {
+    const previousSoftwareOrigin = { x: softwareMenu.x, y: softwareMenu.y };
+    const previousOpenGlOrigin = { x: openglMenu.x, y: openglMenu.y };
+
+    context.qmenu.state.vidWidth = viewportWidth;
+    context.qmenu.state.vidHeight = viewportHeight;
+
+    softwareMenu.x = viewportWidth * 0.5;
+    openglMenu.x = viewportWidth * 0.5;
+    Menu_Center(context.qmenu, softwareMenu);
+    Menu_Center(context.qmenu, openglMenu);
+    softwareMenu.x -= 8;
+    openglMenu.x -= 8;
+    currentMenu = currentMenuIndex === SOFTWARE_MENU ? softwareMenu : openglMenu;
+
+    return () => {
+      softwareMenu.x = previousSoftwareOrigin.x;
+      softwareMenu.y = previousSoftwareOrigin.y;
+      openglMenu.x = previousOpenGlOrigin.x;
+      openglMenu.y = previousOpenGlOrigin.y;
+      currentMenu = currentMenuIndex === SOFTWARE_MENU ? softwareMenu : openglMenu;
+    };
+  }
+
   function VID_MenuInit(): void {
     resetFramework(softwareMenu);
     resetFramework(openglMenu);
@@ -415,11 +453,23 @@ export function createClientVidMenuController(
     Menu_Draw(context.qmenu, currentMenu);
   }
 
+  /**
+   * Original name: VID_MenuKey
+   * Source: Quake-2-master/win32/vid_menu.c + Quake-2-master/linux/vid_menu.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Routes movement and selection keys through the active software/OpenGL video menu.
+   *
+   * Porting notes:
+   * - Escape uses the Linux submenu behavior (`M_PopMenu`) so the browser main-menu stack returns to the parent menu.
+   */
   function VID_MenuKey(key: number): string | null {
     const menu = currentMenu;
     switch (key) {
       case K_ESCAPE:
-        ApplyChanges();
+        CancelChanges();
         return null;
       case K_KP_UPARROW:
       case K_UPARROW:
@@ -455,6 +505,7 @@ export function createClientVidMenuController(
   return {
     VID_MenuInit,
     VID_MenuDraw,
-    VID_MenuKey
+    VID_MenuKey,
+    syncMenuOrigins
   };
 }

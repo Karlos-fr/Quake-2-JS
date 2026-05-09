@@ -138,7 +138,7 @@ import {
   type ClientMenuMapEntry,
   type PlayerModelInfo
 } from "../../../packages/client/src/menu.js";
-import { createClientQMenuContext } from "../../../packages/client/src/qmenu.js";
+import { createClientQMenuContext, Menu_Center, type menuframework_s } from "../../../packages/client/src/qmenu.js";
 import {
   SCR_Init,
   SCR_DrawCinematicRef,
@@ -372,6 +372,7 @@ interface FullGameRuntime {
   finishConfigBootstrap: () => void;
   captureClipboardText: (text: string) => void;
   attachMenuRendererRef: (ref: refexport_t | null) => void;
+  syncVideoMenuOverlayOrigins: (viewportWidth: number, viewportHeight: number) => () => void;
   beginAuthoritativeConnection: (mapRequest: string) => void;
   isAuthoritativeLevelLoading: () => boolean;
   shouldPumpAuthoritativeFrame: () => boolean;
@@ -1754,6 +1755,9 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     attachMenuRendererRef: (ref) => {
       menuRef.setTarget(ref);
     },
+    syncVideoMenuOverlayOrigins: (viewportWidth, viewportHeight) => {
+      return videoMenu?.syncMenuOrigins(viewportWidth, viewportHeight) ?? (() => undefined);
+    },
     beginAuthoritativeConnection,
     isAuthoritativeLevelLoading: () => authoritativeLevelLoading,
     shouldPumpAuthoritativeFrame,
@@ -2602,6 +2606,108 @@ function createFullGameAutosizedPictureCommand(pic: string): ClientHudPictureCom
   };
 }
 
+interface MenuOverlayFrameworkOrigin {
+  menu: menuframework_s;
+  x: number;
+  y: number;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (web viewport adapter)
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Keep active `client/menu.c` framework origins aligned with the overlay `viddef`.
+ *
+ * Porting notes:
+ * - Mirrors the original `*_MenuInit` positioning formulas from `client/menu.c`.
+ * - The browser overlay can change `viddef` between menu init and draw; the C renderer used one
+ *   consistent `viddef` for both.
+ * - Returns the prior origins so the temporary overlay coordinate system does not leak back into
+ *   the regular 640x480 frontend menu.
+ */
+function syncMenuOverlayFrameworkOrigins(
+  context: ClientMenuContext,
+  viewportWidth: number,
+  viewportHeight: number
+): MenuOverlayFrameworkOrigin[] {
+  const state = context.state;
+  const centerX = viewportWidth * 0.5;
+  const origins = [
+    state.s_game_menu,
+    state.s_multiplayer_menu,
+    state.s_keys_menu,
+    state.s_startserver_menu,
+    state.s_dmoptions_menu,
+    state.s_downloadoptions_menu,
+    state.s_joinserver_menu,
+    state.s_options_menu,
+    state.s_loadgame_menu,
+    state.s_savegame_menu,
+    state.s_addressbook_menu,
+    state.s_player_config_menu
+  ].map((menu) => ({ menu, x: menu.x, y: menu.y }));
+
+  context.qmenu.state.vidWidth = viewportWidth;
+  context.qmenu.state.vidHeight = viewportHeight;
+
+  state.s_game_menu.x = centerX;
+  Menu_Center(context.qmenu, state.s_game_menu);
+
+  state.s_multiplayer_menu.x = centerX - 64;
+  Menu_Center(context.qmenu, state.s_multiplayer_menu);
+
+  state.s_keys_menu.x = centerX;
+  Menu_Center(context.qmenu, state.s_keys_menu);
+
+  state.s_startserver_menu.x = centerX;
+  Menu_Center(context.qmenu, state.s_startserver_menu);
+
+  state.s_dmoptions_menu.x = centerX;
+  Menu_Center(context.qmenu, state.s_dmoptions_menu);
+
+  state.s_downloadoptions_menu.x = centerX;
+  Menu_Center(context.qmenu, state.s_downloadoptions_menu);
+
+  state.s_joinserver_menu.x = centerX - 120;
+  Menu_Center(context.qmenu, state.s_joinserver_menu);
+
+  state.s_options_menu.x = Math.trunc(viewportWidth / 2);
+  state.s_options_menu.y = Math.trunc(viewportHeight / 2 - 58);
+
+  state.s_loadgame_menu.x = Math.trunc(viewportWidth / 2 - 120);
+  state.s_loadgame_menu.y = Math.trunc(viewportHeight / 2 - 58);
+
+  state.s_savegame_menu.x = Math.trunc(viewportWidth / 2 - 120);
+  state.s_savegame_menu.y = Math.trunc(viewportHeight / 2 - 58);
+
+  state.s_addressbook_menu.x = Math.trunc(viewportWidth / 2 - 142);
+  state.s_addressbook_menu.y = Math.trunc(viewportHeight / 2 - 58);
+
+  state.s_player_config_menu.x = Math.trunc(viewportWidth / 2 - 95);
+  state.s_player_config_menu.y = Math.trunc(viewportHeight / 2 - 97);
+
+  return origins;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (web viewport adapter)
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Restore menu framework origins after an in-game overlay draw.
+ */
+function restoreMenuOverlayFrameworkOrigins(origins: MenuOverlayFrameworkOrigin[]): void {
+  for (const origin of origins) {
+    origin.menu.x = origin.x;
+    origin.menu.y = origin.y;
+  }
+}
+
 /**
  * Original name: N/A
  * Source: N/A (web render orchestration)
@@ -2674,14 +2780,20 @@ function drawMenuOverlayRef(runtime: FullGameRuntime, ref: refexport_t, viewport
   const previousHeight = runtime.menu.vid.viddef.height;
   runtime.menu.vid.viddef.width = viewportWidth;
   runtime.menu.vid.viddef.height = viewportHeight;
+  const previousMenuOrigins = syncMenuOverlayFrameworkOrigins(runtime.menu, viewportWidth, viewportHeight);
+  const restoreVideoMenuOrigins = runtime.syncVideoMenuOverlayOrigins(viewportWidth, viewportHeight);
   runtime.attachMenuRendererRef(ref);
   try {
     if (runtime.menu.keys.state.key_dest === keydest_t.key_menu) {
       M_Draw(runtime.menu);
     }
   } finally {
+    restoreVideoMenuOrigins();
+    restoreMenuOverlayFrameworkOrigins(previousMenuOrigins);
     runtime.menu.vid.viddef.width = previousWidth;
     runtime.menu.vid.viddef.height = previousHeight;
+    runtime.menu.qmenu.state.vidWidth = previousWidth;
+    runtime.menu.qmenu.state.vidHeight = previousHeight;
     runtime.attachMenuRendererRef(runtime.frontendRenderer?.ref ?? null);
     runtime.drawCommands.length = 0;
   }

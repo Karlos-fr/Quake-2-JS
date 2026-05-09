@@ -59,6 +59,11 @@ const clientMenuSources = [
   file,
   source: readFileSync(join(repoRoot, "packages", "client", "src", file), "utf8")
 }));
+const menuMainGameSource = clientMenuSources.find((entry) => entry.file === "menu-main-game.ts")?.source ?? "";
+const vidMenuSource = readFileSync(
+  join(repoRoot, "packages", "client", "src", "vid-menu.ts"),
+  "utf8"
+);
 const renderLoopSource = readFileSync(
   join(repoRoot, "apps", "web", "src", "full-game-render-loop.ts"),
   "utf8"
@@ -175,6 +180,31 @@ assert.equal(
   fullGameSource.includes("runtime.menu.vid.viddef.width = viewportWidth;"),
   true,
   "attract-loop menu overlay should temporarily use the active game viewport width"
+);
+assert.equal(
+  fullGameSource.includes("syncMenuOverlayFrameworkOrigins(runtime.menu, viewportWidth, viewportHeight);"),
+  true,
+  "attract-loop menu overlay should keep source menu item origins in the same viddef as the banner"
+);
+assert.equal(
+  fullGameSource.includes("runtime.syncVideoMenuOverlayOrigins(viewportWidth, viewportHeight);"),
+  true,
+  "attract-loop menu overlay should also align the private video menu frameworks"
+);
+assert.equal(
+  vidMenuSource.includes("function syncMenuOrigins(viewportWidth: number, viewportHeight: number): () => void"),
+  true,
+  "video menu controller should expose overlay origin synchronization for its private frameworks"
+);
+assert.equal(
+  vidMenuSource.includes("case K_ESCAPE:\n        CancelChanges();"),
+  true,
+  "video menu escape should pop back to the parent menu"
+);
+assert.equal(
+  menuMainGameSource.includes("context.state.s_game_menu.x = context.vid.viddef.width * 0.5;"),
+  false,
+  "Game_MenuDraw should stay ISO with client/menu.c and not reposition the framework during draw"
 );
 assert.equal(
   fullGameSource.includes("const loadingCommand = SCR_DrawLoading(runtime.client) ?? createFullGameAutosizedPictureCommand(\"loading\");"),
