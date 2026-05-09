@@ -1907,6 +1907,8 @@ export function SCR_DrawConsole(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen snapshot builder)
  * Category: New
  * Purpose: Build the first renderer-agnostic client HUD/screen snapshot.
  *
@@ -2109,6 +2111,8 @@ export function SCR_UpdateScreen(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen cinematic snapshot helper)
  * Category: New
  * Purpose: Build the screen-frame snapshot for the dedicated cinematic path of `SCR_UpdateScreen`.
  *
@@ -2347,6 +2351,8 @@ export function SCR_PlayCinematic(runtime: ClientRuntime, arg: string, hooks: Cl
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen snapshot helper)
  * Category: New
  * Purpose: Build the currently visible center-print snapshot without mutating timer state.
  */
@@ -2364,6 +2370,8 @@ function buildCenterPrintSnapshot(runtime: ClientRuntime): ClientCenterPrintStat
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen snapshot helper)
  * Category: New
  * Purpose: Build the loading-plaque snapshot corresponding to `SCR_DrawLoading`.
  */
@@ -2376,6 +2384,8 @@ function buildLoadingSnapshot(runtime: ClientRuntime): ClientLoadingOverlayState
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen snapshot helper)
  * Category: New
  * Purpose: Build the pause-overlay snapshot corresponding to `SCR_DrawPause`.
  */
@@ -2386,7 +2396,10 @@ function buildPauseSnapshot(options: ClientScreenBuildOptions): ClientPauseOverl
 }
 
 /**
- * Category: New
+ * Original name: SCR_CalcVrect
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
  * Purpose: Compute the Quake II refresh rectangle from the current viewsize and viewport dimensions.
  *
  * Constraints:
@@ -2416,6 +2429,8 @@ function SCR_CalcVrect(runtime: ClientRuntime, viewportWidth: number, viewportHe
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (screen snapshot helper)
  * Category: New
  * Purpose: Build the net-warning snapshot corresponding to `SCR_DrawNet`.
  */

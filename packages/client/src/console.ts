@@ -86,18 +86,36 @@ export interface console_t {
   times: number[];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-facing console draw command)
+ * Category: New
+ * Purpose: Represent one `Con_DrawCharacter` glyph draw request without renderer globals.
+ */
 export interface ConsoleDrawCharacterCommand {
   cx: number;
   line: number;
   num: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-facing console snapshot)
+ * Category: New
+ * Purpose: Represent one scrollback or notify line extracted from `console_t`.
+ */
 export interface ConsoleLineSnapshot {
   line: number;
   text: string;
   ageMs: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-facing console text command)
+ * Category: New
+ * Purpose: Represent one console text draw command without direct `re.DrawChar` calls.
+ */
 export interface ConsoleTextCommand {
   x: number;
   y: number;
@@ -105,6 +123,12 @@ export interface ConsoleTextCommand {
   variant: "normal" | "alt";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-facing console picture command)
+ * Category: New
+ * Purpose: Represent the console background picture draw request as structured data.
+ */
 export interface ConsoleStretchPicCommand {
   x: number;
   y: number;
@@ -113,11 +137,23 @@ export interface ConsoleStretchPicCommand {
   pic: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-facing console notify snapshot)
+ * Category: New
+ * Purpose: Group the transient notify overlay draw commands and dirty rectangle.
+ */
 export interface ConsoleNotifySnapshot {
   lines: ConsoleTextCommand[];
   dirty: { x1: number; y1: number; x2: number; y2: number } | null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-facing console draw snapshot)
+ * Category: New
+ * Purpose: Group the full console draw pass into renderer-agnostic commands.
+ */
 export interface ConsoleDrawConsoleSnapshot {
   lines: number;
   vislines: number;
@@ -129,11 +165,23 @@ export interface ConsoleDrawConsoleSnapshot {
   input: ConsoleTextCommand | null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (filesystem adapter result)
+ * Category: New
+ * Purpose: Return `Con_Dump_f` output to callers when no filesystem hook writes it directly.
+ */
 export interface ConsoleDumpResult {
   path: string;
   contents: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime hook adapter)
+ * Category: New
+ * Purpose: Inject host actions that were direct engine calls in `client/console.c`.
+ */
 export interface ClientConsoleHooks {
   SCR_EndLoadingPlaque?: (runtime: ClientRuntime) => void;
   M_ForceMenuOff?: (context: ClientConsoleContext) => void;
@@ -142,6 +190,12 @@ export interface ClientConsoleHooks {
   onPrint?: (line: string) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit runtime context)
+ * Category: New
+ * Purpose: Own the state and dependencies needed by the `client/console.c` port.
+ */
 export interface ClientConsoleContext {
   con: console_t;
   keys: ClientKeyContext;
@@ -154,6 +208,12 @@ export interface ClientConsoleContext {
   con_notifytime: cvar_t | null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit runtime context options)
+ * Category: New
+ * Purpose: Provide constructor inputs for `ClientConsoleContext`.
+ */
 export interface ClientConsoleContextOptions {
   con?: console_t;
   keys: ClientKeyContext;
@@ -165,9 +225,20 @@ export interface ClientConsoleContextOptions {
   hooks?: ClientConsoleHooks;
 }
 
+/**
+ * Original name: cr
+ * Source: client/console.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves `Con_Print` carriage-return state across calls like the C static local.
+ */
 let conPrintCarriageReturn = false;
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit runtime context)
  * Category: New
  * Purpose: Create the composite runtime used by the `client/console.c` port.
  *
@@ -194,6 +265,8 @@ export function createClientConsoleContext(options: ClientConsoleContextOptions)
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (console state factory)
  * Category: New
  * Purpose: Create a zero-initialized `console_t` state block matching the Quake II header layout.
  *

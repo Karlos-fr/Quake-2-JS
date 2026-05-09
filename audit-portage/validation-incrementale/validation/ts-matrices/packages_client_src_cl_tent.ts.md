@@ -5,7 +5,7 @@
 - Fichier TS: `packages/client/src/cl_tent.ts`
 - Symboles TS: 79
 - Couvert C/H: 8
-- Reste a auditer: 31
+- Reste a auditer: 21
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -57,16 +57,16 @@
 | `packages/client/src/cl_tent.ts` | function | `buildForceWalls` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
 | `packages/client/src/cl_tent.ts` | function | `createBeamRender` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
 | `packages/client/src/cl_tent.ts` | function | `createHeatbeamRender` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
-| `packages/client/src/cl_tent.ts` | function | `buildCurrentView` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `computePlayerBeamGunStart` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `getHandMultiplier` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `calculateBeamAngles` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `subtractVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `addVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `isZeroVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `scaleVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `addScaledVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `vectorLength` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_tent.ts` | function | `buildCurrentView` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `computePlayerBeamGunStart` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `getHandMultiplier` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `calculateBeamAngles` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `subtractVec3` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `addVec3` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `isZeroVec3` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `scaleVec3` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `addScaledVec3` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `vectorLength` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
 | `packages/client/src/cl_tent.ts` | function | `buildSustains` | non | `CL_ProcessSustain` | `Quake-2-master/client/cl_tent.c and client/cl_newfx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
 | `packages/client/src/cl_tent.ts` | function | `CL_ProcessSustain` | oui | `CL_ProcessSustain` | `Quake-2-master/client/cl_tent.c and client/cl_newfx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
 | `packages/client/src/cl_tent.ts` | function | `runSustainThinker` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

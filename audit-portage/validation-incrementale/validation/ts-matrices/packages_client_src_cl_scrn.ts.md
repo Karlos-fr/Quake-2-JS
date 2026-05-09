@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_scrn.ts`
 - Symboles TS: 86
-- Couvert C/H: 21
-- Reste a auditer: 39
+- Couvert C/H: 29
+- Reste a auditer: 25
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -56,15 +56,15 @@
 | `packages/client/src/cl_scrn.ts` | function | `SCR_BeginLoadingPlaque` | oui | `SCR_BeginLoadingPlaque` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_EndLoadingPlaque` | oui | `SCR_EndLoadingPlaque` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_Loading_f` | oui | `SCR_Loading_f` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_RunConsole` | oui | `SCR_RunConsole` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawNet` | oui | `SCR_DrawNet` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawPause` | oui | `SCR_DrawPause` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawLoading` | oui | `SCR_DrawLoading` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_AddDirtyPoint` | oui | `SCR_AddDirtyPoint` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DirtyScreen` | oui | `SCR_DirtyScreen` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_BuildScreenState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_UpdateScreen` | oui | `SCR_UpdateScreen` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `buildActiveCinematicScreenFrame` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_RunConsole` | oui | `SCR_RunConsole` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawNet` | oui | `SCR_DrawNet` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawPause` | oui | `SCR_DrawPause` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawLoading` | oui | `SCR_DrawLoading` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_AddDirtyPoint` | oui | `SCR_AddDirtyPoint` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DirtyScreen` | oui | `SCR_DirtyScreen` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_BuildScreenState` | oui | `N/A` | `N/A (screen snapshot builder)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_UpdateScreen` | oui | `SCR_UpdateScreen` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `buildActiveCinematicScreenFrame` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_TimeRefresh_f` | oui | `SCR_TimeRefresh_f` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_Sky_f` | oui | `SCR_Sky_f` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_StopCinematic` | oui | `SCR_StopCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
@@ -73,11 +73,11 @@
 | `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCinematic` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCinematicRef` | oui | `SCR_DrawCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_PlayCinematic` | oui | `SCR_PlayCinematic` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_scrn.ts` | function | `buildCenterPrintSnapshot` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `buildLoadingSnapshot` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `buildPauseSnapshot` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_CalcVrect` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_scrn.ts` | function | `buildNetSnapshot` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_scrn.ts` | function | `buildCenterPrintSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `buildLoadingSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `buildPauseSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_CalcVrect` | non | `SCR_CalcVrect` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `buildNetSnapshot` | non | `N/A` | `N/A (screen snapshot helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_scrn.ts` | function | `countCenterLines` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_scrn.ts` | function | `resolveConfigstring` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_scrn.ts` | function | `resolveImageStat` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

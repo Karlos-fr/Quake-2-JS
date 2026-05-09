@@ -385,6 +385,8 @@ export interface client_sustain_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime state)
  * Category: New
  * Purpose: Preserve one transient temp light event such as `CL_Flashlight`.
  *
@@ -402,6 +404,8 @@ export interface client_temp_light_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime state)
  * Category: New
  * Purpose: Preserve one transient force-wall effect segment.
  *
@@ -416,6 +420,8 @@ export interface client_force_wall_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime state)
  * Category: New
  * Purpose: Group the persistent temporary-entity arrays ported from `cl_tent.c`.
  *
@@ -436,6 +442,8 @@ export interface client_tent_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime state)
  * Category: New
  * Purpose: Preserve the client-side screen and HUD transient state used by `cl_scrn.c`.
  *
@@ -464,6 +472,8 @@ export interface client_screen_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime state)
  * Category: New
  * Purpose: Store the active Quake II sky configstrings in a structured client state block.
  *
@@ -512,6 +522,8 @@ export interface client_cinematic_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime state)
  * Category: New
  * Purpose: Preserve the client-side precache traversal state used by `CL_RequestNextDownload`.
  *
@@ -672,6 +684,8 @@ export interface client_static_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime bundle)
  * Category: New
  * Purpose: Expose the minimal client runtime bundle used by early client message parsing.
  *
@@ -909,6 +923,8 @@ export function createClientSustain(): client_sustain_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized transient temp light slot.
  *
@@ -928,6 +944,8 @@ export function createClientTempLight(): client_temp_light_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized transient force-wall slot.
  *
@@ -944,6 +962,8 @@ export function createClientForceWall(): client_force_wall_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create the persistent temp-entity state arrays ported from `cl_tent.c`.
  *
@@ -966,6 +986,8 @@ export function createClientTentState(): client_tent_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized client screen state compatible with early `cl_scrn.c` ports.
  *
@@ -1009,6 +1031,8 @@ export function createClientScreenState(): client_screen_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized structured client sky state.
  *
@@ -1024,6 +1048,8 @@ export function createClientSkyState(): client_sky_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized client cinematic state.
  *
@@ -1054,6 +1080,8 @@ export function createClientCinematicState(): client_cinematic_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized client level state compatible with early parser ports.
  *
@@ -1124,6 +1152,8 @@ export function createClientState(): client_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized persistent client static state.
  *
@@ -1158,6 +1188,8 @@ export function createClientStatic(): client_static_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized client precache traversal state.
  *
@@ -1174,6 +1206,8 @@ export function createClientPrecacheState(): client_precache_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create the minimal client parsing runtime bundle used by current parser ports.
  *

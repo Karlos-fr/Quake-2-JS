@@ -3959,12 +3959,24 @@ function isTextInputTarget(target: EventTarget | null): boolean {
     || target instanceof HTMLSelectElement;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas helper)
+ * Category: New
+ * Purpose: Keep the browser fallback canvas on the fixed Quake II logical viewport.
+ */
 function resizeCanvas(page: FullGamePage): void {
   page.canvas.width = LOGICAL_WIDTH;
   page.canvas.height = LOGICAL_HEIGHT;
   page.context.imageSmoothingEnabled = false;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web viewport adapter)
+ * Category: New
+ * Purpose: Select the visible browser viewport layer for game, frontend, loading and canvas fallback frames.
+ */
 function syncFullGameViewportVisibility(runtime: FullGameRuntime, page: FullGamePage): void {
   const attractLoopMenuOverlay = shouldDrawAttractLoopMenuOverlay(runtime);
   const loadingOverlayVisible = runtime.mode === "loading"
@@ -3995,6 +4007,12 @@ function syncFullGameViewportVisibility(runtime: FullGameRuntime, page: FullGame
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web canvas helper)
+ * Category: New
+ * Purpose: Clear the logical fallback canvas before replaying the ported screen draw commands.
+ */
 function clearCanvas(page: FullGamePage): void {
   page.context.imageSmoothingEnabled = false;
   page.context.fillStyle = "#000";
@@ -4006,6 +4024,12 @@ function clearOverlayCanvas(page: FullGamePage): void {
   page.context.clearRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web pointer-lock helper)
+ * Category: New
+ * Purpose: Reset browser-only mouse-look bookkeeping without changing the ported input state.
+ */
 function resetFullGameMouseLook(runtime: FullGameRuntime): void {
   runtime.mouse.pointerLocked = false;
   runtime.mouse.pointerLockEscapeArmed = false;
@@ -4013,6 +4037,12 @@ function resetFullGameMouseLook(runtime: FullGameRuntime): void {
   runtime.mouse.dragging = false;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web pointer-lock adapter)
+ * Category: Adapter
+ * Purpose: Leave browser mouse-look capture when gameplay focus moves back to menu, console or page focus.
+ */
 function releaseFullGameMouseLook(runtime: FullGameRuntime, page: FullGamePage): void {
   const wasLocked = isFullGamePointerLocked(page);
   resetFullGameMouseLook(runtime);
@@ -4021,6 +4051,12 @@ function releaseFullGameMouseLook(runtime: FullGameRuntime, page: FullGamePage):
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web pointer-lock adapter)
+ * Category: Adapter
+ * Purpose: Request browser pointer lock only while the ported runtime is accepting gameplay input.
+ */
 function requestFullGamePointerLock(runtime: FullGameRuntime, page: FullGamePage, eventTarget?: EventTarget | null): void {
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
@@ -4043,6 +4079,12 @@ function requestFullGamePointerLock(runtime: FullGameRuntime, page: FullGamePage
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web mouse-look adapter)
+ * Category: Adapter
+ * Purpose: Convert browser mouse movement into Quake view-angle updates during active gameplay capture.
+ */
 function handleMouseMove(event: MouseEvent, runtime: FullGameRuntime, page: FullGamePage): void {
   if (
     runtime.mode !== "game"
@@ -4061,11 +4103,23 @@ function handleMouseMove(event: MouseEvent, runtime: FullGameRuntime, page: Full
   applyFullGameMouseLook(runtime, event.movementX, event.movementY);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web pointer-lock helper)
+ * Category: New
+ * Purpose: Recognize whether the browser lock is held by the full-game viewport.
+ */
 function isFullGamePointerLocked(page: FullGamePage): boolean {
   const locked = document.pointerLockElement;
   return locked !== null && page.gameViewport.contains(locked);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web mouse-look helper)
+ * Category: New
+ * Purpose: Keep drag-based browser mouse-look active only while the pointer remains inside the game viewport.
+ */
 function isFullGameMouseLookActive(runtime: FullGameRuntime, page: FullGamePage, event: MouseEvent): boolean {
   if (!runtime.mouse.lookActive) {
     return false;
@@ -4084,6 +4138,12 @@ function isFullGameMouseLookActive(runtime: FullGameRuntime, page: FullGamePage,
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web mouse-look adapter)
+ * Category: Adapter
+ * Purpose: Apply browser movement deltas through the ported mouse cvars to the client view angles.
+ */
 function applyFullGameMouseLook(runtime: FullGameRuntime, movementX: number, movementY: number): void {
   const sensitivity = Cvar_VariableValue(runtime.menu.cvar, "sensitivity") || 3;
   const yaw = Cvar_VariableValue(runtime.menu.cvar, "m_yaw") || 0.022;

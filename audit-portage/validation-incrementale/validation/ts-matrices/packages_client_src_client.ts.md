@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/client.ts`
 - Symboles TS: 57
-- Couvert C/H: 19
-- Reste a auditer: 35
+- Couvert C/H: 24
+- Reste a auditer: 13
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -31,18 +31,18 @@
 | `packages/client/src/client.ts` | interface | `client_explosion_t` | oui | `explosion_t` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H | Storage type lives in `client.ts`; behavior remains validated through `cl_tent.ts`. |
 | `packages/client/src/client.ts` | interface | `client_laser_t` | oui | `laser_t` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H | Storage type lives in `client.ts`; behavior remains validated through `cl_tent.ts`. |
 | `packages/client/src/client.ts` | interface | `client_sustain_t` | oui | `cl_sustain` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/client.ts` | interface | `client_temp_light_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_force_wall_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_tent_state_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_screen_state_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_sky_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_cinematic_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_precache_state_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_state_t` | oui | `client_state_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/client.ts` | enum | `connstate_t` | oui | `connstate_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/client.ts` | enum | `dltype_t` | oui | `dltype_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/client.ts` | interface | `client_static_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `ClientRuntime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/client.ts` | interface | `client_temp_light_t` | oui | `N/A` | `N/A (local runtime state)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | interface | `client_force_wall_t` | oui | `N/A` | `N/A (local runtime state)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | interface | `client_tent_state_t` | oui | `N/A` | `N/A (local runtime state)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | interface | `client_screen_state_t` | oui | `N/A` | `N/A (local runtime state)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | interface | `client_sky_t` | oui | `N/A` | `N/A (local runtime state)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | interface | `client_cinematic_t` | oui | `cinematics_t` | `Quake-2-master/client/cl_cin.c` | Ported | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `client_precache_state_t` | oui | `N/A` | `N/A (local runtime state)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | interface | `client_state_t` | oui | `client_state_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | enum | `connstate_t` | oui | `connstate_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | enum | `dltype_t` | oui | `dltype_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `client_static_t` | oui | `client_static_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `ClientRuntime` | oui | `N/A` | `N/A (local runtime bundle)` | New |  | Non applicable | Valide |  |
 | `packages/client/src/client.ts` | function | `createFrame` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/client.ts` | function | `createCentity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/client.ts` | function | `createClientinfo` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
@@ -54,15 +54,15 @@
 | `packages/client/src/client.ts` | function | `createClientTentEntity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/client.ts` | function | `createClientLaser` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/client.ts` | function | `createClientSustain` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientTempLight` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientForceWall` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientTentState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientScreenState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientSkyState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientCinematicState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientStatic` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientPrecacheState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientRuntime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/client.ts` | function | `createClientTempLight` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientForceWall` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientTentState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientScreenState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientSkyState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientCinematicState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientStatic` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientPrecacheState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientRuntime` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
 | `packages/client/src/client.ts` | function | `createKbutton` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/client.ts` | function | `createUsercmd` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

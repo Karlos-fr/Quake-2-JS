@@ -3,8 +3,8 @@
 ## Etat
 
 - Statut: En cours
-- Dernier lot traite: `handleKeyUp`, `handlePointerDown`, `handlePointerLockChange`, `routeFullGameEscapeToClient`, `handleMouseButton`, `handleMouseWheel`, `mapMouseButton`, `isTextInputTarget`, `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey`
-- Verdict: 8 symboles `Valide` dans `full-game.ts`; 3 symboles `Partiel` car absents de `full-game.ts` et deplaces dans `apps/web/src/full-game-keymap.ts`.
+- Dernier lot traite: `resizeCanvas`, `syncFullGameViewportVisibility`, `clearCanvas`, `resetFullGameMouseLook`, `releaseFullGameMouseLook`, `requestFullGamePointerLock`, `handleMouseMove`, `isFullGamePointerLocked`, `isFullGameMouseLookActive`, `applyFullGameMouseLook`
+- Verdict: 10 symboles `Valide`; viewport/canvas classes `New`, pointer-lock et mouse-look classes `New` ou `Adapter` selon ownership navigateur.
 
 ## Preuves de la session
 
@@ -27,6 +27,10 @@
 - En-tetes ajoutes dans `apps/web/src/full-game.ts` pour `handleKeyUp`, `handlePointerDown`, `handlePointerLockChange`, `routeFullGameEscapeToClient`, `handleMouseButton`, `handleMouseWheel`, `mapMouseButton` et `isTextInputTarget`.
 - Croisement C/H/ownership: les proprietaires restent `packages/client/src/keys.ts` pour `Key_Event` et les constantes `K_ESCAPE`, `K_MOUSE*`, `K_MWHEEL*`; les matrices `client_keys.c.md` et `client_keys.h.md` les marquent `Valide`. Le lot web convertit les evenements DOM et appelle `Key_Event` sans revendiquer ces portages.
 - Ecart de matrice: `mapDomKey`, `mapFunctionKey` et `mapPrintableDomKey` ne sont plus des symboles de `apps/web/src/full-game.ts`; la logique de keymap est dans `apps/web/src/full-game-keymap.ts` via `mapFullGameDomKey`, appelee par `full-game.ts`. Lignes marquees `Partiel` dans la matrice de ce fichier, a reprendre hors lot/fichier si l'index TS doit etre regenere.
+- Checklist TS appliquee au lot viewport/mouse-look: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web canvas helper)`, `N/A (web viewport adapter)`, `N/A (web pointer-lock helper)`, `N/A (web pointer-lock adapter)`, `N/A (web mouse-look helper)` et `N/A (web mouse-look adapter)`, categories `New` ou `Adapter`, absence de matrice C/H liee.
+- En-tetes ajoutes dans `apps/web/src/full-game.ts` pour `resizeCanvas`, `syncFullGameViewportVisibility`, `clearCanvas`, `resetFullGameMouseLook`, `releaseFullGameMouseLook`, `requestFullGamePointerLock`, `handleMouseMove`, `isFullGamePointerLocked`, `isFullGameMouseLookActive` et `applyFullGameMouseLook`.
+- Croisement C/H/ownership: les proprietaires restent `packages/client/src/cl_input.ts` pour `CL_AdjustAngles`/creation des commandes et `packages/client/src/cl_main.ts` pour les cvars `sensitivity`, `m_yaw`, `m_pitch`; le lot web adapte les deltas DOM/pointer-lock vers l'etat client porte sans revendiquer ces portages.
+- Recherche de doublons/ownership: les symboles du lot ne sont definis que dans `apps/web/src/full-game.ts`; aucun doublon de portage proprietaire ni mauvais package detecte.
 
 ## Jugement integration
 
@@ -48,6 +52,9 @@
 - Runtime: lot keyup/souris integre comme adapter; keyup, boutons souris, molette et Escape synthetique passent par `Key_Event`, puis `executeRuntimeCommandBuffer`, sans remplacer le port `keys.c`.
 - apps/web: applicable et integre; les listeners DOM `keyup`, `pointerdown`, `pointerlockchange`, `mousedown`, `mouseup` et `wheel` branchent ces adapters depuis `bootstrap`.
 - renderer-three: non applicable justifie pour ce lot; aucun rendu visible n'est produit directement, le lot ne fait que router les entrees navigateur vers runtime/client.
+- Runtime: lot viewport/mouse-look integre comme adapter; les cvars portees `sensitivity`, `m_yaw` et `m_pitch` pilotent les deltas souris, et les viewangles restent ceux du `ClientRuntime` consommes ensuite par les commandes/prediction client.
+- apps/web: applicable et integre; `resize`, `mousemove`, `blur`, les transitions menu/game et la boucle `frame` branchent le canvas, la visibilite des viewports et la capture souris dans le meme host.
+- renderer-three: applicable indirectement pour le viewport; `syncFullGameViewportVisibility` choisit entre game/frontend/canvas, tandis que le rendu visible reste produit par `full-game-render-loop` et `renderer-three`.
 
 ## Tests lances
 
@@ -67,7 +74,11 @@
 - `npm run verify:full-game:input-bindings` passe.
 - `npm run verify:full-game:authoritative-input` passe.
 - `npm run typecheck` passe.
+- `npm run typecheck` passe.
+- `npm run verify:full-game:input-bindings` passe.
+- `npm run verify:full-game:authoritative-input` passe.
+- `npm run verify:full-game:three-renderer` passe.
 
 ## Prochain lot recommande
 
-Traiter le bloc viewport/mouse-look suivant dans `apps/web/src/full-game.ts`: `resizeCanvas`, `syncFullGameViewportVisibility`, `clearCanvas`, `resetFullGameMouseLook`, `releaseFullGameMouseLook`, `requestFullGamePointerLock`, `handleMouseMove`, `isFullGamePointerLocked`, `isFullGameMouseLookActive`, `applyFullGameMouseLook`. Reprendre separement les lignes `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey` lors de la validation de `apps/web/src/full-game-keymap.ts` ou apres regeneration de la matrice TS.
+Traiter le bloc final suivant dans `apps/web/src/full-game.ts`: `createNoopQglBindings`, `createFullGameRefImports`, `requireFullGameRefCvar`, `appendLog`. Reprendre separement les lignes `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey` lors de la validation de `apps/web/src/full-game-keymap.ts` ou apres regeneration de la matrice TS.

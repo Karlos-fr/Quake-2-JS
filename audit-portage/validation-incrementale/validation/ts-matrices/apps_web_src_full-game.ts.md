@@ -5,7 +5,7 @@
 - Fichier TS: `apps/web/src/full-game.ts`
 - Symboles TS: 94
 - Couvert C/H: 0
-- Reste a auditer: 14
+- Reste a auditer: 4
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -89,16 +89,16 @@
 | `apps/web/src/full-game.ts` | function | `mapDomKey` | non | `N/A` | `N/A (moved to web input keymap)` | New |  | TS sans lien source | Partiel | Symbole absent de `full-game.ts`; logique remplacee par `mapFullGameDomKey` dans `apps/web/src/full-game-keymap.ts`. |
 | `apps/web/src/full-game.ts` | function | `mapFunctionKey` | non | `N/A` | `N/A (moved to web input keymap)` | New |  | TS sans lien source | Partiel | Symbole absent de `full-game.ts`; helper present dans `apps/web/src/full-game-keymap.ts`. |
 | `apps/web/src/full-game.ts` | function | `mapPrintableDomKey` | non | `N/A` | `N/A (moved to web input keymap)` | New |  | TS sans lien source | Partiel | Symbole absent de `full-game.ts`; helper present dans `apps/web/src/full-game-keymap.ts`. |
-| `apps/web/src/full-game.ts` | function | `resizeCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `syncFullGameViewportVisibility` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `clearCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `resetFullGameMouseLook` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `releaseFullGameMouseLook` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `requestFullGamePointerLock` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `handleMouseMove` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `isFullGamePointerLocked` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `isFullGameMouseLookActive` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `applyFullGameMouseLook` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game.ts` | function | `resizeCanvas` | non | `N/A` | `N/A (web canvas helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `syncFullGameViewportVisibility` | non | `N/A` | `N/A (web viewport adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `clearCanvas` | non | `N/A` | `N/A (web canvas helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `resetFullGameMouseLook` | non | `N/A` | `N/A (web pointer-lock helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `releaseFullGameMouseLook` | non | `N/A` | `N/A (web pointer-lock adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `requestFullGamePointerLock` | non | `N/A` | `N/A (web pointer-lock adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `handleMouseMove` | non | `N/A` | `N/A (web mouse-look adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `isFullGamePointerLocked` | non | `N/A` | `N/A (web pointer-lock helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `isFullGameMouseLookActive` | non | `N/A` | `N/A (web mouse-look helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `applyFullGameMouseLook` | non | `N/A` | `N/A (web mouse-look adapter)` | Adapter |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `createNoopQglBindings` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `createFullGameRefImports` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `requireFullGameRefCvar` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

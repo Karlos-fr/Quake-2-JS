@@ -893,6 +893,8 @@ function createHeatbeamRender(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Build the current logical view values needed by player-beam reconstruction.
  */
@@ -927,6 +929,8 @@ function buildCurrentView(runtime: ClientRuntime): ClientViewValues {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Rebuild the player beam gun start from the current and previous player gun offsets.
  */
@@ -950,6 +954,8 @@ function computePlayerBeamGunStart(runtime: ClientRuntime, view: ClientViewValue
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Convert the `hand` cvar value into the original beam-side multiplier.
  */
@@ -964,6 +970,8 @@ function getHandMultiplier(runtime: ClientRuntime): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Convert one beam direction vector into Quake-style beam angles.
  */
@@ -998,6 +1006,8 @@ function calculateBeamAngles(dist: vec3_t, lightningStyle: boolean): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Subtract one vector from another by value.
  */
@@ -1006,6 +1016,8 @@ function subtractVec3(a: vec3_t, b: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Add two vectors by value.
  */
@@ -1014,6 +1026,8 @@ function addVec3(a: vec3_t, b: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Test whether a vector matches the zero vector exactly.
  */
@@ -1022,6 +1036,8 @@ function isZeroVec3(vector: vec3_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Scale one vector by a scalar by value.
  */
@@ -1030,6 +1046,8 @@ function scaleVec3(vector: vec3_t, scalar: number): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Add one scaled direction vector to a base vector by value.
  */
@@ -1042,6 +1060,8 @@ function addScaledVec3(base: vec3_t, direction: vec3_t, scalar: number): vec3_t 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Compute the Euclidean length of one vector.
  */
