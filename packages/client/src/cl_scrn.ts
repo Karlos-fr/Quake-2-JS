@@ -1294,14 +1294,14 @@ export function SCR_DrawHudRef(
 /**
  * Original name: SCR_DrawCrosshair
  * Source: client/cl_view.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Draws the selected crosshair picture centered in the current rendered viewport.
  *
  * Porting notes:
- * - Lives in the HUD/ref path so the split Three.js runtime still emits the original `ref.DrawPic` call.
+ * - Proprietary port lives in `packages/client/src/view.ts`; this helper adapts it for the HUD/ref path.
  */
 export function SCR_DrawCrosshairRef(
   runtime: ClientRuntime,

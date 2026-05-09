@@ -1381,6 +1381,12 @@ export function CL_Nukeblast(runtime: ClientRuntime, self: client_sustain_t): vo
 
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Build one reusable trail descriptor between two positions.
+ */
 function createTrailEffect(kind: string, start: vec3_t, end: vec3_t, color: number, spacing: number): ClientActionEffect {
   return {
     category: "particle",
@@ -1392,6 +1398,12 @@ function createTrailEffect(kind: string, start: vec3_t, end: vec3_t, color: numb
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Compute a private dot product for local particle placement math.
+ */
 function dotProduct(a: vec3_t, b: vec3_t): number {
   return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
 }
@@ -1434,6 +1446,12 @@ function vectoangles2(value1: vec3_t): vec3_t {
   return [-pitch, yaw, 0];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Allocate one particle from the client runtime free list for local runtime-effect paths.
+ */
 function allocParticle(runtime: ClientRuntime): cparticle_t | null {
   if (runtime.cl.free_particles < 0) {
     return null;
@@ -1447,6 +1465,12 @@ function allocParticle(runtime: ClientRuntime): cparticle_t | null {
   return particle;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Allocate or recycle one dynamic light for local runtime-effect paths.
+ */
 function allocDlight(runtime: ClientRuntime, key: number): ClientRuntime["cl"]["dlights"][number] {
   if (key !== 0) {
     for (const dlight of runtime.cl.dlights) {
@@ -1469,6 +1493,12 @@ function allocDlight(runtime: ClientRuntime, key: number): ClientRuntime["cl"]["
   return dlight;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Clear a dynamic-light slot before local runtime-effect reuse.
+ */
 function resetDlight(dlight: ClientRuntime["cl"]["dlights"][number], key: number): void {
   dlight.key = key;
   dlight.color = [0, 0, 0];
@@ -1479,6 +1509,12 @@ function resetDlight(dlight: ClientRuntime["cl"]["dlights"][number], key: number
   dlight.minlight = 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Return `base + direction * scalar` for local particle math.
+ */
 function addScaledVector(base: vec3_t, direction: vec3_t, scalar: number): vec3_t {
   return [
     base[0] + direction[0] * scalar,
@@ -1487,10 +1523,22 @@ function addScaledVector(base: vec3_t, direction: vec3_t, scalar: number): vec3_
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Return `a - b` for local trail vector math.
+ */
 function subtractVec3(a: vec3_t, b: vec3_t): vec3_t {
   return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Normalize one local vector in place and return its original length.
+ */
 function normalizeVectorCopy(vector: vec3_t): number {
   const length = Math.sqrt((vector[0] * vector[0]) + (vector[1] * vector[1]) + (vector[2] * vector[2]));
   if (length === 0) {
@@ -1503,10 +1551,22 @@ function normalizeVectorCopy(vector: vec3_t): number {
   return length;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Preserve positive floating-point modulo behavior for heatbeam stepping.
+ */
 function floatMod(value: number, divisor: number): number {
   return value - (Math.floor(value / divisor) * divisor);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Build one normalized random direction for local particle scatter.
+ */
 function normalizeRandomDirection(): vec3_t {
   const dir: vec3_t = [crand(), crand(), crand()];
   const length = Math.sqrt((dir[0] * dir[0]) + (dir[1] * dir[1]) + (dir[2] * dir[2]));

@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Symboles TS: 124
-- Couvert C/H: 18
-- Reste a auditer: 86
+- Couvert C/H: 25
+- Reste a auditer: 69
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -47,23 +47,23 @@
 | `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui | `CL_ItemRespawnParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
 | `packages/client/src/cl_fx.ts` | function | `CL_ItemRespawnParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui | `CL_ExplosionParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BigTeleportParticles` | oui | `CL_BigTeleportParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BigTeleportParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BigTeleportParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlasterParticles` | oui | `CL_BlasterParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlasterParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlasterParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlasterTrail` | oui | `CL_BlasterTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlasterTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BlasterTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_QuadTrail` | oui | `CL_QuadTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_FlagTrail` | oui | `CL_FlagTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_DiminishingTrail` | oui | `CL_DiminishingTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_DiminishingTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_DiminishingTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui | `CL_ExplosionParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_ExplosionParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BigTeleportParticles` | oui | `CL_BigTeleportParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BigTeleportParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BigTeleportParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlasterParticles` | oui | `CL_BlasterParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlasterParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlasterParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlasterTrail` | oui | `CL_BlasterTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlasterTrail` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BlasterTrail` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_QuadTrail` | oui | `CL_QuadTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_FlagTrail` | oui | `CL_FlagTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_DiminishingTrail` | oui | `CL_DiminishingTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_DiminishingTrail` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_DiminishingTrail` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
 | `packages/client/src/cl_fx.ts` | function | `MakeNormalVectors` | oui | `MakeNormalVectors` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_fx.ts` | function | `CL_RocketTrail` | oui | `CL_RocketTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_fx.ts` | function | `CL_RocketTrail` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

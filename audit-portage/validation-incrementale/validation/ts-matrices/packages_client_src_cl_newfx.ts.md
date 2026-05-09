@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_newfx.ts`
 - Symboles TS: 73
-- Couvert C/H: 57
-- Reste a auditer: 15
+- Couvert C/H: 58
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -67,18 +67,18 @@
 | `packages/client/src/cl_newfx.ts` | function | `CL_MonsterPlasma_Shell` | oui | `CL_MonsterPlasma_Shell` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_newfx.ts` | function | `CL_Widowbeamout` | oui | `CL_Widowbeamout` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_newfx.ts` | function | `CL_Nukeblast` | oui | `CL_Nukeblast` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/cl_newfx.ts` | function | `createTrailEffect` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `MakeNormalVectors` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `normalizeVector` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `crossProduct` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `dotProduct` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `vectoangles2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `allocParticle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `allocDlight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `resetDlight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `addScaledVector` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `normalizeVectorCopy` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `floatMod` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `crand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_newfx.ts` | function | `normalizeRandomDirection` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/cl_newfx.ts` | function | `createTrailEffect` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `MakeNormalVectors` | non | `MakeNormalVectors` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Import externe | Non applicable | Import depuis `cl_fx.ts`; proprietaire C/H `MakeNormalVectors` deja valide dans `client_cl_fx.c.md`. |
+| `packages/client/src/cl_newfx.ts` | function | `normalizeVector` | non | `N/A` | `N/A (stale generated row)` | New |  | Symbole absent du fichier | Non applicable | Absent de `cl_newfx.ts`; helper prive existant seulement dans `cl_fx.ts`. |
+| `packages/client/src/cl_newfx.ts` | function | `crossProduct` | non | `N/A` | `N/A (stale generated row)` | New |  | Symbole absent du fichier | Non applicable | Absent de `cl_newfx.ts`; helper prive existant seulement dans `cl_fx.ts`. |
+| `packages/client/src/cl_newfx.ts` | function | `dotProduct` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `vectoangles2` | non | `vectoangles2` | `Quake-2-master/client/cl_newfx.c` | Ported | [`client_cl_newfx.c.md`](../matrices/client_cl_newfx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_newfx.ts` | function | `allocParticle` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `allocDlight` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide | Helper local non exporte; le portage proprietaire de `CL_AllocDlight` reste `cl_fx.ts`. |
+| `packages/client/src/cl_newfx.ts` | function | `resetDlight` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `addScaledVector` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `normalizeVectorCopy` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `floatMod` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |
+| `packages/client/src/cl_newfx.ts` | function | `crand` | non | `crand` | `Quake-2-master/qcommon/common.c` | Adapter | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Import externe | Non applicable | Import depuis `qcommon`; proprietaire C/H `crand` deja valide dans `qcommon_common.c.md` et `qcommon_qcommon.h.md`. |
+| `packages/client/src/cl_newfx.ts` | function | `normalizeRandomDirection` | non | `N/A` | `N/A (local helper)` | New |  | TS local sans lien source | Valide |  |

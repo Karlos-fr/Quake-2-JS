@@ -42,15 +42,74 @@ import {
 } from "../../qcommon/src/index.js";
 import { UPDATE_BACKUP } from "../../qcommon/src/index.js";
 
+/**
+ * Original name: MAX_PARSE_ENTITIES
+ * Source: client/client.h
+ * Category: Ported
+ */
 export const MAX_PARSE_ENTITIES = 1024;
+
+/**
+ * Original name: CMD_BACKUP
+ * Source: client/client.h
+ * Category: Ported
+ */
 export const CMD_BACKUP = 64;
+
+/**
+ * Original name: MAX_CLIENTWEAPONMODELS
+ * Source: client/client.h
+ * Category: Ported
+ */
 export const MAX_CLIENTWEAPONMODELS = 20;
+
+/**
+ * Original name: MAX_EXPLOSIONS
+ * Source: client/cl_tent.c
+ * Category: Ported
+ */
 export const MAX_EXPLOSIONS = 32;
+
+/**
+ * Original name: MAX_BEAMS
+ * Source: client/cl_tent.c
+ * Category: Ported
+ */
 export const MAX_BEAMS = 32;
+
+/**
+ * Original name: MAX_LASERS
+ * Source: client/cl_tent.c
+ * Category: Ported
+ */
 export const MAX_LASERS = 32;
+
+/**
+ * Original name: MAX_SUSTAINS
+ * Source: client/client.h
+ * Category: Ported
+ */
 export const MAX_SUSTAINS = 32;
+
+/**
+ * Original name: MAX_DLIGHTS
+ * Source: client/ref.h
+ * Category: Adapter
+ */
 export const MAX_DLIGHTS = 32;
+
+/**
+ * Original name: MAX_PARTICLES
+ * Source: client/ref.h
+ * Category: Adapter
+ */
 export const MAX_PARTICLES = 4096;
+
+/**
+ * Original name: INSTANT_PARTICLE
+ * Source: client/client.h
+ * Category: Ported
+ */
 export const INSTANT_PARTICLE = -10000.0;
 
 /**
@@ -73,7 +132,7 @@ export interface client_lightstyle_t {
 
 /**
  * Original name: cdlight_t
- * Source: client/client.h and client/cl_fx.c
+ * Source: client/client.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -95,8 +154,8 @@ export interface client_dlight_t {
 }
 
 /**
- * Original name: cparticle_t
- * Source: client/client.h and client/cl_fx.c
+ * Original name: particle_s
+ * Source: client/client.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -212,7 +271,11 @@ export interface clientinfo_t {
 }
 
 /**
- * Category: New
+ * Original name: beam_t
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
  * Purpose: Preserve one client-side temporary beam slot modeled after `beam_t`.
  *
  * Constraints:
@@ -229,7 +292,11 @@ export interface client_beam_t {
 }
 
 /**
- * Category: New
+ * Original name: entity_t
+ * Source: client/ref.h
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
  * Purpose: Preserve the render-facing `entity_t` subset embedded inside `explosion_t` and `laser_t`.
  *
  * Constraints:
@@ -249,7 +316,11 @@ export interface client_tent_entity_t {
 }
 
 /**
- * Category: New
+ * Original name: explosion_t
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
  * Purpose: Preserve one client-side temporary explosion slot modeled after `explosion_t`.
  *
  * Constraints:
@@ -266,7 +337,11 @@ export interface client_explosion_t {
 }
 
 /**
- * Category: New
+ * Original name: laser_t
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
  * Purpose: Preserve one client-side temporary laser slot modeled after `laser_t`.
  *
  * Constraints:
@@ -283,7 +358,7 @@ export interface client_laser_t {
 }
 
 /**
- * Original name: cl_sustain_t
+ * Original name: cl_sustain
  * Source: client/client.h
  * Category: Ported
  * Fidelity level: Close

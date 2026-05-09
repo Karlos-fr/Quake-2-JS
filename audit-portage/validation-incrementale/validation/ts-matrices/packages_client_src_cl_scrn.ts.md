@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_scrn.ts`
 - Symboles TS: 86
-- Couvert C/H: 13
-- Reste a auditer: 48
+- Couvert C/H: 21
+- Reste a auditer: 39
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -47,15 +47,15 @@
 | `packages/client/src/cl_scrn.ts` | function | `SCR_DrawLayoutRef` | oui | `SCR_DrawLayout` | `Quake-2-master/client/cl_scrn.c` | Adapter | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Doublon resolu | Valide | Adapter `refexport_t`; proprietaire portage: `SCR_DrawLayout`. |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_BuildHudDrawCommands` | oui | `N/A` | `N/A (screen draw-command composer)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_DrawHudRef` | oui | `N/A` | `N/A (renderer adapter)` | New |  | TS sans lien source | Valide |  |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCrosshairRef` | oui | `SCR_DrawCrosshair` | `Quake-2-master/client/cl_view.c` | Ported | [`client_cl_view.c.md`](../matrices/client_cl_view.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_scrn.ts` | function | `CL_AddNetgraph` | oui | `CL_AddNetgraph` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DebugGraph` | oui | `SCR_DebugGraph` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawDebugGraph` | oui | `SCR_DrawDebugGraph` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_CenterPrint` | oui | `SCR_CenterPrint` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_CheckDrawCenterString` | oui | `SCR_CheckDrawCenterString` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_BeginLoadingPlaque` | oui | `SCR_BeginLoadingPlaque` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_EndLoadingPlaque` | oui | `SCR_EndLoadingPlaque` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_scrn.ts` | function | `SCR_Loading_f` | oui | `SCR_Loading_f` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawCrosshairRef` | oui | `SCR_DrawCrosshair` | `Quake-2-master/client/cl_view.c` | Adapter | [`client_cl_view.c.md`](../matrices/client_cl_view.c.md) | Doublon resolu | Valide | Adapter `refexport_t`; proprietaire portage: `packages/client/src/view.ts` `SCR_DrawCrosshair`. |
+| `packages/client/src/cl_scrn.ts` | function | `CL_AddNetgraph` | oui | `CL_AddNetgraph` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DebugGraph` | oui | `SCR_DebugGraph` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_DrawDebugGraph` | oui | `SCR_DrawDebugGraph` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_CenterPrint` | oui | `SCR_CenterPrint` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_CheckDrawCenterString` | oui | `SCR_CheckDrawCenterString` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_BeginLoadingPlaque` | oui | `SCR_BeginLoadingPlaque` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_EndLoadingPlaque` | oui | `SCR_EndLoadingPlaque` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_scrn.ts` | function | `SCR_Loading_f` | oui | `SCR_Loading_f` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_RunConsole` | oui | `SCR_RunConsole` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_DrawNet` | oui | `SCR_DrawNet` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_scrn.ts` | function | `SCR_DrawPause` | oui | `SCR_DrawPause` | `Quake-2-master/client/cl_scrn.c` | Ported | [`client_cl_scrn.c.md`](../matrices/client_cl_scrn.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |

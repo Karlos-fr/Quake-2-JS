@@ -3768,6 +3768,12 @@ function isConsoleToggleDomKey(event: KeyboardEvent): boolean {
     || event.key === "²";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input adapter)
+ * Category: Adapter
+ * Purpose: Route DOM keyup events into the ported key system while preserving browser-only pointer-lock escape handling.
+ */
 function handleKeyUp(event: KeyboardEvent, runtime: FullGameRuntime, page: FullGamePage): void {
   if (isTextInputTarget(event.target)) {
     return;
@@ -3811,6 +3817,12 @@ function handleKeyUp(event: KeyboardEvent, runtime: FullGameRuntime, page: FullG
   executeRuntimeCommandBuffer(runtime, page);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web pointer-lock adapter)
+ * Category: Adapter
+ * Purpose: Start browser mouse-look capture for active gameplay without replacing the ported key/input runtime.
+ */
 function handlePointerDown(event: PointerEvent, runtime: FullGameRuntime, page: FullGamePage): void {
   void runtime.audio.unlock();
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
@@ -3822,6 +3834,12 @@ function handlePointerDown(event: PointerEvent, runtime: FullGameRuntime, page: 
   requestFullGamePointerLock(runtime, page, event.target);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web pointer-lock adapter)
+ * Category: Adapter
+ * Purpose: Mirror browser pointer-lock state and route intentional unlocks back through the ported Escape key path.
+ */
 function handlePointerLockChange(runtime: FullGameRuntime, page: FullGamePage): void {
   const shouldRouteEscape = runtime.mouse.pointerLockEscapeArmed
     && shouldRoutePointerUnlockAsEscape(runtime);
@@ -3840,6 +3858,12 @@ function handlePointerLockChange(runtime: FullGameRuntime, page: FullGamePage): 
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input adapter)
+ * Category: Adapter
+ * Purpose: Synthesize the gameplay Escape transition through the ported `Key_Event` dispatcher.
+ */
 function routeFullGameEscapeToClient(runtime: FullGameRuntime, page: FullGamePage): void {
   runtime.mouse.lookActive = false;
   runtime.mouse.dragging = false;
@@ -3863,6 +3887,12 @@ function isFullGameAutomaticLevelLoad(runtime: FullGameRuntime): boolean {
     || (runtime.client.cls.state !== connstate_t.ca_active && runtime.serverHost.hasActiveGameMap());
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input adapter)
+ * Category: Adapter
+ * Purpose: Convert browser mouse button transitions to Quake key events for active gameplay bindings.
+ */
 function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRuntime, page: FullGamePage): void {
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
@@ -3884,6 +3914,12 @@ function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRu
   executeRuntimeCommandBuffer(runtime, page);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input adapter)
+ * Category: Adapter
+ * Purpose: Convert browser wheel movement to the original Quake mouse-wheel key press/release pair.
+ */
 function handleMouseWheel(event: WheelEvent, runtime: FullGameRuntime, page: FullGamePage): void {
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game || event.deltaY === 0) {
     return;
@@ -3896,6 +3932,12 @@ function handleMouseWheel(event: WheelEvent, runtime: FullGameRuntime, page: Ful
   executeRuntimeCommandBuffer(runtime, page);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input helper)
+ * Category: New
+ * Purpose: Map DOM mouse button numbers to the Quake key constants owned by `keys.ts`.
+ */
 function mapMouseButton(event: MouseEvent): number | null {
   switch (event.button) {
     case 0: return K_MOUSE1;
@@ -3905,6 +3947,12 @@ function mapMouseButton(event: MouseEvent): number | null {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web input helper)
+ * Category: New
+ * Purpose: Keep browser text controls from being consumed by the full-game key dispatcher.
+ */
 function isTextInputTarget(target: EventTarget | null): boolean {
   return target instanceof HTMLInputElement
     || target instanceof HTMLTextAreaElement

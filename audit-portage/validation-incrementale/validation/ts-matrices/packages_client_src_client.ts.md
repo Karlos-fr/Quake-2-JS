@@ -4,33 +4,33 @@
 
 - Fichier TS: `packages/client/src/client.ts`
 - Symboles TS: 57
-- Couvert C/H: 0
-- Reste a auditer: 57
+- Couvert C/H: 19
+- Reste a auditer: 35
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/client.ts` | value | `MAX_PARSE_ENTITIES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `CMD_BACKUP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `MAX_CLIENTWEAPONMODELS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `MAX_EXPLOSIONS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `MAX_BEAMS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `MAX_LASERS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `MAX_SUSTAINS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `MAX_DLIGHTS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `MAX_PARTICLES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | value | `INSTANT_PARTICLE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/client.ts` | interface | `client_lightstyle_t` | oui | `clightstyle_t` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/client.ts` | interface | `client_dlight_t` | oui | `cdlight_t` | `Quake-2-master/client/client.h and client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/client.ts` | interface | `cparticle_t` | oui | `cparticle_t` | `Quake-2-master/client/client.h and client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/client.ts` | interface | `kbutton_t` | oui | `kbutton_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/client.ts` | interface | `frame_t` | oui | `frame_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/client.ts` | interface | `centity_t` | oui | `centity_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/client.ts` | interface | `clientinfo_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_beam_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_tent_entity_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_explosion_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_laser_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | interface | `client_sustain_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/client.ts` | value | `MAX_PARSE_ENTITIES` | oui | `MAX_PARSE_ENTITIES` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | value | `CMD_BACKUP` | oui | `CMD_BACKUP` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | value | `MAX_CLIENTWEAPONMODELS` | oui | `MAX_CLIENTWEAPONMODELS` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | value | `MAX_EXPLOSIONS` | oui | `MAX_EXPLOSIONS` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | value | `MAX_BEAMS` | oui | `MAX_BEAMS` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | value | `MAX_LASERS` | oui | `MAX_LASERS` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | value | `MAX_SUSTAINS` | oui | `MAX_SUSTAINS` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | value | `MAX_DLIGHTS` | oui | `MAX_DLIGHTS` | `Quake-2-master/client/ref.h` | Adapter | [`client_ref.h.md`](../matrices/client_ref.h.md) | Ownership suspect | Valide | Canonical ref.h macro owner is `packages/client/src/ref.ts`; this adapter keeps client runtime slot count aligned. |
+| `packages/client/src/client.ts` | value | `MAX_PARTICLES` | oui | `MAX_PARTICLES` | `Quake-2-master/client/ref.h` | Adapter | [`client_ref.h.md`](../matrices/client_ref.h.md) | Ownership suspect | Valide | Canonical ref.h macro owner is `packages/client/src/ref.ts`; this adapter keeps client runtime slot count aligned. |
+| `packages/client/src/client.ts` | value | `INSTANT_PARTICLE` | oui | `INSTANT_PARTICLE` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `client_lightstyle_t` | oui | `clightstyle_t` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `client_dlight_t` | oui | `cdlight_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `cparticle_t` | oui | `particle_s` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `kbutton_t` | oui | `kbutton_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `frame_t` | oui | `frame_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `centity_t` | oui | `centity_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `clientinfo_t` | oui | `clientinfo_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/client.ts` | interface | `client_beam_t` | oui | `beam_t` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H | Storage type lives in `client.ts`; behavior remains validated through `cl_tent.ts`. |
+| `packages/client/src/client.ts` | interface | `client_tent_entity_t` | oui | `entity_t` | `Quake-2-master/client/ref.h` | Adapter | [`client_ref.h.md`](../matrices/client_ref.h.md) | Ownership suspect | Valide | Subset adapter for temp-entity storage; canonical renderer-facing `entity_t` remains in `packages/client/src/ref.ts`. |
+| `packages/client/src/client.ts` | interface | `client_explosion_t` | oui | `explosion_t` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H | Storage type lives in `client.ts`; behavior remains validated through `cl_tent.ts`. |
+| `packages/client/src/client.ts` | interface | `client_laser_t` | oui | `laser_t` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H | Storage type lives in `client.ts`; behavior remains validated through `cl_tent.ts`. |
+| `packages/client/src/client.ts` | interface | `client_sustain_t` | oui | `cl_sustain` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/client.ts` | interface | `client_temp_light_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/client.ts` | interface | `client_force_wall_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/client.ts` | interface | `client_tent_state_t` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

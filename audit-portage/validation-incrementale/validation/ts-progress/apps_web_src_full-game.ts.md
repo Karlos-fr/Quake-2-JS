@@ -3,8 +3,8 @@
 ## Etat
 
 - Statut: En cours
-- Dernier lot traite: `loadPictureCanvas`, `loadGlyphCanvas`, `resolvePictureFile`, `pcxToCanvas`, `handleKeyDown`, `syncFullGameKeyDestination`, `toggleFullGameConsole`, `toggleFullGameConsoleContext`, `printFullGameWebAudioInfo`, `isConsoleToggleDomKey`
-- Verdict: 10 symboles `Valide`; adapters/helpers web assets, input, console et audio debug, sans proprietaire C/H attendu.
+- Dernier lot traite: `handleKeyUp`, `handlePointerDown`, `handlePointerLockChange`, `routeFullGameEscapeToClient`, `handleMouseButton`, `handleMouseWheel`, `mapMouseButton`, `isTextInputTarget`, `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey`
+- Verdict: 8 symboles `Valide` dans `full-game.ts`; 3 symboles `Partiel` car absents de `full-game.ts` et deplaces dans `apps/web/src/full-game-keymap.ts`.
 
 ## Preuves de la session
 
@@ -23,6 +23,10 @@
 - Checklist TS appliquee au lot assets/input: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web canvas asset adapter)`, `N/A (local canvas helper)`, `N/A (web input adapter)`, `N/A (web console adapter)`, `N/A (web audio debug helper)` et `N/A (web input helper)`, categories `Adapter` ou `New`, absence de matrice C/H liee.
 - Croisement C/H/ownership: les proprietaires restent `packages/renderer-three/src/gl_draw.ts` pour `Draw_FindPic`/`Draw_Char`/`Draw_Pic`, `packages/renderer-three/src/gl_image.ts` et `packages/formats/src/pcx.ts` pour le decodage PCX, `packages/client/src/keys.ts` pour `Key_Event`, `packages/client/src/console.ts` pour `Con_ToggleConsole_f` et `packages/client/src/menu-runtime.ts` pour `M_Keydown`. Le lot web route les evenements DOM et convertit des assets vers canvas sans revendiquer ces portages.
 - Recherche de doublons/ownership: les symboles du lot ne sont definis que dans `apps/web/src/full-game.ts`; aucun doublon de portage proprietaire ni mauvais package detecte.
+- Checklist TS appliquee au lot keyup/souris: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web input adapter)`, `N/A (web pointer-lock adapter)` et `N/A (web input helper)`, categories `Adapter` ou `New`, absence de matrice C/H liee pour ces symboles web.
+- En-tetes ajoutes dans `apps/web/src/full-game.ts` pour `handleKeyUp`, `handlePointerDown`, `handlePointerLockChange`, `routeFullGameEscapeToClient`, `handleMouseButton`, `handleMouseWheel`, `mapMouseButton` et `isTextInputTarget`.
+- Croisement C/H/ownership: les proprietaires restent `packages/client/src/keys.ts` pour `Key_Event` et les constantes `K_ESCAPE`, `K_MOUSE*`, `K_MWHEEL*`; les matrices `client_keys.c.md` et `client_keys.h.md` les marquent `Valide`. Le lot web convertit les evenements DOM et appelle `Key_Event` sans revendiquer ces portages.
+- Ecart de matrice: `mapDomKey`, `mapFunctionKey` et `mapPrintableDomKey` ne sont plus des symboles de `apps/web/src/full-game.ts`; la logique de keymap est dans `apps/web/src/full-game-keymap.ts` via `mapFullGameDomKey`, appelee par `full-game.ts`. Lignes marquees `Partiel` dans la matrice de ce fichier, a reprendre hors lot/fichier si l'index TS doit etre regenere.
 
 ## Jugement integration
 
@@ -41,6 +45,9 @@
 - Runtime: lot assets/input integre comme adapter; les touches DOM sont routees vers `Key_Event`, `M_Keydown`, `Con_ToggleConsole_f`, `SCR_StopCinematic` et `SCR_FinishCinematic` portes, sans dupliquer leur comportement.
 - apps/web: applicable et integre; le chargement PCX canvas alimente le fallback canvas et les hooks `refexport_t`, tandis que le keydown global pilote console, menu, cinematic et gameplay depuis `bootstrap`.
 - renderer-three: applicable indirectement; les chemins de rendu Three/ref_gl gardent leurs proprietaires `gl_draw`/`gl_image`, et ce lot fournit seulement les assets canvas de secours et le routage navigateur.
+- Runtime: lot keyup/souris integre comme adapter; keyup, boutons souris, molette et Escape synthetique passent par `Key_Event`, puis `executeRuntimeCommandBuffer`, sans remplacer le port `keys.c`.
+- apps/web: applicable et integre; les listeners DOM `keyup`, `pointerdown`, `pointerlockchange`, `mousedown`, `mouseup` et `wheel` branchent ces adapters depuis `bootstrap`.
+- renderer-three: non applicable justifie pour ce lot; aucun rendu visible n'est produit directement, le lot ne fait que router les entrees navigateur vers runtime/client.
 
 ## Tests lances
 
@@ -57,7 +64,10 @@
 - `npm run verify:full-game:audio-routing` passe.
 - `npm run verify:full-game:three-renderer` passe.
 - `npm run typecheck` passe.
+- `npm run verify:full-game:input-bindings` passe.
+- `npm run verify:full-game:authoritative-input` passe.
+- `npm run typecheck` passe.
 
 ## Prochain lot recommande
 
-Traiter le bloc input suivant: `handleKeyUp`, `handlePointerDown`, `handlePointerLockChange`, `routeFullGameEscapeToClient`, `handleMouseButton`, `handleMouseWheel`, `mapMouseButton`, `isTextInputTarget`, `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey`.
+Traiter le bloc viewport/mouse-look suivant dans `apps/web/src/full-game.ts`: `resizeCanvas`, `syncFullGameViewportVisibility`, `clearCanvas`, `resetFullGameMouseLook`, `releaseFullGameMouseLook`, `requestFullGamePointerLock`, `handleMouseMove`, `isFullGamePointerLocked`, `isFullGameMouseLookActive`, `applyFullGameMouseLook`. Reprendre separement les lignes `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey` lors de la validation de `apps/web/src/full-game-keymap.ts` ou apres regeneration de la matrice TS.

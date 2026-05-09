@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_tent.ts`
 - Symboles TS: 79
-- Couvert C/H: 4
-- Reste a auditer: 42
+- Couvert C/H: 8
+- Reste a auditer: 31
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -46,17 +46,17 @@
 | `packages/client/src/cl_tent.ts` | function | `CL_BuildTEntRefresh` | oui | `CL_AddTEnts` | `Quake-2-master/client/cl_tent.c` | Adapter | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Adapter non proprietaire | Valide | Wrapper structure pour refresh; proprietaire nominal conserve par `CL_AddTEnts`. |
 | `packages/client/src/cl_tent.ts` | function | `CL_AddTEnts` | oui | `CL_AddTEnts` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_tent.ts` | function | `buildBeams` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
-| `packages/client/src/cl_tent.ts` | function | `CL_AddBeams` | oui | `CL_AddBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_tent.ts` | function | `buildPlayerBeams` | non | `CL_AddPlayerBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_tent.ts` | function | `CL_AddPlayerBeams` | oui | `CL_AddPlayerBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_tent.ts` | function | `buildLasers` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `CL_AddLasers` | oui | `CL_AddLasers` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_tent.ts` | function | `buildExplosions` | non | `CL_AddExplosions` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_tent.ts` | function | `CL_AddExplosions` | oui | `CL_AddExplosions` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_tent.ts` | function | `buildTempLights` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `buildForceWalls` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `createBeamRender` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `createHeatbeamRender` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_tent.ts` | function | `CL_AddBeams` | oui | `CL_AddBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `buildPlayerBeams` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_AddPlayerBeams` | oui | `CL_AddPlayerBeams` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `buildLasers` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_AddLasers` | oui | `CL_AddLasers` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `buildExplosions` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_AddExplosions` | oui | `CL_AddExplosions` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `buildTempLights` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `buildForceWalls` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `createBeamRender` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `createHeatbeamRender` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
 | `packages/client/src/cl_tent.ts` | function | `buildCurrentView` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_tent.ts` | function | `computePlayerBeamGunStart` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_tent.ts` | function | `getHandMultiplier` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

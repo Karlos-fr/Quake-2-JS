@@ -5,7 +5,7 @@
 - Fichier TS: `apps/web/src/full-game.ts`
 - Symboles TS: 94
 - Couvert C/H: 0
-- Reste a auditer: 25
+- Reste a auditer: 14
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -78,17 +78,17 @@
 | `apps/web/src/full-game.ts` | function | `toggleFullGameConsoleContext` | non | `N/A` | `N/A (web console adapter)` | Adapter |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `printFullGameWebAudioInfo` | non | `N/A` | `N/A (web audio debug helper)` | New |  | Hors C/H | Valide |  |
 | `apps/web/src/full-game.ts` | function | `isConsoleToggleDomKey` | non | `N/A` | `N/A (web input helper)` | New |  | Hors C/H | Valide |  |
-| `apps/web/src/full-game.ts` | function | `handleKeyUp` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `handlePointerDown` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `handlePointerLockChange` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `routeFullGameEscapeToClient` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `handleMouseButton` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `handleMouseWheel` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `mapMouseButton` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `isTextInputTarget` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `mapDomKey` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `mapFunctionKey` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game.ts` | function | `mapPrintableDomKey` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game.ts` | function | `handleKeyUp` | non | `N/A` | `N/A (web input adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `handlePointerDown` | non | `N/A` | `N/A (web pointer-lock adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `handlePointerLockChange` | non | `N/A` | `N/A (web pointer-lock adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `routeFullGameEscapeToClient` | non | `N/A` | `N/A (web input adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `handleMouseButton` | non | `N/A` | `N/A (web input adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `handleMouseWheel` | non | `N/A` | `N/A (web input adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `mapMouseButton` | non | `N/A` | `N/A (web input helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `isTextInputTarget` | non | `N/A` | `N/A (web input helper)` | New |  | Hors C/H | Valide |  |
+| `apps/web/src/full-game.ts` | function | `mapDomKey` | non | `N/A` | `N/A (moved to web input keymap)` | New |  | TS sans lien source | Partiel | Symbole absent de `full-game.ts`; logique remplacee par `mapFullGameDomKey` dans `apps/web/src/full-game-keymap.ts`. |
+| `apps/web/src/full-game.ts` | function | `mapFunctionKey` | non | `N/A` | `N/A (moved to web input keymap)` | New |  | TS sans lien source | Partiel | Symbole absent de `full-game.ts`; helper present dans `apps/web/src/full-game-keymap.ts`. |
+| `apps/web/src/full-game.ts` | function | `mapPrintableDomKey` | non | `N/A` | `N/A (moved to web input keymap)` | New |  | TS sans lien source | Partiel | Symbole absent de `full-game.ts`; helper present dans `apps/web/src/full-game-keymap.ts`. |
 | `apps/web/src/full-game.ts` | function | `resizeCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `syncFullGameViewportVisibility` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `apps/web/src/full-game.ts` | function | `clearCanvas` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

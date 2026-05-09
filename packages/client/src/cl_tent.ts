@@ -15,7 +15,7 @@
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original temp-entity pipeline.
- * - `tent.ts` is the principal port target for `client/cl_tent.c`.
+ * - `cl_tent.ts` is the principal port target for `client/cl_tent.c`.
  * - `newfx.ts` provides the helpers ported from `client/cl_newfx.c` reused by the temp-entity pipeline.
  * - `effects.ts` stays focused on the routines ported from `client/cl_fx.c`.
  * - `refresh.ts` only consumes the structured refresh output built here.
@@ -534,9 +534,9 @@ export function CL_AddBeams(runtime: ClientRuntime): ClientBeamRender[] {
 }
 
 /**
- * Original name: CL_AddPlayerBeams
- * Source: client/cl_tent.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
+ * Category: New
  * Fidelity level: Close
  *
  * Behavior:
@@ -581,6 +581,8 @@ export function CL_AddPlayerBeams(runtime: ClientRuntime): ClientBeamRender[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Convert active laser slots into refresh-facing beam records.
  */
@@ -623,9 +625,9 @@ export function CL_AddLasers(runtime: ClientRuntime): ClientBeamRender[] {
 }
 
 /**
- * Original name: CL_AddExplosions
- * Source: client/cl_tent.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
+ * Category: New
  * Fidelity level: Close
  *
  * Behavior:
@@ -725,6 +727,8 @@ export function CL_AddExplosions(runtime: ClientRuntime): {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Convert active transient temp lights into refresh-facing dynamic lights.
  */
@@ -741,6 +745,8 @@ function buildTempLights(runtime: ClientRuntime): ClientDynamicLight[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Convert active force-wall slots into refresh-facing segment records.
  */
@@ -756,6 +762,8 @@ function buildForceWalls(runtime: ClientRuntime): ClientForceWallRender[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Build a generic beam render record from one active beam slot.
  */
@@ -810,6 +818,8 @@ function createBeamRender(runtime: ClientRuntime, slot: client_beam_t, kind: "be
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local refresh helper)
  * Category: New
  * Purpose: Rebuild one heatbeam render record using the current logical view and gun-offset path.
  */
