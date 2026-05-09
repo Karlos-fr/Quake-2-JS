@@ -254,6 +254,12 @@ function CreditsFunc(context: ClientMenuContext): void {
   M_Menu_Credits_f(context);
 }
 
+/**
+ * Original name: idcredits
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const idcredits = [
   "+QUAKE II BY ID SOFTWARE",
   "",
@@ -344,6 +350,12 @@ export const idcredits = [
   null
 ];
 
+/**
+ * Original name: xatcredits
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const xatcredits = [
   "+QUAKE II MISSION PACK: THE RECKONING",
   "+BY",
@@ -484,6 +496,12 @@ export const xatcredits = [
   null
 ];
 
+/**
+ * Original name: roguecredits
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const roguecredits = [
   "+QUAKE II MISSION PACK 2: GROUND ZERO",
   "+BY",
@@ -597,6 +615,15 @@ export const roguecredits = [
   null
 ];
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Extracts the source-style CR/LF credits parsing used by `M_Menu_Credits_f`.
+ */
 function parseCreditsBuffer(context: ClientMenuContext, text: string): Array<string | null> {
   const lines = context.state.creditsIndex;
   lines.fill(null);
@@ -637,6 +664,15 @@ function parseCreditsBuffer(context: ClientMenuContext, text: string): Array<str
   return lines;
 }
 
+/**
+ * Original name: Developer_searchpath
+ * Source: Quake-2-master/qcommon/files.c
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Porting notes:
+ * - Local menu adapter to the host hook; the owning port is in `packages/filesystem/src/files.ts`.
+ */
 function Developer_searchpath(context: ClientMenuContext, who: number): number {
   return context.hooks.getDeveloperSearchpath?.(who) ?? 0;
 }

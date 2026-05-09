@@ -182,6 +182,12 @@ export function M_Menu_Multiplayer_f(context: ClientMenuContext): void {
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Keep discovered server addresses independent from caller-owned buffers.
+ */
 function cloneNetAdr(adr: netadr_t): netadr_t {
   return {
     type: adr.type,
@@ -394,11 +400,26 @@ export function M_Menu_JoinServer_f(context: ClientMenuContext): void {
   );
 }
 
+/**
+ * Original name: Developer_searchpath
+ * Source: Quake-2-master/qcommon/files.c
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Porting notes:
+ * - Routed through the menu context hook because filesystem search paths are owned outside this menu module.
+ */
 function Developer_searchpath(context: ClientMenuContext, who: number): number {
   return context.hooks.getDeveloperSearchpath?.(who) ?? 0;
 }
 
-function ClampCvar(min: number, max: number, value: number): number {
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Preserve the start-server menu's non-negative numeric clamp without claiming the shared ClampCvar port.
+ */
+function clampStartServerValue(min: number, max: number, value: number): number {
   if (value < min) {
     return min;
   }
@@ -408,6 +429,12 @@ function ClampCvar(min: number, max: number, value: number): number {
   return value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Convert menu field buffers to C atoi-like integer values.
+ */
 function parseMenuInt(value: string): number {
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) ? parsed : 0;
@@ -458,12 +485,24 @@ function RulesChangeFunc(context: ClientMenuContext): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Extract the map short name from the formatted menu label.
+ */
 function getStartMapName(context: ClientMenuContext): string {
   const selected = context.state.mapnames[context.state.s_startmap_list.curvalue] ?? "";
   const newline = selected.indexOf("\n");
   return newline >= 0 ? selected.slice(newline + 1) : selected;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Isolate the original cooperative spawn-spot table used by StartServerActionFunc.
+ */
 function getCoopStartSpot(startmap: string): string | null {
   switch (startmap.toLowerCase()) {
     case "bunk1":
@@ -497,9 +536,9 @@ function StartServerActionFunc(context: ClientMenuContext): void {
   const fraglimit = parseMenuInt(context.state.s_fraglimit_field.buffer);
   const rules = context.state.s_rules_box.curvalue;
 
-  Cvar_SetValue(context.cvar, "maxclients", ClampCvar(0, maxclients, maxclients));
-  Cvar_SetValue(context.cvar, "timelimit", ClampCvar(0, timelimit, timelimit));
-  Cvar_SetValue(context.cvar, "fraglimit", ClampCvar(0, fraglimit, fraglimit));
+  Cvar_SetValue(context.cvar, "maxclients", clampStartServerValue(0, maxclients, maxclients));
+  Cvar_SetValue(context.cvar, "timelimit", clampStartServerValue(0, timelimit, timelimit));
+  Cvar_SetValue(context.cvar, "fraglimit", clampStartServerValue(0, fraglimit, fraglimit));
   Cvar_Set(context.cvar, "hostname", context.state.s_hostname_field.buffer);
 
   if (rules < 2 || Developer_searchpath(context, 2) !== 2) {
@@ -525,6 +564,12 @@ function StartServerActionFunc(context: ClientMenuContext): void {
   M_ForceMenuOff(context);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Convert the host-provided maps.lst entries into StartServer_MenuInit labels.
+ */
 function buildMapNames(context: ClientMenuContext): string[] {
   const entries = context.hooks.getMapList?.() ?? null;
 
@@ -706,7 +751,20 @@ export function M_Menu_StartServer_f(context: ClientMenuContext): void {
   );
 }
 
+/**
+ * Original name: yes_no_names
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const yes_no_names = ["no", "yes", null];
+
+/**
+ * Original name: teamplay_names
+ * Source: client/menu.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const teamplay_names = ["disabled", "by skin", "by model", null];
 
 /**
@@ -803,6 +861,12 @@ export function DMFlagCallback(context: ClientMenuContext, self: unknown): void 
   context.state.s_dmoptions_menu.statusbar = context.state.dmoptions_statusbar;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Share repeated DM options spin-control initialization.
+ */
 function initDmSpin(
   context: ClientMenuContext,
   item: menulist_s,
@@ -954,6 +1018,12 @@ export function DownloadCallback(context: ClientMenuContext, self: unknown): voi
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Share repeated download options spin-control initialization.
+ */
 function initDownloadSpin(
   context: ClientMenuContext,
   item: menulist_s,

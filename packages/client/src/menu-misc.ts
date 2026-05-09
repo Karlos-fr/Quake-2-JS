@@ -12,7 +12,7 @@ import { VID_MenuDraw, VID_MenuInit, VID_MenuKey } from "./vid.js";
 
 /**
  * Original name: M_Menu_Video_f
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -30,7 +30,7 @@ export function M_Menu_Video_f(context: ClientMenuContext): void {
 
 /**
  * Original name: M_Quit_Key
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -59,7 +59,7 @@ export function M_Quit_Key(context: ClientMenuContext, key: number): string | nu
 
 /**
  * Original name: M_Quit_Draw
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -77,7 +77,7 @@ export function M_Quit_Draw(context: ClientMenuContext): void {
 
 /**
  * Original name: M_Menu_Quit_f
- * Source: client/menu.c
+ * Source: Quake-2-master/client/menu.c
  * Category: Ported
  * Fidelity level: Strict
  *

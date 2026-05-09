@@ -3407,10 +3407,10 @@ function createMuzzleFlash2Definition(
 }
 
 /**
- * Original name: CL_ParticleEffect / CL_SmokeAndFlash
+ * Original name: CL_ParseMuzzleFlash2
  * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Emits the original secondary muzzle-flash particle and smoke markers for later backend handling.
@@ -3452,10 +3452,10 @@ function appendMuzzleFlash2Particles(
 }
 
 /**
- * Original name: S_StartSound
+ * Original name: CL_ParseMuzzleFlash2
  * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Emits the original monster muzzle-flash sound side effect when one exists.
@@ -3490,6 +3490,8 @@ function appendMuzzleFlash2Sounds(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Test whether one flash number belongs to an inclusive original C range.
  */
@@ -3498,6 +3500,8 @@ function isBetween(value: number, min: number, max: number): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Test whether one flash number belongs to an explicit original C case list.
  */
@@ -3506,6 +3510,8 @@ function matchesAny(value: number, candidates: readonly number[]): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (muzzleflash metadata helper)
  * Category: New
  * Purpose: Reproduce the randomized machinegun sound selection used by `CL_ParseMuzzleFlash`.
  */
@@ -3519,6 +3525,8 @@ function randomMachinegunSound(volume = 1): { name: string; channel: number; att
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Reset one client dynamic-light slot back to its zeroed allocation state.
  */
@@ -3533,6 +3541,8 @@ function resetDlight(dlight: ClientRuntime["cl"]["dlights"][number], key: number
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Allocate one particle slot from the free list and prepend it to the active list.
  *
@@ -3553,6 +3563,8 @@ function allocParticle(runtime: ClientRuntime): cparticle_t | null {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Distinguish the runtime overload of particle helpers from pure descriptor mode.
  */
@@ -3771,6 +3783,8 @@ function spawnTrapParticles(runtime: ClientRuntime, adjustedOrigin: vec3_t): voi
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
  * Category: New
  * Purpose: Compute `a + scalar * direction` by value.
  */
@@ -3783,6 +3797,8 @@ function addScaledVector(base: vec3_t, direction: vec3_t, scalar: number): vec3_
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
  * Category: New
  * Purpose: Subtract two vectors by value.
  */
@@ -3791,6 +3807,8 @@ function subtractVec3(a: vec3_t, b: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
  * Category: New
  * Purpose: Return a normalized copy of the given vector and its original length.
  */
@@ -3807,6 +3825,8 @@ function normalizeVectorCopy(vector: vec3_t): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local math helper)
  * Category: New
  * Purpose: Reproduce floating-point modulo behavior for the heatbeam ring offset.
  */
@@ -3815,6 +3835,8 @@ function floatMod(value: number, divisor: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (temp-entity metadata helper)
  * Category: New
  * Purpose: Map the original `TE_SPLASH` splash type byte to the particle color used by `cl_tent.c`.
  */
@@ -3827,6 +3849,8 @@ function mapSplashColor(splashType: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (temp-entity sound metadata helper)
  * Category: New
  * Purpose: Reproduce the random `spark5/6/7` selection used by `TE_SPLASH`.
  */
@@ -3842,6 +3866,8 @@ function randomSplashSparkSound(): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (temp-entity sound metadata helper)
  * Category: New
  * Purpose: Reproduce the `ric1/ric2/ric3` random impact sound selection.
  */
@@ -3860,6 +3886,8 @@ function randomRicochetSound(): string | null {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
  * Category: New
  * Purpose: Build one normalized random direction vector.
  */
@@ -3876,6 +3904,8 @@ function normalizeRandomDirection(): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Reset one client particle slot back to its zeroed allocation state.
  */

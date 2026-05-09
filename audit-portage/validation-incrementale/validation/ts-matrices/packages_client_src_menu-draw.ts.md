@@ -4,15 +4,15 @@
 
 - Fichier TS: `packages/client/src/menu-draw.ts`
 - Symboles TS: 7
-- Couvert C/H: 0
-- Reste a auditer: 7
+- Couvert C/H: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/menu-draw.ts` | function | `M_Banner` | oui | `M_Banner` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-draw.ts` | function | `M_DrawCharacter` | oui | `M_DrawCharacter` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-draw.ts` | function | `M_Print` | oui | `M_Print` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-draw.ts` | function | `M_PrintWhite` | oui | `M_PrintWhite` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-draw.ts` | function | `M_DrawPic` | oui | `M_DrawPic` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-draw.ts` | function | `M_DrawCursor` | oui | `M_DrawCursor` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-draw.ts` | function | `M_DrawTextBox` | oui | `M_DrawTextBox` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/menu-draw.ts` | function | `M_Banner` | oui | `M_Banner` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-draw.ts` | function | `M_DrawCharacter` | oui | `M_DrawCharacter` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-draw.ts` | function | `M_Print` | oui | `M_Print` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-draw.ts` | function | `M_PrintWhite` | oui | `M_PrintWhite` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-draw.ts` | function | `M_DrawPic` | oui | `M_DrawPic` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-draw.ts` | function | `M_DrawCursor` | oui | `M_DrawCursor` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-draw.ts` | function | `M_DrawTextBox` | oui | `M_DrawTextBox` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |

@@ -59,10 +59,25 @@ import {
 import type { ClientInputContext } from "./cl_input.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local session default)
+ * Category: New
+ * Purpose: Lift standalone local-session spawns enough to match the expected player hull placement.
+ */
 const DEFAULT_SPAWN_LIFT = 24;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local session default)
+ * Category: New
+ * Purpose: Seed the standalone local-session view height before regular prediction owns the field.
+ */
 const DEFAULT_VIEWHEIGHT = 22;
 
 /**
+ * Original name: N/A
+ * Source: N/A (local session coordinator)
  * Category: New
  * Purpose: Preserve the runtime-side state that drives the standalone local prediction/gameplay loop.
  *
@@ -81,6 +96,8 @@ export interface LocalClientSessionState<TSnapshot> {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local session coordinator)
  * Category: New
  * Purpose: Describe the movement/attack input snapshot consumed by the standalone local session step.
  *
@@ -94,6 +111,8 @@ export interface LocalClientSessionInputState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local session coordinator)
  * Category: New
  * Purpose: Describe the snapshot callbacks required to keep moving BSP submodels interpolated outside the adapter.
  *
@@ -106,6 +125,8 @@ export interface LocalClientSessionSnapshotHooks<TSnapshot> {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local session coordinator)
  * Category: New
  * Purpose: Keep standalone-demo conveniences explicit instead of making every local session inherit them.
  */
@@ -116,6 +137,8 @@ export interface LocalClientSessionOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local session coordinator)
  * Category: New
  * Purpose: Build the standalone local client/gameplay session state for one BSP map without leaving the bootstrap in a web adapter.
  *
@@ -189,6 +212,8 @@ export function initializeLocalClientSession<TSnapshot>(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local session coordinator)
  * Category: New
  * Purpose: Advance one standalone local client/gameplay frame without involving any browser or renderer objects.
  *

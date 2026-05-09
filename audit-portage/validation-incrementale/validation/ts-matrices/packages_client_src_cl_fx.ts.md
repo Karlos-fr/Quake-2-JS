@@ -5,7 +5,7 @@
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Symboles TS: 124
 - Couvert C/H: 38
-- Reste a auditer: 18
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -114,22 +114,22 @@
 | `packages/client/src/cl_fx.ts` | function | `getMuzzleFlashRadius` | non | `CL_ParseMuzzleFlash` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `cl_parse.ts`. |
 | `packages/client/src/cl_fx.ts` | function | `getMuzzleFlash2Definition` | non | `CL_ParseMuzzleFlash2` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `cl_parse.ts`. |
 | `packages/client/src/cl_fx.ts` | function | `createMuzzleFlash2Definition` | non | `N/A` | `N/A (muzzleflash2 metadata helper)` | New |  | TS sans lien source | Valide |  |
-| `packages/client/src/cl_fx.ts` | function | `appendMuzzleFlash2Particles` | non | `CL_ParticleEffect / CL_SmokeAndFlash` | `Quake-2-master/client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_fx.ts` | function | `appendMuzzleFlash2Sounds` | non | `S_StartSound` | `Quake-2-master/client/cl_fx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_fx.ts` | function | `isBetween` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `matchesAny` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `randomMachinegunSound` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `resetDlight` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `allocParticle` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `isClientRuntime` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_fx.ts` | function | `appendMuzzleFlash2Particles` | non | `CL_ParseMuzzleFlash2` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `CL_ParseMuzzleFlash2` dans `cl_parse.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `appendMuzzleFlash2Sounds` | non | `CL_ParseMuzzleFlash2` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter prive; le proprietaire C/H reste `CL_ParseMuzzleFlash2` dans `cl_parse.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `isBetween` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `matchesAny` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `randomMachinegunSound` | non | `N/A` | `N/A (muzzleflash metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `resetDlight` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `allocParticle` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `isClientRuntime` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
 | `packages/client/src/cl_fx.ts` | function | `spawnFlyParticles` | non | `CL_FlyParticles` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Helper runtime prive; le proprietaire C/H reste `CL_FlyParticles`. |
-| `packages/client/src/cl_fx.ts` | function | `addScaledVector` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `subtractVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `normalizeVectorCopy` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `floatMod` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `mapSplashColor` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `randomSplashSparkSound` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `randomRicochetSound` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `crand` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `normalizeRandomDirection` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `resetParticle` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_fx.ts` | function | `addScaledVector` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `normalizeVectorCopy` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `floatMod` | non | `N/A` | `N/A (local math helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `mapSplashColor` | non | `N/A` | `N/A (temp-entity metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `randomSplashSparkSound` | non | `N/A` | `N/A (temp-entity sound metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `randomRicochetSound` | non | `N/A` | `N/A (temp-entity sound metadata helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `crand` | non | `crand` | `Quake-2-master/qcommon/common.c` | Adapter | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Import externe | Non applicable | Import depuis `packages/qcommon/src/qcommon.ts`; le proprietaire C/H n'est pas `cl_fx.ts`. |
+| `packages/client/src/cl_fx.ts` | function | `normalizeRandomDirection` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/client/src/cl_fx.ts` | function | `resetParticle` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |

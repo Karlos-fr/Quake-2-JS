@@ -4,12 +4,12 @@
 
 - Fichier TS: `packages/client/src/menu-misc.ts`
 - Symboles TS: 4
-- Couvert C/H: 0
-- Reste a auditer: 4
+- Couvert C/H: 4
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/client/src/menu-misc.ts` | function | `M_Menu_Video_f` | oui | `M_Menu_Video_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-misc.ts` | function | `M_Quit_Key` | oui | `M_Quit_Key` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-misc.ts` | function | `M_Quit_Draw` | oui | `M_Quit_Draw` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/menu-misc.ts` | function | `M_Menu_Quit_f` | oui | `M_Menu_Quit_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/client/src/menu-misc.ts` | function | `M_Menu_Video_f` | oui | `M_Menu_Video_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-misc.ts` | function | `M_Quit_Key` | oui | `M_Quit_Key` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-misc.ts` | function | `M_Quit_Draw` | oui | `M_Quit_Draw` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/menu-misc.ts` | function | `M_Menu_Quit_f` | oui | `M_Menu_Quit_f` | `Quake-2-master/client/menu.c` | Ported | [`client_menu.c.md`](../matrices/client_menu.c.md) | Couvert C/H | Couvert C/H |  |
