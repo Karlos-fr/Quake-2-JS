@@ -160,4 +160,10 @@ serverHost.frame(100);
 assert.equal(serverHost.currentMapRequest, "base2", "server host should update currentMapRequest after automatic gamemap changes");
 assert.equal(serverHost.hasActiveGameMap(), true, "automatic gamemap should leave the server in an active game state");
 
+Cbuf_AddText(cmd, "gamemap \"end.cin+victory.pcx\"\n");
+Cbuf_Execute(cmd);
+assert.equal(serverHost.hasActiveGameMap(), false, "server cinematic media should not be reported as an active game map");
+assert.equal(serverHost.hasActiveServerMedia(), true, "server cinematic media should be exposed to the full-game runtime");
+assert.equal(serverHost.hasActiveAttractLoop(), false, "level-end server media should not be treated as the attract loop");
+
 console.log("quake2-full-game-server-host: ok");

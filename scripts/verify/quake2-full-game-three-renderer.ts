@@ -74,6 +74,9 @@ assert.ok(source.includes("drawLoadingFrame"), "full-game should render the load
 assert.ok(source.includes("drawCenteredPicture(page, runtime, loadingCommand.pic)"), "full-game should draw the original loading picture centered on the canvas fallback");
 assert.ok(source.includes("drawFullGamePictureRef("), "full-game should draw the loading picture centered through the frontend ref_gl adapter");
 assert.ok(source.includes("drawLoadingFrame(runtime, page);"), "full-game should keep the loading plaque visible while the Three renderer is pending");
+assert.ok(source.includes("runtime.serverHost.hasActiveServerMedia() && runtime.client.cl.cinematic.cinematictime > 0"), "full-game should enter cinematic mode for server-driven .cin/.pcx media");
+assert.ok(source.includes("if (runtime.serverHost.hasActiveServerMedia()) {\n      if (runtime.serverHost.hasActiveAttractLoop()) {"), "full-game should distinguish attract-loop media from level-end media");
+assert.ok(source.includes("SCR_FinishCinematic(runtime.client);\n      }\n      return;\n    }\n\n    const elapsed = runtime.client.cls.realtime - runtime.cinematicStartedAt;"), "level-end server media should finish through the server nextserver path without stopping the final pcx locally");
 assert.ok(source.includes("forceGameInputForLevelLoad"), "full-game should force gameplay input during authoritative level loads");
 assert.ok(source.includes("isAuthoritativeLevelLoading"), "full-game should track automatic authoritative level loads");
 assert.ok(source.includes("shouldDrawFullGameLoadingFrame"), "full-game should prioritize the loading plaque over menu drawing");

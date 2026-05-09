@@ -77,6 +77,7 @@ export interface FullGameServerHost {
   currentMapRequest: string | null;
   hasActiveServer: () => boolean;
   hasActiveGameMap: () => boolean;
+  hasActiveServerMedia: () => boolean;
   hasActiveAttractLoop: () => boolean;
   frame: (milliseconds: number) => void;
   writeLocalClientFrame: (client: ClientRuntime, hooks?: ClientParseHooks) => boolean;
@@ -247,11 +248,8 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
     },
     hasActiveServer: () => svs.initialized && sv.state !== server_state_t.ss_dead && sv.name.length > 0,
     hasActiveGameMap: () => sv.state === server_state_t.ss_game && sv.name.length > 0,
-    hasActiveAttractLoop: () => sv.attractloop && (
-      sv.state === server_state_t.ss_cinematic ||
-      sv.state === server_state_t.ss_demo ||
-      sv.state === server_state_t.ss_pic
-    ),
+    hasActiveServerMedia: () => hasActiveServerMedia(),
+    hasActiveAttractLoop: () => sv.attractloop && hasActiveServerMedia(),
     frame: (milliseconds) => {
       if (!svs.initialized || sv.state === server_state_t.ss_dead) {
         return;
@@ -307,6 +305,14 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
       localClientBegunFor = null;
     }
   };
+
+  function hasActiveServerMedia(): boolean {
+    return (
+      sv.state === server_state_t.ss_cinematic ||
+      sv.state === server_state_t.ss_demo ||
+      sv.state === server_state_t.ss_pic
+    );
+  }
 
   function ensureLocalServerClient(): client_t | null {
     if (!svs.initialized || sv.state !== server_state_t.ss_game || !sv.name) {

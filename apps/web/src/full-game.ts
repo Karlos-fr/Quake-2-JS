@@ -2397,12 +2397,20 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
   runtime.flushClientOutput();
   runtime.updateClientAudio();
 
-  if (runtime.serverHost.hasActiveAttractLoop() && runtime.client.cl.cinematic.cinematictime > 0) {
+  if (runtime.serverHost.hasActiveServerMedia() && runtime.client.cl.cinematic.cinematictime > 0) {
+    if (runtime.mode !== "cinematic") {
+      runtime.cinematicStartedAt = runtime.client.cls.realtime;
+    }
     runtime.markAuthoritativeGameActive();
     runtime.mode = "cinematic";
     runtime.client.cl.screen.scr_draw_loading = 0;
-    page.status.textContent = "Boucle de demonstration Quake II.";
-    page.status.style.display = "block";
+    if (runtime.serverHost.hasActiveAttractLoop()) {
+      page.status.textContent = "Boucle de demonstration Quake II.";
+      page.status.style.display = "block";
+    } else {
+      page.status.textContent = "";
+      page.status.style.display = "none";
+    }
     return;
   }
 
@@ -2493,9 +2501,12 @@ function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void 
   drawCapturedCommands(page, runtime);
 
   if (wasActive && runtime.client.cl.cinematic.cinematictime <= 0) {
-    if (runtime.serverHost.hasActiveAttractLoop()) {
+    if (runtime.serverHost.hasActiveServerMedia()) {
       runtime.audio.stopRaw();
       runtime.mode = "loading";
+      if (runtime.serverHost.hasActiveAttractLoop()) {
+        runtime.client.cl.screen.scr_draw_loading = 0;
+      }
       return;
     }
 
@@ -3734,16 +3745,24 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   }
 
   if (runtime.mode === "cinematic") {
-    if (runtime.serverHost.hasActiveAttractLoop()) {
-      SCR_StopCinematic(runtime.client, {
-        onCinematicSoundRestart: () => {
-          runtime.audio.stopRaw();
-        }
-      });
-      SCR_FinishCinematic(runtime.client);
-      runtime.audio.stopRaw();
-      runtime.mode = "loading";
-      runtime.client.cl.screen.scr_draw_loading = 0;
+    if (runtime.serverHost.hasActiveServerMedia()) {
+      if (runtime.serverHost.hasActiveAttractLoop()) {
+        SCR_StopCinematic(runtime.client, {
+          onCinematicSoundRestart: () => {
+            runtime.audio.stopRaw();
+          }
+        });
+        SCR_FinishCinematic(runtime.client);
+        runtime.audio.stopRaw();
+        runtime.mode = "loading";
+        runtime.client.cl.screen.scr_draw_loading = 0;
+        return;
+      }
+
+      const elapsed = runtime.client.cls.realtime - runtime.cinematicStartedAt;
+      if (elapsed > 1000 || key === K_ESCAPE || key === K_ENTER || key === K_SPACE) {
+        SCR_FinishCinematic(runtime.client);
+      }
       return;
     }
 

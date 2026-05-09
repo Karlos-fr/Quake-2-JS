@@ -1,6 +1,6 @@
 /**
  * File: quake2-three-world-alpha.ts
- * Purpose: Verify that translucent BSP surfaces produced by the ref_gl world path are not lightmapped in the Three.js adapter.
+ * Purpose: Verify that translucent BSP surfaces produced by the ref_gl world path keep alpha in the Three.js adapter.
  *
  * This file is not a direct source port.
  * It is a targeted integration harness for `gl_rsurf.c -> gl-world-scene-adapter.ts`.
@@ -22,7 +22,7 @@ import { createVirtualFilesystem, mountPak } from "../../packages/filesystem/src
 import { createThreeGlWorldSceneAdapter } from "../../packages/renderer-three/src/index.js";
 
 const DEFAULT_PAK_PATH = path.join(process.cwd(), "Quake 2", "baseq2", "pak0.pak");
-const MAP_PATHS = ["maps/base1.bsp", "maps/base2.bsp", "maps/base3.bsp"];
+const MAP_PATHS = ["maps/base1.bsp", "maps/base2.bsp", "maps/base3.bsp", "maps/boss2.bsp"];
 
 main();
 
@@ -41,6 +41,8 @@ function main(): void {
   const filesystem = createVirtualFilesystem();
   mountPak(filesystem, pakBytes, pakPath);
 
+  let checkedAny = false;
+  let checkedBoss2 = false;
   for (const mapPath of MAP_PATHS) {
     if (!findPakEntry(pak, mapPath)) {
       continue;
@@ -57,21 +59,35 @@ function main(): void {
     assert.equal(translucent.material.opacity, expectedAlpha(translucent), `${mapPath} translucent opacity mismatch`);
     assert.equal(translucent.material.lightMap, null, `${mapPath} translucent surfaces should not use lightmaps`);
     assert.equal(translucent.renderOrder > 0, true, `${mapPath} translucent renderOrder mismatch`);
+    if (mapPath === "maps/boss2.bsp") {
+      adapter.update(0, [352, -960, 128]);
+      const visibleBoss2Translucent = findTranslucentSurfaceMesh(adapter.root, true);
+      assert.ok(visibleBoss2Translucent, "boss2 translucent surfaces should be visible from the Jorg arena");
+      assert.equal(visibleBoss2Translucent.material.transparent, true, "boss2 visible translucent material flag mismatch");
+      assert.equal(visibleBoss2Translucent.material.depthWrite, false, "boss2 visible translucent depthWrite mismatch");
+    }
+    checkedAny = true;
+    checkedBoss2 = checkedBoss2 || mapPath === "maps/boss2.bsp";
     console.log(`quake2-three-world-alpha: ok (${mapPath})`);
-    return;
   }
 
-  throw new Error(`Aucune surface translucide trouvee dans ${MAP_PATHS.join(", ")}`);
+  if (!checkedAny) {
+    throw new Error(`Aucune surface translucide trouvee dans ${MAP_PATHS.join(", ")}`);
+  }
+  assert.equal(checkedBoss2, true, "boss2 translucent window surfaces should be verified");
 }
 
 /**
  * Category: New
  * Purpose: Find one BSP mesh configured as an alpha surface by `gl-world-scene-adapter`.
  */
-function findTranslucentSurfaceMesh(root: { traverse: (callback: (object: unknown) => void) => void }): Mesh | null {
+function findTranslucentSurfaceMesh(root: { traverse: (callback: (object: unknown) => void) => void }, visibleOnly = false): Mesh | null {
   let found: Mesh | null = null;
   root.traverse((object) => {
     if (found || !(object instanceof Mesh) || !(object.material instanceof MeshBasicMaterial)) {
+      return;
+    }
+    if (visibleOnly && !object.visible) {
       return;
     }
 
