@@ -184,9 +184,9 @@ export type ClientHudFillCommand = HudFillCommand;
 export type ClientHudDrawCommand = HudDrawCommand | ClientTileClearCommand;
 
 /**
- * Original name: SCR_TileClear / re.DrawTileClear call
- * Source: client/cl_scrn.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
+ * Category: New
  * Fidelity level: Close
  *
  * Behavior:
@@ -206,9 +206,9 @@ export interface ClientTileClearCommand {
 }
 
 /**
- * Original name: SCR_DrawConsole
- * Source: client/cl_scrn.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (renderer-neutral screen DTO)
+ * Category: New
  * Fidelity level: Close
  *
  * Behavior:
@@ -1821,7 +1821,7 @@ export function SCR_TileClear(
 /**
  * Original name: SCR_TileClear
  * Source: client/cl_scrn.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:

@@ -1055,6 +1055,8 @@ export function Con_DrawConsole(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (console/key state sync helper)
  * Category: New
  * Purpose: Keep the key-state console mirrors synchronized with the primary console state.
  *
@@ -1066,6 +1068,8 @@ export function Con_SyncConsoleToKeys(context: ClientConsoleContext): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (console/key state sync helper)
  * Category: New
  * Purpose: Re-apply the key-state scrollback position onto the primary console state before drawing.
  *
@@ -1076,6 +1080,12 @@ export function Con_SyncKeysToConsole(context: ClientConsoleContext): void {
   context.con.display = context.keys.state.con_display;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local console dump helper)
+ * Category: New
+ * Purpose: Serialize console scrollback into the plain-text body consumed by `Con_Dump_f`.
+ */
 function buildConsoleDump(con: console_t): string {
   if (con.linewidth <= 0 || con.totallines <= 0) {
     return "";
@@ -1099,6 +1109,12 @@ function buildConsoleDump(con: console_t): string {
   return lines.length === 0 ? "" : `${lines.join("\n")}\n`;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local console draw helper)
+ * Category: New
+ * Purpose: Build the renderer-neutral download progress row used by `Con_DrawConsole`.
+ */
 function buildDownloadBar(context: ClientConsoleContext): ConsoleTextCommand | null {
   if (!context.client.cls.downloadname || context.client.cls.downloadpercent < 0) {
     return null;
@@ -1146,6 +1162,12 @@ function buildDownloadBar(context: ClientConsoleContext): ConsoleTextCommand | n
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local console draw helper)
+ * Category: New
+ * Purpose: Build the Quake II backscroll marker row used by `Con_DrawConsole`.
+ */
 function buildBackscrollRow(linewidth: number): string {
   const chars = new Array<string>(linewidth).fill(" ");
   for (let x = 0; x < linewidth; x += 4) {
@@ -1154,6 +1176,12 @@ function buildBackscrollRow(linewidth: number): string {
   return chars.join("");
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (menu hook adapter)
+ * Category: New
+ * Purpose: Route the original `M_ForceMenuOff` side effect through the explicit console hooks.
+ */
 function forceMenuOff(context: ClientConsoleContext): void {
   if (context.hooks.M_ForceMenuOff) {
     context.hooks.M_ForceMenuOff(context);
@@ -1164,20 +1192,44 @@ function forceMenuOff(context: ClientConsoleContext): void {
   context.keys.state.console_open = false;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console/key state sync helper)
+ * Category: New
+ * Purpose: Mirror primary console scroll state into the key subsystem compatibility fields.
+ */
 function syncKeyStateFromConsole(context: ClientConsoleContext): void {
   context.keys.state.con_current = context.con.current;
   context.keys.state.con_display = context.con.display;
   context.keys.state.con_totallines = context.con.totallines;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console/key state sync helper)
+ * Category: New
+ * Purpose: Read the current console row from the key-state mirror used by scrollback controls.
+ */
 function getEffectiveCurrent(context: ClientConsoleContext): number {
   return context.keys.state.con_current;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (console/key state sync helper)
+ * Category: New
+ * Purpose: Read the displayed console row from the key-state mirror used by scrollback controls.
+ */
 function getEffectiveDisplay(context: ClientConsoleContext): number {
   return context.keys.state.con_display;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local console text helper)
+ * Category: New
+ * Purpose: Read one wrapped console text-buffer row without exposing buffer indexing to draw code.
+ */
 function readConsoleLine(con: console_t, line: number, trimEnd: boolean): string {
   const row = mod(line, con.totallines);
   const start = row * con.linewidth;
@@ -1185,16 +1237,34 @@ function readConsoleLine(con: console_t, line: number, trimEnd: boolean): string
   return trimEnd ? text.replace(/\s+$/u, "") : text;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (command registration adapter)
+ * Category: New
+ * Purpose: Register a console command only when the shared command runtime does not already own it.
+ */
 function registerConsoleCommand(runtime: CommandRuntime, name: string, handler: () => void): void {
   if (!Cmd_Exists(runtime, name)) {
     Cmd_AddCommand(runtime, name, handler);
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime hook adapter)
+ * Category: New
+ * Purpose: Route console status messages through the injected host print hook.
+ */
 function emitConsolePrint(context: ClientConsoleContext, line: string): void {
   context.hooks.onPrint?.(line);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local console text helper)
+ * Category: New
+ * Purpose: Apply Quake II's alternate console character-bank bit to a JavaScript string.
+ */
 function setHighBit(text: string): string {
   let result = "";
   for (const char of text) {
@@ -1203,6 +1273,12 @@ function setHighBit(text: string): string {
   return result;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local console text helper)
+ * Category: New
+ * Purpose: Remove Quake II's alternate console character-bank bit before plain-text output.
+ */
 function stripHighBit(text: string): string {
   let result = "";
   for (const char of text) {
@@ -1211,10 +1287,22 @@ function stripHighBit(text: string): string {
   return result;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local arithmetic helper)
+ * Category: New
+ * Purpose: Preserve positive modulo semantics for wrapped console buffer indices.
+ */
 function mod(value: number, divisor: number): number {
   return ((value % divisor) + divisor) % divisor;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local overload discriminator)
+ * Category: New
+ * Purpose: Distinguish legacy `console_t` overload calls from full runtime context calls.
+ */
 function isConsoleContext(value: console_t | ClientConsoleContext): value is ClientConsoleContext {
   return "con" in value && "keys" in value && "client" in value;
 }

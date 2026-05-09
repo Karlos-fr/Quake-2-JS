@@ -6,9 +6,9 @@
 
 ## Dernier lot traite
 
-- Lot: `MakeNormalVectors`, `CL_RocketTrail`, `CL_RailTrail`, `CL_IonripperTrail`, `CL_BubbleTrail`, puis leurs surcharges TS presentes.
-- Verdict: couvert C/H pour les cinq symboles proprietaires deja valides dans `client_cl_fx.c.md`; surcharges TS classees `Non applicable`.
-- Corrections: matrice TS mise a jour pour rattacher les proprietaires au statut `Couvert C/H`; surcharges explicitees avec `Original name: N/A`, `Source declaree: N/A (TS overload)`, `Category: New`.
+- Lot: `CL_FlyParticles`, `CL_FlyEffect`, `CL_FlyEffectRuntime`, `CL_BfgParticles`, `CL_TrapParticles`, `CL_BFGExplosionParticles`, `CL_TeleportParticles`, leurs surcharges TS presentes, et le helper runtime prive `spawnFlyParticles`.
+- Verdict: couvert C/H pour les six symboles proprietaires deja valides dans `client_cl_fx.c.md`; `CL_FlyEffectRuntime` et `spawnFlyParticles` classes adapters runtime prives; surcharges TS classees `Non applicable`.
+- Corrections: matrice TS mise a jour pour rattacher les proprietaires au statut `Couvert C/H`, expliciter les surcharges avec `Original name: N/A`, `Source declaree: N/A (TS overload)`, `Category: New`, et lever les faux doublons des adapters.
 - Tests: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
 
 ## Decisions
@@ -23,10 +23,13 @@
 - Les signatures de surcharge TS de `CL_ExplosionParticles`, `CL_BigTeleportParticles`, `CL_BlasterParticles`, `CL_BlasterTrail` et `CL_DiminishingTrail` ne sont pas des portages proprietaires distincts.
 - `MakeNormalVectors`, `CL_RocketTrail`, `CL_RailTrail`, `CL_IonripperTrail` et `CL_BubbleTrail` sont les symboles TS proprietaires attendus pour `client/cl_fx.c`; leurs lignes C/H sont deja `Valide` dans `client_cl_fx.c.md` avec preuves runtime, metadata web/renderer selon les effets concernes.
 - Les signatures de surcharge TS de `CL_RocketTrail`, `CL_RailTrail` et `CL_BubbleTrail` ne sont pas des portages proprietaires distincts.
+- `CL_FlyParticles`, `CL_FlyEffect`, `CL_BfgParticles`, `CL_TrapParticles`, `CL_BFGExplosionParticles` et `CL_TeleportParticles` sont les symboles TS proprietaires attendus pour `client/cl_fx.c`; leurs lignes C/H sont deja `Valide` dans `client_cl_fx.c.md` avec preuves runtime, metadata `apps/web`, particules `renderer-three` et typecheck selon les effets concernes.
+- `CL_FlyEffectRuntime` et `spawnFlyParticles` sont des helpers/adapters runtime prives; ils ne remplacent pas les proprietaires C/H `CL_FlyEffect` et `CL_FlyParticles`.
+- Les signatures de surcharge TS de `CL_FlyParticles`, `CL_BFGExplosionParticles` et `CL_TeleportParticles` ne sont pas des portages proprietaires distincts.
 
 ## Prochain lot recommande
 
-Continuer avec `CL_FlyParticles`, `CL_FlyEffect`, `CL_FlyEffectRuntime`, `CL_BfgParticles`, `CL_TrapParticles`, `CL_BFGExplosionParticles`, `CL_TeleportParticles`, puis leurs surcharges TS si presentes.
+Continuer avec `CL_AddParticles`, `CL_BuildEntityEventEffects`, puis `CL_BuildActionEffects` et les premiers helpers `New` a entete incomplete si le lot reste stable.
 
 ## Blocages
 

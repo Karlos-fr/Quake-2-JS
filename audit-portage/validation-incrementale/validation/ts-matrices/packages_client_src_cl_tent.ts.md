@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_tent.ts`
 - Symboles TS: 79
-- Couvert C/H: 8
-- Reste a auditer: 21
+- Couvert C/H: 11
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -67,24 +67,24 @@
 | `packages/client/src/cl_tent.ts` | function | `scaleVec3` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
 | `packages/client/src/cl_tent.ts` | function | `addScaledVec3` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
 | `packages/client/src/cl_tent.ts` | function | `vectorLength` | non | N/A | N/A (local refresh helper) | New |  | Hors C/H explicite | Valide |  |
-| `packages/client/src/cl_tent.ts` | function | `buildSustains` | non | `CL_ProcessSustain` | `Quake-2-master/client/cl_tent.c and client/cl_newfx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_tent.ts` | function | `CL_ProcessSustain` | oui | `CL_ProcessSustain` | `Quake-2-master/client/cl_tent.c and client/cl_newfx.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/client/src/cl_tent.ts` | function | `runSustainThinker` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `buildSustainRender` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `createImpactExplosion` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `CL_SmokeAndFlash` | oui | `CL_SmokeAndFlash` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_tent.ts` | function | `assignBeam` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `assignPlayerBeam` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `assignLaser` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `assignForceWall` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `assignSteamSustain` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `assignTimedSustain` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `allocateExplosion` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `CL_AllocExplosion` | non | `CL_AllocExplosion` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_tent.ts` | function | `updateExplosionForFrame` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `resetExplosion` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `resetSustain` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `directionByteToVector` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `directionByteToImpactAngles` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `randomAngleDegrees` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_tent.ts` | function | `randomExplosionBaseframe` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/cl_tent.ts` | function | `buildSustains` | non | N/A | N/A (local sustain helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_ProcessSustain` | oui | `CL_ProcessSustain` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `runSustainThinker` | non | N/A | N/A (local sustain helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `buildSustainRender` | non | N/A | N/A (local sustain helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `createImpactExplosion` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_SmokeAndFlash` | oui | `CL_SmokeAndFlash` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `assignBeam` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `assignPlayerBeam` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `assignLaser` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `assignForceWall` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `assignSteamSustain` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `assignTimedSustain` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `allocateExplosion` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `CL_AllocExplosion` | non | `CL_AllocExplosion` | `Quake-2-master/client/cl_tent.c` | Ported | [`client_cl_tent.c.md`](../matrices/client_cl_tent.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_tent.ts` | function | `updateExplosionForFrame` | non | N/A | N/A (local explosion helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `resetExplosion` | non | N/A | N/A (local explosion helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `resetSustain` | non | N/A | N/A (local sustain helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `directionByteToVector` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `directionByteToImpactAngles` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `randomAngleDegrees` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |
+| `packages/client/src/cl_tent.ts` | function | `randomExplosionBaseframe` | non | N/A | N/A (local temp-entity helper) | New |  | Hors C/H explicite | Valide |  |

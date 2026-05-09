@@ -2,9 +2,9 @@
 
 ## Etat
 
-- Statut: En cours
-- Dernier lot traite: `resizeCanvas`, `syncFullGameViewportVisibility`, `clearCanvas`, `resetFullGameMouseLook`, `releaseFullGameMouseLook`, `requestFullGamePointerLock`, `handleMouseMove`, `isFullGamePointerLocked`, `isFullGameMouseLookActive`, `applyFullGameMouseLook`
-- Verdict: 10 symboles `Valide`; viewport/canvas classes `New`, pointer-lock et mouse-look classes `New` ou `Adapter` selon ownership navigateur.
+- Statut: Termine pour les symboles presents dans `apps/web/src/full-game.ts`
+- Dernier lot traite: `createNoopQglBindings`, `createFullGameRefImports`, `requireFullGameRefCvar`, `appendLog`
+- Verdict: 4 symboles `Valide`; helpers ref_gl/log classes `New` ou `Adapter` selon ownership navigateur, sans matrice C/H liee.
 
 ## Preuves de la session
 
@@ -31,6 +31,10 @@
 - En-tetes ajoutes dans `apps/web/src/full-game.ts` pour `resizeCanvas`, `syncFullGameViewportVisibility`, `clearCanvas`, `resetFullGameMouseLook`, `releaseFullGameMouseLook`, `requestFullGamePointerLock`, `handleMouseMove`, `isFullGamePointerLocked`, `isFullGameMouseLookActive` et `applyFullGameMouseLook`.
 - Croisement C/H/ownership: les proprietaires restent `packages/client/src/cl_input.ts` pour `CL_AdjustAngles`/creation des commandes et `packages/client/src/cl_main.ts` pour les cvars `sensitivity`, `m_yaw`, `m_pitch`; le lot web adapte les deltas DOM/pointer-lock vers l'etat client porte sans revendiquer ces portages.
 - Recherche de doublons/ownership: les symboles du lot ne sont definis que dans `apps/web/src/full-game.ts`; aucun doublon de portage proprietaire ni mauvais package detecte.
+- Checklist TS appliquee au lot final: identification TS, export non, `Original name: N/A`, sources declarees `N/A (web ref_gl adapter)`, `N/A (web ref imports adapter)`, `N/A (web ref imports helper)` et `N/A (web log helper)`, categories `New` ou `Adapter`, absence de matrice C/H liee.
+- En-tetes ajoutes dans `apps/web/src/full-game.ts` pour `createNoopQglBindings`, `createFullGameRefImports`, `requireFullGameRefCvar` et `appendLog`.
+- Croisement C/H/ownership: les proprietaires restent `packages/renderer-three/src/ref-gl-host.ts`/`qgl.ts` pour le host ref_gl/QGL et `packages/qcommon/src/cvar.ts` pour la creation de cvars; le lot web fournit uniquement les services navigateur attendus par l'host et ne revendique aucun portage C/H proprietaire.
+- Recherche de doublons/ownership: `createNoopQglBindings` a un homologue local dans `apps/web/src/main.ts`, deja documente comme adapter de page demo; ce n'est pas un doublon de portage C/H. Les autres symboles du lot sont locaux a `apps/web/src/full-game.ts`; aucun mauvais package ni import suspect detecte.
 
 ## Jugement integration
 
@@ -55,6 +59,9 @@
 - Runtime: lot viewport/mouse-look integre comme adapter; les cvars portees `sensitivity`, `m_yaw` et `m_pitch` pilotent les deltas souris, et les viewangles restent ceux du `ClientRuntime` consommes ensuite par les commandes/prediction client.
 - apps/web: applicable et integre; `resize`, `mousemove`, `blur`, les transitions menu/game et la boucle `frame` branchent le canvas, la visibilite des viewports et la capture souris dans le meme host.
 - renderer-three: applicable indirectement pour le viewport; `syncFullGameViewportVisibility` choisit entre game/frontend/canvas, tandis que le rendu visible reste produit par `full-game-render-loop` et `renderer-three`.
+- Runtime: lot final integre comme adapter; `appendLog` couvre uniquement les messages de bootstrap avant console, `createFullGameRefImports` delegue aux cvars qcommon et aux callbacks console sans remplacer le runtime porte.
+- apps/web: applicable et integre; les helpers sont appeles depuis l'assemblage frontend/game renderer et depuis `createFullGameRuntime` pour les logs precoces.
+- renderer-three: applicable et integre comme service host; `createNoopQglBindings` et `createFullGameRefImports` alimentent `createRefGlHost`, tandis que le comportement proprietaire renderer reste dans `packages/renderer-three`.
 
 ## Tests lances
 
@@ -78,7 +85,10 @@
 - `npm run verify:full-game:input-bindings` passe.
 - `npm run verify:full-game:authoritative-input` passe.
 - `npm run verify:full-game:three-renderer` passe.
+- `npm run typecheck` passe.
+- `npm run verify:full-game:three-renderer` passe.
+- `npm run verify:full-game:commands` passe.
 
 ## Prochain lot recommande
 
-Traiter le bloc final suivant dans `apps/web/src/full-game.ts`: `createNoopQglBindings`, `createFullGameRefImports`, `requireFullGameRefCvar`, `appendLog`. Reprendre separement les lignes `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey` lors de la validation de `apps/web/src/full-game-keymap.ts` ou apres regeneration de la matrice TS.
+Aucun lot restant dans `apps/web/src/full-game.ts`. Reprendre separement les lignes `mapDomKey`, `mapFunctionKey`, `mapPrintableDomKey` lors de la validation de `apps/web/src/full-game-keymap.ts` ou apres regeneration de la matrice TS.

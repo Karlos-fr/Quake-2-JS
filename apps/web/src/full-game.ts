@@ -4153,6 +4153,12 @@ function applyFullGameMouseLook(runtime: FullGameRuntime, movementX: number, mov
   runtime.client.cl.viewangles[0] = Math.max(-89, Math.min(89, runtime.client.cl.viewangles[0]));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web ref_gl adapter)
+ * Category: New
+ * Purpose: Provide inert QGL procedures so the ported `ref_gl` host can run under Three.js in the browser.
+ */
 function createNoopQglBindings(): Record<string, unknown> {
   const bindings: Record<string, unknown> = {};
   for (const name of QGL_REQUIRED_PROCEDURES) {
@@ -4171,6 +4177,15 @@ function createNoopQglBindings(): Record<string, unknown> {
   return bindings;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web ref imports adapter)
+ * Category: Adapter
+ * Purpose: Build the browser-side `refimport_t` services consumed by the ported `ref_gl` host.
+ *
+ * Porting notes:
+ * - Cvar operations delegate to qcommon's cvar runtime; this helper does not own C/H renderer behavior.
+ */
 function createFullGameRefImports(onPrint: (message: string) => void): Partial<refimport_t> {
   const cvarRuntime = createCvarRuntime();
   const cvars = new Map<string, cvar_t>();
@@ -4209,6 +4224,12 @@ function createFullGameRefImports(onPrint: (message: string) => void): Partial<r
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web ref imports helper)
+ * Category: New
+ * Purpose: Fail fast if a browser-local ref cvar cannot be created by the qcommon cvar runtime.
+ */
 function requireFullGameRefCvar(cvar: cvar_t | null, name: string): cvar_t {
   if (!cvar) {
     throw new Error(`Unable to create ref cvar ${name}`);
@@ -4216,6 +4237,12 @@ function requireFullGameRefCvar(cvar: cvar_t | null, name: string): cvar_t {
   return cvar;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web log helper)
+ * Category: New
+ * Purpose: Keep early browser bootstrap messages visible before the ported console is ready.
+ */
 function appendLog(page: FullGamePage, line: string): void {
   const next = `${page.log.textContent ?? ""}${line}\n`;
   page.log.textContent = next.split("\n").slice(-8).join("\n");

@@ -2,9 +2,16 @@
 
 - Fichier TS: `packages/client/src/client.ts`
 - Matrice TS: `audit-portage/validation-incrementale/validation/ts-matrices/packages_client_src_client.ts.md`
-- Statut: En cours
+- Statut: Termine
 
 ## Dernier lot valide
+
+Lot du 2026-05-09:
+
+- Symboles traites: `createFrame`, `createCentity`, `createClientinfo`, `createClientLightstyle`, `createClientDlight`, `createCparticle`, `createClientBeam`, `createClientExplosion`, `createClientTentEntity`, `createClientLaser`, `createClientSustain`, `createKbutton`, `createUsercmd`.
+- Preuves C/H: matrices `client_client.h.md`, `client_cl_fx.c.md`, `client_cl_tent.c.md`, `client_ref.h.md` relues indirectement via les structures proprietaires deja validees; les factories sont `Category: New` et n'ont pas de matrice C/H directe.
+- Corrections: commentaires d'en-tete completes avec `Original name: N/A`, `Source: N/A (local factory)`, `Category: New`; matrice TS mise a jour avec les memes metadonnees.
+- Tests: `npm run audit:validation:ts-matrices` lance pour verification generation, puis matrice corrigee manuellement pour conserver `N/A (...)`; `npm run verify:client:header`, `npm run verify:cl-tent`, `npm run verify:cl-parse`, `npm run typecheck` OK; `npm run verify:cl-input` echoue sur l'assertion cinematic `nextserver` deja signalee hors lot.
 
 Lot du 2026-05-09:
 
@@ -22,7 +29,7 @@ Lot du 2026-05-09:
 
 ## Prochain lot recommande
 
-Continuer avec `createFrame`, `createCentity`, `createClientinfo`, `createClientLightstyle`, `createClientDlight`, `createCparticle`, `createClientBeam`, `createClientExplosion`, `createClientTentEntity`, `createClientLaser`, `createClientSustain`, `createKbutton`, `createUsercmd`.
+Aucun.
 
 ## Blocages
 

@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/console.ts`
 - Symboles TS: 61
-- Couvert C/H: 16
-- Reste a auditer: 29
+- Couvert C/H: 23
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -41,32 +41,32 @@
 | `packages/client/src/console.ts` | function | `Con_Clear_f` | oui | `N/A` | `N/A (TS overload signature)` | New |  | Surcharge TS | Non applicable | Signature overload; implementation `Con_Clear_f` couverte C/H. |
 | `packages/client/src/console.ts` | function | `Con_Dump_f` | oui | `Con_Dump_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/console.ts` | function | `Con_ClearNotify` | oui | `Con_ClearNotify` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/client/src/console.ts` | function | `Con_MessageMode_f` | oui | `Con_MessageMode_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/console.ts` | function | `Con_MessageMode2_f` | oui | `Con_MessageMode2_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/console.ts` | function | `Con_ToggleConsole_f` | oui | `Con_ToggleConsole_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/console.ts` | function | `Con_ToggleConsole_f` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `Con_ToggleConsole_f` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `Con_ToggleChat_f` | oui | `Con_ToggleChat_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/console.ts` | function | `Con_DrawInput` | oui | `Con_DrawInput` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/console.ts` | function | `Con_DrawNotify` | oui | `Con_DrawNotify` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/console.ts` | function | `Con_DrawNotify` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `Con_DrawNotify` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `Con_DrawConsole` | oui | `Con_DrawConsole` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/console.ts` | function | `Con_DrawConsole` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `Con_DrawConsole` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `Con_SyncConsoleToKeys` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/console.ts` | function | `Con_SyncKeysToConsole` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/console.ts` | function | `buildConsoleDump` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `buildDownloadBar` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `buildBackscrollRow` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `forceMenuOff` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `syncKeyStateFromConsole` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `getEffectiveCurrent` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `getEffectiveDisplay` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `readConsoleLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `registerConsoleCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `emitConsolePrint` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `setHighBit` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `stripHighBit` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `mod` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/console.ts` | function | `isConsoleContext` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/console.ts` | function | `Con_MessageMode_f` | oui | `Con_MessageMode_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/console.ts` | function | `Con_MessageMode2_f` | oui | `Con_MessageMode2_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/console.ts` | function | `Con_ToggleConsole_f` | oui | `Con_ToggleConsole_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/console.ts` | function | `Con_ToggleConsole_f` | oui | `N/A` | `N/A (TS overload signature)` | New |  | Surcharge TS | Non applicable | Signature overload; implementation `Con_ToggleConsole_f` couverte C/H. |
+| `packages/client/src/console.ts` | function | `Con_ToggleConsole_f` | oui | `N/A` | `N/A (TS overload signature)` | New |  | Surcharge TS | Non applicable | Signature overload; implementation `Con_ToggleConsole_f` couverte C/H. |
+| `packages/client/src/console.ts` | function | `Con_ToggleChat_f` | oui | `Con_ToggleChat_f` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/console.ts` | function | `Con_DrawInput` | oui | `Con_DrawInput` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/console.ts` | function | `Con_DrawNotify` | oui | `Con_DrawNotify` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/console.ts` | function | `Con_DrawNotify` | oui | `N/A` | `N/A (TS overload signature)` | New |  | Surcharge TS | Non applicable | Signature overload; implementation `Con_DrawNotify` couverte C/H. |
+| `packages/client/src/console.ts` | function | `Con_DrawNotify` | oui | `N/A` | `N/A (TS overload signature)` | New |  | Surcharge TS | Non applicable | Signature overload; implementation `Con_DrawNotify` couverte C/H. |
+| `packages/client/src/console.ts` | function | `Con_DrawConsole` | oui | `Con_DrawConsole` | `Quake-2-master/client/console.c` | Ported | [`client_console.c.md`](../matrices/client_console.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/console.ts` | function | `Con_DrawConsole` | oui | `N/A` | `N/A (TS overload signature)` | New |  | Surcharge TS | Non applicable | Signature overload; implementation `Con_DrawConsole` couverte C/H. |
+| `packages/client/src/console.ts` | function | `Con_DrawConsole` | oui | `N/A` | `N/A (TS overload signature)` | New |  | Surcharge TS | Non applicable | Signature overload; implementation `Con_DrawConsole` couverte C/H. |
+| `packages/client/src/console.ts` | function | `Con_SyncConsoleToKeys` | oui | `N/A` | `N/A (console/key state sync helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `Con_SyncKeysToConsole` | oui | `N/A` | `N/A (console/key state sync helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `buildConsoleDump` | non | `N/A` | `N/A (local console dump helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `buildDownloadBar` | non | `N/A` | `N/A (local console draw helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `buildBackscrollRow` | non | `N/A` | `N/A (local console draw helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `forceMenuOff` | non | `N/A` | `N/A (menu hook adapter)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `syncKeyStateFromConsole` | non | `N/A` | `N/A (console/key state sync helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `getEffectiveCurrent` | non | `N/A` | `N/A (console/key state sync helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `getEffectiveDisplay` | non | `N/A` | `N/A (console/key state sync helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `readConsoleLine` | non | `N/A` | `N/A (local console text helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `registerConsoleCommand` | non | `N/A` | `N/A (command registration adapter)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `emitConsolePrint` | non | `N/A` | `N/A (runtime hook adapter)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `setHighBit` | non | `N/A` | `N/A (local console text helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `stripHighBit` | non | `N/A` | `N/A (local console text helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `mod` | non | `N/A` | `N/A (local arithmetic helper)` | New |  | Nouveau TS | Valide |  |
+| `packages/client/src/console.ts` | function | `isConsoleContext` | non | `N/A` | `N/A (local overload discriminator)` | New |  | Nouveau TS | Valide |  |

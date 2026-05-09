@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Symboles TS: 124
-- Couvert C/H: 30
-- Reste a auditer: 58
+- Couvert C/H: 36
+- Reste a auditer: 44
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -75,19 +75,19 @@
 | `packages/client/src/cl_fx.ts` | function | `CL_BubbleTrail` | oui | `CL_BubbleTrail` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/cl_fx.ts` | function | `CL_BubbleTrail` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
 | `packages/client/src/cl_fx.ts` | function | `CL_BubbleTrail` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_FlyParticles` | oui | `CL_FlyParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `CL_FlyParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_FlyParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_FlyEffect` | oui | `CL_FlyEffect` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `CL_FlyEffectRuntime` | non | `CL_FlyEffect` | `Quake-2-master/client/cl_fx.c` | Ported integration | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BfgParticles` | oui | `CL_BfgParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_TrapParticles` | oui | `CL_TrapParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BFGExplosionParticles` | oui | `CL_BFGExplosionParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BFGExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_BFGExplosionParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui | `CL_TeleportParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_FlyParticles` | oui | `CL_FlyParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_FlyParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_FlyParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_FlyEffect` | oui | `CL_FlyEffect` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_FlyEffectRuntime` | non | `CL_FlyEffect` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Adapter runtime prive; le proprietaire C/H reste `CL_FlyEffect`. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BfgParticles` | oui | `CL_BfgParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_TrapParticles` | oui | `CL_TrapParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BFGExplosionParticles` | oui | `CL_BFGExplosionParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_BFGExplosionParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_BFGExplosionParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui | `CL_TeleportParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
+| `packages/client/src/cl_fx.ts` | function | `CL_TeleportParticles` | oui | `N/A` | `N/A (TS overload)` | New |  | TS sans lien source | Non applicable | Surcharge TS du symbole audite sur la ligne precedente. |
 | `packages/client/src/cl_fx.ts` | function | `CL_AddParticles` | oui | `CL_AddParticles` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_fx.ts` | function | `CL_BuildEntityEventEffects` | oui | `CL_EntityEvent` | `Quake-2-master/client/cl_fx.c` | Ported | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/client/src/cl_fx.ts` | function | `CL_BuildActionEffects` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
@@ -122,7 +122,7 @@
 | `packages/client/src/cl_fx.ts` | function | `resetDlight` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_fx.ts` | function | `allocParticle` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_fx.ts` | function | `isClientRuntime` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/cl_fx.ts` | function | `spawnFlyParticles` | non | `CL_FlyParticles` | `Quake-2-master/client/cl_fx.c` | Ported integration | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
+| `packages/client/src/cl_fx.ts` | function | `spawnFlyParticles` | non | `CL_FlyParticles` | `Quake-2-master/client/cl_fx.c` | Adapter | [`client_cl_fx.c.md`](../matrices/client_cl_fx.c.md) | Adapter local | Valide | Helper runtime prive; le proprietaire C/H reste `CL_FlyParticles`. |
 | `packages/client/src/cl_fx.ts` | function | `addScaledVector` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_fx.ts` | function | `subtractVec3` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/client/src/cl_fx.ts` | function | `normalizeVectorCopy` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

@@ -5,7 +5,7 @@
 - Fichier TS: `packages/client/src/client.ts`
 - Symboles TS: 57
 - Couvert C/H: 24
-- Reste a auditer: 13
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -43,17 +43,17 @@
 | `packages/client/src/client.ts` | enum | `dltype_t` | oui | `dltype_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/client.ts` | interface | `client_static_t` | oui | `client_static_t` | `Quake-2-master/client/client.h` | Ported | [`client_client.h.md`](../matrices/client_client.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/client/src/client.ts` | interface | `ClientRuntime` | oui | `N/A` | `N/A (local runtime bundle)` | New |  | Non applicable | Valide |  |
-| `packages/client/src/client.ts` | function | `createFrame` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createCentity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientinfo` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientLightstyle` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientDlight` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createCparticle` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientBeam` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientExplosion` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientTentEntity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientLaser` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createClientSustain` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/client.ts` | function | `createFrame` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createCentity` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientinfo` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientLightstyle` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientDlight` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createCparticle` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientBeam` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientExplosion` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientTentEntity` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientLaser` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createClientSustain` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
 | `packages/client/src/client.ts` | function | `createClientTempLight` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
 | `packages/client/src/client.ts` | function | `createClientForceWall` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
 | `packages/client/src/client.ts` | function | `createClientTentState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
@@ -64,5 +64,5 @@
 | `packages/client/src/client.ts` | function | `createClientStatic` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
 | `packages/client/src/client.ts` | function | `createClientPrecacheState` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
 | `packages/client/src/client.ts` | function | `createClientRuntime` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
-| `packages/client/src/client.ts` | function | `createKbutton` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/client/src/client.ts` | function | `createUsercmd` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/client/src/client.ts` | function | `createKbutton` | oui | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |
+| `packages/client/src/client.ts` | function | `createUsercmd` | non | `N/A` | `N/A (local factory)` | New |  | Non applicable | Valide |  |

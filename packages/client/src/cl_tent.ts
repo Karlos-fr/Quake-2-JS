@@ -1070,9 +1070,9 @@ function vectorLength(vector: vec3_t): number {
 }
 
 /**
- * Original name: CL_ProcessSustain
- * Source: client/cl_tent.c and client/cl_newfx.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (local sustain helper)
+ * Category: New
  * Fidelity level: Close
  *
  * Behavior:
@@ -1110,7 +1110,7 @@ function buildSustains(runtime: ClientRuntime): ClientSustainRender[] {
 
 /**
  * Original name: CL_ProcessSustain
- * Source: client/cl_tent.c and client/cl_newfx.c
+ * Source: client/cl_tent.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1122,6 +1122,8 @@ export function CL_ProcessSustain(runtime: ClientRuntime): ClientSustainRender[]
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local sustain helper)
  * Category: New
  * Purpose: Execute the renderer-side equivalent of the active sustain thinker for the current frame.
  *
@@ -1148,6 +1150,8 @@ function runSustainThinker(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local sustain helper)
  * Category: New
  * Purpose: Convert one active sustain slot into a renderer-facing descriptor after thinker execution.
  */
@@ -1202,6 +1206,8 @@ function buildSustainRender(runtime: ClientRuntime, sustain: ClientRuntime["cl"]
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Recreate the common `TE_BLASTER*` explosion payloads.
  */
@@ -1289,6 +1295,8 @@ export function CL_SmokeAndFlash(runtime: ClientRuntime, origin: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Assign one parsed beam packet into the chosen fixed-size slot array.
  */
@@ -1326,6 +1334,8 @@ function assignBeam(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Assign one parsed player beam packet into the dedicated player-beam array.
  */
@@ -1354,6 +1364,8 @@ function assignPlayerBeam(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Assign one parsed laser packet into the fixed-size laser array.
  */
@@ -1373,6 +1385,8 @@ function assignLaser(runtime: ClientRuntime, packet: ClientTempEntityPacket, col
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Recreate `CL_ForceWall` as a transient segment effect.
  */
@@ -1388,6 +1402,8 @@ function assignForceWall(runtime: ClientRuntime, packet: ClientTempEntityPacket)
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Assign one parsed steam sustain packet when it represents a persistent sustain.
  */
@@ -1414,6 +1430,8 @@ function assignSteamSustain(runtime: ClientRuntime, packet: ClientTempEntityPack
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Assign one parsed timed sustain packet such as widow beam out or nuke blast.
  */
@@ -1439,6 +1457,8 @@ function assignTimedSustain(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Allocate or recycle one explosion slot and fill it with normalized explosion data.
  */
@@ -1497,6 +1517,8 @@ function CL_AllocExplosion(runtime: ClientRuntime): client_explosion_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local explosion helper)
  * Category: New
  * Purpose: Decide whether one explosion slot stays active for the current frame.
  */
@@ -1516,6 +1538,8 @@ function updateExplosionForFrame(slot: client_explosion_t, frameIndex: number): 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local explosion helper)
  * Category: New
  * Purpose: Reset one explosion slot back to the free state.
  */
@@ -1539,6 +1563,8 @@ function resetExplosion(slot: client_explosion_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local sustain helper)
  * Category: New
  * Purpose: Reset one sustain slot back to its free state after expiration.
  */
@@ -1557,6 +1583,8 @@ function resetSustain(slot: ClientRuntime["cl"]["tents"]["sustains"][number]): v
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Resolve one networked Quake direction byte through the original `anorms.h` lookup table.
  */
@@ -1565,6 +1593,8 @@ function directionByteToVector(directionByte: number | undefined): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Derive coarse impact angles from the parsed direction byte.
  */
@@ -1576,6 +1606,8 @@ function directionByteToImpactAngles(directionByte: number | undefined): vec3_t 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Reproduce the original random yaw seeding used by several temp explosion entities.
  */
@@ -1584,6 +1616,8 @@ function randomAngleDegrees(): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local temp-entity helper)
  * Category: New
  * Purpose: Reproduce the `frand() < 0.5 ? 15 : 0` baseframe choice used by the original explosion variants.
  */

@@ -702,6 +702,8 @@ export interface ClientRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized Quake II frame value.
  *
@@ -722,6 +724,8 @@ export function createFrame(): frame_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized client entity state record.
  *
@@ -741,6 +745,8 @@ export function createCentity(): centity_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a minimal zero-initialized client info record.
  *
@@ -766,6 +772,8 @@ export function createClientinfo(): clientinfo_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized client lightstyle slot.
  *
@@ -781,6 +789,8 @@ export function createClientLightstyle(): client_lightstyle_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized client dynamic light slot.
  *
@@ -800,6 +810,8 @@ export function createClientDlight(): client_dlight_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized client particle slot.
  *
@@ -821,6 +833,8 @@ export function createCparticle(): cparticle_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized temp beam slot.
  *
@@ -840,6 +854,8 @@ export function createClientBeam(): client_beam_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized temp explosion slot.
  *
@@ -859,6 +875,8 @@ export function createClientExplosion(): client_explosion_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized temp-entity render sub-structure.
  *
@@ -881,6 +899,8 @@ export function createClientTentEntity(): client_tent_entity_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized temp laser slot.
  *
@@ -900,6 +920,8 @@ export function createClientLaser(): client_laser_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create one zero-initialized temp sustain slot.
  *
@@ -1226,6 +1248,8 @@ export function createClientRuntime(): ClientRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized Quake II key button state.
  *
@@ -1242,6 +1266,8 @@ export function createKbutton(): kbutton_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local factory)
  * Category: New
  * Purpose: Create a zero-initialized user command matching Quake II defaults.
  *

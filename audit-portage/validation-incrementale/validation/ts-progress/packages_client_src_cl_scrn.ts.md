@@ -1,7 +1,7 @@
 # Progress TS - packages/client/src/cl_scrn.ts
 
-- Dernier lot traite: `SCR_RunConsole`, `SCR_DrawNet`, `SCR_DrawPause`, `SCR_DrawLoading`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen`, `SCR_BuildScreenState`, `SCR_UpdateScreen`, plus le bloc coherent `buildActiveCinematicScreenFrame`, `buildCenterPrintSnapshot`, `buildLoadingSnapshot`, `buildPauseSnapshot`, `SCR_CalcVrect`, `buildNetSnapshot`.
-- Verdict lot: les symboles portes proprietaires `cl_scrn.c` du lot sont `Couvert C/H`; `SCR_BuildScreenState` et les helpers snapshot prives sont `Valide` comme `New`; `SCR_CalcVrect` est rattache a son original static `cl_scrn.c`.
+- Dernier lot traite: `SCR_TileClear`, `SCR_TileClearRef`, `SCR_DrawConsole`, `SCR_TimeRefresh_f`, `SCR_Sky_f`, plus les DTO rattaches au lot `ClientTileClearCommand` et `ClientScreenConsolePlan`.
+- Verdict lot: `SCR_TileClear`, `SCR_DrawConsole`, `SCR_TimeRefresh_f` et `SCR_Sky_f` sont proprietaires `packages/client/src/cl_scrn.ts` et `Couvert C/H` via `client_cl_scrn.c.md`; `SCR_TileClearRef` est `Valide` comme adapter `refexport_t`; `ClientTileClearCommand` et `ClientScreenConsolePlan` sont `Valide` comme DTO `New`.
 - Tests lances dans cette session:
   - `npm run verify:cl-scrn`: ok.
   - `npm run typecheck`: ok.
@@ -16,4 +16,8 @@
   - `CL_AddNetgraph`, `SCR_DebugGraph`, `SCR_DrawDebugGraph`, `SCR_CenterPrint`, `SCR_CheckDrawCenterString`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_Loading_f` ont une matrice C/H `client_cl_scrn.c.md` valide et restent proprietaires dans `packages/client/src/cl_scrn.ts`.
   - `SCR_RunConsole`, `SCR_DrawNet`, `SCR_DrawPause`, `SCR_DrawLoading`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen`, `SCR_UpdateScreen` et `SCR_CalcVrect` ont une matrice C/H `client_cl_scrn.c.md` valide et restent proprietaires dans `packages/client/src/cl_scrn.ts`; `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et `SCR_UpdateScreen` ont aussi des declarations validees dans `client_screen.h.md`.
   - `SCR_BuildScreenState`, `buildActiveCinematicScreenFrame`, `buildCenterPrintSnapshot`, `buildLoadingSnapshot`, `buildPauseSnapshot` et `buildNetSnapshot` sont des helpers/snapshots renderer-neutral sans source C/H directe; leurs entetes et lignes de matrice indiquent `Original name: N/A` et `Source: N/A (...)`.
-- Prochain lot recommande: continuer avec `SCR_TileClear`, `SCR_TileClearRef`, `SCR_DrawConsole`, puis `SCR_TimeRefresh_f` et `SCR_Sky_f` si le lot reste stable.
+  - `ClientTileClearCommand` et `ClientScreenConsolePlan` ne sont pas des portages proprietaires C/H: entetes et matrice indiquent `Original name: N/A`, `Source: N/A (renderer-neutral screen DTO)`, `Category: New`.
+  - `SCR_TileClearRef` ne masque pas le proprietaire `SCR_TileClear`: il applique les commandes via `refexport_t` et reste classe `Adapter`.
+  - Integration runtime: `SCR_Init` enregistre `timerefresh` et `sky`; `SCR_UpdateScreen` appelle `SCR_TileClear`/`SCR_TileClearRef` et expose le plan console/HUD.
+  - Integration apps-web/renderer-three: non applicable directement pour `SCR_DrawConsole` et `SCR_TimeRefresh_f`; le tile clear est consomme via commandes snapshot ou `refexport_t`; le sky met a jour l'etat client consomme par les snapshots/adapters sky existants.
+- Prochain lot recommande: continuer avec les doublons cinematics `SCR_StopCinematic`, `SCR_FinishCinematic`, `SCR_RunCinematic`, `SCR_DrawCinematic`, `SCR_DrawCinematicRef`, `SCR_PlayCinematic`, en verifiant l'ownership avec `packages/client/src/cl_cin.ts`.
