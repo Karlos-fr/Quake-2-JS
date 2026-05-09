@@ -37,6 +37,8 @@ const FS_BASEDIRNAME = "baseq2";
 export const MAX_READ = 0x10000;
 
 /**
+ * Original name: N/A
+ * Source: N/A (virtual filesystem model)
  * Category: New
  * Purpose: Represent one mounted in-memory directory searched by the virtual filesystem.
  *
@@ -49,6 +51,8 @@ export interface MountedDirectory {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (virtual filesystem model)
  * Category: New
  * Purpose: Preserve one mounted loose file and its original logical path.
  *
@@ -61,7 +65,10 @@ export interface MountedDirectoryFile {
 }
 
 /**
- * Category: New
+ * Original name: pack_s
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
  * Purpose: Represent a mounted PAK in virtual search path order.
  *
  * Constraints:
@@ -72,7 +79,10 @@ export interface MountedPak {
 }
 
 /**
- * Category: New
+ * Original name: filelink_s
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Strict
  * Purpose: Represent one `link` entry from the original Quake II filesystem.
  *
  * Constraints:
@@ -85,7 +95,10 @@ export interface FileLink {
 }
 
 /**
- * Category: New
+ * Original name: searchpath_s
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
  * Purpose: Track one Quake II search path entry, either a directory or a PAK archive.
  *
  * Constraints:
@@ -98,6 +111,8 @@ export interface SearchPath {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (virtual filesystem model)
  * Category: New
  * Purpose: Describe a resolved file inside the virtual filesystem.
  *
@@ -113,6 +128,8 @@ export interface MountedVirtualFile {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (virtual filesystem model)
  * Category: New
  * Purpose: Store mounted search paths for future Quake II filesystem lookups.
  *
@@ -128,6 +145,8 @@ export interface VirtualFilesystem {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (virtual filesystem input)
  * Category: New
  * Purpose: Describe one initial mounted file passed while creating or mounting a directory.
  *
@@ -136,10 +155,22 @@ export interface VirtualFilesystem {
  */
 export type MountedDirectoryInput = Record<string, Uint8Array> | Iterable<[string, Uint8Array]>;
 
+/**
+ * Original name: N/A
+ * Source: N/A (filesystem cvar adapter)
+ * Category: New
+ * Purpose: Represent the minimal cvar value shape needed by filesystem initialization.
+ */
 export interface FilesystemCvar {
   string: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (filesystem command adapter)
+ * Category: New
+ * Purpose: Provide command registration and argv access without coupling filesystem code to qcommon.
+ */
 export interface FSInitCommandAdapter {
   addCommand: (name: string, callback: () => void) => void;
   argc?: () => number;
@@ -147,10 +178,22 @@ export interface FSInitCommandAdapter {
   print?: (line: string) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (filesystem cvar adapter)
+ * Category: New
+ * Purpose: Provide cvar creation without coupling filesystem code to qcommon.
+ */
 export interface FSInitCvarAdapter {
   get: (name: string, value: string, flags: number) => FilesystemCvar | null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (filesystem initialization adapter)
+ * Category: New
+ * Purpose: Bundle host adapters used by the ported `FS_InitFilesystem` flow.
+ */
 export interface FSInitFilesystemOptions {
   commands?: FSInitCommandAdapter;
   cvars?: FSInitCvarAdapter;
@@ -158,6 +201,8 @@ export interface FSInitFilesystemOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (virtual filesystem factory)
  * Category: New
  * Purpose: Create an empty virtual filesystem.
  *
@@ -212,6 +257,8 @@ export function FS_InitFilesystem(filesystem: VirtualFilesystem, options: FSInit
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (manual mount adapter)
  * Category: Adapter
  * Purpose: Mount loose in-memory files without automatically mounting embedded PAK archives.
  *
@@ -269,16 +316,16 @@ export function FS_AddGameDirectory(
 }
 
 /**
- * Original name: FS_LoadPackFile
- * Source: qcommon/files.c
- * Category: Ported
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (manual mount adapter)
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
- * Behavior:
- * - Mounts one parsed PAK archive into the search path.
+ * Purpose:
+ * - Preserve the earlier TypeScript helper name for callers that mount PAK bytes directly.
  *
  * Porting notes:
- * - Parses directly from a byte array instead of reopening the pack on disk.
+ * - The owning port of `FS_LoadPackFile` is `FS_LoadPackFile` below.
  */
 export function mountPak(filesystem: VirtualFilesystem, bytes: Uint8Array, path?: string): MountedPak {
   const pak = {
@@ -418,6 +465,8 @@ export function FS_Gamedir(filesystem: VirtualFilesystem): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (filesystem state helper)
  * Category: New
  * Purpose: Mark the current search paths as the base search path set retained across gamedir changes.
  *
@@ -604,6 +653,8 @@ export function Developer_searchpath(filesystem: VirtualFilesystem): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (text decoding helper)
  * Category: New
  * Purpose: Read a mounted file as an ASCII-style text string suitable for Quake config scripts.
  *
@@ -767,6 +818,8 @@ export function FS_Dir_f(filesystem: VirtualFilesystem, wildcard = "*.*"): strin
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (text decoding helper)
  * Category: New
  * Purpose: Decode low 8-bit file bytes into a JavaScript string without UTF-8 reinterpretation.
  *
@@ -783,6 +836,12 @@ function decodeTextBytes(bytes: Uint8Array): string {
   return result;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (filesystem command adapter)
+ * Category: New
+ * Purpose: Register the ported filesystem console commands through an injected command adapter.
+ */
 function registerFilesystemCommands(filesystem: VirtualFilesystem, commands: FSInitCommandAdapter | undefined): void {
   if (!commands) {
     return;
@@ -811,15 +870,29 @@ function registerFilesystemCommands(filesystem: VirtualFilesystem, commands: FSI
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (filesystem cvar adapter)
+ * Category: New
+ * Purpose: Read or synthesize one filesystem cvar during initialization.
+ */
 function getFilesystemCvar(cvars: FSInitCvarAdapter | undefined, name: string, value: string, flags: number): FilesystemCvar {
   return cvars?.get(name, value, flags) ?? { string: value };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (path helper)
+ * Category: New
+ * Purpose: Join a host root and Quake game directory before VFS normalization.
+ */
 function joinGameDirectory(root: string, gameDirectory: string): string {
   return normalizeDirectoryPath(`${root}/${gameDirectory}`);
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (virtual filesystem factory)
  * Category: New
  * Purpose: Build one mounted in-memory directory with normalized file lookup keys.
  *
@@ -846,6 +919,8 @@ function createMountedDirectory(path: string, files?: MountedDirectoryInput): Mo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (listing helper)
  * Category: New
  * Purpose: Enumerate loose file paths with the mounted directory prefix used by `FS_ListFiles`.
  *
@@ -857,6 +932,8 @@ function listMountedLooseFiles(directory: MountedDirectory): string[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (listing helper)
  * Category: New
  * Purpose: Derive mounted subdirectory names for `FS_ListFiles(..., SFF_SUBDIR, ...)`.
  *
@@ -880,6 +957,8 @@ function listMountedSubdirectories(directory: MountedDirectory): string[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (link resolution helper)
  * Category: New
  * Purpose: Resolve the original Quake II filesystem link prefixes before normal search path iteration.
  *
@@ -899,6 +978,8 @@ function resolveLinkedFilename(filesystem: VirtualFilesystem, filename: string):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (link resolution helper)
  * Category: New
  * Purpose: Resolve a linked file against mounted in-memory directories.
  *
@@ -935,6 +1016,8 @@ function readDirectoryLinkedFile(filesystem: VirtualFilesystem, linkedFilename: 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (path normalization helper)
  * Category: New
  * Purpose: Normalize a Quake virtual file path to forward slashes and lowercase for lookups.
  *
@@ -946,6 +1029,8 @@ function normalizeVirtualPath(value: string): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (path normalization helper)
  * Category: New
  * Purpose: Normalize one mounted directory path while preserving directory-like separators.
  *
@@ -962,6 +1047,8 @@ function normalizeDirectoryPath(value: string): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (wildcard helper)
  * Category: New
  * Purpose: Match one path against a Quake-style `*` and `?` wildcard pattern.
  *

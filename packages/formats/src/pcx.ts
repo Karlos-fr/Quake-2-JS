@@ -18,13 +18,33 @@
 
 import { getLittleShort, getUnsignedByte } from "../../memory/src/binary-io.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local PCX parser constant)
+ * Category: New
+ * Purpose: Size of the fixed `pcx_t` header before the unbounded pixel data.
+ */
 const PCX_HEADER_SIZE = 128;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local PCX parser constant)
+ * Category: New
+ * Purpose: Marker byte preceding the trailing 256-color PCX palette.
+ */
 const PCX_PALETTE_MARKER = 0x0c;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local PCX parser constant)
+ * Category: New
+ * Purpose: Number of RGB bytes in a 256-color PCX palette.
+ */
 const PCX_PALETTE_SIZE = 768;
 
 /**
  * Original name: pcx_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -55,6 +75,8 @@ export interface pcx_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (decoded PCX DTO)
  * Category: New
  * Purpose: Represent a decoded Quake II PCX image with both indexed and RGBA pixels.
  *
@@ -72,15 +94,16 @@ export interface PcxImage {
 }
 
 /**
- * Original name: LoadPCX
- * Source: Quake II original loaders derived from qcommon/qfiles.h layout
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (shared PCX decoder adapter)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Validates a Quake-style 8-bit PCX file and decodes its RLE-compressed image payload.
  *
  * Porting notes:
+ * - Shared parser used by `SCR_LoadPCX` and renderer `LoadPCX` owners; it is not their proprietary port.
  * - Restricts support to the Quake II 8-bit single-plane flavor.
  * - Requires the trailing 256-color palette marker to be present.
  */
@@ -111,6 +134,8 @@ export function parsePcx(bytes: Uint8Array, path?: string): PcxImage {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local PCX parser helper)
  * Category: New
  * Purpose: Read the fixed-size PCX header fields into a structured object.
  *
@@ -140,6 +165,8 @@ function readPcxHeader(bytes: Uint8Array): pcx_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local PCX parser helper)
  * Category: New
  * Purpose: Enforce the subset of the PCX format used by Quake II assets.
  *
@@ -165,6 +192,8 @@ function validatePcxHeader(header: pcx_t, path?: string): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local PCX parser helper)
  * Category: New
  * Purpose: Decode the PCX RLE payload into padded scanline bytes.
  *
@@ -212,6 +241,8 @@ function decodePcxRle(data: Uint8Array, bytesPerRow: number, height: number, pat
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local PCX parser helper)
  * Category: New
  * Purpose: Remove per-scanline padding and keep only the visible pixel indices.
  *
@@ -231,6 +262,8 @@ function extractIndexedPixels(decoded: Uint8Array, width: number, height: number
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local PCX parser helper)
  * Category: New
  * Purpose: Read the 256-color palette stored at the end of Quake II PCX files.
  *
@@ -247,6 +280,8 @@ function readPcxPalette(bytes: Uint8Array, path?: string): Uint8Array {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local PCX parser helper)
  * Category: New
  * Purpose: Expand palette indices into RGBA pixels for direct renderer upload.
  *
@@ -272,6 +307,8 @@ function expandPaletteIndices(indices: Uint8Array, paletteRgb: Uint8Array, width
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local PCX parser helper)
  * Category: New
  * Purpose: Reproduce Quake II's transparent-pixel neighbor color selection to avoid alpha fringes.
  *

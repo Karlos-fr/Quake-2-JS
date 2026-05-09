@@ -18,15 +18,64 @@
 
 import { getLittleLong } from "../../memory/src/binary-io.js";
 
+/**
+ * Original name: IDPAKHEADER
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Four-byte PAK magic used by Quake II archive headers.
+ */
 export const IDPAKHEADER = (("K".charCodeAt(0) << 24) + ("C".charCodeAt(0) << 16) + ("A".charCodeAt(0) << 8) + "P".charCodeAt(0)) | 0;
+
+/**
+ * Original name: MAX_FILES_IN_PACK
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Upper bound for directory entries in one Quake II PAK archive.
+ */
 export const MAX_FILES_IN_PACK = 4096;
+
+/**
+ * Original name: N/A
+ * Source: N/A (derived PAK directory entry size)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Keep the fixed `dpackfile_t` byte size explicit for binary parsing.
+ */
 const DPACKFILE_SIZE = 64;
+
+/**
+ * Original name: N/A
+ * Source: N/A (derived PAK header size)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Keep the fixed `dpackheader_t` byte size explicit for binary parsing.
+ */
 const DPACKHEADER_SIZE = 12;
+
+/**
+ * Original name: N/A
+ * Source: N/A (derived PAK filename field size)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Keep the fixed `dpackfile_t.name` byte width explicit for binary parsing.
+ */
 const DPACKFILENAME_SIZE = 56;
 
 /**
  * Original name: dpackfile_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -44,7 +93,7 @@ export interface dpackfile_t {
 
 /**
  * Original name: dpackheader_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -59,7 +108,7 @@ export interface dpackheader_t {
 
 /**
  * Original name: packfile_t
- * Source: qcommon/files.c
+ * Source: Quake-2-master/qcommon/files.c
  * Category: Adapter
  * Fidelity level: Close
  *
@@ -75,7 +124,11 @@ export interface PakEntry extends dpackfile_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (PAK archive parser result)
  * Category: New
+ * Fidelity level: NewTooling
+ *
  * Purpose: Represent a parsed Quake II PAK archive with raw bytes and indexed directory entries.
  *
  * Constraints:
@@ -89,15 +142,16 @@ export interface PakArchive {
 }
 
 /**
- * Original name: FS_LoadPackFile
- * Source: qcommon/files.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (PAK archive parser used by FS_LoadPackFile)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Validates and parses the header and directory of a Quake II PAK file.
  *
  * Porting notes:
+ * - The owning `FS_LoadPackFile` port remains in `packages/filesystem/src/files.ts`.
  * - Omits checksum validation for now.
  * - Returns a parsed archive object instead of allocating Quake zone memory.
  */
@@ -165,7 +219,11 @@ export function parsePak(bytes: Uint8Array, path?: string): PakArchive {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (PAK lookup helper)
  * Category: New
+ * Fidelity level: NewTooling
+ *
  * Purpose: Find a PAK entry using Quake-like case-insensitive path matching.
  *
  * Constraints:
@@ -177,7 +235,11 @@ export function findPakEntry(archive: PakArchive, filename: string): PakEntry | 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (PAK data slicing helper)
  * Category: New
+ * Fidelity level: NewTooling
+ *
  * Purpose: Read the raw byte content of a parsed PAK entry.
  *
  * Constraints:
@@ -188,7 +250,11 @@ export function readPakEntryData(archive: PakArchive, entry: PakEntry): Uint8Arr
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (PAK filename decoder)
  * Category: New
+ * Fidelity level: NewTooling
+ *
  * Purpose: Decode the fixed-width null-terminated PAK entry name field.
  *
  * Constraints:
@@ -209,7 +275,11 @@ function decodePakName(bytes: Uint8Array): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (PAK path normalization helper)
  * Category: New
+ * Fidelity level: NewTooling
+ *
  * Purpose: Normalize PAK lookup paths so search behavior matches Quake II case-insensitive comparisons.
  *
  * Constraints:

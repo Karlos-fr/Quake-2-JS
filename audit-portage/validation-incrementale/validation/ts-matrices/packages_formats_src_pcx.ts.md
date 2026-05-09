@@ -4,21 +4,21 @@
 
 - Fichier TS: `packages/formats/src/pcx.ts`
 - Symboles TS: 13
-- Couvert C/H: 0
-- Reste a auditer: 13
+- Couvert C/H: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/formats/src/pcx.ts` | value | `PCX_HEADER_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/formats/src/pcx.ts` | value | `PCX_PALETTE_MARKER` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/formats/src/pcx.ts` | value | `PCX_PALETTE_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/formats/src/pcx.ts` | interface | `pcx_t` | oui | `pcx_t` | `Quake-2-master/qcommon/qfiles.h` | Ported | [`qcommon_qfiles.h.md`](../matrices/qcommon_qfiles.h.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
-| `packages/formats/src/pcx.ts` | interface | `PcxImage` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/pcx.ts` | function | `parsePcx` | oui | `LoadPCX` | `Quake-2-master/Quake II original loaders derived from qcommon/qfiles.h layout` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/formats/src/pcx.ts` | function | `readPcxHeader` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/pcx.ts` | function | `validatePcxHeader` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/pcx.ts` | function | `decodePcxRle` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/pcx.ts` | function | `extractIndexedPixels` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/pcx.ts` | function | `readPcxPalette` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/pcx.ts` | function | `expandPaletteIndices` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/pcx.ts` | function | `resolveTransparentNeighborIndex` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/formats/src/pcx.ts` | value | `PCX_HEADER_SIZE` | non | `N/A` | `N/A (local PCX parser constant)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | value | `PCX_PALETTE_MARKER` | non | `N/A` | `N/A (local PCX parser constant)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | value | `PCX_PALETTE_SIZE` | non | `N/A` | `N/A (local PCX parser constant)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | interface | `pcx_t` | oui | `pcx_t` | `Quake-2-master/qcommon/qfiles.h` | Ported | [`qcommon_qfiles.h.md`](../matrices/qcommon_qfiles.h.md) | Cible C/H validee | Couvert C/H | Deplacement legitime: `qfiles.h` est decoupe dans `packages/formats`. |
+| `packages/formats/src/pcx.ts` | interface | `PcxImage` | oui | `N/A` | `N/A (decoded PCX DTO)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | function | `parsePcx` | oui | `N/A` | `N/A (shared PCX decoder adapter)` | Adapter | [`client_cl_cin.c.md`](../matrices/client_cl_cin.c.md), [`ref_gl_gl_image.c.md`](../matrices/ref_gl_gl_image.c.md) | Adapter C/H | Valide | Decodeur factorise; les proprietaires C/H restent `SCR_LoadPCX` et renderer `LoadPCX`. |
+| `packages/formats/src/pcx.ts` | function | `readPcxHeader` | non | `N/A` | `N/A (local PCX parser helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | function | `validatePcxHeader` | non | `N/A` | `N/A (local PCX parser helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | function | `decodePcxRle` | non | `N/A` | `N/A (local PCX parser helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | function | `extractIndexedPixels` | non | `N/A` | `N/A (local PCX parser helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | function | `readPcxPalette` | non | `N/A` | `N/A (local PCX parser helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | function | `expandPaletteIndices` | non | `N/A` | `N/A (local PCX parser helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/pcx.ts` | function | `resolveTransparentNeighborIndex` | non | `N/A` | `N/A (local PCX parser helper)` | New |  | Hors C/H | Valide |  |

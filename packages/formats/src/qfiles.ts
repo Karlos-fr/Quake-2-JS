@@ -122,7 +122,7 @@ const DAREAPORTAL_SIZE = 8;
 
 /**
  * Original name: lump_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -133,7 +133,7 @@ export interface lump_t {
 
 /**
  * Original name: dheader_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -145,7 +145,7 @@ export interface dheader_t {
 
 /**
  * Original name: dmodel_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -160,7 +160,7 @@ export interface dmodel_t {
 
 /**
  * Original name: dvertex_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -170,7 +170,7 @@ export interface dvertex_t {
 
 /**
  * Original name: dplane_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -182,7 +182,7 @@ export interface dplane_t {
 
 /**
  * Original name: dnode_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -196,8 +196,8 @@ export interface dnode_t {
 }
 
 /**
- * Original name: texinfo_t
- * Source: qcommon/qfiles.h
+ * Original name: texinfo_s
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -211,7 +211,7 @@ export interface texinfo_t {
 
 /**
  * Original name: dedge_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -221,7 +221,7 @@ export interface dedge_t {
 
 /**
  * Original name: dface_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -237,7 +237,7 @@ export interface dface_t {
 
 /**
  * Original name: dleaf_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -255,7 +255,7 @@ export interface dleaf_t {
 
 /**
  * Original name: dbrushside_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -266,7 +266,7 @@ export interface dbrushside_t {
 
 /**
  * Original name: dbrush_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -278,7 +278,7 @@ export interface dbrush_t {
 
 /**
  * Original name: dareaportal_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -289,7 +289,7 @@ export interface dareaportal_t {
 
 /**
  * Original name: darea_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -300,7 +300,7 @@ export interface darea_t {
 
 /**
  * Original name: dvis_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -316,6 +316,8 @@ export interface dvis_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity model)
  * Category: New
  * Purpose: Represent one parsed Quake II BSP entity from the textual entity lump.
  *
@@ -327,6 +329,8 @@ export interface BspEntity {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP spawn helper)
  * Category: New
  * Purpose: Represent a first extracted Quake II player spawn point.
  *
@@ -339,6 +343,8 @@ export interface BspSpawnPoint {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser result)
  * Category: New
  * Purpose: Represent the first parsed BSP data needed by renderer and collision bridge layers.
  *
@@ -369,10 +375,10 @@ export interface BspMap {
 }
 
 /**
- * Original name: dheader_t
- * Source: qcommon/qfiles.h
- * Category: Ported
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (BSP parser facade)
+ * Category: New
+ * Fidelity level: NewTooling
  *
  * Behavior:
  * - Validates and parses the core lumps of a Quake II BSP file.
@@ -414,6 +420,8 @@ export function parseBsp(bytes: Uint8Array, path?: string): BspMap {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity parser)
  * Category: New
  * Purpose: Parse the textual BSP entity lump into structured key/value dictionaries.
  *
@@ -474,6 +482,8 @@ export function parseEntityLump(text: string): BspEntity[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity helper)
  * Category: New
  * Purpose: Find BSP entities with one exact classname.
  *
@@ -485,6 +495,8 @@ export function findEntitiesByClassname(map: BspMap, classname: string): BspEnti
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP spawn helper)
  * Category: New
  * Purpose: Extract the primary single-player spawn point from a BSP map.
  *
@@ -533,6 +545,8 @@ export function findPrimarySpawnPoint(map: BspMap, spawnpoint = ""): BspSpawnPoi
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity helper)
  * Category: New
  * Purpose: Extract an entity origin from one parsed BSP entity.
  *
@@ -544,6 +558,8 @@ export function getEntityOrigin(entity: BspEntity): [number, number, number] | n
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity helper)
  * Category: New
  * Purpose: Extract the yaw angle commonly used by Quake entities.
  *
@@ -569,6 +585,8 @@ export function getEntityYaw(entity: BspEntity): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP header and its lump table.
  *
@@ -594,6 +612,8 @@ function readBspHeader(bytes: Uint8Array): dheader_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Validate the BSP header and lump bounds.
  *
@@ -618,6 +638,8 @@ function validateBspHeader(header: dheader_t, bytes: Uint8Array, path?: string):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read raw bytes for one BSP lump.
  *
@@ -630,6 +652,8 @@ function readLumpBytes(bytes: Uint8Array, header: dheader_t, lumpIndex: number):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP model table.
  *
@@ -648,6 +672,8 @@ function readModels(bytes: Uint8Array, header: dheader_t): dmodel_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP vertex table.
  *
@@ -661,6 +687,8 @@ function readVertexes(bytes: Uint8Array, header: dheader_t): dvertex_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP plane table.
  *
@@ -676,6 +704,8 @@ function readPlanes(bytes: Uint8Array, header: dheader_t): dplane_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP node table.
  *
@@ -694,6 +724,8 @@ function readNodes(bytes: Uint8Array, header: dheader_t): dnode_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP texinfo table.
  *
@@ -714,6 +746,8 @@ function readTexInfo(bytes: Uint8Array, header: dheader_t): texinfo_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP edge table.
  *
@@ -727,6 +761,8 @@ function readEdges(bytes: Uint8Array, header: dheader_t): dedge_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP face table.
  *
@@ -751,6 +787,8 @@ function readFaces(bytes: Uint8Array, header: dheader_t): dface_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP leaf table.
  *
@@ -772,6 +810,8 @@ function readLeafs(bytes: Uint8Array, header: dheader_t): dleaf_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP brush side table.
  *
@@ -786,6 +826,8 @@ function readBrushSides(bytes: Uint8Array, header: dheader_t): dbrushside_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP brush table.
  *
@@ -801,6 +843,8 @@ function readBrushes(bytes: Uint8Array, header: dheader_t): dbrush_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP area table.
  *
@@ -815,6 +859,8 @@ function readAreas(bytes: Uint8Array, header: dheader_t): darea_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read the BSP areaportal table.
  *
@@ -829,6 +875,8 @@ function readAreaPortals(bytes: Uint8Array, header: dheader_t): dareaportal_t[] 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read a signed short lump into a typed array.
  *
@@ -849,6 +897,8 @@ function readShortLump(bytes: Uint8Array, header: dheader_t, lumpIndex: number):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read a signed long lump into a typed array.
  *
@@ -869,6 +919,8 @@ function readLongLump(bytes: Uint8Array, header: dheader_t, lumpIndex: number): 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP parser helper)
  * Category: New
  * Purpose: Read one BSP lump as a struct array with fixed record size.
  *
@@ -891,6 +943,8 @@ function readStructArray<T>(bytes: Uint8Array, lump: lump_t, recordSize: number,
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP string decoder)
  * Category: New
  * Purpose: Decode a BSP entity string or other lump payload without UTF-8 reinterpretation.
  *
@@ -911,6 +965,8 @@ function decodeCStringBytes(bytes: Uint8Array): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP string decoder)
  * Category: New
  * Purpose: Decode a fixed-width null-terminated Quake C string field.
  *
@@ -931,6 +987,8 @@ function decodeFixedCString(bytes: Uint8Array): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (binary reader helper)
  * Category: New
  * Purpose: Read one unsigned little-endian short.
  *
@@ -942,6 +1000,8 @@ function getUnsignedShort(buffer: Uint8Array, offset: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity parser)
  * Category: New
  * Purpose: Skip insignificant whitespace while parsing the textual BSP entity lump.
  *
@@ -957,6 +1017,8 @@ function skipEntityWhitespace(text: string, index: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity parser)
  * Category: New
  * Purpose: Read one Quake-style quoted token from the BSP entity lump.
  *
@@ -984,6 +1046,8 @@ function readQuotedToken(text: string, index: number): { value: string; nextInde
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity helper)
  * Category: New
  * Purpose: Parse a Quake entity origin string into a numeric vector.
  *
@@ -1009,6 +1073,8 @@ function parseEntityOrigin(value: string | undefined): [number, number, number] 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (BSP entity helper)
  * Category: New
  * Purpose: Parse a Quake entity angle string with the usual default fallback.
  *

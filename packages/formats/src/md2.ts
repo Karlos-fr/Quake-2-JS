@@ -18,27 +18,129 @@
 
 import { getLittleFloat, getLittleLong, getLittleShort, getUnsignedByte } from "../../memory/src/binary-io.js";
 
+/**
+ * Original name: IDALIASHEADER
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const IDALIASHEADER = (("2".charCodeAt(0) << 24) + ("P".charCodeAt(0) << 16) + ("D".charCodeAt(0) << 8) + "I".charCodeAt(0)) | 0;
+/**
+ * Original name: ALIAS_VERSION
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const ALIAS_VERSION = 8;
+/**
+ * Original name: MAX_TRIANGLES
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_TRIANGLES = 4096;
+/**
+ * Original name: MAX_VERTS
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_VERTS = 2048;
+/**
+ * Original name: MAX_FRAMES
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_FRAMES = 512;
+/**
+ * Original name: MAX_MD2SKINS
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_MD2SKINS = 32;
+/**
+ * Original name: MAX_SKINNAME
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_SKINNAME = 64;
+/**
+ * Original name: DTRIVERTX_V0
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const DTRIVERTX_V0 = 0;
+/**
+ * Original name: DTRIVERTX_V1
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const DTRIVERTX_V1 = 1;
+/**
+ * Original name: DTRIVERTX_V2
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const DTRIVERTX_V2 = 2;
+/**
+ * Original name: DTRIVERTX_LNI
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const DTRIVERTX_LNI = 3;
+/**
+ * Original name: DTRIVERTX_SIZE
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const DTRIVERTX_SIZE = 4;
+/**
+ * Original name: N/A
+ * Source: N/A (local binary layout helper)
+ * Category: New
+ * Purpose: Fixed byte size of `dstvert_t` when reading MD2 binary data.
+ */
 const DSTVERT_SIZE = 4;
+/**
+ * Original name: N/A
+ * Source: N/A (local binary layout helper)
+ * Category: New
+ * Purpose: Fixed byte size of `dtriangle_t` when reading MD2 binary data.
+ */
 const DTRIANGLE_SIZE = 12;
+/**
+ * Original name: N/A
+ * Source: N/A (local binary layout helper)
+ * Category: New
+ * Purpose: Fixed byte size of one MD2 OpenGL command dword.
+ */
 const DGLCMD_SIZE = 4;
+/**
+ * Original name: N/A
+ * Source: N/A (local binary layout helper)
+ * Category: New
+ * Purpose: Fixed byte size of `dmdl_t` when reading an MD2 header.
+ */
 const DMDL_SIZE = 68;
+/**
+ * Original name: N/A
+ * Source: N/A (local binary layout helper)
+ * Category: New
+ * Purpose: Fixed byte width of a `daliasframe_t` frame name.
+ */
 const FRAME_NAME_SIZE = 16;
 
 /**
  * Original name: dstvert_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -55,7 +157,7 @@ export interface dstvert_t {
 
 /**
  * Original name: dtriangle_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -69,7 +171,7 @@ export interface dtriangle_t {
 
 /**
  * Original name: dtrivertx_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -83,7 +185,7 @@ export interface dtrivertx_t {
 
 /**
  * Original name: daliasframe_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -103,7 +205,7 @@ export interface daliasframe_t {
 
 /**
  * Original name: dmdl_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -131,6 +233,8 @@ export interface dmdl_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (parsed MD2 aggregate)
  * Category: New
  * Purpose: Represent a parsed MD2 model with header, skins, geometry tables and decoded frames.
  *
@@ -147,9 +251,9 @@ export interface Md2Model {
 }
 
 /**
- * Original name: dmdl_t
- * Source: qcommon/qfiles.h
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (MD2 parser adapter using qfiles.h layout)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -177,6 +281,8 @@ export function parseMd2(bytes: Uint8Array, path?: string): Md2Model {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local MD2 parser helper)
  * Category: New
  * Purpose: Read the fixed-size MD2 header.
  *
@@ -206,6 +312,8 @@ function readMd2Header(bytes: Uint8Array): dmdl_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local MD2 parser helper)
  * Category: New
  * Purpose: Validate the MD2 layout constraints used by Quake II assets.
  *
@@ -246,6 +354,8 @@ function validateMd2Header(header: dmdl_t, bytes: Uint8Array, path?: string): vo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local MD2 parser helper)
  * Category: New
  * Purpose: Read the MD2 skin name table.
  *
@@ -264,6 +374,8 @@ function readMd2Skins(bytes: Uint8Array, header: dmdl_t): string[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local MD2 parser helper)
  * Category: New
  * Purpose: Read the MD2 texture coordinate table.
  *
@@ -285,6 +397,8 @@ function readMd2TexCoords(bytes: Uint8Array, header: dmdl_t): dstvert_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local MD2 parser helper)
  * Category: New
  * Purpose: Read the MD2 triangle table.
  *
@@ -314,6 +428,8 @@ function readMd2Triangles(bytes: Uint8Array, header: dmdl_t): dtriangle_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local MD2 parser helper)
  * Category: New
  * Purpose: Read and decode all MD2 frames.
  *
@@ -373,6 +489,8 @@ function readMd2Frames(bytes: Uint8Array, header: dmdl_t): daliasframe_t[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local MD2 parser helper)
  * Category: New
  * Purpose: Read the raw MD2 OpenGL command stream.
  *
@@ -390,6 +508,8 @@ function readMd2GlCommands(bytes: Uint8Array, header: dmdl_t): Int32Array {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local validation helper)
  * Category: New
  * Purpose: Assert that one MD2 table range stays inside file bounds.
  *
@@ -403,6 +523,8 @@ function assertRange(offset: number, length: number, bytes: Uint8Array, path: st
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local string helper)
  * Category: New
  * Purpose: Decode a fixed-width null-terminated Quake C string field.
  *

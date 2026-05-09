@@ -96,6 +96,8 @@ import { CL_RegisterTEntModels } from "./cl_tent.js";
 import type { ClientDynamicLight, ClientRefreshFrame, ClientRenderEntity, ClientRenderParticle } from "./refresh.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (view value contract)
  * Category: New
  * Purpose: Hold the logical refdef-style values calculated from parsed client frames.
  *
@@ -113,6 +115,8 @@ export interface ClientViewValues {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (view options contract)
  * Category: New
  * Purpose: Describe the runtime knobs needed by the current lightweight prediction/view helpers.
  *
@@ -136,6 +140,8 @@ export interface ClientViewOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (prediction collision contract)
  * Category: New
  * Purpose: Gather the collision inputs that `cl_pred.c` uses to build `CL_PMTrace` and `CL_PMpointcontents`.
  *
@@ -150,6 +156,8 @@ export interface ClientPredictionCollisionSource {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (scene staging contract)
  * Category: New
  * Purpose: Preserve the temporary renderer-facing scene buffers that `cl_view.c` fills through `V_*`.
  *
@@ -167,6 +175,8 @@ export interface ClientViewScene {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (view debug state)
  * Category: New
  * Purpose: Preserve the tiny gun-debug state owned by `cl_view.c`.
  */
@@ -176,6 +186,8 @@ export interface ClientViewDebugState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (view runtime context)
  * Category: New
  * Purpose: Group the command/cvar references owned by `V_Init`.
  */
@@ -196,6 +208,8 @@ export interface ClientViewContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (crosshair draw contract)
  * Category: New
  * Purpose: Describe one renderer-neutral crosshair draw command rebuilt from `SCR_DrawCrosshair`.
  */
@@ -206,6 +220,8 @@ export interface ClientCrosshairDraw {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (rendered view contract)
  * Category: New
  * Purpose: Describe the renderer-neutral output rebuilt by `V_RenderView`.
  */
@@ -216,6 +232,8 @@ export interface ClientRenderedView {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (render view options contract)
  * Category: New
  * Purpose: Describe the host services and toggles needed by the `V_RenderView` port.
  */
@@ -233,6 +251,8 @@ export interface ClientRenderViewOptions extends ClientViewOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (prep refresh options contract)
  * Category: New
  * Purpose: Describe the host/runtime services needed by the `CL_PrepRefresh` port.
  *
@@ -256,6 +276,8 @@ export interface ClientPrepRefreshOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (prep refresh result contract)
  * Category: New
  * Purpose: Report the registration work completed by the `CL_PrepRefresh` port.
  *
@@ -270,6 +292,8 @@ export interface ClientPrepRefreshResult {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (scene factory)
  * Category: New
  * Purpose: Create zero-initialized `cl_view.c` scene staging buffers.
  */
@@ -286,6 +310,8 @@ export function createClientViewScene(): ClientViewScene {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (debug state factory)
  * Category: New
  * Purpose: Create zero-initialized gun-debug state matching the globals in `cl_view.c`.
  */
@@ -297,6 +323,8 @@ export function createClientViewDebugState(): ClientViewDebugState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (view context factory)
  * Category: New
  * Purpose: Create zero-initialized state for the `cl_view.c` init/debug cvars and commands.
  */
@@ -948,16 +976,17 @@ export function CL_CheckPredictionError(runtime: ClientRuntime, options: ClientV
 }
 
 /**
- * Original name: CL_AddEntities
- * Source: client/cl_ents.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (CL_AddEntities lerp helper)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Updates `cl.time` clamping and computes the current interpolation fraction.
  *
  * Porting notes:
- * - Only ports the time/lerp portion for now, leaving entity emission to later adapters.
+ * - Extracts the time/lerp portion used before structured entity emission.
+ * - Proprietary `CL_AddEntities` ownership lives in `packages/client/src/refresh.ts` as `CL_BuildRefreshFrame`.
  */
 export function CL_UpdateLerpFraction(runtime: ClientRuntime, options: ClientViewOptions = {}): number {
   if (runtime.cls.state !== connstate_t.ca_active) {
@@ -1272,6 +1301,8 @@ export function CL_PMpointcontents(point: vec3_t, source: ClientPredictionCollis
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (prediction collision factory)
  * Category: New
  * Purpose: Build the current `cl_pred.c` collision inputs from the parsed client frame and loaded clip models.
  *
@@ -1288,6 +1319,8 @@ export function createClientPredictionCollisionSource(runtime: ClientRuntime, wo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (predicted pmove factory)
  * Category: New
  * Purpose: Build the temporary `pmove_t` bundle used by the first client-side `Pmove` prediction integration.
  *
@@ -1330,6 +1363,15 @@ function createPredictedPmove(runtime: ClientRuntime, options: ClientViewOptions
   return context;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (refresh frame adapter)
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Adapts the structured `CL_AddEntities` refresh frame into the `cl_view.c` `V_Add*` staging buffers.
+ */
 function fillSceneFromRefreshFrame(
   scene: ClientViewScene,
   runtime: ClientRuntime,
@@ -1376,6 +1418,15 @@ function fillSceneFromRefreshFrame(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (refdef assembly adapter)
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Adapts the staged `cl_view.c` scene buffers into the renderer-facing `refdef_t`.
+ */
 function buildRefdefFromScene(
   scene: ClientViewScene,
   runtime: ClientRuntime,
@@ -1445,6 +1496,12 @@ function buildRefdefFromScene(
   return refdef;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sort helper)
+ * Category: New
+ * Purpose: Keep refresh entities in a stable model/skinnum order before scene staging.
+ */
 function compareRenderEntities(a: ClientRenderEntity, b: ClientRenderEntity): number {
   if (a.modelindex === b.modelindex) {
     return a.skinnum - b.skinnum;
@@ -1453,6 +1510,15 @@ function compareRenderEntities(a: ClientRenderEntity, b: ClientRenderEntity): nu
   return a.modelindex - b.modelindex;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (render entity model adapter)
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves structured `CL_AddPacketEntities` model metadata to `entity_t.model` handles for `V_RenderView`.
+ */
 function resolveSceneEntityModel(
   runtime: ClientRuntime,
   entity: ClientRenderEntity,
@@ -1494,6 +1560,15 @@ function resolveSceneEntityModel(
   return (runtime.cl.model_draw[entity.modelindex] as model_s | null) ?? null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (render entity skin adapter)
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves structured `CL_AddPacketEntities` skin metadata to `entity_t.skin` handles for `V_RenderView`.
+ */
 function resolveSceneEntitySkin(
   runtime: ClientRuntime,
   entity: ClientRenderEntity,
@@ -1520,7 +1595,9 @@ function resolveSceneEntitySkin(
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (CL_AddPacketEntities disguise adapter)
+ * Category: Adapter
  * Purpose: Recreate the `RF_USE_DISGUISE` player-model remap from `CL_AddPacketEntities`.
  */
 function getDisguiseModelPath(modelName: string): string | null {
@@ -1537,7 +1614,9 @@ function getDisguiseModelPath(modelName: string): string | null {
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (CL_AddPacketEntities disguise adapter)
+ * Category: Adapter
  * Purpose: Recreate the `RF_USE_DISGUISE` player-skin remap from `CL_AddPacketEntities`.
  */
 function getDisguiseSkinPath(modelName: string): string | null {
@@ -1554,6 +1633,8 @@ function getDisguiseSkinPath(modelName: string): string | null {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (pmove clone helper)
  * Category: New
  * Purpose: Clone one packed `pmove_state_t` before local prediction mutates it.
  */
@@ -1570,6 +1651,8 @@ function clonePmoveState(state: pmove_state_t): pmove_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (usercmd clone helper)
  * Category: New
  * Purpose: Clone one `usercmd_t` so client prediction can mutate command state without touching the runtime source buffer.
  */
@@ -1587,6 +1670,8 @@ function cloneUsercmd(cmd: usercmd_t): usercmd_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (fallback trace helper)
  * Category: New
  * Purpose: Create a default trace result for prediction modes that do not yet provide collision callbacks.
  */
@@ -1604,6 +1689,8 @@ function createPassThroughTrace(end: vec3_t): trace_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (fallback trace helper)
  * Category: New
  * Purpose: Create a neutral plane used by fallback trace results.
  */
@@ -1618,6 +1705,8 @@ function createDefaultPlane(): cplane_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (fallback trace helper)
  * Category: New
  * Purpose: Create a neutral surface used by fallback trace results.
  */
@@ -1630,6 +1719,8 @@ function createDefaultSurface(): csurface_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (prediction entity collector)
  * Category: New
  * Purpose: Materialize the current frame packet entities in source order for prediction collision helpers.
  */
@@ -1645,6 +1736,15 @@ function collectPredictionEntities(runtime: ClientRuntime): entity_state_t[] {
   return entities;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (clientinfo registration adapter)
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Adapts parsed clientinfo resource registration to the renderer hooks used by `CL_PrepRefresh`.
+ */
 function registerClientinfoResources(
   clientinfo: ClientRuntime["cl"]["clientinfo"][number],
   ref?: Pick<refexport_t, "RegisterModel" | "RegisterSkin" | "RegisterPic">
@@ -1656,16 +1756,34 @@ function registerClientinfoResources(
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (map name helper)
+ * Category: New
+ * Purpose: Extract the display map name from the registered world model path.
+ */
 function extractMapName(worldModel: string): string {
   const mapPath = worldModel.startsWith("maps/") ? worldModel.slice(5) : worldModel;
   return mapPath.endsWith(".bsp") ? mapPath.slice(0, -4) : mapPath;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sky configstring parser)
+ * Category: New
+ * Purpose: Parse `CS_SKYROTATE` while preserving Quake II's invalid-value fallback.
+ */
 function parseSkyRotate(value: string): number {
   const parsed = Number.parseFloat(value.trim());
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sky configstring parser)
+ * Category: New
+ * Purpose: Parse `CS_SKYAXIS` into a renderer-facing vector.
+ */
 function parseSkyAxis(value: string): vec3_t {
   const parts = value
     .trim()
