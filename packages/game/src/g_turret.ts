@@ -62,7 +62,20 @@ import {
   type GameRuntime
 } from "./runtime.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (named local magic spawnflag)
+ * Category: New
+ * Purpose: Names the original `65536` fire-request bit used by the turret driver/breach handshake.
+ */
 const TURRET_BREACH_FIRE = 65536;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local helper constant)
+ * Category: New
+ * Purpose: Shared zero vector for turret damage calls that used `vec3_origin` in C.
+ */
 const ZERO_VEC3: vec3_t = [0, 0, 0];
 
 /**
@@ -576,6 +589,12 @@ export function SP_turret_driver(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (spawn property adapter)
+ * Category: New
+ * Purpose: Reads spawn-temp style turret fields from parsed entity properties.
+ */
 function parseEntityFloat(entity: GameEntity, key: string, fallback: number): number {
   const raw = entity.properties[key];
   if (!raw) {
@@ -586,6 +605,12 @@ function parseEntityFloat(entity: GameEntity, key: string, fallback: number): nu
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Applies the local `[-180, 180]` wrap used by turret angular deltas.
+ */
 function wrapAngleDelta(value: number): number {
   if (value < -180) {
     return value + 360;
@@ -596,6 +621,12 @@ function wrapAngleDelta(value: number): number {
   return value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local immutable equivalent of the C `VectorMA` macro for turret muzzle offsets.
+ */
 function vectorMA(start: vec3_t, scale: number, direction: vec3_t): vec3_t {
   return [
     start[0] + direction[0] * scale,
@@ -604,6 +635,12 @@ function vectorMA(start: vec3_t, scale: number, direction: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local immutable vector subtraction helper for turret calculations.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],
@@ -612,6 +649,12 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local immutable vector scale helper for turret angular velocity.
+ */
 function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   return [
     vector[0] * scale,
@@ -620,10 +663,22 @@ function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local vector length helper for turret driver mount distance.
+ */
 function vectorLength(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Clamps turret frame deltas to the configured angular speed.
+ */
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }

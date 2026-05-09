@@ -18,14 +18,44 @@
 
 import { getLittleLong } from "../../memory/src/binary-io.js";
 
+/**
+ * Original name: MIPLEVELS
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the number of mipmap offsets stored in a Quake II WAL texture.
+ */
 export const MIPLEVELS = 4;
+
+/**
+ * Original name: N/A
+ * Source: N/A (WAL parser constant)
+ * Category: New
+ * Purpose: Size of the fixed `name` and `animname` fields in `miptex_t`.
+ */
 const MIPTEX_NAME_SIZE = 32;
+
+/**
+ * Original name: N/A
+ * Source: N/A (WAL parser constant)
+ * Category: New
+ * Purpose: Byte size of the serialized `miptex_t` header before mip payloads.
+ */
 const MIPTEX_HEADER_SIZE = 100;
+
+/**
+ * Original name: N/A
+ * Source: N/A (WAL parser constant)
+ * Category: New
+ * Purpose: Mip dimension divisors derived from the four WAL mip levels.
+ */
 const MIP_DIVISORS = [1, 2, 4, 8] as const;
 
 /**
- * Original name: miptex_s / miptex_t
- * Source: qcommon/qfiles.h
+ * Original name: miptex_s
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -49,6 +79,8 @@ export interface miptex_t {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (parsed WAL container)
  * Purpose: Represent a parsed WAL texture with all available mip levels.
  *
  * Constraints:
@@ -60,15 +92,16 @@ export interface WalTexture {
 }
 
 /**
- * Original name: miptex_t
- * Source: qcommon/qfiles.h
- * Category: Ported
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (WAL parser adapter)
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Validates and parses a Quake II WAL texture header and mip payloads.
  *
  * Porting notes:
+ * - Adapts the `miptex_t` file format for renderer consumers without claiming ownership of `GL_LoadWal`.
  * - Keeps mip data indexed rather than applying a palette in this layer.
  */
 export function parseWal(bytes: Uint8Array, path?: string): WalTexture {
@@ -104,6 +137,8 @@ export function parseWal(bytes: Uint8Array, path?: string): WalTexture {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (WAL parser helper)
  * Purpose: Read the fixed-size WAL header into a structured object.
  *
  * Constraints:
@@ -129,6 +164,8 @@ function readWalHeader(bytes: Uint8Array): miptex_t {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (WAL parser validation helper)
  * Purpose: Enforce the subset of WAL header validity required by Quake II textures.
  *
  * Constraints:
@@ -148,6 +185,8 @@ function validateWalHeader(header: miptex_t, path?: string): void {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source: N/A (local string helper)
  * Purpose: Decode a fixed-width null-terminated Quake C string field.
  *
  * Constraints:

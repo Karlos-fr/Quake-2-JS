@@ -4,18 +4,18 @@
 
 - Fichier TS: `packages/formats/src/wal.ts`
 - Symboles TS: 10
-- Couvert C/H: 0
-- Reste a auditer: 10
+- Couvert C/H: 2
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/formats/src/wal.ts` | value | `MIPLEVELS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/formats/src/wal.ts` | value | `MIPTEX_NAME_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/formats/src/wal.ts` | value | `MIPTEX_HEADER_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/formats/src/wal.ts` | value | `MIP_DIVISORS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/formats/src/wal.ts` | interface | `miptex_t` | oui | `miptex_t` | `Quake-2-master/qcommon/qfiles.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/formats/src/wal.ts` | interface | `WalTexture` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/wal.ts` | function | `parseWal` | oui | `miptex_t` | `Quake-2-master/qcommon/qfiles.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/formats/src/wal.ts` | function | `readWalHeader` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/wal.ts` | function | `validateWalHeader` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/wal.ts` | function | `decodeCString` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/formats/src/wal.ts` | value | `MIPLEVELS` | oui | `MIPLEVELS` | `Quake-2-master/qcommon/qfiles.h` | Ported | [`qcommon_qfiles.h.md`](../matrices/qcommon_qfiles.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/formats/src/wal.ts` | value | `MIPTEX_NAME_SIZE` | non | `N/A` | `N/A (WAL parser constant)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/wal.ts` | value | `MIPTEX_HEADER_SIZE` | non | `N/A` | `N/A (WAL parser constant)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/wal.ts` | value | `MIP_DIVISORS` | non | `N/A` | `N/A (WAL parser constant)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/wal.ts` | interface | `miptex_t` | oui | `miptex_s` | `Quake-2-master/qcommon/qfiles.h` | Ported | [`qcommon_qfiles.h.md`](../matrices/qcommon_qfiles.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/formats/src/wal.ts` | interface | `WalTexture` | oui | `N/A` | `N/A (parsed WAL container)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/wal.ts` | function | `parseWal` | oui | `N/A` | `N/A (WAL parser adapter)` | Adapter |  | Hors C/H | Valide | Adapter de format utilise par `GL_LoadWal`; le portage proprietaire renderer reste `packages/renderer-three/src/gl_image.ts`. |
+| `packages/formats/src/wal.ts` | function | `readWalHeader` | non | `N/A` | `N/A (WAL parser helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/wal.ts` | function | `validateWalHeader` | non | `N/A` | `N/A (WAL parser validation helper)` | New |  | Hors C/H | Valide |  |
+| `packages/formats/src/wal.ts` | function | `decodeCString` | non | `N/A` | `N/A (local string helper)` | New |  | Hors C/H | Valide |  |

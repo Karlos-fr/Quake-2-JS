@@ -7,6 +7,9 @@
 
 ## Dernier lot valide
 
+- 2026-05-09: lot strict `g_local.ts` des aliases prives/exportes `AMMO_BULLETS` a `AMMO_SLUGS` valide. Les six valeurs ont ete classees `Adapter` et `Valide`, avec `Original name`/`Source declaree` explicites vers `Quake-2-master/game/g_local.h`, sans les marquer `Couvert C/H` car le proprietaire C/H de l'enum `ammo_t` reste `packages/game/src/runtime.ts`.
+- Preuves session: lecture explicite de `README.md`, `CHECKLIST_VALIDATION_TS.md`, `CHECKLIST_VALIDATION_ENTITES.md`, `ORGANISATION_AGENTS.md`, matrice TS, progress file TS, `AVANCEMENT_GLOBAL_TS.md`, matrice C/H `game_g_local.h.md`, source `Quake-2-master/game/g_local.h`; verification du port proprietaire `ammo_t` dans `packages/game/src/runtime.ts`, des usages runtime dans `g_items.ts`, et du point d'export `g_local.ts`.
+- Correction locale `packages/game/src/g_local.ts`: entetes ajoutes pour `AMMO_BULLETS`, `AMMO_SHELLS`, `AMMO_ROCKETS`, `AMMO_GRENADES`, `AMMO_CELLS`, `AMMO_SLUGS`; les valeurs numeriques restent conservees pour eviter les hazards de cycle d'import mentionnes dans le lot precedent.
 - 2026-05-08: bloc `MOVETYPE_*` puis bloc declaratif/macros jusqu'a `CLOFS` valide. `MOVETYPE_NONE` a `MOVETYPE_BOUNCE`, `fieldtype_t`, `gitem_armor_t`, `client_persistant_t`, `client_respawn_t`, `mframe_t`, `mmove_t`, `monsterinfo_t`, `moveinfo_t`, `field_t`, `ITEM_INDEX`, `world`, `FOFS`, `STOFS`, `LLOFS` et `CLOFS` marques `Couvert C/H` par croisement avec `validation/matrices/game_g_local.h.md`. `gitem_t` marque `Valide` par lecture directe du typedef `struct gitem_s`; `createGameLocals`, `createLevelLocals` et `createSpawnTemp` marques `Valide` comme helpers `New` avec `Original name: N/A` et `Source declaree: N/A (local zero-initializer)`.
 - Preuves session: lecture explicite de `README.md`, `CHECKLIST_VALIDATION_TS.md`, `CHECKLIST_VALIDATION_ENTITES.md`, `ORGANISATION_AGENTS.md`, matrice TS, progress file TS, `AVANCEMENT_GLOBAL_TS.md`, matrice C/H `game_g_local.h.md`, source `Quake-2-master/game/g_local.h`; verification usages runtime dans `g_phys.ts`, `g_save.ts`, `g_spawn.ts`, `g_items.ts`, `g_cmds.ts`, `g_trigger.ts`, `p_client.ts`, `p_weapon.ts`, `p_hud.ts`, exports publics dans `packages/game/src/index.ts`, et absence d'integration principale dans `apps/web`/`renderer-three`.
 - Correction locale `packages/game/src/g_local.ts`: entete ajoutee pour `field_t`; commentaires de `createGameLocals`, `createLevelLocals`, `createSpawnTemp` corriges en `N/A`; commentaires de `ITEM_INDEX`, `world`, `FOFS`, `STOFS`, `LLOFS`, `CLOFS` corriges en `Category: Ported`.
@@ -39,10 +42,8 @@
 
 ## Blocages
 
-- Aucun bloquant pour le bloc `MOVETYPE_*` a `CLOFS`.
 - Point ouvert hors `g_local.h`: ownership de `VEC_UP`/`MOVEDIR_UP`/`VEC_DOWN`/`MOVEDIR_DOWN`, declares dans `g_utils.c` et dupliques dans `g_utils.ts`.
 
 ## Prochain lot recommande
 
-- Si le prochain lot doit rester strictement dans `g_local.ts`, traiter les aliases prives `AMMO_BULLETS` a `AMMO_SLUGS`.
-- Sinon, traiter la decision d'ownership pour `VEC_UP`/`MOVEDIR_UP`/`VEC_DOWN`/`MOVEDIR_DOWN` avec `g_utils.ts`, sans modifier `g_local.ts` en parallele.
+- Traiter la decision d'ownership pour `VEC_UP`/`MOVEDIR_UP`/`VEC_DOWN`/`MOVEDIR_DOWN` avec `g_utils.ts`, sans lancer un autre agent en parallele sur `g_local.ts` ou `g_utils.ts`.

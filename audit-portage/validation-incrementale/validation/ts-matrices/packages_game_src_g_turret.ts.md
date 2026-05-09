@@ -4,29 +4,29 @@
 
 - Fichier TS: `packages/game/src/g_turret.ts`
 - Symboles TS: 21
-- Couvert C/H: 0
-- Reste a auditer: 21
+- Couvert C/H: 12
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_turret.ts` | value | `TURRET_BREACH_FIRE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | value | `ZERO_VEC3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | function | `AnglesNormalize` | oui | `AnglesNormalize` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `SnapToEights` | oui | `SnapToEights` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `turret_blocked` | oui | `turret_blocked` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `turret_breach_fire` | oui | `turret_breach_fire` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `turret_breach_think` | oui | `turret_breach_think` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `turret_breach_finish_init` | oui | `turret_breach_finish_init` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `SP_turret_breach` | oui | `SP_turret_breach` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `SP_turret_base` | oui | `SP_turret_base` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `turret_driver_die` | oui | `turret_driver_die` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `turret_driver_think` | oui | `turret_driver_think` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `turret_driver_link` | oui | `turret_driver_link` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `SP_turret_driver` | oui | `SP_turret_driver` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_turret.ts` | function | `parseEntityFloat` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | function | `wrapAngleDelta` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | function | `vectorMA` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | function | `scaleVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | function | `vectorLength` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_turret.ts` | function | `clamp` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_turret.ts` | value | `TURRET_BREACH_FIRE` | non | `N/A` | `N/A (named local magic spawnflag)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | value | `ZERO_VEC3` | non | `N/A` | `N/A (local helper constant)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | function | `AnglesNormalize` | oui | `AnglesNormalize` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `SnapToEights` | oui | `SnapToEights` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `turret_blocked` | oui | `turret_blocked` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `turret_breach_fire` | oui | `turret_breach_fire` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `turret_breach_think` | oui | `turret_breach_think` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `turret_breach_finish_init` | oui | `turret_breach_finish_init` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `SP_turret_breach` | oui | `SP_turret_breach` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `SP_turret_base` | oui | `SP_turret_base` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `turret_driver_die` | oui | `turret_driver_die` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `turret_driver_think` | oui | `turret_driver_think` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `turret_driver_link` | oui | `turret_driver_link` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `SP_turret_driver` | oui | `SP_turret_driver` | `Quake-2-master/game/g_turret.c` | Ported | [`game_g_turret.c.md`](../matrices/game_g_turret.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_turret.ts` | function | `parseEntityFloat` | non | `N/A` | `N/A (spawn property adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | function | `wrapAngleDelta` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | function | `vectorMA` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | function | `scaleVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | function | `vectorLength` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/g_turret.ts` | function | `clamp` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |

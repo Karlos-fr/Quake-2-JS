@@ -4,26 +4,26 @@
 
 - Fichier TS: `packages/game/src/g_svcmds.ts`
 - Symboles TS: 18
-- Couvert C/H: 8
-- Reste a auditer: 10
+- Couvert C/H: 10
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_svcmds.ts` | interface | `ipfilter_t` | oui | `ipfilter_t` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | interface | `GameServerCommandState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_svcmds.ts` | interface | `GameServerCommandContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_svcmds.ts` | value | `MAX_IPFILTERS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_svcmds.ts` | value | `FREE_IPFILTER_COMPARE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_svcmds.ts` | function | `createGameServerCommandState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/g_svcmds.ts` | function | `Svcmd_Test_f` | oui | `Svcmd_Test_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | function | `StringToFilter` | oui | `StringToFilter` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | function | `SV_FilterPacket` | oui | `SV_FilterPacket` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | function | `SVCmd_AddIP_f` | oui | `SVCmd_AddIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | function | `SVCmd_RemoveIP_f` | oui | `SVCmd_RemoveIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | function | `SVCmd_ListIP_f` | oui | `SVCmd_ListIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | function | `SVCmd_WriteIP_f` | oui | `SVCmd_WriteIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_svcmds.ts` | function | `ServerCommand` | oui | `ServerCommand` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/g_svcmds.ts` | function | `getFilterBanValue` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_svcmds.ts` | function | `stringsEqualIgnoreCase` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_svcmds.ts` | function | `packFilterBytes` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_svcmds.ts` | function | `unpackFilterBytes` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_svcmds.ts` | interface | `ipfilter_t` | oui | `ipfilter_t` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | interface | `GameServerCommandState` | oui | `N/A` | `N/A (explicit state holder)` | New |  | Classe New | Valide |  |
+| `packages/game/src/g_svcmds.ts` | interface | `GameServerCommandContext` | oui | `N/A` | `N/A (game import adapter)` | New |  | Classe New | Valide |  |
+| `packages/game/src/g_svcmds.ts` | value | `MAX_IPFILTERS` | oui | `MAX_IPFILTERS` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | value | `FREE_IPFILTER_COMPARE` | non | `N/A` | `N/A (free-slot sentinel)` | New |  | Classe New | Valide |  |
+| `packages/game/src/g_svcmds.ts` | function | `createGameServerCommandState` | oui | `N/A` | `N/A (state factory)` | New |  | Classe New | Valide |  |
+| `packages/game/src/g_svcmds.ts` | function | `Svcmd_Test_f` | oui | `Svcmd_Test_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `StringToFilter` | oui | `StringToFilter` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `SV_FilterPacket` | oui | `SV_FilterPacket` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `SVCmd_AddIP_f` | oui | `SVCmd_AddIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `SVCmd_RemoveIP_f` | oui | `SVCmd_RemoveIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `SVCmd_ListIP_f` | oui | `SVCmd_ListIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `SVCmd_WriteIP_f` | oui | `SVCmd_WriteIP_f` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `ServerCommand` | oui | `ServerCommand` | `Quake-2-master/game/g_svcmds.c` | Ported | [`game_g_svcmds.c.md`](../matrices/game_g_svcmds.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_svcmds.ts` | function | `getFilterBanValue` | non | `N/A` | `N/A (cvar access helper)` | New |  | Classe New | Valide |  |
+| `packages/game/src/g_svcmds.ts` | function | `stringsEqualIgnoreCase` | non | `N/A` | `N/A (local string compare helper)` | New |  | Classe New | Valide |  |
+| `packages/game/src/g_svcmds.ts` | function | `packFilterBytes` | non | `N/A` | `N/A (byte packing helper)` | New |  | Classe New | Valide |  |
+| `packages/game/src/g_svcmds.ts` | function | `unpackFilterBytes` | non | `N/A` | `N/A (byte unpacking helper)` | New |  | Classe New | Valide |  |

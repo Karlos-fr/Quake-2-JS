@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_local.ts`
 - Symboles TS: 137
 - Couvert C/H: 123
-- Reste a auditer: 10
+- Reste a auditer: 4
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -140,9 +140,9 @@
 | `packages/game/src/g_local.ts` | function | `STOFS` | oui | `STOFS` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | TS conserve le role de selecteur de champ au lieu d'un offset byte C. |
 | `packages/game/src/g_local.ts` | function | `LLOFS` | oui | `LLOFS` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | TS conserve le role de selecteur de champ au lieu d'un offset byte C. |
 | `packages/game/src/g_local.ts` | function | `CLOFS` | oui | `CLOFS` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | TS conserve le role de selecteur de champ au lieu d'un offset byte C. |
-| `packages/game/src/g_local.ts` | value | `AMMO_BULLETS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `AMMO_SHELLS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `AMMO_ROCKETS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `AMMO_GRENADES` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `AMMO_CELLS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/g_local.ts` | value | `AMMO_SLUGS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/g_local.ts` | value | `AMMO_BULLETS` | oui | `AMMO_BULLETS` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Alias enum | Valide | Alias exporte du membre `ammo_t`; proprietaire C/H de l'enum reste `packages/game/src/runtime.ts`. |
+| `packages/game/src/g_local.ts` | value | `AMMO_SHELLS` | oui | `AMMO_SHELLS` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Alias enum | Valide | Alias exporte du membre `ammo_t`; proprietaire C/H de l'enum reste `packages/game/src/runtime.ts`. |
+| `packages/game/src/g_local.ts` | value | `AMMO_ROCKETS` | oui | `AMMO_ROCKETS` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Alias enum | Valide | Alias exporte du membre `ammo_t`; proprietaire C/H de l'enum reste `packages/game/src/runtime.ts`. |
+| `packages/game/src/g_local.ts` | value | `AMMO_GRENADES` | oui | `AMMO_GRENADES` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Alias enum | Valide | Alias exporte du membre `ammo_t`; proprietaire C/H de l'enum reste `packages/game/src/runtime.ts`. |
+| `packages/game/src/g_local.ts` | value | `AMMO_CELLS` | oui | `AMMO_CELLS` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Alias enum | Valide | Alias exporte du membre `ammo_t`; proprietaire C/H de l'enum reste `packages/game/src/runtime.ts`. |
+| `packages/game/src/g_local.ts` | value | `AMMO_SLUGS` | oui | `AMMO_SLUGS` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Alias enum | Valide | Alias exporte du membre `ammo_t`; proprietaire C/H de l'enum reste `packages/game/src/runtime.ts`. |

@@ -17,16 +17,67 @@
 
 import { getLittleLong } from "../../memory/src/binary-io.js";
 
+/**
+ * Original name: IDSPRITEHEADER
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Identifies Quake II SP2 sprite files as little-endian "IDS2".
+ */
 export const IDSPRITEHEADER = (("2".charCodeAt(0) << 24) + ("S".charCodeAt(0) << 16) + ("D".charCodeAt(0) << 8) + "I".charCodeAt(0)) | 0;
+
+/**
+ * Original name: SPRITE_VERSION
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the supported Quake II SP2 sprite format version.
+ */
 export const SPRITE_VERSION = 2;
 
+/**
+ * Original name: MAX_SKINNAME
+ * Source: Quake-2-master/qcommon/qfiles.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Reuses the shared fixed-width skin/name field size for SP2 frame names.
+ *
+ * Porting notes:
+ * - The canonical exported `MAX_SKINNAME` port is owned by `packages/formats/src/md2.ts`.
+ */
 const MAX_SKINNAME = 64;
+
+/**
+ * Original name: N/A
+ * Source: N/A (binary layout helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Captures the byte size of one serialized `dsprframe_t` entry.
+ */
 const DSPRFRAME_SIZE = 80;
+
+/**
+ * Original name: N/A
+ * Source: N/A (binary layout helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Captures the byte size of the fixed `dsprite_t` header before variable frames.
+ */
 const DSPRITE_HEADER_SIZE = 12;
 
 /**
  * Original name: dsprframe_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -43,7 +94,7 @@ export interface dsprframe_t {
 
 /**
  * Original name: dsprite_t
- * Source: qcommon/qfiles.h
+ * Source: Quake-2-master/qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -58,15 +109,16 @@ export interface dsprite_t {
 }
 
 /**
- * Original name: dsprite_t
- * Source: qcommon/qfiles.h
- * Category: Ported
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (format parser)
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
- * Behavior:
+ * Purpose:
  * - Validates and parses a Quake II SP2 sprite file into structured frame metadata.
  *
  * Porting notes:
+ * - Adapts the raw `dsprite_t` layout from `qfiles.h`; the owner of that source struct is the `dsprite_t` interface above.
  * - Keeps frame ordering and names exactly so later renderer adapters can resolve sprite images faithfully.
  */
 export function parseSp2(bytes: Uint8Array, path?: string): dsprite_t {
@@ -117,6 +169,8 @@ export function parseSp2(bytes: Uint8Array, path?: string): dsprite_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Decode a fixed-width null-terminated Quake C string field.
  *

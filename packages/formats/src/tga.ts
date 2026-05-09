@@ -17,8 +17,8 @@
  */
 
 /**
- * Original name: TargaHeader
- * Source: ref_gl/gl_image.c
+ * Original name: _TargaHeader
+ * Source: Quake-2-master/ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -41,6 +41,8 @@ export interface TargaHeader {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (decoded TGA image contract)
  * Category: New
  * Purpose: Describe one decoded TGA image in RGBA byte form.
  *
@@ -55,15 +57,16 @@ export interface TgaImage {
 }
 
 /**
- * Original name: LoadTGA
- * Source: ref_gl/gl_image.c
- * Category: Ported
- * Fidelity level: Strict
+ * Original name: N/A
+ * Source: N/A (shared TGA parser)
+ * Category: Adapter
+ * Fidelity level: Close
  *
  * Behavior:
  * - Decodes an uncompressed or RLE true-color TGA image into RGBA bytes.
  *
  * Porting notes:
+ * - The owning `LoadTGA` port remains in `packages/renderer-three/src/gl_image.ts`.
  * - Supports only image types 2 and 10 with 24-bit or 32-bit pixels, matching the original loader.
  */
 export function parseTga(bytes: Uint8Array, path?: string): TgaImage {
@@ -99,6 +102,8 @@ export function parseTga(bytes: Uint8Array, path?: string): TgaImage {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read the fixed 18-byte TGA header.
  */
@@ -120,6 +125,8 @@ function readTgaHeader(bytes: Uint8Array): TargaHeader {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Validate the exact TGA feature subset accepted by Quake II.
  */
@@ -138,6 +145,8 @@ function validateTgaHeader(header: TargaHeader, path?: string): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Decode one uncompressed true-color TGA image.
  */
@@ -174,6 +183,8 @@ function decodeUncompressedTga(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Decode one RLE true-color TGA image.
  */
@@ -234,6 +245,8 @@ function decodeRleTga(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read one true-color TGA pixel in source BGR(A) order and return RGBA bytes.
  */
@@ -250,6 +263,8 @@ function readTgaPixel(bytes: Uint8Array, offset: number, bytesPerPixel: number, 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Write one RGBA pixel into the destination image buffer.
  */
@@ -268,6 +283,8 @@ function writeRgbaPixel(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read one little-endian 16-bit value from the TGA byte stream.
  */

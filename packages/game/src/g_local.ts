@@ -214,7 +214,7 @@ export const MOVEDIR_DOWN: vec3_t = [0, 0, -1];
 
 /**
  * Original name: damage_t
- * Source: game/g_local.h
+ * Source: Quake-2-master/game/g_local.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -229,7 +229,7 @@ export enum damage_t {
 
 /**
  * Original name: movetype_t
- * Source: game/g_local.h
+ * Source: Quake-2-master/game/g_local.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -262,7 +262,7 @@ export const MOVETYPE_BOUNCE = movetype_t.MOVETYPE_BOUNCE;
 
 /**
  * Original name: fieldtype_t
- * Source: game/g_local.h
+ * Source: Quake-2-master/game/g_local.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -295,7 +295,7 @@ export type moveinfo_t = GameMoveInfo;
 
 /**
  * Original name: game_locals_t
- * Source: game/g_local.h
+ * Source: Quake-2-master/game/g_local.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -321,7 +321,7 @@ export interface game_locals_t {
 
 /**
  * Original name: level_locals_t
- * Source: game/g_local.h
+ * Source: Quake-2-master/game/g_local.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -364,7 +364,7 @@ export interface level_locals_t {
 
 /**
  * Original name: spawn_temp_t
- * Source: game/g_local.h
+ * Source: Quake-2-master/game/g_local.h
  * Category: Ported
  * Fidelity level: Close
  *
@@ -703,11 +703,88 @@ export {
   weaponstate_t
 };
 
+/**
+ * Original name: AMMO_BULLETS
+ * Source: game/g_local.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the canonical `ammo_t.AMMO_BULLETS` value from the `g_local.h` attachment point.
+ *
+ * Porting notes:
+ * - The owner of the enum port is `packages/game/src/runtime.ts`; this numeric alias avoids runtime import-cycle hazards.
+ */
 const AMMO_BULLETS = 0;
+
+/**
+ * Original name: AMMO_SHELLS
+ * Source: game/g_local.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the canonical `ammo_t.AMMO_SHELLS` value from the `g_local.h` attachment point.
+ *
+ * Porting notes:
+ * - The owner of the enum port is `packages/game/src/runtime.ts`; this numeric alias avoids runtime import-cycle hazards.
+ */
 const AMMO_SHELLS = 1;
+
+/**
+ * Original name: AMMO_ROCKETS
+ * Source: game/g_local.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the canonical `ammo_t.AMMO_ROCKETS` value from the `g_local.h` attachment point.
+ *
+ * Porting notes:
+ * - The owner of the enum port is `packages/game/src/runtime.ts`; this numeric alias avoids runtime import-cycle hazards.
+ */
 const AMMO_ROCKETS = 2;
+
+/**
+ * Original name: AMMO_GRENADES
+ * Source: game/g_local.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the canonical `ammo_t.AMMO_GRENADES` value from the `g_local.h` attachment point.
+ *
+ * Porting notes:
+ * - The owner of the enum port is `packages/game/src/runtime.ts`; this numeric alias avoids runtime import-cycle hazards.
+ */
 const AMMO_GRENADES = 3;
+
+/**
+ * Original name: AMMO_CELLS
+ * Source: game/g_local.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the canonical `ammo_t.AMMO_CELLS` value from the `g_local.h` attachment point.
+ *
+ * Porting notes:
+ * - The owner of the enum port is `packages/game/src/runtime.ts`; this numeric alias avoids runtime import-cycle hazards.
+ */
 const AMMO_CELLS = 4;
+
+/**
+ * Original name: AMMO_SLUGS
+ * Source: game/g_local.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the canonical `ammo_t.AMMO_SLUGS` value from the `g_local.h` attachment point.
+ *
+ * Porting notes:
+ * - The owner of the enum port is `packages/game/src/runtime.ts`; this numeric alias avoids runtime import-cycle hazards.
+ */
 const AMMO_SLUGS = 5;
 
 export type {

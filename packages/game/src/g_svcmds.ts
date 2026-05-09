@@ -22,7 +22,7 @@ import { PRINT_HIGH, Q_stricmp } from "../../qcommon/src/index.js";
 
 /**
  * Original name: ipfilter_t
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -35,6 +35,8 @@ export interface ipfilter_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit state holder)
  * Category: New
  * Purpose: Hold the mutable packet-filter state that originally lived in file-scope globals.
  *
@@ -47,6 +49,8 @@ export interface GameServerCommandState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game import adapter)
  * Category: New
  * Purpose: Narrow the imported engine callbacks required by `g_svcmds.c`.
  */
@@ -55,10 +59,25 @@ export interface GameServerCommandContext {
   writeFile?: (path: string, contents: string) => boolean;
 }
 
+/**
+ * Original name: MAX_IPFILTERS
+ * Source: Quake-2-master/game/g_svcmds.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_IPFILTERS = 1024;
+
+/**
+ * Original name: N/A
+ * Source: N/A (free-slot sentinel)
+ * Category: New
+ * Purpose: Preserve the original deleted-slot sentinel used by `SVCmd_AddIP_f`.
+ */
 const FREE_IPFILTER_COMPARE = 0xffffffff;
 
 /**
+ * Original name: N/A
+ * Source: N/A (state factory)
  * Category: New
  * Purpose: Create the zero-initialized server-command state used by the `g_svcmds.c` port.
  */
@@ -71,7 +90,7 @@ export function createGameServerCommandState(): GameServerCommandState {
 
 /**
  * Original name: Svcmd_Test_f
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -84,7 +103,7 @@ export function Svcmd_Test_f(context: GameServerCommandContext): void {
 
 /**
  * Original name: StringToFilter
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -138,7 +157,7 @@ export function StringToFilter(context: GameServerCommandContext, source: string
 
 /**
  * Original name: SV_FilterPacket
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -189,7 +208,7 @@ export function SV_FilterPacket(
 
 /**
  * Original name: SVCmd_AddIP_f
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -224,7 +243,7 @@ export function SVCmd_AddIP_f(state: GameServerCommandState, context: GameServer
 
 /**
  * Original name: SVCmd_RemoveIP_f
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -260,7 +279,7 @@ export function SVCmd_RemoveIP_f(state: GameServerCommandState, context: GameSer
 
 /**
  * Original name: SVCmd_ListIP_f
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -286,7 +305,7 @@ export function SVCmd_ListIP_f(state: GameServerCommandState, context: GameServe
 
 /**
  * Original name: SVCmd_WriteIP_f
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -322,7 +341,7 @@ export function SVCmd_WriteIP_f(state: GameServerCommandState, context: GameServ
 
 /**
  * Original name: ServerCommand
- * Source: game/g_svcmds.c
+ * Source: Quake-2-master/game/g_svcmds.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -347,15 +366,33 @@ export function ServerCommand(state: GameServerCommandState, context: GameServer
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (cvar access helper)
+ * Category: New
+ * Purpose: Centralize the original `filterban` default/fallback behavior.
+ */
 function getFilterBanValue(context: GameServerCommandContext): number {
   const filterban = context.gi.cvar("filterban", "1", 0);
   return filterban ? (filterban.value | 0) : 1;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local string compare helper)
+ * Category: New
+ * Purpose: Keep server-command dispatch on the shared Quake II case-insensitive comparison.
+ */
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (byte packing helper)
+ * Category: New
+ * Purpose: Reproduce the little-endian byte view used by the C packet filter code.
+ */
 function packFilterBytes(bytes: number[]): number {
   return (
     ((bytes[0] ?? 0) & 0xff) |
@@ -365,6 +402,12 @@ function packFilterBytes(bytes: number[]): number {
   ) >>> 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (byte unpacking helper)
+ * Category: New
+ * Purpose: Reproduce the little-endian byte view used when listing and writing filters.
+ */
 function unpackFilterBytes(value: number): [number, number, number, number] {
   return [
     value & 0xff,

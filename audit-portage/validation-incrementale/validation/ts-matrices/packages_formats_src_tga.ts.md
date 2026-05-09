@@ -4,18 +4,18 @@
 
 - Fichier TS: `packages/formats/src/tga.ts`
 - Symboles TS: 10
-- Couvert C/H: 0
-- Reste a auditer: 10
+- Couvert C/H: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/formats/src/tga.ts` | interface | `TargaHeader` | oui | `TargaHeader` | `Quake-2-master/ref_gl/gl_image.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/formats/src/tga.ts` | interface | `TgaImage` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/tga.ts` | function | `parseTga` | oui | `LoadTGA` | `Quake-2-master/ref_gl/gl_image.c` | Ported | [`ref_gl_gl_image.c.md`](../matrices/ref_gl_gl_image.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. Ownership aussi suspect: le package TS ne correspond pas au module source attendu. |
-| `packages/formats/src/tga.ts` | function | `readTgaHeader` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/tga.ts` | function | `validateTgaHeader` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/tga.ts` | function | `decodeUncompressedTga` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/tga.ts` | function | `decodeRleTga` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/tga.ts` | function | `readTgaPixel` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/tga.ts` | function | `writeRgbaPixel` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/formats/src/tga.ts` | function | `getLittleShort` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/formats/src/tga.ts` | interface | `TargaHeader` | oui | `_TargaHeader` | `Quake-2-master/ref_gl/gl_image.c` | Ported | [`ref_gl_gl_image.c.md`](../matrices/ref_gl_gl_image.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/formats/src/tga.ts` | interface | `TgaImage` | oui | `N/A` | `N/A (decoded TGA image contract)` | New |  | TS sans lien source | Valide |  |
+| `packages/formats/src/tga.ts` | function | `parseTga` | oui | `N/A` | `N/A (shared TGA parser)` | Adapter |  | TS sans lien source | Valide | Adapter du chargement TGA; le portage proprietaire `LoadTGA` reste dans `packages/renderer-three/src/gl_image.ts`. |
+| `packages/formats/src/tga.ts` | function | `readTgaHeader` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/formats/src/tga.ts` | function | `validateTgaHeader` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/formats/src/tga.ts` | function | `decodeUncompressedTga` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/formats/src/tga.ts` | function | `decodeRleTga` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/formats/src/tga.ts` | function | `readTgaPixel` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/formats/src/tga.ts` | function | `writeRgbaPixel` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/formats/src/tga.ts` | function | `getLittleShort` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
