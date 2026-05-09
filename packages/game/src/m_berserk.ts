@@ -1,6 +1,6 @@
 /**
  * File: m_berserk.ts
- * Source: Quake II original / game/m_berserk.h and game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.h and Quake-2-master/game/m_berserk.c
  * Purpose: Port of the generated berserk model frame constants and monster_berserk gameplay behavior.
  *
  * Porting policy:
@@ -45,6 +45,15 @@ import {
   type GameRuntime
 } from "./runtime.js";
 
+/**
+ * Original name: FRAME_* and MODEL_SCALE
+ * Source: Quake-2-master/game/m_berserk.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - ModelGen frame macros for the berserk MD2 model, kept as numeric constants.
+ */
 export const FRAME_stand1 = 0;
 export const FRAME_stand2 = 1;
 export const FRAME_stand3 = 2;
@@ -292,6 +301,15 @@ export const FRAME_deathc8 = 243;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Original name: sound_pain/sound_die/sound_idle/sound_punch/sound_search/sound_sight
+ * Source: Quake-2-master/game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Sound asset names registered by `SP_monster_berserk`, separated from runtime handles for web-safe sound routing.
+ */
 const SOUND_PAIN = "berserk/berpain2.wav";
 const SOUND_DIE = "berserk/berdeth2.wav";
 const SOUND_IDLE = "berserk/beridle1.wav";
@@ -299,6 +317,15 @@ const SOUND_PUNCH = "berserk/attack.wav";
 const SOUND_SEARCH = "berserk/bersrch1.wav";
 const SOUND_SIGHT = "berserk/sight.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handles)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Store registered sound indices returned by the TypeScript runtime.
+ */
 let sound_pain = 0;
 let sound_die = 0;
 let sound_idle = 0;
@@ -308,7 +335,7 @@ let sound_search = 0;
 
 /**
  * Original name: berserk_sight
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -326,7 +353,7 @@ export function berserk_sight(self: GameEntity, _other: GameEntity | null, runti
 
 /**
  * Original name: berserk_search
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -356,7 +383,7 @@ export const berserk_move_stand: GameMonsterMove = {
 
 /**
  * Original name: berserk_stand
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -377,7 +404,7 @@ export const berserk_move_stand_fidget: GameMonsterMove = {
 
 /**
  * Original name: berserk_fidget
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -416,7 +443,7 @@ export const berserk_move_walk: GameMonsterMove = {
 
 /**
  * Original name: berserk_walk
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -437,7 +464,7 @@ export const berserk_move_run1: GameMonsterMove = {
 
 /**
  * Original name: berserk_run
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -454,7 +481,7 @@ export function berserk_run(self: GameEntity): void {
 
 /**
  * Original name: berserk_attack_spike
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -471,7 +498,7 @@ export function berserk_attack_spike(self: GameEntity, runtime: GameRuntime): vo
 
 /**
  * Original name: berserk_swing
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -504,7 +531,7 @@ export const berserk_move_attack_spike: GameMonsterMove = {
 
 /**
  * Original name: berserk_attack_club
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -533,7 +560,7 @@ export const berserk_move_attack_club: GameMonsterMove = {
 
 /**
  * Original name: berserk_strike
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -560,7 +587,7 @@ export const berserk_move_attack_strike: GameMonsterMove = {
 
 /**
  * Original name: berserk_melee
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -593,7 +620,7 @@ export const berserk_move_pain2: GameMonsterMove = {
 
 /**
  * Original name: berserk_pain
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -639,7 +666,7 @@ export function berserk_pain(
 
 /**
  * Original name: berserk_dead
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -673,7 +700,7 @@ export const berserk_move_death2: GameMonsterMove = {
 
 /**
  * Original name: berserk_die
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -722,7 +749,7 @@ export function berserk_die(
 
 /**
  * Original name: SP_monster_berserk
- * Source: game/m_berserk.c
+ * Source: Quake-2-master/game/m_berserk.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -767,6 +794,15 @@ export function SP_monster_berserk(self: GameEntity, runtime: GameRuntime): void
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Build TypeScript `mframe_t` equivalents from compact distance and callback tables.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -779,6 +815,15 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Place sparse think callbacks into frame-indexed arrays.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -790,6 +835,15 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Register berserk assets through the explicit runtime instead of `gi.soundindex`.
+ */
 function precacheBerserkAssets(runtime: GameRuntime): void {
   sound_pain = registerGameSound(runtime, SOUND_PAIN);
   sound_die = registerGameSound(runtime, SOUND_DIE);
@@ -799,12 +853,30 @@ function precacheBerserkAssets(runtime: GameRuntime): void {
   sound_sight = registerGameSound(runtime, SOUND_SIGHT);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Local equivalent of `VectorSet` for mutable tuple fields.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Express local `rand() % n` choices where exact libc RNG state is not shared.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

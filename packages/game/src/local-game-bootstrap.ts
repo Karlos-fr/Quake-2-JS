@@ -55,11 +55,33 @@ import {
 import { Add_Ammo, Drop_Item, FindItem, GetAmmoItemForWeapon, SetRespawn } from "./g_items.js";
 import { InitClientPersistant } from "./p_client.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
+ * Category: New
+ * Purpose: Preserve the local standalone player trigger hull minimums used before full spawn logic owns the proxy.
+ */
 const LOCAL_PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
+ * Category: New
+ * Purpose: Preserve the local standalone player trigger hull maximums used before full spawn logic owns the proxy.
+ */
 const LOCAL_PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
+
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
+ * Category: New
+ * Purpose: Seed the local standalone player view height before regular gameplay and prediction update it.
+ */
 const LOCAL_PLAYER_VIEWHEIGHT = 22;
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Preserve the local browser/demo weapon-slot mapping outside the web adapter.
  *
@@ -80,6 +102,8 @@ export type LocalWeaponSlotKey =
   | "Digit0";
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Map the current local weapon-slot keys to Quake II pickup names.
  *
@@ -100,6 +124,12 @@ export const LOCAL_WEAPON_SLOTS: Record<LocalWeaponSlotKey, string> = {
   Digit0: "BFG10K"
 };
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
+ * Category: New
+ * Purpose: Keep the standalone demo ammo grants explicit and separate from general gameplay pickup rules.
+ */
 const LOCAL_AMMO_GRANTS: Array<[string, number]> = [
   ["Shells", 50],
   ["Bullets", 200],
@@ -110,6 +140,8 @@ const LOCAL_AMMO_GRANTS: Array<[string, number]> = [
 ];
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Describe one local inventory grant used by the current standalone bootstrap.
  */
@@ -119,6 +151,8 @@ export interface LocalInventoryGrant {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Describe one item configstring payload derived from the current local standalone item bootstrap.
  */
@@ -128,6 +162,8 @@ export interface LocalItemStringEntry {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Describe the local weapon/bootstrap data shared between gameplay seeding and the client HUD bootstrap.
  */
@@ -143,6 +179,8 @@ export interface LocalWeaponBootstrapData {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Make standalone-demo inventory grants opt-in for local session users.
  */
@@ -151,6 +189,8 @@ export interface LocalGameplayPlayerOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Reuse the currently ported `p_weapon.c` and `g_weapon.c` routines as the standalone gameplay weapon hook table.
  *
@@ -198,6 +238,12 @@ export const LOCAL_GAME_WEAPON_HOOKS: GameWeaponHooks = {
   }
 };
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
+ * Category: New
+ * Purpose: Bridge local weapon fire callbacks to the standalone temp-entity event queue.
+ */
 const LOCAL_GAME_WORLD_WEAPON_HOOKS: GameWeaponWorldHooks = {
   emitTempEntity: (event, payload, runtime) => {
     const origin = readTempEntityOrigin(payload) ?? [0, 0, 0];
@@ -205,6 +251,12 @@ const LOCAL_GAME_WORLD_WEAPON_HOOKS: GameWeaponWorldHooks = {
   }
 };
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
+ * Category: New
+ * Purpose: Extract the best available origin from local weapon temp-entity payloads.
+ */
 function readTempEntityOrigin(payload: Record<string, unknown>): vec3_t | null {
   const origin = payload.origin;
   if (isVec3(origin)) {
@@ -224,6 +276,12 @@ function readTempEntityOrigin(payload: Record<string, unknown>): vec3_t | null {
   return null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
+ * Category: New
+ * Purpose: Validate local temp-entity payload coordinates before forwarding them to gameplay events.
+ */
 function isVec3(value: unknown): value is vec3_t {
   return Array.isArray(value)
     && value.length === 3
@@ -231,6 +289,8 @@ function isVec3(value: unknown): value is vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Seed one local gameplay player with the currently bootstrapped standalone inventory and initial weapon.
  *
@@ -258,6 +318,8 @@ export function seedLocalWeaponInventory(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Create the standalone local gameplay player proxy used by the browser/runtime loop.
  *
@@ -287,6 +349,8 @@ export function createLocalGameplayPlayer(runtime: GameRuntime, options: LocalGa
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Request one local weapon switch from the standalone controls using the original `Use_Weapon` path.
  *
@@ -305,6 +369,8 @@ export function selectLocalWeapon(player: GameEntity, weaponName: string, runtim
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Keep the standalone browser demo inventory in a weapon-ready state with direct slot access and effectively infinite ammo.
  *
@@ -339,6 +405,8 @@ export function refillLocalDemoInventory(player: GameEntity, runtime: GameRuntim
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Force one local demo weapon slot switch while keeping the browser demo inventory primed for immediate use.
  *
@@ -351,6 +419,8 @@ export function selectLocalDemoWeapon(player: GameEntity, weaponName: string, ru
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Build the current standalone weapon bootstrap payload shared by gameplay and client bootstrap code.
  *
@@ -420,6 +490,8 @@ export function buildLocalWeaponBootstrapData(): LocalWeaponBootstrapData {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local gameplay bootstrap)
  * Category: New
  * Purpose: Advance the current standalone gameplay weapon state machine through the already ported `p_weapon.c` path.
  *

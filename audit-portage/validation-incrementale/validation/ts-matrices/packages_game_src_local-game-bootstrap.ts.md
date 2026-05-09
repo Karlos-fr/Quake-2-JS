@@ -5,28 +5,28 @@
 - Fichier TS: `packages/game/src/local-game-bootstrap.ts`
 - Symboles TS: 21
 - Couvert C/H: 0
-- Reste a auditer: 21
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_PLAYER_TRIGGER_MINS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_PLAYER_TRIGGER_MAXS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_PLAYER_VIEWHEIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/local-game-bootstrap.ts` | type | `LocalWeaponSlotKey` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_WEAPON_SLOTS` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_AMMO_GRANTS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalInventoryGrant` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalItemStringEntry` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalWeaponBootstrapData` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalGameplayPlayerOptions` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_GAME_WEAPON_HOOKS` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_GAME_WORLD_WEAPON_HOOKS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `readTempEntityOrigin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `isVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `seedLocalWeaponInventory` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `createLocalGameplayPlayer` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `selectLocalWeapon` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `refillLocalDemoInventory` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `selectLocalDemoWeapon` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `buildLocalWeaponBootstrapData` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/local-game-bootstrap.ts` | function | `thinkLocalWeapon` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_PLAYER_TRIGGER_MINS` | non | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_PLAYER_TRIGGER_MAXS` | non | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_PLAYER_VIEWHEIGHT` | non | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | type | `LocalWeaponSlotKey` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_WEAPON_SLOTS` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_AMMO_GRANTS` | non | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalInventoryGrant` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalItemStringEntry` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalWeaponBootstrapData` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | interface | `LocalGameplayPlayerOptions` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_GAME_WEAPON_HOOKS` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | value | `LOCAL_GAME_WORLD_WEAPON_HOOKS` | non | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `readTempEntityOrigin` | non | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `isVec3` | non | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `seedLocalWeaponInventory` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `createLocalGameplayPlayer` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `selectLocalWeapon` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `refillLocalDemoInventory` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `selectLocalDemoWeapon` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `buildLocalWeaponBootstrapData` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/local-game-bootstrap.ts` | function | `thinkLocalWeapon` | oui | `N/A` | `N/A (local gameplay bootstrap)` | New |  | TS sans lien source | Valide |  |

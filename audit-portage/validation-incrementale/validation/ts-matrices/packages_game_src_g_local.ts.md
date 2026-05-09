@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/g_local.ts`
 - Symboles TS: 137
 - Couvert C/H: 123
-- Reste a auditer: 4
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -102,10 +102,10 @@
 | `packages/game/src/g_local.ts` | value | `MOD_TARGET_LASER` | oui | `MOD_TARGET_LASER` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_local.ts` | value | `MOD_TRIGGER_HURT` | oui | `MOD_TRIGGER_HURT` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/g_local.ts` | value | `MOD_TARGET_BLASTER` | oui | `MOD_TARGET_BLASTER` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/g_local.ts` | value | `VEC_UP` | oui | `VEC_UP` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
-| `packages/game/src/g_local.ts` | value | `MOVEDIR_UP` | oui | `MOVEDIR_UP` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
-| `packages/game/src/g_local.ts` | value | `VEC_DOWN` | oui | `VEC_DOWN` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
-| `packages/game/src/g_local.ts` | value | `MOVEDIR_DOWN` | oui | `MOVEDIR_DOWN` | `Quake-2-master/game/g_utils.c` | Ported |  | Ownership suspect | Partiel | Declare dans `g_utils.c` et duplique localement dans `packages/game/src/g_utils.ts`; action suivante: traiter ownership/export dans le lot `g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `VEC_UP` | oui | `VEC_UP` | `Quake-2-master/game/g_utils.c` | Adapter |  | Adapter export | Valide | Alias exporte depuis le point `g_local`; port proprietaire valide dans `packages/game/src/g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `MOVEDIR_UP` | oui | `MOVEDIR_UP` | `Quake-2-master/game/g_utils.c` | Adapter |  | Adapter export | Valide | Alias exporte depuis le point `g_local`; port proprietaire valide dans `packages/game/src/g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `VEC_DOWN` | oui | `VEC_DOWN` | `Quake-2-master/game/g_utils.c` | Adapter |  | Adapter export | Valide | Alias exporte depuis le point `g_local`; port proprietaire valide dans `packages/game/src/g_utils.ts`. |
+| `packages/game/src/g_local.ts` | value | `MOVEDIR_DOWN` | oui | `MOVEDIR_DOWN` | `Quake-2-master/game/g_utils.c` | Adapter |  | Adapter export | Valide | Alias exporte depuis le point `g_local`; port proprietaire valide dans `packages/game/src/g_utils.ts`. |
 | `packages/game/src/g_local.ts` | enum | `damage_t` | oui | `damage_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_local.ts` | enum | `movetype_t` | oui | `movetype_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/g_local.ts` | value | `MOVETYPE_NONE` | oui | `MOVETYPE_NONE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Alias exporte du membre valide de `movetype_t`; doublon exporte homonyme dans `packages/game/src/runtime.ts` a traiter dans la matrice `runtime.ts`. |

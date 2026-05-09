@@ -1,6 +1,6 @@
 /**
  * File: m_actor.ts
- * Source: Quake II original / game/m_actor.h and game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.h and Quake-2-master/game/m_actor.c
  * Purpose: Port of the generated actor model frame constants and misc_actor gameplay behavior.
  *
  * Porting policy:
@@ -549,6 +549,12 @@ export const MODEL_SCALE = 1.0;
 
 export const MAX_ACTOR_NAMES = 8;
 export const MZ2_ACTOR_MACHINEGUN_1 = 63;
+/**
+ * Original name: N/A
+ * Source: N/A (local gameplay sentinel)
+ * Category: New
+ * Purpose: Large pause duration used to mirror the original indefinite actor wait.
+ */
 const MONSTER_PAUSE_FOREVER = 100000000;
 
 export const actor_names = [
@@ -659,7 +665,7 @@ export const actor_move_attack: GameMonsterMove = {
 
 /**
  * Original name: actor_stand
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -677,7 +683,7 @@ export function actor_stand(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: actor_walk
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -690,7 +696,7 @@ export function actor_walk(self: GameEntity): void {
 
 /**
  * Original name: actor_run
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -717,7 +723,7 @@ export function actor_run(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: actor_pain
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -765,7 +771,7 @@ export function actor_pain(
 
 /**
  * Original name: actorMachineGun
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -805,7 +811,7 @@ export function actorMachineGun(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: actor_dead
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -823,7 +829,7 @@ export function actor_dead(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: actor_die
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -860,7 +866,7 @@ export function actor_die(
 
 /**
  * Original name: actor_fire
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -879,7 +885,7 @@ export function actor_fire(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: actor_attack
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -897,7 +903,7 @@ export function actor_attack(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: actor_use
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -933,7 +939,7 @@ export function actor_use(self: GameEntity, _other: GameEntity | null, _activato
 
 /**
  * Original name: SP_misc_actor
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1002,7 +1008,7 @@ export function SP_misc_actor(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: target_actor_touch
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1096,7 +1102,7 @@ export function target_actor_touch(
 
 /**
  * Original name: SP_target_actor
- * Source: game/m_actor.c
+ * Source: Quake-2-master/game/m_actor.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1140,6 +1146,12 @@ export function SP_target_actor(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame builder)
+ * Category: New
+ * Purpose: Builds typed monster frame arrays from declarative C table data.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -1152,32 +1164,74 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Selects the actor chat display name using the original modulo rule.
+ */
 function actorNameForEntity(entity: GameEntity): string {
   return actor_names[entity.index % MAX_ACTOR_NAMES];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local RNG adapter)
+ * Category: New
+ * Purpose: Represents C `rand() % n`/bitmask integer branches in actor logic.
+ */
 function randomInt(max: number): number {
   return Math.trunc(Math.random() * max);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Mutates a vec3 without depending on broad shared math ownership.
+ */
 function setVec3(vector: vec3_t, x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local vec3 subtraction for actor aiming and path yaw calculations.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local vec3 addition for actor muzzle/target calculations.
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local vec3 scaling for actor projectile targeting.
+ */
 function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   return [vector[0] * scale, vector[1] * scale, vector[2] * scale];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local vec3 normalization for actor firing direction.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {

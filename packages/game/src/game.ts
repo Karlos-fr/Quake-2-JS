@@ -40,7 +40,7 @@ import type { GameAreaLink, GameClient, GameEntity } from "./runtime.js";
 
 /**
  * Original name: GAME_API_VERSION
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -51,7 +51,7 @@ export const GAME_API_VERSION = 3;
 
 /**
  * Original name: MAX_ENT_CLUSTERS
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -62,7 +62,7 @@ export const MAX_ENT_CLUSTERS = 16;
 
 /**
  * Original name: solid_t
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -78,7 +78,7 @@ export enum solid_t {
 
 /**
  * Original name: link_s
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -89,7 +89,7 @@ export type link_s = GameAreaLink;
 
 /**
  * Original name: link_t
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -100,7 +100,7 @@ export type link_t = link_s;
 
 /**
  * Original name: gclient_s
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -111,7 +111,7 @@ export type gclient_s = GameClient;
 
 /**
  * Original name: gclient_t
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -122,7 +122,7 @@ export type gclient_t = gclient_s;
 
 /**
  * Original name: edict_s
- * Source: game/g_local.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -133,7 +133,7 @@ export type edict_s = GameEntity;
 
 /**
  * Original name: edict_t
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -143,6 +143,8 @@ export type edict_s = GameEntity;
 export type edict_t = edict_s;
 
 /**
+ * Original name: N/A
+ * Source: N/A (engine callback helper type)
  * Category: New
  * Purpose: Model one `printf`-style callback imported from the engine.
  *
@@ -153,7 +155,7 @@ export type GamePrintf = (fmt: string, ...args: unknown[]) => void;
 
 /**
  * Original name: game_import_t
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -237,7 +239,7 @@ export interface game_import_t {
 
 /**
  * Original name: game_export_t
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -274,7 +276,7 @@ export interface game_export_t {
 
 /**
  * Original name: GetGameApi
- * Source: game/game.h
+ * Source: Quake-2-master/game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -287,6 +289,8 @@ export interface game_export_t {
 export type GetGameApi = (imports: game_import_t) => game_export_t;
 
 /**
+ * Original name: N/A
+ * Source: N/A (server-visible gclient_t prefix contract)
  * Category: New
  * Purpose: Expose the server-visible `gclient_t` prefix shared by `game.h`.
  *
@@ -299,6 +303,8 @@ export interface GameClientServerFields {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server-visible edict_t prefix contract)
  * Category: New
  * Purpose: Expose the server-visible `edict_t` prefix shared by `game.h`.
  *
@@ -327,6 +333,12 @@ export interface GameEdictServerFields {
   owner: edict_t | null;
 }
 
+/**
+ * Original name: SVF_NOCLIENT / SVF_DEADMONSTER / SVF_MONSTER
+ * Source: Quake-2-master/game/game.h
+ * Category: Adapter
+ * Purpose: Re-export the server-visible flag constants from their runtime owner for the public game API surface.
+ */
 export {
   SVF_DEADMONSTER,
   SVF_MONSTER,

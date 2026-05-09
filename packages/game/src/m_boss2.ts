@@ -259,23 +259,65 @@ export const MZ2_BOSS2_MACHINEGUN_R3 = 135;
 export const MZ2_BOSS2_MACHINEGUN_R4 = 136;
 export const MZ2_BOSS2_MACHINEGUN_R5 = 137;
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Name the boss2 check-attack trace mask assembled inline in the C source.
+ */
 const BOSS2_ATTACK_TRACE_MASK = CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA;
 const SOUND_PAIN1 = "bosshovr/bhvpain1.wav";
 const SOUND_PAIN2 = "bosshovr/bhvpain2.wav";
 const SOUND_PAIN3 = "bosshovr/bhvpain3.wav";
 const SOUND_DEATH = "bosshovr/bhvdeth1.wav";
 const SOUND_SEARCH1 = "bosshovr/bhvunqv1.wav";
+/**
+ * Original name: N/A
+ * Source: N/A (asset path constant)
+ * Category: New
+ * Purpose: Name the boss2 engine loop path registered by `SP_monster_boss2`.
+ */
 const SOUND_ENGINE = "bosshovr/bhvengn1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Purpose: Cache the registered runtime handle for `SOUND_PAIN1`.
+ */
 let sound_pain1 = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Purpose: Cache the registered runtime handle for `SOUND_PAIN2`.
+ */
 let sound_pain2 = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Purpose: Cache the registered runtime handle for `SOUND_PAIN3`.
+ */
 let sound_pain3 = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Purpose: Cache the registered runtime handle for `SOUND_DEATH`.
+ */
 let sound_death = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Purpose: Cache the registered runtime handle for `SOUND_SEARCH1`.
+ */
 let sound_search1 = 0;
 
 /**
  * Original name: boss2_search
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -290,7 +332,7 @@ export function boss2_search(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: Boss2Rocket
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -314,7 +356,7 @@ export function Boss2Rocket(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: boss2_firebullet_right
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -327,7 +369,7 @@ export function boss2_firebullet_right(self: GameEntity, runtime: GameRuntime): 
 
 /**
  * Original name: boss2_firebullet_left
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -340,7 +382,7 @@ export function boss2_firebullet_left(self: GameEntity, runtime: GameRuntime): v
 
 /**
  * Original name: Boss2MachineGun
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -461,7 +503,7 @@ export const boss2_move_death: GameMonsterMove = {
 
 /**
  * Original name: boss2_stand
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -474,7 +516,7 @@ export function boss2_stand(self: GameEntity): void {
 
 /**
  * Original name: boss2_run
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -491,7 +533,7 @@ export function boss2_run(self: GameEntity): void {
 
 /**
  * Original name: boss2_walk
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -504,7 +546,7 @@ export function boss2_walk(self: GameEntity): void {
 
 /**
  * Original name: boss2_attack
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -530,7 +572,7 @@ export function boss2_attack(self: GameEntity): void {
 
 /**
  * Original name: boss2_attack_mg
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -543,7 +585,7 @@ export function boss2_attack_mg(self: GameEntity): void {
 
 /**
  * Original name: boss2_reattack_mg
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -564,7 +606,7 @@ export function boss2_reattack_mg(self: GameEntity): void {
 
 /**
  * Original name: boss2_pain
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -605,7 +647,7 @@ export function boss2_pain(
 
 /**
  * Original name: boss2_dead
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -623,7 +665,7 @@ export function boss2_dead(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: boss2_die
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -646,7 +688,7 @@ export function boss2_die(
 
 /**
  * Original name: Boss2_CheckAttack
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -728,7 +770,7 @@ export function Boss2_CheckAttack(self: GameEntity, runtime: GameRuntime): boole
 
 /**
  * Original name: SP_monster_boss2
- * Source: game/m_boss2.c
+ * Source: Quake-2-master/game/m_boss2.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -775,6 +817,12 @@ export function SP_monster_boss2(self: GameEntity, runtime: GameRuntime): void {
   flymonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Build `mframe_t`-equivalent rows from compact declarative arrays.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -787,6 +835,12 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Build frame rows when the AI callback varies by frame index.
+ */
 function makeIndexedFrames(
   aifunc: (index: number) => GameMonsterFrame["aifunc"],
   distances: number[],
@@ -799,6 +853,12 @@ function makeIndexedFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Place sparse think callbacks at their original frame indexes.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -810,6 +870,12 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Keep the spawn precache order aligned with `SP_monster_boss2`.
+ */
 function precacheBoss2Assets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -818,6 +884,12 @@ function precacheBoss2Assets(runtime: GameRuntime): void {
   sound_search1 = registerGameSound(runtime, SOUND_SEARCH1);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local adapter)
+ * Category: Adapter
+ * Purpose: Share the four identical `Boss2Rocket` fire blocks while preserving source muzzle ids and projectile parameters.
+ */
 function fireBoss2Rocket(
   self: GameEntity,
   flashNumber: number,
@@ -837,6 +909,8 @@ function fireBoss2Rocket(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local adapter)
  * Category: Adapter
  * Purpose: Share the duplicated boss2 left/right machinegun C blocks without changing their muzzle ids or shot parameters.
  *
@@ -867,6 +941,12 @@ function fireBoss2Machinegun(self: GameEntity, flashNumber: number, runtime: Gam
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound adapter)
+ * Category: New
+ * Purpose: Convert C `gi.sound` parameters into the runtime sound event option object.
+ */
 function soundOptions(channel: number, attenuation: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -876,24 +956,54 @@ function soundOptions(channel: number, attenuation: number): { channel: number; 
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local adapter)
+ * Category: Adapter
+ * Purpose: Read boss2 muzzle offsets from the shared `monster_flash_offset` port without owning that table.
+ */
 function boss2FlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local `VectorSet` equivalent for mutable entity bounds.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local `VectorSubtract` equivalent for boss2 calculations.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local `VectorMA` equivalent used by boss2 machinegun lead.
+ */
 function vectorMA(veca: vec3_t, scale: number, vecb: vec3_t): vec3_t {
   return [veca[0] + scale * vecb[0], veca[1] + scale * vecb[1], veca[2] + scale * vecb[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local `VectorNormalize` equivalent returning a new vector.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = lengthVec3(vector);
   if (length === 0) {
@@ -902,6 +1012,12 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local `VectorLength` equivalent for boss2 attack distance checks.
+ */
 function lengthVec3(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }

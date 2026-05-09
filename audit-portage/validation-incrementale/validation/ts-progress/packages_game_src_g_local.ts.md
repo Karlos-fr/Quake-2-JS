@@ -3,10 +3,13 @@
 - Fichier TS: `packages/game/src/g_local.ts`
 - Matrice TS: `audit-portage/validation-incrementale/validation/ts-matrices/packages_game_src_g_local.ts.md`
 - Source principale: `Quake-2-master/game/g_local.h`
-- Statut courant: En cours
+- Statut courant: Termine
 
 ## Dernier lot valide
 
+- 2026-05-09: lot restant `VEC_UP` / `MOVEDIR_UP` / `VEC_DOWN` / `MOVEDIR_DOWN` valide depuis `g_local.ts` seulement. Les quatre exports sont classes `Adapter` et `Valide`: ils reexposent les sentinelles/directions declarees dans `Quake-2-master/game/g_utils.c` depuis le point d'attache public `g_local`, sans revendiquer l'ownership du portage.
+- Preuves session: lecture explicite de `README.md`, `CHECKLIST_VALIDATION_TS.md`, `CHECKLIST_VALIDATION_ENTITES.md`, `ORGANISATION_AGENTS.md`, matrice TS, progress file TS, `AVANCEMENT_GLOBAL_TS.md`, source `Quake-2-master/game/g_utils.c`, matrice C/H `game_g_utils.c.md`, matrice TS `packages_game_src_g_utils.ts.md`; verification que `packages/game/src/g_utils.ts` possede le miroir local non exporte utilise par `G_SetMovedir` et que ces exports `g_local.ts` ne sont pas importes ailleurs dans `packages/game/src`.
+- Correction locale `packages/game/src/g_local.ts`: entetes ajoutes pour les quatre adapters directionnels; aucune modification de `packages/game/src/g_utils.ts`.
 - 2026-05-09: lot strict `g_local.ts` des aliases prives/exportes `AMMO_BULLETS` a `AMMO_SLUGS` valide. Les six valeurs ont ete classees `Adapter` et `Valide`, avec `Original name`/`Source declaree` explicites vers `Quake-2-master/game/g_local.h`, sans les marquer `Couvert C/H` car le proprietaire C/H de l'enum `ammo_t` reste `packages/game/src/runtime.ts`.
 - Preuves session: lecture explicite de `README.md`, `CHECKLIST_VALIDATION_TS.md`, `CHECKLIST_VALIDATION_ENTITES.md`, `ORGANISATION_AGENTS.md`, matrice TS, progress file TS, `AVANCEMENT_GLOBAL_TS.md`, matrice C/H `game_g_local.h.md`, source `Quake-2-master/game/g_local.h`; verification du port proprietaire `ammo_t` dans `packages/game/src/runtime.ts`, des usages runtime dans `g_items.ts`, et du point d'export `g_local.ts`.
 - Correction locale `packages/game/src/g_local.ts`: entetes ajoutes pour `AMMO_BULLETS`, `AMMO_SHELLS`, `AMMO_ROCKETS`, `AMMO_GRENADES`, `AMMO_CELLS`, `AMMO_SLUGS`; les valeurs numeriques restent conservees pour eviter les hazards de cycle d'import mentionnes dans le lot precedent.
@@ -42,8 +45,8 @@
 
 ## Blocages
 
-- Point ouvert hors `g_local.h`: ownership de `VEC_UP`/`MOVEDIR_UP`/`VEC_DOWN`/`MOVEDIR_DOWN`, declares dans `g_utils.c` et dupliques dans `g_utils.ts`.
+- Aucun blocage restant pour `g_local.ts`.
 
 ## Prochain lot recommande
 
-- Traiter la decision d'ownership pour `VEC_UP`/`MOVEDIR_UP`/`VEC_DOWN`/`MOVEDIR_DOWN` avec `g_utils.ts`, sans lancer un autre agent en parallele sur `g_local.ts` ou `g_utils.ts`.
+- Aucun pour `g_local.ts`.

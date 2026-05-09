@@ -207,9 +207,61 @@ export const MOD_SPLASH = 29;
 export const MOD_TARGET_LASER = 30;
 export const MOD_TRIGGER_HURT = 31;
 export const MOD_TARGET_BLASTER = 33;
+
+/**
+ * Original name: VEC_UP
+ * Source: Quake-2-master/game/g_utils.c
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the original `G_SetMovedir` upward-angle sentinel from the `g_local` public attachment point.
+ *
+ * Porting notes:
+ * - The owning port used by `G_SetMovedir` remains the local mirror in `packages/game/src/g_utils.ts`.
+ */
 export const VEC_UP: vec3_t = [0, -1, 0];
+
+/**
+ * Original name: MOVEDIR_UP
+ * Source: Quake-2-master/game/g_utils.c
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the original upward movement direction paired with `VEC_UP`.
+ *
+ * Porting notes:
+ * - The owning port used by `G_SetMovedir` remains the local mirror in `packages/game/src/g_utils.ts`.
+ */
 export const MOVEDIR_UP: vec3_t = [0, 0, 1];
+
+/**
+ * Original name: VEC_DOWN
+ * Source: Quake-2-master/game/g_utils.c
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the original `G_SetMovedir` downward-angle sentinel from the `g_local` public attachment point.
+ *
+ * Porting notes:
+ * - The owning port used by `G_SetMovedir` remains the local mirror in `packages/game/src/g_utils.ts`.
+ */
 export const VEC_DOWN: vec3_t = [0, -2, 0];
+
+/**
+ * Original name: MOVEDIR_DOWN
+ * Source: Quake-2-master/game/g_utils.c
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exposes the original downward movement direction paired with `VEC_DOWN`.
+ *
+ * Porting notes:
+ * - The owning port used by `G_SetMovedir` remains the local mirror in `packages/game/src/g_utils.ts`.
+ */
 export const MOVEDIR_DOWN: vec3_t = [0, 0, -1];
 
 /**

@@ -1,0 +1,25 @@
+# Progress TS - packages/game/src/m_berserk.ts
+
+- Statut: Termine
+- Dernier lot traite: fichier complet, 299 symboles.
+- Resultat: 288 symboles `Couvert C/H`, 11 symboles `New` valides.
+- Matrices C/H croisees:
+  - `game_m_berserk.h.md` pour `FRAME_*` et `MODEL_SCALE`.
+  - `game_m_berserk.c.md` pour sons, tables/moves et fonctions gameplay.
+- Decisions:
+  - Les constantes `SOUND_*` restent le portage proprietaire des globals statiques C `sound_*` selon la matrice C/H existante.
+  - Les variables `sound_*` TypeScript sont classees `New` comme handles runtime, avec `Original name: N/A` et `Source declaree: N/A (runtime sound handles)`.
+  - `makeFrames`, `indexedThinks`, `precacheBerserkAssets`, `setVec3` et `randomInt` sont des helpers locaux `New`.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Integration:
+  - Runtime: integre via `g_spawn.ts`, `SP_monster_berserk`, callbacks `monsterinfo`, `walkmonster_start`, `G_RunFrame` et registre de sauvegarde.
+  - apps/web: integre via le host full-game et les sorties runtime (`soundEvents`, snapshots entites).
+  - renderer-three: consomme les snapshots visibles du monstre via le flux full-game; les sons restent non proprietaires renderer.
+- Prochain lot recommande: aucun pour ce fichier.
