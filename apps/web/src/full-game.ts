@@ -2940,6 +2940,7 @@ async function createFullGameFrontendRenderer(
 ): Promise<FullGameFrontendRendererState> {
   page.frontendViewport.replaceChildren();
   const rendererBundle = await createRenderer();
+  rendererBundle.renderer.setClearColor(0x000000, 1);
   const rendererCanvas = rendererBundle.renderer.domElement;
   rendererCanvas.style.position = "absolute";
   rendererCanvas.style.left = "50%";

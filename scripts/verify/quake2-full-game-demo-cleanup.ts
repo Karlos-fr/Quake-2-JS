@@ -167,6 +167,11 @@ assert.equal(
   "standalone menu rendering should render the ref_gl draw adapter scene"
 );
 assert.equal(
+  fullGameSource.includes("rendererBundle.renderer.setClearColor(0x000000, 1);"),
+  true,
+  "standalone menu/loading frontend renderer should clear to exact black like the page background"
+);
+assert.equal(
   fullGameSource.includes("renderer.glDrawAdapter.setViewport(LOGICAL_WIDTH, LOGICAL_HEIGHT);"),
   true,
   "standalone menu/loading drawing should keep the original 640x480 logical viewport"
