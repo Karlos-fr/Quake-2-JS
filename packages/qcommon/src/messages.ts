@@ -62,16 +62,81 @@ import {
   type vec3_t
 } from "./q_shared.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (message string buffer limit)
+ * Category: New
+ */
 const READ_STRING_LIMIT = 2048;
+
+/**
+ * Original name: N/A
+ * Source: N/A (message coordinate scale helper)
+ * Category: New
+ */
 const COORD_SCALE = 8;
+
+/**
+ * Original name: N/A
+ * Source: N/A (message angle scale helper)
+ * Category: New
+ */
 const BYTE_ANGLE_SCALE = 256 / 360;
+
+/**
+ * Original name: CM_ANGLE1
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_ANGLE1 = 1 << 0;
+
+/**
+ * Original name: CM_ANGLE2
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_ANGLE2 = 1 << 1;
+
+/**
+ * Original name: CM_ANGLE3
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_ANGLE3 = 1 << 2;
+
+/**
+ * Original name: CM_FORWARD
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_FORWARD = 1 << 3;
+
+/**
+ * Original name: CM_SIDE
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_SIDE = 1 << 4;
+
+/**
+ * Original name: CM_UP
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_UP = 1 << 5;
+
+/**
+ * Original name: CM_BUTTONS
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_BUTTONS = 1 << 6;
+
+/**
+ * Original name: CM_IMPULSE
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Adapter
+ */
 const CM_IMPULSE = 1 << 7;
 
 /**
@@ -891,6 +956,8 @@ export function MSG_ReadDir(msg_read: sizebuf_t): vec3_t {
 export { MSG_BeginReading };
 
 /**
+ * Original name: N/A
+ * Source: N/A (message string reader helper)
  * Category: New
  * Purpose: Read a Quake II message string using the original temporary-buffer limits.
  *
@@ -913,6 +980,8 @@ function readStringInternal(msg_read: sizebuf_t, stopOnNewline: boolean): string
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (usercmd clone helper)
  * Category: New
  * Purpose: Copy one `usercmd_t` while preserving the original fixed field layout.
  *

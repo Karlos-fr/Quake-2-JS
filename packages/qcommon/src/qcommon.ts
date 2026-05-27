@@ -340,6 +340,8 @@ export interface netchan_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon runtime container)
  * Category: New
  * Purpose: Hold the qcommon-global mutable values declared in `qcommon.h` but not yet owned by narrower ports.
  *
@@ -371,6 +373,8 @@ export interface QcommonGlobals {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon control-flow adapter)
  * Category: New
  * Purpose: Represent one qcommon error/quit control-flow signal without depending on C `setjmp`.
  *
@@ -390,6 +394,8 @@ export class QcommonSignal extends Error {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon runtime container)
  * Category: New
  * Purpose: Track the tagged zone allocations and lifecycle callbacks that back the remaining `qcommon.h` misc helpers.
  *
@@ -412,6 +418,8 @@ export interface QcommonMiscRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon debug runtime record)
  * Category: New
  * Purpose: Preserve one debug-graph sample emitted through `SCR_DebugGraph`.
  *
@@ -424,6 +432,8 @@ export interface DebugGraphSample {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon host callback adapter)
  * Category: New
  * Purpose: Hold the host callbacks referenced by the final system/client/server declaration tail of `qcommon.h`.
  *
@@ -454,6 +464,8 @@ export interface QcommonHostHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon host runtime container)
  * Category: New
  * Purpose: Hold the explicit runtime that backs the final host/client/server declaration tail of `qcommon.h`.
  *
@@ -466,6 +478,8 @@ export interface QcommonHostRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon network packet adapter)
  * Category: New
  * Purpose: Describe one host-level packet used by the qcommon network runtime hooks.
  *
@@ -478,6 +492,8 @@ export interface NetPacket {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon network hook adapter)
  * Category: New
  * Purpose: Hold the host callbacks needed by the qcommon network port.
  *
@@ -494,6 +510,8 @@ export interface QcommonNetHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon network runtime container)
  * Category: New
  * Purpose: Track the mutable qcommon network globals declared in `qcommon.h`.
  *
@@ -515,6 +533,8 @@ export interface QcommonNetRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon runtime factory)
  * Category: New
  * Purpose: Create the default qcommon global state not yet owned by narrower ports.
  */
@@ -541,6 +561,8 @@ export function createQcommonGlobals(): QcommonGlobals {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime used by the remaining qcommon misc helper ports.
  */
@@ -557,6 +579,8 @@ export function createQcommonMiscRuntime(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon runtime factory)
  * Category: New
  * Purpose: Create the runtime that backs the final system/client/server declaration tail of `qcommon.h`.
  */
@@ -568,6 +592,8 @@ export function createQcommonHostRuntime(hooks: QcommonHostHooks = {}): QcommonH
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime used by the `NET_*` and `Netchan_*` qcommon ports.
  */
@@ -590,6 +616,8 @@ export function createQcommonNetRuntime(hooks: QcommonNetHooks = {}): QcommonNet
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon network value factory)
  * Category: New
  * Purpose: Create one zero-initialized `netadr_t` value.
  */
@@ -603,6 +631,8 @@ export function createNetAdr(type = netadrtype_t.NA_LOOPBACK): netadr_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (qcommon network value factory)
  * Category: New
  * Purpose: Create one zero-initialized `netchan_t` value with correctly sized message buffers.
  */
@@ -1654,8 +1684,8 @@ export function SCR_DebugGraph(runtime: QcommonHostRuntime, value: number, color
 }
 
 /**
- * Original name: compareBytes
- * Source: packages/qcommon/src/qcommon.ts
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Fidelity level: Close
  *
@@ -1677,8 +1707,8 @@ function compareBytes(a: Uint8Array, b: Uint8Array): boolean {
 }
 
 /**
- * Original name: cloneNetAdr
- * Source: packages/qcommon/src/qcommon.ts
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Fidelity level: Close
  *
@@ -1695,8 +1725,8 @@ function cloneNetAdr(address: netadr_t): netadr_t {
 }
 
 /**
- * Original name: copyNetAdr
- * Source: packages/qcommon/src/qcommon.ts
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Fidelity level: Close
  *
@@ -1711,8 +1741,8 @@ function copyNetAdr(target: netadr_t, source: netadr_t): void {
 }
 
 /**
- * Original name: bytesToHex
- * Source: packages/qcommon/src/qcommon.ts
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Fidelity level: Close
  *

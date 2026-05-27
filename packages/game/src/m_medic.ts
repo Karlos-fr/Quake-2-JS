@@ -307,8 +307,21 @@ export const FRAME_attack60 = 236;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local muzzle flash alias)
+ * Category: New
+ * Purpose: Keep the medic-specific muzzle flash id next to its firing code while using the shared flash table.
+ */
 export const MZ2_MEDIC_BLASTER_1 = 60;
 
+/**
+ * Original name: sound_*
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Preserve the medic sound precache paths used by the original sound globals.
+ */
 const SOUND_IDLE1 = "medic/idle.wav";
 const SOUND_PAIN1 = "medic/medpain1.wav";
 const SOUND_PAIN2 = "medic/medpain2.wav";
@@ -320,6 +333,12 @@ const SOUND_HOOK_HIT = "medic/medatck3.wav";
 const SOUND_HOOK_HEAL = "medic/medatck4.wav";
 const SOUND_HOOK_RETRACT = "medic/medatck5.wav";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (runtime sound cache handles)
+ * Category: New
+ * Purpose: Store registered sound IDs returned by the explicit TypeScript runtime.
+ */
 let sound_idle1 = 0;
 let sound_pain1 = 0;
 let sound_pain2 = 0;
@@ -1034,6 +1053,12 @@ export function SP_monster_medic(self: GameEntity, runtime: GameRuntime): void {
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Convert compact distance and think arrays into runtime monster frame records.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -1046,6 +1071,12 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Build sparse think callback arrays for declarative monster frame tables.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -1057,6 +1088,12 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local precache helper)
+ * Category: New
+ * Purpose: Centralize medic sound registration while preserving source precache order.
+ */
 function precacheMedicAssets(runtime: GameRuntime): void {
   sound_idle1 = registerGameSound(runtime, SOUND_IDLE1);
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
@@ -1071,6 +1108,12 @@ function precacheMedicAssets(runtime: GameRuntime): void {
   registerGameSound(runtime, "medic/medatck1.wav");
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local sound helper)
+ * Category: New
+ * Purpose: Create runtime sound option records matching the original `gi.sound` defaults.
+ */
 function soundOptions(channel: number, attenuation = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -1080,12 +1123,24 @@ function soundOptions(channel: number, attenuation = ATTN_NORM): { channel: numb
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Mutate bbox vectors in place for spawn and corpse bounds setup.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Build temporary direction vectors for medic fire and cable checks.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],
@@ -1094,6 +1149,12 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Add a scaled direction vector for the visible medic cable endpoint.
+ */
 function vectorMA(vector: vec3_t, scale: number, direction: vec3_t): vec3_t {
   return [
     vector[0] + scale * direction[0],
@@ -1102,10 +1163,22 @@ function vectorMA(vector: vec3_t, scale: number, direction: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Measure temporary vectors for medic range checks without mutating entity state.
+ */
 function vec3Length(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Measure distance between medic and revive candidates using local vector helpers.
+ */
 function vec3Distance(left: vec3_t, right: vec3_t): number {
   return vec3Length(subtractVec3(left, right));
 }

@@ -4,353 +4,353 @@
 
 - Fichier TS: `packages/game/src/m_insane.ts`
 - Symboles TS: 345
-- Couvert C/H: 0
-- Reste a auditer: 345
+- Couvert C/H: 335
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand36` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand37` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand38` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand39` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand40` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand41` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand42` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand43` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand44` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand45` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand46` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand47` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand48` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand49` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand50` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand51` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand52` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand53` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand54` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand55` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand56` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand57` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand58` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand59` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand60` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand61` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand62` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand63` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand64` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand65` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand66` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand67` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand68` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand69` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand70` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand71` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand72` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand73` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand74` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand75` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand76` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand77` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand78` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand79` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand80` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand81` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand82` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand83` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand84` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand85` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand86` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand87` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand88` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand89` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand90` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand91` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand92` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand93` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand94` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand95` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand96` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand97` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand98` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand99` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand100` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand129` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand130` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand131` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand132` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand133` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand134` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand135` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand136` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand137` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand138` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand139` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand140` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand141` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand142` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand143` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand144` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand145` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand146` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand147` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand148` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand149` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand150` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand151` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand152` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand153` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand154` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand155` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand156` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand157` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand158` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand159` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_stand160` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk36` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk37` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk38` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk39` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_walk26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_st_death18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_crawl9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `FRAME_cross30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_FIST` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_SHAKE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_MOAN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_SCREAMS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `sound_fist` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `sound_shake` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `sound_moan` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `sound_scream` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | function | `insane_fist` | oui | `insane_fist` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_shake` | oui | `insane_shake` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_moan` | oui | `insane_moan` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_scream` | oui | `insane_scream` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_normal` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_stand_normal` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_insane` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_stand_insane` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_uptodown` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_uptodown` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_downtoup` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_downtoup` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_jumpdown` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_jumpdown` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_down` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_down` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_walk_normal` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_walk_normal` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_run_normal` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_walk_insane` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_walk_insane` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_run_insane` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_pain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_stand_pain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_stand_death` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_crawl` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_crawl` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_runcrawl` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_crawl_pain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_crawl_pain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_crawl_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_crawl_death` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_cross` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_cross` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_frames_struggle_cross` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | value | `insane_move_struggle_cross` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | function | `insane_cross` | oui | `insane_cross` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_walk` | oui | `insane_walk` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_run` | oui | `insane_run` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_pain` | oui | `insane_pain` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_onground` | oui | `insane_onground` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_checkdown` | oui | `insane_checkdown` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_checkup` | oui | `insane_checkup` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_stand` | oui | `insane_stand` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_dead` | oui | `insane_dead` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `insane_die` | oui | `insane_die` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `SP_misc_insane` | oui | `SP_misc_insane` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_insane.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | function | `precacheInsaneSounds` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | function | `isCrawlingFrame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_insane.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand1` | oui | `FRAME_stand1` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand2` | oui | `FRAME_stand2` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand3` | oui | `FRAME_stand3` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand4` | oui | `FRAME_stand4` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand5` | oui | `FRAME_stand5` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand6` | oui | `FRAME_stand6` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand7` | oui | `FRAME_stand7` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand8` | oui | `FRAME_stand8` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand9` | oui | `FRAME_stand9` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand31` | oui | `FRAME_stand31` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand32` | oui | `FRAME_stand32` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand33` | oui | `FRAME_stand33` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand34` | oui | `FRAME_stand34` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand35` | oui | `FRAME_stand35` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand36` | oui | `FRAME_stand36` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand37` | oui | `FRAME_stand37` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand38` | oui | `FRAME_stand38` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand39` | oui | `FRAME_stand39` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand40` | oui | `FRAME_stand40` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand41` | oui | `FRAME_stand41` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand42` | oui | `FRAME_stand42` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand43` | oui | `FRAME_stand43` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand44` | oui | `FRAME_stand44` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand45` | oui | `FRAME_stand45` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand46` | oui | `FRAME_stand46` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand47` | oui | `FRAME_stand47` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand48` | oui | `FRAME_stand48` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand49` | oui | `FRAME_stand49` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand50` | oui | `FRAME_stand50` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand51` | oui | `FRAME_stand51` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand52` | oui | `FRAME_stand52` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand53` | oui | `FRAME_stand53` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand54` | oui | `FRAME_stand54` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand55` | oui | `FRAME_stand55` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand56` | oui | `FRAME_stand56` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand57` | oui | `FRAME_stand57` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand58` | oui | `FRAME_stand58` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand59` | oui | `FRAME_stand59` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand60` | oui | `FRAME_stand60` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand61` | oui | `FRAME_stand61` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand62` | oui | `FRAME_stand62` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand63` | oui | `FRAME_stand63` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand64` | oui | `FRAME_stand64` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand65` | oui | `FRAME_stand65` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand66` | oui | `FRAME_stand66` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand67` | oui | `FRAME_stand67` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand68` | oui | `FRAME_stand68` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand69` | oui | `FRAME_stand69` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand70` | oui | `FRAME_stand70` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand71` | oui | `FRAME_stand71` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand72` | oui | `FRAME_stand72` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand73` | oui | `FRAME_stand73` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand74` | oui | `FRAME_stand74` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand75` | oui | `FRAME_stand75` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand76` | oui | `FRAME_stand76` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand77` | oui | `FRAME_stand77` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand78` | oui | `FRAME_stand78` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand79` | oui | `FRAME_stand79` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand80` | oui | `FRAME_stand80` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand81` | oui | `FRAME_stand81` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand82` | oui | `FRAME_stand82` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand83` | oui | `FRAME_stand83` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand84` | oui | `FRAME_stand84` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand85` | oui | `FRAME_stand85` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand86` | oui | `FRAME_stand86` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand87` | oui | `FRAME_stand87` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand88` | oui | `FRAME_stand88` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand89` | oui | `FRAME_stand89` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand90` | oui | `FRAME_stand90` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand91` | oui | `FRAME_stand91` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand92` | oui | `FRAME_stand92` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand93` | oui | `FRAME_stand93` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand94` | oui | `FRAME_stand94` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand95` | oui | `FRAME_stand95` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand96` | oui | `FRAME_stand96` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand97` | oui | `FRAME_stand97` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand98` | oui | `FRAME_stand98` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand99` | oui | `FRAME_stand99` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand100` | oui | `FRAME_stand100` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand101` | oui | `FRAME_stand101` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand102` | oui | `FRAME_stand102` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand103` | oui | `FRAME_stand103` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand104` | oui | `FRAME_stand104` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand105` | oui | `FRAME_stand105` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand106` | oui | `FRAME_stand106` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand107` | oui | `FRAME_stand107` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand108` | oui | `FRAME_stand108` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand109` | oui | `FRAME_stand109` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand110` | oui | `FRAME_stand110` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand111` | oui | `FRAME_stand111` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand112` | oui | `FRAME_stand112` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand113` | oui | `FRAME_stand113` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand114` | oui | `FRAME_stand114` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand115` | oui | `FRAME_stand115` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand116` | oui | `FRAME_stand116` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand117` | oui | `FRAME_stand117` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand118` | oui | `FRAME_stand118` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand119` | oui | `FRAME_stand119` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand120` | oui | `FRAME_stand120` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand121` | oui | `FRAME_stand121` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand122` | oui | `FRAME_stand122` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand123` | oui | `FRAME_stand123` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand124` | oui | `FRAME_stand124` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand125` | oui | `FRAME_stand125` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand126` | oui | `FRAME_stand126` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand127` | oui | `FRAME_stand127` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand128` | oui | `FRAME_stand128` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand129` | oui | `FRAME_stand129` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand130` | oui | `FRAME_stand130` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand131` | oui | `FRAME_stand131` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand132` | oui | `FRAME_stand132` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand133` | oui | `FRAME_stand133` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand134` | oui | `FRAME_stand134` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand135` | oui | `FRAME_stand135` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand136` | oui | `FRAME_stand136` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand137` | oui | `FRAME_stand137` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand138` | oui | `FRAME_stand138` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand139` | oui | `FRAME_stand139` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand140` | oui | `FRAME_stand140` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand141` | oui | `FRAME_stand141` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand142` | oui | `FRAME_stand142` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand143` | oui | `FRAME_stand143` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand144` | oui | `FRAME_stand144` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand145` | oui | `FRAME_stand145` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand146` | oui | `FRAME_stand146` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand147` | oui | `FRAME_stand147` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand148` | oui | `FRAME_stand148` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand149` | oui | `FRAME_stand149` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand150` | oui | `FRAME_stand150` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand151` | oui | `FRAME_stand151` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand152` | oui | `FRAME_stand152` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand153` | oui | `FRAME_stand153` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand154` | oui | `FRAME_stand154` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand155` | oui | `FRAME_stand155` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand156` | oui | `FRAME_stand156` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand157` | oui | `FRAME_stand157` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand158` | oui | `FRAME_stand158` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand159` | oui | `FRAME_stand159` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_stand160` | oui | `FRAME_stand160` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk27` | oui | `FRAME_walk27` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk28` | oui | `FRAME_walk28` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk29` | oui | `FRAME_walk29` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk30` | oui | `FRAME_walk30` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk31` | oui | `FRAME_walk31` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk32` | oui | `FRAME_walk32` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk33` | oui | `FRAME_walk33` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk34` | oui | `FRAME_walk34` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk35` | oui | `FRAME_walk35` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk36` | oui | `FRAME_walk36` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk37` | oui | `FRAME_walk37` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk38` | oui | `FRAME_walk38` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk39` | oui | `FRAME_walk39` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk1` | oui | `FRAME_walk1` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk2` | oui | `FRAME_walk2` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk3` | oui | `FRAME_walk3` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk4` | oui | `FRAME_walk4` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk5` | oui | `FRAME_walk5` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk6` | oui | `FRAME_walk6` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk7` | oui | `FRAME_walk7` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk8` | oui | `FRAME_walk8` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk9` | oui | `FRAME_walk9` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk10` | oui | `FRAME_walk10` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk11` | oui | `FRAME_walk11` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk12` | oui | `FRAME_walk12` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk13` | oui | `FRAME_walk13` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk14` | oui | `FRAME_walk14` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk15` | oui | `FRAME_walk15` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk16` | oui | `FRAME_walk16` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk17` | oui | `FRAME_walk17` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk18` | oui | `FRAME_walk18` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk19` | oui | `FRAME_walk19` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk20` | oui | `FRAME_walk20` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk21` | oui | `FRAME_walk21` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk22` | oui | `FRAME_walk22` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk23` | oui | `FRAME_walk23` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk24` | oui | `FRAME_walk24` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk25` | oui | `FRAME_walk25` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_walk26` | oui | `FRAME_walk26` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain2` | oui | `FRAME_st_pain2` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain3` | oui | `FRAME_st_pain3` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain4` | oui | `FRAME_st_pain4` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain5` | oui | `FRAME_st_pain5` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain6` | oui | `FRAME_st_pain6` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain7` | oui | `FRAME_st_pain7` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain8` | oui | `FRAME_st_pain8` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain9` | oui | `FRAME_st_pain9` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain10` | oui | `FRAME_st_pain10` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain11` | oui | `FRAME_st_pain11` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_pain12` | oui | `FRAME_st_pain12` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death2` | oui | `FRAME_st_death2` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death3` | oui | `FRAME_st_death3` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death4` | oui | `FRAME_st_death4` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death5` | oui | `FRAME_st_death5` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death6` | oui | `FRAME_st_death6` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death7` | oui | `FRAME_st_death7` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death8` | oui | `FRAME_st_death8` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death9` | oui | `FRAME_st_death9` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death10` | oui | `FRAME_st_death10` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death11` | oui | `FRAME_st_death11` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death12` | oui | `FRAME_st_death12` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death13` | oui | `FRAME_st_death13` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death14` | oui | `FRAME_st_death14` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death15` | oui | `FRAME_st_death15` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death16` | oui | `FRAME_st_death16` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death17` | oui | `FRAME_st_death17` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_st_death18` | oui | `FRAME_st_death18` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl1` | oui | `FRAME_crawl1` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl2` | oui | `FRAME_crawl2` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl3` | oui | `FRAME_crawl3` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl4` | oui | `FRAME_crawl4` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl5` | oui | `FRAME_crawl5` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl6` | oui | `FRAME_crawl6` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl7` | oui | `FRAME_crawl7` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl8` | oui | `FRAME_crawl8` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_crawl9` | oui | `FRAME_crawl9` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain2` | oui | `FRAME_cr_pain2` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain3` | oui | `FRAME_cr_pain3` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain4` | oui | `FRAME_cr_pain4` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain5` | oui | `FRAME_cr_pain5` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain6` | oui | `FRAME_cr_pain6` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain7` | oui | `FRAME_cr_pain7` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain8` | oui | `FRAME_cr_pain8` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain9` | oui | `FRAME_cr_pain9` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_pain10` | oui | `FRAME_cr_pain10` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death10` | oui | `FRAME_cr_death10` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death11` | oui | `FRAME_cr_death11` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death12` | oui | `FRAME_cr_death12` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death13` | oui | `FRAME_cr_death13` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death14` | oui | `FRAME_cr_death14` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death15` | oui | `FRAME_cr_death15` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cr_death16` | oui | `FRAME_cr_death16` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross1` | oui | `FRAME_cross1` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross2` | oui | `FRAME_cross2` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross3` | oui | `FRAME_cross3` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross4` | oui | `FRAME_cross4` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross5` | oui | `FRAME_cross5` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross6` | oui | `FRAME_cross6` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross7` | oui | `FRAME_cross7` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross8` | oui | `FRAME_cross8` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross9` | oui | `FRAME_cross9` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross10` | oui | `FRAME_cross10` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross11` | oui | `FRAME_cross11` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross12` | oui | `FRAME_cross12` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross13` | oui | `FRAME_cross13` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross14` | oui | `FRAME_cross14` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross15` | oui | `FRAME_cross15` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross16` | oui | `FRAME_cross16` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross17` | oui | `FRAME_cross17` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross18` | oui | `FRAME_cross18` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross19` | oui | `FRAME_cross19` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross20` | oui | `FRAME_cross20` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross21` | oui | `FRAME_cross21` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross22` | oui | `FRAME_cross22` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross23` | oui | `FRAME_cross23` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross24` | oui | `FRAME_cross24` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross25` | oui | `FRAME_cross25` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross26` | oui | `FRAME_cross26` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross27` | oui | `FRAME_cross27` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross28` | oui | `FRAME_cross28` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross29` | oui | `FRAME_cross29` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `FRAME_cross30` | oui | `FRAME_cross30` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_insane.h` | Ported | [`game_m_insane.h.md`](../matrices/game_m_insane.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_FIST` | non | `N/A` | `N/A (local asset constants)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_SHAKE` | non | `N/A` | `N/A (local asset constants)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_MOAN` | non | `N/A` | `N/A (local asset constants)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | value | `INSANE_SOUND_SCREAMS` | non | `N/A` | `N/A (local asset constants)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | value | `sound_fist` | non | `sound_fist` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `sound_shake` | non | `sound_shake` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `sound_moan` | non | `sound_moan` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `sound_scream` | non | `sound_scream` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_fist` | oui | `insane_fist` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_shake` | oui | `insane_shake` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_moan` | oui | `insane_moan` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_scream` | oui | `insane_scream` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_normal` | non | `insane_frames_stand_normal` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_stand_normal` | oui | `insane_move_stand_normal` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_insane` | non | `insane_frames_stand_insane` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_stand_insane` | oui | `insane_move_stand_insane` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_uptodown` | non | `insane_frames_uptodown` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_uptodown` | oui | `insane_move_uptodown` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_downtoup` | non | `insane_frames_downtoup` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_downtoup` | oui | `insane_move_downtoup` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_jumpdown` | non | `insane_frames_jumpdown` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_jumpdown` | oui | `insane_move_jumpdown` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_down` | non | `insane_frames_down` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_down` | oui | `insane_move_down` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_walk_normal` | non | `insane_frames_walk_normal` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_walk_normal` | oui | `insane_move_walk_normal` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_run_normal` | oui | `insane_move_run_normal` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_walk_insane` | non | `insane_frames_walk_insane` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_walk_insane` | oui | `insane_move_walk_insane` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_run_insane` | oui | `insane_move_run_insane` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_pain` | non | `insane_frames_stand_pain` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_stand_pain` | oui | `insane_move_stand_pain` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_stand_death` | non | `insane_frames_stand_death` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_stand_death` | oui | `insane_move_stand_death` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_crawl` | non | `insane_frames_crawl` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_crawl` | oui | `insane_move_crawl` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_runcrawl` | oui | `insane_move_runcrawl` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_crawl_pain` | non | `insane_frames_crawl_pain` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_crawl_pain` | oui | `insane_move_crawl_pain` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_crawl_death` | non | `insane_frames_crawl_death` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_crawl_death` | oui | `insane_move_crawl_death` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_cross` | non | `insane_frames_cross` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_cross` | oui | `insane_move_cross` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_frames_struggle_cross` | non | `insane_frames_struggle_cross` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | value | `insane_move_struggle_cross` | oui | `insane_move_struggle_cross` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_cross` | oui | `insane_cross` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_walk` | oui | `insane_walk` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_run` | oui | `insane_run` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_pain` | oui | `insane_pain` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_onground` | oui | `insane_onground` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_checkdown` | oui | `insane_checkdown` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_checkup` | oui | `insane_checkup` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_stand` | oui | `insane_stand` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_dead` | oui | `insane_dead` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `insane_die` | oui | `insane_die` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `SP_misc_insane` | oui | `SP_misc_insane` | `Quake-2-master/game/m_insane.c` | Ported | [`game_m_insane.c.md`](../matrices/game_m_insane.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_insane.ts` | function | `makeFrames` | non | `N/A` | `N/A (local table helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local table helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | function | `precacheInsaneSounds` | non | `N/A` | `N/A (local precache helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | function | `isCrawlingFrame` | non | `N/A` | `N/A (local state helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_insane.ts` | function | `randomInt` | non | `N/A` | `N/A (local RNG helper)` | New |  | Valide | Valide |  |

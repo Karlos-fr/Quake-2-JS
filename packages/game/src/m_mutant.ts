@@ -204,6 +204,15 @@ export const FRAME_walk23 = 148;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Symbols: SOUND_SWING, SOUND_HIT, SOUND_HIT2, SOUND_DEATH, SOUND_IDLE, SOUND_PAIN1, SOUND_PAIN2, SOUND_SIGHT, SOUND_SEARCH, SOUND_STEP1, SOUND_STEP2, SOUND_STEP3, SOUND_THUD
+ * Original name: sound_swing, sound_hit, sound_hit2, sound_death, sound_idle, sound_pain1, sound_pain2, sound_sight, sound_search, sound_step1, sound_step2, sound_step3, sound_thud
+ * Source: Quake-2-master/game/m_mutant.c
+ * Source declaree: Quake-2-master/game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Purpose: Name the source mutant sound globals as asset paths before runtime precache assigns sound IDs.
+ */
 const SOUND_SWING = "mutant/mutatck1.wav";
 const SOUND_HIT = "mutant/mutatck2.wav";
 const SOUND_HIT2 = "mutant/mutatck3.wav";
@@ -218,6 +227,14 @@ const SOUND_STEP2 = "mutant/step2.wav";
 const SOUND_STEP3 = "mutant/step3.wav";
 const SOUND_THUD = "mutant/thud1.wav";
 
+/**
+ * Symbols: sound_swing, sound_hit, sound_hit2, sound_death, sound_idle, sound_pain1, sound_pain2, sound_sight, sound_search, sound_step1, sound_step2, sound_step3, sound_thud
+ * Original name: N/A
+ * Source: N/A (runtime sound cache handles)
+ * Source declaree: N/A (runtime sound cache handles)
+ * Category: New
+ * Purpose: Store registered sound IDs for the runtime sound adapter.
+ */
 let sound_swing = 0;
 let sound_hit = 0;
 let sound_hit2 = 0;
@@ -905,6 +922,14 @@ export function SP_monster_mutant(self: GameEntity, runtime: GameRuntime): void 
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Symbols: makeFrames
+ * Original name: N/A
+ * Source: N/A (local frame table helper)
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Convert compact distance/think arrays into runtime monster frame records.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -917,6 +942,14 @@ function makeFrames(
   }));
 }
 
+/**
+ * Symbols: indexedThinks
+ * Original name: N/A
+ * Source: N/A (local frame table helper)
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Build sparse think callback arrays for declarative monster frame tables.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -928,6 +961,14 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Symbols: precacheMutantAssets
+ * Original name: N/A
+ * Source: N/A (local precache helper)
+ * Source declaree: N/A (local precache helper)
+ * Category: New
+ * Purpose: Centralize mutant sound registration while preserving source precache order.
+ */
 function precacheMutantAssets(runtime: GameRuntime): void {
   sound_swing = registerGameSound(runtime, SOUND_SWING);
   sound_hit = registerGameSound(runtime, SOUND_HIT);
@@ -944,6 +985,14 @@ function precacheMutantAssets(runtime: GameRuntime): void {
   sound_thud = registerGameSound(runtime, SOUND_THUD);
 }
 
+/**
+ * Symbols: soundOptions
+ * Original name: N/A
+ * Source: N/A (local sound helper)
+ * Source declaree: N/A (local sound helper)
+ * Category: New
+ * Purpose: Build the repeated Quake sound option payload used by mutant callbacks.
+ */
 function soundOptions(channel: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -953,20 +1002,52 @@ function soundOptions(channel: number): { channel: number; volume: number; atten
   };
 }
 
+/**
+ * Symbols: setVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Mutate runtime vectors in place for spawn bounds and corpse bounds setup.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Symbols: addVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Build the mutant jump impact point from origin and scaled direction vectors.
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Symbols: scaleVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Scale jump directions and impact normals for local mutant movement math.
+ */
 function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   return [vector[0] * scale, vector[1] * scale, vector[2] * scale];
 }
 
+/**
+ * Symbols: normalizeVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Normalize mutant jump velocity before applying impact damage.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = vec3Length(vector);
   if (length === 0) {
@@ -975,10 +1056,26 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Symbols: vec3Length
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Measure mutant jump velocity and horizontal jump-check distance.
+ */
 function vec3Length(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }
 
+/**
+ * Symbols: randomInt
+ * Original name: N/A
+ * Source: N/A (local random helper)
+ * Source declaree: N/A (local random helper)
+ * Category: New
+ * Purpose: Preserve the integer rand-style branches used by mutant sound and melee behavior.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

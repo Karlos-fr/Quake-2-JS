@@ -582,6 +582,9 @@ export const MZ2_MAKRON_BLASTER_16 = 117;
 export const MZ2_MAKRON_BLASTER_17 = 118;
 export const MZ2_MAKRON_RAILGUN_1 = 119;
 
+// Original name: N/A
+// Source: N/A (local trace mask)
+// Category: New
 const MAKRON_ATTACK_TRACE_MASK = CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA;
 const SOUND_PAIN4 = "makron/pain3.wav";
 const SOUND_PAIN5 = "makron/pain2.wav";
@@ -597,10 +600,17 @@ const SOUND_TAUNT1 = "makron/voice4.wav";
 const SOUND_TAUNT2 = "makron/voice3.wav";
 const SOUND_TAUNT3 = "makron/voice.wav";
 const SOUND_HIT = "makron/bhit.wav";
+
+// Original name: N/A
+// Source: N/A (local asset path constants)
+// Category: New
 const SOUND_SPINE = "makron/spine.wav";
 const SOUND_UDEATH = "misc/udeath.wav";
 const MODEL_RIDER = "models/monsters/boss3/rider/tris.md2";
 
+// Original name: N/A
+// Source: N/A (runtime sound handles)
+// Category: New
 let sound_pain4 = 0;
 let sound_pain5 = 0;
 let sound_pain6 = 0;
@@ -1065,7 +1075,7 @@ export function makron_pain(
 
 /**
  * Original name: makron_sight
- * Source: game/m_boss32.c
+ * Source: Quake-2-master/game/m_boss32.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1230,7 +1240,7 @@ export function makron_die(
 
 /**
  * Original name: Makron_CheckAttack
- * Source: game/m_boss32.c
+ * Source: Quake-2-master/game/m_boss32.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1307,7 +1317,7 @@ export function Makron_CheckAttack(self: GameEntity, runtime: GameRuntime): bool
 
 /**
  * Original name: MakronPrecache
- * Source: game/m_boss32.c
+ * Source: Quake-2-master/game/m_boss32.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1335,7 +1345,7 @@ export function MakronPrecache(runtime: GameRuntime): void {
 
 /**
  * Original name: SP_monster_makron
- * Source: game/m_boss32.c
+ * Source: Quake-2-master/game/m_boss32.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1381,7 +1391,7 @@ export function SP_monster_makron(self: GameEntity, runtime: GameRuntime): void 
 
 /**
  * Original name: MakronSpawn
- * Source: game/m_boss32.c
+ * Source: Quake-2-master/game/m_boss32.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1407,7 +1417,7 @@ export function MakronSpawn(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: MakronToss
- * Source: game/m_boss32.c
+ * Source: Quake-2-master/game/m_boss32.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1423,6 +1433,11 @@ export function MakronToss(self: GameEntity, runtime: GameRuntime): void {
   copyVec3(ent.origin, self.s.origin);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame helper)
+ * Category: New
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -1435,6 +1450,11 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame helper)
+ * Category: New
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -1446,6 +1466,11 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound options helper)
+ * Category: New
+ */
 function soundOptions(channel: number, attenuation: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -1455,30 +1480,60 @@ function soundOptions(channel: number, attenuation: number): { channel: number; 
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local muzzle flash adapter)
+ * Category: New
+ */
 function makronFlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function copyVec3(target: [number, number, number], source: vec3_t): void {
   target[0] = source[0];
   target[1] = source[1];
   target[2] = source[2];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   return [vector[0] * scale, vector[1] * scale, vector[2] * scale];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {

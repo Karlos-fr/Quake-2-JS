@@ -15,6 +15,15 @@
  * - This file is a declarative header port generated from the original qdata output.
  */
 
+/**
+ * Original name: FRAME_* and MODEL_SCALE
+ * Source: Quake-2-master/game/m_player.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - ModelGen frame macros for the player MD2 model, kept as numeric constants.
+ */
 export const FRAME_stand01 = 0;
 export const FRAME_stand02 = 1;
 export const FRAME_stand03 = 2;

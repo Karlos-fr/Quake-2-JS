@@ -4,248 +4,248 @@
 
 - Fichier TS: `packages/game/src/m_flyer.ts`
 - Symboles TS: 240
-- Couvert C/H: 0
-- Reste a auditer: 240
+- Couvert C/H: 221
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_flyer.ts` | value | `ACTION_nothing` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `ACTION_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `ACTION_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `ACTION_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `ACTION_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_start01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_start02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_start03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_start04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_start05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_start06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stop01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stop02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stop03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stop04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stop05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stop06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stop07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand36` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand37` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand38` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand39` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand40` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand41` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand42` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand43` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand44` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_stand45` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_attak217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_defens01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_defens02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_defens03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_defens04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_defens05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_defens06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `FRAME_pain304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `MZ2_FLYER_BLASTER_1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `MZ2_FLYER_BLASTER_2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_IDLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_SLASH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_SPROING` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_DIE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_ATTACK3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `SOUND_LOOP_IDLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `nextmove` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `sound_idle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `sound_slash` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `sound_sproing` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `sound_die` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_stand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_start` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_start` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_stop` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_stop` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_rollright` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_rollright` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_rollleft` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_rollleft` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_pain3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_defense` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_defense` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_bankright` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_bankright` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_bankleft` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_bankleft` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_attack2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_start_melee` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_start_melee` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_end_melee` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_end_melee` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_frames_loop_melee` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | value | `flyer_move_loop_melee` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_sight` | oui | `flyer_sight` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_idle` | oui | `flyer_idle` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_pop_blades` | oui | `flyer_pop_blades` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_run` | oui | `flyer_run` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_walk` | oui | `flyer_walk` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_stand` | oui | `flyer_stand` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_stop` | oui | `flyer_stop` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_start` | oui | `flyer_start` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_fire` | oui | `flyer_fire` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_fireleft` | oui | `flyer_fireleft` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_fireright` | oui | `flyer_fireright` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_slash_left` | oui | `flyer_slash_left` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_slash_right` | oui | `flyer_slash_right` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_loop_melee` | oui | `flyer_loop_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_attack` | oui | `flyer_attack` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_setstart` | oui | `flyer_setstart` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_nextmove` | oui | `flyer_nextmove` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_melee` | oui | `flyer_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_check_melee` | oui | `flyer_check_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_pain` | oui | `flyer_pain` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `flyer_die` | oui | `flyer_die` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `SP_monster_flyer` | oui | `SP_monster_flyer` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flyer.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `precacheFlyerAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `flyerFlashOffset` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flyer.ts` | function | `stringsEqualIgnoreCase` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_flyer.ts` | value | `ACTION_nothing` | oui | `ACTION_nothing` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `ACTION_attack1` | oui | `ACTION_attack1` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `ACTION_attack2` | oui | `ACTION_attack2` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `ACTION_run` | oui | `ACTION_run` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `ACTION_walk` | oui | `ACTION_walk` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_start01` | oui | `FRAME_start01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_start02` | oui | `FRAME_start02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_start03` | oui | `FRAME_start03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_start04` | oui | `FRAME_start04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_start05` | oui | `FRAME_start05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_start06` | oui | `FRAME_start06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stop01` | oui | `FRAME_stop01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stop02` | oui | `FRAME_stop02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stop03` | oui | `FRAME_stop03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stop04` | oui | `FRAME_stop04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stop05` | oui | `FRAME_stop05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stop06` | oui | `FRAME_stop06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stop07` | oui | `FRAME_stop07` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand01` | oui | `FRAME_stand01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand02` | oui | `FRAME_stand02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand03` | oui | `FRAME_stand03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand04` | oui | `FRAME_stand04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand05` | oui | `FRAME_stand05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand06` | oui | `FRAME_stand06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand07` | oui | `FRAME_stand07` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand08` | oui | `FRAME_stand08` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand09` | oui | `FRAME_stand09` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand31` | oui | `FRAME_stand31` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand32` | oui | `FRAME_stand32` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand33` | oui | `FRAME_stand33` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand34` | oui | `FRAME_stand34` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand35` | oui | `FRAME_stand35` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand36` | oui | `FRAME_stand36` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand37` | oui | `FRAME_stand37` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand38` | oui | `FRAME_stand38` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand39` | oui | `FRAME_stand39` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand40` | oui | `FRAME_stand40` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand41` | oui | `FRAME_stand41` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand42` | oui | `FRAME_stand42` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand43` | oui | `FRAME_stand43` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand44` | oui | `FRAME_stand44` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_stand45` | oui | `FRAME_stand45` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak109` | oui | `FRAME_attak109` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak110` | oui | `FRAME_attak110` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak111` | oui | `FRAME_attak111` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak112` | oui | `FRAME_attak112` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak113` | oui | `FRAME_attak113` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak114` | oui | `FRAME_attak114` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak115` | oui | `FRAME_attak115` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak116` | oui | `FRAME_attak116` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak117` | oui | `FRAME_attak117` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak118` | oui | `FRAME_attak118` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak119` | oui | `FRAME_attak119` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak120` | oui | `FRAME_attak120` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak121` | oui | `FRAME_attak121` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak201` | oui | `FRAME_attak201` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak202` | oui | `FRAME_attak202` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak203` | oui | `FRAME_attak203` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak204` | oui | `FRAME_attak204` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak205` | oui | `FRAME_attak205` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak206` | oui | `FRAME_attak206` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak207` | oui | `FRAME_attak207` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak208` | oui | `FRAME_attak208` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak209` | oui | `FRAME_attak209` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak210` | oui | `FRAME_attak210` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak211` | oui | `FRAME_attak211` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak212` | oui | `FRAME_attak212` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak213` | oui | `FRAME_attak213` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak214` | oui | `FRAME_attak214` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak215` | oui | `FRAME_attak215` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak216` | oui | `FRAME_attak216` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_attak217` | oui | `FRAME_attak217` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl01` | oui | `FRAME_bankl01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl02` | oui | `FRAME_bankl02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl03` | oui | `FRAME_bankl03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl04` | oui | `FRAME_bankl04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl05` | oui | `FRAME_bankl05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl06` | oui | `FRAME_bankl06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankl07` | oui | `FRAME_bankl07` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr01` | oui | `FRAME_bankr01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr02` | oui | `FRAME_bankr02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr03` | oui | `FRAME_bankr03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr04` | oui | `FRAME_bankr04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr05` | oui | `FRAME_bankr05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr06` | oui | `FRAME_bankr06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_bankr07` | oui | `FRAME_bankr07` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf01` | oui | `FRAME_rollf01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf02` | oui | `FRAME_rollf02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf03` | oui | `FRAME_rollf03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf04` | oui | `FRAME_rollf04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf05` | oui | `FRAME_rollf05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf06` | oui | `FRAME_rollf06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf07` | oui | `FRAME_rollf07` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf08` | oui | `FRAME_rollf08` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollf09` | oui | `FRAME_rollf09` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr01` | oui | `FRAME_rollr01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr02` | oui | `FRAME_rollr02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr03` | oui | `FRAME_rollr03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr04` | oui | `FRAME_rollr04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr05` | oui | `FRAME_rollr05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr06` | oui | `FRAME_rollr06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr07` | oui | `FRAME_rollr07` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr08` | oui | `FRAME_rollr08` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_rollr09` | oui | `FRAME_rollr09` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_defens01` | oui | `FRAME_defens01` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_defens02` | oui | `FRAME_defens02` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_defens03` | oui | `FRAME_defens03` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_defens04` | oui | `FRAME_defens04` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_defens05` | oui | `FRAME_defens05` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_defens06` | oui | `FRAME_defens06` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain105` | oui | `FRAME_pain105` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain106` | oui | `FRAME_pain106` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain107` | oui | `FRAME_pain107` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain108` | oui | `FRAME_pain108` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain109` | oui | `FRAME_pain109` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain201` | oui | `FRAME_pain201` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain202` | oui | `FRAME_pain202` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain203` | oui | `FRAME_pain203` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain204` | oui | `FRAME_pain204` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain301` | oui | `FRAME_pain301` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain302` | oui | `FRAME_pain302` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain303` | oui | `FRAME_pain303` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `FRAME_pain304` | oui | `FRAME_pain304` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_flyer.h` | Ported | [`game_m_flyer.h.md`](../matrices/game_m_flyer.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `MZ2_FLYER_BLASTER_1` | non | `N/A` | `N/A (local muzzle flash alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `MZ2_FLYER_BLASTER_2` | non | `N/A` | `N/A (local muzzle flash alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_IDLE` | non | `sound_idle` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_SLASH` | non | `sound_slash` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_SPROING` | non | `sound_sproing` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_DIE` | non | `sound_die` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_ATTACK3` | non | `N/A` | `N/A (local asset path constant)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `SOUND_LOOP_IDLE` | non | `N/A` | `N/A (local asset path constant)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `nextmove` | non | `nextmove` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `sound_sight` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `sound_idle` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `sound_slash` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `sound_sproing` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `sound_die` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_stand` | non | `flyer_frames_stand` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_stand` | oui | `flyer_move_stand` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_walk` | non | `flyer_frames_walk` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_walk` | oui | `flyer_move_walk` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_run` | non | `flyer_frames_run` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_run` | oui | `flyer_move_run` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_start` | non | `flyer_frames_start` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_start` | oui | `flyer_move_start` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_stop` | non | `flyer_frames_stop` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_stop` | oui | `flyer_move_stop` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_rollright` | non | `flyer_frames_rollright` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_rollright` | oui | `flyer_move_rollright` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_rollleft` | non | `flyer_frames_rollleft` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_rollleft` | oui | `flyer_move_rollleft` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_pain3` | non | `flyer_frames_pain3` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_pain3` | oui | `flyer_move_pain3` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_pain2` | non | `flyer_frames_pain2` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_pain2` | oui | `flyer_move_pain2` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_pain1` | non | `flyer_frames_pain1` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_pain1` | oui | `flyer_move_pain1` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_defense` | non | `flyer_frames_defense` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_defense` | oui | `flyer_move_defense` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_bankright` | non | `flyer_frames_bankright` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_bankright` | oui | `flyer_move_bankright` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_bankleft` | non | `flyer_frames_bankleft` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_bankleft` | oui | `flyer_move_bankleft` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_attack2` | non | `flyer_frames_attack2` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_attack2` | oui | `flyer_move_attack2` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_start_melee` | non | `flyer_frames_start_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_start_melee` | oui | `flyer_move_start_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_end_melee` | non | `flyer_frames_end_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_end_melee` | oui | `flyer_move_end_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_frames_loop_melee` | non | `flyer_frames_loop_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | value | `flyer_move_loop_melee` | oui | `flyer_move_loop_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_sight` | oui | `flyer_sight` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_idle` | oui | `flyer_idle` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_pop_blades` | oui | `flyer_pop_blades` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_run` | oui | `flyer_run` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_walk` | oui | `flyer_walk` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_stand` | oui | `flyer_stand` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_stop` | oui | `flyer_stop` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_start` | oui | `flyer_start` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_fire` | oui | `flyer_fire` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_fireleft` | oui | `flyer_fireleft` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_fireright` | oui | `flyer_fireright` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_slash_left` | oui | `flyer_slash_left` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_slash_right` | oui | `flyer_slash_right` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_loop_melee` | oui | `flyer_loop_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_attack` | oui | `flyer_attack` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_setstart` | oui | `flyer_setstart` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_nextmove` | oui | `flyer_nextmove` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_melee` | oui | `flyer_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_check_melee` | oui | `flyer_check_melee` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_pain` | oui | `flyer_pain` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `flyer_die` | oui | `flyer_die` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `SP_monster_flyer` | oui | `SP_monster_flyer` | `Quake-2-master/game/m_flyer.c` | Ported | [`game_m_flyer.c.md`](../matrices/game_m_flyer.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flyer.ts` | function | `makeFrames` | non | `N/A` | `N/A (local frame table helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local frame table helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | function | `precacheFlyerAssets` | non | `N/A` | `N/A (local precache helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | function | `flyerFlashOffset` | non | `N/A` | `N/A (local flash table adapter)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | function | `randomInt` | non | `N/A` | `N/A (local random helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_flyer.ts` | function | `stringsEqualIgnoreCase` | non | `N/A` | `N/A (local string helper)` | New |  | Valide | Valide |  |

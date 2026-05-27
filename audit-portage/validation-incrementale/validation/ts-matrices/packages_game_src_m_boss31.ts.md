@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_boss31.ts`
 - Symboles TS: 278
-- Couvert C/H: 189
-- Reste a auditer: 89
+- Couvert C/H: 249
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -198,92 +198,92 @@
 | `packages/game/src/m_boss31.ts` | value | `FRAME_walk24` | oui | `FRAME_walk24` | `Quake-2-master/game/m_boss31.h` | Ported | [`game_m_boss31.h.md`](../matrices/game_m_boss31.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_boss31.ts` | value | `FRAME_walk25` | oui | `FRAME_walk25` | `Quake-2-master/game/m_boss31.h` | Ported | [`game_m_boss31.h.md`](../matrices/game_m_boss31.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_boss31.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_boss31.h` | Ported | [`game_m_boss31.h.md`](../matrices/game_m_boss31.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_boss31.ts` | value | `MZ2_JORG_MACHINEGUN_L1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `MZ2_JORG_MACHINEGUN_R1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `MZ2_JORG_BFG_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `JORG_ATTACK_TRACE_MASK` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_PAIN3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_DEATH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_ATTACK1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_ATTACK2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_SEARCH1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_SEARCH2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_SEARCH3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_IDLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_STEP_LEFT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_STEP_RIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_FIREGUN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_DEATH_HIT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `SOUND_W_LOOP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_pain3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_idle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_search1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_search2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_search3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_attack1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_attack2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_step_left` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_step_right` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `sound_death_hit` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_search` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_idle` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_death_hit` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_step_left` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_step_right` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_start_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_start_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_end_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_end_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_death1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_death` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_start_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_start_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_frames_end_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | value | `jorg_move_end_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_reattack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_pain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorgBFG` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_firebullet_right` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_firebullet_left` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_firebullet` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorgMachineGun` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_dead` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorg_die` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `Jorg_CheckAttack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `SP_monster_jorg` | oui | `SP_monster_jorg` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_boss31.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `precacheJorgAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `fireJorgMachinegun` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `soundOptions` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `jorgFlashOffset` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `vectorMA` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss31.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_boss31.ts` | value | `MZ2_JORG_MACHINEGUN_L1` | oui | `N/A` | `N/A (local muzzle flash aliases)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `MZ2_JORG_MACHINEGUN_R1` | oui | `N/A` | `N/A (local muzzle flash aliases)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `MZ2_JORG_BFG_1` | oui | `N/A` | `N/A (local muzzle flash aliases)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `JORG_ATTACK_TRACE_MASK` | non | `N/A` | `N/A (named local trace mask)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_PAIN3` | non | `sound_pain3` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_DEATH` | non | `sound_death` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_ATTACK1` | non | `sound_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_ATTACK2` | non | `sound_attack2` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_SEARCH1` | non | `sound_search1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_SEARCH2` | non | `sound_search2` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_SEARCH3` | non | `sound_search3` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_IDLE` | non | `sound_idle` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_STEP_LEFT` | non | `sound_step_left` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_STEP_RIGHT` | non | `sound_step_right` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_FIREGUN` | non | `sound_firegun` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_DEATH_HIT` | non | `sound_death_hit` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `SOUND_W_LOOP` | non | `N/A` | `N/A (named local sound path)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_pain3` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_idle` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_death` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_search1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_search2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_search3` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_attack1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_attack2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_step_left` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_step_right` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | value | `sound_death_hit` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_search` | oui | `jorg_search` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_idle` | oui | `jorg_idle` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_death_hit` | oui | `jorg_death_hit` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_step_left` | oui | `jorg_step_left` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_step_right` | oui | `jorg_step_right` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_stand` | oui | `jorg_frames_stand` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_stand` | oui | `jorg_move_stand` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_run` | oui | `jorg_frames_run` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_run` | oui | `jorg_move_run` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_start_walk` | oui | `jorg_frames_start_walk` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_start_walk` | oui | `jorg_move_start_walk` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_walk` | oui | `jorg_frames_walk` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_walk` | oui | `jorg_move_walk` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_end_walk` | oui | `jorg_frames_end_walk` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_end_walk` | oui | `jorg_move_end_walk` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_pain3` | oui | `jorg_frames_pain3` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_pain3` | oui | `jorg_move_pain3` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_pain2` | oui | `jorg_frames_pain2` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_pain2` | oui | `jorg_move_pain2` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_pain1` | oui | `jorg_frames_pain1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_pain1` | oui | `jorg_move_pain1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_death1` | oui | `jorg_frames_death1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_death` | oui | `jorg_move_death` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_attack2` | oui | `jorg_frames_attack2` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_attack2` | oui | `jorg_move_attack2` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_start_attack1` | oui | `jorg_frames_start_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_start_attack1` | oui | `jorg_move_start_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_attack1` | oui | `jorg_frames_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_attack1` | oui | `jorg_move_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_frames_end_attack1` | oui | `jorg_frames_end_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | value | `jorg_move_end_attack1` | oui | `jorg_move_end_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_stand` | oui | `jorg_stand` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_walk` | oui | `jorg_walk` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_run` | oui | `jorg_run` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_reattack1` | oui | `jorg_reattack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_attack1` | oui | `jorg_attack1` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_pain` | oui | `jorg_pain` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorgBFG` | oui | `jorgBFG` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_firebullet_right` | oui | `jorg_firebullet_right` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_firebullet_left` | oui | `jorg_firebullet_left` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_firebullet` | oui | `jorg_firebullet` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_attack` | oui | `jorg_attack` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_dead` | oui | `jorg_dead` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorg_die` | oui | `jorg_die` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `Jorg_CheckAttack` | oui | `Jorg_CheckAttack` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `SP_monster_jorg` | oui | `SP_monster_jorg` | `Quake-2-master/game/m_boss31.c` | Ported | [`game_m_boss31.c.md`](../matrices/game_m_boss31.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss31.ts` | function | `jorgMachineGun` | oui | `N/A` | `N/A (compatibility adapter for forward-only C declaration)` | Adapter |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `makeFrames` | non | `N/A` | `N/A (local declarative frame helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local declarative frame helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `precacheJorgAssets` | non | `N/A` | `N/A (runtime asset registration helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `fireJorgMachinegun` | non | `N/A` | `N/A (shared local machinegun helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `soundOptions` | non | `N/A` | `N/A (local sound option helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `jorgFlashOffset` | non | `N/A` | `N/A (local flash offset adapter)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `vectorMA` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_boss31.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | TS sans lien source | Valide |  |

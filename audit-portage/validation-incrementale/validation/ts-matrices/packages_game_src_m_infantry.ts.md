@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_infantry.ts`
 - Symboles TS: 287
-- Couvert C/H: 180
-- Reste a auditer: 107
+- Couvert C/H: 265
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -189,110 +189,110 @@
 | `packages/game/src/m_infantry.ts` | value | `FRAME_death308` | oui | `FRAME_death308` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_infantry.ts` | value | `FRAME_death309` | oui | `FRAME_death309` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_infantry.ts` | value | `FRAME_block01` | oui | `FRAME_block01` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_block02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_block03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_block04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_block05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `FRAME_attak208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `MZ2_INFANTRY_MACHINEGUN_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `MZ2_INFANTRY_MACHINEGUN_2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `aimangles` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_DIE1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_DIE2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_GUNSHOT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_WEAPON_COCK` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_PUNCH_SWING` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_PUNCH_HIT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_SEARCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `SOUND_IDLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_die1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_die2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_gunshot` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_weapon_cock` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_punch_swing` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_punch_hit` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_search` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `sound_idle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_stand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_stand` | oui | `infantry_stand` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_fidget` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_fidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_fidget` | oui | `infantry_fidget` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_pain` | oui | `infantry_pain` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_infantry.ts` | function | `InfantryMachineGun` | oui | `InfantryMachineGun` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_sight` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_dead` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_death1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_death1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_death2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_death2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_death3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_death3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_die` | oui | `infantry_die` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_duck_down` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_duck_hold` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_duck_up` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_duck` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_duck` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_dodge` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_cock_gun` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_fire` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_attack1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_swing` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_smack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_frames_attack2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | value | `infantry_move_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantry_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `SP_monster_infantry` | oui | `SP_monster_infantry` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_infantry.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `precacheInfantryAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `soundOptions` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `infantryFlashOffset` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `addVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `scaleVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_infantry.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_block02` | oui | `FRAME_block02` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_block03` | oui | `FRAME_block03` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_block04` | oui | `FRAME_block04` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_block05` | oui | `FRAME_block05` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak109` | oui | `FRAME_attak109` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak110` | oui | `FRAME_attak110` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak111` | oui | `FRAME_attak111` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak112` | oui | `FRAME_attak112` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak113` | oui | `FRAME_attak113` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak114` | oui | `FRAME_attak114` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak115` | oui | `FRAME_attak115` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak201` | oui | `FRAME_attak201` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak202` | oui | `FRAME_attak202` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak203` | oui | `FRAME_attak203` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak204` | oui | `FRAME_attak204` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak205` | oui | `FRAME_attak205` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak206` | oui | `FRAME_attak206` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak207` | oui | `FRAME_attak207` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `FRAME_attak208` | oui | `FRAME_attak208` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_infantry.h` | Ported | [`game_m_infantry.h.md`](../matrices/game_m_infantry.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `MZ2_INFANTRY_MACHINEGUN_1` | oui | `MZ2_INFANTRY_MACHINEGUN_1` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `MZ2_INFANTRY_MACHINEGUN_2` | oui | `MZ2_INFANTRY_MACHINEGUN_2` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `aimangles` | non | `aimangles` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_DIE1` | non | `sound_die1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_DIE2` | non | `sound_die2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_GUNSHOT` | non | `sound_gunshot` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_WEAPON_COCK` | non | `sound_weapon_cock` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_PUNCH_SWING` | non | `sound_punch_swing` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_PUNCH_HIT` | non | `sound_punch_hit` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_SEARCH` | non | `sound_search` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `SOUND_IDLE` | non | `sound_idle` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_die1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_die2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_gunshot` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_weapon_cock` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_punch_swing` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_punch_hit` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_sight` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_search` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `sound_idle` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_stand` | non | `infantry_frames_stand` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_stand` | oui | `infantry_move_stand` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_stand` | oui | `infantry_stand` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_fidget` | non | `infantry_frames_fidget` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_fidget` | oui | `infantry_move_fidget` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_fidget` | oui | `infantry_fidget` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_walk` | non | `infantry_frames_walk` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_walk` | oui | `infantry_move_walk` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_walk` | oui | `infantry_walk` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_run` | non | `infantry_frames_run` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_run` | oui | `infantry_move_run` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_run` | oui | `infantry_run` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_pain1` | non | `infantry_frames_pain1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_pain1` | oui | `infantry_move_pain1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_pain2` | non | `infantry_frames_pain2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_pain2` | oui | `infantry_move_pain2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_pain` | oui | `infantry_pain` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `InfantryMachineGun` | oui | `InfantryMachineGun` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_sight` | oui | `infantry_sight` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_dead` | oui | `infantry_dead` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_death1` | non | `infantry_frames_death1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_death1` | oui | `infantry_move_death1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_death2` | non | `infantry_frames_death2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_death2` | oui | `infantry_move_death2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_death3` | non | `infantry_frames_death3` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_death3` | oui | `infantry_move_death3` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_die` | oui | `infantry_die` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_duck_down` | oui | `infantry_duck_down` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_duck_hold` | oui | `infantry_duck_hold` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_duck_up` | oui | `infantry_duck_up` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_duck` | non | `infantry_frames_duck` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_duck` | oui | `infantry_move_duck` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_dodge` | oui | `infantry_dodge` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_cock_gun` | oui | `infantry_cock_gun` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_fire` | oui | `infantry_fire` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_attack1` | non | `infantry_frames_attack1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_attack1` | oui | `infantry_move_attack1` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_swing` | oui | `infantry_swing` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_smack` | oui | `infantry_smack` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_frames_attack2` | non | `infantry_frames_attack2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | value | `infantry_move_attack2` | oui | `infantry_move_attack2` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `infantry_attack` | oui | `infantry_attack` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `SP_monster_infantry` | oui | `SP_monster_infantry` | `Quake-2-master/game/m_infantry.c` | Ported | [`game_m_infantry.c.md`](../matrices/game_m_infantry.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_infantry.ts` | function | `makeFrames` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `precacheInfantryAssets` | non | `N/A` | `N/A (runtime asset helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `soundOptions` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `infantryFlashOffset` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `setVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `addVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `scaleVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |
+| `packages/game/src/m_infantry.ts` | function | `randomInt` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide |  |

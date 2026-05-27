@@ -341,6 +341,16 @@ export const FRAME_recln140 = 287;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Original name: N/A
+ * Source: N/A (local q_shared flash id alias)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Keep the Chick rocket flash index local to the Chick gameplay port while
+ *   delegating offset data lookup to `m_flash`.
+ */
 export const MZ2_CHICK_ROCKET_1 = 57;
 
 const SOUND_MISSILE_PRELAUNCH = "chick/chkatck1.wav";
@@ -359,6 +369,15 @@ const SOUND_PAIN3 = "chick/chkpain3.wav";
 const SOUND_SIGHT = "chick/chksght1.wav";
 const SOUND_SEARCH = "chick/chksrch1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Store registered runtime sound indexes for the Chick sound path constants.
+ */
 let sound_missile_prelaunch = 0;
 let sound_missile_launch = 0;
 let sound_melee_swing = 0;
@@ -1114,6 +1133,15 @@ export function SP_monster_chick(self: GameEntity, runtime: GameRuntime): void {
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame builder)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Build TS monster frame arrays from compact distance/callback lists.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -1126,6 +1154,15 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local frame callback helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Place sparse frame callbacks at their source frame indexes.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -1137,6 +1174,15 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local asset precache helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Keep the `SP_monster_chick` asset precache sequence in one TS helper.
+ */
 function precacheChickAssets(runtime: GameRuntime): void {
   sound_missile_prelaunch = registerGameSound(runtime, SOUND_MISSILE_PRELAUNCH);
   sound_missile_launch = registerGameSound(runtime, SOUND_MISSILE_LAUNCH);
@@ -1158,6 +1204,16 @@ function precacheChickAssets(runtime: GameRuntime): void {
   void sound_search;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound option helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Adapt original `gi.sound` channel, volume, attenuation and time offset
+ *   arguments to the TS runtime sound option object.
+ */
 function soundOptions(channel: number, attenuation: number = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -1167,16 +1223,44 @@ function soundOptions(channel: number, attenuation: number = ATTN_NORM): { chann
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Local mutable tuple assignment equivalent for entity bounds.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Return the vector difference used by Chick rocket aiming.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Normalize a vector for rocket direction calculations while keeping zero
+ *   vectors stable for harness/runtime safety.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {
@@ -1185,6 +1269,15 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local random helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Provide integer random selection for TS branches that mirror `rand() % n`.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

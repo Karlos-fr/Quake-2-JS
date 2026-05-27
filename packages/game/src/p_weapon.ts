@@ -102,6 +102,8 @@ const GRENADE_TIMER = 3.0;
 const GRENADE_MINSPEED = 400;
 const GRENADE_MAXSPEED = 800;
 /**
+ * Original name: N/A
+ * Source: N/A (local hook interface)
  * Category: New
  * Purpose: Preserve the still-external callbacks required by the first `p_weapon.c` port.
  *
@@ -1588,6 +1590,8 @@ export function Weapon_BFG(ent: GameEntity, runtime: GameRuntime, hooks: GameWea
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local guard helper)
  * Category: New
  * Purpose: Ensure one entity has an attached gameplay client before weapon logic runs.
  */
@@ -1703,6 +1707,8 @@ function resolveFireShotgun(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local dispatch helper)
  * Category: New
  * Purpose: Resolve one default player-weapon thinker from the local `p_weapon.c` port when no override hook is supplied.
  */
@@ -1738,6 +1744,8 @@ function getDefaultWeaponThink(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local item-index adapter)
  * Category: New
  * Purpose: Convert one item reference to the original Quake II item index space.
  */
@@ -1746,6 +1754,8 @@ function ITEM_INDEX(item: GameItemDefinition | null): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local muzzleflash helper)
  * Category: New
  * Purpose: Preserve the original `is_silenced` muzzle-flash bit composition from `p_weapon.c`.
  */
@@ -1754,6 +1764,8 @@ function getSilencedMuzzleBits(client: GameClient): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime event adapter)
  * Category: New
  * Purpose: Route one player muzzleflash through an override hook or the local runtime event queue.
  */
@@ -1766,6 +1778,8 @@ function queuePlayerMuzzleFlash(ent: GameEntity, weapon: number, runtime: GameRu
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime sound adapter)
  * Category: New
  * Purpose: Route one explicit one-shot weapon sound through an override hook or the local runtime sound queue.
  */
@@ -1784,6 +1798,8 @@ function playWeaponOneShot(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper entity allocator)
  * Category: New
  * Purpose: Allocate one `player_noise` helper entity with the original fixed bounds and no-client flag.
  */
@@ -1798,6 +1814,8 @@ function createPlayerNoiseEntity(owner: GameEntity, runtime: GameRuntime): GameE
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local random adapter)
  * Category: Adapter
  * Purpose: Mirror the original `(int)(random() + 0.25)` animation-frame expression through `g_local.random`.
  */
@@ -1806,6 +1824,8 @@ function randomIntFromFloat(): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local random helper)
  * Category: New
  * Purpose: Mirror the original `rand() & 15` pause-frame gating used by weapon idle loops.
  */
@@ -1814,6 +1834,8 @@ function randomPause(): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local inventory helper)
  * Category: New
  * Purpose: Read one inventory count by original pickup name.
  */
@@ -1823,6 +1845,8 @@ function getInventoryCount(client: GameClient, pickupName: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local inventory helper)
  * Category: New
  * Purpose: Test one original ammo/weapon fallback pair against the current inventory.
  */
@@ -1831,6 +1855,8 @@ function hasInventoryWeapon(client: GameClient, ammoName: string, weaponName: st
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local runtime message adapter)
  * Category: New
  * Purpose: Route one high-priority weapon message to the current runtime diagnostics stream.
  */

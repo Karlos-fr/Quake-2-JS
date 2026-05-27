@@ -331,6 +331,16 @@ export const FRAME_cross30 = 281;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Original name: N/A
+ * Source: N/A (local asset constants)
+ * Category: New
+ *
+ * Purpose:
+ * - Keep misc_insane sound paths centralized for runtime registration and playback.
+ *
+ * Symbols: INSANE_SOUND_FIST, INSANE_SOUND_SHAKE, INSANE_SOUND_MOAN, INSANE_SOUND_SCREAMS
+ */
 const INSANE_SOUND_FIST = "insane/insane11.wav";
 const INSANE_SOUND_SHAKE = "insane/insane5.wav";
 const INSANE_SOUND_MOAN = "insane/insane7.wav";
@@ -946,6 +956,14 @@ export function SP_misc_insane(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local table helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Convert declarative distance/think arrays into runtime monster frame records.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -958,6 +976,14 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local table helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Build sparse think callback arrays for declarative monster frame tables.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -969,6 +995,14 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local precache helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Register misc_insane sound assets and store their runtime handles.
+ */
 function precacheInsaneSounds(runtime: GameRuntime): void {
   sound_fist = registerGameSound(runtime, INSANE_SOUND_FIST);
   sound_shake = registerGameSound(runtime, INSANE_SOUND_SHAKE);
@@ -978,6 +1012,14 @@ function precacheInsaneSounds(runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local state helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Recognize frame ranges that use crawling pain/death behavior.
+ */
 function isCrawlingFrame(self: GameEntity): boolean {
   return (
     (self.s.frame >= FRAME_crawl1 && self.s.frame <= FRAME_crawl9) ||
@@ -985,12 +1027,28 @@ function isCrawlingFrame(self: GameEntity): boolean {
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Mutate fixed-size vectors without allocating temporary arrays.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local RNG helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Express C `rand() % n` style integer choices used by this port.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

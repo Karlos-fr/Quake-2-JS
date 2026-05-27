@@ -253,6 +253,14 @@ export const FRAME_attak108 = 204;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Symbols: MZ2_HOVER_BLASTER_1
+ * Original name: N/A
+ * Source: N/A (local muzzle flash alias)
+ * Source declaree: N/A (local muzzle flash alias)
+ * Category: New
+ * Purpose: Keep the hover-specific flash id close to the monster code while using the shared flash table.
+ */
 export const MZ2_HOVER_BLASTER_1 = 62;
 
 const SOUND_PAIN1 = "hover/hovpain1.wav";
@@ -262,9 +270,26 @@ const SOUND_DEATH2 = "hover/hovdeth2.wav";
 const SOUND_SIGHT = "hover/hovsght1.wav";
 const SOUND_SEARCH1 = "hover/hovsrch1.wav";
 const SOUND_SEARCH2 = "hover/hovsrch2.wav";
+
+/**
+ * Symbols: SOUND_ATTACK, SOUND_IDLE
+ * Original name: N/A
+ * Source: N/A (local asset path constants)
+ * Source declaree: N/A (local asset path constants)
+ * Category: New
+ * Purpose: Name source string literals that are precached or assigned during hover spawn setup.
+ */
 const SOUND_ATTACK = "hover/hovatck1.wav";
 const SOUND_IDLE = "hover/hovidle1.wav";
 
+/**
+ * Symbols: sound_pain1, sound_pain2, sound_death1, sound_death2, sound_sight, sound_search1, sound_search2
+ * Original name: N/A
+ * Source: N/A (runtime sound cache handles)
+ * Source declaree: N/A (runtime sound cache handles)
+ * Category: New
+ * Purpose: Store registered sound IDs for the runtime sound adapter.
+ */
 let sound_pain1 = 0;
 let sound_pain2 = 0;
 let sound_death1 = 0;
@@ -759,6 +784,14 @@ export function SP_monster_hover(self: GameEntity, runtime: GameRuntime): void {
   flymonster_start(self, runtime);
 }
 
+/**
+ * Symbols: makeFrames
+ * Original name: N/A
+ * Source: N/A (local frame table helper)
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Convert compact distance/think arrays into runtime monster frame records.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -771,6 +804,14 @@ function makeFrames(
   }));
 }
 
+/**
+ * Symbols: precacheHoverAssets
+ * Original name: N/A
+ * Source: N/A (local precache helper)
+ * Source declaree: N/A (local precache helper)
+ * Category: New
+ * Purpose: Centralize hover sound registration while preserving source precache order.
+ */
 function precacheHoverAssets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -782,12 +823,28 @@ function precacheHoverAssets(runtime: GameRuntime): void {
   registerGameSound(runtime, SOUND_ATTACK);
 }
 
+/**
+ * Symbols: setVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Mutate runtime vectors in place for spawn and corpse bounds setup.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Symbols: subtractVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Build the projectile aim vector used by hover blaster fire.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],

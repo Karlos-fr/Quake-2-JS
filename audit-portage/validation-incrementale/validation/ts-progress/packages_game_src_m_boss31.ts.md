@@ -29,3 +29,13 @@
 - Integration runtime/apps-web/renderer-three: constantes de frames/scale consommees par les moves/spawn du gameplay via `G_RunFrame`/`M_MoveFrame` ou `monsterinfo.scale`; pas d'integration web/renderer directe attendue pour ces macros seules.
 - Tests: non lances; modification documentaire uniquement.
 - Prochain lot recommande: `MZ2_JORG_*`, constantes sons et handles, puis helpers/fonctions Jorg selon risque.
+
+## Session 2026-05-27 - fin de matrice
+
+- Lot: les 89 symboles restants, de `MZ2_JORG_MACHINEGUN_L1` a `normalizeVec3`.
+- Verdict: fichier termine dans la matrice TS actuelle avec 278 symboles, 249 `Couvert C/H`, 28 `Category: New` valides, 1 `Category: Adapter` valide et 0 a auditer.
+- Preuves: matrice C/H `game_m_boss31.c.md` ouverte; symboles portes verifies comme `Valide` avec proprietaire attendu `packages/game/src/m_boss31.ts`; valeurs `MZ2_JORG_*` comparees aux definitions originales `q_shared.h`/commentaires `m_flash.c`; spawn/runtime verifies via `g_spawn.ts`, `g_save.ts` et les harness `m-boss31`.
+- Corrections: ajout d'en-tetes explicites `Original name: N/A`, `Source: N/A (...)`, `Category: New` dans `m_boss31.ts` pour les aliases locaux, caches runtime et helpers locaux. Matrice TS completee avec `Original name`, `Source declaree`, `Category`, lien C/H, `Statut croise` et `Validation TS`.
+- Integration runtime/apps-web/renderer-three: runtime integre via `monster_jorg`, `monsterinfo`, moves, sons, projectiles, Makron handoff et registres de spawn/save. `apps/web` consomme le runtime full-game et les evenements sons/temp entities; `renderer-three` consomme les modeles/frames/temp entities produits, sans correction renderer dediee a faire dans ce lot.
+- Tests: `npm run verify:m-boss31:header`, `npm run verify:m-boss31:source-parity`, `npm run verify:m-boss31`, `npm run typecheck`, `git diff --check`.
+- Prochain lot recommande: aucun.

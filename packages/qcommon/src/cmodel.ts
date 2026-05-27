@@ -36,12 +36,24 @@ import {
   VectorCopy
 } from "../../math/src/q_shared.js";
 
+/**
+ * Original name: DIST_EPSILON
+ * Source declaree: Quake-2-master/qcommon/cmodel.c
+ * Category: Ported
+ */
 const DIST_EPSILON = 0.03125;
+
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local portal state serializer)
+ * Category: New
+ */
 const PORTAL_STATE_BYTES = MAX_MAP_AREAPORTALS * 4;
 
 /**
  * Original name: cbrushside_t
  * Source: qcommon/cmodel.c
+ * Source declaree: Quake-2-master/qcommon/cmodel.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -56,6 +68,7 @@ interface CollisionBrushSide {
 /**
  * Original name: cbrush_t
  * Source: qcommon/cmodel.c
+ * Source declaree: Quake-2-master/qcommon/cmodel.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -71,6 +84,7 @@ interface CollisionBrush {
 /**
  * Original name: cleaf_t
  * Source: qcommon/cmodel.c
+ * Source declaree: Quake-2-master/qcommon/cmodel.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -88,6 +102,7 @@ interface CollisionLeaf {
 /**
  * Original name: cnode_t
  * Source: qcommon/cmodel.c
+ * Source declaree: Quake-2-master/qcommon/cmodel.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -102,6 +117,7 @@ interface CollisionNode {
 /**
  * Original name: carea_t
  * Source: qcommon/cmodel.c
+ * Source declaree: Quake-2-master/qcommon/cmodel.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -116,6 +132,8 @@ interface CollisionArea {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (collision runtime state)
  * Category: New
  * Purpose: Hold the BSP-derived collision structures needed by point contents and trace queries.
  *
@@ -150,6 +168,8 @@ export interface CollisionWorld {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (collision runtime state)
  * Category: New
  * Purpose: Preserve the `cmodel.c` map cache and the cvar-like knobs needed by `CM_LoadMap`.
  *
@@ -165,6 +185,8 @@ export interface CollisionModelRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (collision load result shape)
  * Category: New
  * Purpose: Describe the source-faithful result of `CM_LoadMap`.
  *
@@ -179,6 +201,8 @@ export interface CollisionLoadResult {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (collision map loader callback)
  * Category: New
  * Purpose: Provide the file-loading callback needed by the TypeScript `CM_LoadMap` path.
  *
@@ -187,6 +211,11 @@ export interface CollisionLoadResult {
  */
 export type CollisionMapLoader = (name: string) => Uint8Array | undefined;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (per-trace runtime state)
+ * Category: New
+ */
 interface TraceWork {
   start: vec3_t;
   end: vec3_t;
@@ -200,6 +229,8 @@ interface TraceWork {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (collision runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime state that replaces the original `cmodel.c` file-static globals.
  *
@@ -217,6 +248,8 @@ export function createCollisionModelRuntime(map_noareas = false): CollisionModel
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (BSP collision world adapter)
  * Category: New
  * Purpose: Build the first collision runtime from a parsed BSP map.
  *
@@ -555,6 +588,8 @@ export function CM_TransformedBoxTrace(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (pmove trace adapter)
  * Category: New
  * Purpose: Create a `pmove`-compatible trace callback bound to one collision world and headnode.
  *
@@ -581,6 +616,8 @@ export function createCollisionTrace(world: CollisionWorld, headnode = 0, brushm
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (pmove contents adapter)
  * Category: New
  * Purpose: Create a `pmove`-compatible point contents callback bound to one collision world and headnode.
  *
@@ -1220,7 +1257,9 @@ function CM_TraceToLeaf(world: CollisionWorld, leafnum: number, work: TraceWork)
 }
 
 /**
- * Category: New
+ * Original name: CM_TestInLeaf
+ * Source declaree: Quake-2-master/qcommon/cmodel.c
+ * Category: Adapter
  * Purpose: Collect the leafs overlapped by a stationary box and test them for initial solid overlap.
  *
  * Constraints:
@@ -1421,6 +1460,8 @@ function CM_RecursiveHullCheck(
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (BSP plane adapter)
  * Category: New
  * Purpose: Convert one BSP plane into the shared collision plane shape.
  */
@@ -1435,6 +1476,8 @@ function createPlane(plane: dplane_t): cplane_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (BSP texinfo adapter)
  * Category: New
  * Purpose: Convert one BSP texinfo record into the shared collision/render surface shape.
  */
@@ -1447,6 +1490,8 @@ function createSurface(texinfo: texinfo_t): csurface_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (trace default plane helper)
  * Category: New
  * Purpose: Create a neutral default plane for miss traces.
  */
@@ -1461,6 +1506,8 @@ function createDefaultPlane(): cplane_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (plane signbits helper)
  * Category: New
  * Purpose: Compute Quake-style signbits for one plane normal.
  */
@@ -1479,6 +1526,8 @@ function computePlaneSignbits(normal: vec3_t): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (trace fraction helper)
  * Category: New
  * Purpose: Clamp one trace fraction into the inclusive `[0, 1]` interval.
  */
@@ -1493,6 +1542,8 @@ function clamp01(value: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (bounds-plane helper)
  * Category: New
  * Purpose: Compute conservative min/max distances from an AABB to a non-axial BSP plane.
  */
@@ -1510,6 +1561,8 @@ function distToPlaneCorner(mins: vec3_t, maxs: vec3_t, normal: vec3_t, dist: num
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (model rotation helper)
  * Category: New
  * Purpose: Resolve whether one model-space collision query must account for entity rotation.
  */
@@ -1518,6 +1571,8 @@ function hasRotation(angles: vec3_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (box hull accessor)
  * Category: New
  * Purpose: Resolve the synthetic box-model headnode used by the original transformed trace fast path.
  *
@@ -1529,6 +1584,8 @@ function getBoxHeadnode(world: CollisionWorld): number {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (model rotation helper)
  * Category: New
  * Purpose: Rotate one point from world space into the local frame of a rotated BSP submodel.
  */
@@ -1541,6 +1598,8 @@ function rotateIntoModelFrame(input: vec3_t, angles: vec3_t, output: vec3_t): vo
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (model rotation helper)
  * Category: New
  * Purpose: Rotate one plane normal back out of a BSP submodel local frame.
  */
@@ -1553,6 +1612,8 @@ function rotateOutOfModelFrame(input: vec3_t, inverseAngles: vec3_t, output: vec
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (vector helper)
  * Category: New
  * Purpose: Subtract one vector from another without mutating the inputs.
  */
@@ -1565,6 +1626,8 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (vector helper)
  * Category: New
  * Purpose: Negate one vector without mutating the source.
  */
@@ -1573,6 +1636,8 @@ function negateVec3(vector: vec3_t): vec3_t {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (BSP area adapter)
  * Category: New
  * Purpose: Build one mutable collision area record from the parsed BSP area lump.
  */
@@ -1704,6 +1769,8 @@ function getClusterVis(world: CollisionWorld, cluster: number, kind: 0 | 1): Uin
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (portal state reset helper)
  * Category: New
  * Purpose: Reinitialize the portal-open state exactly like the original cached-map fast path.
  */
@@ -1713,6 +1780,8 @@ function resetPortalState(world: CollisionWorld): void {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (empty map model helper)
  * Category: New
  * Purpose: Provide the zeroed `map_cmodels[0]` shape used when no map is currently loaded.
  */

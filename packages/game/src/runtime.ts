@@ -49,6 +49,19 @@ import {
 import { G_UseTargets } from "./g_utils.js";
 import type { GameItemDefinition } from "./g_items.js";
 
+/**
+ * Original name: AREA_* / DF_* / SPLASH_*
+ * Source: game/q_shared.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Re-exports shared qcommon constants used by gameplay runtime modules.
+ *
+ * Porting notes:
+ * - The canonical owners remain in `packages/qcommon/src/q_shared.ts`; this file only exposes
+ *   the game-runtime import surface expected by existing ports.
+ */
 export {
   AREA_SOLID,
   AREA_TRIGGERS,
@@ -118,9 +131,29 @@ export const WEAP_ROCKETLAUNCHER = 8;
 export const WEAP_HYPERBLASTER = 9;
 export const WEAP_RAILGUN = 10;
 export const WEAP_BFG = 11;
+
+/**
+ * Original name: RIGHT_HANDED / LEFT_HANDED / CENTER_HANDED
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the handedness values used by player weapon projection and HUD state.
+ */
 export const RIGHT_HANDED = 0;
 export const LEFT_HANDED = 1;
 export const CENTER_HANDED = 2;
+
+/**
+ * Original name: MOD_*
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines means-of-death ids consumed by combat, weapon and obituary logic.
+ */
 export const MOD_SHOTGUN = 2;
 export const MOD_SSHOTGUN = 3;
 export const MOD_MACHINEGUN = 4;
@@ -140,6 +173,16 @@ export const MOD_HANDGRENADE = 15;
 export const MOD_HG_SPLASH = 16;
 export const MOD_HELD_GRENADE = 24;
 export const MOD_FRIENDLY_FIRE = 0x8000000;
+
+/**
+ * Original name: DAMAGE_* / DEFAULT_* / DAMAGE_TIME
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines damage flags, weapon spread defaults and the view-damage feedback duration.
+ */
 export const DAMAGE_RADIUS = 0x00000001;
 export const DAMAGE_NO_ARMOR = 0x00000002;
 export const DAMAGE_ENERGY = 0x00000004;
@@ -154,6 +197,16 @@ export const DEFAULT_DEATHMATCH_SHOTGUN_COUNT = 12;
 export const DEFAULT_SHOTGUN_COUNT = 12;
 export const DEFAULT_SSHOTGUN_COUNT = 20;
 export const DAMAGE_TIME = 0.5;
+
+/**
+ * Original name: ANIM_*
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines client animation priority values used by player view and weapon code.
+ */
 export const ANIM_BASIC = 0;
 export const ANIM_WAVE = 1;
 export const ANIM_JUMP = 2;
@@ -161,6 +214,16 @@ export const ANIM_PAIN = 3;
 export const ANIM_ATTACK = 4;
 export const ANIM_DEATH = 5;
 export const ANIM_REVERSE = 6;
+
+/**
+ * Original name: DEAD_*
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines entity death-state flags consumed by combat, client and monster logic.
+ */
 export const DEAD_NO = 0;
 export const DEAD_DYING = 1;
 export const DEAD_DEAD = 2;
@@ -299,6 +362,8 @@ export interface GameClient {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Name the string-backed entity fields searchable through the first `G_Find` port.
  *
@@ -314,6 +379,8 @@ export type GameEntityFieldName =
   | "model";
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Classify gameplay entities by the collision/runtime role they currently occupy.
  *
@@ -327,6 +394,8 @@ export type GameEntityKind =
   | "dynamic_box";
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Preserve the `use` callback shape used by Quake II gameplay entities.
  *
@@ -336,6 +405,8 @@ export type GameEntityKind =
 export type GameEntityUse = (self: GameEntity, other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime) => void;
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Preserve the `touch` callback shape used by trigger entities.
  *
@@ -345,6 +416,8 @@ export type GameEntityUse = (self: GameEntity, other: GameEntity | null, activat
 export type GameEntityTouch = (self: GameEntity, other: GameEntity, runtime: GameRuntime, plane?: trace_t["plane"] | null, surface?: trace_t["surface"] | null) => void;
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Preserve the `blocked` callback shape used by pushers such as doors and platforms.
  *
@@ -354,6 +427,8 @@ export type GameEntityTouch = (self: GameEntity, other: GameEntity, runtime: Gam
 export type GameEntityBlocked = (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Preserve the `die` callback shape used by shootable brush entities such as doors.
  *
@@ -370,6 +445,8 @@ export type GameEntityDie = (
 ) => void;
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Preserve the `pain` callback shape used by damageable gameplay entities.
  *
@@ -493,6 +570,8 @@ export interface GameMonsterInfo {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Hold the local asset registration tables used to emulate the original index-based game import API.
  *
@@ -510,6 +589,8 @@ export interface GameAssetRegistry {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Preserve the `think` callback shape used by delayed gameplay entities.
  *
@@ -654,6 +735,8 @@ export interface GameEntity {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Expose the collision queries consumed by the gameplay runtime ports in `g_phys`.
  *
@@ -675,6 +758,8 @@ export interface GameCollisionBridge {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Describe one runtime instrumentation event emitted while resolving targets.
  *
@@ -701,6 +786,8 @@ export interface GameRuntimeLogEntry {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Describe one gameplay-side one-shot sound request emitted by the ported game code before a real audio backend is attached.
  *
@@ -722,6 +809,8 @@ export interface GameSoundEvent {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side `gi.cprintf` request before the engine/server import is available.
  *
@@ -737,6 +826,8 @@ export interface GameCprintfEvent {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side `gi.centerprintf` request before the engine/server import is available.
  *
@@ -751,6 +842,8 @@ export interface GameCenterprintEvent {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side temporary entity event emitted by source ports before server multicast serialization is attached.
  *
@@ -766,6 +859,8 @@ export interface GameTempEntityEvent {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Describe one gameplay-originated configstring update before it is serialized by the server bridge.
  */
@@ -775,6 +870,8 @@ export interface GameConfigstringUpdate {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side player muzzleflash event until a client/demo bridge consumes it.
  *
@@ -788,6 +885,8 @@ export interface GamePlayerMuzzleFlashEvent {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side monster muzzleflash event until a client/demo bridge consumes it.
  *
@@ -802,6 +901,8 @@ export interface GameMonsterMuzzleFlashEvent {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Hold the circular player-trail state used by pursuit helpers from `p_trail.c`.
  *
@@ -815,6 +916,8 @@ export interface GamePlayerTrailState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Hold the mutable gameplay entity list plus minimal timing and log state.
  *
@@ -889,6 +992,8 @@ export interface GameRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Preserve the minimal `link_t` area-link node shape shared by `game.h` and `g_local.h`.
  *
@@ -901,16 +1006,28 @@ export interface GameAreaLink {
 }
 
 /**
- * Category: New
- * Purpose: Keep the first trigger/runtime constants in one place while later gameplay ports grow.
+ * Original name: SOLID_*
+ * Source: game/game.h
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Values only need local consistency for now because no network serialization depends on them yet.
+ * Behavior:
+ * - Defines the game import solid enum used by edict collision and linking.
  */
 export const SOLID_NOT = 0;
 export const SOLID_TRIGGER = 1;
 export const SOLID_BBOX = 2;
 export const SOLID_BSP = 3;
+
+/**
+ * Original name: MOVETYPE_*
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines gameplay movement modes used by the physics dispatcher.
+ */
 export const MOVETYPE_NONE = 0;
 export const MOVETYPE_NOCLIP = 1;
 export const MOVETYPE_PUSH = 2;
@@ -921,6 +1038,16 @@ export const MOVETYPE_FLY = 6;
 export const MOVETYPE_TOSS = 7;
 export const MOVETYPE_FLYMISSILE = 8;
 export const MOVETYPE_BOUNCE = 9;
+
+/**
+ * Original name: FL_*
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines gameplay entity flags used by combat, AI, items and movers.
+ */
 export const FL_NOTARGET = 0x00000020;
 export const FL_IMMUNE_LASER = 0x00000004;
 export const FL_GODMODE = 0x00000010;
@@ -928,19 +1055,79 @@ export const FL_NO_KNOCKBACK = 0x00000800;
 export const FL_POWER_ARMOR = 0x00001000;
 export const FL_RESPAWN = 0x80000000;
 export const FL_TEAMSLAVE = 0x00000400;
+
+/**
+ * Original name: POWER_ARMOR_*
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines power-armor mode ids returned by item/combat logic.
+ */
 export const POWER_ARMOR_NONE = 0;
 export const POWER_ARMOR_SCREEN = 1;
 export const POWER_ARMOR_SHIELD = 2;
+
+/**
+ * Original name: SVF_*
+ * Source: game/game.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines server-visible edict flags shared through the game import boundary.
+ */
 export const SVF_NOCLIENT = 1 << 0;
 export const SVF_DEADMONSTER = 1 << 1;
 export const SVF_MONSTER = 1 << 2;
+
+/**
+ * Original name: FRAMETIME
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the fixed gameplay frame duration used by movers, items and thinks.
+ */
 export const FRAMETIME = 0.1;
+
+/**
+ * Original name: DROPPED_ITEM / DROPPED_PLAYER_ITEM
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines item spawnflags used by pickup, drop and respawn rules.
+ */
 export const DROPPED_ITEM = 0x00010000;
 export const DROPPED_PLAYER_ITEM = 0x00020000;
+
+/**
+ * Original name: STATE_*
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines brush-mover state ids used by plats, buttons and doors.
+ */
 export const STATE_TOP = 0;
 export const STATE_BOTTOM = 1;
 export const STATE_UP = 2;
 export const STATE_DOWN = 3;
+
+/**
+ * Original name: DOOR_*
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines func_door spawnflags used by door setup and callbacks.
+ */
 export const DOOR_START_OPEN = 1;
 export const DOOR_REVERSE = 2;
 export const DOOR_CRUSHER = 4;
@@ -948,6 +1135,16 @@ export const DOOR_NOMONSTER = 8;
 export const DOOR_TOGGLE = 32;
 export const DOOR_X_AXIS = 64;
 export const DOOR_Y_AXIS = 128;
+
+/**
+ * Original name: PLAT_LOW_TRIGGER
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the func_plat low-trigger spawnflag used while building the center trigger.
+ */
 export const PLAT_LOW_TRIGGER = 1;
 
 /**
@@ -1118,6 +1315,8 @@ export function createGameClient(): GameClient {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Create the zero-initialized `monsterinfo_t` block embedded in gameplay entities.
  */
@@ -1153,6 +1352,8 @@ export function createMonsterInfo(): GameMonsterInfo {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Convert one parsed BSP entity into the mutable runtime shape used by the first gameplay ports.
  *
@@ -1291,6 +1492,8 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Create the first gameplay runtime from BSP entities while preserving map ordering.
  *
@@ -1371,6 +1574,8 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Create a gameplay runtime from one parsed BSP map and enrich brush entities with inline model bounds.
  *
@@ -1395,6 +1600,8 @@ export function createGameRuntimeFromBspMap(map: BspMap): GameRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Attach the minimal gameplay client state to one runtime entity.
  *
@@ -1409,6 +1616,8 @@ export function attachGameClient(entity: GameEntity): GameClient {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Advance and execute all `think` callbacks scheduled up to one absolute time.
  *
@@ -1438,6 +1647,8 @@ export function runPendingThinks(runtime: GameRuntime, upToTime = Number.POSITIV
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Invoke one entity `use` callback while journaling the activation for verification.
  *
@@ -1463,6 +1674,8 @@ export function useGameEntity(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Provide a human-readable label for one runtime entity in verification output.
  *
@@ -1485,6 +1698,8 @@ export function getRuntimeEntityLabel(entity: GameEntity | null): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Find all currently active entities with one exact `targetname`.
  *
@@ -1514,6 +1729,8 @@ export function Think_Delay(ent: GameEntity, runtime: GameRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Allocate one new temporary runtime entity appended after the BSP-spawned entity set.
  *
@@ -1650,6 +1867,8 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Mark one runtime entity as freed while keeping its slot available for log references.
  *
@@ -1787,6 +2006,8 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Find the next scheduled thinker to execute up to one absolute time limit.
  *
@@ -1810,6 +2031,8 @@ function findNextThinkEntity(runtime: GameRuntime, upToTime: number): GameEntity
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Parse one optional float-like BSP property with a zero fallback.
  */
@@ -1823,6 +2046,8 @@ function parseEntityFloat(value: string | undefined): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Parse one optional integer-like BSP property with a zero fallback.
  */
@@ -1836,6 +2061,8 @@ function parseEntityInteger(value: string | undefined): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Create the zero-initialized `moveinfo` block used by early door and plat ports.
  */
@@ -1865,6 +2092,8 @@ function createMoveInfo(): GameMoveInfo {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Create one detached area-link node mirroring the `link_t` storage embedded in `edict_t`.
  */
@@ -1876,6 +2105,8 @@ function createAreaLink(): GameAreaLink {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Create the local asset registry used by the early gameplay runtime ports.
  */
@@ -1891,6 +2122,8 @@ function createAssetRegistry(): GameAssetRegistry {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Create the zero-initialized player-trail state embedded in the gameplay runtime.
  */
@@ -1903,6 +2136,8 @@ function createPlayerTrailState(): GamePlayerTrailState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Parse one Quake-style origin vector into a numeric tuple with a safe zero fallback.
  */
@@ -1920,6 +2155,8 @@ function parseEntityVector(value: string | undefined): [number, number, number] 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Parse the first Quake entity angle conventions into a three-component angle tuple.
  *
@@ -1945,6 +2182,8 @@ function parseEntityAngles(properties: Record<string, string>): [number, number,
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Attach inline BSP model bounds to one runtime brush entity.
  *
@@ -1974,6 +2213,8 @@ function applyInlineModelBounds(entity: GameEntity, map: BspMap): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Attach server collision inline-model bounds while preserving the original `gi.setmodel` effect for brush entities.
  *
@@ -2021,6 +2262,8 @@ function applyInlineModelBoundsFromCollision(runtime: GameRuntime, entity: GameE
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Keep the exported `entity_state_t` fields aligned with the gameplay entity pose and solidity.
  */
@@ -2033,6 +2276,8 @@ function syncEntityStateFromRuntimeEntity(entity: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Recompute the canonical spatial bounds fields used by later Quake II collision and linking ports.
  *
@@ -2047,6 +2292,8 @@ export function refreshEntitySpatialState(entity: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Register one model path in the local gameplay runtime and return its stable Quake-style index.
  */
@@ -2070,6 +2317,8 @@ export function registerGameModel(runtime: GameRuntime, path: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Mirror the server-side model table layout before gameplay registers dynamic alias models.
  *
@@ -2110,6 +2359,8 @@ function reserveModelConfigstring(runtime: GameRuntime, index: number, path: str
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Apply the gameplay equivalent of `gi.setmodel` for brush and alias entities.
  *
@@ -2138,6 +2389,8 @@ export function setGameEntityModel(runtime: GameRuntime, entity: GameEntity, pat
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Register one sound path in the local gameplay runtime and return its stable Quake-style index.
  */
@@ -2148,6 +2401,8 @@ export function registerGameSound(runtime: GameRuntime, path: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side one-shot sound event while registering its Quake-style sound index.
  *
@@ -2167,6 +2422,8 @@ export function emitGameSound(runtime: GameRuntime, entity: GameEntity | null, p
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one sound event that already has a stable Quake-style sound index and optional server playback metadata.
  */
@@ -2211,6 +2468,8 @@ export function emitRegisteredGameSound(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one temp-entity event from gameplay code while preserving multicast metadata for the server bridge.
  */
@@ -2231,6 +2490,8 @@ export function emitGameTempEntity(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Store one gameplay-originated configstring update until a server/client bridge consumes it.
  */
@@ -2239,6 +2500,8 @@ export function setGameConfigstring(runtime: GameRuntime, index: number, value: 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Drain queued gameplay temp-entity events in FIFO order for a server/client bridge.
  */
@@ -2249,6 +2512,8 @@ export function drainGameTempEntityEvents(runtime: GameRuntime): GameTempEntityE
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Drain gameplay configstring updates while preserving the latest value per index.
  */
@@ -2259,6 +2524,8 @@ export function drainGameConfigstringUpdates(runtime: GameRuntime): GameConfigst
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Drain the queued gameplay one-shot sound events accumulated since the previous consumer pass.
  *
@@ -2272,6 +2539,8 @@ export function drainGameSoundEvents(runtime: GameRuntime): GameSoundEvent[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side client print event while preserving the original `gi.cprintf` target semantics.
  */
@@ -2286,6 +2555,8 @@ export function emitGameCprintf(runtime: GameRuntime, entity: GameEntity | null,
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Drain queued gameplay client print events in FIFO order for a server/client bridge.
  */
@@ -2296,6 +2567,8 @@ export function drainGameCprintfEvents(runtime: GameRuntime): GameCprintfEvent[]
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side centerprint event while preserving the original `gi.centerprintf` target semantics.
  */
@@ -2309,6 +2582,8 @@ export function emitGameCenterprint(runtime: GameRuntime, entity: GameEntity | n
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Drain queued gameplay centerprint events in FIFO order for a server/client bridge.
  */
@@ -2319,6 +2594,8 @@ export function drainGameCenterprintEvents(runtime: GameRuntime): GameCenterprin
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side player muzzleflash event while preserving the original weapon bitfield.
  *
@@ -2334,6 +2611,8 @@ export function emitPlayerMuzzleFlash(runtime: GameRuntime, entity: GameEntity, 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Drain the queued gameplay player muzzleflash events accumulated since the previous consumer pass.
  *
@@ -2347,6 +2626,8 @@ export function drainPlayerMuzzleFlashEvents(runtime: GameRuntime): GamePlayerMu
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Queue one gameplay-side monster muzzleflash event while preserving the original `MZ2_*` id.
  *
@@ -2363,6 +2644,8 @@ export function emitMonsterMuzzleFlash(runtime: GameRuntime, entity: GameEntity,
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Drain queued gameplay monster muzzleflash events accumulated since the previous consumer pass.
  *
@@ -2376,6 +2659,8 @@ export function drainMonsterMuzzleFlashEvents(runtime: GameRuntime): GameMonster
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Register one image path in the local gameplay runtime and return its stable Quake-style index.
  */
@@ -2393,6 +2678,8 @@ export function registerGameImage(runtime: GameRuntime, path: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Link one gameplay entity into the runtime spatial query lists.
  *
@@ -2431,6 +2718,8 @@ export function linkGameEntity(runtime: GameRuntime, entity: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Unlink one gameplay entity from the runtime spatial query lists.
  *
@@ -2448,6 +2737,8 @@ export function unlinkGameEntity(runtime: GameRuntime, entity: GameEntity): void
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Return the currently linked entities overlapping one world-space bounds box.
  *
@@ -2480,6 +2771,8 @@ export function BoxEdicts(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Classify one gameplay entity into the runtime collision buckets used by spatial linking.
  */
@@ -2500,6 +2793,8 @@ export function classifyGameEntity(entity: GameEntity): GameEntityKind {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Identify one BSP inline model entity from the current runtime shape.
  */
@@ -2508,6 +2803,8 @@ export function isInlineBspEntity(entity: GameEntity): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Identify one runtime trigger entity.
  */
@@ -2516,6 +2813,8 @@ export function isRuntimeTriggerEntity(entity: GameEntity): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Identify one dynamic box-style entity distinct from BSP brush models and triggers.
  */
@@ -2524,6 +2823,8 @@ export function isDynamicBoxEntity(entity: GameEntity): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Recompute one entity `size` from its current mins and maxs.
  */
@@ -2536,6 +2837,8 @@ function updateEntitySize(entity: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Recompute one entity absolute world bounds from its current runtime shape.
  */
@@ -2553,6 +2856,8 @@ function updateEntityAbsoluteBounds(entity: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Register one path in a local Quake-style asset table while preserving stable 1-based indices.
  */
@@ -2569,6 +2874,8 @@ function registerAssetPath(paths: string[], indices: Map<string, number>, path: 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Remove one entity reference from a linked runtime list.
  */
@@ -2580,6 +2887,8 @@ function removeLinkedEntity(list: GameEntity[], entity: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Test whether two axis-aligned bounds boxes overlap.
  */
@@ -2600,6 +2909,8 @@ function boundsOverlap(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Build the gameplay collision bridge consumed by the `g_phys` ports.
  *
@@ -2618,6 +2929,8 @@ function createGameCollisionBridge(map: BspMap, runtime: GameRuntime): GameColli
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Resolve one gameplay trace against the world, transformed inline BSP entities and linked dynamic boxes.
  */
@@ -2678,6 +2991,8 @@ function traceAgainstGameWorld(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Resolve point contents across the gameplay world and linked transformed inline BSP entities.
  */
@@ -2711,6 +3026,8 @@ function pointContentsAgainstGameWorld(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Choose the earliest blocking trace while preserving Quake II startsolid propagation.
  */
@@ -2730,6 +3047,8 @@ function mergeGameplayTrace(bestTrace: trace_t, candidate: trace_t): trace_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Trace one moving AABB against one linked dynamic-box entity using the swept AABB equivalent used by the runtime bridge.
  */
@@ -2831,6 +3150,8 @@ function traceAgainstDynamicBox(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Test whether one point lies inside one inclusive axis-aligned bounds box.
  */
@@ -2843,6 +3164,8 @@ function pointInsideBounds(point: vec3_t, mins: vec3_t, maxs: vec3_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
  * Category: New
  * Purpose: Build the neutral miss plane used by synthetic dynamic-box traces.
  */

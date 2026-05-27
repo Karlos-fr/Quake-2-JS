@@ -283,6 +283,9 @@ const SOUND_OPEN = "gunner/gunatck1.wav";
 const SOUND_SEARCH = "gunner/gunsrch1.wav";
 const SOUND_SIGHT = "gunner/sight1.wav";
 
+// Original name: N/A
+// Source: N/A (runtime sound handle cache)
+// Category: New
 let sound_pain = 0;
 let sound_pain2 = 0;
 let sound_death = 0;
@@ -747,6 +750,11 @@ export function SP_monster_gunner(self: GameEntity, runtime: GameRuntime): void 
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame builder)
+ * Category: New
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -759,6 +767,11 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local frame callback helper)
+ * Category: New
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -770,6 +783,11 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime asset registration helper)
+ * Category: New
+ */
 function precacheGunnerAssets(runtime: GameRuntime): void {
   sound_death = registerGameSound(runtime, SOUND_DEATH);
   sound_pain = registerGameSound(runtime, SOUND_PAIN);
@@ -782,6 +800,11 @@ function precacheGunnerAssets(runtime: GameRuntime): void {
   registerGameSound(runtime, "gunner/gunatck3.wav");
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound options helper)
+ * Category: New
+ */
 function soundOptions(channel: number, attenuation: number = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -791,28 +814,58 @@ function soundOptions(channel: number, attenuation: number = ATTN_NORM): { chann
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster flash adapter)
+ * Category: New
+ */
 function gunnerFlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   return [vector[0] * scale, vector[1] * scale, vector[2] * scale];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {
@@ -821,6 +874,11 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local random integer helper)
+ * Category: New
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

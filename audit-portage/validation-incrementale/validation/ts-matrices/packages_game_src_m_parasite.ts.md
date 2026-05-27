@@ -4,205 +4,205 @@
 
 - Fichier TS: `packages/game/src/m_parasite.ts`
 - Symboles TS: 197
-- Couvert C/H: 0
-- Reste a auditer: 197
+- Couvert C/H: 180
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_break32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_death101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_death102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_death103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_death104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_death105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_death106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_death107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_drain18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_pain111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_run15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `FRAME_stand35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_DIE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_LAUNCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_IMPACT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_SUCK` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_REELIN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_TAP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_SCRATCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `SOUND_SEARCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_die` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_launch` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_impact` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_suck` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_reelin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_tap` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_scratch` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `sound_search` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_launch` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_reel_in` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_sight` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_tap` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_scratch` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_search` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_start_fidget` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_start_fidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_fidget` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_fidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_end_fidget` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_end_fidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_end_fidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_do_fidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_refidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_idle` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_stand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_start_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_start_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_stop_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_stop_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_start_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_start_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_start_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_stop_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_stop_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_start_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_pain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_drain_attack_ok` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_drain_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_drain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_drain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_break` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_break` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_dead` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_frames_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | value | `parasite_move_death` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `parasite_die` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `SP_monster_parasite` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `precacheParasiteAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_parasite.ts` | function | `vec3Length` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break01` | oui | `FRAME_break01` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break02` | oui | `FRAME_break02` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break03` | oui | `FRAME_break03` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break04` | oui | `FRAME_break04` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break05` | oui | `FRAME_break05` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break06` | oui | `FRAME_break06` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break07` | oui | `FRAME_break07` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break08` | oui | `FRAME_break08` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break09` | oui | `FRAME_break09` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break10` | oui | `FRAME_break10` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break11` | oui | `FRAME_break11` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break12` | oui | `FRAME_break12` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break13` | oui | `FRAME_break13` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break14` | oui | `FRAME_break14` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break15` | oui | `FRAME_break15` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break16` | oui | `FRAME_break16` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break17` | oui | `FRAME_break17` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break18` | oui | `FRAME_break18` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break19` | oui | `FRAME_break19` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break20` | oui | `FRAME_break20` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break21` | oui | `FRAME_break21` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break22` | oui | `FRAME_break22` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break23` | oui | `FRAME_break23` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break24` | oui | `FRAME_break24` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break25` | oui | `FRAME_break25` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break26` | oui | `FRAME_break26` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break27` | oui | `FRAME_break27` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break28` | oui | `FRAME_break28` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break29` | oui | `FRAME_break29` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break30` | oui | `FRAME_break30` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break31` | oui | `FRAME_break31` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_break32` | oui | `FRAME_break32` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_death101` | oui | `FRAME_death101` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_death102` | oui | `FRAME_death102` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_death103` | oui | `FRAME_death103` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_death104` | oui | `FRAME_death104` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_death105` | oui | `FRAME_death105` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_death106` | oui | `FRAME_death106` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_death107` | oui | `FRAME_death107` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain01` | oui | `FRAME_drain01` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain02` | oui | `FRAME_drain02` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain03` | oui | `FRAME_drain03` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain04` | oui | `FRAME_drain04` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain05` | oui | `FRAME_drain05` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain06` | oui | `FRAME_drain06` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain07` | oui | `FRAME_drain07` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain08` | oui | `FRAME_drain08` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain09` | oui | `FRAME_drain09` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain10` | oui | `FRAME_drain10` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain11` | oui | `FRAME_drain11` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain12` | oui | `FRAME_drain12` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain13` | oui | `FRAME_drain13` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain14` | oui | `FRAME_drain14` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain15` | oui | `FRAME_drain15` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain16` | oui | `FRAME_drain16` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain17` | oui | `FRAME_drain17` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_drain18` | oui | `FRAME_drain18` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain105` | oui | `FRAME_pain105` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain106` | oui | `FRAME_pain106` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain107` | oui | `FRAME_pain107` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain108` | oui | `FRAME_pain108` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain109` | oui | `FRAME_pain109` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain110` | oui | `FRAME_pain110` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_pain111` | oui | `FRAME_pain111` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run01` | oui | `FRAME_run01` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run02` | oui | `FRAME_run02` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run03` | oui | `FRAME_run03` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run04` | oui | `FRAME_run04` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run05` | oui | `FRAME_run05` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run06` | oui | `FRAME_run06` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run07` | oui | `FRAME_run07` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run08` | oui | `FRAME_run08` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run09` | oui | `FRAME_run09` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run10` | oui | `FRAME_run10` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run11` | oui | `FRAME_run11` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run12` | oui | `FRAME_run12` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run13` | oui | `FRAME_run13` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run14` | oui | `FRAME_run14` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_run15` | oui | `FRAME_run15` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand01` | oui | `FRAME_stand01` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand02` | oui | `FRAME_stand02` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand03` | oui | `FRAME_stand03` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand04` | oui | `FRAME_stand04` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand05` | oui | `FRAME_stand05` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand06` | oui | `FRAME_stand06` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand07` | oui | `FRAME_stand07` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand08` | oui | `FRAME_stand08` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand09` | oui | `FRAME_stand09` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand31` | oui | `FRAME_stand31` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand32` | oui | `FRAME_stand32` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand33` | oui | `FRAME_stand33` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand34` | oui | `FRAME_stand34` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `FRAME_stand35` | oui | `FRAME_stand35` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_parasite.h` | Ported | [`game_m_parasite.h.md`](../matrices/game_m_parasite.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_DIE` | non | `sound_die` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_LAUNCH` | non | `sound_launch` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_IMPACT` | non | `sound_impact` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_SUCK` | non | `sound_suck` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_REELIN` | non | `sound_reelin` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_TAP` | non | `sound_tap` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_SCRATCH` | non | `sound_scratch` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `SOUND_SEARCH` | non | `sound_search` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_die` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_launch` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_impact` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_suck` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_reelin` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_sight` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_tap` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_scratch` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | value | `sound_search` | non | `N/A` | `N/A (runtime sound cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_launch` | oui | `parasite_launch` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_reel_in` | oui | `parasite_reel_in` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_sight` | oui | `parasite_sight` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_tap` | oui | `parasite_tap` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_scratch` | oui | `parasite_scratch` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_search` | oui | `parasite_search` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_start_fidget` | non | `parasite_frames_start_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_start_fidget` | oui | `parasite_move_start_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_fidget` | non | `parasite_frames_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_fidget` | oui | `parasite_move_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_end_fidget` | non | `parasite_frames_end_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_end_fidget` | oui | `parasite_move_end_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_end_fidget` | oui | `parasite_end_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_do_fidget` | oui | `parasite_do_fidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_refidget` | oui | `parasite_refidget` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_idle` | oui | `parasite_idle` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_stand` | non | `parasite_frames_stand` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_stand` | oui | `parasite_move_stand` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_stand` | oui | `parasite_stand` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_run` | non | `parasite_frames_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_run` | oui | `parasite_move_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_start_run` | non | `parasite_frames_start_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_start_run` | oui | `parasite_move_start_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_stop_run` | non | `parasite_frames_stop_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_stop_run` | oui | `parasite_move_stop_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_start_run` | oui | `parasite_start_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_run` | oui | `parasite_run` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_walk` | non | `parasite_frames_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_walk` | oui | `parasite_move_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_start_walk` | non | `parasite_frames_start_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_start_walk` | oui | `parasite_move_start_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_stop_walk` | non | `parasite_frames_stop_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_stop_walk` | oui | `parasite_move_stop_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_start_walk` | oui | `parasite_start_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_walk` | oui | `parasite_walk` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_pain1` | non | `parasite_frames_pain1` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_pain1` | oui | `parasite_move_pain1` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_pain` | oui | `parasite_pain` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_drain_attack_ok` | oui | `parasite_drain_attack_ok` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_drain_attack` | oui | `parasite_drain_attack` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_drain` | non | `parasite_frames_drain` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_drain` | oui | `parasite_move_drain` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_break` | non | `parasite_frames_break` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_break` | oui | `parasite_move_break` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_attack` | oui | `parasite_attack` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_dead` | oui | `parasite_dead` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_frames_death` | non | `parasite_frames_death` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | value | `parasite_move_death` | oui | `parasite_move_death` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `parasite_die` | oui | `parasite_die` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `SP_monster_parasite` | oui | `SP_monster_parasite` | `Quake-2-master/game/m_parasite.c` | Ported | [`game_m_parasite.c.md`](../matrices/game_m_parasite.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_parasite.ts` | function | `makeFrames` | non | `N/A` | `N/A (local helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | function | `precacheParasiteAssets` | non | `N/A` | `N/A (runtime precache helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_parasite.ts` | function | `vec3Length` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |

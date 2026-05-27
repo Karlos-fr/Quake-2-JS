@@ -305,6 +305,19 @@ export const FRAME_stand_60 = 253;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Original name: N/A
+ * Source: N/A (local q_shared flash id aliases)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Keeps the supertank muzzle flash ids local to this monster module.
+ *
+ * Porting notes:
+ * - Mirrors the `MZ2_SUPERTANK_*` values from `q_shared.h`; `m_supertank.ts`
+ *   is not the owner of the shared flash-id port.
+ */
 export const MZ2_SUPERTANK_MACHINEGUN_1 = 64;
 export const MZ2_SUPERTANK_MACHINEGUN_2 = 65;
 export const MZ2_SUPERTANK_MACHINEGUN_3 = 66;
@@ -321,14 +334,34 @@ const SOUND_PAIN3 = "bosstank/btkpain3.wav";
 const SOUND_DEATH = "bosstank/btkdeth1.wav";
 const SOUND_SEARCH1 = "bosstank/btkunqv1.wav";
 const SOUND_SEARCH2 = "bosstank/btkunqv2.wav";
+
+/**
+ * Original name: N/A
+ * Source: N/A (local asset path constant)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Names the tread sound path registered for supertank engine movement.
+ */
 const SOUND_TREAD = "bosstank/btkengn1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handles)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Caches runtime sound indices produced during supertank asset precache.
+ */
 let sound_pain1 = 0;
 let sound_pain2 = 0;
 let sound_pain3 = 0;
 let sound_death = 0;
 let sound_search1 = 0;
 let sound_search2 = 0;
+
 let tread_sound = 0;
 
 /**
@@ -920,6 +953,15 @@ export function SP_monster_supertank(self: GameEntity, runtime: GameRuntime): vo
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame builder)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds declarative monster frame entries from distances and optional callbacks.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -932,6 +974,15 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local frame callback helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Places sparse frame callbacks at their original C table indexes.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -943,6 +994,15 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local asset precache helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Registers supertank sound assets in the same order as `SP_monster_supertank`.
+ */
 function precacheSupertankAssets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -953,6 +1013,15 @@ function precacheSupertankAssets(runtime: GameRuntime): void {
   tread_sound = registerGameSound(runtime, SOUND_TREAD);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound options helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the structured sound options used by supertank sound emissions.
+ */
 function soundOptions(channel: number, attenuation: number = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -962,20 +1031,56 @@ function soundOptions(channel: number, attenuation: number = ATTN_NORM): { chann
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local flash offset helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Resolves a supertank muzzle flash id to the shared monster flash offset table.
+ */
 function supertankFlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Mutates an existing vector with three component values.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns `left - right` as a new vector.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Normalizes a vector and preserves the zero-vector guard used by the TS runtime.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {
@@ -984,6 +1089,15 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local random integer helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Produces an integer bucket matching the local `rand() & 15` source call site.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

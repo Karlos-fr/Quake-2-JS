@@ -1,6 +1,8 @@
 /**
  * File: q_shared.ts
- * Source: Quake II original / game/q_shared.h
+ * Original name: q_shared.h declarations
+ * Source: Quake-2-master/game/q_shared.h
+ * Category: Ported
  * Purpose: Port the shared Quake II constants and data structures used across runtime modules.
  *
  * Porting policy:
@@ -686,6 +688,8 @@ export function AngleVectors(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (zero-initialized q_shared state helper)
  * Category: New
  * Purpose: Create a default entity_state_t value suitable for incremental client and server ports.
  *
@@ -713,6 +717,8 @@ export function createEntityState(): entity_state_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (zero-initialized q_shared state helper)
  * Category: New
  * Purpose: Create a default player_state_t value suitable for incremental client and server ports.
  *

@@ -192,16 +192,71 @@ const SOUND_TAP = "parasite/paridle1.wav";
 const SOUND_SCRATCH = "parasite/paridle2.wav";
 const SOUND_SEARCH = "parasite/parsrch1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_pain1 = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_pain2 = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_die = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_launch = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_impact = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_suck = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_reelin = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_sight = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_tap = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_scratch = 0;
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ */
 let sound_search = 0;
 
 /**
@@ -786,6 +841,11 @@ export function SP_monster_parasite(self: GameEntity, runtime: GameRuntime): voi
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -798,6 +858,11 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -809,6 +874,11 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime precache helper)
+ * Category: New
+ */
 function precacheParasiteAssets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -823,16 +893,31 @@ function precacheParasiteAssets(runtime: GameRuntime): void {
   sound_search = registerGameSound(runtime, SOUND_SEARCH);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function vec3Length(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }

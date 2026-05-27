@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_supertank.ts`
 - Symboles TS: 332
-- Couvert C/H: 180
-- Reste a auditer: 152
+- Couvert C/H: 307
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -189,155 +189,155 @@
 | `packages/game/src/m_supertank.ts` | value | `FRAME_right_2` | oui | `FRAME_right_2` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_supertank.ts` | value | `FRAME_right_3` | oui | `FRAME_right_3` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_supertank.ts` | value | `FRAME_right_4` | oui | `FRAME_right_4` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_right_18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_36` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_37` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_38` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_39` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_40` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_41` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_42` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_43` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_44` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_45` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_46` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_47` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_48` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_49` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_50` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_51` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_52` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_53` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_54` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_55` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_56` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_57` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_58` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_59` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_60` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_ROCKET_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_ROCKET_2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_ROCKET_3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `SOUND_PAIN3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `SOUND_DEATH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `SOUND_SEARCH1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `SOUND_SEARCH2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `SOUND_TREAD` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `sound_pain3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `sound_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `sound_search1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `sound_search2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `tread_sound` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `TreadSound` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_search` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_forward` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_forward` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_forward` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_turn_right` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_turn_right` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_turn_left` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_turn_left` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_death1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_death` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_backward` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_backward` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_frames_end_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | value | `supertank_move_end_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_reattack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_pain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertankRocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertankMachineGun` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_dead` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `BossExplode` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertank_die` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `SP_monster_supertank` | oui | `SP_monster_supertank` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_supertank.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `precacheSupertankAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `soundOptions` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `supertankFlashOffset` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_supertank.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_5` | oui | `FRAME_right_5` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_6` | oui | `FRAME_right_6` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_7` | oui | `FRAME_right_7` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_8` | oui | `FRAME_right_8` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_9` | oui | `FRAME_right_9` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_10` | oui | `FRAME_right_10` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_11` | oui | `FRAME_right_11` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_12` | oui | `FRAME_right_12` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_13` | oui | `FRAME_right_13` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_14` | oui | `FRAME_right_14` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_15` | oui | `FRAME_right_15` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_16` | oui | `FRAME_right_16` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_17` | oui | `FRAME_right_17` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_right_18` | oui | `FRAME_right_18` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_1` | oui | `FRAME_stand_1` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_2` | oui | `FRAME_stand_2` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_3` | oui | `FRAME_stand_3` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_4` | oui | `FRAME_stand_4` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_5` | oui | `FRAME_stand_5` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_6` | oui | `FRAME_stand_6` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_7` | oui | `FRAME_stand_7` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_8` | oui | `FRAME_stand_8` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_9` | oui | `FRAME_stand_9` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_10` | oui | `FRAME_stand_10` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_11` | oui | `FRAME_stand_11` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_12` | oui | `FRAME_stand_12` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_13` | oui | `FRAME_stand_13` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_14` | oui | `FRAME_stand_14` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_15` | oui | `FRAME_stand_15` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_16` | oui | `FRAME_stand_16` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_17` | oui | `FRAME_stand_17` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_18` | oui | `FRAME_stand_18` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_19` | oui | `FRAME_stand_19` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_20` | oui | `FRAME_stand_20` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_21` | oui | `FRAME_stand_21` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_22` | oui | `FRAME_stand_22` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_23` | oui | `FRAME_stand_23` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_24` | oui | `FRAME_stand_24` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_25` | oui | `FRAME_stand_25` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_26` | oui | `FRAME_stand_26` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_27` | oui | `FRAME_stand_27` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_28` | oui | `FRAME_stand_28` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_29` | oui | `FRAME_stand_29` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_30` | oui | `FRAME_stand_30` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_31` | oui | `FRAME_stand_31` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_32` | oui | `FRAME_stand_32` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_33` | oui | `FRAME_stand_33` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_34` | oui | `FRAME_stand_34` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_35` | oui | `FRAME_stand_35` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_36` | oui | `FRAME_stand_36` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_37` | oui | `FRAME_stand_37` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_38` | oui | `FRAME_stand_38` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_39` | oui | `FRAME_stand_39` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_40` | oui | `FRAME_stand_40` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_41` | oui | `FRAME_stand_41` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_42` | oui | `FRAME_stand_42` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_43` | oui | `FRAME_stand_43` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_44` | oui | `FRAME_stand_44` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_45` | oui | `FRAME_stand_45` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_46` | oui | `FRAME_stand_46` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_47` | oui | `FRAME_stand_47` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_48` | oui | `FRAME_stand_48` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_49` | oui | `FRAME_stand_49` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_50` | oui | `FRAME_stand_50` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_51` | oui | `FRAME_stand_51` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_52` | oui | `FRAME_stand_52` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_53` | oui | `FRAME_stand_53` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_54` | oui | `FRAME_stand_54` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_55` | oui | `FRAME_stand_55` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_56` | oui | `FRAME_stand_56` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_57` | oui | `FRAME_stand_57` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_58` | oui | `FRAME_stand_58` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_59` | oui | `FRAME_stand_59` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `FRAME_stand_60` | oui | `FRAME_stand_60` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_supertank.h` | Ported | [`game_m_supertank.h.md`](../matrices/game_m_supertank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_1` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_2` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_3` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_4` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_5` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_MACHINEGUN_6` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_ROCKET_1` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_ROCKET_2` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `MZ2_SUPERTANK_ROCKET_3` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `SOUND_PAIN3` | non | `sound_pain3` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `SOUND_DEATH` | non | `sound_death` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `SOUND_SEARCH1` | non | `sound_search1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `SOUND_SEARCH2` | non | `sound_search2` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `SOUND_TREAD` | non | `N/A` | `N/A (local asset path constant)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound handle)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound handle)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `sound_pain3` | non | `N/A` | `N/A (runtime sound handle)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `sound_death` | non | `N/A` | `N/A (runtime sound handle)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `sound_search1` | non | `N/A` | `N/A (runtime sound handle)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `sound_search2` | non | `N/A` | `N/A (runtime sound handle)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | value | `tread_sound` | non | `tread_sound` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `TreadSound` | oui | `TreadSound` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_search` | oui | `supertank_search` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_stand` | oui | `supertank_frames_stand` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_stand` | oui | `supertank_move_stand` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_stand` | oui | `supertank_stand` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_run` | oui | `supertank_frames_run` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_run` | oui | `supertank_move_run` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_forward` | oui | `supertank_frames_forward` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_forward` | oui | `supertank_move_forward` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_forward` | oui | `supertank_forward` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_walk` | oui | `supertank_walk` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_run` | oui | `supertank_run` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_turn_right` | oui | `supertank_frames_turn_right` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_turn_right` | oui | `supertank_move_turn_right` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_turn_left` | oui | `supertank_frames_turn_left` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_turn_left` | oui | `supertank_move_turn_left` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_pain3` | oui | `supertank_frames_pain3` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_pain3` | oui | `supertank_move_pain3` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_pain2` | oui | `supertank_frames_pain2` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_pain2` | oui | `supertank_move_pain2` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_pain1` | oui | `supertank_frames_pain1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_pain1` | oui | `supertank_move_pain1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_death1` | oui | `supertank_frames_death1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_death` | oui | `supertank_move_death` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_backward` | oui | `supertank_frames_backward` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_backward` | oui | `supertank_move_backward` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack4` | oui | `supertank_frames_attack4` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack4` | oui | `supertank_move_attack4` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack3` | oui | `supertank_frames_attack3` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack3` | oui | `supertank_move_attack3` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack2` | oui | `supertank_frames_attack2` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack2` | oui | `supertank_move_attack2` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_attack1` | oui | `supertank_frames_attack1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_attack1` | oui | `supertank_move_attack1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_frames_end_attack1` | oui | `supertank_frames_end_attack1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | value | `supertank_move_end_attack1` | oui | `supertank_move_end_attack1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_reattack1` | oui | `supertank_reattack1` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_pain` | oui | `supertank_pain` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertankRocket` | oui | `supertankRocket` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertankMachineGun` | oui | `supertankMachineGun` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_attack` | oui | `supertank_attack` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_dead` | oui | `supertank_dead` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `BossExplode` | oui | `BossExplode` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `supertank_die` | oui | `supertank_die` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `SP_monster_supertank` | oui | `SP_monster_supertank` | `Quake-2-master/game/m_supertank.c` | Ported | [`game_m_supertank.c.md`](../matrices/game_m_supertank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_supertank.ts` | function | `makeFrames` | non | `N/A` | `N/A (local monster frame builder)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local frame callback helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `precacheSupertankAssets` | non | `N/A` | `N/A (local asset precache helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `soundOptions` | non | `N/A` | `N/A (local sound options helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `supertankFlashOffset` | non | `N/A` | `N/A (local flash offset helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_supertank.ts` | function | `randomInt` | non | `N/A` | `N/A (local random integer helper)` | New |  | Hors C/H | Valide |  |

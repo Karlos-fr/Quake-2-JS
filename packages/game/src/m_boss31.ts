@@ -245,6 +245,9 @@ export const FRAME_walk25 = 187;
 
 export const MODEL_SCALE = 1.0;
 
+// Original name: N/A
+// Source: N/A (local muzzle flash aliases)
+// Category: New
 export const MZ2_JORG_MACHINEGUN_L1 = 120;
 export const MZ2_JORG_MACHINEGUN_L2 = 121;
 export const MZ2_JORG_MACHINEGUN_L3 = 122;
@@ -259,6 +262,9 @@ export const MZ2_JORG_MACHINEGUN_R5 = 130;
 export const MZ2_JORG_MACHINEGUN_R6 = 131;
 export const MZ2_JORG_BFG_1 = 132;
 
+// Original name: N/A
+// Source: N/A (named local trace mask)
+// Category: New
 const JORG_ATTACK_TRACE_MASK = CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA;
 const SOUND_PAIN1 = "boss3/bs3pain1.wav";
 const SOUND_PAIN2 = "boss3/bs3pain2.wav";
@@ -274,8 +280,15 @@ const SOUND_STEP_LEFT = "boss3/step1.wav";
 const SOUND_STEP_RIGHT = "boss3/step2.wav";
 const SOUND_FIREGUN = "boss3/xfire.wav";
 const SOUND_DEATH_HIT = "boss3/d_hit.wav";
+
+// Original name: N/A
+// Source: N/A (named local sound path)
+// Category: New
 const SOUND_W_LOOP = "boss3/w_loop.wav";
 
+// Original name: N/A
+// Source: N/A (runtime sound handle cache)
+// Category: New
 let sound_pain1 = 0;
 let sound_pain2 = 0;
 let sound_pain3 = 0;
@@ -898,6 +911,11 @@ export function SP_monster_jorg(self: GameEntity, runtime: GameRuntime): void {
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local declarative frame helper)
+ * Category: New
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -910,6 +928,11 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local declarative frame helper)
+ * Category: New
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -921,6 +944,11 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime asset registration helper)
+ * Category: New
+ */
 function precacheJorgAssets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -938,6 +966,11 @@ function precacheJorgAssets(runtime: GameRuntime): void {
   sound_death_hit = registerGameSound(runtime, SOUND_DEATH_HIT);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (shared local machinegun helper)
+ * Category: New
+ */
 function fireJorgMachinegun(self: GameEntity, flashNumber: number, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -962,6 +995,11 @@ function fireJorgMachinegun(self: GameEntity, flashNumber: number, runtime: Game
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound option helper)
+ * Category: New
+ */
 function soundOptions(channel: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -971,24 +1009,49 @@ function soundOptions(channel: number): { channel: number; volume: number; atten
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local flash offset adapter)
+ * Category: New
+ */
 function jorgFlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function vectorMA(veca: vec3_t, scale: number, vecb: vec3_t): vec3_t {
   return [veca[0] + scale * vecb[0], veca[1] + scale * vecb[1], veca[2] + scale * vecb[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {

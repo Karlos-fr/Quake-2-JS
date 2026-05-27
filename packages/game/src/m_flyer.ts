@@ -201,6 +201,14 @@ export const FRAME_pain304 = 150;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Symbols: MZ2_FLYER_BLASTER_1, MZ2_FLYER_BLASTER_2
+ * Original name: N/A
+ * Source: N/A (local muzzle flash aliases)
+ * Source declaree: N/A (local muzzle flash aliases)
+ * Category: New
+ * Purpose: Keep flyer-specific names close to the monster code while delegating offsets to the shared flash table.
+ */
 export const MZ2_FLYER_BLASTER_1 = 58;
 export const MZ2_FLYER_BLASTER_2 = 59;
 
@@ -211,10 +219,28 @@ const SOUND_PAIN2 = "flyer/flypain2.wav";
 const SOUND_SLASH = "flyer/flyatck2.wav";
 const SOUND_SPROING = "flyer/flyatck1.wav";
 const SOUND_DIE = "flyer/flydeth1.wav";
+
+/**
+ * Symbols: SOUND_ATTACK3, SOUND_LOOP_IDLE
+ * Original name: N/A
+ * Source: N/A (local asset path constants)
+ * Source declaree: N/A (local asset path constants)
+ * Category: New
+ * Purpose: Name source string literals that are precached or assigned during flyer spawn setup.
+ */
 const SOUND_ATTACK3 = "flyer/flyatck3.wav";
 const SOUND_LOOP_IDLE = "flyer/flyidle1.wav";
 
 let nextmove = ACTION_nothing;
+
+/**
+ * Symbols: sound_sight, sound_idle, sound_pain1, sound_pain2, sound_slash, sound_sproing, sound_die
+ * Original name: N/A
+ * Source: N/A (runtime sound cache handles)
+ * Source declaree: N/A (runtime sound cache handles)
+ * Category: New
+ * Purpose: Store registered sound IDs for the runtime sound adapter.
+ */
 let sound_sight = 0;
 let sound_idle = 0;
 let sound_pain1 = 0;
@@ -830,6 +856,14 @@ export function SP_monster_flyer(self: GameEntity, runtime: GameRuntime): void {
   flymonster_start(self, runtime);
 }
 
+/**
+ * Symbols: makeFrames
+ * Original name: N/A
+ * Source: N/A (local frame table helper)
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Convert compact distance/think arrays into runtime monster frame records.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -842,6 +876,14 @@ function makeFrames(
   }));
 }
 
+/**
+ * Symbols: indexedThinks
+ * Original name: N/A
+ * Source: N/A (local frame table helper)
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Build sparse think callback arrays for declarative monster frame tables.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -853,6 +895,14 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Symbols: precacheFlyerAssets
+ * Original name: N/A
+ * Source: N/A (local precache helper)
+ * Source declaree: N/A (local precache helper)
+ * Category: New
+ * Purpose: Centralize flyer sound registration while preserving source precache order.
+ */
 function precacheFlyerAssets(runtime: GameRuntime): void {
   sound_sight = registerGameSound(runtime, SOUND_SIGHT);
   sound_idle = registerGameSound(runtime, SOUND_IDLE);
@@ -864,16 +914,40 @@ function precacheFlyerAssets(runtime: GameRuntime): void {
   registerGameSound(runtime, SOUND_ATTACK3);
 }
 
+/**
+ * Symbols: flyerFlashOffset
+ * Original name: N/A
+ * Source: N/A (local flash table adapter)
+ * Source declaree: N/A (local flash table adapter)
+ * Category: New
+ * Purpose: Resolve flyer muzzle flash offsets through the shared monster flash table.
+ */
 function flyerFlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Symbols: setVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Mutate runtime vectors in place for spawn bounds setup.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Symbols: subtractVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Build the projectile aim vector used by flyer blaster fire.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],
@@ -882,10 +956,26 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Symbols: randomInt
+ * Original name: N/A
+ * Source: N/A (local random helper)
+ * Source declaree: N/A (local random helper)
+ * Category: New
+ * Purpose: Preserve the integer rand-style pain branch used by the source behavior.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }
 
+/**
+ * Symbols: stringsEqualIgnoreCase
+ * Original name: N/A
+ * Source: N/A (local string helper)
+ * Source declaree: N/A (local string helper)
+ * Category: New
+ * Purpose: Reuse the Quake case-insensitive string comparison for map-specific spawn quirks.
+ */
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }

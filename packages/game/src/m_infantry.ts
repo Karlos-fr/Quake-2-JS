@@ -304,6 +304,12 @@ const SOUND_SIGHT = "infantry/infsght1.wav";
 const SOUND_SEARCH = "infantry/infsrch1.wav";
 const SOUND_IDLE = "infantry/infidle1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Purpose: Stores runtime sound indexes produced from the ported infantry sound paths.
+ */
 let sound_pain1 = 0;
 let sound_pain2 = 0;
 let sound_die1 = 0;
@@ -853,6 +859,12 @@ export function SP_monster_infantry(self: GameEntity, runtime: GameRuntime): voi
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Builds runtime monster-frame objects from the compact C frame table data.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -865,6 +877,12 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Creates sparse frame callback arrays for translated monster move tables.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -876,6 +894,12 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime asset helper)
+ * Category: New
+ * Purpose: Registers the sounds required by the ported infantry spawn routine.
+ */
 function precacheInfantryAssets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -892,6 +916,12 @@ function precacheInfantryAssets(runtime: GameRuntime): void {
   void sound_search;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Normalizes sound options used by the infantry sound call adapters.
+ */
 function soundOptions(channel: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -901,16 +931,34 @@ function soundOptions(channel: number): { channel: number; volume: number; atten
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Resolves infantry muzzle flash offsets through the shared monster flash table.
+ */
 function infantryFlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Assigns vector components without depending on C macro mutation semantics.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Returns a new vector containing component-wise addition.
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] + right[0],
@@ -919,6 +967,12 @@ function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Returns a new vector containing component-wise subtraction.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],
@@ -927,6 +981,12 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Returns a new vector scaled by a scalar factor.
+ */
 function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   return [
     vector[0] * scale,
@@ -935,6 +995,12 @@ function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Returns a normalized vector with a zero-vector guard.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {
@@ -943,6 +1009,12 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Implements the small integer random branches used by the ported infantry logic.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

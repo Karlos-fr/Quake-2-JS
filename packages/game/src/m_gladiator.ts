@@ -140,6 +140,14 @@ export const FRAME_painup7 = 89;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Symbols: MZ2_GLADIATOR_RAILGUN_1
+ * Original name: N/A
+ * Source: N/A (local muzzle flash alias)
+ * Source declaree: N/A (local muzzle flash alias)
+ * Category: New
+ * Purpose: Keep the gladiator-specific muzzle flash name close to the monster code while delegating offsets to the shared flash table.
+ */
 export const MZ2_GLADIATOR_RAILGUN_1 = 61;
 
 const SOUND_PAIN1 = "gladiator/pain.wav";
@@ -153,6 +161,14 @@ const SOUND_IDLE = "gladiator/gldidle1.wav";
 const SOUND_SEARCH = "gladiator/gldsrch1.wav";
 const SOUND_SIGHT = "gladiator/sight.wav";
 
+/**
+ * Symbols: sound_pain1, sound_pain2, sound_die, sound_gun, sound_cleaver_swing, sound_cleaver_hit, sound_cleaver_miss, sound_idle, sound_search, sound_sight
+ * Original name: N/A
+ * Source: N/A (runtime sound cache handles)
+ * Source declaree: N/A (runtime sound cache handles)
+ * Category: New
+ * Purpose: Store registered sound IDs for the runtime sound adapter.
+ */
 let sound_pain1 = 0;
 let sound_pain2 = 0;
 let sound_die = 0;
@@ -604,6 +620,14 @@ export function SP_monster_gladiator(self: GameEntity, runtime: GameRuntime): vo
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Symbols: makeFrames
+ * Original name: N/A
+ * Source: N/A (local frame table helper)
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Convert compact distance/think arrays into runtime monster frame records.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -616,6 +640,14 @@ function makeFrames(
   }));
 }
 
+/**
+ * Symbols: indexedThinks
+ * Original name: N/A
+ * Source: N/A (local frame table helper)
+ * Source declaree: N/A (local frame table helper)
+ * Category: New
+ * Purpose: Build sparse think callback arrays for declarative monster frame tables.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -627,6 +659,14 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Symbols: precacheGladiatorAssets
+ * Original name: N/A
+ * Source: N/A (local precache helper)
+ * Source declaree: N/A (local precache helper)
+ * Category: New
+ * Purpose: Centralize gladiator sound registration while preserving source precache order.
+ */
 function precacheGladiatorAssets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -640,12 +680,28 @@ function precacheGladiatorAssets(runtime: GameRuntime): void {
   sound_sight = registerGameSound(runtime, SOUND_SIGHT);
 }
 
+/**
+ * Symbols: setVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Mutate runtime vectors in place for spawn bounds and corpse bounds setup.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Symbols: subtractVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Build range and aim vectors used by gladiator ranged attack logic.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],
@@ -654,6 +710,14 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Symbols: normalizeVec3
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Normalize the railgun aim vector produced by the runtime vector helpers.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = vec3Length(vector);
   if (length === 0) {
@@ -662,10 +726,26 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Symbols: vec3Length
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Source declaree: N/A (local vector helper)
+ * Category: New
+ * Purpose: Measure range for the gladiator railgun safe-zone check.
+ */
 function vec3Length(vector: vec3_t): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
 }
 
+/**
+ * Symbols: randomInt
+ * Original name: N/A
+ * Source: N/A (local random helper)
+ * Source declaree: N/A (local random helper)
+ * Category: New
+ * Purpose: Preserve the integer rand-style melee damage variation used by the source behavior.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

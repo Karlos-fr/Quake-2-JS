@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_chick.ts`
 - Symboles TS: 386
-- Couvert C/H: 313
-- Reste a auditer: 73
+- Couvert C/H: 362
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -298,100 +298,100 @@
 | `packages/game/src/m_chick.ts` | value | `FRAME_recln139` | oui | `FRAME_recln139` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | value | `FRAME_recln140` | oui | `FRAME_recln140` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_chick.ts` | value | `MZ2_CHICK_ROCKET_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_MISSILE_PRELAUNCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_MISSILE_LAUNCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_MELEE_SWING` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_MELEE_HIT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_MISSILE_RELOAD` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_DEATH1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_DEATH2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_FALL_DOWN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_IDLE1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_IDLE2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_PAIN3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `SOUND_SEARCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_missile_prelaunch` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_missile_launch` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_melee_swing` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_melee_hit` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_missile_reload` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_death1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_death2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_fall_down` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_idle1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_idle2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_pain3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `sound_search` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `MZ2_CHICK_ROCKET_1` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_MISSILE_PRELAUNCH` | non | `sound_missile_prelaunch` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_MISSILE_LAUNCH` | non | `sound_missile_launch` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_MELEE_SWING` | non | `sound_melee_swing` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_MELEE_HIT` | non | `sound_melee_hit` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_MISSILE_RELOAD` | non | `sound_missile_reload` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_DEATH1` | non | `sound_death1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_DEATH2` | non | `sound_death2` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_FALL_DOWN` | non | `sound_fall_down` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_IDLE1` | non | `sound_idle1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_IDLE2` | non | `sound_idle2` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_PAIN3` | non | `sound_pain3` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `SOUND_SEARCH` | non | `sound_search` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `sound_missile_prelaunch` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_missile_launch` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_melee_swing` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_melee_hit` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_missile_reload` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_death1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_death2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_fall_down` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_idle1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_idle2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_pain3` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_sight` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | value | `sound_search` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
 | `packages/game/src/m_chick.ts` | function | `ChickMoan` | oui | `ChickMoan` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_fidget` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_fidget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_fidget` | non | `chick_frames_fidget` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_fidget` | oui | `chick_move_fidget` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_fidget` | oui | `chick_fidget` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_stand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_stand` | non | `chick_frames_stand` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_stand` | oui | `chick_move_stand` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_stand` | oui | `chick_stand` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_start_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_start_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_start_run` | non | `chick_frames_start_run` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_start_run` | oui | `chick_move_start_run` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_run` | non | `chick_frames_run` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_run` | oui | `chick_move_run` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_walk` | non | `chick_frames_walk` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_walk` | oui | `chick_move_walk` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_walk` | oui | `chick_walk` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_run` | oui | `chick_run` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_pain3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_pain1` | non | `chick_frames_pain1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_pain1` | oui | `chick_move_pain1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_pain2` | non | `chick_frames_pain2` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_pain2` | oui | `chick_move_pain2` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_pain3` | non | `chick_frames_pain3` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_pain3` | oui | `chick_move_pain3` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_pain` | oui | `chick_pain` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_dead` | oui | `chick_dead` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_death2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_death2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_death1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_death1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_death2` | non | `chick_frames_death2` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_death2` | oui | `chick_move_death2` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_death1` | non | `chick_frames_death1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_death1` | oui | `chick_move_death1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_die` | oui | `chick_die` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_duck_down` | oui | `chick_duck_down` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_duck_hold` | oui | `chick_duck_hold` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_duck_up` | oui | `chick_duck_up` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_duck` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_duck` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_duck` | non | `chick_frames_duck` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_duck` | oui | `chick_move_duck` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_dodge` | oui | `chick_dodge` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `ChickSlash` | oui | `ChickSlash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `ChickRocket` | oui | `ChickRocket` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `Chick_PreAttack1` | oui | `Chick_PreAttack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `ChickReload` | oui | `ChickReload` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_start_attack1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_start_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_attack1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_end_attack1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_end_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_start_attack1` | non | `chick_frames_start_attack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_start_attack1` | oui | `chick_move_start_attack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_attack1` | non | `chick_frames_attack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_attack1` | oui | `chick_move_attack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_end_attack1` | non | `chick_frames_end_attack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_end_attack1` | oui | `chick_move_end_attack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_rerocket` | oui | `chick_rerocket` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_attack1` | oui | `chick_attack1` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_slash` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_slash` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_end_slash` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_end_slash` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_slash` | non | `chick_frames_slash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_slash` | oui | `chick_move_slash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_end_slash` | non | `chick_frames_end_slash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_end_slash` | oui | `chick_move_end_slash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_reslash` | oui | `chick_reslash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_slash` | oui | `chick_slash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | value | `chick_frames_start_slash` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `chick_move_start_slash` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `chick_frames_start_slash` | non | `chick_frames_start_slash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `chick_move_start_slash` | oui | `chick_move_start_slash` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | function | `chick_melee` | oui | `chick_melee` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_attack` | oui | `chick_attack` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `chick_sight` | oui | `chick_sight` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/m_chick.ts` | function | `SP_monster_chick` | oui | `SP_monster_chick` | `Quake-2-master/game/m_chick.c` | Ported | [`game_m_chick.c.md`](../matrices/game_m_chick.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/m_chick.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | function | `precacheChickAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | function | `soundOptions` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | function | `makeFrames` | non | `N/A` | `N/A (local monster frame builder)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local frame callback helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | function | `precacheChickAssets` | non | `N/A` | `N/A (local asset precache helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | function | `soundOptions` | non | `N/A` | `N/A (local sound option helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_chick.ts` | function | `randomInt` | non | `N/A` | `N/A (local random helper)` | New |  | Valide | Valide |  |

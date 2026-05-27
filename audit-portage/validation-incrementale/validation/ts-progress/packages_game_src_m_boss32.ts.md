@@ -1,6 +1,6 @@
 # Progress TS - packages/game/src/m_boss32.ts
 
-- Statut: En cours
+- Statut: Termine
 - Dernier lot valide: `FRAME_stand01` a `FRAME_stand51` (51 macros de frames stand) marques `Couvert C/H`.
 - Preuves consultees:
   - `packages/game/src/m_boss32.ts`
@@ -28,3 +28,13 @@
 - Integration runtime/apps-web/renderer-three: constantes de frames/scale consommees par les moves/spawn du gameplay via `G_RunFrame`/`M_MoveFrame` ou `monsterinfo.scale`; pas d'integration web/renderer directe attendue pour ces macros seules.
 - Tests: non lances; modification documentaire uniquement.
 - Prochain lot recommande: `MZ2_MAKRON_*`, constantes sons et handles, puis helpers/fonctions Makron selon risque.
+
+## Session 2026-05-27 - gros lot final
+
+- Lot: 200 symboles restants, de `FRAME_jump03` a `normalizeVec3`: dernieres macros de frames Makron, `MZ2_MAKRON_*`, constantes sons/asset, caches de sons, tables/moves, fonctions Makron et helpers locaux.
+- Verdict: fichier termine, `559` symboles `Couvert C/H`, `27` symboles `New` marques `Valide`, `0` a auditer.
+- Preuves: matrices C/H `game_m_boss32.h.md`, `game_q_shared.h.md` et `game_m_boss32.c.md` consultees; symboles TS proprietaires confirmes dans `packages/game/src/m_boss32.ts`; valeurs de frames et ids `MZ2_MAKRON_*` alignees avec les sources; pas de mauvais package, mauvais fichier ou doublon proprietaire constate dans le lot.
+- Corrections: ajout d'en-tetes `Category: New` dans `m_boss32.ts` pour le trace mask, constantes asset locales, caches de sons runtime et helpers locaux; normalisation de quelques `Source:` d'en-tetes Makron vers `Quake-2-master/game/m_boss32.c`; matrice TS completee.
+- Integration runtime/apps-web/renderer-three: runtime integre via `SP_monster_makron`, `MakronPrecache`, callbacks `monsterinfo`, moves, sons, projectiles et `walkmonster_start`; `apps/web` consomme le runtime porte sans logique parallele attendue ici; `renderer-three` consomme les entites/frames/temp entities produites, aucune correction renderer dediee requise pour ce lot.
+- Tests: `npm run verify:m-boss32:header`, `npm run verify:m-boss32:source-parity`, `npm run verify:m-boss32`, `npm run typecheck`, `git diff --check`.
+- Prochain lot recommande: aucun pour `m_boss32.ts`.

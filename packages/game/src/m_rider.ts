@@ -1,7 +1,10 @@
 /**
  * File: m_rider.ts
- * Source: Quake II original / game/m_rider.h
+ * Original name: FRAME_* and MODEL_SCALE
+ * Source: Quake-2-master/game/m_rider.h
+ * Category: Ported
  * Purpose: Port of the generated rider model frame constants used by the boss3 rider model.
+ * Fidelity level: Strict
  *
  * Porting policy:
  * - Preserve original behavior first.

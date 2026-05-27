@@ -534,6 +534,12 @@ export const FRAME_death610 = 474;
 
 export const MODEL_SCALE = 1.2;
 
+/**
+ * Original name: N/A
+ * Source: N/A (local muzzle flash aliases)
+ * Category: New
+ * Purpose: Local numeric aliases for soldier muzzle flash ids used by the ported fire tables.
+ */
 export const MZ2_SOLDIER_BLASTER_1 = 39;
 export const MZ2_SOLDIER_BLASTER_2 = 40;
 export const MZ2_SOLDIER_SHOTGUN_1 = 41;
@@ -570,6 +576,12 @@ const SOUND_DEATH = "soldier/soldeth1.wav";
 const SOUND_DEATH_SS = "soldier/soldeth3.wav";
 const SOUND_COCK = "infantry/infatck3.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound cache)
+ * Category: New
+ * Purpose: Stores registered sound handles returned by the explicit TS runtime.
+ */
 let sound_idle = 0;
 let sound_sight1 = 0;
 let sound_sight2 = 0;
@@ -1480,6 +1492,12 @@ export function SP_monster_soldier_ss(self: GameEntity, runtime: GameRuntime): v
   self.gib_health = -30;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local frame helper)
+ * Category: New
+ * Purpose: Builds declarative monster frame records from distance and think arrays.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -1492,6 +1510,12 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local frame helper)
+ * Category: New
+ * Purpose: Builds sparse think-function arrays for declarative monster frame tables.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -1503,6 +1527,12 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound helper)
+ * Category: New
+ * Purpose: Creates runtime sound option records matching the original `gi.sound` defaults.
+ */
 function soundOptions(channel: number, attenuation = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -1512,12 +1542,24 @@ function soundOptions(channel: number, attenuation = ATTN_NORM): { channel: numb
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Mutates bbox vectors in place while keeping the ported code compact.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Adds two temporary aim vectors for soldier firing calculations.
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] + right[0],
@@ -1526,6 +1568,12 @@ function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Subtracts temporary aim vectors for soldier firing calculations.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],
@@ -1534,6 +1582,12 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Scales temporary aim vectors for soldier firing calculations.
+ */
 function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   return [
     vector[0] * scale,
@@ -1542,6 +1596,12 @@ function scaleVec3(vector: vec3_t, scale: number): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Normalizes temporary aim vectors without mutating runtime entity state.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {
@@ -1550,6 +1610,12 @@ function normalizeVec3(vector: vec3_t): vec3_t {
   return [vector[0] / length, vector[1] / length, vector[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local random helper)
+ * Category: New
+ * Purpose: Mirrors C integer random selection for soldier death/attack branches.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

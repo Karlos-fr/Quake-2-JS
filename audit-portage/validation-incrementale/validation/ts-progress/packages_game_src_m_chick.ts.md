@@ -62,3 +62,16 @@
 - Integration runtime/apps-web/renderer-three: constantes de frames/scale consommees par les moves/spawn du gameplay via `G_RunFrame`/`M_MoveFrame` ou `monsterinfo.scale`; pas d'integration web/renderer directe attendue pour ces macros seules.
 - Tests: non lances; modification documentaire uniquement.
 - Prochain lot recommande: classer les constantes sons/handles et les tables `chick_frames_*` / `chick_move_*`.
+
+## Session 2026-05-27 - fin de matrice TS
+
+- Lot: les 73 symboles restants, de `MZ2_CHICK_ROCKET_1` a `randomInt`.
+- Verdict: fichier termine dans la matrice TS actuelle: 386 symboles, 362 `Couvert C/H`, 24 `Category: New` valides, 0 a auditer.
+- `Couvert C/H`: constantes `SOUND_*` proprietaires des globals sons selon `game_m_chick.c.md`, tables `chick_frames_*` et moves `chick_move_*` proprietaires attendus selon la matrice C/H `game_m_chick.c.md`.
+- `Valide/New`: alias local `MZ2_CHICK_ROCKET_1`, caches runtime `sound_*`, et helpers locaux `makeFrames`, `indexedThinks`, `precacheChickAssets`, `soundOptions`, `setVec3`, `subtractVec3`, `normalizeVec3`, `randomInt`, avec entetes et matrice `Original name: N/A`, `Source declaree: N/A (<raison courte>)`, `Category: New`.
+- Preuves: symboles presents dans `packages/game/src/m_chick.ts`; source C `Quake-2-master/game/m_chick.c`; flash id original dans `Quake-2-master/game/q_shared.h`; matrice C/H `game_m_chick.c.md` en `Valide`; ownership `packages/game` conforme au module source `game`.
+- Doublons/ownership/package: aucun doublon proprietaire du meme couple `Original name` + `Source declaree` detecte dans ce fichier; les helpers locaux ne sont pas presentes comme portage proprietaire; imports inchanges.
+- Corrections: ajout d'entetes `Category: New` dans `packages/game/src/m_chick.ts`; matrice TS completee; ligne globale mise a jour.
+- Integration runtime/apps-web/renderer-three: runtime integre via `SP_monster_chick`, callbacks `monsterinfo`, moves, sons, rocket fire, precache et `walkmonster_start`; `apps/web` consomme le runtime porte; `renderer-three` consomme les entites/frames/temp entities produites, sans correction dediee attendue pour ce lot.
+- Tests: `npm run verify:m-chick:header`, `npm run verify:m-chick:source-parity`, `npm run verify:m-chick`, `npm run typecheck`, `git diff --check`.
+- Prochain lot recommande: aucun.

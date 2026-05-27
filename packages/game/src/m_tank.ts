@@ -346,6 +346,16 @@ export const FRAME_recln140 = 293;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Original name: N/A
+ * Source: N/A (local q_shared flash id alias)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Keep the tank weapon flash indexes local to the tank gameplay port while
+ *   delegating offset data lookup to `m_flash`.
+ */
 export const MZ2_TANK_BLASTER_1 = 1;
 export const MZ2_TANK_BLASTER_2 = 2;
 export const MZ2_TANK_BLASTER_3 = 3;
@@ -381,6 +391,15 @@ const SOUND_WINDUP = "tank/tnkatck4.wav";
 const SOUND_STRIKE = "tank/tnkatck5.wav";
 const SOUND_SIGHT = "tank/sight1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Store registered runtime sound indexes for the tank sound path constants.
+ */
 let sound_thud = 0;
 let sound_pain = 0;
 let sound_idle = 0;
@@ -1103,6 +1122,15 @@ export function SP_monster_tank(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame builder)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Build TS monster frame arrays from compact distance/callback lists.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -1115,6 +1143,15 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local frame callback helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Place sparse frame callbacks at their source frame indexes.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -1126,6 +1163,15 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local asset precache helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Keep the `SP_monster_tank` asset precache sequence in one TS helper.
+ */
 function precacheTankAssets(runtime: GameRuntime): void {
   sound_pain = registerGameSound(runtime, SOUND_PAIN);
   sound_thud = registerGameSound(runtime, SOUND_THUD);
@@ -1144,6 +1190,16 @@ function precacheTankAssets(runtime: GameRuntime): void {
   registerGameSound(runtime, "tank/tnkatck3.wav");
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound option helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Adapt original `gi.sound` channel, volume, attenuation and time offset
+ *   arguments to the TS runtime sound option object.
+ */
 function soundOptions(channel: number, attenuation: number = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -1153,20 +1209,57 @@ function soundOptions(channel: number, attenuation: number = ATTN_NORM): { chann
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local flash offset helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Route tank-local flash indexes to the shared monster flash offset table.
+ */
 function tankFlashOffset(flashNumber: number): vec3_t {
   return getMonsterFlashOffset(flashNumber);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Local mutable tuple assignment equivalent for entity bounds.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Return the vector difference used by tank aiming and range checks.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Purpose:
+ * - Normalize a vector for rocket direction calculations while keeping zero
+ *   vectors stable for harness/runtime safety.
+ */
 function normalizeVec3(vector: vec3_t): vec3_t {
   const length = Math.hypot(vector[0], vector[1], vector[2]);
   if (length === 0) {

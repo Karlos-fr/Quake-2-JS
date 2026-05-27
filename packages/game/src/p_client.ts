@@ -132,12 +132,34 @@ import { G_Find, G_FreeEdict, G_InitEdict, G_Spawn, KillBox } from "./g_utils.js
 import { SP_misc_teleporter_dest, ThrowGib } from "./g_misc.js";
 import type { GameClient, GameClientPersistant, GameEntity, GameRuntime } from "./runtime.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local player spawn constants)
+ * Category: New
+ */
 const PLAYER_MINS: [number, number, number] = [-16, -16, -24];
+/**
+ * Original name: N/A
+ * Source: N/A (local player spawn constants)
+ * Category: New
+ */
 const PLAYER_MAXS: [number, number, number] = [16, 16, 32];
+/**
+ * Original name: N/A
+ * Source: N/A (local player spawn constants)
+ * Category: New
+ */
 const PLAYER_VIEWHEIGHT = 22;
+/**
+ * Original name: N/A
+ * Source: N/A (local player spawn constants)
+ * Category: New
+ */
 const PLAYER_MASS = 200;
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime hook interface)
  * Category: New
  * Purpose: Hold the still-external callbacks required by the current `p_client.c` state/lifecycle port.
  *
@@ -166,6 +188,11 @@ export interface GamePlayerClientHooks extends GameWeaponHooks {
   validateConnect?: (ent: GameEntity, userinfo: string, runtime: GameRuntime) => { accepted: boolean; reason?: string; };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local coop fixup data)
+ * Category: New
+ */
 const COOP_FIXUP_MAPS = new Set([
   "jail2",
   "jail4",
@@ -185,7 +212,7 @@ const COOP_FIXUP_MAPS = new Set([
 
 /**
  * Original name: InitClientPersistant
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -216,7 +243,7 @@ export function InitClientPersistant(client: GameClient): void {
 
 /**
  * Original name: InitClientResp
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -233,7 +260,7 @@ export function InitClientResp(client: GameClient, runtime: GameRuntime): void {
 
 /**
  * Original name: SaveClientData
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -260,7 +287,7 @@ export function SaveClientData(runtime: GameRuntime): void {
 
 /**
  * Original name: FetchClientEntData
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -284,7 +311,7 @@ export function FetchClientEntData(ent: GameEntity, runtime: GameRuntime): void 
 
 /**
  * Original name: LookAtKiller
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -330,7 +357,7 @@ export function LookAtKiller(self: GameEntity, inflictor: GameEntity | null, att
 
 /**
  * Original name: IsFemale
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -341,7 +368,7 @@ export function IsFemale(ent: GameEntity): boolean {
 
 /**
  * Original name: IsNeutral
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -352,7 +379,7 @@ export function IsNeutral(ent: GameEntity): boolean {
 
 /**
  * Original name: player_pain
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -375,7 +402,7 @@ export function player_pain(
 
 /**
  * Original name: SP_FixCoopSpots
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -408,7 +435,7 @@ export function SP_FixCoopSpots(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: SP_CreateCoopSpots
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -429,7 +456,7 @@ export function SP_CreateCoopSpots(self: GameEntity, runtime: GameRuntime): void
 
 /**
  * Original name: SP_info_player_start
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -446,7 +473,7 @@ export function SP_info_player_start(self: GameEntity, runtime: GameRuntime): vo
 
 /**
  * Original name: SP_info_player_deathmatch
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -461,7 +488,7 @@ export function SP_info_player_deathmatch(self: GameEntity, runtime: GameRuntime
 
 /**
  * Original name: SP_info_player_coop
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  */
@@ -479,7 +506,7 @@ export function SP_info_player_coop(self: GameEntity, runtime: GameRuntime): voi
 
 /**
  * Original name: SP_info_player_intermission
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -490,7 +517,7 @@ export function SP_info_player_intermission(self: GameEntity, runtime: GameRunti
 
 /**
  * Original name: ClientObituary
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -710,7 +737,7 @@ export function ClientObituary(
 
 /**
  * Original name: SelectSpawnPoint
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -768,7 +795,7 @@ export function SelectSpawnPoint(ent: GameEntity, runtime: GameRuntime): { origi
 
 /**
  * Original name: PlayersRangeFromSpot
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -798,7 +825,7 @@ export function PlayersRangeFromSpot(spot: GameEntity, runtime: GameRuntime): nu
 
 /**
  * Original name: SelectRandomDeathmatchSpawnPoint
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -850,7 +877,7 @@ export function SelectRandomDeathmatchSpawnPoint(runtime: GameRuntime): GameEnti
 
 /**
  * Original name: SelectFarthestDeathmatchSpawnPoint
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -879,7 +906,7 @@ export function SelectFarthestDeathmatchSpawnPoint(runtime: GameRuntime): GameEn
 
 /**
  * Original name: SelectDeathmatchSpawnPoint
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  */
@@ -892,7 +919,7 @@ export function SelectDeathmatchSpawnPoint(runtime: GameRuntime): GameEntity | n
 
 /**
  * Original name: SelectCoopSpawnPoint
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -924,7 +951,7 @@ export function SelectCoopSpawnPoint(ent: GameEntity, runtime: GameRuntime): Gam
 
 /**
  * Original name: PutClientInServer
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1069,7 +1096,7 @@ export function PutClientInServer(
 
 /**
  * Original name: InitBodyQue
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1086,7 +1113,7 @@ export function InitBodyQue(runtime: GameRuntime): void {
 
 /**
  * Original name: body_die
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1114,11 +1141,16 @@ export function body_die(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local death animation state)
+ * Category: New
+ */
 let deathAnimationIndex = 0;
 
 /**
  * Original name: TossClientWeapon
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1177,7 +1209,7 @@ export function TossClientWeapon(self: GameEntity, runtime: GameRuntime, hooks: 
 
 /**
  * Original name: player_die
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1277,8 +1309,8 @@ export function player_die(
 
 /**
  * Original name: ThrowClientHead
- * Source: game/p_client.c via game/g_misc.c helper
- * Category: Ported
+ * Source: Quake-2-master/game/g_misc.c
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -1319,7 +1351,7 @@ export function ThrowClientHead(self: GameEntity, damage: number, runtime: GameR
 
 /**
  * Original name: CopyToBodyQue
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1365,7 +1397,7 @@ export function CopyToBodyQue(ent: GameEntity, runtime: GameRuntime, hooks: Game
 
 /**
  * Original name: respawn
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1394,7 +1426,7 @@ export function respawn(ent: GameEntity, runtime: GameRuntime, hooks: GamePlayer
 
 /**
  * Original name: spectator_respawn
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1445,7 +1477,7 @@ export function spectator_respawn(ent: GameEntity, runtime: GameRuntime, hooks: 
 
 /**
  * Original name: ClientUserinfoChanged
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1491,7 +1523,7 @@ export function ClientUserinfoChanged(
 
 /**
  * Original name: ClientConnect
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1539,7 +1571,7 @@ export function ClientConnect(
 
 /**
  * Original name: ClientDisconnect
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1576,7 +1608,7 @@ export function ClientDisconnect(
 
 /**
  * Original name: ClientBeginDeathmatch
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1607,7 +1639,7 @@ export function ClientBeginDeathmatch(
 
 /**
  * Original name: ClientBegin
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1656,7 +1688,7 @@ export function ClientBegin(
 
 /**
  * Original name: ClientThink
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1790,7 +1822,7 @@ export function ClientThink(
 
 /**
  * Original name: ClientBeginServerFrame
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1848,8 +1880,8 @@ export function ClientBeginServerFrame(
 
 /**
  * Original name: UpdateChaseCam call loop in ClientThink
- * Source: game/p_client.c
- * Category: Ported
+ * Source: Quake-2-master/game/p_client.c
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
@@ -1864,6 +1896,11 @@ export function UpdateChaseFollowers(ent: GameEntity, runtime: GameRuntime): voi
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local persistent-state helper)
+ * Category: New
+ */
 function resetPersistantState(pers: GameClientPersistant): void {
   pers.userinfo = "";
   pers.netname = "";
@@ -1889,6 +1926,11 @@ function resetPersistantState(pers: GameClientPersistant): void {
   pers.spectator = false;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound hook helper)
+ * Category: New
+ */
 function emitDeathSound(
   self: GameEntity,
   soundPath: string,
@@ -1903,6 +1945,11 @@ function emitDeathSound(
   emitGameSound(runtime, self, soundPath);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local player gib helper)
+ * Category: New
+ */
 function throwPlayerGibs(self: GameEntity, damage: number, runtime: GameRuntime): void {
   for (let index = 0; index < 4; index += 1) {
     ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
@@ -1912,8 +1959,8 @@ function throwPlayerGibs(self: GameEntity, damage: number, runtime: GameRuntime)
 
 /**
  * Original name: VelocityForDamage
- * Source: game/g_misc.c
- * Category: Ported
+ * Source: Quake-2-master/game/g_misc.c
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
@@ -1932,6 +1979,11 @@ function velocityForDamage(damage: number): [number, number, number] {
   return [velocity[0] * scale, velocity[1] * scale, velocity[2] * scale];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function addVec3(left: [number, number, number], right: [number, number, number]): [number, number, number] {
   return [
     left[0] + right[0],
@@ -1940,6 +1992,11 @@ function addVec3(left: [number, number, number], right: [number, number, number]
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local client reset helper)
+ * Category: New
+ */
 function resetClientTransientState(client: GameClient): void {
   const preservedPers = client.pers;
   const preservedResp = client.resp;
@@ -2006,6 +2063,11 @@ function resetClientTransientState(client: GameClient): void {
   client.resp = preservedResp;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local userinfo helper)
+ * Category: New
+ */
 function clampFov(fov: number, runtime: GameRuntime): number {
   if (runtime.deathmatch && (runtime.dmflags & DF_FIXED_FOV) !== 0) {
     return 90;
@@ -2019,6 +2081,11 @@ function clampFov(fov: number, runtime: GameRuntime): number {
   return fov;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local pmove bridge helper)
+ * Category: New
+ */
 function buildClientPmove(ent: GameEntity, ucmd: usercmd_t, runtime: GameRuntime): pmove_t {
   const client = ent.client!;
 
@@ -2063,7 +2130,7 @@ function buildClientPmove(ent: GameEntity, ucmd: usercmd_t, runtime: GameRuntime
 
 /**
  * Original name: PM_trace
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -2083,6 +2150,8 @@ export function PM_trace(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local pmove callback)
  * Category: New
  * Purpose: Keep the `pmove` point-contents callback explicit beside `PM_trace`.
  */
@@ -2096,7 +2165,7 @@ export function PMpointcontents(
 
 /**
  * Original name: CheckBlock
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -2114,7 +2183,7 @@ export function CheckBlock(bytes: ArrayLike<number>, count: number = bytes.lengt
 
 /**
  * Original name: PrintPmove
- * Source: game/p_client.c
+ * Source: Quake-2-master/game/p_client.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -2129,6 +2198,11 @@ export function PrintPmove(pm: pmove_t): string {
   return `sv ${pm.cmd.impulse.toString().padStart(3, " ")}:${c1} ${c2}\n`;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local pmove touch helper)
+ * Category: New
+ */
 function touchPmoveEntities(pm: pmove_t, ent: GameEntity, runtime: GameRuntime): void {
   for (let i = 0; i < pm.numtouch; i += 1) {
     const other = (pm.touchents[i] as GameEntity | null) ?? null;
@@ -2152,6 +2226,11 @@ function touchPmoveEntities(pm: pmove_t, ent: GameEntity, runtime: GameRuntime):
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local pmove serialization helper)
+ * Category: New
+ */
 function clonePmoveState(state: GameClient["ps"]["pmove"]): GameClient["ps"]["pmove"] {
   return {
     pm_type: state.pm_type,
@@ -2164,6 +2243,11 @@ function clonePmoveState(state: GameClient["ps"]["pmove"]): GameClient["ps"]["pm
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local pmove serialization helper)
+ * Category: New
+ */
 function samePmoveState(left: GameClient["old_pmove"], right: GameClient["old_pmove"]): boolean {
   return (
     left.pm_type === right.pm_type &&
@@ -2182,6 +2266,11 @@ function samePmoveState(left: GameClient["old_pmove"], right: GameClient["old_pm
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local pmove debug helper)
+ * Category: New
+ */
 function encodePackedPmoveState(state: GameClient["ps"]["pmove"]): number[] {
   return [
     state.pm_type & 0xff,
@@ -2200,6 +2289,11 @@ function encodePackedPmoveState(state: GameClient["ps"]["pmove"]): number[] {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local pmove debug helper)
+ * Category: New
+ */
 function encodePackedUsercmd(cmd: usercmd_t): number[] {
   return [
     ...encodeShort(cmd.msec),
@@ -2215,11 +2309,21 @@ function encodePackedUsercmd(cmd: usercmd_t): number[] {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local binary encoding helper)
+ * Category: New
+ */
 function encodeShort(value: number): [number, number] {
   const normalized = value & 0xffff;
   return [normalized & 0xff, (normalized >> 8) & 0xff];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local coop spawn helper)
+ * Category: New
+ */
 function spawnCoopSpot(
   origin: [number, number, number],
   targetname: string,
@@ -2235,6 +2339,11 @@ function spawnCoopSpot(
   spot.angles[YAW] = yaw;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local userinfo helper)
+ * Category: New
+ */
 function readUserinfoNumber(userinfo: string, key: string, fallback: number): number {
   const value = Info_ValueForKey(userinfo, key);
   if (!value) {
@@ -2244,6 +2353,11 @@ function readUserinfoNumber(userinfo: string, key: string, fallback: number): nu
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local string helper)
+ * Category: New
+ */
 function equalsIgnoreCase(left: string, right: string): boolean {
   return Q_stricmp(left, right) === 0;
 }

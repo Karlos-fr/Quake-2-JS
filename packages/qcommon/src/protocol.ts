@@ -1,6 +1,6 @@
 /**
  * File: protocol.ts
- * Source: Quake II original / qcommon/qcommon.h
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Purpose: Port the Quake II protocol constants shared by client and server message parsing.
  *
  * Porting policy:
@@ -17,7 +17,7 @@
 
 /**
  * Original name: BASEDIRNAME
- * Source: qcommon/qcommon.h
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -27,8 +27,8 @@
 export const BASEDIRNAME = "baseq2";
 
 /**
- * Original names: PROTOCOL_VERSION, UPDATE_BACKUP, UPDATE_MASK
- * Source: qcommon/qcommon.h
+ * Original name: PROTOCOL_VERSION, UPDATE_BACKUP, UPDATE_MASK
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -41,7 +41,7 @@ export const UPDATE_MASK = UPDATE_BACKUP - 1;
 
 /**
  * Original name: svc_ops_e
- * Source: qcommon/qcommon.h
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -74,7 +74,7 @@ export enum svc_ops_e {
 
 /**
  * Original name: clc_ops_e
- * Source: qcommon/qcommon.h
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -90,8 +90,8 @@ export enum clc_ops_e {
 }
 
 /**
- * Original names: PS_M_TYPE through PS_RDFLAGS
- * Source: qcommon/qcommon.h
+ * Original name: PS_M_TYPE through PS_RDFLAGS
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -115,8 +115,8 @@ export const PS_WEAPONFRAME = 1 << 13;
 export const PS_RDFLAGS = 1 << 14;
 
 /**
- * Original names: SND_VOLUME through DEFAULT_SOUND_PACKET_ATTENUATION
- * Source: qcommon/qcommon.h
+ * Original name: SND_VOLUME through DEFAULT_SOUND_PACKET_ATTENUATION
+ * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -131,6 +131,15 @@ export const SND_OFFSET = 1 << 4;
 export const DEFAULT_SOUND_PACKET_VOLUME = 1.0;
 export const DEFAULT_SOUND_PACKET_ATTENUATION = 1.0;
 
+/**
+ * Original name: U_ORIGIN1 through U_SOLID
+ * Source: Quake-2-master/qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the entity_state_t delta bit flags shared by qcommon message deltas and clients.
+ */
 export const U_ORIGIN1 = 1 << 0;
 export const U_ORIGIN2 = 1 << 1;
 export const U_ANGLE2 = 1 << 2;
@@ -161,7 +170,7 @@ export const U_SOLID = 1 << 27;
 
 /**
  * Original name: svc_strings
- * Source: client/cl_parse.c
+ * Source: Quake-2-master/client/cl_parse.c
  * Category: Ported
  * Fidelity level: Strict
  *

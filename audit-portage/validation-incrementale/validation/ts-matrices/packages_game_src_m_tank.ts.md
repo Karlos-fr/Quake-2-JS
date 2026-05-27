@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_tank.ts`
 - Symboles TS: 403
-- Couvert C/H: 180
-- Reste a auditer: 223
+- Couvert C/H: 362
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -189,226 +189,226 @@
 | `packages/game/src/m_tank.ts` | value | `FRAME_attak410` | oui | `FRAME_attak410` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_tank.ts` | value | `FRAME_attak411` | oui | `FRAME_attak411` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_tank.ts` | value | `FRAME_attak412` | oui | `FRAME_attak412` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak413` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak414` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak415` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak416` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak417` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak418` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak419` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak420` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak421` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak422` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak423` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak424` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak425` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak426` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak427` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak428` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak429` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain313` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain314` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain315` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_pain316` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death129` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death130` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death131` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_death132` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln129` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln130` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln131` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln132` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln133` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln134` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln135` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln136` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln137` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln138` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln139` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_recln140` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_BLASTER_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_BLASTER_2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_BLASTER_3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_4` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_5` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_6` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_7` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_8` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_9` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_ROCKET_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_ROCKET_2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_ROCKET_3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_PAIN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_THUD` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_IDLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_DIE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_STEP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_WINDUP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_STRIKE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_thud` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_pain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_idle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_die` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_step` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_windup` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `sound_strike` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_sight` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_footstep` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_thud` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_windup` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_idle` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_start_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_start_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_stop_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_stop_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_start_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_start_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_stop_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_stop_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_pain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `TankBlaster` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `TankStrike` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `TankRocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `TankMachineGun` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_blast` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_attack_blast` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_reattack_blast` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_reattack_blast` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_post_blast` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_attack_post_blast` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_reattack_blaster` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_poststrike` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_strike` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_attack_strike` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_pre_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_attack_pre_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_fire_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_attack_fire_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_post_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_attack_post_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_chain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_attack_chain` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_refire_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_doattack_rocket` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_dead` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_frames_death1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `tank_move_death` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tank_die` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `SP_monster_tank` | oui | `SP_monster_tank` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_tank.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `precacheTankAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `soundOptions` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `tankFlashOffset` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | function | `normalizeVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak413` | oui | `FRAME_attak413` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak414` | oui | `FRAME_attak414` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak415` | oui | `FRAME_attak415` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak416` | oui | `FRAME_attak416` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak417` | oui | `FRAME_attak417` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak418` | oui | `FRAME_attak418` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak419` | oui | `FRAME_attak419` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak420` | oui | `FRAME_attak420` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak421` | oui | `FRAME_attak421` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak422` | oui | `FRAME_attak422` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak423` | oui | `FRAME_attak423` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak424` | oui | `FRAME_attak424` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak425` | oui | `FRAME_attak425` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak426` | oui | `FRAME_attak426` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak427` | oui | `FRAME_attak427` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak428` | oui | `FRAME_attak428` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak429` | oui | `FRAME_attak429` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain201` | oui | `FRAME_pain201` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain202` | oui | `FRAME_pain202` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain203` | oui | `FRAME_pain203` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain204` | oui | `FRAME_pain204` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain205` | oui | `FRAME_pain205` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain301` | oui | `FRAME_pain301` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain302` | oui | `FRAME_pain302` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain303` | oui | `FRAME_pain303` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain304` | oui | `FRAME_pain304` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain305` | oui | `FRAME_pain305` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain306` | oui | `FRAME_pain306` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain307` | oui | `FRAME_pain307` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain308` | oui | `FRAME_pain308` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain309` | oui | `FRAME_pain309` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain310` | oui | `FRAME_pain310` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain311` | oui | `FRAME_pain311` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain312` | oui | `FRAME_pain312` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain313` | oui | `FRAME_pain313` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain314` | oui | `FRAME_pain314` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain315` | oui | `FRAME_pain315` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_pain316` | oui | `FRAME_pain316` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death101` | oui | `FRAME_death101` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death102` | oui | `FRAME_death102` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death103` | oui | `FRAME_death103` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death104` | oui | `FRAME_death104` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death105` | oui | `FRAME_death105` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death106` | oui | `FRAME_death106` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death107` | oui | `FRAME_death107` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death108` | oui | `FRAME_death108` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death109` | oui | `FRAME_death109` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death110` | oui | `FRAME_death110` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death111` | oui | `FRAME_death111` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death112` | oui | `FRAME_death112` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death113` | oui | `FRAME_death113` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death114` | oui | `FRAME_death114` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death115` | oui | `FRAME_death115` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death116` | oui | `FRAME_death116` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death117` | oui | `FRAME_death117` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death118` | oui | `FRAME_death118` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death119` | oui | `FRAME_death119` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death120` | oui | `FRAME_death120` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death121` | oui | `FRAME_death121` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death122` | oui | `FRAME_death122` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death123` | oui | `FRAME_death123` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death124` | oui | `FRAME_death124` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death125` | oui | `FRAME_death125` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death126` | oui | `FRAME_death126` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death127` | oui | `FRAME_death127` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death128` | oui | `FRAME_death128` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death129` | oui | `FRAME_death129` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death130` | oui | `FRAME_death130` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death131` | oui | `FRAME_death131` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_death132` | oui | `FRAME_death132` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln101` | oui | `FRAME_recln101` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln102` | oui | `FRAME_recln102` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln103` | oui | `FRAME_recln103` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln104` | oui | `FRAME_recln104` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln105` | oui | `FRAME_recln105` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln106` | oui | `FRAME_recln106` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln107` | oui | `FRAME_recln107` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln108` | oui | `FRAME_recln108` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln109` | oui | `FRAME_recln109` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln110` | oui | `FRAME_recln110` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln111` | oui | `FRAME_recln111` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln112` | oui | `FRAME_recln112` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln113` | oui | `FRAME_recln113` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln114` | oui | `FRAME_recln114` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln115` | oui | `FRAME_recln115` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln116` | oui | `FRAME_recln116` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln117` | oui | `FRAME_recln117` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln118` | oui | `FRAME_recln118` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln119` | oui | `FRAME_recln119` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln120` | oui | `FRAME_recln120` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln121` | oui | `FRAME_recln121` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln122` | oui | `FRAME_recln122` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln123` | oui | `FRAME_recln123` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln124` | oui | `FRAME_recln124` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln125` | oui | `FRAME_recln125` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln126` | oui | `FRAME_recln126` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln127` | oui | `FRAME_recln127` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln128` | oui | `FRAME_recln128` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln129` | oui | `FRAME_recln129` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln130` | oui | `FRAME_recln130` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln131` | oui | `FRAME_recln131` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln132` | oui | `FRAME_recln132` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln133` | oui | `FRAME_recln133` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln134` | oui | `FRAME_recln134` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln135` | oui | `FRAME_recln135` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln136` | oui | `FRAME_recln136` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln137` | oui | `FRAME_recln137` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln138` | oui | `FRAME_recln138` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln139` | oui | `FRAME_recln139` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_recln140` | oui | `FRAME_recln140` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_BLASTER_1` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_BLASTER_2` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_BLASTER_3` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_1` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_2` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_3` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_4` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_5` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_6` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_7` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_8` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_9` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_10` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_11` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_12` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_13` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_14` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_15` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_16` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_17` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_18` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_MACHINEGUN_19` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_ROCKET_1` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_ROCKET_2` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `MZ2_TANK_ROCKET_3` | oui | `N/A` | `N/A (local q_shared flash id alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_PAIN` | non | `sound_pain` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_THUD` | non | `sound_thud` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_IDLE` | non | `sound_idle` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_DIE` | non | `sound_die` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_STEP` | non | `sound_step` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_WINDUP` | non | `sound_windup` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_STRIKE` | non | `sound_strike` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `sound_thud` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `sound_pain` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `sound_idle` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `sound_die` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `sound_step` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `sound_sight` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `sound_windup` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | value | `sound_strike` | non | `N/A` | `N/A (runtime sound handle cache)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `tank_sight` | oui | `tank_sight` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_footstep` | oui | `tank_footstep` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_thud` | oui | `tank_thud` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_windup` | oui | `tank_windup` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_idle` | oui | `tank_idle` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_stand` | oui | `tank_frames_stand` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_stand` | oui | `tank_move_stand` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_stand` | oui | `tank_stand` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_start_walk` | oui | `tank_frames_start_walk` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_start_walk` | oui | `tank_move_start_walk` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_walk` | oui | `tank_frames_walk` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_walk` | oui | `tank_move_walk` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_stop_walk` | oui | `tank_frames_stop_walk` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_stop_walk` | oui | `tank_move_stop_walk` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_walk` | oui | `tank_walk` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_start_run` | oui | `tank_frames_start_run` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_start_run` | oui | `tank_move_start_run` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_run` | oui | `tank_frames_run` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_run` | oui | `tank_move_run` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_stop_run` | oui | `tank_frames_stop_run` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_stop_run` | oui | `tank_move_stop_run` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_run` | oui | `tank_run` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_pain1` | oui | `tank_frames_pain1` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_pain1` | oui | `tank_move_pain1` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_pain2` | oui | `tank_frames_pain2` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_pain2` | oui | `tank_move_pain2` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_pain3` | oui | `tank_frames_pain3` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_pain3` | oui | `tank_move_pain3` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_pain` | oui | `tank_pain` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `TankBlaster` | oui | `TankBlaster` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `TankStrike` | oui | `TankStrike` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `TankRocket` | oui | `TankRocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `TankMachineGun` | oui | `TankMachineGun` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_blast` | oui | `tank_frames_attack_blast` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_attack_blast` | oui | `tank_move_attack_blast` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_reattack_blast` | oui | `tank_frames_reattack_blast` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_reattack_blast` | oui | `tank_move_reattack_blast` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_post_blast` | oui | `tank_frames_attack_post_blast` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_attack_post_blast` | oui | `tank_move_attack_post_blast` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_reattack_blaster` | oui | `tank_reattack_blaster` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_poststrike` | oui | `tank_poststrike` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_strike` | oui | `tank_frames_attack_strike` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_attack_strike` | oui | `tank_move_attack_strike` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_pre_rocket` | oui | `tank_frames_attack_pre_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_attack_pre_rocket` | oui | `tank_move_attack_pre_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_fire_rocket` | oui | `tank_frames_attack_fire_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_attack_fire_rocket` | oui | `tank_move_attack_fire_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_post_rocket` | oui | `tank_frames_attack_post_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_attack_post_rocket` | oui | `tank_move_attack_post_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_attack_chain` | oui | `tank_frames_attack_chain` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_attack_chain` | oui | `tank_move_attack_chain` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_refire_rocket` | oui | `tank_refire_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_doattack_rocket` | oui | `tank_doattack_rocket` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_attack` | oui | `tank_attack` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_dead` | oui | `tank_dead` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_frames_death1` | oui | `tank_frames_death1` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `tank_move_death` | oui | `tank_move_death` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `tank_die` | oui | `tank_die` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `SP_monster_tank` | oui | `SP_monster_tank` | `Quake-2-master/game/m_tank.c` | Ported | [`game_m_tank.c.md`](../matrices/game_m_tank.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | function | `makeFrames` | non | `N/A` | `N/A (local monster frame builder)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local frame callback helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `precacheTankAssets` | non | `N/A` | `N/A (local asset precache helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `soundOptions` | non | `N/A` | `N/A (local sound option helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `tankFlashOffset` | non | `N/A` | `N/A (local flash offset helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_tank.ts` | function | `normalizeVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |

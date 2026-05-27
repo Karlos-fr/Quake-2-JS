@@ -4,281 +4,281 @@
 
 - Fichier TS: `packages/game/src/m_hover.ts`
 - Symboles TS: 273
-- Couvert C/H: 0
-- Reste a auditer: 273
+- Couvert C/H: 259
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_stop208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_takeof30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_land01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_pain309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_death111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_backwd24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `MZ2_HOVER_BLASTER_1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_DEATH1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_DEATH2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_SEARCH1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_SEARCH2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_ATTACK` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `SOUND_IDLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `sound_death1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `sound_death2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `sound_search1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `sound_search2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | function | `hover_sight` | oui | `hover_sight` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_search` | oui | `hover_search` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_stand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_stop1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_stop1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_stop2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_stop2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_takeoff` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_takeoff` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_pain3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_land` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_land` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_forward` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_forward` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_death1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_death1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_backward` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_backward` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_start_attack` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_start_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_attack1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_frames_end_attack` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | value | `hover_move_end_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | function | `hover_reattack` | oui | `hover_reattack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_fire_blaster` | oui | `hover_fire_blaster` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_stand` | oui | `hover_stand` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_run` | oui | `hover_run` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_walk` | oui | `hover_walk` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_start_attack` | oui | `hover_start_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_attack` | oui | `hover_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_pain` | oui | `hover_pain` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_deadthink` | oui | `hover_deadthink` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_dead` | oui | `hover_dead` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `hover_die` | oui | `hover_die` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `SP_monster_hover` | oui | `SP_monster_hover` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_hover.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | function | `precacheHoverAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_hover.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand01` | oui | `FRAME_stand01` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand02` | oui | `FRAME_stand02` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand03` | oui | `FRAME_stand03` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand04` | oui | `FRAME_stand04` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand05` | oui | `FRAME_stand05` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand06` | oui | `FRAME_stand06` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand07` | oui | `FRAME_stand07` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand08` | oui | `FRAME_stand08` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand09` | oui | `FRAME_stand09` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd01` | oui | `FRAME_forwrd01` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd02` | oui | `FRAME_forwrd02` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd03` | oui | `FRAME_forwrd03` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd04` | oui | `FRAME_forwrd04` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd05` | oui | `FRAME_forwrd05` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd06` | oui | `FRAME_forwrd06` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd07` | oui | `FRAME_forwrd07` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd08` | oui | `FRAME_forwrd08` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd09` | oui | `FRAME_forwrd09` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd10` | oui | `FRAME_forwrd10` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd11` | oui | `FRAME_forwrd11` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd12` | oui | `FRAME_forwrd12` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd13` | oui | `FRAME_forwrd13` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd14` | oui | `FRAME_forwrd14` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd15` | oui | `FRAME_forwrd15` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd16` | oui | `FRAME_forwrd16` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd17` | oui | `FRAME_forwrd17` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd18` | oui | `FRAME_forwrd18` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd19` | oui | `FRAME_forwrd19` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd20` | oui | `FRAME_forwrd20` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd21` | oui | `FRAME_forwrd21` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd22` | oui | `FRAME_forwrd22` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd23` | oui | `FRAME_forwrd23` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd24` | oui | `FRAME_forwrd24` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd25` | oui | `FRAME_forwrd25` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd26` | oui | `FRAME_forwrd26` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd27` | oui | `FRAME_forwrd27` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd28` | oui | `FRAME_forwrd28` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd29` | oui | `FRAME_forwrd29` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd30` | oui | `FRAME_forwrd30` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd31` | oui | `FRAME_forwrd31` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd32` | oui | `FRAME_forwrd32` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd33` | oui | `FRAME_forwrd33` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd34` | oui | `FRAME_forwrd34` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_forwrd35` | oui | `FRAME_forwrd35` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop101` | oui | `FRAME_stop101` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop102` | oui | `FRAME_stop102` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop103` | oui | `FRAME_stop103` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop104` | oui | `FRAME_stop104` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop105` | oui | `FRAME_stop105` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop106` | oui | `FRAME_stop106` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop107` | oui | `FRAME_stop107` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop108` | oui | `FRAME_stop108` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop109` | oui | `FRAME_stop109` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop201` | oui | `FRAME_stop201` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop202` | oui | `FRAME_stop202` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop203` | oui | `FRAME_stop203` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop204` | oui | `FRAME_stop204` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop205` | oui | `FRAME_stop205` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop206` | oui | `FRAME_stop206` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop207` | oui | `FRAME_stop207` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_stop208` | oui | `FRAME_stop208` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof01` | oui | `FRAME_takeof01` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof02` | oui | `FRAME_takeof02` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof03` | oui | `FRAME_takeof03` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof04` | oui | `FRAME_takeof04` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof05` | oui | `FRAME_takeof05` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof06` | oui | `FRAME_takeof06` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof07` | oui | `FRAME_takeof07` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof08` | oui | `FRAME_takeof08` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof09` | oui | `FRAME_takeof09` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof10` | oui | `FRAME_takeof10` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof11` | oui | `FRAME_takeof11` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof12` | oui | `FRAME_takeof12` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof13` | oui | `FRAME_takeof13` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof14` | oui | `FRAME_takeof14` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof15` | oui | `FRAME_takeof15` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof16` | oui | `FRAME_takeof16` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof17` | oui | `FRAME_takeof17` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof18` | oui | `FRAME_takeof18` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof19` | oui | `FRAME_takeof19` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof20` | oui | `FRAME_takeof20` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof21` | oui | `FRAME_takeof21` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof22` | oui | `FRAME_takeof22` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof23` | oui | `FRAME_takeof23` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof24` | oui | `FRAME_takeof24` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof25` | oui | `FRAME_takeof25` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof26` | oui | `FRAME_takeof26` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof27` | oui | `FRAME_takeof27` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof28` | oui | `FRAME_takeof28` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof29` | oui | `FRAME_takeof29` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_takeof30` | oui | `FRAME_takeof30` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_land01` | oui | `FRAME_land01` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain105` | oui | `FRAME_pain105` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain106` | oui | `FRAME_pain106` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain107` | oui | `FRAME_pain107` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain108` | oui | `FRAME_pain108` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain109` | oui | `FRAME_pain109` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain110` | oui | `FRAME_pain110` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain111` | oui | `FRAME_pain111` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain112` | oui | `FRAME_pain112` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain113` | oui | `FRAME_pain113` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain114` | oui | `FRAME_pain114` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain115` | oui | `FRAME_pain115` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain116` | oui | `FRAME_pain116` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain117` | oui | `FRAME_pain117` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain118` | oui | `FRAME_pain118` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain119` | oui | `FRAME_pain119` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain120` | oui | `FRAME_pain120` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain121` | oui | `FRAME_pain121` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain122` | oui | `FRAME_pain122` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain123` | oui | `FRAME_pain123` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain124` | oui | `FRAME_pain124` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain125` | oui | `FRAME_pain125` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain126` | oui | `FRAME_pain126` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain127` | oui | `FRAME_pain127` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain128` | oui | `FRAME_pain128` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain201` | oui | `FRAME_pain201` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain202` | oui | `FRAME_pain202` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain203` | oui | `FRAME_pain203` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain204` | oui | `FRAME_pain204` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain205` | oui | `FRAME_pain205` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain206` | oui | `FRAME_pain206` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain207` | oui | `FRAME_pain207` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain208` | oui | `FRAME_pain208` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain209` | oui | `FRAME_pain209` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain210` | oui | `FRAME_pain210` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain211` | oui | `FRAME_pain211` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain212` | oui | `FRAME_pain212` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain301` | oui | `FRAME_pain301` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain302` | oui | `FRAME_pain302` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain303` | oui | `FRAME_pain303` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain304` | oui | `FRAME_pain304` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain305` | oui | `FRAME_pain305` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain306` | oui | `FRAME_pain306` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain307` | oui | `FRAME_pain307` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain308` | oui | `FRAME_pain308` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_pain309` | oui | `FRAME_pain309` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death101` | oui | `FRAME_death101` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death102` | oui | `FRAME_death102` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death103` | oui | `FRAME_death103` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death104` | oui | `FRAME_death104` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death105` | oui | `FRAME_death105` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death106` | oui | `FRAME_death106` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death107` | oui | `FRAME_death107` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death108` | oui | `FRAME_death108` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death109` | oui | `FRAME_death109` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death110` | oui | `FRAME_death110` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_death111` | oui | `FRAME_death111` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd01` | oui | `FRAME_backwd01` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd02` | oui | `FRAME_backwd02` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd03` | oui | `FRAME_backwd03` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd04` | oui | `FRAME_backwd04` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd05` | oui | `FRAME_backwd05` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd06` | oui | `FRAME_backwd06` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd07` | oui | `FRAME_backwd07` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd08` | oui | `FRAME_backwd08` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd09` | oui | `FRAME_backwd09` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd10` | oui | `FRAME_backwd10` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd11` | oui | `FRAME_backwd11` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd12` | oui | `FRAME_backwd12` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd13` | oui | `FRAME_backwd13` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd14` | oui | `FRAME_backwd14` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd15` | oui | `FRAME_backwd15` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd16` | oui | `FRAME_backwd16` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd17` | oui | `FRAME_backwd17` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd18` | oui | `FRAME_backwd18` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd19` | oui | `FRAME_backwd19` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd20` | oui | `FRAME_backwd20` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd21` | oui | `FRAME_backwd21` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd22` | oui | `FRAME_backwd22` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd23` | oui | `FRAME_backwd23` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_backwd24` | oui | `FRAME_backwd24` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_hover.h` | Ported | [`game_m_hover.h.md`](../matrices/game_m_hover.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `MZ2_HOVER_BLASTER_1` | non | `N/A` | `N/A (local muzzle flash alias)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_DEATH1` | non | `sound_death1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_DEATH2` | non | `sound_death2` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_SEARCH1` | non | `sound_search1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_SEARCH2` | non | `sound_search2` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_ATTACK` | non | `N/A` | `N/A (local asset path constant)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `SOUND_IDLE` | non | `N/A` | `N/A (local asset path constant)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `sound_death1` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `sound_death2` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `sound_sight` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `sound_search1` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | value | `sound_search2` | non | `N/A` | `N/A (runtime sound cache handle)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | function | `hover_sight` | oui | `hover_sight` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_search` | oui | `hover_search` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_stand` | non | `hover_frames_stand` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_stand` | oui | `hover_move_stand` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_stop1` | non | `hover_frames_stop1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_stop1` | oui | `hover_move_stop1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_stop2` | non | `hover_frames_stop2` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_stop2` | oui | `hover_move_stop2` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_takeoff` | non | `hover_frames_takeoff` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_takeoff` | oui | `hover_move_takeoff` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_pain3` | non | `hover_frames_pain3` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_pain3` | oui | `hover_move_pain3` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_pain2` | non | `hover_frames_pain2` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_pain2` | oui | `hover_move_pain2` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_pain1` | non | `hover_frames_pain1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_pain1` | oui | `hover_move_pain1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_land` | non | `hover_frames_land` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_land` | oui | `hover_move_land` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_forward` | non | `hover_frames_forward` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_forward` | oui | `hover_move_forward` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_walk` | non | `hover_frames_walk` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_walk` | oui | `hover_move_walk` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_run` | non | `hover_frames_run` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_run` | oui | `hover_move_run` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_death1` | non | `hover_frames_death1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_death1` | oui | `hover_move_death1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_backward` | non | `hover_frames_backward` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_backward` | oui | `hover_move_backward` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_start_attack` | non | `hover_frames_start_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_start_attack` | oui | `hover_move_start_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_attack1` | non | `hover_frames_attack1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_attack1` | oui | `hover_move_attack1` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_frames_end_attack` | non | `hover_frames_end_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | value | `hover_move_end_attack` | oui | `hover_move_end_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_reattack` | oui | `hover_reattack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_fire_blaster` | oui | `hover_fire_blaster` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_stand` | oui | `hover_stand` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_run` | oui | `hover_run` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_walk` | oui | `hover_walk` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_start_attack` | oui | `hover_start_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_attack` | oui | `hover_attack` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_pain` | oui | `hover_pain` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_deadthink` | oui | `hover_deadthink` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_dead` | oui | `hover_dead` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `hover_die` | oui | `hover_die` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `SP_monster_hover` | oui | `SP_monster_hover` | `Quake-2-master/game/m_hover.c` | Ported | [`game_m_hover.c.md`](../matrices/game_m_hover.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_hover.ts` | function | `makeFrames` | non | `N/A` | `N/A (local frame table helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | function | `precacheHoverAssets` | non | `N/A` | `N/A (local precache helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
+| `packages/game/src/m_hover.ts` | function | `subtractVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Valide | Valide |  |
