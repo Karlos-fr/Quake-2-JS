@@ -274,6 +274,9 @@ export const FRAME_stand60 = 221;
 
 export const MODEL_SCALE = 1.0;
 
+// Original name: N/A
+// Source: N/A (named local constant for C magic spawnflag)
+// Category: New
 const BRAIN_TENTACLE_REATTACK = 65536;
 
 const SOUND_CHEST_OPEN = "brain/brnatck1.wav";
@@ -291,6 +294,9 @@ const SOUND_MELEE1 = "brain/melee1.wav";
 const SOUND_MELEE2 = "brain/melee2.wav";
 const SOUND_MELEE3 = "brain/melee3.wav";
 
+// Original name: N/A
+// Source: N/A (runtime sound handles)
+// Category: New
 let sound_chest_open = 0;
 let sound_tentacles_extend = 0;
 let sound_tentacles_retract = 0;
@@ -851,6 +857,11 @@ export function SP_monster_brain(self: GameEntity, runtime: GameRuntime): void {
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame helper)
+ * Category: New
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -863,6 +874,11 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame helper)
+ * Category: New
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -874,6 +890,11 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime asset registration helper)
+ * Category: New
+ */
 function precacheBrainAssets(runtime: GameRuntime): void {
   sound_chest_open = registerGameSound(runtime, SOUND_CHEST_OPEN);
   sound_tentacles_extend = registerGameSound(runtime, SOUND_TENTACLES_EXTEND);
@@ -894,6 +915,11 @@ function precacheBrainAssets(runtime: GameRuntime): void {
   void sound_idle2;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local sound options helper)
+ * Category: New
+ */
 function soundOptions(channel: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
   return {
     channel,
@@ -903,12 +929,22 @@ function soundOptions(channel: number): { channel: number; volume: number; atten
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local random integer helper)
+ * Category: New
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

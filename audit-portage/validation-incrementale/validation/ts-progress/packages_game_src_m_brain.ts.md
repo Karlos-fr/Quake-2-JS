@@ -1,8 +1,9 @@
 # Progress TS - packages/game/src/m_brain.ts
 
-- Statut: En cours
-- Dernier lot valide: `FRAME_pain201` a `FRAME_defens08` (53 constantes de frames).
-- Prochain lot recommande: poursuivre avec `FRAME_stand01` a `FRAME_stand60`.
+- Statut: Termine
+- Dernier lot valide: lot elargi final `MODEL_SCALE` a `randomInt` (84 symboles restants).
+- Prochain lot recommande: aucun dans la matrice TS actuelle; les lignes restantes sont deja classees `Valide` hors C/H par validations anterieures.
+
 
 ## Preuves de session
 
@@ -30,6 +31,9 @@
 - Lot `FRAME_pain201` a `FRAME_defens08`: valeurs TS comparees aux macros `Quake-2-master/game/m_brain.h` (`109` a `161`) pour les familles `pain201-208`, `pain301-306`, `death101-118`, `death201-205`, `duck01-08`, `defens01-08`.
 - Matrice C/H `game_m_brain.h.md`: lignes `FRAME_pain201` a `FRAME_defens08` deja `Valide`, proprietaire `packages/game/src/m_brain.ts`.
 - Recherche doublons: `rg "FRAME_pain20[1-8]|FRAME_pain30[1-6]|FRAME_death10[1-9]|FRAME_death11[0-8]|FRAME_death20[1-5]|FRAME_duck0[1-8]|FRAME_defens0[1-8]" packages audit-portage/validation-incrementale/validation/ts-matrices -g "*.ts" -g "*.md"`.
+- Lot `FRAME_stand01` a `FRAME_stand60`: valeurs TS comparees aux macros `Quake-2-master/game/m_brain.h` (`162` a `221`).
+- Matrice C/H `game_m_brain.h.md`: lignes `FRAME_stand01` a `FRAME_stand60` deja `Valide`, proprietaire `packages/game/src/m_brain.ts`.
+- Recherche doublons: `rg "FRAME_stand0[1-9]|FRAME_stand[1-5][0-9]|FRAME_stand60|Original name: FRAME_stand" packages audit-portage/validation-incrementale/validation/ts-matrices -g "*.ts" -g "*.md"`.
 ## Decisions
 
 - `FRAME_walk101` a `FRAME_walk113` sont les proprietaires TS attendus des macros homonymes de `Quake-2-master/game/m_brain.h`, deja marquees `Valide` dans la matrice C/H `game_m_brain.h.md`.
@@ -48,6 +52,8 @@
 - Les homonymes releves dans d'autres monstres (`m_actor`, `m_boss31`, `m_boss32`, `m_chick`, `m_float`, `m_flyer`, `m_gunner`, `m_hover`, `m_infantry`, `m_parasite`, `m_mutant`, `m_player`, `m_soldier`, `m_tank`) relevent de leurs propres headers/monstres; pas de doublon meme `Original name` + meme `Source declaree` pour ce lot `m_brain`.
 - `FRAME_pain201` a `FRAME_defens08` sont les proprietaires TS attendus des macros homonymes de `Quake-2-master/game/m_brain.h`, deja marquees `Valide` dans la matrice C/H `game_m_brain.h.md`.
 - Les homonymes releves dans d'autres monstres (`m_actor`, `m_boss31`, `m_boss32`, `m_chick`, `m_float`, `m_flyer`, `m_gunner`, `m_hover`, `m_infantry`, `m_mutant`, `m_parasite`, `m_player`, `m_soldier`, `m_tank`) relevent de leurs propres headers/monstres; pas de doublon meme `Original name` + meme `Source declaree` pour ce lot `m_brain`.
+- `FRAME_stand01` a `FRAME_stand60` sont les proprietaires TS attendus des macros homonymes de `Quake-2-master/game/m_brain.h`, deja marquees `Valide` dans la matrice C/H `game_m_brain.h.md`.
+- Les homonymes releves dans d'autres monstres (`m_actor`, `m_boss2`, `m_boss31`, `m_boss32`, `m_mutant`, `m_soldier`) relevent de leurs propres headers/monstres; pas de doublon meme `Original name` + meme `Source declaree` pour ce lot `m_brain`.
 ## Tests
 
 - Non lances: aucune correction de code ni d'import; mise a jour documentaire TS uniquement.
@@ -55,3 +61,13 @@
 ## Blocages
 
 - Aucun.
+
+## Session 2026-05-27 - lot elargi final
+
+- Lot: `MODEL_SCALE`, `BRAIN_TENTACLE_REATTACK`, constantes `SOUND_*`, handles `sound_*`, fonctions/moves/tables `brain_*`, `SP_monster_brain`, et helpers locaux `makeFrames`, `indexedThinks`, `precacheBrainAssets`, `soundOptions`, `setVec3`, `randomInt`.
+- Verdicts: `Couvert C/H` pour `MODEL_SCALE`, les constantes `SOUND_*`, les fonctions/moves/tables `brain_*` et `SP_monster_brain`; `Valide` / `Hors C/H` pour les 21 entites `Category: New`.
+- Preuves: matrices C/H `game_m_brain.h.md` et `game_m_brain.c.md` lues; entites C/H marquees `Valide` avec proprietaire attendu `packages/game/src/m_brain.ts`; conventions de sons croisees avec `m_berserk` (`SOUND_*` proprietaires des globals C `sound_*`, handles `sound_*` TS en `New`); ownership package `packages/game` conforme au module source `game`; aucun champ `Original name` ou `Source declaree` laisse vide pour les entites `New`.
+- Corrections: commentaires d'entete ajoutes dans `packages/game/src/m_brain.ts` pour `BRAIN_TENTACLE_REATTACK`, le groupe des handles runtime `sound_*`, et les helpers locaux `makeFrames`, `indexedThinks`, `precacheBrainAssets`, `soundOptions`, `setVec3`, `randomInt`; matrice TS mise a jour a 306 symboles, 285 `Couvert C/H`, 0 `A verifier`.
+- Integration runtime/apps-web/renderer-three: runtime integre via callbacks `monsterinfo`, moves `GameMonsterMove`, precache/register sound/model et `walkmonster_start` depuis `SP_monster_brain`; `apps/web` consomme le runtime porte sans logique parallele attendue pour ce monstre; `renderer-three` consomme les entites/modeles/frames produits par le runtime, aucune integration renderer specifique supplementaire n'est attendue pour ce lot.
+- Tests: `npm run verify:m-brain:header`, `npm run verify:m-brain:source-parity`, `npm run typecheck`, `npm run verify:m-brain`.
+- Prochain lot recommande: aucun dans la matrice TS actuelle; les lignes restantes sont deja classees `Valide` hors C/H par validations anterieures.

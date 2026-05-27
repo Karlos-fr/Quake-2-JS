@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_flipper.ts`
 - Symboles TS: 214
-- Couvert C/H: 160
-- Reste a auditer: 54
+- Couvert C/H: 201
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -169,57 +169,57 @@
 | `packages/game/src/m_flipper.ts` | value | `FRAME_flpdth54` | oui | `FRAME_flpdth54` | `Quake-2-master/game/m_flipper.h` | Ported | [`game_m_flipper.h.md`](../matrices/game_m_flipper.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_flipper.ts` | value | `FRAME_flpdth55` | oui | `FRAME_flpdth55` | `Quake-2-master/game/m_flipper.h` | Ported | [`game_m_flipper.h.md`](../matrices/game_m_flipper.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_flipper.ts` | value | `FRAME_flpdth56` | oui | `FRAME_flpdth56` | `Quake-2-master/game/m_flipper.h` | Ported | [`game_m_flipper.h.md`](../matrices/game_m_flipper.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_flipper.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `FLIPPER_RUN_SPEED` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_DEATH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_CHOMP` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_ATTACK` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_IDLE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_SEARCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_chomp` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_attack` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_idle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_search` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_stand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_stand` | oui | `flipper_stand` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_run_loop` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_run_loop` | oui | `flipper_run_loop` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_run_start` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_run_start` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_run` | oui | `flipper_run` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_walk` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_walk` | oui | `flipper_walk` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_start_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_start_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_start_run` | oui | `flipper_start_run` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_bite` | oui | `flipper_bite` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_preattack` | oui | `flipper_preattack` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_attack` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_melee` | oui | `flipper_melee` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_pain` | oui | `flipper_pain` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_dead` | oui | `flipper_dead` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_frames_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | value | `flipper_move_death` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_sight` | oui | `flipper_sight` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | function | `flipper_die` | oui | `flipper_die` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | function | `SP_monster_flipper` | oui | `SP_monster_flipper` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_flipper.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `precacheFlipperAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_flipper.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_flipper.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_flipper.h` | Ported | [`game_m_flipper.h.md`](../matrices/game_m_flipper.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `FLIPPER_RUN_SPEED` | non | `FLIPPER_RUN_SPEED` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_DEATH` | non | `sound_death` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_CHOMP` | non | `sound_chomp` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_ATTACK` | non | `sound_attack` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_IDLE` | non | `sound_idle` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_SEARCH` | non | `sound_search` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_chomp` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_attack` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_pain1` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_pain2` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_death` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_idle` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_search` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `sound_sight` | non | `N/A` | N/A (runtime sound handle cache) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_stand` | non | `flipper_frames_stand` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_stand` | oui | `flipper_move_stand` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_stand` | oui | `flipper_stand` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_run` | non | `flipper_frames_run` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_run_loop` | oui | `flipper_move_run_loop` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_run_loop` | oui | `flipper_run_loop` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_run_start` | non | `flipper_frames_run_start` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_run_start` | oui | `flipper_move_run_start` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_run` | oui | `flipper_run` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_walk` | non | `flipper_frames_walk` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_walk` | oui | `flipper_move_walk` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_walk` | oui | `flipper_walk` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_start_run` | non | `flipper_frames_start_run` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_start_run` | oui | `flipper_move_start_run` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_start_run` | oui | `flipper_start_run` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_pain2` | non | `flipper_frames_pain2` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_pain2` | oui | `flipper_move_pain2` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_pain1` | non | `flipper_frames_pain1` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_pain1` | oui | `flipper_move_pain1` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_bite` | oui | `flipper_bite` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_preattack` | oui | `flipper_preattack` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_attack` | non | `flipper_frames_attack` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_attack` | oui | `flipper_move_attack` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_melee` | oui | `flipper_melee` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_pain` | oui | `flipper_pain` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_dead` | oui | `flipper_dead` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_frames_death` | non | `flipper_frames_death` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | value | `flipper_move_death` | oui | `flipper_move_death` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_sight` | oui | `flipper_sight` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `flipper_die` | oui | `flipper_die` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `SP_monster_flipper` | oui | `SP_monster_flipper` | `Quake-2-master/game/m_flipper.c` | Ported | [`game_m_flipper.c.md`](../matrices/game_m_flipper.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flipper.ts` | function | `makeFrames` | non | `N/A` | N/A (local helper) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | function | `indexedThinks` | non | `N/A` | N/A (local helper) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | function | `precacheFlipperAssets` | non | `N/A` | N/A (local helper) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | function | `setVec3` | non | `N/A` | N/A (local helper) | New |  | Valide | Valide |  |
+| `packages/game/src/m_flipper.ts` | function | `randomInt` | non | `N/A` | N/A (local helper) | New |  | Valide | Valide |  |

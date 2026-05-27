@@ -4,211 +4,211 @@
 
 - Fichier TS: `packages/game/src/m_soldier.ts`
 - Symboles TS: 610
-- Couvert C/H: 0
-- Reste a auditer: 610
+- Couvert C/H: 200
+- Reste a auditer: 410
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak218` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak401` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak402` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak403` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak404` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak405` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_attak406` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_duck01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_duck02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_duck03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_duck04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_duck05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain313` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain314` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain315` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain316` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain317` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain318` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain401` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain402` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain403` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain404` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain405` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain406` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain407` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain408` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain409` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain410` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain411` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain412` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain413` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain414` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain415` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain416` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_pain417` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_run12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runs18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_runt19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand129` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand130` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand313` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand314` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand315` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand316` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand317` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand318` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand319` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand320` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand321` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand322` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand323` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_soldier.ts` | value | `FRAME_stand324` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak109` | oui | `FRAME_attak109` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak110` | oui | `FRAME_attak110` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak111` | oui | `FRAME_attak111` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak112` | oui | `FRAME_attak112` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak201` | oui | `FRAME_attak201` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak202` | oui | `FRAME_attak202` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak203` | oui | `FRAME_attak203` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak204` | oui | `FRAME_attak204` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak205` | oui | `FRAME_attak205` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak206` | oui | `FRAME_attak206` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak207` | oui | `FRAME_attak207` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak208` | oui | `FRAME_attak208` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak209` | oui | `FRAME_attak209` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak210` | oui | `FRAME_attak210` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak211` | oui | `FRAME_attak211` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak212` | oui | `FRAME_attak212` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak213` | oui | `FRAME_attak213` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak214` | oui | `FRAME_attak214` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak215` | oui | `FRAME_attak215` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak216` | oui | `FRAME_attak216` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak217` | oui | `FRAME_attak217` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak218` | oui | `FRAME_attak218` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak301` | oui | `FRAME_attak301` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak302` | oui | `FRAME_attak302` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak303` | oui | `FRAME_attak303` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak304` | oui | `FRAME_attak304` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak305` | oui | `FRAME_attak305` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak306` | oui | `FRAME_attak306` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak307` | oui | `FRAME_attak307` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak308` | oui | `FRAME_attak308` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak309` | oui | `FRAME_attak309` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak401` | oui | `FRAME_attak401` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak402` | oui | `FRAME_attak402` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak403` | oui | `FRAME_attak403` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak404` | oui | `FRAME_attak404` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak405` | oui | `FRAME_attak405` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_attak406` | oui | `FRAME_attak406` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_duck01` | oui | `FRAME_duck01` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_duck02` | oui | `FRAME_duck02` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_duck03` | oui | `FRAME_duck03` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_duck04` | oui | `FRAME_duck04` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_duck05` | oui | `FRAME_duck05` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain105` | oui | `FRAME_pain105` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain201` | oui | `FRAME_pain201` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain202` | oui | `FRAME_pain202` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain203` | oui | `FRAME_pain203` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain204` | oui | `FRAME_pain204` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain205` | oui | `FRAME_pain205` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain206` | oui | `FRAME_pain206` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain207` | oui | `FRAME_pain207` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain301` | oui | `FRAME_pain301` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain302` | oui | `FRAME_pain302` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain303` | oui | `FRAME_pain303` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain304` | oui | `FRAME_pain304` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain305` | oui | `FRAME_pain305` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain306` | oui | `FRAME_pain306` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain307` | oui | `FRAME_pain307` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain308` | oui | `FRAME_pain308` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain309` | oui | `FRAME_pain309` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain310` | oui | `FRAME_pain310` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain311` | oui | `FRAME_pain311` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain312` | oui | `FRAME_pain312` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain313` | oui | `FRAME_pain313` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain314` | oui | `FRAME_pain314` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain315` | oui | `FRAME_pain315` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain316` | oui | `FRAME_pain316` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain317` | oui | `FRAME_pain317` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain318` | oui | `FRAME_pain318` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain401` | oui | `FRAME_pain401` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain402` | oui | `FRAME_pain402` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain403` | oui | `FRAME_pain403` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain404` | oui | `FRAME_pain404` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain405` | oui | `FRAME_pain405` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain406` | oui | `FRAME_pain406` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain407` | oui | `FRAME_pain407` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain408` | oui | `FRAME_pain408` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain409` | oui | `FRAME_pain409` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain410` | oui | `FRAME_pain410` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain411` | oui | `FRAME_pain411` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain412` | oui | `FRAME_pain412` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain413` | oui | `FRAME_pain413` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain414` | oui | `FRAME_pain414` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain415` | oui | `FRAME_pain415` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain416` | oui | `FRAME_pain416` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_pain417` | oui | `FRAME_pain417` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run01` | oui | `FRAME_run01` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run02` | oui | `FRAME_run02` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run03` | oui | `FRAME_run03` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run04` | oui | `FRAME_run04` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run05` | oui | `FRAME_run05` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run06` | oui | `FRAME_run06` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run07` | oui | `FRAME_run07` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run08` | oui | `FRAME_run08` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run09` | oui | `FRAME_run09` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run10` | oui | `FRAME_run10` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run11` | oui | `FRAME_run11` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_run12` | oui | `FRAME_run12` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs01` | oui | `FRAME_runs01` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs02` | oui | `FRAME_runs02` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs03` | oui | `FRAME_runs03` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs04` | oui | `FRAME_runs04` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs05` | oui | `FRAME_runs05` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs06` | oui | `FRAME_runs06` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs07` | oui | `FRAME_runs07` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs08` | oui | `FRAME_runs08` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs09` | oui | `FRAME_runs09` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs10` | oui | `FRAME_runs10` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs11` | oui | `FRAME_runs11` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs12` | oui | `FRAME_runs12` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs13` | oui | `FRAME_runs13` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs14` | oui | `FRAME_runs14` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs15` | oui | `FRAME_runs15` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs16` | oui | `FRAME_runs16` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs17` | oui | `FRAME_runs17` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runs18` | oui | `FRAME_runs18` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt01` | oui | `FRAME_runt01` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt02` | oui | `FRAME_runt02` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt03` | oui | `FRAME_runt03` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt04` | oui | `FRAME_runt04` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt05` | oui | `FRAME_runt05` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt06` | oui | `FRAME_runt06` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt07` | oui | `FRAME_runt07` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt08` | oui | `FRAME_runt08` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt09` | oui | `FRAME_runt09` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt10` | oui | `FRAME_runt10` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt11` | oui | `FRAME_runt11` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt12` | oui | `FRAME_runt12` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt13` | oui | `FRAME_runt13` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt14` | oui | `FRAME_runt14` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt15` | oui | `FRAME_runt15` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt16` | oui | `FRAME_runt16` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt17` | oui | `FRAME_runt17` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt18` | oui | `FRAME_runt18` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_runt19` | oui | `FRAME_runt19` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand101` | oui | `FRAME_stand101` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand102` | oui | `FRAME_stand102` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand103` | oui | `FRAME_stand103` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand104` | oui | `FRAME_stand104` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand105` | oui | `FRAME_stand105` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand106` | oui | `FRAME_stand106` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand107` | oui | `FRAME_stand107` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand108` | oui | `FRAME_stand108` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand109` | oui | `FRAME_stand109` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand110` | oui | `FRAME_stand110` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand111` | oui | `FRAME_stand111` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand112` | oui | `FRAME_stand112` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand113` | oui | `FRAME_stand113` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand114` | oui | `FRAME_stand114` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand115` | oui | `FRAME_stand115` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand116` | oui | `FRAME_stand116` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand117` | oui | `FRAME_stand117` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand118` | oui | `FRAME_stand118` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand119` | oui | `FRAME_stand119` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand120` | oui | `FRAME_stand120` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand121` | oui | `FRAME_stand121` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand122` | oui | `FRAME_stand122` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand123` | oui | `FRAME_stand123` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand124` | oui | `FRAME_stand124` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand125` | oui | `FRAME_stand125` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand126` | oui | `FRAME_stand126` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand127` | oui | `FRAME_stand127` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand128` | oui | `FRAME_stand128` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand129` | oui | `FRAME_stand129` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand130` | oui | `FRAME_stand130` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand301` | oui | `FRAME_stand301` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand302` | oui | `FRAME_stand302` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand303` | oui | `FRAME_stand303` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand304` | oui | `FRAME_stand304` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand305` | oui | `FRAME_stand305` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand306` | oui | `FRAME_stand306` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand307` | oui | `FRAME_stand307` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand308` | oui | `FRAME_stand308` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand309` | oui | `FRAME_stand309` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand310` | oui | `FRAME_stand310` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand311` | oui | `FRAME_stand311` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand312` | oui | `FRAME_stand312` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand313` | oui | `FRAME_stand313` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand314` | oui | `FRAME_stand314` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand315` | oui | `FRAME_stand315` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand316` | oui | `FRAME_stand316` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand317` | oui | `FRAME_stand317` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand318` | oui | `FRAME_stand318` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand319` | oui | `FRAME_stand319` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand320` | oui | `FRAME_stand320` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand321` | oui | `FRAME_stand321` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand322` | oui | `FRAME_stand322` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand323` | oui | `FRAME_stand323` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_soldier.ts` | value | `FRAME_stand324` | oui | `FRAME_stand324` | `Quake-2-master/game/m_soldier.h` | Ported | [`game_m_soldier.h.md`](../matrices/game_m_soldier.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_soldier.ts` | value | `FRAME_stand325` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_soldier.ts` | value | `FRAME_stand326` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_soldier.ts` | value | `FRAME_stand327` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

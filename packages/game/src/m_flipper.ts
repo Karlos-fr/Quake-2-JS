@@ -217,6 +217,12 @@ const SOUND_IDLE = "flipper/flpidle1.wav";
 const SOUND_SEARCH = "flipper/flpsrch1.wav";
 const SOUND_SIGHT = "flipper/flpsght1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handle cache)
+ * Category: New
+ * Purpose: Store registered runtime sound indexes for the flipper sound path constants.
+ */
 let sound_chomp = 0;
 let sound_attack = 0;
 let sound_pain1 = 0;
@@ -594,6 +600,12 @@ export function SP_monster_flipper(self: GameEntity, runtime: GameRuntime): void
   swimmonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Build TS monster frame arrays from compact distance/callback lists.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -606,6 +618,12 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Place sparse frame callbacks at their source frame indexes.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -617,6 +635,12 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Keep the `SP_monster_flipper` asset precache sequence in one TS helper.
+ */
 function precacheFlipperAssets(runtime: GameRuntime): void {
   sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
   sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
@@ -628,12 +652,24 @@ function precacheFlipperAssets(runtime: GameRuntime): void {
   sound_sight = registerGameSound(runtime, SOUND_SIGHT);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Local mutable tuple assignment equivalent for entity bounds.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Provide the integer random branch used by flipper pain selection.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

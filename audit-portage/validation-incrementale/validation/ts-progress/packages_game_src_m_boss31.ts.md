@@ -2,21 +2,30 @@
 
 ## Dernier lot traite
 
-- Lot: constantes de frames `FRAME_pain301` a `FRAME_pain325`.
-- Verdict: `Couvert C/H` pour les 25 macros portees depuis `Quake-2-master/game/m_boss31.h`.
-- Preuves: matrice C/H `game_m_boss31.h.md` ouverte; chaque macro du lot y pointe vers `packages/game/src/m_boss31.ts` avec cible homonyme `Valide`; comparaison locale des valeurs H/TS confirmee de 87 a 111.
+- Lot: constantes `FRAME_walk01` a `FRAME_walk25` et `MODEL_SCALE`.
+- Verdict: `Couvert C/H` pour les 26 macros portees depuis `Quake-2-master/game/m_boss31.h`.
+- Preuves: matrice C/H `game_m_boss31.h.md` ouverte; chaque macro du lot y pointe vers `packages/game/src/m_boss31.ts` avec cible homonyme `Valide`; comparaison locale des valeurs H/TS confirmee de 163 a 187 et `MODEL_SCALE` `1.000000`/`1.0`.
 - Corrections: matrice TS completee avec `Original name`, `Source declaree`, `Category: Ported`, lien C/H, `Statut croise` et `Validation TS`.
 
 ## Tests de reference
 
 - Aucun test lance: modification documentaire uniquement; verification ponctuelle par extraction des constantes C/H et TS.
+- `git diff --check` a lancer en verification finale de session si aucun code TS ne change.
 
 ## Decisions importantes
 
 - Le fichier TS proprietaire attendu est bien `packages/game/src/m_boss31.ts` pour les macros de `game/m_boss31.h`; les homonymes d'autres monstres restent proprietaires de leurs propres fichiers `.h` et `.ts`.
 - L'entete de fichier TS couvre explicitement `game/m_boss31.h` et `game/m_boss31.c`; aucun entete par constante n'a ete ajoute pour eviter un bruit disproportionne sur les macros generees.
-- Les homonymes `FRAME_pain301` a `FRAME_pain325` existent dans d'autres monstres, notamment `m_boss32.ts`, mais avec leurs propres sources/proprietaires; pas de doublon du couple `Original name` + `Source declaree`.
+- Les homonymes `FRAME_stand01` a `FRAME_stand51` existent dans d'autres monstres, notamment `m_boss32.ts`, mais avec leurs propres sources/proprietaires; pas de doublon du couple `Original name` + `Source declaree`.
+- Les homonymes `FRAME_walk01` a `FRAME_walk25` existent aussi dans d'autres monstres, mais avec leurs propres sources/proprietaires; pas de doublon du couple `Original name` + `Source declaree`.
+- Integration runtime/apps-web/renderer-three: ces constantes alimentent `jorg_move_stand` via `G_RunFrame`/`M_MoveFrame`; `apps/web` et `renderer-three` consomment les frames d'entite produites par le runtime, sans integration specifique attendue pour les constantes elles-memes.
+- Integration runtime/apps-web/renderer-three: `FRAME_walk01` a `FRAME_walk25` alimentent `jorg_move_start_walk`, `jorg_move_walk`, `jorg_move_run` et `jorg_move_end_walk`; `MODEL_SCALE` est applique dans `SP_monster_jorg`. Pas d'integration web/renderer directe attendue pour ces constantes seules.
+## Session 2026-05-27 - lot elargi
 
-## Prochain lot recommande
-
-- Continuer avec les constantes `FRAME_stand01` a `FRAME_stand51`.
+- Lot: `FRAME_walk01` a `FRAME_walk25`, puis `MODEL_SCALE`.
+- Verdict: `Couvert C/H` pour 26 macro(s) portee(s) depuis `Quake-2-master/game/m_boss31.h`.
+- Preuves: valeurs TS comparees aux macros H, matrice C/H `game_m_boss31.h.md` avec statut `Valide` et proprietaire attendu `packages/game/src/m_boss31.ts`; ownership package `packages/game` conforme au module source `game`; pas de doublon du couple `Original name` + `Source declaree` dans ce fichier.
+- Corrections: matrice TS completee avec `Original name`, `Source declaree`, `Category: Ported`, lien C/H, `Statut croise` et `Validation TS`. Aucun code TS modifie.
+- Integration runtime/apps-web/renderer-three: constantes de frames/scale consommees par les moves/spawn du gameplay via `G_RunFrame`/`M_MoveFrame` ou `monsterinfo.scale`; pas d'integration web/renderer directe attendue pour ces macros seules.
+- Tests: non lances; modification documentaire uniquement.
+- Prochain lot recommande: `MZ2_JORG_*`, constantes sons et handles, puis helpers/fonctions Jorg selon risque.

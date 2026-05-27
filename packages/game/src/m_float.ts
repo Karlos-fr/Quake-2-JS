@@ -308,9 +308,40 @@ export const FRAME_stand252 = 247;
 
 export const MODEL_SCALE = 1.0;
 
+/**
+ * Original name: N/A
+ * Source: N/A (local q_shared flash id alias)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Keeps the floater blaster muzzle id local to this monster module.
+ *
+ * Porting notes:
+ * - Mirrors `MZ2_FLOAT_BLASTER_1` from `q_shared.h`; `m_float.ts` is not the owner of the shared flash-id port.
+ */
 export const MZ2_FLOAT_BLASTER_1 = 82;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local zap offset)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the manual floater zap offset used by the original `floater_zap` body.
+ */
 const FLOAT_ZAP_OFFSET: vec3_t = [18.5, -0.9, 10];
 
+/**
+ * Original name: N/A
+ * Source: N/A (local asset path constants)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Names the sound paths precached or emitted by `SP_monster_floater` and floater callbacks.
+ */
 const SOUND_ATTACK1 = "floater/fltatck1.wav";
 const SOUND_ATTACK2 = "floater/fltatck2.wav";
 const SOUND_ATTACK3 = "floater/fltatck3.wav";
@@ -321,6 +352,15 @@ const SOUND_PAIN2 = "floater/fltpain2.wav";
 const SOUND_SEARCH = "floater/fltsrch1.wav";
 const SOUND_SIGHT = "floater/fltsght1.wav";
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime sound handles)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Caches runtime sound indices produced during floater asset precache.
+ */
 let sound_attack2 = 0;
 let sound_attack3 = 0;
 let sound_death1 = 0;
@@ -792,6 +832,15 @@ export function SP_monster_floater(self: GameEntity, runtime: GameRuntime): void
   flymonster_start(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local monster frame builder)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds declarative monster frame entries from distances and optional think callbacks.
+ */
 function makeFrames(
   aifunc: GameMonsterFrame["aifunc"],
   distances: number[],
@@ -804,6 +853,15 @@ function makeFrames(
   }));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local frame callback helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Places sparse frame callbacks at their original zero-based table positions.
+ */
 function indexedThinks(
   count: number,
   entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
@@ -815,6 +873,15 @@ function indexedThinks(
   return thinks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local asset precache helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Registers floater sound assets in the same order as `SP_monster_floater`.
+ */
 function precacheFloaterAssets(runtime: GameRuntime): void {
   sound_attack2 = registerGameSound(runtime, SOUND_ATTACK2);
   sound_attack3 = registerGameSound(runtime, SOUND_ATTACK3);
@@ -826,12 +893,30 @@ function precacheFloaterAssets(runtime: GameRuntime): void {
   registerGameSound(runtime, SOUND_ATTACK1);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Mutates an existing vector with three component values.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;
   vector[2] = z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns `left - right` as a new vector.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [
     left[0] - right[0],
@@ -840,6 +925,15 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local rand helper)
+ * Category: New
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Produces an integer bucket matching the local `rand() % maxExclusive` call sites.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

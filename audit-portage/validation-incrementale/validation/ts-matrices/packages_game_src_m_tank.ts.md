@@ -4,191 +4,191 @@
 
 - Fichier TS: `packages/game/src/m_tank.ts`
 - Symboles TS: 403
-- Couvert C/H: 0
-- Reste a auditer: 403
+- Couvert C/H: 180
+- Reste a auditer: 223
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_walk25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak218` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak219` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak220` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak221` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak222` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak223` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak224` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak225` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak226` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak227` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak228` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak229` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak230` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak231` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak232` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak233` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak234` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak235` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak236` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak237` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak238` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak313` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak314` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak315` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak316` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak317` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak318` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak319` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak320` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak321` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak322` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak323` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak324` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak325` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak326` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak327` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak328` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak329` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak330` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak331` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak332` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak333` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak334` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak335` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak336` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak337` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak338` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak339` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak340` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak341` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak342` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak343` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak344` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak345` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak346` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak347` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak348` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak349` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak350` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak351` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak352` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak353` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak401` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak402` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak403` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak404` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak405` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak406` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak407` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak408` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak409` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak410` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak411` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_tank.ts` | value | `FRAME_attak412` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand01` | oui | `FRAME_stand01` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand02` | oui | `FRAME_stand02` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand03` | oui | `FRAME_stand03` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand04` | oui | `FRAME_stand04` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand05` | oui | `FRAME_stand05` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand06` | oui | `FRAME_stand06` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand07` | oui | `FRAME_stand07` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand08` | oui | `FRAME_stand08` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand09` | oui | `FRAME_stand09` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk01` | oui | `FRAME_walk01` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk02` | oui | `FRAME_walk02` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk03` | oui | `FRAME_walk03` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk04` | oui | `FRAME_walk04` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk05` | oui | `FRAME_walk05` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk06` | oui | `FRAME_walk06` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk07` | oui | `FRAME_walk07` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk08` | oui | `FRAME_walk08` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk09` | oui | `FRAME_walk09` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk10` | oui | `FRAME_walk10` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk11` | oui | `FRAME_walk11` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk12` | oui | `FRAME_walk12` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk13` | oui | `FRAME_walk13` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk14` | oui | `FRAME_walk14` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk15` | oui | `FRAME_walk15` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk16` | oui | `FRAME_walk16` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk17` | oui | `FRAME_walk17` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk18` | oui | `FRAME_walk18` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk19` | oui | `FRAME_walk19` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk20` | oui | `FRAME_walk20` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk21` | oui | `FRAME_walk21` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk22` | oui | `FRAME_walk22` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk23` | oui | `FRAME_walk23` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk24` | oui | `FRAME_walk24` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_walk25` | oui | `FRAME_walk25` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak109` | oui | `FRAME_attak109` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak110` | oui | `FRAME_attak110` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak111` | oui | `FRAME_attak111` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak112` | oui | `FRAME_attak112` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak113` | oui | `FRAME_attak113` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak114` | oui | `FRAME_attak114` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak115` | oui | `FRAME_attak115` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak116` | oui | `FRAME_attak116` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak117` | oui | `FRAME_attak117` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak118` | oui | `FRAME_attak118` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak119` | oui | `FRAME_attak119` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak120` | oui | `FRAME_attak120` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak121` | oui | `FRAME_attak121` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak122` | oui | `FRAME_attak122` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak201` | oui | `FRAME_attak201` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak202` | oui | `FRAME_attak202` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak203` | oui | `FRAME_attak203` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak204` | oui | `FRAME_attak204` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak205` | oui | `FRAME_attak205` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak206` | oui | `FRAME_attak206` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak207` | oui | `FRAME_attak207` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak208` | oui | `FRAME_attak208` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak209` | oui | `FRAME_attak209` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak210` | oui | `FRAME_attak210` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak211` | oui | `FRAME_attak211` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak212` | oui | `FRAME_attak212` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak213` | oui | `FRAME_attak213` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak214` | oui | `FRAME_attak214` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak215` | oui | `FRAME_attak215` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak216` | oui | `FRAME_attak216` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak217` | oui | `FRAME_attak217` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak218` | oui | `FRAME_attak218` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak219` | oui | `FRAME_attak219` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak220` | oui | `FRAME_attak220` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak221` | oui | `FRAME_attak221` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak222` | oui | `FRAME_attak222` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak223` | oui | `FRAME_attak223` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak224` | oui | `FRAME_attak224` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak225` | oui | `FRAME_attak225` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak226` | oui | `FRAME_attak226` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak227` | oui | `FRAME_attak227` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak228` | oui | `FRAME_attak228` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak229` | oui | `FRAME_attak229` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak230` | oui | `FRAME_attak230` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak231` | oui | `FRAME_attak231` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak232` | oui | `FRAME_attak232` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak233` | oui | `FRAME_attak233` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak234` | oui | `FRAME_attak234` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak235` | oui | `FRAME_attak235` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak236` | oui | `FRAME_attak236` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak237` | oui | `FRAME_attak237` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak238` | oui | `FRAME_attak238` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak301` | oui | `FRAME_attak301` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak302` | oui | `FRAME_attak302` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak303` | oui | `FRAME_attak303` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak304` | oui | `FRAME_attak304` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak305` | oui | `FRAME_attak305` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak306` | oui | `FRAME_attak306` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak307` | oui | `FRAME_attak307` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak308` | oui | `FRAME_attak308` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak309` | oui | `FRAME_attak309` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak310` | oui | `FRAME_attak310` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak311` | oui | `FRAME_attak311` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak312` | oui | `FRAME_attak312` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak313` | oui | `FRAME_attak313` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak314` | oui | `FRAME_attak314` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak315` | oui | `FRAME_attak315` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak316` | oui | `FRAME_attak316` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak317` | oui | `FRAME_attak317` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak318` | oui | `FRAME_attak318` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak319` | oui | `FRAME_attak319` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak320` | oui | `FRAME_attak320` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak321` | oui | `FRAME_attak321` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak322` | oui | `FRAME_attak322` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak323` | oui | `FRAME_attak323` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak324` | oui | `FRAME_attak324` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak325` | oui | `FRAME_attak325` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak326` | oui | `FRAME_attak326` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak327` | oui | `FRAME_attak327` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak328` | oui | `FRAME_attak328` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak329` | oui | `FRAME_attak329` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak330` | oui | `FRAME_attak330` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak331` | oui | `FRAME_attak331` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak332` | oui | `FRAME_attak332` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak333` | oui | `FRAME_attak333` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak334` | oui | `FRAME_attak334` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak335` | oui | `FRAME_attak335` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak336` | oui | `FRAME_attak336` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak337` | oui | `FRAME_attak337` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak338` | oui | `FRAME_attak338` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak339` | oui | `FRAME_attak339` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak340` | oui | `FRAME_attak340` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak341` | oui | `FRAME_attak341` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak342` | oui | `FRAME_attak342` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak343` | oui | `FRAME_attak343` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak344` | oui | `FRAME_attak344` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak345` | oui | `FRAME_attak345` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak346` | oui | `FRAME_attak346` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak347` | oui | `FRAME_attak347` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak348` | oui | `FRAME_attak348` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak349` | oui | `FRAME_attak349` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak350` | oui | `FRAME_attak350` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak351` | oui | `FRAME_attak351` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak352` | oui | `FRAME_attak352` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak353` | oui | `FRAME_attak353` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak401` | oui | `FRAME_attak401` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak402` | oui | `FRAME_attak402` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak403` | oui | `FRAME_attak403` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak404` | oui | `FRAME_attak404` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak405` | oui | `FRAME_attak405` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak406` | oui | `FRAME_attak406` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak407` | oui | `FRAME_attak407` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak408` | oui | `FRAME_attak408` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak409` | oui | `FRAME_attak409` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak410` | oui | `FRAME_attak410` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak411` | oui | `FRAME_attak411` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_tank.ts` | value | `FRAME_attak412` | oui | `FRAME_attak412` | `Quake-2-master/game/m_tank.h` | Ported | [`game_m_tank.h.md`](../matrices/game_m_tank.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_tank.ts` | value | `FRAME_attak413` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_tank.ts` | value | `FRAME_attak414` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_tank.ts` | value | `FRAME_attak415` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

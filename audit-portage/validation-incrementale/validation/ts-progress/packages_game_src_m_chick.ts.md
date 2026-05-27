@@ -14,6 +14,7 @@
 - `FRAME_duck01` a `FRAME_duck07`: macros de frames exportees, proprietaire TS confirme dans `packages/game/src/m_chick.ts`, source declaree `Quake-2-master/game/m_chick.h`, matrice C/H `game_m_chick.h.md` validee; marquees `Couvert C/H` dans la matrice TS.
 
 - `FRAME_pain101` a `FRAME_stand230`: macros de frames exportees, proprietaire TS confirme dans `packages/game/src/m_chick.ts`, source declaree `Quake-2-master/game/m_chick.h`, matrice C/H `game_m_chick.h.md` validee; marquees `Couvert C/H` dans la matrice TS.
+- `FRAME_walk01` a `FRAME_walk27`: macros de frames exportees, proprietaire TS confirme dans `packages/game/src/m_chick.ts`, source declaree `Quake-2-master/game/m_chick.h`, matrice C/H `game_m_chick.h.md` validee; marquees `Couvert C/H` dans la matrice TS.
 
 ## Preuves consultees
 
@@ -43,11 +44,21 @@
 - `Quake-2-master/game/m_chick.h`: macros `FRAME_pain101` a `FRAME_stand230` aux valeurs 90 a 180.
 - `audit-portage/validation-incrementale/validation/matrices/game_m_chick.h.md`: lignes macros `FRAME_pain101` a `FRAME_stand230` ciblees vers `packages/game/src/m_chick.ts`, statut C/H `Valide`.
 - Recherche doublons/imports dans `packages`: homonymes de frames dans d'autres monstres, mais sources/proprietaires distincts; aucun mauvais package ni mauvais ownership detecte pour le lot elargi.
+- `packages/game/src/m_chick.ts`: constantes exportees `FRAME_walk01` a `FRAME_walk27` aux valeurs 181 a 207.
+- `Quake-2-master/game/m_chick.h`: macros `FRAME_walk01` a `FRAME_walk27` aux valeurs 181 a 207.
+- `audit-portage/validation-incrementale/validation/matrices/game_m_chick.h.md`: lignes macros `FRAME_walk01` a `FRAME_walk27` ciblees vers `packages/game/src/m_chick.ts`, statut C/H `Valide`.
+- Entete fichier TS verifiee: `m_chick.ts` declare la source `game/m_chick.h` et `game/m_chick.c`; pour ces constantes simples, la matrice porte les metadonnees par symbole (`Original name`, `Source declaree`, `Category`).
+- Recherche doublons/imports dans `packages` et `apps`: homonymes `FRAME_walk01`/`FRAME_walk27` dans d'autres monstres, mais sources/proprietaires distincts; aucun mauvais package ni mauvais ownership detecte pour le lot.
 
 ## Tests
 
 - Non lances: aucune modification de code TS, uniquement reclassement documentaire de constantes deja couvertes par la matrice C/H.
+## Session 2026-05-27 - lot elargi
 
-## Prochain lot recommande
-
-- Continuer avec les macros de marche `FRAME_walk01` a `FRAME_walk27`.
+- Lot: `FRAME_recln201` a `FRAME_recln240`, `FRAME_recln101` a `FRAME_recln140`, puis `MODEL_SCALE`.
+- Verdict: `Couvert C/H` pour 81 macro(s) portee(s) depuis `Quake-2-master/game/m_chick.h`.
+- Preuves: valeurs TS comparees aux macros H, matrice C/H `game_m_chick.h.md` avec statut `Valide` et proprietaire attendu `packages/game/src/m_chick.ts`; ownership package `packages/game` conforme au module source `game`; pas de doublon du couple `Original name` + `Source declaree` dans ce fichier.
+- Corrections: matrice TS completee avec `Original name`, `Source declaree`, `Category: Ported`, lien C/H, `Statut croise` et `Validation TS`. Aucun code TS modifie.
+- Integration runtime/apps-web/renderer-three: constantes de frames/scale consommees par les moves/spawn du gameplay via `G_RunFrame`/`M_MoveFrame` ou `monsterinfo.scale`; pas d'integration web/renderer directe attendue pour ces macros seules.
+- Tests: non lances; modification documentaire uniquement.
+- Prochain lot recommande: classer les constantes sons/handles et les tables `chick_frames_*` / `chick_move_*`.

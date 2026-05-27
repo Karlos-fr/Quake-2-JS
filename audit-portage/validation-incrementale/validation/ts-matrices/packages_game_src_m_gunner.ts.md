@@ -4,191 +4,191 @@
 
 - Fichier TS: `packages/game/src/m_gunner.ts`
 - Symboles TS: 297
-- Couvert C/H: 0
-- Reste a auditer: 297
+- Couvert C/H: 180
+- Reste a auditer: 117
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand36` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand37` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand38` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand39` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand40` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand41` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand42` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand43` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand44` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand45` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand46` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand47` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand48` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand49` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand50` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand51` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand52` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand53` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand54` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand55` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand56` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand57` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand58` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand59` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand60` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand61` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand62` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand63` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand64` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand65` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand66` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand67` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand68` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand69` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_stand70` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_walk24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_run08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_runs01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_runs02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_runs03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_runs04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_runs05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_runs06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak218` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak219` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak220` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak221` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak222` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak223` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak224` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak225` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak226` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak227` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak228` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak229` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_attak230` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_gunner.ts` | value | `FRAME_pain203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand01` | oui | `FRAME_stand01` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand02` | oui | `FRAME_stand02` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand03` | oui | `FRAME_stand03` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand04` | oui | `FRAME_stand04` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand05` | oui | `FRAME_stand05` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand06` | oui | `FRAME_stand06` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand07` | oui | `FRAME_stand07` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand08` | oui | `FRAME_stand08` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand09` | oui | `FRAME_stand09` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand31` | oui | `FRAME_stand31` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand32` | oui | `FRAME_stand32` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand33` | oui | `FRAME_stand33` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand34` | oui | `FRAME_stand34` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand35` | oui | `FRAME_stand35` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand36` | oui | `FRAME_stand36` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand37` | oui | `FRAME_stand37` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand38` | oui | `FRAME_stand38` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand39` | oui | `FRAME_stand39` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand40` | oui | `FRAME_stand40` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand41` | oui | `FRAME_stand41` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand42` | oui | `FRAME_stand42` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand43` | oui | `FRAME_stand43` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand44` | oui | `FRAME_stand44` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand45` | oui | `FRAME_stand45` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand46` | oui | `FRAME_stand46` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand47` | oui | `FRAME_stand47` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand48` | oui | `FRAME_stand48` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand49` | oui | `FRAME_stand49` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand50` | oui | `FRAME_stand50` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand51` | oui | `FRAME_stand51` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand52` | oui | `FRAME_stand52` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand53` | oui | `FRAME_stand53` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand54` | oui | `FRAME_stand54` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand55` | oui | `FRAME_stand55` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand56` | oui | `FRAME_stand56` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand57` | oui | `FRAME_stand57` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand58` | oui | `FRAME_stand58` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand59` | oui | `FRAME_stand59` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand60` | oui | `FRAME_stand60` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand61` | oui | `FRAME_stand61` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand62` | oui | `FRAME_stand62` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand63` | oui | `FRAME_stand63` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand64` | oui | `FRAME_stand64` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand65` | oui | `FRAME_stand65` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand66` | oui | `FRAME_stand66` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand67` | oui | `FRAME_stand67` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand68` | oui | `FRAME_stand68` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand69` | oui | `FRAME_stand69` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_stand70` | oui | `FRAME_stand70` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk01` | oui | `FRAME_walk01` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk02` | oui | `FRAME_walk02` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk03` | oui | `FRAME_walk03` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk04` | oui | `FRAME_walk04` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk05` | oui | `FRAME_walk05` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk06` | oui | `FRAME_walk06` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk07` | oui | `FRAME_walk07` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk08` | oui | `FRAME_walk08` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk09` | oui | `FRAME_walk09` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk10` | oui | `FRAME_walk10` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk11` | oui | `FRAME_walk11` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk12` | oui | `FRAME_walk12` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk13` | oui | `FRAME_walk13` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk14` | oui | `FRAME_walk14` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk15` | oui | `FRAME_walk15` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk16` | oui | `FRAME_walk16` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk17` | oui | `FRAME_walk17` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk18` | oui | `FRAME_walk18` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk19` | oui | `FRAME_walk19` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk20` | oui | `FRAME_walk20` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk21` | oui | `FRAME_walk21` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk22` | oui | `FRAME_walk22` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk23` | oui | `FRAME_walk23` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_walk24` | oui | `FRAME_walk24` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run01` | oui | `FRAME_run01` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run02` | oui | `FRAME_run02` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run03` | oui | `FRAME_run03` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run04` | oui | `FRAME_run04` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run05` | oui | `FRAME_run05` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run06` | oui | `FRAME_run06` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run07` | oui | `FRAME_run07` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_run08` | oui | `FRAME_run08` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_runs01` | oui | `FRAME_runs01` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_runs02` | oui | `FRAME_runs02` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_runs03` | oui | `FRAME_runs03` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_runs04` | oui | `FRAME_runs04` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_runs05` | oui | `FRAME_runs05` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_runs06` | oui | `FRAME_runs06` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak109` | oui | `FRAME_attak109` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak110` | oui | `FRAME_attak110` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak111` | oui | `FRAME_attak111` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak112` | oui | `FRAME_attak112` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak113` | oui | `FRAME_attak113` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak114` | oui | `FRAME_attak114` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak115` | oui | `FRAME_attak115` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak116` | oui | `FRAME_attak116` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak117` | oui | `FRAME_attak117` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak118` | oui | `FRAME_attak118` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak119` | oui | `FRAME_attak119` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak120` | oui | `FRAME_attak120` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak121` | oui | `FRAME_attak121` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak201` | oui | `FRAME_attak201` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak202` | oui | `FRAME_attak202` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak203` | oui | `FRAME_attak203` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak204` | oui | `FRAME_attak204` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak205` | oui | `FRAME_attak205` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak206` | oui | `FRAME_attak206` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak207` | oui | `FRAME_attak207` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak208` | oui | `FRAME_attak208` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak209` | oui | `FRAME_attak209` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak210` | oui | `FRAME_attak210` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak211` | oui | `FRAME_attak211` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak212` | oui | `FRAME_attak212` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak213` | oui | `FRAME_attak213` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak214` | oui | `FRAME_attak214` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak215` | oui | `FRAME_attak215` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak216` | oui | `FRAME_attak216` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak217` | oui | `FRAME_attak217` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak218` | oui | `FRAME_attak218` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak219` | oui | `FRAME_attak219` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak220` | oui | `FRAME_attak220` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak221` | oui | `FRAME_attak221` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak222` | oui | `FRAME_attak222` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak223` | oui | `FRAME_attak223` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak224` | oui | `FRAME_attak224` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak225` | oui | `FRAME_attak225` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak226` | oui | `FRAME_attak226` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak227` | oui | `FRAME_attak227` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak228` | oui | `FRAME_attak228` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak229` | oui | `FRAME_attak229` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_attak230` | oui | `FRAME_attak230` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain105` | oui | `FRAME_pain105` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain106` | oui | `FRAME_pain106` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain107` | oui | `FRAME_pain107` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain108` | oui | `FRAME_pain108` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain109` | oui | `FRAME_pain109` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain110` | oui | `FRAME_pain110` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain111` | oui | `FRAME_pain111` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain112` | oui | `FRAME_pain112` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain113` | oui | `FRAME_pain113` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain114` | oui | `FRAME_pain114` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain115` | oui | `FRAME_pain115` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain116` | oui | `FRAME_pain116` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain117` | oui | `FRAME_pain117` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain118` | oui | `FRAME_pain118` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain201` | oui | `FRAME_pain201` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain202` | oui | `FRAME_pain202` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_gunner.ts` | value | `FRAME_pain203` | oui | `FRAME_pain203` | `Quake-2-master/game/m_gunner.h` | Ported | [`game_m_gunner.h.md`](../matrices/game_m_gunner.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_gunner.ts` | value | `FRAME_pain204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_gunner.ts` | value | `FRAME_pain205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_gunner.ts` | value | `FRAME_pain206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

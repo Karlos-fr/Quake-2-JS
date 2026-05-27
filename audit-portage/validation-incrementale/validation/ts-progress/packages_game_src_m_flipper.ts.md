@@ -2,21 +2,25 @@
 
 ## Dernier lot traite
 
-- Lot: constantes de frames `FRAME_flppn201` a `FRAME_flpdth56`.
-- Verdict: `Couvert C/H` pour les 61 macros portees depuis `Quake-2-master/game/m_flipper.h`.
-- Preuves: matrice C/H `game_m_flipper.h.md` ouverte; chaque macro du lot y pointe vers `packages/game/src/m_flipper.ts` avec cible homonyme `Valide`; comparaison locale des valeurs H/TS confirmee de 99 a 159.
-- Corrections: matrice TS completee avec `Original name`, `Source declaree`, `Category: Ported`, lien C/H, `Statut croise` et `Validation TS`.
+- Lot: gros bloc restant de `FLIPPER_RUN_SPEED` a `randomInt` (53 symboles).
+- Verdict: 40 symboles `Couvert C/H` et 13 helpers/caches locaux `Valide` en `Category: New`.
+- Preuves: matrice C/H `game_m_flipper.c.md` ouverte; toutes les entrees C/H correspondantes sont `Valide` avec proprietaire attendu `packages/game/src/m_flipper.ts`. Source C `Quake-2-master/game/m_flipper.c` et TS `packages/game/src/m_flipper.ts` compares pour `FLIPPER_RUN_SPEED`, les sons, les tables `mframe_t`, les moves `mmove_t`, les fonctions gameplay et le spawn. Les helpers nouveaux ont `Original name: N/A`, `Source declaree: N/A (...)`, `Category: New` dans la matrice et un en-tete TS explicite.
+- Corrections: ajout d'en-tetes TS pour les caches/assistants locaux nouveaux; matrice TS completee; avancement global mis a jour.
 
 ## Tests de reference
 
-- Aucun test lance: aucune modification de code TS/import; validation documentaire, ownership et comparaison ponctuelle source H/TS uniquement.
+- `npm run verify:m-flipper:header` -> OK.
+- `npm run verify:m-flipper:source-parity` -> OK.
+- `npm run verify:m-flipper` -> OK.
+- `npm run typecheck` -> OK.
 
 ## Decisions importantes
 
-- Le fichier TS proprietaire attendu est bien `packages/game/src/m_flipper.ts` pour les macros de `game/m_flipper.h`; l'entete de fichier TS couvre explicitement `game/m_flipper.h` et `game/m_flipper.c`.
-- Aucun doublon proprietaire avec le meme couple `Original name` + `Source declaree` n'a ete trouve dans `packages/`; les occurrences restantes du lot sont la definition proprietaire et les usages attendus dans `m_flipper.ts`.
-- Les lots precedents `FRAME_flpbit01` a `FRAME_flpbit20`, `FRAME_flptal01` a `FRAME_flptal21`, `FRAME_flphor01` a `FRAME_flphor24`, `FRAME_flpver01` a `FRAME_flpver29` et `FRAME_flppn101` a `FRAME_flppn105` restent `Couvert C/H`; le cumul audite est maintenant de 160 macros.
+- Le fichier TS proprietaire attendu reste `packages/game/src/m_flipper.ts` pour `game/m_flipper.h` et `game/m_flipper.c`.
+- Les constantes `SOUND_*` portent les anciens globals C `sound_*` dans le modele TS; les variables TS `sound_*` minuscules sont seulement des caches runtime de handles et sont classees `Category: New` pour eviter un doublon de proprietaire.
+- `makeFrames`, `indexedThinks`, `precacheFlipperAssets`, `setVec3` et `randomInt` sont des helpers locaux TS nouveaux avec metadonnees explicites.
+- Aucun mauvais package, mauvais ownership ou doublon proprietaire non justifie n'a ete trouve dans ce lot.
 
 ## Prochain lot recommande
 
-- Continuer avec `MODEL_SCALE`, puis classer les constantes sons/helpers ou passer aux fonctions selon la coordination globale.
+- Aucun: la matrice TS actuelle de `packages/game/src/m_flipper.ts` est terminee.

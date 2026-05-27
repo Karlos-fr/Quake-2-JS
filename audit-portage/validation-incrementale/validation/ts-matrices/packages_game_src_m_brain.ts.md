@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_brain.ts`
 - Symboles TS: 306
-- Couvert C/H: 162
-- Reste a auditer: 144
+- Couvert C/H: 285
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -171,147 +171,147 @@
 | `packages/game/src/m_brain.ts` | value | `FRAME_defens06` | oui | `FRAME_defens06` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_brain.ts` | value | `FRAME_defens07` | oui | `FRAME_defens07` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_brain.ts` | value | `FRAME_defens08` | oui | `FRAME_defens08` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand36` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand37` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand38` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand39` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand40` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand41` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand42` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand43` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand44` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand45` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand46` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand47` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand48` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand49` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand50` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand51` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand52` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand53` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand54` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand55` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand56` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand57` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand58` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand59` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `FRAME_stand60` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `BRAIN_TENTACLE_REATTACK` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_CHEST_OPEN` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_TENTACLES_EXTEND` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_TENTACLES_RETRACT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_DEATH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_IDLE1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_IDLE2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_IDLE3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_PAIN1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_PAIN2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_SIGHT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_SEARCH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_MELEE1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_MELEE2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `SOUND_MELEE3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_chest_open` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_tentacles_extend` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_tentacles_retract` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_death` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_idle1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_idle2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_idle3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_sight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_search` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_melee1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_melee2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `sound_melee3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_sight` | oui | `brain_sight` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | function | `brain_search` | oui | `brain_search` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_stand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_stand` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_stand` | oui | `brain_stand` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_idle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_idle` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_idle` | oui | `brain_idle` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_walk1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_walk1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_walk` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_defense` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_defense` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_pain3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_pain3` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_pain2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_pain2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_pain1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_pain1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_duck_down` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_duck_hold` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_duck_up` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_duck` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_duck` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_dodge` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_death2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_death2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_death1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_death1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_swing_right` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_hit_right` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_swing_left` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_hit_left` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_attack1` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_attack1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_chest_open` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_tentacle_attack` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_chest_closed` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_attack2` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_attack2` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_melee` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_frames_run` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | value | `brain_move_run` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `brain_run` | oui | `brain_run` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | function | `brain_pain` | oui | `brain_pain` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | function | `brain_dead` | oui | `brain_dead` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | function | `brain_die` | oui | `brain_die` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | function | `SP_monster_brain` | oui | `SP_monster_brain` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_brain.ts` | function | `makeFrames` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `indexedThinks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `precacheBrainAssets` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `soundOptions` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_brain.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand01` | oui | `FRAME_stand01` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand02` | oui | `FRAME_stand02` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand03` | oui | `FRAME_stand03` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand04` | oui | `FRAME_stand04` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand05` | oui | `FRAME_stand05` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand06` | oui | `FRAME_stand06` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand07` | oui | `FRAME_stand07` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand08` | oui | `FRAME_stand08` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand09` | oui | `FRAME_stand09` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand31` | oui | `FRAME_stand31` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand32` | oui | `FRAME_stand32` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand33` | oui | `FRAME_stand33` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand34` | oui | `FRAME_stand34` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand35` | oui | `FRAME_stand35` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand36` | oui | `FRAME_stand36` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand37` | oui | `FRAME_stand37` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand38` | oui | `FRAME_stand38` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand39` | oui | `FRAME_stand39` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand40` | oui | `FRAME_stand40` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand41` | oui | `FRAME_stand41` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand42` | oui | `FRAME_stand42` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand43` | oui | `FRAME_stand43` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand44` | oui | `FRAME_stand44` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand45` | oui | `FRAME_stand45` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand46` | oui | `FRAME_stand46` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand47` | oui | `FRAME_stand47` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand48` | oui | `FRAME_stand48` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand49` | oui | `FRAME_stand49` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand50` | oui | `FRAME_stand50` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand51` | oui | `FRAME_stand51` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand52` | oui | `FRAME_stand52` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand53` | oui | `FRAME_stand53` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand54` | oui | `FRAME_stand54` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand55` | oui | `FRAME_stand55` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand56` | oui | `FRAME_stand56` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand57` | oui | `FRAME_stand57` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand58` | oui | `FRAME_stand58` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand59` | oui | `FRAME_stand59` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `FRAME_stand60` | oui | `FRAME_stand60` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_brain.h` | Ported | [`game_m_brain.h.md`](../matrices/game_m_brain.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `BRAIN_TENTACLE_REATTACK` | non | `N/A` | `N/A (named local constant for C magic spawnflag)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_CHEST_OPEN` | non | `sound_chest_open` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_TENTACLES_EXTEND` | non | `sound_tentacles_extend` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_TENTACLES_RETRACT` | non | `sound_tentacles_retract` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_DEATH` | non | `sound_death` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_IDLE1` | non | `sound_idle1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_IDLE2` | non | `sound_idle2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_IDLE3` | non | `sound_idle3` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_PAIN1` | non | `sound_pain1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_PAIN2` | non | `sound_pain2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_SIGHT` | non | `sound_sight` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_SEARCH` | non | `sound_search` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_MELEE1` | non | `sound_melee1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_MELEE2` | non | `sound_melee2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `SOUND_MELEE3` | non | `sound_melee3` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `sound_chest_open` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_tentacles_extend` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_tentacles_retract` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_death` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_idle1` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_idle2` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_idle3` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_pain1` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_pain2` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_sight` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_search` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_melee1` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_melee2` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | value | `sound_melee3` | non | `N/A` | `N/A (runtime sound handles)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | function | `brain_sight` | oui | `brain_sight` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_search` | oui | `brain_search` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_stand` | non | `brain_frames_stand` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_stand` | oui | `brain_move_stand` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_stand` | oui | `brain_stand` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_idle` | non | `brain_frames_idle` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_idle` | oui | `brain_move_idle` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_idle` | oui | `brain_idle` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_walk1` | non | `brain_frames_walk1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_walk1` | oui | `brain_move_walk1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_walk` | oui | `brain_walk` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_defense` | non | `brain_frames_defense` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_defense` | oui | `brain_move_defense` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_pain3` | non | `brain_frames_pain3` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_pain3` | oui | `brain_move_pain3` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_pain2` | non | `brain_frames_pain2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_pain2` | oui | `brain_move_pain2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_pain1` | non | `brain_frames_pain1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_pain1` | oui | `brain_move_pain1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_duck_down` | oui | `brain_duck_down` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_duck_hold` | oui | `brain_duck_hold` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_duck_up` | oui | `brain_duck_up` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_duck` | non | `brain_frames_duck` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_duck` | oui | `brain_move_duck` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_dodge` | oui | `brain_dodge` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_death2` | non | `brain_frames_death2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_death2` | oui | `brain_move_death2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_death1` | non | `brain_frames_death1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_death1` | oui | `brain_move_death1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_swing_right` | oui | `brain_swing_right` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_hit_right` | oui | `brain_hit_right` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_swing_left` | oui | `brain_swing_left` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_hit_left` | oui | `brain_hit_left` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_attack1` | non | `brain_frames_attack1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_attack1` | oui | `brain_move_attack1` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_chest_open` | oui | `brain_chest_open` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_tentacle_attack` | oui | `brain_tentacle_attack` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_chest_closed` | oui | `brain_chest_closed` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_attack2` | non | `brain_frames_attack2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_attack2` | oui | `brain_move_attack2` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_melee` | oui | `brain_melee` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_frames_run` | non | `brain_frames_run` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | value | `brain_move_run` | oui | `brain_move_run` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_run` | oui | `brain_run` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_pain` | oui | `brain_pain` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_dead` | oui | `brain_dead` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `brain_die` | oui | `brain_die` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `SP_monster_brain` | oui | `SP_monster_brain` | `Quake-2-master/game/m_brain.c` | Ported | [`game_m_brain.c.md`](../matrices/game_m_brain.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_brain.ts` | function | `makeFrames` | non | `N/A` | `N/A (local monster frame helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | function | `indexedThinks` | non | `N/A` | `N/A (local monster frame helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | function | `precacheBrainAssets` | non | `N/A` | `N/A (runtime asset registration helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | function | `soundOptions` | non | `N/A` | `N/A (local sound options helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_brain.ts` | function | `randomInt` | non | `N/A` | `N/A (local random integer helper)` | New |  | Hors C/H | Valide |  |

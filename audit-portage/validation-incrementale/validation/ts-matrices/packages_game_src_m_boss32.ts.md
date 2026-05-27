@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_boss32.ts`
 - Symboles TS: 586
-- Couvert C/H: 112
-- Reste a auditer: 474
+- Couvert C/H: 386
+- Reste a auditer: 200
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -121,262 +121,262 @@
 | `packages/game/src/m_boss32.ts` | value | `FRAME_pain323` | oui | `FRAME_pain323` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_boss32.ts` | value | `FRAME_pain324` | oui | `FRAME_pain324` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_boss32.ts` | value | `FRAME_pain325` | oui | `FRAME_pain325` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand32` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand33` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand34` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand35` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand36` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand37` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand38` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand39` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand40` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand41` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand42` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand43` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand44` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand45` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand46` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand47` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand48` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand49` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand50` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_stand51` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_active13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak401` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak402` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak403` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak404` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak405` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak406` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak407` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak408` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak409` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak410` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak411` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak412` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak413` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak414` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak415` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak416` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak417` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak418` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak419` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak420` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak421` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak422` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak423` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak424` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak425` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak426` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak501` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak502` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak503` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak504` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak505` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak506` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak507` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak508` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak509` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak510` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak511` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak512` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak513` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak514` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak515` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_attak516` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death218` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death219` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death220` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death221` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death222` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death223` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death224` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death225` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death226` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death227` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death228` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death229` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death230` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death231` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death232` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death233` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death234` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death235` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death236` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death237` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death238` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death239` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death240` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death241` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death242` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death243` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death244` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death245` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death246` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death247` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death248` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death249` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death250` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death251` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death252` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death253` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death254` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death255` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death256` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death257` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death258` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death259` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death260` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death261` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death262` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death263` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death264` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death265` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death266` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death267` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death268` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death269` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death270` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death271` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death272` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death273` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death274` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death275` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death276` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death277` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death278` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death279` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death280` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death281` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death282` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death283` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death284` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death285` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death286` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death287` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death288` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death289` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death290` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death291` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death292` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death293` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death294` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death295` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death313` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death314` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death315` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death316` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death317` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death318` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death319` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_death320` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_jump01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_jump02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand01` | oui | `FRAME_stand01` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand02` | oui | `FRAME_stand02` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand03` | oui | `FRAME_stand03` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand04` | oui | `FRAME_stand04` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand05` | oui | `FRAME_stand05` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand06` | oui | `FRAME_stand06` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand07` | oui | `FRAME_stand07` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand08` | oui | `FRAME_stand08` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand09` | oui | `FRAME_stand09` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand10` | oui | `FRAME_stand10` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand11` | oui | `FRAME_stand11` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand12` | oui | `FRAME_stand12` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand13` | oui | `FRAME_stand13` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand14` | oui | `FRAME_stand14` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand15` | oui | `FRAME_stand15` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand16` | oui | `FRAME_stand16` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand17` | oui | `FRAME_stand17` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand18` | oui | `FRAME_stand18` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand19` | oui | `FRAME_stand19` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand20` | oui | `FRAME_stand20` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand21` | oui | `FRAME_stand21` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand22` | oui | `FRAME_stand22` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand23` | oui | `FRAME_stand23` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand24` | oui | `FRAME_stand24` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand25` | oui | `FRAME_stand25` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand26` | oui | `FRAME_stand26` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand27` | oui | `FRAME_stand27` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand28` | oui | `FRAME_stand28` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand29` | oui | `FRAME_stand29` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand30` | oui | `FRAME_stand30` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand31` | oui | `FRAME_stand31` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand32` | oui | `FRAME_stand32` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand33` | oui | `FRAME_stand33` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand34` | oui | `FRAME_stand34` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand35` | oui | `FRAME_stand35` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand36` | oui | `FRAME_stand36` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand37` | oui | `FRAME_stand37` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand38` | oui | `FRAME_stand38` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand39` | oui | `FRAME_stand39` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand40` | oui | `FRAME_stand40` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand41` | oui | `FRAME_stand41` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand42` | oui | `FRAME_stand42` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand43` | oui | `FRAME_stand43` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand44` | oui | `FRAME_stand44` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand45` | oui | `FRAME_stand45` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand46` | oui | `FRAME_stand46` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand47` | oui | `FRAME_stand47` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand48` | oui | `FRAME_stand48` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand49` | oui | `FRAME_stand49` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand50` | oui | `FRAME_stand50` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_stand51` | oui | `FRAME_stand51` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk01` | oui | `FRAME_walk01` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk02` | oui | `FRAME_walk02` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk03` | oui | `FRAME_walk03` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk04` | oui | `FRAME_walk04` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk05` | oui | `FRAME_walk05` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk06` | oui | `FRAME_walk06` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk07` | oui | `FRAME_walk07` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk08` | oui | `FRAME_walk08` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk09` | oui | `FRAME_walk09` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk10` | oui | `FRAME_walk10` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk11` | oui | `FRAME_walk11` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk12` | oui | `FRAME_walk12` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk13` | oui | `FRAME_walk13` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk14` | oui | `FRAME_walk14` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk15` | oui | `FRAME_walk15` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk16` | oui | `FRAME_walk16` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk17` | oui | `FRAME_walk17` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk18` | oui | `FRAME_walk18` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk19` | oui | `FRAME_walk19` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk20` | oui | `FRAME_walk20` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk21` | oui | `FRAME_walk21` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk22` | oui | `FRAME_walk22` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk23` | oui | `FRAME_walk23` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk24` | oui | `FRAME_walk24` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk25` | oui | `FRAME_walk25` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active01` | oui | `FRAME_active01` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active02` | oui | `FRAME_active02` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active03` | oui | `FRAME_active03` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active04` | oui | `FRAME_active04` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active05` | oui | `FRAME_active05` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active06` | oui | `FRAME_active06` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active07` | oui | `FRAME_active07` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active08` | oui | `FRAME_active08` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active09` | oui | `FRAME_active09` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active10` | oui | `FRAME_active10` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active11` | oui | `FRAME_active11` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active12` | oui | `FRAME_active12` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_active13` | oui | `FRAME_active13` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak301` | oui | `FRAME_attak301` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak302` | oui | `FRAME_attak302` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak303` | oui | `FRAME_attak303` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak304` | oui | `FRAME_attak304` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak305` | oui | `FRAME_attak305` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak306` | oui | `FRAME_attak306` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak307` | oui | `FRAME_attak307` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak308` | oui | `FRAME_attak308` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak401` | oui | `FRAME_attak401` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak402` | oui | `FRAME_attak402` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak403` | oui | `FRAME_attak403` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak404` | oui | `FRAME_attak404` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak405` | oui | `FRAME_attak405` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak406` | oui | `FRAME_attak406` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak407` | oui | `FRAME_attak407` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak408` | oui | `FRAME_attak408` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak409` | oui | `FRAME_attak409` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak410` | oui | `FRAME_attak410` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak411` | oui | `FRAME_attak411` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak412` | oui | `FRAME_attak412` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak413` | oui | `FRAME_attak413` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak414` | oui | `FRAME_attak414` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak415` | oui | `FRAME_attak415` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak416` | oui | `FRAME_attak416` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak417` | oui | `FRAME_attak417` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak418` | oui | `FRAME_attak418` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak419` | oui | `FRAME_attak419` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak420` | oui | `FRAME_attak420` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak421` | oui | `FRAME_attak421` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak422` | oui | `FRAME_attak422` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak423` | oui | `FRAME_attak423` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak424` | oui | `FRAME_attak424` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak425` | oui | `FRAME_attak425` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak426` | oui | `FRAME_attak426` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak501` | oui | `FRAME_attak501` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak502` | oui | `FRAME_attak502` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak503` | oui | `FRAME_attak503` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak504` | oui | `FRAME_attak504` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak505` | oui | `FRAME_attak505` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak506` | oui | `FRAME_attak506` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak507` | oui | `FRAME_attak507` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak508` | oui | `FRAME_attak508` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak509` | oui | `FRAME_attak509` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak510` | oui | `FRAME_attak510` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak511` | oui | `FRAME_attak511` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak512` | oui | `FRAME_attak512` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak513` | oui | `FRAME_attak513` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak514` | oui | `FRAME_attak514` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak515` | oui | `FRAME_attak515` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_attak516` | oui | `FRAME_attak516` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death201` | oui | `FRAME_death201` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death202` | oui | `FRAME_death202` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death203` | oui | `FRAME_death203` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death204` | oui | `FRAME_death204` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death205` | oui | `FRAME_death205` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death206` | oui | `FRAME_death206` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death207` | oui | `FRAME_death207` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death208` | oui | `FRAME_death208` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death209` | oui | `FRAME_death209` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death210` | oui | `FRAME_death210` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death211` | oui | `FRAME_death211` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death212` | oui | `FRAME_death212` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death213` | oui | `FRAME_death213` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death214` | oui | `FRAME_death214` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death215` | oui | `FRAME_death215` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death216` | oui | `FRAME_death216` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death217` | oui | `FRAME_death217` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death218` | oui | `FRAME_death218` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death219` | oui | `FRAME_death219` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death220` | oui | `FRAME_death220` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death221` | oui | `FRAME_death221` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death222` | oui | `FRAME_death222` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death223` | oui | `FRAME_death223` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death224` | oui | `FRAME_death224` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death225` | oui | `FRAME_death225` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death226` | oui | `FRAME_death226` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death227` | oui | `FRAME_death227` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death228` | oui | `FRAME_death228` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death229` | oui | `FRAME_death229` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death230` | oui | `FRAME_death230` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death231` | oui | `FRAME_death231` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death232` | oui | `FRAME_death232` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death233` | oui | `FRAME_death233` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death234` | oui | `FRAME_death234` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death235` | oui | `FRAME_death235` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death236` | oui | `FRAME_death236` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death237` | oui | `FRAME_death237` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death238` | oui | `FRAME_death238` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death239` | oui | `FRAME_death239` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death240` | oui | `FRAME_death240` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death241` | oui | `FRAME_death241` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death242` | oui | `FRAME_death242` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death243` | oui | `FRAME_death243` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death244` | oui | `FRAME_death244` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death245` | oui | `FRAME_death245` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death246` | oui | `FRAME_death246` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death247` | oui | `FRAME_death247` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death248` | oui | `FRAME_death248` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death249` | oui | `FRAME_death249` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death250` | oui | `FRAME_death250` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death251` | oui | `FRAME_death251` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death252` | oui | `FRAME_death252` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death253` | oui | `FRAME_death253` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death254` | oui | `FRAME_death254` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death255` | oui | `FRAME_death255` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death256` | oui | `FRAME_death256` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death257` | oui | `FRAME_death257` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death258` | oui | `FRAME_death258` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death259` | oui | `FRAME_death259` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death260` | oui | `FRAME_death260` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death261` | oui | `FRAME_death261` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death262` | oui | `FRAME_death262` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death263` | oui | `FRAME_death263` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death264` | oui | `FRAME_death264` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death265` | oui | `FRAME_death265` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death266` | oui | `FRAME_death266` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death267` | oui | `FRAME_death267` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death268` | oui | `FRAME_death268` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death269` | oui | `FRAME_death269` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death270` | oui | `FRAME_death270` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death271` | oui | `FRAME_death271` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death272` | oui | `FRAME_death272` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death273` | oui | `FRAME_death273` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death274` | oui | `FRAME_death274` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death275` | oui | `FRAME_death275` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death276` | oui | `FRAME_death276` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death277` | oui | `FRAME_death277` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death278` | oui | `FRAME_death278` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death279` | oui | `FRAME_death279` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death280` | oui | `FRAME_death280` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death281` | oui | `FRAME_death281` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death282` | oui | `FRAME_death282` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death283` | oui | `FRAME_death283` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death284` | oui | `FRAME_death284` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death285` | oui | `FRAME_death285` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death286` | oui | `FRAME_death286` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death287` | oui | `FRAME_death287` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death288` | oui | `FRAME_death288` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death289` | oui | `FRAME_death289` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death290` | oui | `FRAME_death290` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death291` | oui | `FRAME_death291` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death292` | oui | `FRAME_death292` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death293` | oui | `FRAME_death293` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death294` | oui | `FRAME_death294` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death295` | oui | `FRAME_death295` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death301` | oui | `FRAME_death301` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death302` | oui | `FRAME_death302` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death303` | oui | `FRAME_death303` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death304` | oui | `FRAME_death304` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death305` | oui | `FRAME_death305` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death306` | oui | `FRAME_death306` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death307` | oui | `FRAME_death307` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death308` | oui | `FRAME_death308` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death309` | oui | `FRAME_death309` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death310` | oui | `FRAME_death310` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death311` | oui | `FRAME_death311` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death312` | oui | `FRAME_death312` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death313` | oui | `FRAME_death313` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death314` | oui | `FRAME_death314` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death315` | oui | `FRAME_death315` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death316` | oui | `FRAME_death316` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death317` | oui | `FRAME_death317` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death318` | oui | `FRAME_death318` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death319` | oui | `FRAME_death319` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_death320` | oui | `FRAME_death320` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_jump01` | oui | `FRAME_jump01` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_jump02` | oui | `FRAME_jump02` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_boss32.ts` | value | `FRAME_jump03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_boss32.ts` | value | `FRAME_jump04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_boss32.ts` | value | `FRAME_jump05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
@@ -483,24 +483,24 @@
 | `packages/game/src/m_boss32.ts` | value | `FRAME_stand258` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_boss32.ts` | value | `FRAME_stand259` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_boss32.ts` | value | `FRAME_stand260` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `FRAME_walk217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss32.ts` | value | `MODEL_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk201` | oui | `FRAME_walk201` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk202` | oui | `FRAME_walk202` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk203` | oui | `FRAME_walk203` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk204` | oui | `FRAME_walk204` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk205` | oui | `FRAME_walk205` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk206` | oui | `FRAME_walk206` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk207` | oui | `FRAME_walk207` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk208` | oui | `FRAME_walk208` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk209` | oui | `FRAME_walk209` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk210` | oui | `FRAME_walk210` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk211` | oui | `FRAME_walk211` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk212` | oui | `FRAME_walk212` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk213` | oui | `FRAME_walk213` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk214` | oui | `FRAME_walk214` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk215` | oui | `FRAME_walk215` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk216` | oui | `FRAME_walk216` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `FRAME_walk217` | oui | `FRAME_walk217` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss32.ts` | value | `MODEL_SCALE` | oui | `MODEL_SCALE` | `Quake-2-master/game/m_boss32.h` | Ported | [`game_m_boss32.h.md`](../matrices/game_m_boss32.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_boss32.ts` | value | `MZ2_MAKRON_BFG` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_boss32.ts` | value | `MZ2_MAKRON_BLASTER_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_boss32.ts` | value | `MZ2_MAKRON_RAILGUN_1` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
