@@ -30,6 +30,8 @@ import {
 } from "./cvar.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime facade)
  * Category: New
  * Purpose: Describe optional services used to adapt the qcommon runtime to the host platform.
  *
@@ -43,6 +45,8 @@ export interface QcommonRuntimeOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime facade)
  * Category: New
  * Purpose: Expose the first integrated qcommon runtime state used by future client/server ports.
  *
@@ -58,6 +62,8 @@ export interface QcommonRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime facade)
  * Category: New
  * Purpose: Create and initialize a qcommon runtime that wires together command, cvar and filesystem hooks.
  *

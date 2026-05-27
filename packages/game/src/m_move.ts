@@ -16,16 +16,38 @@
  */
 
 import { MASK_MONSTERSOLID, MASK_WATER, anglemod, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
+import { CONTENTS_SOLID } from "../../qcommon/src/q_shared.js";
 import { AI_NOSTEP, FL_FLY, FL_PARTIALGROUND, FL_SWIM } from "./g_local.js";
 import { linkGameEntity } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 import { touchTriggerEntities } from "./touch.js";
 
+/**
+ * Original name: STEPSIZE
+ * Source: game/m_move.c
+ * Category: Ported
+ */
 export const STEPSIZE = 18;
-export const DI_NODIR = -1;
-const CONTENTS_SOLID = 1;
 
+/**
+ * Original name: DI_NODIR
+ * Source: game/m_move.c
+ * Category: Ported
+ */
+export const DI_NODIR = -1;
+
+/**
+ * Original name: c_yes
+ * Source: game/m_move.c
+ * Category: Ported
+ */
 export let c_yes = 0;
+
+/**
+ * Original name: c_no
+ * Source: game/m_move.c
+ * Category: Ported
+ */
 export let c_no = 0;
 
 /**

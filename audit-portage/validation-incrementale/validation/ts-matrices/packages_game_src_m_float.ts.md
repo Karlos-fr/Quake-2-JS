@@ -4,207 +4,207 @@
 
 - Fichier TS: `packages/game/src/m_float.ts`
 - Symboles TS: 311
-- Couvert C/H: 0
-- Reste a auditer: 311
+- Couvert C/H: 196
+- Reste a auditer: 115
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat14` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat15` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat16` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat17` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat18` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat19` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat20` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat21` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat22` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat23` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat24` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat25` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat26` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat27` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat28` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat29` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat30` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_actvat31` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak218` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak219` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak220` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak221` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak222` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak223` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak224` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak225` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak313` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak314` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak315` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak316` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak317` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak318` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak319` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak320` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak321` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak322` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak323` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak324` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak325` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak326` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak327` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak328` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak329` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak330` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak331` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak332` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak333` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_attak334` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death08` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death09` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death10` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death11` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death12` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_death13` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_pain312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand129` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand130` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand131` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand132` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand133` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand134` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand135` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand136` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand137` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand138` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand139` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand140` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand141` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand142` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand143` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand144` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand145` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand146` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand147` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand148` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand149` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand150` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand151` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_float.ts` | value | `FRAME_stand152` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat01` | oui | `FRAME_actvat01` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat02` | oui | `FRAME_actvat02` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat03` | oui | `FRAME_actvat03` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat04` | oui | `FRAME_actvat04` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat05` | oui | `FRAME_actvat05` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat06` | oui | `FRAME_actvat06` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat07` | oui | `FRAME_actvat07` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat08` | oui | `FRAME_actvat08` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat09` | oui | `FRAME_actvat09` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat10` | oui | `FRAME_actvat10` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat11` | oui | `FRAME_actvat11` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat12` | oui | `FRAME_actvat12` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat13` | oui | `FRAME_actvat13` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat14` | oui | `FRAME_actvat14` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat15` | oui | `FRAME_actvat15` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat16` | oui | `FRAME_actvat16` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat17` | oui | `FRAME_actvat17` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat18` | oui | `FRAME_actvat18` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat19` | oui | `FRAME_actvat19` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat20` | oui | `FRAME_actvat20` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat21` | oui | `FRAME_actvat21` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat22` | oui | `FRAME_actvat22` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat23` | oui | `FRAME_actvat23` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat24` | oui | `FRAME_actvat24` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat25` | oui | `FRAME_actvat25` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat26` | oui | `FRAME_actvat26` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat27` | oui | `FRAME_actvat27` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat28` | oui | `FRAME_actvat28` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat29` | oui | `FRAME_actvat29` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat30` | oui | `FRAME_actvat30` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_actvat31` | oui | `FRAME_actvat31` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak109` | oui | `FRAME_attak109` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak110` | oui | `FRAME_attak110` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak111` | oui | `FRAME_attak111` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak112` | oui | `FRAME_attak112` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak113` | oui | `FRAME_attak113` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak114` | oui | `FRAME_attak114` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak201` | oui | `FRAME_attak201` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak202` | oui | `FRAME_attak202` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak203` | oui | `FRAME_attak203` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak204` | oui | `FRAME_attak204` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak205` | oui | `FRAME_attak205` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak206` | oui | `FRAME_attak206` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak207` | oui | `FRAME_attak207` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak208` | oui | `FRAME_attak208` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak209` | oui | `FRAME_attak209` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak210` | oui | `FRAME_attak210` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak211` | oui | `FRAME_attak211` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak212` | oui | `FRAME_attak212` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak213` | oui | `FRAME_attak213` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak214` | oui | `FRAME_attak214` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak215` | oui | `FRAME_attak215` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak216` | oui | `FRAME_attak216` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak217` | oui | `FRAME_attak217` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak218` | oui | `FRAME_attak218` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak219` | oui | `FRAME_attak219` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak220` | oui | `FRAME_attak220` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak221` | oui | `FRAME_attak221` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak222` | oui | `FRAME_attak222` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak223` | oui | `FRAME_attak223` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak224` | oui | `FRAME_attak224` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak225` | oui | `FRAME_attak225` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak301` | oui | `FRAME_attak301` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak302` | oui | `FRAME_attak302` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak303` | oui | `FRAME_attak303` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak304` | oui | `FRAME_attak304` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak305` | oui | `FRAME_attak305` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak306` | oui | `FRAME_attak306` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak307` | oui | `FRAME_attak307` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak308` | oui | `FRAME_attak308` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak309` | oui | `FRAME_attak309` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak310` | oui | `FRAME_attak310` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak311` | oui | `FRAME_attak311` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak312` | oui | `FRAME_attak312` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak313` | oui | `FRAME_attak313` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak314` | oui | `FRAME_attak314` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak315` | oui | `FRAME_attak315` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak316` | oui | `FRAME_attak316` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak317` | oui | `FRAME_attak317` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak318` | oui | `FRAME_attak318` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak319` | oui | `FRAME_attak319` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak320` | oui | `FRAME_attak320` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak321` | oui | `FRAME_attak321` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak322` | oui | `FRAME_attak322` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak323` | oui | `FRAME_attak323` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak324` | oui | `FRAME_attak324` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak325` | oui | `FRAME_attak325` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak326` | oui | `FRAME_attak326` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak327` | oui | `FRAME_attak327` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak328` | oui | `FRAME_attak328` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak329` | oui | `FRAME_attak329` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak330` | oui | `FRAME_attak330` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak331` | oui | `FRAME_attak331` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak332` | oui | `FRAME_attak332` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak333` | oui | `FRAME_attak333` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_attak334` | oui | `FRAME_attak334` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death01` | oui | `FRAME_death01` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death02` | oui | `FRAME_death02` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death03` | oui | `FRAME_death03` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death04` | oui | `FRAME_death04` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death05` | oui | `FRAME_death05` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death06` | oui | `FRAME_death06` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death07` | oui | `FRAME_death07` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death08` | oui | `FRAME_death08` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death09` | oui | `FRAME_death09` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death10` | oui | `FRAME_death10` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death11` | oui | `FRAME_death11` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death12` | oui | `FRAME_death12` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_death13` | oui | `FRAME_death13` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain105` | oui | `FRAME_pain105` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain106` | oui | `FRAME_pain106` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain107` | oui | `FRAME_pain107` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain201` | oui | `FRAME_pain201` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain202` | oui | `FRAME_pain202` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain203` | oui | `FRAME_pain203` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain204` | oui | `FRAME_pain204` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain205` | oui | `FRAME_pain205` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain206` | oui | `FRAME_pain206` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain207` | oui | `FRAME_pain207` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain208` | oui | `FRAME_pain208` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain301` | oui | `FRAME_pain301` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain302` | oui | `FRAME_pain302` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain303` | oui | `FRAME_pain303` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain304` | oui | `FRAME_pain304` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain305` | oui | `FRAME_pain305` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain306` | oui | `FRAME_pain306` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain307` | oui | `FRAME_pain307` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain308` | oui | `FRAME_pain308` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain309` | oui | `FRAME_pain309` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain310` | oui | `FRAME_pain310` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain311` | oui | `FRAME_pain311` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_pain312` | oui | `FRAME_pain312` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand101` | oui | `FRAME_stand101` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand102` | oui | `FRAME_stand102` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand103` | oui | `FRAME_stand103` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand104` | oui | `FRAME_stand104` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand105` | oui | `FRAME_stand105` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand106` | oui | `FRAME_stand106` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand107` | oui | `FRAME_stand107` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand108` | oui | `FRAME_stand108` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand109` | oui | `FRAME_stand109` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand110` | oui | `FRAME_stand110` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand111` | oui | `FRAME_stand111` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand112` | oui | `FRAME_stand112` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand113` | oui | `FRAME_stand113` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand114` | oui | `FRAME_stand114` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand115` | oui | `FRAME_stand115` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand116` | oui | `FRAME_stand116` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand117` | oui | `FRAME_stand117` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand118` | oui | `FRAME_stand118` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand119` | oui | `FRAME_stand119` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand120` | oui | `FRAME_stand120` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand121` | oui | `FRAME_stand121` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand122` | oui | `FRAME_stand122` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand123` | oui | `FRAME_stand123` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand124` | oui | `FRAME_stand124` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand125` | oui | `FRAME_stand125` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand126` | oui | `FRAME_stand126` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand127` | oui | `FRAME_stand127` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand128` | oui | `FRAME_stand128` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand129` | oui | `FRAME_stand129` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand130` | oui | `FRAME_stand130` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand131` | oui | `FRAME_stand131` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand132` | oui | `FRAME_stand132` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand133` | oui | `FRAME_stand133` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand134` | oui | `FRAME_stand134` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand135` | oui | `FRAME_stand135` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand136` | oui | `FRAME_stand136` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand137` | oui | `FRAME_stand137` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand138` | oui | `FRAME_stand138` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand139` | oui | `FRAME_stand139` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand140` | oui | `FRAME_stand140` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand141` | oui | `FRAME_stand141` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand142` | oui | `FRAME_stand142` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand143` | oui | `FRAME_stand143` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand144` | oui | `FRAME_stand144` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand145` | oui | `FRAME_stand145` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand146` | oui | `FRAME_stand146` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand147` | oui | `FRAME_stand147` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand148` | oui | `FRAME_stand148` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand149` | oui | `FRAME_stand149` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand150` | oui | `FRAME_stand150` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand151` | oui | `FRAME_stand151` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_float.ts` | value | `FRAME_stand152` | oui | `FRAME_stand152` | `Quake-2-master/game/m_float.h` | Ported | [`game_m_float.h.md`](../matrices/game_m_float.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_float.ts` | value | `FRAME_stand201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_float.ts` | value | `FRAME_stand202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_float.ts` | value | `FRAME_stand203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

@@ -4,10 +4,10 @@
 
 - Fichier TS: `packages/game/src/m_flash.ts`
 - Symboles TS: 2
-- Couvert C/H: 0
-- Reste a auditer: 2
+- Couvert C/H: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_flash.ts` | value | `monster_flash_offset` | oui | `monster_flash_offset` | `Quake-2-master/game/m_flash.c` | Ported | [`game_m_flash.c.md`](../matrices/game_m_flash.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/game/src/m_flash.ts` | function | `getMonsterFlashOffset` | oui | `monster_flash_offset` | `Quake-2-master/game/m_flash.c` | Ported | [`game_m_flash.c.md`](../matrices/game_m_flash.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
+| `packages/game/src/m_flash.ts` | value | `monster_flash_offset` | oui | `monster_flash_offset` | `Quake-2-master/game/m_flash.c` | Ported | [`game_m_flash.c.md`](../matrices/game_m_flash.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_flash.ts` | function | `getMonsterFlashOffset` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |

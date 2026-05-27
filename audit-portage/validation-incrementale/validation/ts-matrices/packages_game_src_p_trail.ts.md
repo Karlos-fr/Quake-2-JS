@@ -5,7 +5,7 @@
 - Fichier TS: `packages/game/src/p_trail.ts`
 - Symboles TS: 10
 - Couvert C/H: 0
-- Reste a auditer: 10
+- Reste a auditer: 9
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -18,4 +18,4 @@
 | `packages/game/src/p_trail.ts` | function | `PlayerTrail_PickFirst` | oui | `PlayerTrail_PickFirst` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_trail.ts` | function | `PlayerTrail_PickNext` | oui | `PlayerTrail_PickNext` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_trail.ts` | function | `PlayerTrail_LastSpot` | oui | `PlayerTrail_LastSpot` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/p_trail.ts` | function | `vectoyaw` | non | `vectoyaw` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
+| `packages/game/src/p_trail.ts` | function | `vectoyaw` | non | `vectoyaw` | `Quake-2-master/game/g_utils.c` | Ported import | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Import externe | Non applicable | Import consommateur; proprietaire valide: `packages/game/src/g_utils.ts` / `vectoyaw`. |

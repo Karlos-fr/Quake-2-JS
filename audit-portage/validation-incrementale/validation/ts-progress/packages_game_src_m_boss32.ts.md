@@ -1,0 +1,21 @@
+# Progress TS - packages/game/src/m_boss32.ts
+
+- Statut: En cours
+- Dernier lot valide: `FRAME_pain301` a `FRAME_pain325` (25 macros de frames pain 3) marques `Couvert C/H`.
+- Preuves consultees:
+  - `packages/game/src/m_boss32.ts`
+  - `Quake-2-master/game/m_boss32.h`
+  - `audit-portage/validation-incrementale/validation/matrices/game_m_boss32.h.md`
+  - `audit-portage/validation-incrementale/validation/ts-matrices/packages_game_src_m_boss32.ts.md`
+- Tests de reference: non lances; aucune modification de code, valeurs deja couvertes par la matrice C/H `game_m_boss32.h.md`.
+- Decisions:
+  - Les constantes `FRAME_attak101` a `FRAME_attak118` appartiennent bien a `packages/game/src/m_boss32.ts`, source `Quake-2-master/game/m_boss32.h`, category `Ported`.
+  - Les constantes `FRAME_attak201` a `FRAME_attak213` appartiennent bien a `packages/game/src/m_boss32.ts`, source `Quake-2-master/game/m_boss32.h`, category `Ported`.
+  - Les constantes `FRAME_death01` a `FRAME_death25` appartiennent bien a `packages/game/src/m_boss32.ts`, source `Quake-2-master/game/m_boss32.h`, category `Ported`; valeurs TS/H alignees `31` a `55`.
+  - Les constantes `FRAME_death26` a `FRAME_death50` appartiennent bien a `packages/game/src/m_boss32.ts`, source `Quake-2-master/game/m_boss32.h`, category `Ported`; valeurs TS/H alignees `56` a `80`.
+  - Les constantes `FRAME_pain101` a `FRAME_pain103` appartiennent bien a `packages/game/src/m_boss32.ts`, source `Quake-2-master/game/m_boss32.h`, category `Ported`; valeurs TS/H alignees `81` a `83`.
+  - Les constantes `FRAME_pain201` a `FRAME_pain203` appartiennent bien a `packages/game/src/m_boss32.ts`, source `Quake-2-master/game/m_boss32.h`, category `Ported`; valeurs TS/H alignees `84` a `86`.
+  - Les constantes `FRAME_pain301` a `FRAME_pain325` appartiennent bien a `packages/game/src/m_boss32.ts`, source `Quake-2-master/game/m_boss32.h`, category `Ported`; valeurs TS/H alignees `87` a `111`.
+  - Les doublons nominaux avec d'autres monstres, notamment `m_boss31.ts`, sont attendus: sources/proprietaires differents, pas un doublon de portage pour ce lot.
+- Blocages: aucun.
+- Prochain lot recommande: continuer avec `FRAME_stand01` a `FRAME_stand51`.

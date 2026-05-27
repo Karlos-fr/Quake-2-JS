@@ -319,9 +319,9 @@ export const monster_flash_offset: readonly vec3_t[] = [
 ];
 
 /**
- * Original name: monster_flash_offset
- * Source: game/m_flash.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
  * Fidelity level: Strict
  *
  * Behavior:

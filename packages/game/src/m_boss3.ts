@@ -28,7 +28,19 @@ import {
 } from "./runtime.js";
 import { FRAME_stand201, FRAME_stand260 } from "./m_boss32.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (asset path constant)
+ * Category: New
+ * Purpose: Name the boss3 stand-in rider model path assigned by `SP_monster_boss3_stand`.
+ */
 const MODEL_BOSS3_RIDER = "models/monsters/boss3/rider/tris.md2";
+/**
+ * Original name: N/A
+ * Source: N/A (asset path constant)
+ * Category: New
+ * Purpose: Name the boss3 teleport sound path precached by `SP_monster_boss3_stand`.
+ */
 const SOUND_BIG_TELEPORT = "misc/bigtele.wav";
 
 /**
@@ -100,6 +112,12 @@ export function SP_monster_boss3_stand(self: GameEntity, runtime: GameRuntime): 
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Local `VectorSet` equivalent for mutable entity bounds.
+ */
 function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
   vector[0] = x;
   vector[1] = y;

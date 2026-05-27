@@ -12,6 +12,12 @@
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import type { WebAudioAdapterLogHooks } from "./web-audio-adapter.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio adapter)
+ * Category: Adapter
+ * Purpose: Browser dependencies required to translate logical CD-audio hooks into Web Audio playback.
+ */
 export interface WebCDAudioAdapterOptions {
   context: AudioContext | null;
   filesystem: VirtualFilesystem;
@@ -19,6 +25,12 @@ export interface WebCDAudioAdapterOptions {
   trackResolver?: (track: number) => string[];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio adapter)
+ * Category: Adapter
+ * Purpose: Host backend consumed by the client CD-audio port in browser runtimes.
+ */
 export interface WebCDAudioAdapter {
   readonly currentTrack: number;
   readonly playing: boolean;
@@ -32,6 +44,12 @@ export interface WebCDAudioAdapter {
   update: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio adapter)
+ * Category: Adapter
+ * Purpose: Create the browser CD-audio backend used by runtime hooks instead of native CD-ROM APIs.
+ */
 export function createWebCDAudioAdapter(options: WebCDAudioAdapterOptions): WebCDAudioAdapter {
   const context = options.context;
   const logs = options.logs ?? {};

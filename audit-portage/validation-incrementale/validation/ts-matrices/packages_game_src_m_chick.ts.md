@@ -4,192 +4,192 @@
 
 - Fichier TS: `packages/game/src/m_chick.ts`
 - Symboles TS: 386
-- Couvert C/H: 24
-- Reste a auditer: 362
+- Couvert C/H: 205
+- Reste a auditer: 181
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak129` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak130` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak131` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak132` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_attak216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death218` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death219` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death220` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death221` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death222` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_death223` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_duck01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_duck02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_duck03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_duck04` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_duck05` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_duck06` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_duck07` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain301` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain302` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain303` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain304` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain305` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain306` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain307` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain308` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain309` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain310` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain311` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain312` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain313` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain314` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain315` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain316` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain317` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain318` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain319` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain320` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_pain321` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand101` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand102` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand103` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand104` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand105` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand106` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand107` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand108` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand109` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand110` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand111` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand112` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand113` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand114` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand115` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand116` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand117` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand118` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand119` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand120` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand121` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand122` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand123` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand124` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand125` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand126` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand127` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand128` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand129` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand130` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand201` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand202` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand203` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand204` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand205` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand206` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand207` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand208` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand209` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand210` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand211` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand212` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand213` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand214` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand215` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand216` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand217` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand218` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand219` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand220` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand221` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand222` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand223` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand224` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand225` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand226` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand227` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand228` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand229` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_chick.ts` | value | `FRAME_stand230` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak101` | oui | `FRAME_attak101` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak102` | oui | `FRAME_attak102` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak103` | oui | `FRAME_attak103` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak104` | oui | `FRAME_attak104` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak105` | oui | `FRAME_attak105` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak106` | oui | `FRAME_attak106` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak107` | oui | `FRAME_attak107` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak108` | oui | `FRAME_attak108` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak109` | oui | `FRAME_attak109` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak110` | oui | `FRAME_attak110` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak111` | oui | `FRAME_attak111` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak112` | oui | `FRAME_attak112` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak113` | oui | `FRAME_attak113` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak114` | oui | `FRAME_attak114` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak115` | oui | `FRAME_attak115` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak116` | oui | `FRAME_attak116` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak117` | oui | `FRAME_attak117` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak118` | oui | `FRAME_attak118` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak119` | oui | `FRAME_attak119` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak120` | oui | `FRAME_attak120` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak121` | oui | `FRAME_attak121` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak122` | oui | `FRAME_attak122` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak123` | oui | `FRAME_attak123` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak124` | oui | `FRAME_attak124` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak125` | oui | `FRAME_attak125` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak126` | oui | `FRAME_attak126` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak127` | oui | `FRAME_attak127` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak128` | oui | `FRAME_attak128` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak129` | oui | `FRAME_attak129` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak130` | oui | `FRAME_attak130` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak131` | oui | `FRAME_attak131` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak132` | oui | `FRAME_attak132` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak201` | oui | `FRAME_attak201` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak202` | oui | `FRAME_attak202` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak203` | oui | `FRAME_attak203` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak204` | oui | `FRAME_attak204` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak205` | oui | `FRAME_attak205` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak206` | oui | `FRAME_attak206` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak207` | oui | `FRAME_attak207` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak208` | oui | `FRAME_attak208` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak209` | oui | `FRAME_attak209` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak210` | oui | `FRAME_attak210` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak211` | oui | `FRAME_attak211` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak212` | oui | `FRAME_attak212` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak213` | oui | `FRAME_attak213` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak214` | oui | `FRAME_attak214` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak215` | oui | `FRAME_attak215` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_attak216` | oui | `FRAME_attak216` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death101` | oui | `FRAME_death101` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death102` | oui | `FRAME_death102` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death103` | oui | `FRAME_death103` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death104` | oui | `FRAME_death104` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death105` | oui | `FRAME_death105` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death106` | oui | `FRAME_death106` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death107` | oui | `FRAME_death107` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death108` | oui | `FRAME_death108` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death109` | oui | `FRAME_death109` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death110` | oui | `FRAME_death110` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death111` | oui | `FRAME_death111` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death112` | oui | `FRAME_death112` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death201` | oui | `FRAME_death201` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death202` | oui | `FRAME_death202` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death203` | oui | `FRAME_death203` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death204` | oui | `FRAME_death204` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death205` | oui | `FRAME_death205` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death206` | oui | `FRAME_death206` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death207` | oui | `FRAME_death207` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death208` | oui | `FRAME_death208` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death209` | oui | `FRAME_death209` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death210` | oui | `FRAME_death210` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death211` | oui | `FRAME_death211` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death212` | oui | `FRAME_death212` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death213` | oui | `FRAME_death213` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death214` | oui | `FRAME_death214` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death215` | oui | `FRAME_death215` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death216` | oui | `FRAME_death216` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death217` | oui | `FRAME_death217` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death218` | oui | `FRAME_death218` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death219` | oui | `FRAME_death219` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death220` | oui | `FRAME_death220` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death221` | oui | `FRAME_death221` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death222` | oui | `FRAME_death222` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_death223` | oui | `FRAME_death223` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_duck01` | oui | `FRAME_duck01` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_duck02` | oui | `FRAME_duck02` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_duck03` | oui | `FRAME_duck03` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_duck04` | oui | `FRAME_duck04` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_duck05` | oui | `FRAME_duck05` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_duck06` | oui | `FRAME_duck06` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_duck07` | oui | `FRAME_duck07` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain101` | oui | `FRAME_pain101` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain102` | oui | `FRAME_pain102` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain103` | oui | `FRAME_pain103` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain104` | oui | `FRAME_pain104` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain105` | oui | `FRAME_pain105` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain201` | oui | `FRAME_pain201` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain202` | oui | `FRAME_pain202` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain203` | oui | `FRAME_pain203` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain204` | oui | `FRAME_pain204` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain205` | oui | `FRAME_pain205` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain301` | oui | `FRAME_pain301` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain302` | oui | `FRAME_pain302` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain303` | oui | `FRAME_pain303` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain304` | oui | `FRAME_pain304` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain305` | oui | `FRAME_pain305` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain306` | oui | `FRAME_pain306` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain307` | oui | `FRAME_pain307` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain308` | oui | `FRAME_pain308` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain309` | oui | `FRAME_pain309` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain310` | oui | `FRAME_pain310` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain311` | oui | `FRAME_pain311` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain312` | oui | `FRAME_pain312` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain313` | oui | `FRAME_pain313` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain314` | oui | `FRAME_pain314` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain315` | oui | `FRAME_pain315` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain316` | oui | `FRAME_pain316` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain317` | oui | `FRAME_pain317` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain318` | oui | `FRAME_pain318` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain319` | oui | `FRAME_pain319` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain320` | oui | `FRAME_pain320` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_pain321` | oui | `FRAME_pain321` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand101` | oui | `FRAME_stand101` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand102` | oui | `FRAME_stand102` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand103` | oui | `FRAME_stand103` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand104` | oui | `FRAME_stand104` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand105` | oui | `FRAME_stand105` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand106` | oui | `FRAME_stand106` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand107` | oui | `FRAME_stand107` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand108` | oui | `FRAME_stand108` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand109` | oui | `FRAME_stand109` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand110` | oui | `FRAME_stand110` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand111` | oui | `FRAME_stand111` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand112` | oui | `FRAME_stand112` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand113` | oui | `FRAME_stand113` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand114` | oui | `FRAME_stand114` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand115` | oui | `FRAME_stand115` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand116` | oui | `FRAME_stand116` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand117` | oui | `FRAME_stand117` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand118` | oui | `FRAME_stand118` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand119` | oui | `FRAME_stand119` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand120` | oui | `FRAME_stand120` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand121` | oui | `FRAME_stand121` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand122` | oui | `FRAME_stand122` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand123` | oui | `FRAME_stand123` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand124` | oui | `FRAME_stand124` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand125` | oui | `FRAME_stand125` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand126` | oui | `FRAME_stand126` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand127` | oui | `FRAME_stand127` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand128` | oui | `FRAME_stand128` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand129` | oui | `FRAME_stand129` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand130` | oui | `FRAME_stand130` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand201` | oui | `FRAME_stand201` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand202` | oui | `FRAME_stand202` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand203` | oui | `FRAME_stand203` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand204` | oui | `FRAME_stand204` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand205` | oui | `FRAME_stand205` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand206` | oui | `FRAME_stand206` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand207` | oui | `FRAME_stand207` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand208` | oui | `FRAME_stand208` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand209` | oui | `FRAME_stand209` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand210` | oui | `FRAME_stand210` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand211` | oui | `FRAME_stand211` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand212` | oui | `FRAME_stand212` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand213` | oui | `FRAME_stand213` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand214` | oui | `FRAME_stand214` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand215` | oui | `FRAME_stand215` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand216` | oui | `FRAME_stand216` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand217` | oui | `FRAME_stand217` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand218` | oui | `FRAME_stand218` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand219` | oui | `FRAME_stand219` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand220` | oui | `FRAME_stand220` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand221` | oui | `FRAME_stand221` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand222` | oui | `FRAME_stand222` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand223` | oui | `FRAME_stand223` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand224` | oui | `FRAME_stand224` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand225` | oui | `FRAME_stand225` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand226` | oui | `FRAME_stand226` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand227` | oui | `FRAME_stand227` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand228` | oui | `FRAME_stand228` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand229` | oui | `FRAME_stand229` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_chick.ts` | value | `FRAME_stand230` | oui | `FRAME_stand230` | `Quake-2-master/game/m_chick.h` | Ported | [`game_m_chick.h.md`](../matrices/game_m_chick.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_chick.ts` | value | `FRAME_walk01` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_chick.ts` | value | `FRAME_walk02` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/m_chick.ts` | value | `FRAME_walk03` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

@@ -5,10 +5,10 @@
 - Fichier TS: `packages/qcommon/src/runtime.ts`
 - Symboles TS: 3
 - Couvert C/H: 0
-- Reste a auditer: 3
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/qcommon/src/runtime.ts` | interface | `QcommonRuntimeOptions` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/runtime.ts` | interface | `QcommonRuntime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/runtime.ts` | function | `createQcommonRuntime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/qcommon/src/runtime.ts` | interface | `QcommonRuntimeOptions` | oui | N/A | N/A (runtime facade) | New |  | Entete complet | Valide |  |
+| `packages/qcommon/src/runtime.ts` | interface | `QcommonRuntime` | oui | N/A | N/A (runtime facade) | New |  | Entete complet | Valide |  |
+| `packages/qcommon/src/runtime.ts` | function | `createQcommonRuntime` | oui | N/A | N/A (runtime facade) | New |  | Entete complet | Valide |  |

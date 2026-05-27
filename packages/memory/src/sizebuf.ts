@@ -17,7 +17,7 @@
  */
 
 /**
- * Original name: sizebuf_t
+ * Original name: sizebuf_s
  * Source: Quake-2-master/qcommon/qcommon.h
  * Category: Ported
  * Fidelity level: Strict
@@ -26,6 +26,7 @@
  * - Stores write and read cursors for a byte buffer used by Quake II message IO.
  *
  * Porting notes:
+ * - TS symbol uses the original typedef name `sizebuf_t`; the C/H matrix tracks the owning struct as `sizebuf_s`.
  * - Keeps the original field names to preserve source traceability.
  */
 export interface sizebuf_t {
@@ -38,6 +39,8 @@ export interface sizebuf_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local allocation helper)
  * Category: New
  * Purpose: Allocate a new size buffer backed by a Uint8Array.
  *
@@ -183,6 +186,8 @@ export function SZ_Print(buf: sizebuf_t, data: string): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local string encoding helper)
  * Category: New
  * Purpose: Encode a JavaScript string as a null-terminated byte sequence for Quake II buffers.
  *

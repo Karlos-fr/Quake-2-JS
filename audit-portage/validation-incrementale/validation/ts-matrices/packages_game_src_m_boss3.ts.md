@@ -4,14 +4,14 @@
 
 - Fichier TS: `packages/game/src/m_boss3.ts`
 - Symboles TS: 6
-- Couvert C/H: 0
-- Reste a auditer: 6
+- Couvert C/H: 3
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/m_boss3.ts` | value | `MODEL_BOSS3_RIDER` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss3.ts` | value | `SOUND_BIG_TELEPORT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_boss3.ts` | function | `Use_Boss3` | oui | `Use_Boss3` | `Quake-2-master/game/m_boss3.c` | Ported | [`game_m_boss3.c.md`](../matrices/game_m_boss3.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_boss3.ts` | function | `Think_Boss3Stand` | oui | `Think_Boss3Stand` | `Quake-2-master/game/m_boss3.c` | Ported | [`game_m_boss3.c.md`](../matrices/game_m_boss3.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_boss3.ts` | function | `SP_monster_boss3_stand` | oui | `SP_monster_boss3_stand` | `Quake-2-master/game/m_boss3.c` | Ported | [`game_m_boss3.c.md`](../matrices/game_m_boss3.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_boss3.ts` | function | `setVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_boss3.ts` | value | `MODEL_BOSS3_RIDER` | non | `N/A` | `N/A (asset path constant)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_boss3.ts` | value | `SOUND_BIG_TELEPORT` | non | `N/A` | `N/A (asset path constant)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_boss3.ts` | function | `Use_Boss3` | oui | `Use_Boss3` | `Quake-2-master/game/m_boss3.c` | Ported | [`game_m_boss3.c.md`](../matrices/game_m_boss3.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss3.ts` | function | `Think_Boss3Stand` | oui | `Think_Boss3Stand` | `Quake-2-master/game/m_boss3.c` | Ported | [`game_m_boss3.c.md`](../matrices/game_m_boss3.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss3.ts` | function | `SP_monster_boss3_stand` | oui | `SP_monster_boss3_stand` | `Quake-2-master/game/m_boss3.c` | Ported | [`game_m_boss3.c.md`](../matrices/game_m_boss3.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_boss3.ts` | function | `setVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Hors C/H | Valide |  |
