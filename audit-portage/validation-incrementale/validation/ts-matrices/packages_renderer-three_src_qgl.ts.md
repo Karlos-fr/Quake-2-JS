@@ -4,60 +4,60 @@
 
 - Fichier TS: `packages/renderer-three/src/qgl.ts`
 - Symboles TS: 52
-- Couvert C/H: 0
-- Reste a auditer: 52
+- Couvert C/H: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/qgl.ts` | type | `qboolean` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QglProcedure` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QwglProcedure` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `QGL_PROCEDURES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `QGL_OPTIONAL_PROCEDURES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `QWGL_WIN32_PROCEDURES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QglProcedureName` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QglOptionalProcedure` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QglRequiredProcedure` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QglInventoryProcedure` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QwglProcedureName` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QwglInventoryProcedure` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `QGL_OPTIONAL_PROCEDURE_SET` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `QGL_REQUIRED_PROCEDURES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QglDispatchTable` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | type | `QwglDispatchTable` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | interface | `QglSymbolProvider` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | interface | `QglRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | interface | `QwglRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | interface | `QglInitOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | interface | `QglBootstrapOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_POINT_SIZE_MIN_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_POINT_SIZE_MAX_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_POINT_FADE_THRESHOLD_SIZE_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_DISTANCE_ATTENUATION_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_SHARED_TEXTURE_PALETTE_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_TEXTURE0_SGIS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_TEXTURE1_SGIS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_VENDOR` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_RENDERER` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_VERSION` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | value | `GL_EXTENSIONS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `createQglRuntime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/qgl.ts` | function | `createQwglRuntime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/qgl.ts` | function | `createObjectQglProvider` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/qgl.ts` | function | `QGL_Init` | oui | `QGL_Init` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/renderer-three/src/qgl.ts` | function | `QGL_Shutdown` | oui | `QGL_Shutdown` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/renderer-three/src/qgl.ts` | function | `QWGL_Init` | oui | `QGL_Init` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/renderer-three/src/qgl.ts` | function | `QWGL_Shutdown` | oui | `QGL_Shutdown` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. |
-| `packages/renderer-three/src/qgl.ts` | function | `hasQglProcedure` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/qgl.ts` | function | `hasQwglProcedure` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/qgl.ts` | function | `createQglBootstrapHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/qgl.ts` | function | `createEmptyDispatchTable` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `createEmptyQwglDispatchTable` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `createUnboundRequiredProcedure` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `createUnboundQwglProcedure` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `isQglProcedure` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `isQwglProcedure` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `resolveKnownBootstrapProcedure` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `mapBackendProcToQglName` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `mapBackendProcToQwglName` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/qgl.ts` | function | `readGlString` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/qgl.ts` | type | `qboolean` | oui | `qboolean` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Alias TS bool pour le retour `QGL_Init`; `qboolean` est defini hors `qgl.h`. |
+| `packages/renderer-three/src/qgl.ts` | type | `QglProcedure` | oui | `qgl* procedure pointers` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Typage generique volontaire des providers WebGL. |
+| `packages/renderer-three/src/qgl.ts` | type | `QwglProcedure` | oui | `qwgl* procedure pointers` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Typage generique volontaire des providers Win32 optionnels. |
+| `packages/renderer-three/src/qgl.ts` | value | `QGL_PROCEDURES` | oui | `qgl* procedure inventory` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Inventaire complet verifie par `verify:qgl:header`. |
+| `packages/renderer-three/src/qgl.ts` | value | `QGL_OPTIONAL_PROCEDURES` | oui | `qgl* optional extension inventory` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Maintient le pattern source `if (qglFooEXT)`. |
+| `packages/renderer-three/src/qgl.ts` | value | `QWGL_WIN32_PROCEDURES` | oui | `qwgl* procedure inventory` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Inventaire Win32 conserve comme contrat optionnel; verifie par `verify:qgl:header`. |
+| `packages/renderer-three/src/qgl.ts` | type | `QglProcedureName` | oui | `qgl* procedure inventory type` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | type | `QglOptionalProcedure` | oui | `qgl* optional extension inventory type` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | type | `QglRequiredProcedure` | oui | `qgl* required inventory type` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | type | `QglInventoryProcedure` | oui | `qgl* procedure inventory type` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | type | `QwglProcedureName` | oui | `qwgl* procedure inventory type` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | type | `QwglInventoryProcedure` | oui | `qwgl* procedure inventory type` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | value | `QGL_OPTIONAL_PROCEDURE_SET` | non | `qgl* optional extension lookup` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | value | `QGL_REQUIRED_PROCEDURES` | oui | `qgl* required procedure inventory` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | type | `QglDispatchTable` | oui | `qgl* procedure pointers` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | type | `QwglDispatchTable` | oui | `qwgl* procedure pointers` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | interface | `QglSymbolProvider` | oui | `QGL dynamic symbol loader` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Remplace le chargement DLL par provider injectable. |
+| `packages/renderer-three/src/qgl.ts` | interface | `QglRuntime` | oui | `qgl* global procedure pointers` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Runtime explicite remplacant les globals C. |
+| `packages/renderer-three/src/qgl.ts` | interface | `QwglRuntime` | oui | `qwgl* global procedure pointers` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Runtime explicite pour l'inventaire Win32 optionnel. |
+| `packages/renderer-three/src/qgl.ts` | interface | `QglInitOptions` | oui | `N/A` | `N/A (QGL init options)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | interface | `QglBootstrapOptions` | oui | `N/A` | `N/A (renderer bootstrap options)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_POINT_SIZE_MIN_EXT` | oui | `GL_POINT_SIZE_MIN_EXT` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_POINT_SIZE_MAX_EXT` | oui | `GL_POINT_SIZE_MAX_EXT` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_POINT_FADE_THRESHOLD_SIZE_EXT` | oui | `GL_POINT_FADE_THRESHOLD_SIZE_EXT` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_DISTANCE_ATTENUATION_EXT` | oui | `GL_DISTANCE_ATTENUATION_EXT` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_SHARED_TEXTURE_PALETTE_EXT` | oui | `GL_SHARED_TEXTURE_PALETTE_EXT` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_TEXTURE0_SGIS` | oui | `GL_TEXTURE0_SGIS` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_TEXTURE1_SGIS` | oui | `GL_TEXTURE1_SGIS` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_VENDOR` | non | `GL_VENDOR` | `N/A (OpenGL enum adapter)` | Adapter |  | Valide | Valide | Enum OpenGL standard utilise par `qglGetString`, pas defini par `qgl.h`. |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_RENDERER` | non | `GL_RENDERER` | `N/A (OpenGL enum adapter)` | Adapter |  | Valide | Valide | Enum OpenGL standard utilise par `qglGetString`, pas defini par `qgl.h`. |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_VERSION` | non | `GL_VERSION` | `N/A (OpenGL enum adapter)` | Adapter |  | Valide | Valide | Enum OpenGL standard utilise par `qglGetString`, pas defini par `qgl.h`. |
+| `packages/renderer-three/src/qgl.ts` | value | `GL_EXTENSIONS` | non | `GL_EXTENSIONS` | `N/A (OpenGL enum adapter)` | Adapter |  | Valide | Valide | Enum OpenGL standard utilise par `qglGetString`, pas defini par `qgl.h`. |
+| `packages/renderer-three/src/qgl.ts` | function | `createQglRuntime` | oui | `N/A` | `N/A (QGL runtime factory)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `createQwglRuntime` | oui | `N/A` | `N/A (Win32 QGL runtime factory)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `createObjectQglProvider` | oui | `N/A` | `N/A (object symbol provider)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `QGL_Init` | oui | `QGL_Init` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | function | `QGL_Shutdown` | oui | `QGL_Shutdown` | `Quake-2-master/ref_gl/qgl.h` | Ported | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/qgl.ts` | function | `QWGL_Init` | oui | `N/A` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Adapter Win32 `qwgl*`; ne doit pas etre masque comme portage de `QGL_Init`. |
+| `packages/renderer-three/src/qgl.ts` | function | `QWGL_Shutdown` | oui | `N/A` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide | Adapter Win32 `qwgl*`; ne doit pas etre masque comme portage de `QGL_Shutdown`. |
+| `packages/renderer-three/src/qgl.ts` | function | `hasQglProcedure` | oui | `N/A` | `N/A (QGL runtime query)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `hasQwglProcedure` | oui | `N/A` | `N/A (Win32 QGL runtime query)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `createQglBootstrapHooks` | oui | `N/A` | `N/A (renderer bootstrap adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `createEmptyDispatchTable` | non | `qgl* procedure pointer table` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `createEmptyQwglDispatchTable` | non | `qwgl* procedure pointer table` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `createUnboundRequiredProcedure` | non | `qgl* unbound pointer guard` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `createUnboundQwglProcedure` | non | `qwgl* unbound pointer guard` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `isQglProcedure` | non | `qgl* procedure pointer check` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `isQwglProcedure` | non | `qwgl* procedure pointer check` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `resolveKnownBootstrapProcedure` | non | `qgl/qwgl backend procedure resolver` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `mapBackendProcToQglName` | non | `qgl extension procedure name mapping` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `mapBackendProcToQwglName` | non | `qwgl extension procedure name mapping` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |
+| `packages/renderer-three/src/qgl.ts` | function | `readGlString` | non | `qglGetString wrapper` | `Quake-2-master/ref_gl/qgl.h` | Adapter | [`ref_gl_qgl.h.md`](../matrices/ref_gl_qgl.h.md) | Valide | Valide |  |

@@ -25,19 +25,83 @@ import { MAX_QPATH } from "../../qcommon/src/index.js";
 
 export { MAX_MD2SKINS };
 
+/**
+ * Original name: image_t
+ * Source: ref_gl/gl_model.h
+ * Category: Adapter
+ * Purpose: Keep the renderer model graph independent from the concrete image manager shape.
+ */
 export type image_t = unknown;
+
+/**
+ * Original name: model_s
+ * Source: ref_gl/gl_model.h
+ * Category: Adapter
+ * Purpose: Preserve the C forward-struct spelling used by refresh/client contracts.
+ */
 export type model_s = model_t;
 
+/**
+ * Original name: SIDE_FRONT
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SIDE_FRONT = 0;
+
+/**
+ * Original name: SIDE_BACK
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SIDE_BACK = 1;
+
+/**
+ * Original name: SIDE_ON
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SIDE_ON = 2;
 
+/**
+ * Original name: SURF_PLANEBACK
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SURF_PLANEBACK = 2;
+
+/**
+ * Original name: SURF_DRAWSKY
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SURF_DRAWSKY = 4;
+
+/**
+ * Original name: SURF_DRAWTURB
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SURF_DRAWTURB = 0x10;
+
+/**
+ * Original name: SURF_DRAWBACKGROUND
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SURF_DRAWBACKGROUND = 0x40;
+
+/**
+ * Original name: SURF_UNDERWATER
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const SURF_UNDERWATER = 0x80;
 
+/**
+ * Original name: VERTEXSIZE
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ */
 export const VERTEXSIZE = 7;
 
 /**
@@ -95,6 +159,12 @@ export interface mtexinfo_t {
   image: image_t | null;
 }
 
+/**
+ * Original name: glpoly_s.verts element
+ * Source: ref_gl/gl_model.h
+ * Category: Adapter
+ * Purpose: Represent one `VERTEXSIZE` tuple from the original flexible vertex payload.
+ */
 export type glpoly_vertex_t = [number, number, number, number, number, number, number];
 
 /**
@@ -184,6 +254,12 @@ export interface mleaf_t {
   nummarksurfaces: number;
 }
 
+/**
+ * Original name: mnode_s.children
+ * Source: ref_gl/gl_model.h
+ * Category: Adapter
+ * Purpose: Model the shared node/leaf child pointer shape in TypeScript.
+ */
 export type mnode_child_t = mnode_t | mleaf_t;
 
 /**
@@ -252,6 +328,8 @@ export interface model_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `mvertex_t` with the canonical Quake II tuple shape.
  */
@@ -262,6 +340,8 @@ export function createMVertex(): mvertex_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `mmodel_t` aligned with the original in-memory brush submodel shape.
  */
@@ -279,6 +359,8 @@ export function createMModel(): mmodel_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `medge_t`.
  */
@@ -290,6 +372,8 @@ export function createMEdge(): medge_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `mtexinfo_t`.
  */
@@ -307,6 +391,8 @@ export function createMTexinfo(): mtexinfo_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `glpoly_t`.
  */
@@ -321,6 +407,8 @@ export function createGlPoly(): glpoly_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `msurface_t`.
  */
@@ -351,6 +439,8 @@ export function createMSurface(): msurface_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `mnode_t`.
  */
@@ -368,6 +458,8 @@ export function createMNode(): mnode_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty `mleaf_t`.
  */
@@ -385,6 +477,8 @@ export function createMLeaf(): mleaf_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model factory)
  * Category: New
  * Purpose: Create one empty renderer `model_t` ready to be populated by later `gl_model.c` loading logic.
  */
@@ -434,6 +528,8 @@ export function createModel(): model_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model helper)
  * Category: New
  * Purpose: Mirror the original fixed-size `name[MAX_QPATH]` contract in one guard helper.
  *
@@ -445,6 +541,8 @@ export function isModelNameWithinQPath(name: string): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model helper)
  * Category: New
  * Purpose: Check whether a surface carries any baked or dynamic lightmap style payload.
  */
@@ -453,6 +551,8 @@ export function hasSurfaceSamples(surface: msurface_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model helper)
  * Category: New
  * Purpose: Check whether a polygon vertex conforms to the original `VERTEXSIZE` payload.
  */
@@ -461,6 +561,8 @@ export function isValidGlPolyVertex(vertex: readonly number[]): vertex is glpoly
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model helper)
  * Category: New
  * Purpose: Check whether a polygon payload is internally consistent with `numverts`.
  */
@@ -469,6 +571,8 @@ export function isValidGlPoly(poly: glpoly_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model helper)
  * Category: New
  * Purpose: Validate one model skin table against the original `MAX_MD2SKINS` fixed width.
  */
@@ -477,6 +581,8 @@ export function hasValidModelSkinCount(model: model_t): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model helper)
  * Category: New
  * Purpose: Expose the original lightstyle slot count used by `msurface_t`.
  */

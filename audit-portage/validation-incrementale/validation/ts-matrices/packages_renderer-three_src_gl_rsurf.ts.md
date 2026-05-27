@@ -5,7 +5,7 @@
 - Fichier TS: `packages/renderer-three/src/gl_rsurf.ts`
 - Symboles TS: 77
 - Couvert C/H: 30
-- Reste a auditer: 13
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -73,16 +73,16 @@
 | `packages/renderer-three/src/gl_rsurf.ts` | function | `queueAlphaSurface` | oui | N/A | N/A (alpha surface queue helper) | New |  | Valide | Valide |  |
 | `packages/renderer-three/src/gl_rsurf.ts` | function | `clearImageTextureChains` | oui | N/A | N/A (texture chain helper) | New |  | Valide | Valide |  |
 | `packages/renderer-three/src/gl_rsurf.ts` | function | `createGlRsurfModelHooks` | oui | N/A | N/A (model loader bridge) | New |  | Valide | Valide |  |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `getImageSize` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `readNumericProperty` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `readNestedQuakeDimension` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `dotTexAxis` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `isMNode` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `queueSurfaceLightmap` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `evaluateDynamicLightmapState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `computeFlowingScroll` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `resolveLightmapInternalFormat` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `resolveSurfaceAlpha` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `getImageRegistrationSequence` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `getImageTextureChain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rsurf.ts` | function | `setImageTextureChain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `getImageSize` | non | N/A | N/A (texture dimension helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `readNumericProperty` | non | N/A | N/A (texture dimension helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `readNestedQuakeDimension` | non | N/A | N/A (texture dimension helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `dotTexAxis` | non | `GL_BuildPolygonFromSurface texture-axis dot expression` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Extraction locale de l'expression UV, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `isMNode` | non | N/A | N/A (BSP node type guard) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `queueSurfaceLightmap` | non | `R_RenderBrushPoly/GL_RenderLightmappedPoly lightmapchain assignment` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Extraction locale d'affectations repetees, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `evaluateDynamicLightmapState` | non | `R_RenderBrushPoly/GL_RenderLightmappedPoly dynamic-lightmap test` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Extraction locale du test dynamique, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `computeFlowingScroll` | non | `DrawGLFlowingPoly scroll expression` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Extraction locale de la formule de scroll, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `resolveLightmapInternalFormat` | non | `GL_BeginBuildingLightmaps gl_monolightmap switch` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Extraction locale du switch de format, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `resolveSurfaceAlpha` | non | `R_DrawAlphaSurfaces alpha selection` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Extraction locale du choix alpha, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `getImageRegistrationSequence` | non | `image_t.registration_sequence access` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Acces adapter au champ image C/TS, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `getImageTextureChain` | non | `image_t.texturechain access` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Acces adapter au champ image C/TS, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rsurf.ts` | function | `setImageTextureChain` | non | `image_t.texturechain assignment` | `Quake-2-master/ref_gl/gl_rsurf.c` | Adapter | [ref_gl_gl_rsurf.c.md](../matrices/ref_gl_gl_rsurf.c.md) | Valide | Valide | Acces adapter au champ image C/TS, pas proprietaire C/H distinct. |

@@ -35,6 +35,12 @@ import {
 import { createGlState, type glconfig_t, type glstate_t, type viddef_t } from "./gl_local.js";
 import { GL_SHARED_TEXTURE_PALETTE_EXT } from "./qgl.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (OpenGL/WebGL numeric constants)
+ * Category: New
+ * Purpose: Provide the GL enum values used by the `gl_rmisc.c` backend hooks.
+ */
 export const GL_ALPHA_TEST = 0x0bc0;
 export const GL_BLEND = 0x0be2;
 export const GL_CULL_FACE = 0x0b44;
@@ -58,6 +64,12 @@ export const GL_TEXTURE_WRAP_S = 0x2802;
 export const GL_TEXTURE_WRAP_T = 0x2803;
 export const GL_DISTANCE_ATTENUATION_EXT = 0x8129;
 
+/**
+ * Original name: dottexture
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const DOT_TEXTURE: readonly number[][] = [
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 1, 1, 0, 0, 0, 0],
@@ -70,9 +82,9 @@ const DOT_TEXTURE: readonly number[][] = [
 ] as const;
 
 /**
- * Original name: dottexture-backed particle data build in R_InitParticleTexture
+ * Original name: R_InitParticleTexture particle texture loop
  * Source: ref_gl/gl_rmisc.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
@@ -93,9 +105,9 @@ export function buildParticleTextureRgba(): Uint8Array {
 }
 
 /**
- * Original name: dottexture-backed r_notexture data build in R_InitParticleTexture
+ * Original name: R_InitParticleTexture r_notexture loop
  * Source: ref_gl/gl_rmisc.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
@@ -115,6 +127,12 @@ export function buildNoTextureRgba(): Uint8Array {
   return noTextureData;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer backend hook contract)
+ * Category: New
+ * Purpose: Declare the side-effect hooks that replace direct GL, filesystem and console calls.
+ */
 export interface GlRmiscHooks {
   loadPic?: (
     name: string,
@@ -145,6 +163,12 @@ export interface GlRmiscHooks {
   updateSwapInterval?: (value: number) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit runtime container for ref_gl/gl_rmisc.c globals)
+ * Category: New
+ * Purpose: Hold the renderer state consumed by the miscellaneous GL refresh helpers.
+ */
 export interface GlRmiscRuntime {
   vid: viddef_t;
   gl_config: glconfig_t;
@@ -165,6 +189,12 @@ export interface GlRmiscRuntime {
   hooks: GlRmiscHooks;
 }
 
+/**
+ * Original name: _TargaHeader / TargaHeader
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export interface TargaHeader {
   id_length: number;
   colormap_type: number;
@@ -180,6 +210,12 @@ export interface TargaHeader {
   attributes: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
+ * Category: New
+ * Purpose: Create the explicit runtime object that replaces the original `gl_rmisc.c` globals.
+ */
 export function createGlRmiscRuntime(hooks: GlRmiscHooks = {}): GlRmiscRuntime {
   return {
     vid: { width: 0, height: 0 },
@@ -209,29 +245,61 @@ export function createGlRmiscRuntime(hooks: GlRmiscHooks = {}): GlRmiscRuntime {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
+ * Category: New
+ * Purpose: Mirror the current video dimensions into the `gl_rmisc.c` runtime state.
+ */
 export function setRmiscVid(runtime: GlRmiscRuntime, width: number, height: number): void {
   runtime.vid.width = width;
   runtime.vid.height = height;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
+ * Category: New
+ * Purpose: Mirror GL configuration strings and flags into the `gl_rmisc.c` runtime state.
+ */
 export function setRmiscGlConfig(runtime: GlRmiscRuntime, config: Partial<glconfig_t>): void {
   Object.assign(runtime.gl_config, config);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
+ * Category: New
+ * Purpose: Mirror GL state flags needed by `GL_UpdateSwapInterval`.
+ */
 export function setRmiscGlState(runtime: GlRmiscRuntime, state: Partial<glstate_t>): void {
   Object.assign(runtime.gl_state, state);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer image adapter)
+ * Category: New
+ * Purpose: Attach the image subsystem runtime used by texture state helpers.
+ */
 export function setRmiscImageRuntime(runtime: GlRmiscRuntime, imageRuntime: GlImageRuntime | null): void {
   runtime.imageRuntime = imageRuntime;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer extension adapter)
+ * Category: New
+ * Purpose: Record which optional GL extension hooks are available to `GL_SetDefaultState`.
+ */
 export function setRmiscExtensionState(runtime: GlRmiscRuntime, options: { pointParameters: boolean; colorTable: boolean }): void {
   runtime.qglPointParameterfEXT = options.pointParameters;
   runtime.qglColorTableEXT = options.colorTable;
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer extension adapter)
  * Category: New
  * Purpose: Mirror the backend extension procedures resolved by `R_Init` into the `gl_rmisc.c` runtime.
  *
@@ -246,6 +314,12 @@ export function syncRmiscExtensionStateFromRmain(
   runtime.qglColorTableEXT = rmain.qglColorTableEXT;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer cvar adapter)
+ * Category: New
+ * Purpose: Attach the cvars consumed by texture setup, particle attenuation and swap interval code.
+ */
 export function setRmiscCvars(runtime: GlRmiscRuntime, cvars: Partial<Pick<GlRmiscRuntime,
   "gl_texturemode" | "gl_texturealphamode" | "gl_texturesolidmode" | "gl_particle_att_a" | "gl_particle_att_b" | "gl_particle_att_c" | "gl_particle_min_size" | "gl_particle_max_size" | "gl_ext_palettedtexture" | "gl_swapinterval"
 >>): void {
@@ -275,9 +349,9 @@ export function R_InitParticleTexture(runtime: GlRmiscRuntime): { particletextur
 }
 
 /**
- * Original name: TargaHeader population in GL_ScreenShot_f
+ * Original name: GL_ScreenShot_f TargaHeader population
  * Source: ref_gl/gl_rmisc.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
@@ -297,7 +371,7 @@ export function buildTgaHeader(width: number, height: number): Uint8Array {
 /**
  * Original name: GL_ScreenShot_f filename loop
  * Source: ref_gl/gl_rmisc.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
@@ -317,7 +391,7 @@ export function findScreenshotName(existingPaths: readonly string[]): string | n
 /**
  * Original name: GL_ScreenShot_f RGB/BGR swap loop
  * Source: ref_gl/gl_rmisc.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:

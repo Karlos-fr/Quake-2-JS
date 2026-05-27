@@ -456,10 +456,22 @@ export interface QwglRuntime {
   symbols: QwglDispatchTable;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (QGL init options)
+ * Category: New
+ * Purpose: Configure TS-only requirements layered on top of the ported QGL procedure inventory.
+ */
 export interface QglInitOptions {
   extraRequiredProcedures?: readonly string[];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer bootstrap options)
+ * Category: New
+ * Purpose: Connect explicit QGL/QWGL runtimes to the renderer initialization hooks.
+ */
 export interface QglBootstrapOptions {
   qglRuntime: QglRuntime;
   qwglRuntime?: QwglRuntime;
@@ -480,6 +492,8 @@ const GL_VERSION = 0x1f02;
 const GL_EXTENSIONS = 0x1f03;
 
 /**
+ * Original name: N/A
+ * Source: N/A (QGL runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime replacing the global symbol pointers declared in `qgl.h`.
  */
@@ -494,6 +508,8 @@ export function createQglRuntime(): QglRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Win32 QGL runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime replacing the Win32 `qwgl*` procedure pointers declared in `qgl.h`.
  */
@@ -508,6 +524,8 @@ export function createQwglRuntime(): QwglRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (object symbol provider)
  * Category: New
  * Purpose: Build a symbol provider from a plain object containing procedure bindings.
  */
@@ -608,6 +626,7 @@ export function QGL_Shutdown(runtime: QglRuntime): void {
 }
 
 /**
+ * Original name: N/A
  * Category: Adapter
  * Source: ref_gl/qgl.h
  *
@@ -657,6 +676,7 @@ export function QWGL_Init(runtime: QwglRuntime, provider: QglSymbolProvider): qb
 }
 
 /**
+ * Original name: N/A
  * Category: Adapter
  * Source: ref_gl/qgl.h
  *
@@ -678,6 +698,8 @@ export function QWGL_Shutdown(runtime: QwglRuntime): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (QGL runtime query)
  * Category: New
  * Purpose: Test whether one QGL symbol is currently available in the runtime.
  */
@@ -686,6 +708,8 @@ export function hasQglProcedure(runtime: QglRuntime, name: QglInventoryProcedure
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Win32 QGL runtime query)
  * Category: New
  * Purpose: Test whether one Win32 `qwgl*` symbol is currently available in the runtime.
  */
@@ -694,6 +718,8 @@ export function hasQwglProcedure(runtime: QwglRuntime, name: QwglInventoryProced
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer bootstrap adapter)
  * Category: New
  * Purpose: Bridge the ported `QGL` / `QWGL` runtimes into the bootstrap hooks consumed by `R_Init`.
  *

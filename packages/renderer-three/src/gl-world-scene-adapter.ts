@@ -1,5 +1,8 @@
 /**
  * File: gl-world-scene-adapter.ts
+ * Original name: N/A
+ * Source: N/A (Three.js world scene adapter)
+ * Category: Adapter
  * Purpose: Bridge the ported `gl_model.c` / `gl_rsurf.c` brush-world data into renderable Three.js scene objects.
  *
  * This file is not a direct source port.
@@ -160,7 +163,9 @@ export interface ThreeGlWorldSceneAdapter {
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (Three.js world scene adapter)
+ * Category: Adapter
  * Purpose: Build a Three.js scene adapter from the ported GL brush-world loading pipeline.
  *
  * Constraints:

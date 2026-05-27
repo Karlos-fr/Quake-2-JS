@@ -15,17 +15,32 @@ import type { channel_t, sfx_t, sfxcache_t } from "../../client/src/snd_loc.js";
 
 const MAX_ACTIVE_SFX_SOURCES = 96;
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web audio adapter contract)
+ * Category: New
+ */
 export interface WebAudioAdapterLogHooks {
   onInfo?: (message: string) => void;
   onWarning?: (message: string) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web audio adapter contract)
+ * Category: New
+ */
 export interface QuakeWebAudioAdapterOptions {
   context?: AudioContext | null;
   createContext?: () => AudioContext | null;
   logs?: WebAudioAdapterLogHooks;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (browser sound backend adapter)
+ * Category: Adapter
+ */
 export interface QuakeWebAudioAdapter {
   readonly context: AudioContext | null;
   readonly unlocked: boolean;
@@ -55,6 +70,11 @@ export interface QuakeWebAudioAdapter {
   playWav: (filesystem: VirtualFilesystem, name: string) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web audio debug state)
+ * Category: New
+ */
 export interface WebAudioAdapterDebugState {
   readonly playedSfx: number;
   readonly skippedSfxNoCache: number;
@@ -65,6 +85,11 @@ export interface WebAudioAdapterDebugState {
   readonly lastSkippedSfxName: string;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (sound channel playback options)
+ * Category: New
+ */
 export interface WebAudioSfxPlaybackOptions {
   leftVolume?: number;
   rightVolume?: number;
@@ -75,6 +100,11 @@ export interface WebAudioSfxPlaybackOptions {
   offsetSamples?: number;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (named wav playback options)
+ * Category: New
+ */
 export interface WebAudioNamedSoundOptions {
   leftVolume?: number;
   rightVolume?: number;
@@ -82,6 +112,11 @@ export interface WebAudioNamedSoundOptions {
   loopKey?: string;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (named wav loop descriptor)
+ * Category: New
+ */
 export interface WebAudioNamedLoop {
   key: string;
   name: string;
@@ -89,12 +124,22 @@ export interface WebAudioNamedLoop {
   rightVolume: number;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web audio listener adapter)
+ * Category: Adapter
+ */
 export interface WebAudioListenerState {
   position: [number, number, number];
   forward: [number, number, number];
   up: [number, number, number];
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (web audio source bookkeeping)
+ * Category: New
+ */
 interface ActiveSource {
   source: AudioBufferSourceNode;
   gain: GainNode;
@@ -102,6 +147,11 @@ interface ActiveSource {
   key: string | null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (queued raw audio chunk)
+ * Category: New
+ */
 interface PendingRawChunk {
   count: number;
   sampleRate: number;
@@ -110,11 +160,25 @@ interface PendingRawChunk {
   samples: Uint8Array;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (queued sound effect playback)
+ * Category: New
+ */
 interface PendingSfxPlayback {
   sfx: sfx_t;
   options: WebAudioSfxPlaybackOptions;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (browser sound backend adapter)
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Bridge the ported client sound runtime and browser WebAudio playback nodes.
+ */
 export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions = {}): QuakeWebAudioAdapter {
   const context = options.context ?? options.createContext?.() ?? createDefaultAudioContext();
   const logs = options.logs ?? {};
@@ -425,11 +489,21 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
   return adapter;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Quake sound path adapter)
+ * Category: Adapter
+ */
 export function resolveQuakeSoundPath(name: string): string {
   const normalized = name.replaceAll("\\", "/").replace(/^\/+/, "");
   return normalized.startsWith("sound/") ? normalized : `sound/${normalized}`;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Quake stereo volume adapter)
+ * Category: Adapter
+ */
 export function computeQuakeChannelGain(leftVolume: number, rightVolume: number): { gain: number; pan: number } {
   const left = clamp01(leftVolume / 255);
   const right = clamp01(rightVolume / 255);
@@ -444,6 +518,11 @@ export function computeQuakeChannelGain(leftVolume: number, rightVolume: number)
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (raw sample WebAudio adapter)
+ * Category: Adapter
+ */
 export function writeRawSamplesToAudioBuffer(
   audioBuffer: AudioBuffer,
   count: number,
@@ -471,11 +550,21 @@ export function writeRawSamplesToAudioBuffer(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (browser audio context factory)
+ * Category: New
+ */
 function createDefaultAudioContext(): AudioContext | null {
   const AudioContextCtor = globalThis.AudioContext ?? globalThis.webkitAudioContext;
   return AudioContextCtor ? new AudioContextCtor() : null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (sfx cache WebAudio adapter)
+ * Category: Adapter
+ */
 function getSfxAudioBuffer(
   context: AudioContext,
   cache: WeakMap<sfxcache_t, AudioBuffer>,
@@ -493,6 +582,11 @@ function getSfxAudioBuffer(
   return buffer;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (sfx cache WebAudio adapter)
+ * Category: Adapter
+ */
 function writeSfxCacheToAudioBuffer(audioBuffer: AudioBuffer, sfxCache: sfxcache_t): void {
   const channels = sfxCache.stereo ? 2 : 1;
   const view = new DataView(sfxCache.data.buffer, sfxCache.data.byteOffset, sfxCache.data.byteLength);
@@ -569,6 +663,11 @@ function createSpatialSource(
   return { source, gain, panner, key: options.key };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Quake stereo volume adapter)
+ * Category: Adapter
+ */
 function applyQuakeStereoVolumes(
   gainNode: GainNode,
   pannerNode: StereoPannerNode | null,
@@ -582,6 +681,11 @@ function applyQuakeStereoVolumes(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (decoded wav playback adapter)
+ * Category: Adapter
+ */
 async function playDecodedWav(
   context: AudioContext,
   destination: AudioNode,
@@ -665,10 +769,20 @@ async function playDecodedWav(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Quake sound channel key adapter)
+ * Category: Adapter
+ */
 function makeChannelKey(entnum: number, entchannel: number): string | null {
   return entchannel !== 0 ? `${entnum}:${entchannel}` : null;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Quake sound channel replacement adapter)
+ * Category: Adapter
+ */
 function stopMatchingSources(sources: ActiveSource[], loops: Map<string, ActiveSource>, key: string): void {
   for (let index = sources.length - 1; index >= 0; index -= 1) {
     const active = sources[index];
@@ -683,6 +797,11 @@ function stopMatchingSources(sources: ActiveSource[], loops: Map<string, ActiveS
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio source limit helper)
+ * Category: New
+ */
 function trimActiveSfxSources(sources: ActiveSource[], loops: Map<string, ActiveSource>, maxSources: number): void {
   for (let index = 0; sources.length > maxSources && index < sources.length;) {
     const active = sources[index];
@@ -696,12 +815,22 @@ function trimActiveSfxSources(sources: ActiveSource[], loops: Map<string, Active
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio lifecycle adapter)
+ * Category: New
+ */
 function stopActiveSources(sources: ActiveSource[]): void {
   for (const active of sources.splice(0)) {
     stopActiveSource(active);
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio source bookkeeping)
+ * Category: New
+ */
 function removeActiveSource(sources: ActiveSource[], active: ActiveSource): void {
   const index = sources.indexOf(active);
   if (index >= 0) {
@@ -801,12 +930,22 @@ function stopSource(source: AudioBufferSourceNode): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio master gain helper)
+ * Category: New
+ */
 function updateMasterGain(masterGain: GainNode | null, muted: boolean, volume: number): void {
   if (masterGain) {
     masterGain.gain.value = muted ? 0 : clamp01(volume);
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (listener orientation WebAudio adapter)
+ * Category: Adapter
+ */
 function updateAudioContextListener(context: AudioContext, listener: WebAudioListenerState): void {
   const audioListener = context.listener;
   const time = context.currentTime;
@@ -821,6 +960,11 @@ function updateAudioContextListener(context: AudioContext, listener: WebAudioLis
   setAudioParam(audioListener.upZ, listener.up[2], time);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (WebAudio param helper)
+ * Category: New
+ */
 function setAudioParam(param: AudioParam | undefined, value: number, time: number): void {
   if (!param) {
     return;
@@ -828,14 +972,29 @@ function setAudioParam(param: AudioParam | undefined, value: number, time: numbe
   param.setValueAtTime(value, time);
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (numeric clamp helper)
+ * Category: New
+ */
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (numeric clamp helper)
+ * Category: New
+ */
 function clampSigned(value: number): number {
   return Math.max(-1, Math.min(1, value));
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (signed byte audio adapter)
+ * Category: Adapter
+ */
 function toSignedByte(value: number): number {
   return (value << 24) >> 24;
 }

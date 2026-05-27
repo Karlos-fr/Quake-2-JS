@@ -4,46 +4,46 @@
 
 - Fichier TS: `packages/renderer-three/src/gl-model.ts`
 - Symboles TS: 38
-- Couvert C/H: 0
-- Reste a auditer: 38
+- Couvert C/H: 16
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/gl-model.ts` | type | `image_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | type | `model_s` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SIDE_FRONT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SIDE_BACK` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SIDE_ON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SURF_PLANEBACK` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SURF_DRAWSKY` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SURF_DRAWTURB` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SURF_DRAWBACKGROUND` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `SURF_UNDERWATER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | value | `VERTEXSIZE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `mvertex_t` | oui | `mvertex_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `mmodel_t` | oui | `mmodel_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `medge_t` | oui | `medge_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `mtexinfo_t` | oui | `mtexinfo_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | type | `glpoly_vertex_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `glpoly_t` | oui | `glpoly_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `msurface_t` | oui | `msurface_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `mnode_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `mleaf_t` | oui | `mleaf_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | type | `mnode_child_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl-model.ts` | enum | `modtype_t` | oui | `modtype_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/renderer-three/src/gl-model.ts` | interface | `model_t` | oui | `model_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createMVertex` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createMModel` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createMEdge` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createMTexinfo` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createGlPoly` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createMSurface` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createMNode` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createMLeaf` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `createModel` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `isModelNameWithinQPath` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `hasSurfaceSamples` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `isValidGlPolyVertex` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `isValidGlPoly` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `hasValidModelSkinCount` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl-model.ts` | function | `getSurfaceStyleCapacity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/renderer-three/src/gl-model.ts` | type | `image_t` | oui | `image_t` | `Quake-2-master/ref_gl/gl_model.h` | Adapter | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Valide | Valide | Type opaque; structure concrete image dans `gl_image.ts` / `gl_local.ts`. |
+| `packages/renderer-three/src/gl-model.ts` | type | `model_s` | oui | `model_s` | `Quake-2-master/ref_gl/gl_model.h` | Adapter | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Valide | Valide | Alias TS du port proprietaire `model_t`. |
+| `packages/renderer-three/src/gl-model.ts` | value | `SIDE_FRONT` | oui | `SIDE_FRONT` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `SIDE_BACK` | oui | `SIDE_BACK` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `SIDE_ON` | oui | `SIDE_ON` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `SURF_PLANEBACK` | oui | `SURF_PLANEBACK` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `SURF_DRAWSKY` | oui | `SURF_DRAWSKY` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `SURF_DRAWTURB` | oui | `SURF_DRAWTURB` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `SURF_DRAWBACKGROUND` | oui | `SURF_DRAWBACKGROUND` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `SURF_UNDERWATER` | oui | `SURF_UNDERWATER` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | value | `VERTEXSIZE` | oui | `VERTEXSIZE` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | interface | `mvertex_t` | oui | `mvertex_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Valide | Valide | Compare directement au header; la matrice C/H ne genere que le champ `position`. |
+| `packages/renderer-three/src/gl-model.ts` | interface | `mmodel_t` | oui | `mmodel_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Valide | Valide | Compare directement au header; pas de ligne C/H finale dediee au typedef. |
+| `packages/renderer-three/src/gl-model.ts` | interface | `medge_t` | oui | `medge_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Valide | Valide | Compare directement au header; la matrice C/H ne genere que `cachededgeoffset`. |
+| `packages/renderer-three/src/gl-model.ts` | interface | `mtexinfo_t` | oui | `mtexinfo_s / mtexinfo_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | type | `glpoly_vertex_t` | oui | `glpoly_s.verts element` | `Quake-2-master/ref_gl/gl_model.h` | Adapter | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Valide | Valide | Tuple TS extrait du payload flexible de `glpoly_s`. |
+| `packages/renderer-three/src/gl-model.ts` | interface | `glpoly_t` | oui | `glpoly_s / glpoly_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | interface | `msurface_t` | oui | `msurface_s / msurface_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | interface | `mnode_t` | oui | `mnode_s / mnode_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | interface | `mleaf_t` | oui | `mleaf_s / mleaf_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | type | `mnode_child_t` | oui | `mnode_s.children` | `Quake-2-master/ref_gl/gl_model.h` | Adapter | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Valide | Valide | Union TS pour le pointeur enfant node/leaf. |
+| `packages/renderer-three/src/gl-model.ts` | enum | `modtype_t` | oui | `modtype_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | interface | `model_t` | oui | `model_s / model_t` | `Quake-2-master/ref_gl/gl_model.h` | Ported | [`ref_gl_gl_model.h.md`](../matrices/ref_gl_gl_model.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createMVertex` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createMModel` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createMEdge` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createMTexinfo` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createGlPoly` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createMSurface` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createMNode` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createMLeaf` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `createModel` | oui | N/A | N/A (renderer model factory) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `isModelNameWithinQPath` | oui | N/A | N/A (renderer model helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `hasSurfaceSamples` | oui | N/A | N/A (renderer model helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `isValidGlPolyVertex` | oui | N/A | N/A (renderer model helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `isValidGlPoly` | oui | N/A | N/A (renderer model helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `hasValidModelSkinCount` | oui | N/A | N/A (renderer model helper) | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl-model.ts` | function | `getSurfaceStyleCapacity` | oui | N/A | N/A (renderer model helper) | New |  | Valide | Valide |  |

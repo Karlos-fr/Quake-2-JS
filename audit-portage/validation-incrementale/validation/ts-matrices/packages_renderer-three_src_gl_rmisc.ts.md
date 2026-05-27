@@ -4,52 +4,52 @@
 
 - Fichier TS: `packages/renderer-three/src/gl_rmisc.ts`
 - Symboles TS: 44
-- Couvert C/H: 0
-- Reste a auditer: 44
+- Couvert C/H: 6
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_ALPHA_TEST` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_BLEND` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_CULL_FACE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_DEPTH_TEST` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FILL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FLAT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FRONT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FRONT_AND_BACK` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_GREATER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_ONE_MINUS_SRC_ALPHA` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_POINT_SIZE_MAX_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_POINT_SIZE_MIN_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_POINT_SMOOTH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_REPEAT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_RGB` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_SRC_ALPHA` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_2D` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_MAG_FILTER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_MIN_FILTER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_WRAP_S` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_WRAP_T` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_DISTANCE_ATTENUATION_EXT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | value | `DOT_TEXTURE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `buildParticleTextureRgba` | oui | `dottexture-backed particle data build in R_InitParticleTexture` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `buildNoTextureRgba` | oui | `dottexture-backed r_notexture data build in R_InitParticleTexture` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl_rmisc.ts` | interface | `GlRmiscHooks` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | interface | `GlRmiscRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | interface | `TargaHeader` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `createGlRmiscRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscVid` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscGlConfig` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscGlState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscImageRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscExtensionState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `syncRmiscExtensionStateFromRmain` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscCvars` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `R_InitParticleTexture` | oui | `R_InitParticleTexture` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `buildTgaHeader` | oui | `TargaHeader population in GL_ScreenShot_f` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `findScreenshotName` | oui | `GL_ScreenShot_f filename loop` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `swapRgbToBgr` | oui | `GL_ScreenShot_f RGB/BGR swap loop` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_ScreenShot_f` | oui | `GL_ScreenShot_f` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_Strings_f` | oui | `GL_Strings_f` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_SetDefaultState` | oui | `GL_SetDefaultState` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_UpdateSwapInterval` | oui | `GL_UpdateSwapInterval` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_ALPHA_TEST` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_BLEND` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_CULL_FACE` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_DEPTH_TEST` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FILL` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FLAT` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FRONT` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_FRONT_AND_BACK` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_GREATER` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_ONE_MINUS_SRC_ALPHA` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_POINT_SIZE_MAX_EXT` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_POINT_SIZE_MIN_EXT` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_POINT_SMOOTH` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_REPEAT` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_RGB` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_SRC_ALPHA` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_2D` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_MAG_FILTER` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_MIN_FILTER` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_WRAP_S` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_TEXTURE_WRAP_T` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `GL_DISTANCE_ATTENUATION_EXT` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | value | `DOT_TEXTURE` | non | `dottexture` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported |  | Valide | Valide | Source globale presente dans `gl_rmisc.c`, absente de la matrice C/H generee; table comparee directement. |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `buildParticleTextureRgba` | oui | `R_InitParticleTexture particle texture loop` | `Quake-2-master/ref_gl/gl_rmisc.c` | Adapter | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Valide | Valide | Helper extrait de `R_InitParticleTexture`, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `buildNoTextureRgba` | oui | `R_InitParticleTexture r_notexture loop` | `Quake-2-master/ref_gl/gl_rmisc.c` | Adapter | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Valide | Valide | Helper extrait de `R_InitParticleTexture`, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rmisc.ts` | interface | `GlRmiscHooks` | oui | `N/A` | `N/A (renderer backend hook contract)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | interface | `GlRmiscRuntime` | oui | `N/A` | `N/A (explicit runtime container for ref_gl/gl_rmisc.c globals)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | interface | `TargaHeader` | oui | `_TargaHeader / TargaHeader` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `createGlRmiscRuntime` | oui | `N/A` | `N/A (renderer runtime adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscVid` | oui | `N/A` | `N/A (renderer runtime adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscGlConfig` | oui | `N/A` | `N/A (renderer runtime adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscGlState` | oui | `N/A` | `N/A (renderer runtime adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscImageRuntime` | oui | `N/A` | `N/A (renderer image adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscExtensionState` | oui | `N/A` | `N/A (renderer extension adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `syncRmiscExtensionStateFromRmain` | oui | `N/A` | `N/A (renderer extension adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `setRmiscCvars` | oui | `N/A` | `N/A (renderer cvar adapter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `R_InitParticleTexture` | oui | `R_InitParticleTexture` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `buildTgaHeader` | oui | `GL_ScreenShot_f TargaHeader population` | `Quake-2-master/ref_gl/gl_rmisc.c` | Adapter | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Valide | Valide | Helper extrait de `GL_ScreenShot_f`, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `findScreenshotName` | oui | `GL_ScreenShot_f filename loop` | `Quake-2-master/ref_gl/gl_rmisc.c` | Adapter | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Valide | Valide | Helper extrait de `GL_ScreenShot_f`, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `swapRgbToBgr` | oui | `GL_ScreenShot_f RGB/BGR swap loop` | `Quake-2-master/ref_gl/gl_rmisc.c` | Adapter | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Valide | Valide | Helper extrait de `GL_ScreenShot_f`, pas proprietaire C/H distinct. |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_ScreenShot_f` | oui | `GL_ScreenShot_f` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_Strings_f` | oui | `GL_Strings_f` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_SetDefaultState` | oui | `GL_SetDefaultState` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_rmisc.ts` | function | `GL_UpdateSwapInterval` | oui | `GL_UpdateSwapInterval` | `Quake-2-master/ref_gl/gl_rmisc.c` | Ported | [`ref_gl_gl_rmisc.c.md`](../matrices/ref_gl_gl_rmisc.c.md) | Couvert C/H | Couvert C/H |  |

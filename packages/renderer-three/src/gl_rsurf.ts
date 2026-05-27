@@ -1619,6 +1619,12 @@ export function createGlRsurfModelHooks(runtime: GlRsurfRuntime) {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture dimension helper)
+ * Category: New
+ * Purpose: Resolve image dimensions across the renderer-three texture adapters before building surface UVs.
+ */
 function getImageSize(image: image_t | null): { width: number; height: number } {
   if (image && typeof image === "object") {
     const width = readNumericProperty(image, "width") ?? readNestedQuakeDimension(image, "width");
@@ -1631,6 +1637,12 @@ function getImageSize(image: image_t | null): { width: number; height: number } 
   return { width: 1, height: 1 };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture dimension helper)
+ * Category: New
+ * Purpose: Read flat numeric dimensions from image-like adapter objects.
+ */
 function readNumericProperty(value: object, key: "width" | "height"): number | null {
   const record = value as Record<string, unknown>;
   return typeof record[key] === "number" && Number.isFinite(record[key]) && record[key] > 0
@@ -1638,6 +1650,12 @@ function readNumericProperty(value: object, key: "width" | "height"): number | n
     : null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture dimension helper)
+ * Category: New
+ * Purpose: Read dimensions stored under the renderer adapter's `userData.quake` payload.
+ */
 function readNestedQuakeDimension(value: object, key: "width" | "height"): number | null {
   const record = value as Record<string, unknown>;
   const userData = record.userData;
@@ -1654,19 +1672,43 @@ function readNestedQuakeDimension(value: object, key: "width" | "height"): numbe
   return typeof dimension === "number" && Number.isFinite(dimension) && dimension > 0 ? dimension : null;
 }
 
+/**
+ * Original name: GL_BuildPolygonFromSurface texture-axis dot expression
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Share the original `DotProduct(vec, tex->vecs[i]) + tex->vecs[i][3]` calculation between UV paths.
+ */
 function dotTexAxis(point: vec3_t, axis: [number, number, number, number]): number {
   return DotProduct(point, [axis[0], axis[1], axis[2]]) + axis[3];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (BSP node type guard)
+ * Category: New
+ * Purpose: Narrow BSP child unions while preserving the `contents == -1` node test used by `R_RecursiveWorldNode`.
+ */
 function isMNode(node: mnode_child_t): node is mnode_t {
   return node.contents === -1;
 }
 
+/**
+ * Original name: R_RenderBrushPoly/GL_RenderLightmappedPoly lightmapchain assignment
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Centralize the original surface-to-lightmap chain link update.
+ */
 function queueSurfaceLightmap(runtime: GlRsurfRuntime, surface: msurface_t, textureIndex: number): void {
   surface.lightmapchain = runtime.gl_lms.lightmap_surfaces[textureIndex];
   runtime.gl_lms.lightmap_surfaces[textureIndex] = surface;
 }
 
+/**
+ * Original name: R_RenderBrushPoly/GL_RenderLightmappedPoly dynamic-lightmap test
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Reuse the original style-cache and dlight-frame checks in both TS lightmap rendering paths.
+ */
 function evaluateDynamicLightmapState(
   runtime: GlRsurfRuntime,
   surf: msurface_t
@@ -1700,11 +1742,23 @@ function evaluateDynamicLightmapState(
   return { isDynamic, canUseSurfaceLightmapTexture };
 }
 
+/**
+ * Original name: DrawGLFlowingPoly scroll expression
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Preserve the original flowing-surface texture offset formula for hook-based rendering.
+ */
 function computeFlowingScroll(timeSeconds: number): number {
   const scroll = -64 * (timeSeconds / 40.0 - Math.trunc(timeSeconds / 40.0));
   return scroll === 0 ? -64 : scroll;
 }
 
+/**
+ * Original name: GL_BeginBuildingLightmaps gl_monolightmap switch
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Map the original `gl_monolightmap` mode letters to local lightmap format constants.
+ */
 function resolveLightmapInternalFormat(mode: string): number {
   switch ((mode[0] ?? "0").toUpperCase()) {
     case "A":
@@ -1720,6 +1774,12 @@ function resolveLightmapInternalFormat(mode: string): number {
   }
 }
 
+/**
+ * Original name: R_DrawAlphaSurfaces alpha selection
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Preserve the original `SURF_TRANS33` and `SURF_TRANS66` alpha choices for renderer hooks.
+ */
 function resolveSurfaceAlpha(surface: msurface_t): number {
   const flags = surface.texinfo?.flags ?? 0;
   if ((flags & SURF_TRANS33) !== 0) {
@@ -1732,6 +1792,12 @@ function resolveSurfaceAlpha(surface: msurface_t): number {
   return 1;
 }
 
+/**
+ * Original name: image_t.registration_sequence access
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Read the original image registration flag across C-style and TS-style adapter field names.
+ */
 function getImageRegistrationSequence(image: image_t): number {
   if (!image || typeof image !== "object") {
     return 0;
@@ -1748,6 +1814,12 @@ function getImageRegistrationSequence(image: image_t): number {
   return 0;
 }
 
+/**
+ * Original name: image_t.texturechain access
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Read the texture chain head stored on image adapters for `DrawTextureChains`.
+ */
 function getImageTextureChain(image: image_t): msurface_t | null {
   if (!image || typeof image !== "object") {
     return null;
@@ -1758,6 +1830,12 @@ function getImageTextureChain(image: image_t): msurface_t | null {
   return texturechain && typeof texturechain === "object" ? texturechain as msurface_t : null;
 }
 
+/**
+ * Original name: image_t.texturechain assignment
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Adapter
+ * Purpose: Write the texture chain head stored on image adapters for world and brush surface queues.
+ */
 function setImageTextureChain(image: image_t, surface: msurface_t | null): void {
   if (!image || typeof image !== "object") {
     return;
