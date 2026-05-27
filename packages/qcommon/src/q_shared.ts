@@ -76,6 +76,19 @@ export const MAX_SOUNDS = 256;
 export const MAX_IMAGES = 256;
 export const MAX_ITEMS = 256;
 export const MAX_GENERAL = MAX_CLIENTS * 2;
+
+/**
+ * Original name: MAX_MAP_AREAS
+ * Source: qcommon/qfiles.h
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Mirrors the BSP area limit used to size shared client and server areabits buffers.
+ *
+ * Porting notes:
+ * - The qfiles owner remains packages/formats/src/qfiles.ts; this duplicate keeps qcommon free of a formats dependency.
+ */
 export const MAX_MAP_AREAS = 256;
 
 export const PRINT_LOW = 0;
@@ -523,10 +536,28 @@ export const CS_PLAYERSKINS = CS_ITEMS + MAX_ITEMS;
 export const CS_GENERAL = CS_PLAYERSKINS + MAX_CLIENTS;
 export const MAX_CONFIGSTRINGS = CS_GENERAL + MAX_GENERAL;
 
+/**
+ * Original names: VIDREF_GL, VIDREF_SOFT, VIDREF_OTHER
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Identifies the active renderer family for client-side effects that branch on GL or software rendering.
+ */
 export const VIDREF_GL = 1;
 export const VIDREF_SOFT = 2;
 export const VIDREF_OTHER = 3;
 
+/**
+ * Original name: entity_event_t
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines one-frame impulse events attached to entity_state_t updates.
+ */
 export enum entity_event_t {
   EV_NONE,
   EV_ITEM_RESPAWN,
@@ -538,6 +569,18 @@ export enum entity_event_t {
   EV_OTHER_TELEPORT
 }
 
+/**
+ * Original name: entity_state_t
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Carries server-to-client entity state needed for rendering and prediction.
+ *
+ * Porting notes:
+ * - C source declares `struct entity_state_s` and typedefs it to `entity_state_t`; the TypeScript owner is the typedef name.
+ */
 export interface entity_state_t {
   number: number;
   origin: vec3_t;
@@ -556,6 +599,15 @@ export interface entity_state_t {
   event: number;
 }
 
+/**
+ * Original name: player_state_t
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Carries view, weapon, blend, prediction and status state sent from server to client.
+ */
 export interface player_state_t {
   pmove: pmove_state_t;
   viewangles: vec3_t;

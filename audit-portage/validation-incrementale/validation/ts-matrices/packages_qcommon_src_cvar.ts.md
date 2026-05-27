@@ -4,41 +4,41 @@
 
 - Fichier TS: `packages/qcommon/src/cvar.ts`
 - Symboles TS: 33
-- Couvert C/H: 0
-- Reste a auditer: 33
+- Couvert C/H: 26
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/qcommon/src/cvar.ts` | value | `CVAR_ARCHIVE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | value | `CVAR_USERINFO` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | value | `CVAR_SERVERINFO` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | value | `CVAR_NOSET` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | value | `CVAR_LATCH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | interface | `cvar_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | interface | `CvarHooks` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | interface | `CvarRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/cvar.ts` | function | `createCvarRuntime` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_VariableValue` | oui | `Cvar_VariableValue` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_VariableString` | oui | `Cvar_VariableString` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_CompleteVariable` | oui | `Cvar_CompleteVariable` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Get` | oui | `Cvar_Get` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_ForceSet` | oui | `Cvar_ForceSet` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Set` | oui | `Cvar_Set` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_FullSet` | oui | `Cvar_FullSet` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_SetValue` | oui | `Cvar_SetValue` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_GetLatchedVars` | oui | `Cvar_GetLatchedVars` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Command` | oui | `Cvar_Command` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_BitInfo` | oui | `Cvar_BitInfo` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Userinfo` | oui | `Cvar_Userinfo` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Serverinfo` | oui | `Cvar_Serverinfo` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_WriteVariables` | oui | `Cvar_WriteVariables` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Init` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Set_f` | oui | `Cvar_Set_f` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_List_f` | oui | `Cvar_List_f` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_FindVar` | oui | `Cvar_FindVar` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_InfoValidate` | oui | `Cvar_InfoValidate` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_SetServerState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/cvar.ts` | function | `Cvar_Set2` | oui | `Cvar_Set2` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/cvar.ts` | function | `parseCvarFloat` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/cvar.ts` | function | `flagPrefix` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/cvar.ts` | function | `emitCvarOutput` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/qcommon/src/cvar.ts` | value | `CVAR_ARCHIVE` | oui | `CVAR_ARCHIVE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | value | `CVAR_USERINFO` | oui | `CVAR_USERINFO` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | value | `CVAR_SERVERINFO` | oui | `CVAR_SERVERINFO` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | value | `CVAR_NOSET` | oui | `CVAR_NOSET` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | value | `CVAR_LATCH` | oui | `CVAR_LATCH` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | interface | `cvar_t` | oui | `cvar_s` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | interface | `CvarHooks` | oui | `N/A` | `N/A (runtime adapter)` | New |  | Valide | Valide |  |
+| `packages/qcommon/src/cvar.ts` | interface | `CvarRuntime` | oui | `cvar_vars / userinfo_modified` | `Quake-2-master/qcommon/cvar.c` | Adapter | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Valide | Valide | Etat runtime TS explicite pour globals C `cvar_vars` et `userinfo_modified`. |
+| `packages/qcommon/src/cvar.ts` | function | `createCvarRuntime` | oui | `N/A` | `N/A (runtime adapter)` | New |  | Valide | Valide |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_VariableValue` | oui | `Cvar_VariableValue` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_VariableString` | oui | `Cvar_VariableString` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_CompleteVariable` | oui | `Cvar_CompleteVariable` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Get` | oui | `Cvar_Get` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_ForceSet` | oui | `Cvar_ForceSet` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Set` | oui | `Cvar_Set` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_FullSet` | oui | `Cvar_FullSet` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_SetValue` | oui | `Cvar_SetValue` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_GetLatchedVars` | oui | `Cvar_GetLatchedVars` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Command` | oui | `Cvar_Command` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_BitInfo` | oui | `Cvar_BitInfo` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Userinfo` | oui | `Cvar_Userinfo` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Serverinfo` | oui | `Cvar_Serverinfo` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_WriteVariables` | oui | `Cvar_WriteVariables` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Init` | oui | `Cvar_Init` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Set_f` | oui | `Cvar_Set_f` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_List_f` | oui | `Cvar_List_f` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_FindVar` | oui | `Cvar_FindVar` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_InfoValidate` | oui | `Cvar_InfoValidate` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_SetServerState` | oui | `N/A` | `N/A (runtime adapter)` | New |  | Valide | Valide |  |
+| `packages/qcommon/src/cvar.ts` | function | `Cvar_Set2` | oui | `Cvar_Set2` | `Quake-2-master/qcommon/cvar.c` | Ported | [`qcommon_cvar.c.md`](../matrices/qcommon_cvar.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/cvar.ts` | function | `parseCvarFloat` | non | `N/A` | `N/A (local helper)` | New |  | Valide | Valide |  |
+| `packages/qcommon/src/cvar.ts` | function | `flagPrefix` | non | `N/A` | `N/A (local helper)` | New |  | Valide | Valide |  |
+| `packages/qcommon/src/cvar.ts` | function | `emitCvarOutput` | non | `N/A` | `N/A (runtime adapter)` | New |  | Valide | Valide |  |

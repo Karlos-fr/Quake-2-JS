@@ -34,15 +34,39 @@ export {
   imagetype_t
 } from "./gl_image.js";
 
+/**
+ * Original name: REF_VERSION
+ * Source: ref_gl/gl_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const REF_VERSION = "GL 0.01";
 
+/**
+ * Original name: PITCH / YAW / ROLL
+ * Source: ref_gl/gl_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const PITCH = 0;
 export const YAW = 1;
 export const ROLL = 2;
 
+/**
+ * Original name: MAX_LBM_HEIGHT / BACKFACE_EPSILON
+ * Source: ref_gl/gl_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_LBM_HEIGHT = 480;
 export const BACKFACE_EPSILON = 0.01;
 
+/**
+ * Original name: GL_RENDERER_*
+ * Source: ref_gl/gl_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const GL_RENDERER_VOODOO = 0x00000001;
 export const GL_RENDERER_VOODOO2 = 0x00000002;
 export const GL_RENDERER_VOODOO_RUSH = 0x00000004;
@@ -164,6 +188,8 @@ export interface glstate_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer context object)
  * Category: New
  * Purpose: Group the header-visible `gl_local.h` globals behind one explicit renderer context.
  *
@@ -272,7 +298,9 @@ export interface GlLocalContext {
 }
 
 /**
- * Category: New
+ * Original name: GLimp_SetMode pointer writes
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Represent the pointer-mutating result of `GLimp_SetMode`.
  *
  * Constraints:
@@ -286,7 +314,9 @@ export interface GlimpSetModeResult {
 }
 
 /**
- * Category: New
+ * Original name: GL_BeginRendering pointer writes
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Represent the viewport pointer writes performed by `GL_BeginRendering`.
  *
  * Constraints:
@@ -300,6 +330,8 @@ export interface GL_BeginRenderingResult {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer platform hook surface)
  * Category: New
  * Purpose: Describe the host hooks standing in for the platform-specific `GLimp_*` procedures.
  *
@@ -318,30 +350,40 @@ export interface GlimpHooks {
 }
 
 /**
- * Category: New
+ * Original name: GL_BeginRendering
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `GL_BeginRendering` header signature shape.
  */
 export type GL_BeginRendering_t = () => GL_BeginRenderingResult;
 
 /**
- * Category: New
+ * Original name: GL_EndRendering
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `GL_EndRendering` header signature shape.
  */
 export type GL_EndRendering_t = () => void;
 
 /**
- * Category: New
+ * Original name: R_SwapBuffers
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `R_SwapBuffers` header signature shape.
  */
 export type R_SwapBuffers_t = (v: number) => void;
 
 /**
- * Category: New
+ * Original name: R_TranslatePlayerSkin
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `R_TranslatePlayerSkin` header signature shape.
  */
 export type R_TranslatePlayerSkin_t = (playernum: number) => void;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer struct factory)
  * Category: New
  * Purpose: Create one zero-initialized `viddef_t`.
  */
@@ -353,6 +395,8 @@ export function createRendererVidDef(): viddef_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer struct factory)
  * Category: New
  * Purpose: Create one zero-initialized `glvert_t`.
  */
@@ -370,6 +414,8 @@ export function createGlVert(): glvert_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer struct factory)
  * Category: New
  * Purpose: Create one default `glconfig_t`.
  */
@@ -385,6 +431,8 @@ export function createGlConfig(): glconfig_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer struct factory)
  * Category: New
  * Purpose: Create one default `glstate_t` preserving the original fixed gamma-table widths.
  */
@@ -406,6 +454,8 @@ export function createGlState(): glstate_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer context factory)
  * Category: New
  * Purpose: Create one explicit `gl_local.h` context with zero-initialized shared renderer globals.
  */
@@ -512,6 +562,8 @@ export function createGlLocalContext(): GlLocalContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer validation helper)
  * Category: New
  * Purpose: Check whether one image name fits the original `name[MAX_QPATH]` budget from `image_t`.
  */
@@ -520,6 +572,8 @@ export function isGlImageNameWithinQPath(name: string): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer validation helper)
  * Category: New
  * Purpose: Check whether the shared frustum keeps the canonical four-plane shape from `gl_local.h`.
  */
@@ -528,6 +582,8 @@ export function hasValidFrustum(context: GlLocalContext): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer validation helper)
  * Category: New
  * Purpose: Check whether one world matrix preserves the original 4x4 float payload width.
  */
@@ -536,7 +592,9 @@ export function hasValidWorldMatrix(context: GlLocalContext): boolean {
 }
 
 /**
- * Category: New
+ * Original name: image_s / image_t
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Project original `image_s` / `image_t` handles to the concrete image manager port.
  *
  * Porting notes:
@@ -546,29 +604,43 @@ export function hasValidWorldMatrix(context: GlLocalContext): boolean {
 export type image_t = GlImage;
 
 /**
- * Category: New
+ * Original name: WaterWarpPolyVerts
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `WaterWarpPolyVerts` header signature shape for upcoming ports.
  */
 export type WaterWarpPolyVerts_t = (p: glpoly_t) => glpoly_t | null;
 
 /**
- * Category: New
+ * Original name: R_MarkLights
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `R_MarkLights` header signature shape for upcoming ports.
  */
 export type R_MarkLights_t = (light: dlight_t, bit: number, node: mnode_t) => void;
 
 /**
- * Category: New
+ * Original name: GL_DrawParticles
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `GL_DrawParticles` header signature shape for upcoming ports.
  */
 export type GL_DrawParticles_t = (n: number, particles: readonly particle_t[], colortable: readonly number[]) => void;
 
 /**
- * Category: New
+ * Original name: EmitWaterPolys / R_AddSkySurface
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Purpose: Preserve the original `EmitWaterPolys` and `R_AddSkySurface` header signature shapes for upcoming ports.
  */
 export type SurfaceVoidCallback = (surface: msurface_t) => void;
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer struct factory)
+ * Category: New
+ * Purpose: Create one zero-initialized `cplane_t` for the explicit renderer context.
+ */
 function createEmptyPlane(): cplane_t {
   return {
     normal: [0, 0, 0],

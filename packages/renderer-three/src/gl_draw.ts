@@ -22,16 +22,68 @@
 import { ERR_FATAL, MAX_QPATH, PRINT_ALL } from "../../qcommon/src/index.js";
 import type { image_t } from "./gl-model.js";
 
+/**
+ * Original name: GL_RENDERER_RENDITION
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
+ * Purpose: Local renderer flag copy used by the `gl_draw.c` alpha-test workaround.
+ */
 export const GL_RENDERER_RENDITION = 0x001c0000;
+
+/**
+ * Original name: GL_RENDERER_MCD
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
+ * Purpose: Local renderer flag copy used by the `gl_draw.c` alpha-test workaround.
+ */
 export const GL_RENDERER_MCD = 0x01000000;
 
+/**
+ * Original name: N/A
+ * Source: N/A (OpenGL/WebGL numeric constants)
+ * Category: New
+ * Purpose: Preserve the texture upload format used by the draw raw backend hook.
+ */
 export const GL_COLOR_INDEX = 0x1900;
+
+/**
+ * Original name: N/A
+ * Source: N/A (OpenGL/WebGL numeric constants)
+ * Category: New
+ * Purpose: Preserve the texture upload format used by the draw raw backend hook.
+ */
 export const GL_RGBA = 0x1908;
+
+/**
+ * Original name: N/A
+ * Source: N/A (OpenGL/WebGL numeric constants)
+ * Category: New
+ * Purpose: Preserve the texture upload type used by the draw raw backend hook.
+ */
 export const GL_UNSIGNED_BYTE = 0x1401;
+
+/**
+ * Original name: N/A
+ * Source: N/A (OpenGL/WebGL numeric constants)
+ * Category: New
+ * Purpose: Preserve the paletted texture upload format used by the draw raw backend hook.
+ */
 export const GL_COLOR_INDEX8_EXT = 0x80e5;
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer hook contract)
+ * Category: New
+ * Purpose: Name the texture filter modes accepted by the draw backend hooks.
+ */
 export type GlFilterMode = "nearest" | "linear";
 
+/**
+ * Original name: image_t
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
+ * Purpose: Local view of the `image_t` fields consumed by `gl_draw.c`.
+ */
 export interface GlDrawImage {
   name: string;
   width: number;
@@ -44,6 +96,12 @@ export interface GlDrawImage {
   has_alpha: boolean;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer hook contract)
+ * Category: New
+ * Purpose: Describe one textured quad emitted by the draw backend adapter.
+ */
 export interface GlDrawQuad {
   x: number;
   y: number;
@@ -55,6 +113,12 @@ export interface GlDrawQuad {
   th: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer hook contract)
+ * Category: New
+ * Purpose: Describe one raw cinematic texture upload emitted by `Draw_StretchRaw`.
+ */
 export interface GlDrawRawUpload {
   width: number;
   height: number;
@@ -64,6 +128,12 @@ export interface GlDrawRawUpload {
   data: Uint8Array | Uint32Array;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer hook contract)
+ * Category: New
+ * Purpose: Collect renderer callbacks replacing direct qgl/ri calls from `gl_draw.c`.
+ */
 export interface GlDrawHooks {
   findImage?: (name: string, type: "pic") => image_t | null;
   uploadScrap?: () => void;
@@ -80,6 +150,12 @@ export interface GlDrawHooks {
   Sys_Error?: (errLevel: number, message: string) => never;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
+ * Category: New
+ * Purpose: Hold the explicit draw runtime state replacing the `gl_draw.c` globals.
+ */
 export interface GlDrawRuntime {
   draw_chars: image_t | null;
   scrap_dirty: boolean;
@@ -94,6 +170,8 @@ export interface GlDrawRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Create one explicit runtime replacing the `gl_draw.c` globals.
  */
@@ -113,6 +191,8 @@ export function createGlDrawRuntime(hooks: GlDrawHooks = {}): GlDrawRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer image adapter)
  * Category: New
  * Purpose: Create one image handle shaped like the `image_t` fields consumed by `gl_draw.c`.
  */
@@ -132,6 +212,8 @@ export function createGlDrawImage(overrides: Partial<GlDrawImage> = {}): GlDrawI
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Bind the current renderer identification flags consumed by the alpha-test workaround.
  */
@@ -140,6 +222,8 @@ export function setRendererFlags(runtime: GlDrawRuntime, renderer: number): void
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Bind the current `vid.width` / `vid.height` pair used by `Draw_FadeScreen`.
  */
@@ -149,6 +233,8 @@ export function setVidState(runtime: GlDrawRuntime, width: number, height: numbe
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Bind the current 8-bit to RGBA lookup table consumed by `Draw_Fill`.
  */
@@ -157,6 +243,8 @@ export function setPalette8to24(runtime: GlDrawRuntime, table: Uint32Array | rea
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Bind the current raw cinematic palette used by `Draw_StretchRaw`.
  */
@@ -165,6 +253,8 @@ export function setRawPalette(runtime: GlDrawRuntime, palette: Uint32Array | rea
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Preserve the original `scrap_dirty` flag controlling deferred scrap uploads.
  */
@@ -173,6 +263,8 @@ export function setScrapDirty(runtime: GlDrawRuntime, dirty: boolean): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Preserve the current `qglColorTableEXT` availability used by `Draw_StretchRaw`.
  */
@@ -181,6 +273,8 @@ export function setColorTableExtensionEnabled(runtime: GlDrawRuntime, enabled: b
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
  * Category: New
  * Purpose: Bind the current solid texture internal format selected by `gl_image.c`.
  */
@@ -523,6 +617,12 @@ export function Draw_StretchRaw(
   }
 }
 
+/**
+ * Original name: scrap_dirty / Scrap_Upload
+ * Source: ref_gl/gl_draw.c
+ * Category: Adapter
+ * Purpose: Factor the repeated deferred scrap upload gate shared by `Draw_StretchPic` and `Draw_Pic`.
+ */
 function uploadScrapIfDirty(runtime: GlDrawRuntime): void {
   if (!runtime.scrap_dirty) {
     return;
@@ -532,6 +632,12 @@ function uploadScrapIfDirty(runtime: GlDrawRuntime): void {
   runtime.scrap_dirty = false;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer draw adapter)
+ * Category: New
+ * Purpose: Emit the common textured quad shape used by picture draw calls.
+ */
 function drawPictureQuad(runtime: GlDrawRuntime, image: GlDrawImage, x: number, y: number, width: number, height: number): void {
   withAlphaTestWorkaround(runtime, image, () => {
     runtime.hooks.bindTexture?.(image.texnum);
@@ -548,6 +654,12 @@ function drawPictureQuad(runtime: GlDrawRuntime, image: GlDrawImage, x: number, 
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer draw adapter)
+ * Category: New
+ * Purpose: Scope the Rendition/MCD alpha-test workaround around one draw operation.
+ */
 function withAlphaTestWorkaround(runtime: GlDrawRuntime, image: GlDrawImage | null, draw: () => void): void {
   const shouldToggleAlpha = usesAlphaTestWorkaround(runtime, image);
   if (shouldToggleAlpha) {
@@ -561,6 +673,12 @@ function withAlphaTestWorkaround(runtime: GlDrawRuntime, image: GlDrawImage | nu
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer draw adapter)
+ * Category: New
+ * Purpose: Centralize the alpha-test workaround predicate from the original draw paths.
+ */
 function usesAlphaTestWorkaround(runtime: GlDrawRuntime, image: GlDrawImage | null): boolean {
   if (image && image.has_alpha) {
     return false;
@@ -569,6 +687,12 @@ function usesAlphaTestWorkaround(runtime: GlDrawRuntime, image: GlDrawImage | nu
   return runtime.gl_config_renderer === GL_RENDERER_MCD || (runtime.gl_config_renderer & GL_RENDERER_RENDITION) !== 0;
 }
 
+/**
+ * Original name: Draw_FindPic name normalization
+ * Source: ref_gl/gl_draw.c
+ * Category: Adapter
+ * Purpose: Isolate the original `pics/<name>.pcx` lookup rule for hooks that need it.
+ */
 function resolvePicName(name: string): string {
   if (name[0] !== "/" && name[0] !== "\\") {
     return truncateQPath(`pics/${name}.pcx`);
@@ -577,6 +701,12 @@ function resolvePicName(name: string): string {
   return name.slice(1);
 }
 
+/**
+ * Original name: image_t field access
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
+ * Purpose: Read the `image_t` fields consumed by `gl_draw.c` from the renderer image handle.
+ */
 function getGlDrawImage(image: image_t, functionName: string): GlDrawImage {
   if (!image || typeof image !== "object") {
     throw new Error(`${functionName}: invalid image handle`);
@@ -604,6 +734,12 @@ function getGlDrawImage(image: image_t, functionName: string): GlDrawImage {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer image adapter)
+ * Category: New
+ * Purpose: Validate required numeric fields on opaque renderer image handles.
+ */
 function readRequiredNumber(record: Record<string, unknown>, key: string, functionName: string): number {
   const value = record[key];
   if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -613,11 +749,23 @@ function readRequiredNumber(record: Record<string, unknown>, key: string, functi
   return value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer image adapter)
+ * Category: New
+ * Purpose: Read optional numeric texture coordinate fields from opaque image handles.
+ */
 function readOptionalNumber(record: Record<string, unknown>, key: string, fallback: number): number {
   const value = record[key];
   return typeof value === "number" && Number.isFinite(value) ? value : fallback;
 }
 
+/**
+ * Original name: ri.Sys_Error call site
+ * Source: ref_gl/gl_draw.c
+ * Category: Adapter
+ * Purpose: Preserve fatal error dispatch while allowing the backend hook to own the platform exit path.
+ */
 function failSysError(runtime: GlDrawRuntime, errLevel: number, message: string): never {
   if (runtime.hooks.Sys_Error) {
     return runtime.hooks.Sys_Error(errLevel, message);
@@ -626,6 +774,12 @@ function failSysError(runtime: GlDrawRuntime, errLevel: number, message: string)
   throw new Error(message);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime adapter)
+ * Category: New
+ * Purpose: Normalize palette inputs to the fixed 256-entry tables expected by draw routines.
+ */
 function coercePaletteTable(table: Uint32Array | readonly number[]): Uint32Array {
   const out = new Uint32Array(256);
   const count = Math.min(256, table.length);
@@ -635,6 +789,12 @@ function coercePaletteTable(table: Uint32Array | readonly number[]): Uint32Array
   return out;
 }
 
+/**
+ * Original name: Com_sprintf MAX_QPATH truncation
+ * Source: ref_gl/gl_draw.c
+ * Category: Adapter
+ * Purpose: Keep picture lookup names within the original fixed qpath limit.
+ */
 function truncateQPath(path: string): string {
   if (path.length < MAX_QPATH) {
     return path;

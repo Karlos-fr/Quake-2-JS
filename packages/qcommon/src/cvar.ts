@@ -23,12 +23,33 @@ import {
   Info_ValueForKey
 } from "./common.js";
 
+/**
+ * Original name: CVAR_ARCHIVE / CVAR_USERINFO / CVAR_SERVERINFO / CVAR_NOSET / CVAR_LATCH
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserve the original cvar flag bit values shared by qcommon, client and server code.
+ */
 export const CVAR_ARCHIVE = 1;
 export const CVAR_USERINFO = 2;
 export const CVAR_SERVERINFO = 4;
 export const CVAR_NOSET = 8;
 export const CVAR_LATCH = 16;
 
+/**
+ * Original name: cvar_t
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Stores the scalar/string value, flags, latched value and modified state of one cvar.
+ *
+ * Porting notes:
+ * - The original linked-list `next` field is represented by `CvarRuntime.cvar_vars`.
+ */
 export interface cvar_t {
   name: string;
   string: string;
@@ -38,6 +59,12 @@ export interface cvar_t {
   value: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime adapter)
+ * Category: New
+ * Purpose: Expose side-effect hooks for Cvar behavior that was file-static or engine-global in C.
+ */
 export interface CvarHooks {
   onInfoValidationError?: (kind: "name" | "value") => void;
   onWriteProtected?: (name: string) => void;
@@ -48,6 +75,12 @@ export interface CvarHooks {
   onPrint?: (line: string) => void;
 }
 
+/**
+ * Original name: cvar_vars / userinfo_modified
+ * Source: qcommon/cvar.c
+ * Category: Adapter
+ * Purpose: Hold the original cvar globals in an explicit runtime object for isolated tests and hosts.
+ */
 export interface CvarRuntime {
   cvar_vars: cvar_t[];
   userinfo_modified: boolean;
@@ -56,6 +89,8 @@ export interface CvarRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime adapter)
  * Category: New
  * Purpose: Create an isolated cvar runtime compatible with Quake II cvar behavior.
  *
@@ -519,6 +554,8 @@ export function Cvar_InfoValidate(value: string): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime adapter)
  * Category: New
  * Purpose: Set the runtime server state used by latched cvar behavior.
  *
@@ -605,6 +642,8 @@ export function Cvar_Set2(runtime: CvarRuntime, var_name: string, value: string,
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Parse a cvar string to a numeric value using Quake-like permissive float parsing.
  *
@@ -617,6 +656,8 @@ function parseCvarFloat(value: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Render the four-character flag prefix used by the original `cvarlist` output.
  *
@@ -632,6 +673,8 @@ function flagPrefix(flags: number): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime adapter)
  * Category: New
  * Purpose: Forward cvar command output values to the optional print hook in a consistent way.
  *

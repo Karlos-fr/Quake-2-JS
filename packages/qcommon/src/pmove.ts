@@ -117,11 +117,13 @@ export interface PmoveContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript pmove orchestration options)
  * Category: New
- * Purpose: Describe the temporary omissions still present in the first orchestrated `Pmove` port.
+ * Purpose: Expose harness-only gates around the default `Pmove` orchestration without changing original behavior.
  *
  * Constraints:
- * - Flags must default to the most conservative partial-port behavior.
+ * - Omitted flags must follow Quake II's original `Pmove` path.
  */
 export interface PmoveOptions {
   allowWaterMove?: boolean;
@@ -133,6 +135,8 @@ export interface PmoveOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript cplane factory)
  * Category: New
  * Purpose: Create a zero-initialized cplane_t compatible with Quake II trace defaults.
  */
@@ -147,6 +151,8 @@ export function createCplane(): cplane_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript pml_t factory)
  * Category: New
  * Purpose: Create the local `pml_t` state used during a single pmove execution.
  */
@@ -167,6 +173,8 @@ export function createPmlState(): pml_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript pmove context wrapper)
  * Category: New
  * Purpose: Build a pmove context with original Quake II movement tuning defaults.
  *
@@ -190,6 +198,8 @@ export function createPmoveContext(pm: pmove_t): PmoveContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript pml_t initialization helper)
  * Category: New
  * Purpose: Seed the local pmove state from the current packed `pmove_t` values.
  *
@@ -207,6 +217,8 @@ export function PM_InitLocalState(context: PmoveContext, frametime: number): voi
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript pmove state sync helper)
  * Category: New
  * Purpose: Write the local float-precision movement state back into the packed `pmove_t`.
  *
@@ -221,6 +233,8 @@ export function PM_SyncToState(context: PmoveContext): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript pmove result reset helper)
  * Category: New
  * Purpose: Clear the result fields that Quake II resets at the start of each `Pmove` call.
  *
@@ -1256,7 +1270,7 @@ export function PM_InitialSnapPosition(context: PmoveContext): void {
 /**
  * Original name: timer drop block inside `Pmove`
  * Source: qcommon/pmove.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:

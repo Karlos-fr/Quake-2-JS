@@ -66,9 +66,28 @@ import {
   REF_VERSION
 } from "./gl_local.js";
 
+/**
+ * Original name: NUM_BEAM_SEGS
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const NUM_BEAM_SEGS = 6;
+
+/**
+ * Original name: N/A
+ * Source: N/A (OpenGL draw-buffer constant shim)
+ * Category: New
+ * Purpose: Name the OpenGL back-left draw buffer used by the stereo pattern adapter.
+ */
 export const GL_BACK_LEFT = 0x0402;
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer adapter DTO)
+ * Category: New
+ * Purpose: Describe viewport payloads emitted by the ported GL setup path.
+ */
 export interface GlRmainViewport {
   x: number;
   y: number;
@@ -76,16 +95,34 @@ export interface GlRmainViewport {
   height: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer adapter DTO)
+ * Category: New
+ * Purpose: Describe beam segments emitted by the ported beam draw path.
+ */
 export interface GlRmainBeamSegment {
   start: vec3_t;
   end: vec3_t;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer adapter DTO)
+ * Category: New
+ * Purpose: Describe sprite vertices emitted by the ported sprite draw path.
+ */
 export interface GlRmainSpriteVertex {
   position: vec3_t;
   uv: [number, number];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer adapter DTO)
+ * Category: New
+ * Purpose: Describe triangle-particle payloads emitted by the ported particle fallback.
+ */
 export interface GlRmainParticleTriangle {
   color: [number, number, number, number];
   vertices: Array<{
@@ -94,17 +131,35 @@ export interface GlRmainParticleTriangle {
   }>;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer adapter DTO)
+ * Category: New
+ * Purpose: Describe one line in the optional stereo calibration pattern.
+ */
 export interface GlRmainStereoLine {
   color: [number, number, number];
   start: [number, number];
   end: [number, number];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer adapter DTO)
+ * Category: New
+ * Purpose: Describe the optional stereo calibration pattern retained from `gl_rmain.c`.
+ */
 export interface GlRmainStereoPattern {
   drawBuffer: typeof GL_BACK_LEFT;
   frames: GlRmainStereoLine[][];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer adapter DTO)
+ * Category: New
+ * Purpose: Describe projection bounds emitted by `MYgluPerspective`.
+ */
 export interface GlRmainProjection {
   xmin: number;
   xmax: number;
@@ -114,6 +169,12 @@ export interface GlRmainProjection {
   zFar: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime state)
+ * Category: New
+ * Purpose: Hold mutable GL state formerly stored as renderer globals.
+ */
 export interface GlRmainGlState {
   camera_separation: number;
   stereo_enabled: boolean;
@@ -121,6 +182,12 @@ export interface GlRmainGlState {
   prev_mode: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer hook adapter)
+ * Category: New
+ * Purpose: Expose backend and subsystem effects required by the ported `gl_rmain.c` routines.
+ */
 export interface GlRmainHooks {
   pointInLeaf?: (point: vec3_t, worldmodel: model_t) => { cluster: number; contents: number } | null;
   onNoworldModelClear?: (viewport: GlRmainViewport) => void;
@@ -187,6 +254,12 @@ export interface GlRmainHooks {
   resolveBackendProc?: (name: string) => unknown;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer refexport adapter)
+ * Category: New
+ * Purpose: Provide host callbacks used to assemble the `GetRefAPI` export table.
+ */
 export interface GlRmainRefApiHooks {
   imagelistCommand?: () => void;
   screenshotCommand?: () => void;
@@ -211,6 +284,12 @@ export interface GlRmainRefApiHooks {
   swapInit?: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime state)
+ * Category: New
+ * Purpose: Store the explicit state replacing the mutable globals owned by `ref_gl/gl_rmain.c`.
+ */
 export interface GlRmainRuntime {
   vid: { width: number; height: number };
   gl_state: GlRmainGlState;
@@ -316,6 +395,8 @@ export interface GlRmainRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime replacing the mutable `gl_rmain.c` globals used by the current port tranche.
  */
@@ -432,9 +513,12 @@ export function createGlRmainRuntime(hooks: GlRmainHooks = {}): GlRmainRuntime {
 
 /**
  * Original name: V_AddBlend
- * Source: ref_gl/gl_rmain.c
- * Category: Ported
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
  * Fidelity level: Strict
+ *
+ * Porting notes:
+ * - The original tree declares `V_AddBlend` for `ref_gl` but does not provide a `gl_rmain.c` definition; keep this helper separate from covered owner status.
  */
 export function V_AddBlend(r: number, g: number, b: number, a: number, v_blend: [number, number, number, number]): void {
   if (a <= 0) {
@@ -1277,6 +1361,8 @@ export function R_BeginFrame(runtime: GlRmainRuntime, camera_separation: number)
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer runtime binder)
  * Category: New
  * Purpose: Bind the current world model used by the frame setup and view render path.
  */
@@ -1285,6 +1371,8 @@ export function setRmainWorldModel(runtime: GlRmainRuntime, model: model_t | nul
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer palette binder)
  * Category: New
  * Purpose: Bind the current renderer-owned 8-to-24 palette table used by beam and raw palette code.
  */
@@ -1293,6 +1381,8 @@ export function setRmainPaletteTable(runtime: GlRmainRuntime, table: Uint32Array
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer texture binder)
  * Category: New
  * Purpose: Bind the current particle texture used by the triangle-particle fallback path.
  */
@@ -1301,6 +1391,8 @@ export function setRmainParticleTexture(runtime: GlRmainRuntime, image: image_t 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer video-state binder)
  * Category: New
  * Purpose: Bind the current video dimensions used by viewport setup.
  */
@@ -1310,6 +1402,8 @@ export function setRmainVid(runtime: GlRmainRuntime, width: number, height: numb
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer cvar binder)
  * Category: New
  * Purpose: Bind the cvars currently consumed by the ported `gl_rmain.c` tranche.
  */
@@ -1642,6 +1736,12 @@ export function GetRefAPI(runtime: GlRmainRuntime, rimp: refimport_t, hooks: GlR
   };
 }
 
+/**
+ * Original name: R_Init renderer detection block
+ * Source: ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Extract the renderer/vendor string classification used during GL bootstrap.
+ */
 function detectRendererFlags(rendererString: string, vendorString: string): number {
   const renderer = rendererString.toLowerCase();
   const vendor = vendorString.toLowerCase();
@@ -1683,6 +1783,12 @@ function detectRendererFlags(rendererString: string, vendorString: string): numb
   return GL_RENDERER_OTHER;
 }
 
+/**
+ * Original name: R_Init renderer default block
+ * Source: ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Apply the cvar defaults that the original bootstrap chooses from the detected renderer.
+ */
 function applyRendererSpecificDefaults(runtime: GlRmainRuntime, ri: refimport_t): void {
   const monolightmapMode = runtime.gl_monolightmap?.string[1]?.toUpperCase() ?? "\0";
   if (monolightmapMode !== "F") {
@@ -1709,6 +1815,12 @@ function applyRendererSpecificDefaults(runtime: GlRmainRuntime, ri: refimport_t)
   }
 }
 
+/**
+ * Original name: R_Init extension detection block
+ * Source: ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Extract extension probing and backend proc resolution from the original GL bootstrap.
+ */
 function detectBackendExtensions(runtime: GlRmainRuntime, ri: refimport_t): void {
   const extensions = runtime.gl_extensions_string;
   runtime.qglLockArraysEXT = false;
@@ -1771,14 +1883,32 @@ function detectBackendExtensions(runtime: GlRmainRuntime, ri: refimport_t): void
   }
 }
 
+/**
+ * Original name: R_Init extension strstr checks
+ * Source: ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Keep the original extension substring checks explicit in TS.
+ */
 function hasExtension(extensions: string, extension: string): boolean {
   return extensions.includes(extension);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer backend hook adapter)
+ * Category: New
+ * Purpose: Convert optional WebGL/backend proc resolution into boolean runtime flags.
+ */
 function isBackendProcResolved(runtime: GlRmainRuntime, name: string): boolean {
   return typeof runtime.hooks.resolveBackendProc?.(name) === "function";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer bootstrap state reset)
+ * Category: New
+ * Purpose: Reset TS runtime bootstrap fields that are global variables/function pointers in the C renderer.
+ */
 function resetBootstrapRuntimeState(runtime: GlRmainRuntime): void {
   runtime.gl_state.camera_separation = 0;
   runtime.gl_state.stereo_enabled = false;
@@ -1793,6 +1923,12 @@ function resetBootstrapRuntimeState(runtime: GlRmainRuntime): void {
   runtime.qglSelectTextureSGIS = false;
 }
 
+/**
+ * Original name: R_Init qglGetError block
+ * Source: ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Preserve the original bootstrap GL error report through renderer hooks.
+ */
 function reportBootstrapGlError(runtime: GlRmainRuntime, ri: refimport_t): void {
   const glError = runtime.hooks.getGlError?.();
   if (glError == null || glError === 0) {
@@ -1802,6 +1938,12 @@ function reportBootstrapGlError(runtime: GlRmainRuntime, ri: refimport_t): void 
   ri.Con_Printf(PRINT_ALL, `glGetError() = 0x${glError.toString(16)}\n`);
 }
 
+/**
+ * Original name: R_SetupGL modelview matrix block
+ * Source: ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Build the modelview matrix that the C renderer produced through GL matrix calls.
+ */
 function buildWorldMatrix(vieworg: vec3_t, viewangles: vec3_t): Float32Array {
   const radians = {
     pitch: (-viewangles[0] * Math.PI) / 180,
@@ -1842,6 +1984,12 @@ function buildWorldMatrix(vieworg: vec3_t, viewangles: vec3_t): Float32Array {
   return multiplyMat4(multiplyMat4(multiplyMat4(orientX, orientZ), base), translated);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer matrix helper)
+ * Category: New
+ * Purpose: Create a 4x4 rotation matrix for the TS-side modelview adapter.
+ */
 function rotationMat4(angle: number, axis: vec3_t): Float32Array {
   const [x, y, z] = axis;
   const c = Math.cos(angle);
@@ -1856,6 +2004,12 @@ function rotationMat4(angle: number, axis: vec3_t): Float32Array {
   ]);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer matrix helper)
+ * Category: New
+ * Purpose: Create a 4x4 translation matrix for the TS-side modelview adapter.
+ */
 function translationMat4(offset: vec3_t): Float32Array {
   return new Float32Array([
     1, 0, 0, 0,
@@ -1865,6 +2019,12 @@ function translationMat4(offset: vec3_t): Float32Array {
   ]);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer matrix helper)
+ * Category: New
+ * Purpose: Multiply 4x4 matrices used by the TS-side modelview adapter.
+ */
 function multiplyMat4(left: Float32Array, right: Float32Array): Float32Array {
   const out = new Float32Array(16);
   for (let row = 0; row < 4; row += 1) {
@@ -1879,6 +2039,12 @@ function multiplyMat4(left: Float32Array, right: Float32Array): Float32Array {
   return out;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer frame snapshot helper)
+ * Category: New
+ * Purpose: Snapshot refdef input so the renderer runtime owns stable per-frame data.
+ */
 function cloneRefdef(fd: refdef_t): refdef_t {
   return {
     ...fd,
@@ -1906,6 +2072,12 @@ function cloneRefdef(fd: refdef_t): refdef_t {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer runtime factory helper)
+ * Category: New
+ * Purpose: Initialize a TS frustum plane object for runtime state construction.
+ */
 function createPlane(): cplane_t {
   return {
     normal: [0, 0, 0],
@@ -1916,6 +2088,12 @@ function createPlane(): cplane_t {
   };
 }
 
+/**
+ * Original name: ri.Sys_Error call sites
+ * Source: ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Route fatal renderer errors through the injected host hook or throw in standalone tests.
+ */
 function failSysError(runtime: GlRmainRuntime, level: number, message: string): never {
   if (runtime.hooks.sysError) {
     return runtime.hooks.sysError(level, message);

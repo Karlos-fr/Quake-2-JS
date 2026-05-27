@@ -50,19 +50,84 @@ import {
 } from "./gl-model.js";
 import type { GlRmainRuntime } from "./gl_rmain.js";
 
+/**
+ * Original name: DYNAMIC_LIGHT_WIDTH
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export const DYNAMIC_LIGHT_WIDTH = 128;
+/**
+ * Original name: DYNAMIC_LIGHT_HEIGHT
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export const DYNAMIC_LIGHT_HEIGHT = 128;
+/**
+ * Original name: LIGHTMAP_BYTES
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export const LIGHTMAP_BYTES = 4;
+/**
+ * Original name: BLOCK_WIDTH
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export const BLOCK_WIDTH = 128;
+/**
+ * Original name: BLOCK_HEIGHT
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export const BLOCK_HEIGHT = 128;
+/**
+ * Original name: MAX_LIGHTMAPS
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export const MAX_LIGHTMAPS = 128;
+/**
+ * Original name: GL_LIGHTMAP_FORMAT
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export const GL_LIGHTMAP_FORMAT = "GL_RGBA";
+/**
+ * Original name: N/A
+ * Source: N/A (local GL enum adapter)
+ * Category: New
+ */
 const GL_LIGHTMAP_FORMAT_SOLID = 1;
+/**
+ * Original name: N/A
+ * Source: N/A (local GL enum adapter)
+ * Category: New
+ */
 const GL_LIGHTMAP_FORMAT_ALPHA = 2;
+/**
+ * Original name: N/A
+ * Source: N/A (local GL enum adapter)
+ * Category: New
+ */
 const GL_LIGHTMAP_FORMAT_INTENSITY8 = 3;
+/**
+ * Original name: N/A
+ * Source: N/A (local GL enum adapter)
+ * Category: New
+ */
 const GL_LIGHTMAP_FORMAT_LUMINANCE8 = 4;
+/**
+ * Original name: BACKFACE_EPSILON
+ * Source: ref_gl/gl_local.h
+ * Category: Adapter
+ */
 const BACKFACE_EPSILON = 0.01;
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-three backend hooks)
+ * Category: New
+ */
 export interface GlRsurfHooks {
   setCacheState?: (surface: msurface_t) => void;
   buildLightMap?: (surface: msurface_t, dest: Uint8Array, stride: number) => void;
@@ -117,6 +182,11 @@ export interface GlRsurfHooks {
   endBrushModelDraw?: (entity: GlRsurfEntityRef, model: model_t) => void;
 }
 
+/**
+ * Original name: gllightmapstate_t
+ * Source: Quake-2-master/ref_gl/gl_rsurf.c
+ * Category: Ported
+ */
 export interface GlLightmapState {
   internal_format: number;
   current_lightmap_texture: number;
@@ -125,6 +195,11 @@ export interface GlLightmapState {
   lightmap_buffer: Uint8Array;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer entity adapter)
+ * Category: New
+ */
 export interface GlRsurfEntityRef {
   frame: number;
   flags?: number;
@@ -132,10 +207,20 @@ export interface GlRsurfEntityRef {
   angles?: vec3_t;
 }
 
+/**
+ * Original name: lightstyle_t.white
+ * Source: Quake-2-master/ref_gl/gl_rsurf.c
+ * Category: Adapter
+ */
 export interface GlRsurfLightstyle {
   white: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer-three runtime state)
+ * Category: New
+ */
 export interface GlRsurfRuntime {
   r_worldmodel: model_t | null;
   currentmodel: model_t | null;
@@ -171,6 +256,8 @@ export interface GlRsurfRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime replacing the mutable `gl_rsurf.c` globals.
  */
@@ -1276,6 +1363,8 @@ export function GL_BuildPolygonFromSurface(runtime: GlRsurfRuntime, fa: msurface
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current brush model used by `gl_rsurf.c`-style surface builders.
  */
@@ -1284,6 +1373,8 @@ export function setCurrentModel(runtime: GlRsurfRuntime, model: model_t | null):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the world brush model consumed by the world-traversal half of `gl_rsurf.c`.
  */
@@ -1292,6 +1383,8 @@ export function setWorldModel(runtime: GlRsurfRuntime, model: model_t | null): v
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current entity used by animated texture selection.
  */
@@ -1300,6 +1393,8 @@ export function setCurrentEntity(runtime: GlRsurfRuntime, entity: GlRsurfEntityR
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current frame counter used by dynamic light bookkeeping.
  */
@@ -1308,6 +1403,8 @@ export function setFrameCount(runtime: GlRsurfRuntime, frameCount: number): void
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current renderer lightstyles consumed by lightmap cache validation.
  */
@@ -1316,6 +1413,8 @@ export function setLightstyles(runtime: GlRsurfRuntime, lightstyles: GlRsurfLigh
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Toggle the original `gl_dynamic` path for dynamic lightmap rebuilds.
  */
@@ -1324,6 +1423,8 @@ export function setDynamicLightmapsEnabled(runtime: GlRsurfRuntime, enabled: boo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current refdef time used by flowing-surface UV offsets.
  */
@@ -1332,6 +1433,8 @@ export function setCurrentTime(runtime: GlRsurfRuntime, timeSeconds: number): vo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current world-view origin used by BSP side tests.
  */
@@ -1340,6 +1443,8 @@ export function setViewOrigin(runtime: GlRsurfRuntime, vieworg: vec3_t): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current visible clusters used by PVS marking.
  */
@@ -1349,6 +1454,8 @@ export function setViewClusters(runtime: GlRsurfRuntime, cluster: number, cluste
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Bind the current area bits and renderer flags coming from the refdef.
  */
@@ -1358,6 +1465,8 @@ export function setRefdefState(runtime: GlRsurfRuntime, areabits: Uint8Array | n
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Toggle the original `r_novis`, `gl_lockpvs` and `r_drawworld` control flags.
  */
@@ -1374,6 +1483,8 @@ export function setWorldDrawFlags(runtime: GlRsurfRuntime, options: { novis?: bo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Control whether `DrawTextureChains` uses the original multitexture split path.
  */
@@ -1382,6 +1493,8 @@ export function setMultitextureEnabled(runtime: GlRsurfRuntime, enabled: boolean
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three rmain bridge)
  * Category: New
  * Purpose: Mirror the multitexture availability resolved during `R_Init` into the `gl_rsurf.c` runtime.
  *
@@ -1400,6 +1513,8 @@ export function syncRsurfMultitextureFromRmain(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Toggle the original `gl_showtris` debug visualization path.
  */
@@ -1408,6 +1523,8 @@ export function setShowTriangleOutlines(runtime: GlRsurfRuntime, enabled: boolea
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Toggle the original `gl_lightmap` debug path that prefers lightmap-only world modulation.
  */
@@ -1416,6 +1533,8 @@ export function setLightmapOnly(runtime: GlRsurfRuntime, enabled: boolean): void
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Toggle the original `r_fullbright` short-circuit for the lightmap blend pass.
  */
@@ -1424,6 +1543,8 @@ export function setFullbrightEnabled(runtime: GlRsurfRuntime, enabled: boolean):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Toggle the original `gl_flashblend` path that bypasses brush-model light marking.
  */
@@ -1432,6 +1553,8 @@ export function setFlashblendEnabled(runtime: GlRsurfRuntime, enabled: boolean):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-three state setter)
  * Category: New
  * Purpose: Preserve the original `gl_monolightmap` switch consumed while initializing lightmap storage.
  */
@@ -1440,6 +1563,8 @@ export function setMonolightmapMode(runtime: GlRsurfRuntime, mode: string): void
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (texture chain helper)
  * Category: New
  * Purpose: Queue one surface on the owning texture image chain following the original front-to-back linking convention.
  */
@@ -1453,6 +1578,8 @@ export function chainSurfaceByImage(image: image_t | null, surface: msurface_t):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (alpha surface queue helper)
  * Category: New
  * Purpose: Queue one translucent surface onto the alpha list consumed by `R_DrawAlphaSurfaces`.
  */
@@ -1462,6 +1589,8 @@ export function queueAlphaSurface(runtime: GlRsurfRuntime, surface: msurface_t):
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (texture chain helper)
  * Category: New
  * Purpose: Clear all texture chain heads on one image table.
  */
@@ -1472,6 +1601,8 @@ export function clearImageTextureChains(images: image_t[]): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (model loader bridge)
  * Category: New
  * Purpose: Expose hook functions compatible with the earlier `gl_model.c` loading pipeline.
  */

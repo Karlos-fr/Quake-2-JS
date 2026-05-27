@@ -4,43 +4,43 @@
 
 - Fichier TS: `packages/renderer-three/src/gl_warp.ts`
 - Symboles TS: 35
-- Couvert C/H: 0
-- Reste a auditer: 35
+- Couvert C/H: 15
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/gl_warp.ts` | value | `SUBDIVIDE_SIZE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `TURBSCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `ON_EPSILON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `MAX_CLIP_VERTS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `SKY_TEX_ORDER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `SKY_SUFFIXES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `ST_TO_VEC` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `VEC_TO_ST` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | value | `SKY_CLIP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `getSkyTexClampBounds` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpWaterVertex` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpWaterPoly` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpSkyFace` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `createGlWarpRuntime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpModel` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpRefdefTime` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpViewOrigin` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpSkyCvars` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpPaletteExtensionState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpTurbulenceScale` | oui | `r_turbsin bootstrap scale in R_Init` | `Quake-2-master/ref_gl/gl_rmain.c + ref_gl/gl_warp.c` | Ported |  | Source inconnue | A verifier | Aucune entite C/H correspondante trouvee dans les matrices source. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpFallbackTexture` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpHooks` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `BoundPoly` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `SubdividePolygon` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `GL_SubdivideSurface` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `EmitWaterPolys` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `DrawSkyPolygon` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `ClipSkyPolygon` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `R_AddSkySurface` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `R_ClearSkyBox` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `MakeSkyVec` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `R_DrawSkyBox` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `R_SetSky` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/gl_warp.ts` | function | `failSysError` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/gl_warp.ts` | value | `SUBDIVIDE_SIZE` | oui | `SUBDIVIDE_SIZE` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | value | `TURBSCALE` | oui | `TURBSCALE` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | value | `ON_EPSILON` | oui | `ON_EPSILON` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | value | `MAX_CLIP_VERTS` | oui | `MAX_CLIP_VERTS` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | value | `SKY_TEX_ORDER` | oui | `skytexorder` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Valide | Valide | Table source presente dans `R_DrawSkyBox`; pas de ligne C/H generee. |
+| `packages/renderer-three/src/gl_warp.ts` | value | `SKY_SUFFIXES` | oui | `suf` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Valide | Valide | Table source presente dans `R_SetSky`; pas de ligne C/H generee. |
+| `packages/renderer-three/src/gl_warp.ts` | value | `ST_TO_VEC` | oui | `st_to_vec` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Valide | Valide | Table source presente; pas de ligne C/H generee. |
+| `packages/renderer-three/src/gl_warp.ts` | value | `VEC_TO_ST` | oui | `vec_to_st` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Valide | Valide | Table source presente; pas de ligne C/H generee. |
+| `packages/renderer-three/src/gl_warp.ts` | value | `SKY_CLIP` | oui | `skyclip` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Valide | Valide | Table source presente; pas de ligne C/H generee. |
+| `packages/renderer-three/src/gl_warp.ts` | function | `getSkyTexClampBounds` | oui | `N/A` | `N/A (sky adapter clamp helper)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpWaterVertex` | oui | `N/A` | `N/A (water geometry payload)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpWaterPoly` | oui | `N/A` | `N/A (water geometry payload)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpSkyFace` | oui | `N/A` | `N/A (sky geometry payload)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | interface | `GlWarpRuntime` | oui | `ref_gl/gl_warp.c renderer globals` | `Quake-2-master/ref_gl/gl_warp.c` | Adapter | `ref_gl_gl_warp.c.md` | Valide | Valide | Replaces C renderer globals with explicit per-renderer runtime state. |
+| `packages/renderer-three/src/gl_warp.ts` | function | `createGlWarpRuntime` | oui | `N/A` | `N/A (warp runtime factory)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpModel` | oui | `N/A` | `N/A (warp runtime setter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpRefdefTime` | oui | `N/A` | `N/A (warp runtime setter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpViewOrigin` | oui | `N/A` | `N/A (warp runtime setter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpSkyCvars` | oui | `N/A` | `N/A (warp runtime setter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpPaletteExtensionState` | oui | `N/A` | `N/A (warp runtime setter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpTurbulenceScale` | oui | `r_turbsin bootstrap scale in R_Init` | `Quake-2-master/ref_gl/gl_rmain.c + Quake-2-master/ref_gl/gl_warp.c` | Adapter | `ref_gl_gl_rmain.c.md`, `ref_gl_gl_warp.c.md` | Valide | Valide | Adapter: preserves `R_Init` scaling without mutating canonical `warpsin.ts`. |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpFallbackTexture` | oui | `N/A` | `N/A (warp runtime setter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `setWarpHooks` | oui | `N/A` | `N/A (warp runtime setter)` | New |  | Valide | Valide |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `BoundPoly` | oui | `BoundPoly` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `SubdividePolygon` | oui | `SubdividePolygon` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `GL_SubdivideSurface` | oui | `GL_SubdivideSurface` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `EmitWaterPolys` | oui | `EmitWaterPolys` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `DrawSkyPolygon` | oui | `DrawSkyPolygon` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `ClipSkyPolygon` | oui | `ClipSkyPolygon` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `R_AddSkySurface` | oui | `R_AddSkySurface` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `R_ClearSkyBox` | oui | `R_ClearSkyBox` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `MakeSkyVec` | oui | `MakeSkyVec` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `R_DrawSkyBox` | oui | `R_DrawSkyBox` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `R_SetSky` | oui | `R_SetSky` | `Quake-2-master/ref_gl/gl_warp.c` | Ported | `ref_gl_gl_warp.c.md` | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/gl_warp.ts` | function | `failSysError` | non | `N/A` | `N/A (warp runtime error adapter)` | New |  | Valide | Valide |  |

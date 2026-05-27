@@ -4,16 +4,16 @@
 
 - Fichier TS: `packages/qcommon/src/q_shared.ts`
 - Symboles TS: 281
-- Couvert C/H: 190
-- Reste a auditer: 86
+- Couvert C/H: 274
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `packages/qcommon/src/q_shared.ts` | type | `byte` | oui | `byte` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | type | `qboolean` | oui | `qboolean` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | type | `vec_t` | oui | `vec_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/qcommon/src/q_shared.ts` | type | `vec3_t` | oui | `vec3_t` | `Quake-2-master/game/q_shared.h` | Ported |  | Source directe | Valide | Typedef present dans q_shared.h mais sans ligne C/H generee. |
-| `packages/qcommon/src/q_shared.ts` | type | `vec5_t` | oui | `vec5_t` | `Quake-2-master/game/q_shared.h` | Ported |  | Source directe | Valide | Typedef present dans q_shared.h mais sans ligne C/H generee. |
+| `packages/qcommon/src/q_shared.ts` | type | `vec3_t` | oui | `vec3_t` | `Quake-2-master/game/q_shared.h` | Ported |  | Valide | Valide | Typedef present dans q_shared.h mais sans ligne C/H generee. |
+| `packages/qcommon/src/q_shared.ts` | type | `vec5_t` | oui | `vec5_t` | `Quake-2-master/game/q_shared.h` | Ported |  | Valide | Valide | Typedef present dans q_shared.h mais sans ligne C/H generee. |
 | `packages/qcommon/src/q_shared.ts` | type | `fixed4_t` | oui | `fixed4_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | type | `fixed8_t` | oui | `fixed8_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | type | `fixed16_t` | oui | `fixed16_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
@@ -34,7 +34,7 @@
 | `packages/qcommon/src/q_shared.ts` | value | `MAX_IMAGES` | oui | `MAX_IMAGES` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | value | `MAX_ITEMS` | oui | `MAX_ITEMS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | value | `MAX_GENERAL` | oui | `MAX_GENERAL` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/qcommon/src/q_shared.ts` | value | `MAX_MAP_AREAS` | oui | `MAX_MAP_AREAS` | `Quake-2-master/qcommon/qfiles.h` | Adapter | [`qcommon_qfiles.h.md`](../matrices/qcommon_qfiles.h.md) | Ownership suspect | Partiel | Constante qfiles.h dupliquee dans q_shared.ts; action suivante: decider reexport/import depuis le proprietaire packages/formats/src/qfiles.ts ou documenter explicitement cet adapter. |
+| `packages/qcommon/src/q_shared.ts` | value | `MAX_MAP_AREAS` | oui | `MAX_MAP_AREAS` | `Quake-2-master/qcommon/qfiles.h` | Adapter | [`qcommon_qfiles.h.md`](../matrices/qcommon_qfiles.h.md) | Valide | Valide | Constante qfiles.h volontairement dupliquee: le proprietaire C/H reste packages/formats/src/qfiles.ts; q_shared.ts la garde comme adapter pour eviter une dependance qcommon -> formats. |
 | `packages/qcommon/src/q_shared.ts` | value | `PRINT_LOW` | oui | `PRINT_LOW` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | value | `PRINT_MEDIUM` | oui | `PRINT_MEDIUM` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | value | `PRINT_HIGH` | oui | `PRINT_HIGH` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
@@ -198,95 +198,95 @@
 | `packages/qcommon/src/q_shared.ts` | value | `MZ_NUKE4` | oui | `MZ_NUKE4` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | value | `MZ_NUKE8` | oui | `MZ_NUKE8` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | value | `MZ_SILENCED` | oui | `MZ_SILENCED` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/qcommon/src/q_shared.ts` | enum | `temp_event_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CHAN_AUTO` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CHAN_WEAPON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CHAN_VOICE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CHAN_ITEM` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CHAN_BODY` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CHAN_NO_PHS_ADD` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CHAN_RELIABLE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `ATTN_NONE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `ATTN_NORM` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `ATTN_IDLE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `ATTN_STATIC` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_UNKNOWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_SPARKS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_BLUE_WATER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_BROWN_WATER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_SLIME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_LAVA` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_BLOOD` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_HEALTH_ICON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_HEALTH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_AMMO_ICON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_AMMO` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_ARMOR_ICON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_ARMOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_SELECTED_ICON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_PICKUP_ICON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_PICKUP_STRING` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_TIMER_ICON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_TIMER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_HELPICON` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_SELECTED_ITEM` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_LAYOUTS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_FRAGS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_FLASHES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_CHASE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `STAT_SPECTATOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `MAX_STATS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_HEALTH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_ITEMS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_WEAPONS_STAY` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_FALLING` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_INSTANT_ITEMS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_SAME_LEVEL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_SKINTEAMS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_MODELTEAMS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_FRIENDLY_FIRE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_SPAWN_FARTHEST` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_FORCE_RESPAWN` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_ARMOR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_ALLOW_EXIT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_INFINITE_AMMO` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_QUAD_DROP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_FIXED_FOV` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_QUADFIRE_DROP` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_MINES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_STACK_DOUBLE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_NUKES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_SPHERES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `ROGUE_VERSION_ID` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `ROGUE_VERSION_STRING` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `ANGLE2SHORT_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `SHORT2ANGLE_SCALE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_NAME` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_CDTRACK` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_SKY` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_SKYAXIS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_SKYROTATE` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_STATUSBAR` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_AIRACCEL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_MAXCLIENTS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_MAPCHECKSUM` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_MODELS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_SOUNDS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_IMAGES` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_LIGHTS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_ITEMS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_PLAYERSKINS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `CS_GENERAL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `MAX_CONFIGSTRINGS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `VIDREF_GL` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `VIDREF_SOFT` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | value | `VIDREF_OTHER` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | enum | `entity_event_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | interface | `entity_state_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/q_shared.ts` | interface | `player_state_t` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/qcommon/src/q_shared.ts` | enum | `temp_event_t` | oui | `temp_event_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CHAN_AUTO` | oui | `CHAN_AUTO` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CHAN_WEAPON` | oui | `CHAN_WEAPON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CHAN_VOICE` | oui | `CHAN_VOICE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CHAN_ITEM` | oui | `CHAN_ITEM` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CHAN_BODY` | oui | `CHAN_BODY` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CHAN_NO_PHS_ADD` | oui | `CHAN_NO_PHS_ADD` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CHAN_RELIABLE` | oui | `CHAN_RELIABLE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `ATTN_NONE` | oui | `ATTN_NONE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `ATTN_NORM` | oui | `ATTN_NORM` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `ATTN_IDLE` | oui | `ATTN_IDLE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `ATTN_STATIC` | oui | `ATTN_STATIC` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_UNKNOWN` | oui | `SPLASH_UNKNOWN` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_SPARKS` | oui | `SPLASH_SPARKS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_BLUE_WATER` | oui | `SPLASH_BLUE_WATER` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_BROWN_WATER` | oui | `SPLASH_BROWN_WATER` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_SLIME` | oui | `SPLASH_SLIME` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_LAVA` | oui | `SPLASH_LAVA` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `SPLASH_BLOOD` | oui | `SPLASH_BLOOD` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_HEALTH_ICON` | oui | `STAT_HEALTH_ICON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_HEALTH` | oui | `STAT_HEALTH` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_AMMO_ICON` | oui | `STAT_AMMO_ICON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_AMMO` | oui | `STAT_AMMO` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_ARMOR_ICON` | oui | `STAT_ARMOR_ICON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_ARMOR` | oui | `STAT_ARMOR` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_SELECTED_ICON` | oui | `STAT_SELECTED_ICON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_PICKUP_ICON` | oui | `STAT_PICKUP_ICON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_PICKUP_STRING` | oui | `STAT_PICKUP_STRING` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_TIMER_ICON` | oui | `STAT_TIMER_ICON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_TIMER` | oui | `STAT_TIMER` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_HELPICON` | oui | `STAT_HELPICON` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_SELECTED_ITEM` | oui | `STAT_SELECTED_ITEM` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_LAYOUTS` | oui | `STAT_LAYOUTS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_FRAGS` | oui | `STAT_FRAGS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_FLASHES` | oui | `STAT_FLASHES` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_CHASE` | oui | `STAT_CHASE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `STAT_SPECTATOR` | oui | `STAT_SPECTATOR` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `MAX_STATS` | oui | `MAX_STATS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_HEALTH` | oui | `DF_NO_HEALTH` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_ITEMS` | oui | `DF_NO_ITEMS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_WEAPONS_STAY` | oui | `DF_WEAPONS_STAY` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_FALLING` | oui | `DF_NO_FALLING` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_INSTANT_ITEMS` | oui | `DF_INSTANT_ITEMS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_SAME_LEVEL` | oui | `DF_SAME_LEVEL` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_SKINTEAMS` | oui | `DF_SKINTEAMS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_MODELTEAMS` | oui | `DF_MODELTEAMS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_FRIENDLY_FIRE` | oui | `DF_NO_FRIENDLY_FIRE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_SPAWN_FARTHEST` | oui | `DF_SPAWN_FARTHEST` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_FORCE_RESPAWN` | oui | `DF_FORCE_RESPAWN` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_ARMOR` | oui | `DF_NO_ARMOR` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_ALLOW_EXIT` | oui | `DF_ALLOW_EXIT` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_INFINITE_AMMO` | oui | `DF_INFINITE_AMMO` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_QUAD_DROP` | oui | `DF_QUAD_DROP` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_FIXED_FOV` | oui | `DF_FIXED_FOV` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_QUADFIRE_DROP` | oui | `DF_QUADFIRE_DROP` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_MINES` | oui | `DF_NO_MINES` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_STACK_DOUBLE` | oui | `DF_NO_STACK_DOUBLE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_NUKES` | oui | `DF_NO_NUKES` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `DF_NO_SPHERES` | oui | `DF_NO_SPHERES` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `ROGUE_VERSION_ID` | oui | `ROGUE_VERSION_ID` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `ROGUE_VERSION_STRING` | oui | `ROGUE_VERSION_STRING` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `ANGLE2SHORT_SCALE` | oui | `ANGLE2SHORT helper scale` | `Quake-2-master/game/q_shared.h` | Adapter |  | Valide | Valide | Implementation constant for validated `ANGLE2SHORT` macro. |
+| `packages/qcommon/src/q_shared.ts` | value | `SHORT2ANGLE_SCALE` | oui | `SHORT2ANGLE helper scale` | `Quake-2-master/game/q_shared.h` | Adapter |  | Valide | Valide | Implementation constant for validated `SHORT2ANGLE` macro. |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_NAME` | oui | `CS_NAME` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_CDTRACK` | oui | `CS_CDTRACK` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_SKY` | oui | `CS_SKY` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_SKYAXIS` | oui | `CS_SKYAXIS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_SKYROTATE` | oui | `CS_SKYROTATE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_STATUSBAR` | oui | `CS_STATUSBAR` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_AIRACCEL` | oui | `CS_AIRACCEL` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_MAXCLIENTS` | oui | `CS_MAXCLIENTS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_MAPCHECKSUM` | oui | `CS_MAPCHECKSUM` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_MODELS` | oui | `CS_MODELS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_SOUNDS` | oui | `CS_SOUNDS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_IMAGES` | oui | `CS_IMAGES` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_LIGHTS` | oui | `CS_LIGHTS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_ITEMS` | oui | `CS_ITEMS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_PLAYERSKINS` | oui | `CS_PLAYERSKINS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `CS_GENERAL` | oui | `CS_GENERAL` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `MAX_CONFIGSTRINGS` | oui | `MAX_CONFIGSTRINGS` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `VIDREF_GL` | oui | `VIDREF_GL` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `VIDREF_SOFT` | oui | `VIDREF_SOFT` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | value | `VIDREF_OTHER` | oui | `VIDREF_OTHER` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | enum | `entity_event_t` | oui | `entity_event_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/q_shared.ts` | interface | `entity_state_t` | oui | `entity_state_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H | Ligne C/H proprietaire: `struct entity_state_s` typedefe en `entity_state_t`. |
+| `packages/qcommon/src/q_shared.ts` | interface | `player_state_t` | oui | `player_state_t` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/qcommon/src/q_shared.ts` | function | `ANGLE2SHORT` | oui | `ANGLE2SHORT` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H | Ownership verifie: q_shared.h est centralise dans packages/qcommon malgre le chemin source historique game/. |
 | `packages/qcommon/src/q_shared.ts` | function | `SHORT2ANGLE` | oui | `SHORT2ANGLE` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Couvert C/H | Couvert C/H | Ownership verifie: q_shared.h est centralise dans packages/qcommon malgre le chemin source historique game/. |
 | `packages/qcommon/src/q_shared.ts` | function | `LerpAngle` | oui | `LerpAngle` | `Quake-2-master/game/q_shared.c` | Ported | [`game_q_shared.c.md`](../matrices/game_q_shared.c.md) | Couvert C/H | Couvert C/H | Ownership verifie: q_shared.c shared math helper centralise dans packages/qcommon pour les consommateurs qcommon/game/client/renderer. |
 | `packages/qcommon/src/q_shared.ts` | function | `AngleVectors` | oui | `AngleVectors` | `Quake-2-master/game/q_shared.c` | Ported | [`game_q_shared.c.md`](../matrices/game_q_shared.c.md) | Couvert C/H | Couvert C/H | Ownership verifie: q_shared.c shared math helper centralise dans packages/qcommon pour les consommateurs qcommon/game/client/renderer. |
-| `packages/qcommon/src/q_shared.ts` | function | `createEntityState` | oui | `N/A` | `N/A (zero-initialized q_shared state helper)` | New |  | TS nouveau | Valide |  |
-| `packages/qcommon/src/q_shared.ts` | function | `createPlayerState` | oui | `N/A` | `N/A (zero-initialized q_shared state helper)` | New |  | TS nouveau | Valide |  |
+| `packages/qcommon/src/q_shared.ts` | function | `createEntityState` | oui | `N/A` | `N/A (zero-initialized q_shared state helper)` | New |  | Valide | Valide |  |
+| `packages/qcommon/src/q_shared.ts` | function | `createPlayerState` | oui | `N/A` | `N/A (zero-initialized q_shared state helper)` | New |  | Valide | Valide |  |

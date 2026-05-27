@@ -23,14 +23,33 @@ import { ERR_DROP, ERR_FATAL, MAX_QPATH, PRINT_ALL, PRINT_DEVELOPER } from "../.
 import type { image_t } from "./gl-model.js";
 import { GL_SHARED_TEXTURE_PALETTE_EXT, GL_TEXTURE0_SGIS, GL_TEXTURE1_SGIS } from "./qgl.js";
 
+/**
+ * Original name: TEXNUM_LIGHTMAPS / TEXNUM_SCRAPS / TEXNUM_IMAGES / MAX_GLTEXTURES
+ * Source: ref_gl/gl_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const TEXNUM_LIGHTMAPS = 1024;
 export const TEXNUM_SCRAPS = 1152;
 export const TEXNUM_IMAGES = 1153;
 export const MAX_GLTEXTURES = 1024;
+
+/**
+ * Original name: MAX_SCRAPS / BLOCK_WIDTH / BLOCK_HEIGHT
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_SCRAPS = 1;
 export const BLOCK_WIDTH = 256;
 export const BLOCK_HEIGHT = 256;
 
+/**
+ * Original name: N/A
+ * Source: N/A (OpenGL/WebGL numeric constants)
+ * Category: New
+ * Purpose: Provide the GL enum values used by the image manager backend hooks.
+ */
 export const GL_TEXTURE_ENV = 0x2300;
 export const GL_TEXTURE_ENV_MODE = 0x2200;
 export const GL_REPLACE = 0x1e01;
@@ -54,6 +73,13 @@ export const GL_LINEAR_MIPMAP_LINEAR = 0x2703;
 export const GL_COLOR_INDEX = 0x1900;
 export const GL_COLOR_INDEX8_EXT = 0x80e5;
 export const GL_UNSIGNED_BYTE = 0x1401;
+
+/**
+ * Original name: GL_RENDERER_VOODOO / GL_RENDERER_VOODOO2
+ * Source: ref_gl/gl_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const GL_RENDERER_VOODOO = 0x00000001;
 export const GL_RENDERER_VOODOO2 = 0x00000002;
 
@@ -71,6 +97,15 @@ export enum imagetype_t {
   it_sky
 }
 
+/**
+ * Original name: image_s / image_t
+ * Source: ref_gl/gl_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Owns the concrete image fields; gl_local.ts re-exports this shape as image_t.
+ */
 export interface GlImage {
   name: string;
   type: imagetype_t;
@@ -90,6 +125,12 @@ export interface GlImage {
   paletted: boolean;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture upload adapter)
+ * Category: New
+ * Purpose: Describe pixels passed from the image manager to backend upload hooks.
+ */
 export interface GlImageUploadSource {
   bits: 8 | 32;
   pixels: Uint8Array | Uint32Array;
@@ -99,6 +140,12 @@ export interface GlImageUploadSource {
   is_sky: boolean;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture upload adapter)
+ * Category: New
+ * Purpose: Return backend upload dimensions and alpha/palette state to the image manager.
+ */
 export interface GlImageUploadResult {
   upload_width: number;
   upload_height: number;
@@ -106,6 +153,12 @@ export interface GlImageUploadResult {
   paletted: boolean;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer backend adapter)
+ * Category: New
+ * Purpose: Inject platform, file and GPU operations that were direct `ri`/`qgl` calls in C.
+ */
 export interface GlImageHooks {
   loadFile?: (path: string) => Uint8Array | null;
   bindTexture?: (texnum: number, tmu: number) => void;
@@ -130,6 +183,12 @@ export interface GlImageHooks {
   Sys_Error?: (errLevel: number, message: string) => never;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit runtime container for ref_gl/gl_image.c globals)
+ * Category: New
+ * Purpose: Hold the image manager globals per renderer instance instead of module globals.
+ */
 export interface GlImageRuntime {
   gltextures: GlImage[];
   numgltextures: number;
@@ -169,17 +228,35 @@ export interface GlImageRuntime {
   hooks: GlImageHooks;
 }
 
+/**
+ * Original name: glmode_t
+ * Source: ref_gl/gl_image.c
+ * Category: Adapter
+ * Purpose: TypeScript row shape for the validated `modes` texture filter table.
+ */
 interface TextureModeRecord {
   name: string;
   minimize: number;
   maximize: number;
 }
 
+/**
+ * Original name: gltmode_t
+ * Source: ref_gl/gl_image.c
+ * Category: Adapter
+ * Purpose: TypeScript row shape for the validated alpha/solid format tables.
+ */
 interface TextureFormatModeRecord {
   name: string;
   mode: number;
 }
 
+/**
+ * Original name: modes
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const modes: TextureModeRecord[] = [
   { name: "GL_NEAREST", minimize: GL_NEAREST, maximize: GL_NEAREST },
   { name: "GL_LINEAR", minimize: GL_LINEAR, maximize: GL_LINEAR },
@@ -189,6 +266,12 @@ const modes: TextureModeRecord[] = [
   { name: "GL_LINEAR_MIPMAP_LINEAR", minimize: GL_LINEAR_MIPMAP_LINEAR, maximize: GL_LINEAR }
 ];
 
+/**
+ * Original name: gl_alpha_modes
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const gl_alpha_modes: TextureFormatModeRecord[] = [
   { name: "default", mode: 4 },
   { name: "GL_RGBA", mode: GL_RGBA },
@@ -198,6 +281,12 @@ const gl_alpha_modes: TextureFormatModeRecord[] = [
   { name: "GL_RGBA2", mode: GL_RGBA2 }
 ];
 
+/**
+ * Original name: gl_solid_modes
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const gl_solid_modes: TextureFormatModeRecord[] = [
   { name: "default", mode: 3 },
   { name: "GL_RGB", mode: GL_RGB },
@@ -288,39 +377,93 @@ export function createGlImage(overrides: Partial<GlImage> = {}): GlImage {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer image adapter)
+ * Category: New
+ * Purpose: Connect the draw character image loaded outside this module to the no-bind path.
+ */
 export function setDrawCharsImage(runtime: GlImageRuntime, image: GlImage | null): void {
   runtime.draw_chars = image;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer config adapter)
+ * Category: New
+ * Purpose: Mirror detected renderer flags into the image runtime.
+ */
 export function setRendererFlags(runtime: GlImageRuntime, flags: number): void {
   runtime.renderer_flags = flags;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer config adapter)
+ * Category: New
+ * Purpose: Toggle the image manager no-bind debug behavior.
+ */
 export function setNoBindEnabled(runtime: GlImageRuntime, enabled: boolean): void {
   runtime.gl_nobind_value = enabled;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer extension adapter)
+ * Category: New
+ * Purpose: Mirror shared-palette extension state into the image runtime.
+ */
 export function setPaletteExtensionState(runtime: GlImageRuntime, enabled: boolean, palettedTextureEnabled: boolean): void {
   runtime.qglColorTableEXT = enabled;
   runtime.gl_ext_palettedtexture_value = palettedTextureEnabled;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer cvar adapter)
+ * Category: New
+ * Purpose: Mirror the round-down texture cvar into the image runtime.
+ */
 export function setRoundDownEnabled(runtime: GlImageRuntime, enabled: boolean): void {
   runtime.gl_round_down_value = enabled;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer cvar adapter)
+ * Category: New
+ * Purpose: Mirror and sanitize the picmip cvar for texture upload scaling.
+ */
 export function setPicmipValue(runtime: GlImageRuntime, value: number): void {
   runtime.gl_picmip_value = Math.max(0, Math.trunc(value));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer cvar adapter)
+ * Category: New
+ * Purpose: Mirror the vid_gamma cvar for image initialization.
+ */
 export function setVidGammaValue(runtime: GlImageRuntime, value: number): void {
   runtime.vid_gamma_value = value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer cvar adapter)
+ * Category: New
+ * Purpose: Mirror the intensity cvar for image initialization and upload scaling.
+ */
 export function setIntensityValue(runtime: GlImageRuntime, value: number): void {
   runtime.intensity_value = value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer image adapter)
+ * Category: New
+ * Purpose: Protect persistent notexture and particle images during unused-image cleanup.
+ */
 export function setProtectedImages(runtime: GlImageRuntime, notexture: GlImage | null, particletexture: GlImage | null): void {
   runtime.r_notexture = notexture;
   runtime.r_particletexture = particletexture;
@@ -1493,6 +1636,12 @@ export function GL_ShutdownImages(runtime: GlImageRuntime): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (image slot helper)
+ * Category: New
+ * Purpose: Find or reserve the next local `GlImage` slot for the ported image loader.
+ */
 function allocateImageSlot(runtime: GlImageRuntime): GlImage {
   for (let i = 0; i < runtime.numgltextures; i += 1) {
     const image = runtime.gltextures[i];
@@ -1510,6 +1659,12 @@ function allocateImageSlot(runtime: GlImageRuntime): GlImage {
   return image;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (image slot helper)
+ * Category: New
+ * Purpose: Clear a reusable `GlImage` slot after free or shutdown.
+ */
 function resetImage(image: GlImage): void {
   image.name = "";
   image.type = imagetype_t.it_pic;
@@ -1529,6 +1684,12 @@ function resetImage(image: GlImage): void {
   image.paletted = false;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (image list formatting helper)
+ * Category: New
+ * Purpose: Format image type prefixes for the ported `GL_ImageList_f` output.
+ */
 function imageTypePrefix(type: imagetype_t): string {
   switch (type) {
     case imagetype_t.it_skin:
@@ -1544,6 +1705,12 @@ function imageTypePrefix(type: imagetype_t): string {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer upload adapter)
+ * Category: New
+ * Purpose: Provide upload metadata when no backend-specific upload hook is installed.
+ */
 function defaultUploadImage(runtime: GlImageRuntime, source: GlImageUploadSource): GlImageUploadResult {
   const uploadSize = calculateUploadSize(runtime, source.width, source.height, source.mipmap);
   let has_alpha = false;
@@ -1565,6 +1732,12 @@ function defaultUploadImage(runtime: GlImageRuntime, source: GlImageUploadSource
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer upload adapter)
+ * Category: New
+ * Purpose: Mirror the ported upload dimension decisions for backend upload hooks.
+ */
 function calculateUploadSize(runtime: GlImageRuntime, width: number, height: number, mipmap: boolean): { width: number; height: number } {
   let scaled_width = nextPowerOfTwo(width);
   let scaled_height = nextPowerOfTwo(height);
@@ -1594,6 +1767,12 @@ function calculateUploadSize(runtime: GlImageRuntime, width: number, height: num
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture upload helper)
+ * Category: New
+ * Purpose: Compute the next power-of-two texture size used by the upload path.
+ */
 function nextPowerOfTwo(value: number): number {
   let size = 1;
   while (size < value) {
@@ -1602,10 +1781,22 @@ function nextPowerOfTwo(value: number): number {
   return size;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer backend adapter)
+ * Category: New
+ * Purpose: Narrow the optional multitexture selection hook before invoking it.
+ */
 function hasSelectTextureHook(runtime: GlImageRuntime): boolean {
   return typeof runtime.hooks.selectTexture === "function";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture upload helper)
+ * Category: New
+ * Purpose: Reinterpret packed RGBA bytes as 32-bit pixels for the ported upload path.
+ */
 function toUint32Pixels(pixels: Uint8Array): Uint32Array {
   const source = pixels.byteOffset === 0 && pixels.byteLength % 4 === 0
     ? pixels
@@ -1613,26 +1804,62 @@ function toUint32Pixels(pixels: Uint8Array): Uint32Array {
   return new Uint32Array(source.buffer, source.byteOffset, source.byteLength >> 2);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA packing helper)
+ * Category: New
+ * Purpose: Extract the red byte from Quake-style packed RGBA pixels.
+ */
 function redOf(value: number): number {
   return value & 0xff;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA packing helper)
+ * Category: New
+ * Purpose: Extract the green byte from Quake-style packed RGBA pixels.
+ */
 function greenOf(value: number): number {
   return (value >> 8) & 0xff;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA packing helper)
+ * Category: New
+ * Purpose: Extract the blue byte from Quake-style packed RGBA pixels.
+ */
 function blueOf(value: number): number {
   return (value >> 16) & 0xff;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA packing helper)
+ * Category: New
+ * Purpose: Extract the alpha byte from Quake-style packed RGBA pixels.
+ */
 function alphaOf(value: number): number {
   return (value >>> 24) & 0xff;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA packing helper)
+ * Category: New
+ * Purpose: Pack RGBA bytes into the numeric pixel representation used by upload code.
+ */
 function packRgba(r: number, g: number, b: number, a: number): number {
   return ((a << 24) | (b << 16) | (g << 8) | r) >>> 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer error adapter)
+ * Category: New
+ * Purpose: Route fatal renderer errors through the host hook when available.
+ */
 function failSysError(runtime: GlImageRuntime, errLevel: number, message: string): never {
   if (runtime.hooks.Sys_Error) {
     return runtime.hooks.Sys_Error(errLevel, message);

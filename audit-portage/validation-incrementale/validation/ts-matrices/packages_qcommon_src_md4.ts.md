@@ -4,38 +4,38 @@
 
 - Fichier TS: `packages/qcommon/src/md4.ts`
 - Symboles TS: 30
-- Couvert C/H: 0
-- Reste a auditer: 30
+- Couvert C/H: 29
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/qcommon/src/md4.ts` | type | `UINT4` | non |  | `Quake-2-master/Quake II original / qcommon/md4.c` |  |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/md4.ts` | value | `S11` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S12` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S13` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S14` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S21` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S22` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S23` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S24` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S31` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S32` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S33` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `S34` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | value | `PADDING` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | interface | `MD4_CTX` | oui | `MD4_CTX` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/md4.ts` | function | `createMD4Context` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/md4.ts` | function | `MD4Init` | oui | `MD4Init` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/md4.ts` | function | `MD4Update` | oui | `MD4Update` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/md4.ts` | function | `MD4Final` | oui | `MD4Final` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/md4.ts` | function | `Com_BlockChecksum` | oui | `Com_BlockChecksum` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/md4.ts` | function | `F` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `G` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `H` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `ROTATE_LEFT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `FF` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `GG` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `HH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `MD4Transform` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `Encode` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/qcommon/src/md4.ts` | function | `Decode` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/qcommon/src/md4.ts` | type | `UINT4` | non | `UINT4` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S11` | non | `S11` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S12` | non | `S12` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S13` | non | `S13` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S14` | non | `S14` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S21` | non | `S21` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S22` | non | `S22` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S23` | non | `S23` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S24` | non | `S24` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S31` | non | `S31` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S32` | non | `S32` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S33` | non | `S33` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `S34` | non | `S34` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | value | `PADDING` | non | `PADDING` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | interface | `MD4_CTX` | oui | `MD4_CTX` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `createMD4Context` | oui | `N/A` | `N/A (TS context factory)` | New |  | Valide | Valide |  |
+| `packages/qcommon/src/md4.ts` | function | `MD4Init` | oui | `MD4Init` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `MD4Update` | oui | `MD4Update` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `MD4Final` | oui | `MD4Final` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `Com_BlockChecksum` | oui | `Com_BlockChecksum` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `F` | non | `F` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `G` | non | `G` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `H` | non | `H` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `ROTATE_LEFT` | non | `ROTATE_LEFT` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `FF` | non | `FF` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `GG` | non | `GG` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `HH` | non | `HH` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `MD4Transform` | non | `MD4Transform` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `Encode` | non | `Encode` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/md4.ts` | function | `Decode` | non | `Decode` | `Quake-2-master/qcommon/md4.c` | Ported | [`qcommon_md4.c.md`](../matrices/qcommon_md4.c.md) | Couvert C/H | Couvert C/H |  |

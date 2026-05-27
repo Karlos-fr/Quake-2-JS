@@ -15,6 +15,15 @@
  * - This file is intended to stay close to the original C source.
  */
 
+/**
+ * Original name: UINT4
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Represents the original 32-bit MD4 word type; arithmetic is explicitly wrapped at use sites.
+ */
 type UINT4 = number;
 
 const S11 = 3;
@@ -51,6 +60,8 @@ export interface MD4_CTX {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TS context factory)
  * Category: New
  * Purpose: Create one zero-initialized MD4 context.
  */
@@ -257,6 +268,15 @@ function HH(a: UINT4, b: UINT4, c: UINT4, d: UINT4, x: UINT4, s: number): UINT4 
   return ROTATE_LEFT(a, s);
 }
 
+/**
+ * Original name: MD4Transform
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies the 48-step MD4 block transform and accumulates the result into the digest state.
+ */
 function MD4Transform(state: Uint32Array, block: Uint8Array): void {
   let a = state[0] >>> 0;
   let b = state[1] >>> 0;

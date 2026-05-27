@@ -1150,7 +1150,7 @@ export const PLAT_LOW_TRIGGER = 1;
 /**
  * Original name: client_persistant_t zero/default initialization
  * Source: game/g_local.h
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -1189,7 +1189,7 @@ export function createGameClientPersistant(): GameClientPersistant {
 /**
  * Original name: client_respawn_t zero initialization
  * Source: game/g_local.h
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Strict
  *
  * Behavior:
@@ -1208,7 +1208,7 @@ export function createGameClientRespawn(): GameClientRespawn {
 /**
  * Original name: client_persistant_t copy
  * Source: game/g_local.h
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -1244,7 +1244,7 @@ export function cloneGameClientPersistant(source: GameClientPersistant): GameCli
 /**
  * Original name: gclient_s initialization
  * Source: game/g_local.h
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -2346,6 +2346,12 @@ function reserveServerModelConfigstrings(runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (game runtime adapter)
+ * Category: New
+ * Purpose: Reserve one model configstring slot while keeping the local model table aligned with server indices.
+ */
 function reserveModelConfigstring(runtime: GameRuntime, index: number, path: string): void {
   const slot = index - 1;
   const existing = runtime.assets.modelPaths[slot];

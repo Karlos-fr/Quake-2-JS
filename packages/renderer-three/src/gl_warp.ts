@@ -41,13 +41,53 @@ import {
 } from "./gl-model.js";
 import { r_turbsin } from "./warpsin.js";
 
+/**
+ * Original name: SUBDIVIDE_SIZE
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const SUBDIVIDE_SIZE = 64;
+
+/**
+ * Original name: TURBSCALE
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const TURBSCALE = 256.0 / (2 * Math.PI);
+
+/**
+ * Original name: ON_EPSILON
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const ON_EPSILON = 0.1;
+
+/**
+ * Original name: MAX_CLIP_VERTS
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const MAX_CLIP_VERTS = 64;
 
+/**
+ * Original name: skytexorder
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const SKY_TEX_ORDER = [0, 2, 1, 3, 4, 5] as const;
+
+/**
+ * Original name: suf
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const SKY_SUFFIXES = ["rt", "bk", "lf", "ft", "up", "dn"] as const;
+
+/**
+ * Original name: st_to_vec
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const ST_TO_VEC = [
   [3, -1, 2],
   [-3, 1, 2],
@@ -56,6 +96,12 @@ export const ST_TO_VEC = [
   [-2, -1, 3],
   [2, -1, -3]
 ] as const;
+
+/**
+ * Original name: vec_to_st
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const VEC_TO_ST = [
   [-2, 3, 1],
   [2, 3, -1],
@@ -64,6 +110,12 @@ export const VEC_TO_ST = [
   [-2, -1, 3],
   [-2, 1, -3]
 ] as const;
+
+/**
+ * Original name: skyclip
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ */
 export const SKY_CLIP = [
   [1, 1, 0],
   [1, -1, 0],
@@ -73,6 +125,12 @@ export const SKY_CLIP = [
   [-1, 0, 1]
 ] as const satisfies readonly vec3_t[];
 
+/**
+ * Original name: N/A
+ * Source: N/A (sky adapter clamp helper)
+ * Category: New
+ * Purpose: Expose the original static/rotating sky clamp bounds to Three.js sky fallback code.
+ */
 export function getSkyTexClampBounds(rotate: number): { skyMin: number; skyMax: number } {
   if (rotate !== 0) {
     return {
@@ -87,15 +145,30 @@ export function getSkyTexClampBounds(rotate: number): { skyMin: number; skyMax: 
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (water geometry payload)
+ * Category: New
+ */
 export interface GlWarpWaterVertex {
   position: vec3_t;
   uv: [number, number];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (water geometry payload)
+ * Category: New
+ */
 export interface GlWarpWaterPoly {
   vertices: GlWarpWaterVertex[];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (sky geometry payload)
+ * Category: New
+ */
 export interface GlWarpSkyFace {
   axis: number;
   mins: [number, number];
@@ -107,6 +180,12 @@ export interface GlWarpSkyFace {
   }>;
 }
 
+/**
+ * Original name: ref_gl/gl_warp.c renderer globals
+ * Source: ref_gl/gl_warp.c
+ * Category: Adapter
+ * Purpose: Carry the original warp and sky globals explicitly for the Three.js renderer instance.
+ */
 export interface GlWarpRuntime {
   loadmodel: model_t | null;
   warpface: msurface_t | null;
@@ -133,6 +212,12 @@ export interface GlWarpRuntime {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime factory)
+ * Category: New
+ * Purpose: Allocate a fresh explicit runtime for the state that C stores in renderer globals.
+ */
 export function createGlWarpRuntime(): GlWarpRuntime {
   return {
     loadmodel: null,
@@ -158,24 +243,49 @@ export function createGlWarpRuntime(): GlWarpRuntime {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime setter)
+ * Category: New
+ */
 export function setWarpModel(runtime: GlWarpRuntime, model: model_t | null): void {
   runtime.loadmodel = model;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime setter)
+ * Category: New
+ */
 export function setWarpRefdefTime(runtime: GlWarpRuntime, time: number): void {
   runtime.r_newrefdef_time = time;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime setter)
+ * Category: New
+ */
 export function setWarpViewOrigin(runtime: GlWarpRuntime, origin: vec3_t): void {
   runtime.r_origin = [...origin];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime setter)
+ * Category: New
+ */
 export function setWarpSkyCvars(runtime: GlWarpRuntime, cvars: Partial<Pick<GlWarpRuntime,
   "gl_skymip" | "gl_picmip" | "gl_ext_palettedtexture"
 >>): void {
   Object.assign(runtime, cvars);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime setter)
+ * Category: New
+ */
 export function setWarpPaletteExtensionState(runtime: GlWarpRuntime, enabled: qboolean): void {
   runtime.qglColorTableEXT = enabled;
 }
@@ -183,8 +293,8 @@ export function setWarpPaletteExtensionState(runtime: GlWarpRuntime, enabled: qb
 /**
  * Original name: r_turbsin bootstrap scale in R_Init
  * Source: ref_gl/gl_rmain.c + ref_gl/gl_warp.c
- * Category: Ported
- * Fidelity level: Strict
+ * Category: Adapter
+ * Fidelity level: Close
  *
  * Behavior:
  * - Applies the post-`R_Init` turbulence amplitude used by water warping without mutating the canonical table.
@@ -193,10 +303,20 @@ export function setWarpTurbulenceScale(runtime: GlWarpRuntime, scale: number): v
   runtime.turbulence_scale = scale;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime setter)
+ * Category: New
+ */
 export function setWarpFallbackTexture(runtime: GlWarpRuntime, image: image_t | null): void {
   runtime.r_notexture = image;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime setter)
+ * Category: New
+ */
 export function setWarpHooks(runtime: GlWarpRuntime, hooks: GlWarpRuntime["hooks"]): void {
   runtime.hooks = hooks;
 }
@@ -744,6 +864,11 @@ export function R_SetSky(runtime: GlWarpRuntime, name: string, rotate: number, a
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (warp runtime error adapter)
+ * Category: New
+ */
 function failSysError(runtime: GlWarpRuntime, level: number, message: string): never {
   if (runtime.hooks.sysError) {
     return runtime.hooks.sysError(level, message);

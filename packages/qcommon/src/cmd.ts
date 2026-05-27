@@ -20,25 +20,62 @@ import { createSizeBuffer, SZ_Clear, SZ_Write, type sizebuf_t } from "../../memo
 import { MAX_STRING_CHARS, MAX_STRING_TOKENS } from "./q_shared.js";
 import { COM_Argc, COM_Argv, COM_ClearArgv, COM_Parse, Q_stricmp, type CommonRuntime } from "./common.js";
 
+/**
+ * Original name: EXEC_NOW / EXEC_INSERT / EXEC_APPEND
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ */
 export const EXEC_NOW = 0;
 export const EXEC_INSERT = 1;
 export const EXEC_APPEND = 2;
+
+/**
+ * Original name: ALIAS_LOOP_COUNT / MAX_ALIAS_NAME
+ * Source: qcommon/cmd.c
+ * Category: Ported
+ */
 export const ALIAS_LOOP_COUNT = 16;
 export const MAX_ALIAS_NAME = 32;
+
+/**
+ * Original name: cmd_text_buf
+ * Source: qcommon/cmd.c
+ * Category: Adapter
+ */
 const COMMAND_BUFFER_SIZE = 8192;
 
+/**
+ * Original name: xcommand_t
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ */
 export type xcommand_t = () => void;
 
+/**
+ * Original name: cmd_function_s
+ * Source: qcommon/cmd.c
+ * Category: Ported
+ */
 export interface CommandRegistration {
   name: string;
   fn: xcommand_t | null;
 }
 
+/**
+ * Original name: cmdalias_s
+ * Source: qcommon/cmd.c
+ * Category: Ported
+ */
 export interface CommandAlias {
   name: string;
   value: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (command runtime hooks)
+ * Category: New
+ */
 export interface CommandHooks {
   executeUnknownCommand?: (name: string, text: string) => boolean;
   expandMacroToken?: (token: string) => string;
@@ -48,6 +85,11 @@ export interface CommandHooks {
   onPrint?: (line: string) => void;
 }
 
+/**
+ * Original name: cmd_text / defer_text_buf / cmd_wait / alias_count / cmd_argc / cmd_argv / cmd_args / cmd_functions / cmd_alias
+ * Source: qcommon/cmd.c
+ * Category: Adapter
+ */
 export interface CommandRuntime {
   cmd_text: sizebuf_t;
   defer_text: string;
@@ -62,6 +104,8 @@ export interface CommandRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (command runtime factory)
  * Category: New
  * Purpose: Create an isolated command runtime compatible with Quake II command processing concepts.
  *
@@ -803,6 +847,8 @@ function Cmd_MacroExpandString(runtime: CommandRuntime, text: string): string | 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (command tokenizer helper)
  * Category: New
  * Purpose: Parse one command token with basic Quake-style quoted token support.
  *
@@ -833,6 +879,8 @@ function parseCommandToken(text: string, startIndex: number): { token: string; n
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (command buffer splitter helper)
  * Category: New
  * Purpose: Find the next command split point while ignoring semicolons inside quoted strings.
  *
@@ -856,6 +904,8 @@ function findCommandSplitIndex(text: string): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (command buffer encoding helper)
  * Category: New
  * Purpose: Convert plain text to the ASCII-style byte storage expected by Quake command buffers.
  *
@@ -871,6 +921,8 @@ function encodeAscii(value: string): Uint8Array {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (command buffer decoding helper)
  * Category: New
  * Purpose: Decode Quake command buffer bytes back into a JavaScript string.
  *
@@ -886,6 +938,8 @@ function decodeAscii(bytes: Uint8Array): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (alias assembly helper)
  * Category: New
  * Purpose: Build alias text from the current argv tail while preserving the original newline suffix.
  *
@@ -901,6 +955,8 @@ function buildAliasValue(runtime: CommandRuntime): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (case-insensitive command comparison helper)
  * Category: New
  * Purpose: Compare command names case-insensitively in a Quake-compatible way.
  *
@@ -912,6 +968,8 @@ function equalsIgnoreCase(left: string, right: string): boolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (command output adapter helper)
  * Category: New
  * Purpose: Forward command output values to the optional print hook in a consistent way.
  *

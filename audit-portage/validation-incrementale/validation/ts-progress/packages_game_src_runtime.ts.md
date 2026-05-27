@@ -2,15 +2,15 @@
 
 ## Etat courant
 
-- Statut: En cours.
-- Dernier lot valide: 111 constantes runtime/reexports, de `WEAP_BLASTER` a `PLAT_LOW_TRIGGER`.
-- Verdict du lot: `88 Couvert C/H`, `23 Valide` adapters/redecoupages, `0` non conforme.
-- Preuves: valeurs TS comparees avec `Quake-2-master/game/g_local.h`, `game/game.h`, `game/g_func.c` et `game/q_shared.h`; matrices C/H croisees `game_g_local.h.md`, `game_game.h.md`, `game_g_func.c.md`, `game_q_shared.h.md`; ownership confirme pour les constantes runtime, reexports qcommon classes `Adapter`, et constantes `STATE_*`/`DOOR_*`/`PLAT_LOW_TRIGGER` classees `Valide` car partagees dans runtime.ts mais consommees par `g_func.ts`.
+- Statut: Termine.
+- Dernier lot valide: 10 entites restantes: structures client/entity, helpers d'initialisation client, `Think_Delay`, `reserveModelConfigstring`.
+- Verdict du lot: `1 Couvert C/H`, `9 Valide`, `0` non conforme.
+- Preuves: en-tetes TS verifies dans `packages/game/src/runtime.ts`; matrices C/H croisees `game_g_local.h.md`, `game_g_utils.c.md`, `packages_game_src_g_local.ts.md`, `packages_game_src_game.ts.md`; ownership confirme pour `Think_Delay` dans runtime.ts, structures runtime avec alias C-name dans `g_local.ts`/`game.ts`, helpers d'initialisation classes `Adapter`, et helper local `reserveModelConfigstring` classe `New`.
 
 ## Tests de reference
 
 - Verification statique Node des valeurs: 111 constantes runtime/reexports alignees avec C/H.
-- Verification statique Node des compteurs matrice: 211 symboles, 94 `Couvert C/H`, 107 `Valide`, 10 `A verifier`.
+- Verification statique Node des compteurs matrice: 211 symboles, 95 `Couvert C/H`, 116 `Valide`, 0 `A verifier`.
 - `npm run typecheck`
 - `git diff --check -- packages/game/src/runtime.ts audit-portage/validation-incrementale/validation/ts-matrices/packages_game_src_runtime.ts.md audit-portage/validation-incrementale/validation/ts-progress/packages_game_src_runtime.ts.md audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL_TS.md`
 
@@ -20,8 +20,11 @@
 - Les reexports `AREA_*`, `DF_*` et `SPLASH_*` restent des adapters runtime: le proprietaire C/H canonique est `packages/qcommon/src/q_shared.ts`.
 - Les constantes `MOVETYPE_*` sont les valeurs de l'enum C `movetype_t`; `runtime.ts` est le proprietaire effectif consomme par le runtime et reexporte par `g_local.ts`.
 - Les constantes `STATE_*`, `DOOR_*` et `PLAT_LOW_TRIGGER` viennent de `game/g_func.c`; elles restent dans runtime.ts comme constantes partagees consommees par `g_func.ts`, donc marquees `Valide` sans les compter comme `Couvert C/H`.
-- Les entites portees encore marquees `Entete incomplet` dans la matrice (`GameClientPersistant`, `GameClientRespawn`, `GameClient`, `GameEntity`, fonctions de creation client, `Think_Delay`, `reserveModelConfigstring`) demandent une passe ownership dediee.
+- `GameClientPersistant`, `GameClientRespawn`, `GameClient` et `GameEntity` restent proprietaires structurels dans `runtime.ts`; les noms C historiques sont exposes par aliases dans `g_local.ts` et `game.ts`.
+- Les helpers `createGameClientPersistant`, `createGameClientRespawn`, `cloneGameClientPersistant` et `createGameClient` sont classes `Adapter`: ils initialisent ou copient les structures portees mais ne correspondent pas a une fonction C proprietaire.
+- `Think_Delay` est le seul symbole de ce lot marque `Couvert C/H`, avec proprietaire C/H direct dans `game_g_utils.c.md`.
+- `reserveModelConfigstring` est un helper local `Category: New` avec `Original name: N/A` et `Source declaree: N/A (game runtime adapter)`.
 
 ## Prochain lot recommande
 
-Traiter les 10 entites restantes a en-tete incomplet ou sans lien source: `GameClientPersistant`, `GameClientRespawn`, `GameClient`, `GameEntity`, `createGameClientPersistant`, `createGameClientRespawn`, `cloneGameClientPersistant`, `createGameClient`, `Think_Delay`, `reserveModelConfigstring`.
+Aucun pour `packages/game/src/runtime.ts`: les 211 symboles sont classes.

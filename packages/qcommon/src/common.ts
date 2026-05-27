@@ -22,6 +22,12 @@ import {
   MAX_TOKEN_CHARS
 } from "./q_shared.js";
 
+/**
+ * Original name: MAX_NUM_ARGVS
+ * Source: Quake-2-master/qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 export const MAX_NUM_ARGVS = 50;
 export const MAXPRINTMSG = 4096;
 
@@ -40,6 +46,8 @@ export const MAXPRINTMSG = 4096;
 export const bigendien = !isLittleEndianHost();
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit runtime state)
  * Category: New
  * Purpose: Store the common runtime state gradually ported from `common.c`.
  *
@@ -56,6 +64,8 @@ export interface CommonRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (parser return adapter)
  * Category: New
  * Purpose: Preserve the parsed token/result pair produced by the `COM_Parse` port.
  *
@@ -68,6 +78,8 @@ export interface ComParseResult {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit runtime state)
  * Category: New
  * Purpose: Create an isolated common runtime state for future `Qcommon_Init` integration.
  *
@@ -1024,6 +1036,8 @@ export function Info_Print(s: string): string[] {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local info-string helper)
  * Category: New
  * Purpose: Parse a Quake-style info string into ordered key/value pairs.
  *
@@ -1042,6 +1056,8 @@ function parseInfoString(info: string): Array<{ key: string; value: string }> {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (host endian detector)
  * Category: New
  * Purpose: Detect the host numeric endianness once for the q_shared byte-order helpers.
  */
@@ -1051,6 +1067,12 @@ function isLittleEndianHost(): boolean {
   return new Uint16Array(buffer)[0] === 1;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local ASCII helper)
+ * Category: New
+ * Purpose: Fold one ASCII lowercase byte to uppercase for Quake-style string comparisons.
+ */
 function foldAsciiUpper(code: number): number {
   return code >= 97 && code <= 122 ? code - 32 : code;
 }

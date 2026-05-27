@@ -88,6 +88,12 @@ const SURFEDGE_SIZE = 4;
 const TEXINFO_SIZE = 76;
 const DFACE_SIZE = 20;
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer model loader hooks)
+ * Category: New
+ * Purpose: Describe renderer side-effects that were direct `ref_gl` globals/callbacks in C.
+ */
 export interface GlModelHooks {
   loadFile?: (path: string) => Uint8Array | null;
   freeFile?: (buffer: Uint8Array) => void;
@@ -107,9 +113,9 @@ export interface GlModelHooks {
 }
 
 /**
- * Original name: create renderer model runtime
+ * Original name: loadmodel/modfilelen/mod_novis/mod_known/mod_numknown/mod_inline/registration_sequence
  * Source: ref_gl/gl_model.c
- * Category: NewTooling
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -130,6 +136,8 @@ export interface GlModelRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model runtime factory)
  * Category: New
  * Purpose: Create the explicit runtime replacing the original `gl_model.c` globals.
  */
@@ -1226,6 +1234,8 @@ export function Mod_ForName(runtime: GlModelRuntime, name: string, crash: boolea
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer visibility payload)
  * Category: New
  * Purpose: Attach the raw packed visibility bytes needed by `Mod_ClusterPVS` to one parsed `dvis_t`.
  *
@@ -1239,6 +1249,8 @@ export interface RendererVisData {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer visibility payload)
  * Category: New
  * Purpose: Create one renderer visibility payload combining parsed offsets with the original raw bytes.
  */
@@ -1251,6 +1263,8 @@ export function createRendererVisData(numclusters: number, bitofs: Array<[number
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer visibility adapter)
  * Category: New
  * Purpose: Narrow one model visibility payload to the renderer variant that still carries the raw bytes.
  */
@@ -1263,6 +1277,8 @@ function asVisibilityBytes(vis: model_t["vis"]): Uint8Array {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer BSP type guard)
  * Category: New
  * Purpose: Distinguish renderer BSP nodes from leaves through the original `contents == -1` convention.
  */
@@ -1270,6 +1286,12 @@ function isMNode(node: mnode_child_t): node is mnode_t {
   return node.contents === -1;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer BSP record factory)
+ * Category: New
+ * Purpose: Create the zero-initialized renderer node record used while loading BSP nodes.
+ */
 function createNodeRecord(): mnode_t {
   return {
     contents: -1,
@@ -1283,6 +1305,12 @@ function createNodeRecord(): mnode_t {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer BSP record factory)
+ * Category: New
+ * Purpose: Create the zero-initialized renderer leaf record used while loading BSP leaves.
+ */
 function createLeafRecord(): mleaf_t {
   return {
     contents: 0,
@@ -1297,6 +1325,8 @@ function createLeafRecord(): mleaf_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer model loader guard)
  * Category: New
  * Purpose: Require an active `loadmodel` exactly like the original file-global workflow.
  */
@@ -1309,6 +1339,8 @@ function requireLoadModel(runtime: GlModelRuntime): model_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer error helper)
  * Category: New
  * Purpose: Keep the original `MOD_LoadBmodel: funny lump size in %s` failure wording.
  */
@@ -1316,6 +1348,12 @@ function createFunnyLumpSizeError(modelName: string): Error {
   return new Error(`MOD_LoadBmodel: funny lump size in ${modelName}`);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (BSP string decoding helper)
+ * Category: New
+ * Purpose: Decode one fixed-width NUL-terminated BSP texture/model string from a byte buffer.
+ */
 function readCString(buffer: Uint8Array, offset: number, maxLength: number): string {
   const end = offset + maxLength;
   let cursor = offset;
@@ -1326,6 +1364,12 @@ function readCString(buffer: Uint8Array, offset: number, maxLength: number): str
   return new TextDecoder("ascii").decode(buffer.subarray(offset, cursor));
 }
 
+/**
+ * Original name: signbits calculation
+ * Source: ref_gl/gl_model.c
+ * Category: Adapter
+ * Purpose: Isolate the signbit calculation originally performed inline by `Mod_LoadPlanes`.
+ */
 function computePlaneSignbits(normal: vec3_t): number {
   let bits = 0;
   if (normal[0] < 0) {
@@ -1341,6 +1385,12 @@ function computePlaneSignbits(normal: vec3_t): number {
   return bits;
 }
 
+/**
+ * Original name: Mod_ForName known-model lookup loop
+ * Source: ref_gl/gl_model.c
+ * Category: Adapter
+ * Purpose: Isolate the original `mod_known` name scan used by `Mod_ForName`.
+ */
 function findKnownModel(runtime: GlModelRuntime, name: string): model_t | null {
   for (let index = 0; index < runtime.mod_numknown; index += 1) {
     const mod = runtime.mod_known[index];
@@ -1356,6 +1406,12 @@ function findKnownModel(runtime: GlModelRuntime, name: string): model_t | null {
   return null;
 }
 
+/**
+ * Original name: Mod_ForName allocation loop
+ * Source: ref_gl/gl_model.c
+ * Category: Adapter
+ * Purpose: Isolate the original free-slot allocation and `MAX_MOD_KNOWN` overflow check.
+ */
 function allocateKnownModel(runtime: GlModelRuntime): model_t {
   for (let index = 0; index < runtime.mod_numknown; index += 1) {
     const mod = runtime.mod_known[index];
@@ -1373,6 +1429,12 @@ function allocateKnownModel(runtime: GlModelRuntime): model_t {
   return mod;
 }
 
+/**
+ * Original name: dheader_t byte swap
+ * Source: ref_gl/gl_model.c
+ * Category: Adapter
+ * Purpose: Read the BSP header and lump table that C byte-swapped in place.
+ */
 function readBrushHeader(buffer: Uint8Array): dheader_t {
   const lumps: lump_t[] = [];
   for (let index = 0; index < HEADER_LUMPS; index += 1) {
@@ -1390,6 +1452,12 @@ function readBrushHeader(buffer: Uint8Array): dheader_t {
   };
 }
 
+/**
+ * Original name: inline brush model shallow copy
+ * Source: ref_gl/gl_model.c
+ * Category: Adapter
+ * Purpose: Preserve the original `*starmod = *loadmodel` behavior without C struct assignment.
+ */
 function copyModelShallow(target: model_t, source: model_t): void {
   target.name = source.name;
   target.registration_sequence = source.registration_sequence;

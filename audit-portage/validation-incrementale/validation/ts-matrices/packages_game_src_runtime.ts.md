@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/runtime.ts`
 - Symboles TS: 211
-- Couvert C/H: 94
-- Reste a auditer: 10
+- Couvert C/H: 95
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -75,9 +75,9 @@
 | `packages/game/src/runtime.ts` | value | `DEAD_DYING` | oui | `DEAD_DYING` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/runtime.ts` | value | `DEAD_DEAD` | oui | `DEAD_DEAD` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/runtime.ts` | value | `DEAD_RESPAWNABLE` | oui | `DEAD_RESPAWNABLE` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/runtime.ts` | interface | `GameClientPersistant` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/runtime.ts` | interface | `GameClientRespawn` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/runtime.ts` | interface | `GameClient` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/runtime.ts` | interface | `GameClientPersistant` | oui | `client_persistant_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | Structure runtime; alias C-name dans `g_local.ts`. |
+| `packages/game/src/runtime.ts` | interface | `GameClientRespawn` | oui | `client_respawn_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | Structure runtime; alias C-name dans `g_local.ts`. |
+| `packages/game/src/runtime.ts` | interface | `GameClient` | oui | `gclient_s` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | Structure runtime; alias C-name dans `game.ts`. |
 | `packages/game/src/runtime.ts` | type | `GameEntityFieldName` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | type | `GameEntityKind` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | type | `GameEntityUse` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
@@ -91,7 +91,7 @@
 | `packages/game/src/runtime.ts` | interface | `GameMonsterInfo` | oui | `monsterinfo_t` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
 | `packages/game/src/runtime.ts` | interface | `GameAssetRegistry` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | type | `GameEntityThink` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
-| `packages/game/src/runtime.ts` | interface | `GameEntity` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/runtime.ts` | interface | `GameEntity` | oui | `edict_s` | `Quake-2-master/game/g_local.h` | Ported | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | Structure runtime; alias C-name dans `game.ts`. |
 | `packages/game/src/runtime.ts` | interface | `GameCollisionBridge` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | interface | `GameRuntimeLogEntry` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | interface | `GameSoundEvent` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
@@ -151,10 +151,10 @@
 | `packages/game/src/runtime.ts` | value | `DOOR_X_AXIS` | oui | `DOOR_X_AXIS` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Valide | Valide | Constante partagee declaree dans runtime.ts et consommee par g_func.ts; matrice C/H deja Valide. |
 | `packages/game/src/runtime.ts` | value | `DOOR_Y_AXIS` | oui | `DOOR_Y_AXIS` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Valide | Valide | Constante partagee declaree dans runtime.ts et consommee par g_func.ts; matrice C/H deja Valide. |
 | `packages/game/src/runtime.ts` | value | `PLAT_LOW_TRIGGER` | oui | `PLAT_LOW_TRIGGER` | `Quake-2-master/game/g_func.c` | Ported | [`game_g_func.c.md`](../matrices/game_g_func.c.md) | Valide | Valide | Constante partagee declaree dans runtime.ts et consommee par g_func.ts; matrice C/H deja Valide. |
-| `packages/game/src/runtime.ts` | function | `createGameClientPersistant` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/runtime.ts` | function | `createGameClientRespawn` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/runtime.ts` | function | `cloneGameClientPersistant` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/runtime.ts` | function | `createGameClient` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/runtime.ts` | function | `createGameClientPersistant` | oui | `client_persistant_t zero/default initialization` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | TS initialization helper for the ported struct; no direct C function. |
+| `packages/game/src/runtime.ts` | function | `createGameClientRespawn` | oui | `client_respawn_t zero initialization` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | TS initialization helper for the ported struct; no direct C function. |
+| `packages/game/src/runtime.ts` | function | `cloneGameClientPersistant` | oui | `client_persistant_t copy` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | TS copy helper for the ported struct; no direct C function. |
+| `packages/game/src/runtime.ts` | function | `createGameClient` | oui | `gclient_s initialization` | `Quake-2-master/game/g_local.h` | Adapter | [`game_g_local.h.md`](../matrices/game_g_local.h.md) | Valide | Valide | TS initialization helper for the ported struct; no direct C function. |
 | `packages/game/src/runtime.ts` | function | `createMonsterInfo` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `createRuntimeEntity` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `createGameRuntimeFromBspEntities` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
@@ -164,7 +164,7 @@
 | `packages/game/src/runtime.ts` | function | `useGameEntity` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `getRuntimeEntityLabel` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `findRuntimeEntitiesByTargetname` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
-| `packages/game/src/runtime.ts` | function | `Think_Delay` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/runtime.ts` | function | `Think_Delay` | oui | `Think_Delay` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/runtime.ts` | function | `spawnGameEntity` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `freeGameEntity` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `findNextThinkEntity` | non | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
@@ -182,7 +182,7 @@
 | `packages/game/src/runtime.ts` | function | `refreshEntitySpatialState` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `registerGameModel` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `reserveServerModelConfigstrings` | non | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
-| `packages/game/src/runtime.ts` | function | `reserveModelConfigstring` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/runtime.ts` | function | `reserveModelConfigstring` | non | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `setGameEntityModel` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `registerGameSound` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
 | `packages/game/src/runtime.ts` | function | `emitGameSound` | oui | `N/A` | `N/A (game runtime adapter)` | New |  | Valide | Valide |  |
