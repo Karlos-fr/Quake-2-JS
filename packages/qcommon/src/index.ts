@@ -71,6 +71,12 @@ export {
 
 export { createQcommonRuntime } from "./runtime.js";
 export { BYTE_DIRS, DirFromByte } from "./anorms.js";
+export {
+  CRC_Block,
+  CRC_Init,
+  CRC_ProcessByte,
+  CRC_Value
+} from "./crc.js";
 export { MD4Final, MD4Init, MD4Update, createMD4Context } from "./md4.js";
 export {
   BUILDSTRING,
@@ -85,10 +91,6 @@ export {
   CM_SIDE,
   CM_UP,
   CPUSTRING,
-  CRC_Block,
-  CRC_Init,
-  CRC_ProcessByte,
-  CRC_Value,
   Com_BlockChecksum,
   Com_DPrintf,
   Com_Error,

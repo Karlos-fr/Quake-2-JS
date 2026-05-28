@@ -15,3 +15,12 @@
 ## Prochain lot recommande
 
 Aucun lot restant dans `qcommon/crc.h`; le coordinateur peut marquer ce fichier termine dans `AVANCEMENT_GLOBAL.md`.
+
+## Session 2026-05-28 - redecoupage lot 1
+
+- Lot traite: redecoupage de la cible principale du header CRC.
+- Correction appliquee: les prototypes `CRC_Init`, `CRC_ProcessByte`, `CRC_Value` et `CRC_Block` sont maintenant rattaches a `packages/qcommon/src/crc.ts`.
+- Export package: `packages/qcommon/src/index.ts` reexporte les API `CRC_*` depuis `./crc.js`.
+- Matrice: `qcommon_crc.h.md` mise a jour vers `packages/qcommon/src/crc.ts`, verdict `strict-ok`.
+- Validations lancees: `npm run typecheck` OK; `npm run build --workspace @quake2js/web` OK.
+- Controle de rattachement: `qcommon/crc.h` possede maintenant une cible TS principale au meme basename.

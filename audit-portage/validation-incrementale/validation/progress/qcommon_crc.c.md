@@ -15,3 +15,14 @@
 ## Prochain lot recommande
 
 Aucun lot restant dans `qcommon/crc.c`; auditer `qcommon/crc.h` dans une session separee si le coordinateur veut fermer l'API header.
+
+## Session 2026-05-28 - redecoupage lot 1
+
+- Lot traite: redecoupage de la cible principale CRC.
+- Correction appliquee: creation de `packages/qcommon/src/crc.ts` comme point de rattachement principal pour `qcommon/crc.c` et `qcommon/crc.h`.
+- Deplacement: `CRC_INIT_VALUE`, `CRC_XOR_VALUE`, `crcTable`, `CRC_Init`, `CRC_ProcessByte`, `CRC_Value` et `CRC_Block` sortis de `packages/qcommon/src/qcommon.ts`.
+- Raccord conservatoire: `packages/qcommon/src/qcommon.ts` importe maintenant `CRC_Block` depuis `./crc.js` pour `COM_BlockSequenceCRCByte`, qui reste proprietaire de `qcommon/common.c`.
+- Export package: `packages/qcommon/src/index.ts` reexporte les API `CRC_*` depuis `./crc.js`.
+- Matrice: `qcommon_crc.c.md` mise a jour vers `packages/qcommon/src/crc.ts`, verdict `strict-ok`.
+- Validations lancees: `npm run typecheck` OK; `npm run build --workspace @quake2js/web` OK.
+- Controle de rattachement: le nombre de matrices sans cible TS au meme basename passe de 8 a 6.
