@@ -10,7 +10,6 @@
     "dev": "npm run dev --workspace @quake2js/web",
     "build": "npm run build --workspace @quake2js/web",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "verify:dead-code:packages": "npx tsx ./scripts/verify/dead-code-packages.ts --strict --json audit-portage/dead-code-packages.strict.report.json",
     "audit:socle": "npx tsx ./audit-portage/phases/phase-00-socle-outillage/tools/build-portage-audit-index.ts",
     "audit:phase1": "npm run audit:socle && npx tsx ./audit-portage/phases/phase-01-referentiel-audit/tools/build-reference-audit.ts",
     "audit:phase2": "npm run audit:phase1 && npx tsx ./audit-portage/phases/phase-02-source-vers-typescript/tools/build-structure-audit.ts",

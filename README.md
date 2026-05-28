@@ -41,9 +41,6 @@ packages/
   renderer-three/      Three.js renderer implementation
   server/              Server runtime port
   shared/              Small shared utilities and metadata
-
-scripts/
-  verify/              Verification scripts
 ```
 
 ## Quick Start
