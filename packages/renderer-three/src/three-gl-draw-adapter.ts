@@ -212,7 +212,8 @@ function createTexturedQuad(
   alphaTestEnabled: boolean,
   blendEnabled: boolean
 ): Mesh<BufferGeometry, MeshBasicMaterial> {
-  const geometry = createQuadGeometry(quad.width, quad.height, quad.sl, quad.tl, quad.sh, quad.th);
+  const uv = adjustGlyphAtlasUv(quad, sourceTexture);
+  const geometry = createQuadGeometry(quad.width, quad.height, uv.sl, uv.tl, uv.sh, uv.th);
   const material = new MeshBasicMaterial({
     map: sourceTexture,
     transparent: true,
@@ -225,6 +226,52 @@ function createTexturedQuad(
   const mesh = new Mesh(geometry, material);
   mesh.position.set(quad.x + quad.width / 2, viewportHeight - (quad.y + quad.height / 2), 0);
   return mesh;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js glyph atlas sampling adapter)
+ * Category: New
+ * Purpose: Keep 8x8 console glyphs from sampling adjacent `conchars` cells on WebGL backends.
+ *
+ * Constraints:
+ * - Must only affect the 16x16, 128x128 `conchars` glyph atlas path.
+ * - Must preserve picture and scrap atlas UVs unchanged.
+ */
+function adjustGlyphAtlasUv(
+  quad: GlDrawQuad,
+  sourceTexture: Texture
+): Pick<GlDrawQuad, "sl" | "tl" | "sh" | "th"> {
+  const image = sourceTexture.image as { width?: number; height?: number } | undefined;
+  const textureWidth = typeof image?.width === "number" ? image.width : 0;
+  const textureHeight = typeof image?.height === "number" ? image.height : 0;
+  const cellWidth = Math.abs(quad.sh - quad.sl) * textureWidth;
+  const cellHeight = Math.abs(quad.th - quad.tl) * textureHeight;
+  const isConcharsGlyph =
+    quad.width === 8
+    && quad.height === 8
+    && textureWidth === 128
+    && textureHeight === 128
+    && Math.abs(cellWidth - 8) < 0.001
+    && Math.abs(cellHeight - 8) < 0.001;
+
+  if (!isConcharsGlyph) {
+    return {
+      sl: quad.sl,
+      tl: quad.tl,
+      sh: quad.sh,
+      th: quad.th
+    };
+  }
+
+  const halfTexelU = 0.5 / textureWidth;
+  const halfTexelV = 0.5 / textureHeight;
+  return {
+    sl: quad.sl + halfTexelU,
+    tl: quad.tl + halfTexelV,
+    sh: quad.sh - halfTexelU,
+    th: quad.th - halfTexelV
+  };
 }
 
 /**
