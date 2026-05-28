@@ -4,13 +4,13 @@
 
 - Fichier TS: `packages/renderer-three/src/anormtab.ts`
 - Symboles TS: 5
-- Couvert C/H: 0
-- Reste a auditer: 5
+- Couvert C/H: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/anormtab.ts` | value | `SHADEDOT_QUANT` | oui |  | `Quake-2-master/Quake II original / ref_gl/anormtab.h` |  |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/anormtab.ts` | value | `SHADEDOT_NORMALS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/anormtab.ts` | value | `R_AVERTEXNORMAL_DOTS` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/anormtab.ts` | function | `getAliasShadedots` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/anormtab.ts` | function | `getAliasShadedot` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/renderer-three/src/anormtab.ts` | value | `SHADEDOT_QUANT` | oui | `SHADEDOT_QUANT` | `Quake-2-master/ref_gl/gl_mesh.c` | Adapter | [`ref_gl_gl_mesh.c.md`](../matrices/ref_gl_gl_mesh.c.md) | Adapter local | Valide | Proprietaire C/H attendu: `packages/renderer-three/src/gl_mesh.ts`; ici constante partagee pour indexer la table portee. |
+| `packages/renderer-three/src/anormtab.ts` | value | `SHADEDOT_NORMALS` | oui | `N/A` | `N/A (TypeScript table dimension helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/anormtab.ts` | value | `R_AVERTEXNORMAL_DOTS` | oui | `r_avertexnormal_dots` | `Quake-2-master/ref_gl/anormtab.h` | Ported | [`ref_gl_anormtab.h.md`](../matrices/ref_gl_anormtab.h.md) | Couvert C/H | Couvert C/H |  |
+| `packages/renderer-three/src/anormtab.ts` | function | `getAliasShadedots` | oui | `N/A` | `N/A (TypeScript lookup helper for the ported table)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/anormtab.ts` | function | `getAliasShadedot` | oui | `N/A` | `N/A (TypeScript lookup helper for the ported table)` | New |  | Hors C/H | Valide |  |

@@ -34,12 +34,24 @@ import {
   type GlRmainBeamSegment
 } from "./gl_rmain.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js beam sync contract)
+ * Category: New
+ * Purpose: Public handle for the Three.js beam scene node and refresh-frame sync hook.
+ */
 export interface ThreeBeamSync {
   root: Group;
   apply: (refreshFrame: ClientRefreshFrame | null) => number;
   dispose: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js beam entity adapter)
+ * Category: New
+ * Purpose: Attach refresh-beam metadata to the `entity_t` shape expected by `R_DrawBeam`.
+ */
 type BeamEntity = entity_t & {
   userData: {
     beamKind: NonNullable<ClientRefreshFrame>["beams"][number]["kind"];
@@ -50,8 +62,14 @@ type BeamEntity = entity_t & {
 };
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js beam sync adapter)
  * Category: New
  * Purpose: Create the Three.js adapter that consumes `R_DrawBeam` output for refresh beams and lasers.
+ *
+ * Constraints:
+ * - Must reuse the ported `R_DrawBeam` path instead of duplicating beam geometry rules.
+ * - Must keep client/runtime beam ownership in `ClientRefreshFrame` producers.
  */
 export function createThreeBeamSync(filesystem: VirtualFilesystem): ThreeBeamSync {
   const root = new Group();
@@ -116,6 +134,12 @@ export function createThreeBeamSync(filesystem: VirtualFilesystem): ThreeBeamSyn
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (refresh beam segmentation helper)
+ * Category: New
+ * Purpose: Convert one refresh beam into one or more `entity_t` inputs for `R_DrawBeam`.
+ */
 function createBeamEntities(beam: NonNullable<ClientRefreshFrame>["beams"][number]): entity_t[] {
   if (beam.kind === "laser" || !beam.model || beam.specialLightningShort) {
     return [createBeamEntity(beam, beam.start, beam.end, 0, 1)];
@@ -143,6 +167,12 @@ function createBeamEntities(beam: NonNullable<ClientRefreshFrame>["beams"][numbe
   return entities;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (refresh beam entity helper)
+ * Category: New
+ * Purpose: Populate the `entity_t` fields consumed by `R_DrawBeam` from refresh-beam data.
+ */
 function createBeamEntity(
   beam: NonNullable<ClientRefreshFrame>["beams"][number],
   start: readonly [number, number, number],
@@ -166,6 +196,12 @@ function createBeamEntity(
   return entity;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js beam geometry adapter)
+ * Category: New
+ * Purpose: Convert captured `R_DrawBeam` prism segments into Three.js line-segment geometry.
+ */
 function createBeamLineSegments(
   segments: readonly GlRmainBeamSegment[],
   color: [number, number, number],
@@ -201,14 +237,32 @@ function createBeamLineSegments(
   return line;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (line geometry helper)
+ * Category: New
+ * Purpose: Append one segment's endpoints to a Three.js position buffer.
+ */
 function pushLine(target: number[], start: readonly [number, number, number], end: readonly [number, number, number]): void {
   target.push(start[0], start[1], start[2], end[0], end[1], end[2]);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (vector math helper)
+ * Category: New
+ * Purpose: Compute a local 3D vector difference without adding a renderer-wide math dependency.
+ */
 function subtractVec3(a: readonly [number, number, number], b: readonly [number, number, number]): [number, number, number] {
   return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (vector math helper)
+ * Category: New
+ * Purpose: Advance a local 3D point along a direction by a scalar distance.
+ */
 function addScaledVec3(base: readonly [number, number, number], direction: readonly [number, number, number], scale: number): [number, number, number] {
   return [
     base[0] + direction[0] * scale,
@@ -217,14 +271,32 @@ function addScaledVec3(base: readonly [number, number, number], direction: reado
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (vector math helper)
+ * Category: New
+ * Purpose: Scale a local 3D vector for beam segmentation.
+ */
 function scaleVec3(vector: readonly [number, number, number], scalar: number): [number, number, number] {
   return [vector[0] * scalar, vector[1] * scalar, vector[2] * scalar];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (vector math helper)
+ * Category: New
+ * Purpose: Measure local 3D beam length for segmentation.
+ */
 function vectorLength(vector: readonly [number, number, number]): number {
   return Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js cleanup helper)
+ * Category: New
+ * Purpose: Remove beam line objects and dispose their GPU resources between refresh frames.
+ */
 function clearGroup(group: Group): void {
   for (const child of [...group.children]) {
     group.remove(child);
@@ -238,6 +310,12 @@ function clearGroup(group: Group): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer palette adapter)
+ * Category: New
+ * Purpose: Load Quake's palette for beam colors, with a grayscale fallback for minimal VFS tests.
+ */
 function loadPaletteTable(filesystem: VirtualFilesystem): Uint32Array {
   const paletteFile = readMountedFile(filesystem, "pics/colormap.pcx");
   if (!paletteFile) {
@@ -260,6 +338,12 @@ function loadPaletteTable(filesystem: VirtualFilesystem): Uint32Array {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer palette fallback)
+ * Category: New
+ * Purpose: Build a deterministic grayscale palette table when `pics/colormap.pcx` is unavailable.
+ */
 function createFallbackPaletteTable(): Uint32Array {
   return Uint32Array.from({ length: 256 }, (_, index) => (((255 << 24) >>> 0) | (index << 16) | (index << 8) | index) >>> 0);
 }

@@ -19,7 +19,23 @@
  * - This file is intended to stay byte-faithful to the original shadedot quantization table from `gl_mesh.c`.
  */
 
+/**
+ * Original name: SHADEDOT_QUANT
+ * Source: ref_gl/gl_mesh.c
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Shares the original shadedot angle quantization row count with the ported alias mesh path.
+ */
 export const SHADEDOT_QUANT = 16;
+
+/**
+ * Original name: N/A
+ * Source: N/A (TypeScript table dimension helper)
+ * Category: New
+ * Purpose: Name the fixed MD2 lightnormal lookup width used by the ported shadedot table.
+ */
 export const SHADEDOT_NORMALS = 256;
 
 /**

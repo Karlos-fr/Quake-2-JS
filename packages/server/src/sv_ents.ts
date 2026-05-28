@@ -76,6 +76,8 @@ import type {
 } from "./server.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (server entity procedure context)
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_ents.c` port.
  *
@@ -92,13 +94,45 @@ export interface ServerEntityContext {
   writeDemoMessage?: (demofile: unknown, payload: Uint8Array) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (zero player state helper)
+ * Category: New
+ */
 const DUMMY_PLAYER_STATE = createPlayerState();
+
+/**
+ * Original name: N/A
+ * Source: N/A (zero entity state helper)
+ * Category: New
+ */
 const NULL_ENTITY_STATE = createEntityState();
+
+/**
+ * Original name: N/A
+ * Source: N/A (packet entity sentinel)
+ * Category: New
+ */
 const UNSET_ENTITY_NUM = 9999;
+
+/**
+ * Original name: N/A
+ * Source: N/A (derived fatpvs byte count)
+ * Category: New
+ */
 const FATPVS_LEAF_BYTES = 65536 / 8;
+
+/**
+ * Original name: fatpvs
+ * Source: server/sv_ents.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const fatpvs = new Uint8Array(FATPVS_LEAF_BYTES);
 
 /**
+ * Original name: N/A
+ * Source: N/A (server entity procedure factory)
  * Category: New
  * Purpose: Build the `sv_ents.c` procedure table bound to one explicit server entity context.
  *
@@ -604,6 +638,11 @@ export function createServerEntityProcedures(context: ServerEntityContext): Serv
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (client entity ring accessor)
+ * Category: New
+ */
 function getClientEntityState(svs: server_static_t, firstEntity: number, index: number) {
   if (svs.num_client_entities <= 0) {
     throw new Error("SV_EmitPacketEntities: svs.num_client_entities <= 0");
@@ -618,6 +657,11 @@ function getClientEntityState(svs: server_static_t, firstEntity: number, index: 
   return entity;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (client entity ring writer)
+ * Category: New
+ */
 function getWritableClientEntityState(svs: server_static_t): entity_state_t {
   if (svs.num_client_entities <= 0) {
     throw new Error("SV_BuildClientFrame: svs.num_client_entities <= 0");
@@ -632,6 +676,11 @@ function getWritableClientEntityState(svs: server_static_t): entity_state_t {
   return entity;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (cvar value adapter)
+ * Category: New
+ */
 function getMaxclientsValue(maxclients: cvar_t | null): number {
   if (!maxclients) {
     return 0;
@@ -693,6 +742,11 @@ function SV_FatPVS(context: ServerEntityContext, org: vec3_t): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (entity state copy helper)
+ * Category: New
+ */
 function copyEntityState(out: entity_state_t, source: entity_state_t): void {
   out.number = source.number;
   out.origin[0] = source.origin[0];
@@ -717,6 +771,11 @@ function copyEntityState(out: entity_state_t, source: entity_state_t): void {
   out.event = source.event;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (player state clone helper)
+ * Category: New
+ */
 function clonePlayerState(source: client_frame_t["ps"]): client_frame_t["ps"] {
   return {
     pmove: {
@@ -746,6 +805,11 @@ function clonePlayerState(source: client_frame_t["ps"]): client_frame_t["ps"] {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (server error formatter)
+ * Category: New
+ */
 function formatServerError(error: string, args: unknown[]): string {
   if (args.length === 0) {
     return error;

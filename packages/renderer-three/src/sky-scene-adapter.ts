@@ -33,6 +33,8 @@ import type { LoadedQuakeSkyTextureSet, QuakeSkyResolver } from "./quake-sky-res
 import { MakeSkyVec, SKY_TEX_ORDER, createGlWarpRuntime, getSkyTexClampBounds, type GlWarpSkyFace } from "./gl_warp.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky scene adapter)
  * Category: New
  * Purpose: Hold the imperative hooks used to keep the rendered sky aligned with client sky state and camera movement.
  *
@@ -45,6 +47,8 @@ export interface ThreeSkySceneAdapter {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky scene adapter)
  * Category: New
  * Purpose: Create a dedicated Three.js sky adapter that follows Quake II face ordering and UV conventions.
  *
@@ -94,6 +98,8 @@ export function createThreeSkySceneAdapter(resolver: QuakeSkyResolver): ThreeSky
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky scene cache helper)
  * Category: New
  * Purpose: Build a stable cache key from the active Quake II sky snapshot.
  */
@@ -101,6 +107,12 @@ function buildSkyKey(snapshot: QuakeSkySnapshot, skyFaces: readonly GlWarpSkyFac
   return `${snapshot.name}|${snapshot.rotate}|${snapshot.axis.join(",")}|${buildSkyFacesKey(skyFaces)}`;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js sky scene cache helper)
+ * Category: New
+ * Purpose: Build the clipped-sky-face portion of the sky mesh cache key.
+ */
 function buildSkyFacesKey(skyFaces: readonly GlWarpSkyFace[]): string {
   if (skyFaces.length === 0) {
     return "full";
@@ -112,6 +124,8 @@ function buildSkyFacesKey(skyFaces: readonly GlWarpSkyFace[]): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky scene adapter)
  * Category: New
  * Purpose: Replace the currently rendered sky mesh while disposing previous sky resources.
  *
@@ -132,6 +146,8 @@ function replaceSkyMesh(root: Group, currentMesh: Mesh | null, nextMesh: Mesh | 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky mesh adapter)
  * Category: New
  * Purpose: Build one Quake II-style sky mesh with explicit per-face geometry and texture mapping.
  *
@@ -156,6 +172,8 @@ function createSkyMesh(textureSet: LoadedQuakeSkyTextureSet, rotate: number, sky
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky geometry fallback)
  * Category: New
  * Purpose: Build the full skybox geometry from the Quake II `MakeSkyVec` convention.
  *
@@ -223,6 +241,8 @@ function buildFullSkyGeometry(rotate: number): BufferGeometry {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js clipped sky geometry adapter)
  * Category: New
  * Purpose: Build the visible sky geometry directly from faces emitted by `R_DrawSkyBox`.
  */
@@ -272,6 +292,8 @@ function buildSkyFacesGeometry(skyFaces: readonly GlWarpSkyFace[]): BufferGeomet
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky material adapter)
  * Category: New
  * Purpose: Build the six sky materials in the same effective face order used by the original renderer.
  *
@@ -291,6 +313,8 @@ function buildSkyMaterials(textureSet: LoadedQuakeSkyTextureSet): MeshBasicMater
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky resource lifecycle)
  * Category: New
  * Purpose: Dispose one transient sky mesh and its owned geometry/material state.
  */
@@ -308,6 +332,8 @@ function disposeSkyMesh(mesh: Mesh): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local angle conversion helper)
  * Category: New
  * Purpose: Convert degrees to radians for sky rotation updates.
  */
@@ -316,6 +342,8 @@ function degreesToRadians(value: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js sky axis helper)
  * Category: New
  * Purpose: Normalize one Quake II sky axis into a stable Three.js vector.
  *

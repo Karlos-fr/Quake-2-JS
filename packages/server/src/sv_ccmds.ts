@@ -70,6 +70,8 @@ import {
 } from "./server.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (server console context)
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_ccmds.c` partial port.
  *
@@ -115,6 +117,8 @@ export interface ServerConsoleContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server console factory)
  * Category: New
  * Purpose: Build the `sv_ccmds.c` procedure table bound to one explicit console-command context.
  *

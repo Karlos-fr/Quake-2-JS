@@ -5,19 +5,19 @@
 - Fichier TS: `packages/renderer-three/src/sky-scene-adapter.ts`
 - Symboles TS: 12
 - Couvert C/H: 0
-- Reste a auditer: 12
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | interface | `ThreeSkySceneAdapter` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `createThreeSkySceneAdapter` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyKey` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyFacesKey` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `replaceSkyMesh` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `createSkyMesh` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildFullSkyGeometry` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyFacesGeometry` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyMaterials` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `disposeSkyMesh` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `degreesToRadians` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `normalizeAxis` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | interface | `ThreeSkySceneAdapter` | oui | `N/A` | `N/A (Three.js sky scene adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `createThreeSkySceneAdapter` | oui | `N/A` | `N/A (Three.js sky scene adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyKey` | non | `N/A` | `N/A (Three.js sky scene cache helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyFacesKey` | non | `N/A` | `N/A (Three.js sky scene cache helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `replaceSkyMesh` | non | `N/A` | `N/A (Three.js sky scene adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `createSkyMesh` | non | `N/A` | `N/A (Three.js sky mesh adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildFullSkyGeometry` | non | `N/A` | `N/A (Three.js sky geometry fallback)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyFacesGeometry` | non | `N/A` | `N/A (Three.js clipped sky geometry adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `buildSkyMaterials` | non | `N/A` | `N/A (Three.js sky material adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `disposeSkyMesh` | non | `N/A` | `N/A (Three.js sky resource lifecycle)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `degreesToRadians` | non | `N/A` | `N/A (local angle conversion helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/sky-scene-adapter.ts` | function | `normalizeAxis` | non | `N/A` | `N/A (Three.js sky axis helper)` | New |  | Hors C/H | Valide |  |

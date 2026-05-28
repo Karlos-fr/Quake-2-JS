@@ -303,6 +303,8 @@ export function Netchan_Process(runtime: QcommonNetRuntime, chan: netchan_t, msg
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local address-copy helper)
  * Category: New
  * Purpose: Clone one `netadr_t` value so channel setup preserves address bytes by value.
  */
@@ -316,6 +318,8 @@ function cloneNetAdr(address: netadr_t): netadr_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local text encoding helper)
  * Category: New
  * Purpose: Encode one text payload into the 8-bit byte stream used by out-of-band prints.
  */
@@ -328,6 +332,8 @@ function encodeAscii(value: string): Uint8Array {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local formatting helper)
  * Category: New
  * Purpose: Match the original `%4i` packet-size formatting used by `showpackets`.
  */
@@ -336,6 +342,8 @@ function padPacketSize(size: number): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local cvar/runtime adapter)
  * Category: New
  * Purpose: Read `showpackets` through the original cvar pointer when it is wired.
  */
@@ -344,6 +352,8 @@ function getShowPackets(runtime: QcommonNetRuntime): qboolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local cvar/runtime adapter)
  * Category: New
  * Purpose: Read `showdrop` through the original cvar pointer when it is wired.
  */
@@ -352,6 +362,8 @@ function getShowDrop(runtime: QcommonNetRuntime): qboolean {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local cvar/runtime adapter)
  * Category: New
  * Purpose: Read `qport` through the original no-set cvar when it is wired.
  */

@@ -20,8 +20,20 @@ import {
   type QwglRuntime
 } from "./qgl.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer ref_gl bootstrap)
+ * Category: New
+ * Purpose: Describe the `gl_rmain` hooks still supplied by the host after QGL bootstrap hooks are wired here.
+ */
 type RefGlBootstrapRuntimeHooks = Omit<GlRmainHooks, "qglInit" | "qglShutdown" | "resolveBackendProc" | "getGlStrings">;
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer ref_gl bootstrap)
+ * Category: New
+ * Purpose: Describe injectable host providers used to assemble one ref_gl bootstrap runtime.
+ */
 export interface RefGlBootstrapOptions {
   hooks?: RefGlBootstrapRuntimeHooks;
   qglRuntime?: QglRuntime;
@@ -30,6 +42,12 @@ export interface RefGlBootstrapOptions {
   createQwglProvider?: () => QglSymbolProvider | null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer ref_gl bootstrap)
+ * Category: New
+ * Purpose: Return the assembled renderer runtime together with the QGL runtimes it owns.
+ */
 export interface RefGlBootstrap {
   runtime: GlRmainRuntime;
   qglRuntime: QglRuntime;
@@ -37,6 +55,8 @@ export interface RefGlBootstrap {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer ref_gl bootstrap)
  * Category: New
  * Purpose: Build one `gl_rmain` runtime already wired to the ported `QGL` / `QWGL` bootstrap flow.
  *

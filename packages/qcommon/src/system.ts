@@ -19,6 +19,8 @@
 import type { byte } from "./q_shared.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (system file-search contract)
  * Category: New
  * Purpose: Describe one file-search result emitted by the `Sys_Find*` hooks.
  *
@@ -30,6 +32,8 @@ export interface SysFindResult {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (system hook contract)
  * Category: New
  * Purpose: Hold the host callbacks required by the `q_shared.h` system glue port.
  *
@@ -74,6 +78,8 @@ function formatSystemError(format: string, args: unknown[]): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (system runtime state)
  * Category: New
  * Purpose: Hold the mutable host-facing runtime state for the `q_shared.h` system helpers.
  *
@@ -92,10 +98,9 @@ export interface SystemRuntime {
 }
 
 /**
- * Original name: create system runtime
- * Source: game/q_shared.h
- * Category: NewTooling
- * Fidelity level: Close
+ * Original name: N/A
+ * Source: N/A (system runtime factory)
+ * Category: New
  *
  * Behavior:
  * - Creates the explicit runtime that backs the shared system helper port.

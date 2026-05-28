@@ -5,9 +5,9 @@
 - Fichier TS: `packages/server/src/sv_ccmds.ts`
 - Symboles TS: 2
 - Couvert C/H: 0
-- Reste a auditer: 2
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/server/src/sv_ccmds.ts` | interface | `ServerConsoleContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_ccmds.ts` | function | `createServerConsoleProcedures` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/server/src/sv_ccmds.ts` | interface | `ServerConsoleContext` | oui | N/A | N/A (server console context) | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_ccmds.ts` | function | `createServerConsoleProcedures` | oui | N/A | N/A (server console factory) | New |  | Hors C/H | Valide |  |

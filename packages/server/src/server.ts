@@ -46,6 +46,8 @@ import {
 import type { edict_t, game_export_t } from "../../game/src/index.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (opaque local type)
  * Category: New
  * Purpose: Represent the opaque collision-model pointer array stored by `server_t`.
  *
@@ -98,6 +100,8 @@ export const MAX_CHALLENGES = 1024;
 export const SV_OUTPUTBUF_LENGTH = MAX_MSGLEN - 16;
 
 /**
+ * Original name: N/A
+ * Source: N/A (derived server ring size constant)
  * Category: New
  * Purpose: Surface the packet-entity budget implicitly used by `server.h` for client-entity ring sizing.
  *
@@ -181,7 +185,7 @@ export interface client_frame_t {
 }
 
 /**
- * Original name: client_t
+ * Original name: client_s
  * Source: server/server.h
  * Category: Ported
  * Fidelity level: Close
@@ -265,6 +269,8 @@ export enum redirect_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server header state bundle)
  * Category: New
  * Purpose: Group the server-global extern variables declared by `server.h`.
  *
@@ -289,6 +295,8 @@ export interface ServerHeaderState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_main.c` entry points exposed by `server.h`.
  */
@@ -315,6 +323,8 @@ export interface ServerMainProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_init.c` entry points exposed by `server.h`.
  */
@@ -337,14 +347,18 @@ export interface ServerInitProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
- * Purpose: Declare the `sv_phys.c` entry points exposed by `server.h`.
+ * Purpose: Preserve the legacy `server.h` physics-procedure grouping; `SV_PrepWorldFrame` implementation stays in `sv_main.ts`.
  */
 export interface ServerPhysicsProcedures {
   SV_PrepWorldFrame: () => void;
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_send.c` entry points exposed by `server.h`.
  */
@@ -368,6 +382,8 @@ export interface ServerSendProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_user.c` entry points exposed by `server.h`.
  */
@@ -387,6 +403,8 @@ export interface ServerUserProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_ccmds.c` entry points exposed by `server.h`.
  */
@@ -397,6 +415,8 @@ export interface ServerConsoleProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_ents.c` entry points exposed by `server.h`.
  */
@@ -408,6 +428,8 @@ export interface ServerEntityProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_game.c` entry points exposed by `server.h`.
  */
@@ -418,6 +440,8 @@ export interface ServerGameProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server procedure interface bundle)
  * Category: New
  * Purpose: Declare the `sv_world.c` entry points exposed by `server.h`.
  */
@@ -438,6 +462,8 @@ export interface ServerWorldProcedures {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server struct factory)
  * Category: New
  * Purpose: Create one zero-initialized `client_frame_t`.
  *
@@ -456,6 +482,8 @@ export function createClientFrame(): client_frame_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server struct factory)
  * Category: New
  * Purpose: Create one zero-initialized `client_t`.
  *
@@ -500,6 +528,8 @@ export function createServerClient(): client_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server struct factory)
  * Category: New
  * Purpose: Create one zero-initialized `challenge_t`.
  *
@@ -515,6 +545,8 @@ export function createChallenge(): challenge_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server struct factory)
  * Category: New
  * Purpose: Create one zero-initialized `server_t`.
  *
@@ -540,6 +572,8 @@ export function createServerState(): server_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server struct factory)
  * Category: New
  * Purpose: Create one zero-initialized `server_static_t`.
  *
@@ -565,6 +599,8 @@ export function createServerStatic(): server_static_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server header state factory)
  * Category: New
  * Purpose: Create the server-global extern bundle declared by `server.h`.
  *
@@ -623,6 +659,8 @@ export function NUM_FOR_EDICT(game: game_export_t, edict: edict_t): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (derived server ring size helper)
  * Category: New
  * Purpose: Compute the standard server-side client-entity ring allocation count derived from `maxclients`.
  *

@@ -47,6 +47,8 @@ import { createServerUserProcedures } from "./sv_user.js";
 import { createServerWorldProcedures } from "./sv_world.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (server runtime facade)
  * Category: New
  * Purpose: Describe the explicit dependencies required to assemble the currently ported server modules.
  *
@@ -124,6 +126,8 @@ export interface ServerRuntimeFacadeContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server runtime facade)
  * Category: New
  * Purpose: Expose the composed server subsystem procedures plus a flattened facade view.
  *
@@ -150,6 +154,8 @@ export interface ServerRuntimeFacade {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server runtime facade)
  * Category: New
  * Purpose: Assemble the currently ported server procedure tables into one shared runtime facade.
  *

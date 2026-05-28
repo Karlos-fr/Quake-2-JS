@@ -5,17 +5,17 @@
 - Fichier TS: `packages/server/src/sv_main.ts`
 - Symboles TS: 10
 - Couvert C/H: 0
-- Reste a auditer: 10
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/server/src/sv_main.ts` | value | `SV_FINAL_MESSAGE_BUFFER` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_main.ts` | value | `SV_STATUS_BUFFER_MAX` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_main.ts` | value | `HEARTBEAT_MSEC` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_main.ts` | interface | `ServerMainContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_main.ts` | function | `createServerMainProcedures` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_main.ts` | function | `cloneNetAdr` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_main.ts` | function | `copyNetAdr` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_main.ts` | function | `decodePacketString` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_main.ts` | function | `formatPrintf` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_main.ts` | function | `stripHighBits` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/server/src/sv_main.ts` | value | `SV_FINAL_MESSAGE_BUFFER` | non | `N/A` | `N/A (local final-message buffer size)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | value | `SV_STATUS_BUFFER_MAX` | non | `N/A` | `N/A (local status buffer guard)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | value | `HEARTBEAT_MSEC` | non | `HEARTBEAT_SECONDS` | `Quake-2-master/server/sv_main.c` | Adapter | [`server_sv_main.c.md`](../matrices/server_sv_main.c.md) | Adapter local | Valide | Derive le macro source en millisecondes; `HEARTBEAT_SECONDS` reste couvert C/H. |
+| `packages/server/src/sv_main.ts` | interface | `ServerMainContext` | oui | `N/A` | `N/A (server main context object)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | function | `createServerMainProcedures` | oui | `N/A` | `N/A (server main procedure factory)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | function | `cloneNetAdr` | non | `N/A` | `N/A (local net address clone helper)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | function | `copyNetAdr` | non | `N/A` | `N/A (local net address copy helper)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | function | `decodePacketString` | non | `N/A` | `N/A (local packet string decoder)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | function | `formatPrintf` | non | `N/A` | `N/A (local printf formatter)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_main.ts` | function | `stripHighBits` | non | `N/A` | `N/A (local userinfo string helper)` | New |  | Hors C/H | Valide |  |

@@ -42,6 +42,8 @@ import {
 } from "three";
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js MD2 mesh adapter)
  * Category: New
  * Purpose: Store the Three.js objects and frame metadata required to animate one MD2 mesh.
  *
@@ -56,6 +58,8 @@ export interface Md2MeshInstance {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js MD2 mesh adapter)
  * Category: New
  * Purpose: Control how one MD2 mesh is created.
  *
@@ -69,6 +73,8 @@ export interface Md2MeshBuildOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (alias entity adapter shape)
  * Category: New
  * Purpose: Describe the renderer-facing alias entity state needed by the strict `GL_LerpVerts`-style MD2 interpolation path.
  *
@@ -86,6 +92,8 @@ export interface Md2AliasEntityState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js MD2 mesh adapter)
  * Category: New
  * Purpose: Build one visible Three.js mesh from a parsed Quake II MD2 model.
  *
@@ -125,6 +133,8 @@ export function buildMd2Mesh(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (MD2 VFS loader)
  * Category: New
  * Purpose: Load and parse one MD2 model from the mounted virtual filesystem.
  *
@@ -141,6 +151,8 @@ export function loadMd2Model(filesystem: VirtualFilesystem, path: string): Md2Mo
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js MD2 frame adapter)
  * Category: New
  * Purpose: Apply one MD2 animation frame to an existing mesh geometry.
  *
@@ -175,6 +187,8 @@ export function applyMd2Frame(meshInstance: Md2MeshInstance, frameIndex: number)
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js MD2 frame adapter)
  * Category: New
  * Purpose: Apply one interpolated MD2 pose between two source frames using the Quake-style backlerp fraction.
  *
@@ -330,6 +344,8 @@ export function applyMd2AliasFrameLerp(meshInstance: Md2MeshInstance, entityStat
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js geometry adapter)
  * Category: New
  * Purpose: Keep Three.js render culling in sync with the current MD2 animation pose.
  *
@@ -342,6 +358,8 @@ function refreshMd2GeometryBounds(geometry: BufferGeometry): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js geometry adapter)
  * Category: New
  * Purpose: Build the initial Three.js geometry from MD2 frame zero.
  *
@@ -381,6 +399,8 @@ function createMd2Geometry(model: Md2Model): { geometry: BufferGeometry; vertexI
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (MD2 GL command adapter)
  * Category: New
  * Purpose: Rebuild the original MD2 OpenGL command stream into a flat triangle list that preserves Quake II strip and fan winding.
  *
@@ -424,6 +444,8 @@ function buildMd2GlCommandVertices(model: Md2Model): Array<{ s: number; t: numbe
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (MD2 GL command adapter)
  * Category: New
  * Purpose: Append one MD2 triangle-fan command to the flattened triangle list.
  *
@@ -440,6 +462,8 @@ function appendMd2TriangleFan(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (MD2 GL command adapter)
  * Category: New
  * Purpose: Append one MD2 triangle-strip command to the flattened triangle list.
  *
@@ -461,6 +485,8 @@ function appendMd2TriangleStrip(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (MD2 GL command adapter)
  * Category: New
  * Purpose: Decode one packed MD2 OpenGL command float stored in the raw dword stream.
  *
@@ -475,6 +501,8 @@ function decodeMd2GlFloat(value: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js MD2 skin adapter)
  * Category: New
  * Purpose: Load an MD2 PCX skin as a Three.js texture.
  *
@@ -514,6 +542,12 @@ export function loadMd2SkinTexture(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias shell helper)
+ * Category: New
+ * Purpose: Detect shell flags before applying the powersuit normal offset.
+ */
 function hasShellFlags(flags: number): boolean {
   return (flags & (RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM)) !== 0;
 }

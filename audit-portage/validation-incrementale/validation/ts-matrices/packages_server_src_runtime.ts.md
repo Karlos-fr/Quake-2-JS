@@ -5,10 +5,10 @@
 - Fichier TS: `packages/server/src/runtime.ts`
 - Symboles TS: 3
 - Couvert C/H: 0
-- Reste a auditer: 3
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/server/src/runtime.ts` | interface | `ServerRuntimeFacadeContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/runtime.ts` | interface | `ServerRuntimeFacade` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/runtime.ts` | function | `createServerRuntimeFacade` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/server/src/runtime.ts` | interface | `ServerRuntimeFacadeContext` | oui | N/A | N/A (server runtime facade) | New |  | Hors C/H | Valide |  |
+| `packages/server/src/runtime.ts` | interface | `ServerRuntimeFacade` | oui | N/A | N/A (server runtime facade) | New |  | Hors C/H | Valide |  |
+| `packages/server/src/runtime.ts` | function | `createServerRuntimeFacade` | oui | N/A | N/A (server runtime facade) | New |  | Hors C/H | Valide |  |

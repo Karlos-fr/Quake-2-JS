@@ -90,6 +90,12 @@ import {
 import { createRefGlBootstrap, type RefGlBootstrap, type RefGlBootstrapOptions } from "./ref-gl-bootstrap.js";
 import type { QglProcedure } from "./qgl.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl host facade)
+ * Category: New
+ * Purpose: Describe optional runtimes and hook overrides used to compose the browser/Three ref_gl host.
+ */
 export interface RefGlHostOptions extends RefGlBootstrapOptions {
   imports?: Partial<refimport_t>;
   apiHooks?: GlRmainRefApiHooks;
@@ -102,6 +108,12 @@ export interface RefGlHostOptions extends RefGlBootstrapOptions {
   rmiscHooks?: GlRmiscHooks;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl host facade)
+ * Category: New
+ * Purpose: Expose the composed renderer bootstrap, import table, runtimes and classic refexport_t API.
+ */
 export interface RefGlHost extends RefGlBootstrap {
   refImport: refimport_t;
   rmiscRuntime: GlRmiscRuntime;
@@ -114,6 +126,8 @@ export interface RefGlHost extends RefGlBootstrap {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (ref_gl host facade)
  * Category: New
  * Purpose: Build one minimal host object that exposes the classic renderer export table through the ported bootstrap path.
  *
@@ -341,6 +355,12 @@ function truncateQPath(path: string): string {
   return path.slice(0, MAX_QPATH - 1);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl draw host adapter)
+ * Category: Adapter
+ * Purpose: Bridge host import services and optional draw hooks into the ported gl_draw runtime.
+ */
 function createDefaultDrawRuntime(
   imageRuntime: GlImageRuntime | null,
   refImport: refimport_t,
@@ -367,6 +387,12 @@ function createDefaultDrawRuntime(
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl draw API adapter)
+ * Category: Adapter
+ * Purpose: Wire refexport_t draw callbacks to the ported gl_draw entry points with current rmain state.
+ */
 function createDrawApiHooks(
   drawRuntime: GlDrawRuntime,
   imageRuntime: GlImageRuntime | null,
@@ -421,6 +447,12 @@ function createDrawApiHooks(
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl image runtime sync adapter)
+ * Category: Adapter
+ * Purpose: Copy relevant rmain renderer state into the ported gl_image runtime before image operations.
+ */
 function syncImageFromRmain(imageRuntime: GlImageRuntime, bootstrap: RefGlBootstrap): void {
   const rmain = bootstrap.runtime;
   setImageRendererFlags(imageRuntime, rmain.gl_renderer);
@@ -432,6 +464,12 @@ function syncImageFromRmain(imageRuntime: GlImageRuntime, bootstrap: RefGlBootst
   setIntensityValue(imageRuntime, imageRuntime.intensity_value);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl draw runtime sync adapter)
+ * Category: Adapter
+ * Purpose: Copy current rmain/image state into the ported gl_draw runtime before draw API callbacks.
+ */
 function syncDrawFromRmain(
   drawRuntime: GlDrawRuntime,
   imageRuntime: GlImageRuntime | null,
@@ -450,6 +488,12 @@ function syncDrawFromRmain(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl rmisc runtime sync adapter)
+ * Category: Adapter
+ * Purpose: Copy current rmain/image state into the ported gl_rmisc runtime before miscellaneous GL operations.
+ */
 function syncRmiscFromRmain(
   rmiscRuntime: GlRmiscRuntime,
   bootstrap: RefGlBootstrap,
@@ -482,6 +526,12 @@ function syncRmiscFromRmain(
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (ref_gl qgl host adapter)
+ * Category: Adapter
+ * Purpose: Adapt qgl/qwgl procedure symbols exposed by the bootstrap into gl_rmisc hook callbacks.
+ */
 function createQglRmiscHooks(getBootstrap: () => RefGlBootstrap): GlRmiscHooks {
   const callQgl = (name: string, ...args: unknown[]): unknown => {
     const symbols = getBootstrap().qglRuntime.symbols as unknown as Record<string, unknown>;

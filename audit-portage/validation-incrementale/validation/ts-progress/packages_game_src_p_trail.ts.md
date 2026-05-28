@@ -2,7 +2,7 @@
 
 - Fichier TS: `packages/game/src/p_trail.ts`
 - Matrice TS: `audit-portage/validation-incrementale/validation/ts-matrices/packages_game_src_p_trail.ts.md`
-- Statut: En cours
+- Statut: Termine
 
 ## Dernier lot traite
 
@@ -18,9 +18,16 @@
 - Verification ownership/doublon: pas de correction code; le doublon potentiel de la matrice TS etait un import consommateur, pas un second portage proprietaire.
 - Tests: non lances, changement documentaire uniquement.
 
+- 2026-05-28: `PlayerTrail_Init`, `PlayerTrail_Add`, `PlayerTrail_New`, `PlayerTrail_PickFirst`, `PlayerTrail_PickNext`, `PlayerTrail_LastSpot`.
+- Decision: `Couvert C/H` pour les six fonctions. La matrice `game_p_trail.c.md` marque ces fonctions source comme `Valide` avec proprietaire attendu `packages/game/src/p_trail.ts`.
+- Verification entetes: les six fonctions TS ont `Original name`, `Source`, `Category: Ported`, `Fidelity level` et un comportement de tete coherent avec `game/p_trail.c`.
+- Verification ownership/doublon: aucune autre definition TS de ces fonctions trouvee dans `packages/`; le package `game` correspond au module source `game`. Les globals C `trail`, `trail_head` et `trail_active` restent portes sur `runtime.playerTrail`, deja valides dans la matrice C/H. `vectoyaw` reste un import consommateur non proprietaire documente.
+- Integration: runtime atteint via `SpawnEntities`/`ClientBeginServerFrame`/AI monster trail; `apps/web` consomme indirectement le flux serveur local; `renderer-three` non applicable, ces fonctions ne produisent pas directement de sortie rendu.
+- Tests: `npm run verify:p-trail`; `npm run verify:g-ai`; `npm run verify:p-client`; `npm run verify:g-spawn`; `npm run typecheck`.
+
 ## Prochain lot recommande
 
-- Valider `PlayerTrail_Init`, `PlayerTrail_Add` et `PlayerTrail_New` contre `game_p_trail.c.md`, avec attention aux globals C deplaces dans `runtime.playerTrail`.
+- Aucun.
 
 ## Blocages
 

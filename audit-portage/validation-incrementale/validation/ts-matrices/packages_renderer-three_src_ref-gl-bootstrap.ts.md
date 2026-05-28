@@ -5,11 +5,11 @@
 - Fichier TS: `packages/renderer-three/src/ref-gl-bootstrap.ts`
 - Symboles TS: 4
 - Couvert C/H: 0
-- Reste a auditer: 4
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/ref-gl-bootstrap.ts` | type | `RefGlBootstrapRuntimeHooks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-bootstrap.ts` | interface | `RefGlBootstrapOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-bootstrap.ts` | interface | `RefGlBootstrap` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-bootstrap.ts` | function | `createRefGlBootstrap` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/renderer-three/src/ref-gl-bootstrap.ts` | type | `RefGlBootstrapRuntimeHooks` | non | `N/A` | `N/A (renderer ref_gl bootstrap)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-bootstrap.ts` | interface | `RefGlBootstrapOptions` | oui | `N/A` | `N/A (renderer ref_gl bootstrap)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-bootstrap.ts` | interface | `RefGlBootstrap` | oui | `N/A` | `N/A (renderer ref_gl bootstrap)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-bootstrap.ts` | function | `createRefGlBootstrap` | oui | `N/A` | `N/A (renderer ref_gl bootstrap)` | New |  | Hors C/H | Valide |  |

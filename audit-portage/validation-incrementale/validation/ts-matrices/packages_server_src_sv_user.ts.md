@@ -4,15 +4,15 @@
 
 - Fichier TS: `packages/server/src/sv_user.ts`
 - Symboles TS: 7
-- Couvert C/H: 0
-- Reste a auditer: 7
+- Couvert C/H: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/server/src/sv_user.ts` | value | `DOWNLOAD_CHUNK_SIZE` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_user.ts` | value | `MAX_STRINGCMDS` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_user.ts` | interface | `ServerUserContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_user.ts` | function | `createServerUserProcedures` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_user.ts` | function | `createNullUsercmd` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_user.ts` | function | `writeDownloadRefusal` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_user.ts` | function | `truncateOsPath` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/server/src/sv_user.ts` | value | `DOWNLOAD_CHUNK_SIZE` | non | `N/A` | `N/A (local download chunk constant)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_user.ts` | value | `MAX_STRINGCMDS` | non | `MAX_STRINGCMDS` | `Quake-2-master/server/sv_user.c` | Ported | [`server_sv_user.c.md`](../matrices/server_sv_user.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/server/src/sv_user.ts` | interface | `ServerUserContext` | oui | `N/A` | `N/A (server user dependency context)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_user.ts` | function | `createServerUserProcedures` | oui | `N/A` | `N/A (server user procedure factory)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_user.ts` | function | `createNullUsercmd` | non | `N/A` | `N/A (local usercmd factory)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_user.ts` | function | `writeDownloadRefusal` | non | `N/A` | `N/A (local download refusal helper)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_user.ts` | function | `truncateOsPath` | non | `N/A` | `N/A (local path truncation helper)` | New |  | Hors C/H | Valide |  |

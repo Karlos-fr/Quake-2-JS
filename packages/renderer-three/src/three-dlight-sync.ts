@@ -34,6 +34,12 @@ import {
   type GlLightRuntime
 } from "./gl_light.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js dlight scene adapter)
+ * Category: New
+ * Purpose: Public handle for applying refresh dynamic lights to an adapter-owned Three.js group.
+ */
 export interface ThreeDlightSync {
   root: Group;
   apply: (refreshFrame: ClientRefreshFrame | null) => number;
@@ -41,6 +47,8 @@ export interface ThreeDlightSync {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js dlight scene adapter)
  * Category: New
  * Purpose: Create the Three.js adapter that consumes `R_RenderDlights` output for refresh dynamic lights.
  */
@@ -95,6 +103,12 @@ export function createThreeDlightSync(): ThreeDlightSync {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js dlight refdef adapter)
+ * Category: New
+ * Purpose: Convert a client refresh frame into the refdef shape consumed by the ported light runtime.
+ */
 function createDlightRefdef(refreshFrame: ClientRefreshFrame): ReturnType<typeof createRefDef> {
   const refdef = createRefDef();
   refdef.vieworg = [...refreshFrame.view.vieworg];
@@ -109,6 +123,12 @@ function createDlightRefdef(refreshFrame: ClientRefreshFrame): ReturnType<typeof
   return refdef;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js flashblend mesh adapter)
+ * Category: New
+ * Purpose: Materialize the `R_RenderDlight` triangle fan as a disposable Three.js mesh.
+ */
 function createFlashblendMesh(
   light: dlight_t,
   center: readonly [number, number, number],
@@ -145,6 +165,12 @@ function createFlashblendMesh(
   return mesh;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js color adapter)
+ * Category: New
+ * Purpose: Clamp refresh light color channels into the Three.js color object used by flashblend meshes.
+ */
 function createThreeColor(color: readonly [number, number, number]): Color {
   return new Color(
     Math.max(0, color[0]),
@@ -153,6 +179,12 @@ function createThreeColor(color: readonly [number, number, number]): Color {
   );
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js object lifecycle helper)
+ * Category: New
+ * Purpose: Clear an adapter-owned group and dispose all nested resources.
+ */
 function clearGroup(group: Group): void {
   for (const child of [...group.children]) {
     group.remove(child);
@@ -160,6 +192,12 @@ function clearGroup(group: Group): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js object lifecycle helper)
+ * Category: New
+ * Purpose: Dispose geometry and materials owned by the dlight adapter.
+ */
 function disposeObject(object: Object3D): void {
   if (object instanceof Mesh) {
     object.geometry.dispose();

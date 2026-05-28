@@ -551,14 +551,32 @@ export function G_SetSpectatorStats(ent: GameEntity, runtime: GameRuntime): void
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local HUD image adapter)
+ * Category: New
+ * Purpose: Route HUD image lookups through the gameplay runtime asset registry.
+ */
 function imageIndex(runtime: GameRuntime, icon: string): number {
   return registerGameImage(runtime, icon);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local layout string helper)
+ * Category: New
+ * Purpose: Keep generated layout strings safe for Quake II quoted fields.
+ */
 function layoutQuote(value: string): string {
   return value.replace(/\\/g, "\\\\").replace(/"/g, "'");
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local layout formatting helper)
+ * Category: New
+ * Purpose: Match the fixed-width counter fields used by the original help layout.
+ */
 function pad3(value: number): string {
   return value.toString().padStart(3, " ");
 }

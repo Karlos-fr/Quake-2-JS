@@ -12,6 +12,8 @@
 import type { PakArchive } from "../../formats/src/pak.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (golden snapshot test tooling)
  * Category: NewTooling
  * Purpose: Describe a compact but meaningful golden snapshot for a parsed PAK archive.
  *
@@ -29,6 +31,8 @@ export interface GoldenPakSummarySnapshot {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (golden snapshot test tooling)
  * Category: NewTooling
  * Purpose: Build a stable golden summary from a parsed PAK archive.
  *
@@ -60,6 +64,8 @@ export function createPakSummarySnapshot(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (golden snapshot test tooling)
  * Category: NewTooling
  * Purpose: Compare an actual golden snapshot with an expected one and throw on mismatch.
  *

@@ -65,7 +65,20 @@ import {
   type server_t
 } from "./server.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local download chunk constant)
+ * Category: New
+ * Purpose: Name the 1024-byte transfer chunk used by `SV_NextDownload_f`.
+ */
 const DOWNLOAD_CHUNK_SIZE = 1024;
+
+/**
+ * Original name: MAX_STRINGCMDS
+ * Source: server/sv_user.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const MAX_STRINGCMDS = 8;
 
 type ucmd_t = {
@@ -74,6 +87,8 @@ type ucmd_t = {
 };
 
 /**
+ * Original name: N/A
+ * Source: N/A (server user dependency context)
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_user.c` port.
  *
@@ -105,6 +120,8 @@ export interface ServerUserContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server user procedure factory)
  * Category: New
  * Purpose: Build the `sv_user.c` procedure table bound to one explicit server-user context.
  *
@@ -676,6 +693,12 @@ export function createServerUserProcedures(context: ServerUserContext): ServerUs
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local usercmd factory)
+ * Category: New
+ * Purpose: Create the zero-initialized user command used where the C port clears `usercmd_t` storage.
+ */
 function createNullUsercmd(): usercmd_t {
   return {
     msec: 0,
@@ -689,12 +712,24 @@ function createNullUsercmd(): usercmd_t {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local download refusal helper)
+ * Category: New
+ * Purpose: Emit the repeated `svc_download` refusal payload used by the download command handlers.
+ */
 function writeDownloadRefusal(client: client_t): void {
   MSG_WriteByte(client.netchan.message, svc_ops_e.svc_download);
   MSG_WriteShort(client.netchan.message, -1);
   MSG_WriteByte(client.netchan.message, 0);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local path truncation helper)
+ * Category: New
+ * Purpose: Preserve the bounded `MAX_OSPATH` path behavior used by demo-server bootstrap.
+ */
 function truncateOsPath(value: string): string {
   return value.length >= MAX_OSPATH ? value.slice(0, MAX_OSPATH - 1) : value;
 }

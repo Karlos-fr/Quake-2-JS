@@ -33,6 +33,8 @@ import type { GlDrawHooks, GlDrawQuad, GlDrawRawUpload } from "./gl_draw.js";
 import type { GlImageHooks } from "./gl_image.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js HUD adapter)
  * Category: New
  * Purpose: Expose the Three.js state and hook bundles needed by the classic `gl_draw` path.
  */
@@ -54,6 +56,8 @@ export interface ThreeGlDrawAdapter {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js HUD adapter)
  * Category: New
  * Purpose: Create a Three.js HUD adapter for the ported `gl_draw.c` immediate-mode hooks.
  *
@@ -195,6 +199,12 @@ export function createThreeGlDrawAdapter(): ThreeGlDrawAdapter {
   return adapter;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js HUD adapter)
+ * Category: New
+ * Purpose: Convert one `GlDrawQuad` hook emission into a textured Three.js mesh.
+ */
 function createTexturedQuad(
   quad: GlDrawQuad,
   sourceTexture: Texture,
@@ -217,6 +227,12 @@ function createTexturedQuad(
   return mesh;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js HUD adapter)
+ * Category: New
+ * Purpose: Convert one fill-rectangle hook emission into a solid Three.js mesh.
+ */
 function createSolidQuad(
   x: number,
   y: number,
@@ -241,6 +257,12 @@ function createSolidQuad(
   return mesh;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js HUD adapter)
+ * Category: New
+ * Purpose: Build the shared quad geometry used by HUD textured and solid draws.
+ */
 function createQuadGeometry(width: number, height: number, sl: number, tl: number, sh: number, th: number): BufferGeometry {
   const halfWidth = width / 2;
   const halfHeight = height / 2;
@@ -261,6 +283,12 @@ function createQuadGeometry(width: number, height: number, sl: number, tl: numbe
   return geometry;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js texture adapter)
+ * Category: New
+ * Purpose: Convert draw/image upload hook payloads into a Three.js `DataTexture`.
+ */
 function createTextureFromUpload(upload: GlDrawRawUpload | {
   width: number;
   height: number;
@@ -276,6 +304,12 @@ function createTextureFromUpload(upload: GlDrawRawUpload | {
   return texture;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js texture adapter)
+ * Category: New
+ * Purpose: Convert one paletted scrap upload into a Three.js `DataTexture`.
+ */
 function createIndexedTexture(indices: Uint8Array, width: number, height: number, paletteRgb: Uint8Array | null): DataTexture {
   const texture = new DataTexture(indexedToRgba(indices, paletteRgb), width, height, RGBAFormat, UnsignedByteType);
   texture.magFilter = NearestFilter;
@@ -284,6 +318,12 @@ function createIndexedTexture(indices: Uint8Array, width: number, height: number
   return texture;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA conversion helper)
+ * Category: New
+ * Purpose: Repack Quake-style 32-bit RGBA pixels into byte data accepted by Three.js.
+ */
 function packedRgbaToBytes(source: Uint32Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(width * height * 4);
   for (let index = 0; index < Math.min(source.length, width * height); index += 1) {
@@ -297,6 +337,12 @@ function packedRgbaToBytes(source: Uint32Array, width: number, height: number): 
   return rgba;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA conversion helper)
+ * Category: New
+ * Purpose: Normalize either direct RGBA bytes or indexed pixels into RGBA byte data.
+ */
 function indexedOrRgbaToBytes(source: Uint8Array, width: number, height: number, paletteRgb: Uint8Array | null): Uint8Array {
   if (source.length >= width * height * 4) {
     return source.slice(0, width * height * 4);
@@ -305,6 +351,12 @@ function indexedOrRgbaToBytes(source: Uint8Array, width: number, height: number,
   return indexedToRgba(source, paletteRgb);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (RGBA conversion helper)
+ * Category: New
+ * Purpose: Expand Quake indexed pixels through the shared palette, preserving index 255 transparency.
+ */
 function indexedToRgba(indices: Uint8Array, paletteRgb: Uint8Array | null): Uint8Array {
   const rgba = new Uint8Array(indices.length * 4);
   for (let index = 0; index < indices.length; index += 1) {
@@ -325,6 +377,12 @@ function indexedToRgba(indices: Uint8Array, paletteRgb: Uint8Array | null): Uint
   return rgba;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js texture adapter)
+ * Category: New
+ * Purpose: Store and apply backend texture filter state for Three.js textures.
+ */
 function setTextureFilter(
   textures: Map<number, Texture>,
   filterState: Map<number, TextureFilterState>,
@@ -339,6 +397,12 @@ function setTextureFilter(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js texture adapter)
+ * Category: New
+ * Purpose: Apply a previously stored min/mag filter pair to a Three.js texture.
+ */
 function applyStoredFilter(texture: Texture, filter: TextureFilterState | undefined): void {
   if (!filter) {
     return;
@@ -349,10 +413,22 @@ function applyStoredFilter(texture: Texture, filter: TextureFilterState | undefi
   texture.needsUpdate = true;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js filter adapter)
+ * Category: New
+ * Purpose: Convert the `gl_draw.ts` hook filter names to Three.js filter constants.
+ */
 function toThreeFilter(filter: "nearest" | "linear"): MinificationTextureFilter & MagnificationTextureFilter {
   return filter === "nearest" ? NearestFilter : LinearFilter;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js filter adapter)
+ * Category: New
+ * Purpose: Convert OpenGL minification filter enum values from `gl_image.ts` hooks to Three.js filters.
+ */
 function toThreeGlMinFilter(filter: number): MinificationTextureFilter {
   switch (filter) {
     case 0x2600:
@@ -367,10 +443,22 @@ function toThreeGlMinFilter(filter: number): MinificationTextureFilter {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js filter adapter)
+ * Category: New
+ * Purpose: Convert OpenGL magnification filter enum values from `gl_image.ts` hooks to Three.js filters.
+ */
 function toThreeGlMagFilter(filter: number): MagnificationTextureFilter {
   return filter === 0x2600 ? NearestFilter : LinearFilter;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js texture adapter)
+ * Category: New
+ * Purpose: Replace one backend texture slot and dispose the previous Three.js texture.
+ */
 function replaceTexture(textures: Map<number, Texture>, texnum: number, texture: Texture): void {
   const old = textures.get(texnum);
   if (old && old !== texture) {
@@ -379,6 +467,12 @@ function replaceTexture(textures: Map<number, Texture>, texnum: number, texture:
   textures.set(texnum, texture);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js HUD adapter)
+ * Category: New
+ * Purpose: Dispose all transient HUD meshes owned by the adapter root group.
+ */
 function clearGroup(root: Group): void {
   for (const child of [...root.children]) {
     root.remove(child);
@@ -392,6 +486,12 @@ function clearGroup(root: Group): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js texture adapter)
+ * Category: New
+ * Purpose: Remember the Three.js min/mag filter pair associated with one texture slot.
+ */
 interface TextureFilterState {
   minFilter: MinificationTextureFilter;
   magFilter: MagnificationTextureFilter;

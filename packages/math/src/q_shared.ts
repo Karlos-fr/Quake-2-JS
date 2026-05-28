@@ -454,6 +454,8 @@ export function Q_log2(value: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local plane shape interface)
  * Category: New
  * Purpose: Describe the minimal plane shape consumed by the q_shared math helpers.
  *
@@ -653,7 +655,7 @@ export function RotatePointAroundVector(
 
 /**
  * Original name: BoxOnPlaneSide
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -769,6 +771,15 @@ export function BoxOnPlaneSide2(
   return sides;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local matrix scratch helper)
+ * Category: New
+ * Purpose: Allocate one zeroed 3x3 matrix for rotation helpers.
+ *
+ * Constraints:
+ * - Must stay local to avoid exposing a new public math API.
+ */
 function createMatrix3x3(): number[][] {
   return [
     [0, 0, 0],

@@ -5,10 +5,10 @@
 - Fichier TS: `packages/renderer-common/src/sky.ts`
 - Symboles TS: 3
 - Couvert C/H: 0
-- Reste a auditer: 3
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-common/src/sky.ts` | value | `QUAKE_SKY_FACE_SUFFIXES` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-common/src/sky.ts` | type | `QuakeSkyFaceName` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-common/src/sky.ts` | interface | `QuakeSkyAssetSet` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/renderer-common/src/sky.ts` | value | `QUAKE_SKY_FACE_SUFFIXES` | oui | N/A | N/A (renderer-common sky contract) | New |  | Hors C/H | Valide | Contrat commun; le portage proprietaire de `ref_gl/gl_warp.c::suf` reste `packages/renderer-three/src/gl_warp.ts::SKY_SUFFIXES`. |
+| `packages/renderer-common/src/sky.ts` | type | `QuakeSkyFaceName` | oui | N/A | N/A (renderer-common sky contract) | New |  | Hors C/H | Valide |  |
+| `packages/renderer-common/src/sky.ts` | interface | `QuakeSkyAssetSet` | oui | N/A | N/A (renderer-common sky contract) | New |  | Hors C/H | Valide |  |

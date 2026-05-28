@@ -77,9 +77,17 @@ import {
   type server_t
 } from "./server.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (named savegame restore loop count)
+ * Category: New
+ * Purpose: Name the fixed number of settling frames pumped after restoring a savegame.
+ */
 const SAVEGAME_FRAME_COUNT = 100;
 
 /**
+ * Original name: N/A
+ * Source: N/A (server init dependency context)
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_init.c` port.
  *
@@ -122,6 +130,8 @@ export interface ServerInitContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server init procedure factory)
  * Category: New
  * Purpose: Build the `sv_init.c` procedure table bound to one explicit server-init context.
  *
@@ -553,6 +563,12 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (entity state copy helper)
+ * Category: New
+ * Purpose: Copy the entity-state fields used by server baselines without sharing mutable vectors.
+ */
 function cloneEntityState(state: entity_state_t): entity_state_t {
   const copy = createEntityState();
   copy.number = state.number;
@@ -579,6 +595,12 @@ function cloneEntityState(state: entity_state_t): entity_state_t {
   return copy;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (client command reset helper)
+ * Category: New
+ * Purpose: Reset the last user command for a newly attached server client.
+ */
 function zeroClientCommand(client: client_t): void {
   client.lastcmd.msec = 0;
   client.lastcmd.buttons = 0;
@@ -592,10 +614,22 @@ function zeroClientCommand(client: client_t): void {
   client.lastcmd.lightlevel = 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (case-insensitive suffix helper)
+ * Category: New
+ * Purpose: Match Quake II map suffixes without depending on platform string casing.
+ */
 function endsWithInsensitive(text: string, suffix: string): boolean {
   return text.toLowerCase().endsWith(suffix.toLowerCase());
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local printf formatter)
+ * Category: New
+ * Purpose: Format the small printf subset needed by server init error callbacks.
+ */
 function formatPrintf(fmt: string, args: unknown[]): string {
   if (args.length === 0) {
     return fmt;

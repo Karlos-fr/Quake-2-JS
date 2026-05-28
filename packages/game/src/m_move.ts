@@ -494,6 +494,15 @@ export function M_walkmove(ent: GameEntity, yaw: number, dist: number, runtime: 
   return SV_movestep(ent, move, true, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: Quake-2-master/game/m_move.c (M_CheckBottom realcheck block)
+ * Category: Adapter
+ * Fidelity level: Close
+ *
+ * Purpose:
+ * - Keeps the original `M_CheckBottom` realcheck branch separate without claiming a second C owner.
+ */
 function M_CheckBottomReal(
   ent: GameEntity,
   runtime: GameRuntime,
@@ -537,26 +546,71 @@ function M_CheckBottomReal(
   return true;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local relink helper)
+ * Category: New
+ * Fidelity level: New
+ *
+ * Purpose:
+ * - Centralizes the original relink plus trigger-touch side effects used after monster movement.
+ */
 function relinkMonster(ent: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, ent);
   touchTriggerEntities(runtime, ent);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local origin sync helper)
+ * Category: New
+ * Fidelity level: New
+ *
+ * Purpose:
+ * - Keeps legacy `origin` and networked `s.origin` fields synchronized after movement.
+ */
 function setEntityOrigin(ent: GameEntity, origin: vec3_t): void {
   ent.s.origin = [...origin];
   ent.origin = [...origin];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Fidelity level: New
+ *
+ * Purpose:
+ * - Provides a local immutable vector addition for movement calculations.
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (runtime guard helper)
+ * Category: New
+ * Fidelity level: New
+ *
+ * Purpose:
+ * - Fails early when monster movement is used without the collision bridge that replaces `gi.trace`.
+ */
 function ensureCollision(runtime: GameRuntime): void {
   if (!runtime.collision) {
     throw new Error("m_move requires runtime collision bridge");
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (trace entity adapter helper)
+ * Category: New
+ * Fidelity level: New
+ *
+ * Purpose:
+ * - Narrows trace entity payloads back to game entities for ground ownership bookkeeping.
+ */
 function asGameEntity(value: trace_t["ent"]): GameEntity | null {
   if (!value || typeof value !== "object") {
     return null;
@@ -565,6 +619,15 @@ function asGameEntity(value: trace_t["ent"]): GameEntity | null {
   return value as GameEntity;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local random helper)
+ * Category: New
+ * Fidelity level: New
+ *
+ * Purpose:
+ * - Mirrors the integer shape expected by the original `rand()` branches in this movement file.
+ */
 function randomInt(): number {
   return (Math.random() * 0x7fffffff) | 0;
 }

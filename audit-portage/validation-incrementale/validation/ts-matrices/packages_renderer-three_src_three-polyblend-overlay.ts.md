@@ -5,11 +5,11 @@
 - Fichier TS: `packages/renderer-three/src/three-polyblend-overlay.ts`
 - Symboles TS: 4
 - Couvert C/H: 0
-- Reste a auditer: 4
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/three-polyblend-overlay.ts` | interface | `ThreePolyblendOverlay` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-polyblend-overlay.ts` | function | `createThreePolyblendOverlay` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/three-polyblend-overlay.ts` | function | `createUnitQuadGeometry` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/three-polyblend-overlay.ts` | function | `clamp01` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/three-polyblend-overlay.ts` | interface | `ThreePolyblendOverlay` | oui | `N/A` | `N/A (Three.js polyblend scene adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-polyblend-overlay.ts` | function | `createThreePolyblendOverlay` | oui | `N/A` | `N/A (Three.js polyblend scene adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-polyblend-overlay.ts` | function | `createUnitQuadGeometry` | non | `N/A` | `N/A (Three.js overlay geometry helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-polyblend-overlay.ts` | function | `clamp01` | non | `N/A` | `N/A (local color channel helper)` | New |  | Hors C/H | Valide |  |

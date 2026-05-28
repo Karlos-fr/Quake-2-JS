@@ -5,17 +5,17 @@
 - Fichier TS: `packages/renderer-three/src/quake-sky-resolver.ts`
 - Symboles TS: 10
 - Couvert C/H: 0
-- Reste a auditer: 10
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | value | `SHARED_PALETTE_PATH` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | interface | `LoadedQuakeSkyTextureSet` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | interface | `QuakeSkyResolver` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `createQuakeSkyResolver` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `buildSkyAssetSet` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `resolveSkyFacePath` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `loadSharedPalette` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `loadSkyTexture` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `expandIndexedRgba` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `createSkyTexture` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | value | `SHARED_PALETTE_PATH` | non | `N/A` | `N/A (sky texture palette path)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | interface | `LoadedQuakeSkyTextureSet` | oui | `N/A` | `N/A (renderer sky resolver contract)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | interface | `QuakeSkyResolver` | oui | `N/A` | `N/A (renderer sky resolver contract)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `createQuakeSkyResolver` | oui | `N/A` | `N/A (Three.js sky asset resolver)` | Adapter |  | Adapter local | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `buildSkyAssetSet` | non | `N/A` | `N/A (Three.js sky asset resolver)` | Adapter |  | Adapter local | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `resolveSkyFacePath` | non | `N/A` | `N/A (Three.js sky asset resolver)` | Adapter |  | Adapter local | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `loadSharedPalette` | non | `N/A` | `N/A (Three.js sky palette loader)` | Adapter |  | Adapter local | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `loadSkyTexture` | non | `N/A` | `N/A (Three.js sky texture loader)` | Adapter |  | Adapter local | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `expandIndexedRgba` | non | `N/A` | `N/A (indexed image expansion helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/quake-sky-resolver.ts` | function | `createSkyTexture` | non | `N/A` | `N/A (Three.js sky texture factory)` | Adapter |  | Adapter local | Valide |  |

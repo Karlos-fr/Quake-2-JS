@@ -70,13 +70,32 @@ import {
   type server_t
 } from "./server.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (local final-message buffer size)
+ * Category: New
+ */
 const SV_FINAL_MESSAGE_BUFFER = 1400;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local status buffer guard)
+ * Category: New
+ */
 const SV_STATUS_BUFFER_MAX = MAX_MSGLEN - 16;
 const HEARTBEAT_SECONDS = 300;
+
+/**
+ * Original name: HEARTBEAT_SECONDS
+ * Source: server/sv_main.c
+ * Category: Adapter
+ */
 const HEARTBEAT_MSEC = HEARTBEAT_SECONDS * 1000;
 const CLIENT_NAME_LENGTH = 32;
 
 /**
+ * Original name: N/A
+ * Source: N/A (server main context object)
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_main.c` partial port.
  *
@@ -133,6 +152,8 @@ export interface ServerMainContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server main procedure factory)
  * Category: New
  * Purpose: Build the `sv_main.c` procedure table bound to one explicit server-main context.
  *
@@ -1124,6 +1145,11 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local net address clone helper)
+ * Category: New
+ */
 function cloneNetAdr(address: netadr_t): netadr_t {
   return {
     type: address.type,
@@ -1133,6 +1159,11 @@ function cloneNetAdr(address: netadr_t): netadr_t {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local net address copy helper)
+ * Category: New
+ */
 function copyNetAdr(target: netadr_t, source: netadr_t): void {
   target.type = source.type;
   target.ip.set(source.ip);
@@ -1140,6 +1171,11 @@ function copyNetAdr(target: netadr_t, source: netadr_t): void {
   target.port = source.port;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local packet string decoder)
+ * Category: New
+ */
 function decodePacketString(bytes: Uint8Array): string {
   let text = "";
   for (let i = 0; i < bytes.length; i += 1) {
@@ -1152,6 +1188,11 @@ function decodePacketString(bytes: Uint8Array): string {
   return text;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local printf formatter)
+ * Category: New
+ */
 function formatPrintf(fmt: string, args: unknown[]): string {
   if (args.length === 0) {
     return fmt;
@@ -1176,6 +1217,11 @@ function formatPrintf(fmt: string, args: unknown[]): string {
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local userinfo string helper)
+ * Category: New
+ */
 function stripHighBits(text: string): string {
   let out = "";
   const limit = Math.min(text.length, CLIENT_NAME_LENGTH - 1);

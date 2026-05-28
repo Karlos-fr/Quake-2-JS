@@ -5,15 +5,15 @@
 - Fichier TS: `packages/platform/src/web-cd-audio-adapter.ts`
 - Symboles TS: 8
 - Couvert C/H: 0
-- Reste a auditer: 5
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `packages/platform/src/web-cd-audio-adapter.ts` | interface | `WebCDAudioAdapterOptions` | oui | `N/A` | `N/A (web CD audio adapter)` | Adapter |  | Hors C/H | Valide |  |
 | `packages/platform/src/web-cd-audio-adapter.ts` | interface | `WebCDAudioAdapter` | oui | `N/A` | `N/A (web CD audio adapter)` | Adapter |  | Hors C/H | Valide |  |
 | `packages/platform/src/web-cd-audio-adapter.ts` | function | `createWebCDAudioAdapter` | oui | `N/A` | `N/A (web CD audio adapter)` | Adapter |  | Hors C/H | Valide |  |
-| `packages/platform/src/web-cd-audio-adapter.ts` | function | `updateMusicGain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/platform/src/web-cd-audio-adapter.ts` | function | `computeMusicGain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/platform/src/web-cd-audio-adapter.ts` | function | `clamp01` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/platform/src/web-cd-audio-adapter.ts` | function | `resolveWebCdTrackCandidates` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/platform/src/web-cd-audio-adapter.ts` | function | `startTrack` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/platform/src/web-cd-audio-adapter.ts` | function | `updateMusicGain` | non | `N/A` | `N/A (web CD audio volume helper)` | New |  | Hors C/H | Valide |  |
+| `packages/platform/src/web-cd-audio-adapter.ts` | function | `computeMusicGain` | non | `N/A` | `N/A (web CD audio volume helper)` | New |  | Hors C/H | Valide |  |
+| `packages/platform/src/web-cd-audio-adapter.ts` | function | `clamp01` | non | `N/A` | `N/A (web CD audio volume helper)` | New |  | Hors C/H | Valide |  |
+| `packages/platform/src/web-cd-audio-adapter.ts` | function | `resolveWebCdTrackCandidates` | oui | `N/A` | `N/A (web CD audio asset mapping)` | Adapter |  | Hors C/H | Valide |  |
+| `packages/platform/src/web-cd-audio-adapter.ts` | function | `startTrack` | non | `N/A` | `N/A (web CD audio asset loader)` | Adapter |  | Hors C/H | Valide |  |

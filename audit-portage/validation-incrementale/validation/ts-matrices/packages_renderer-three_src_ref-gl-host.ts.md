@@ -5,16 +5,16 @@
 - Fichier TS: `packages/renderer-three/src/ref-gl-host.ts`
 - Symboles TS: 9
 - Couvert C/H: 0
-- Reste a auditer: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/ref-gl-host.ts` | interface | `RefGlHostOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-host.ts` | interface | `RefGlHost` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-host.ts` | function | `createRefGlHost` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/ref-gl-host.ts` | function | `createDefaultDrawRuntime` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-host.ts` | function | `createDrawApiHooks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-host.ts` | function | `syncImageFromRmain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-host.ts` | function | `syncDrawFromRmain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-host.ts` | function | `syncRmiscFromRmain` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/ref-gl-host.ts` | function | `createQglRmiscHooks` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/ref-gl-host.ts` | interface | `RefGlHostOptions` | oui | `N/A` | `N/A (ref_gl host facade)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | interface | `RefGlHost` | oui | `N/A` | `N/A (ref_gl host facade)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | function | `createRefGlHost` | oui | `N/A` | `N/A (ref_gl host facade)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | function | `createDefaultDrawRuntime` | non | `N/A` | `N/A (ref_gl draw host adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | function | `createDrawApiHooks` | non | `N/A` | `N/A (ref_gl draw API adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | function | `syncImageFromRmain` | non | `N/A` | `N/A (ref_gl image runtime sync adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | function | `syncDrawFromRmain` | non | `N/A` | `N/A (ref_gl draw runtime sync adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | function | `syncRmiscFromRmain` | non | `N/A` | `N/A (ref_gl rmisc runtime sync adapter)` | Adapter |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/ref-gl-host.ts` | function | `createQglRmiscHooks` | non | `N/A` | `N/A (ref_gl qgl host adapter)` | Adapter |  | Hors C/H | Valide |  |

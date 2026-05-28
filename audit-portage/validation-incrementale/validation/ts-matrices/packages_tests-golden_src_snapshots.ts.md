@@ -5,9 +5,9 @@
 - Fichier TS: `packages/tests-golden/src/snapshots.ts`
 - Symboles TS: 2
 - Couvert C/H: 0
-- Reste a auditer: 2
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/tests-golden/src/snapshots.ts` | interface | `GoldenPakSummarySnapshot` | oui |  |  | NewTooling |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/tests-golden/src/snapshots.ts` | function | `createPakSummarySnapshot` | oui |  |  | NewTooling |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/tests-golden/src/snapshots.ts` | interface | `GoldenPakSummarySnapshot` | oui | N/A | N/A (golden snapshot test tooling) | NewTooling |  | Hors C/H | Valide |  |
+| `packages/tests-golden/src/snapshots.ts` | function | `createPakSummarySnapshot` | oui | N/A | N/A (golden snapshot test tooling) | NewTooling |  | Hors C/H | Valide |  |

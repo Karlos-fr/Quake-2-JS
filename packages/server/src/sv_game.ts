@@ -74,6 +74,8 @@ import {
 } from "./server.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (server game context)
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_game.c` port.
  *
@@ -124,6 +126,8 @@ export interface ServerGameContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server game procedure factory)
  * Category: New
  * Purpose: Build the `sv_game.c` procedure table bound to one explicit server-game context.
  *
@@ -565,6 +569,15 @@ export function createServerGameProcedures(context: ServerGameContext): ServerGa
   };
 }
 
+/**
+ * Original name: SV_InitGameProgs game export assignment adapter
+ * Source: Quake-2-master/server/sv_game.c
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Preserve descriptors from the TypeScript `GetGameApi` result while updating the existing server-owned `ge` object.
+ */
 function assignGameExports(target: game_export_t, source: game_export_t): void {
   const descriptors = Object.getOwnPropertyDescriptors(source);
   for (const key of Reflect.ownKeys(descriptors)) {
@@ -572,6 +585,15 @@ function assignGameExports(target: game_export_t, source: game_export_t): void {
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local printf formatter)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Provide the minimal `%s`/numeric formatting needed by the variadic `sv_game.c` callback ports.
+ */
 function formatPrintf(fmt: string, args: unknown[]): string {
   if (args.length === 0) {
     return fmt;

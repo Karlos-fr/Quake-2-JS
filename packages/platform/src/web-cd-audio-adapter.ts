@@ -166,20 +166,44 @@ export function createWebCDAudioAdapter(options: WebCDAudioAdapterOptions): WebC
   return adapter;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio volume helper)
+ * Category: New
+ * Purpose: Synchronize the Web Audio gain node with Quake II master/music volume and pause state.
+ */
 function updateMusicGain(gain: GainNode | null, masterVolume: number, musicVolume: number, paused: boolean): void {
   if (gain) {
     gain.gain.value = computeMusicGain(masterVolume, musicVolume, paused);
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio volume helper)
+ * Category: New
+ * Purpose: Combine clamped master/music volume while muting paused browser CD playback.
+ */
 function computeMusicGain(masterVolume: number, musicVolume: number, paused: boolean): number {
   return paused ? 0 : clamp01(masterVolume) * clamp01(musicVolume);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio volume helper)
+ * Category: New
+ * Purpose: Keep browser audio volume inputs inside the Web Audio gain range.
+ */
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio asset mapping)
+ * Category: Adapter
+ * Purpose: Translate Quake II logical CD track numbers into browser-loadable music filenames.
+ */
 export function resolveWebCdTrackCandidates(track: number): string[] {
   const number = Math.max(0, Math.trunc(track));
   const padded = number.toString().padStart(2, "0");
@@ -199,6 +223,12 @@ export function resolveWebCdTrackCandidates(track: number): string[] {
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web CD audio asset loader)
+ * Category: Adapter
+ * Purpose: Resolve, decode and cache browser music assets for one logical CD track request.
+ */
 async function startTrack(
   context: AudioContext,
   filesystem: VirtualFilesystem,

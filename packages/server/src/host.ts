@@ -14,12 +14,24 @@ import type { qboolean } from "../../qcommon/src/index.js";
 import type { ServerRuntimeFacade } from "./runtime.js";
 import type { server_static_t, server_t } from "./server.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (server host bridge contract)
+ * Category: New
+ * Purpose: Collect optional top-level server hooks installed by the runtime host.
+ */
 interface ServerHostBindings {
   SV_Init?: () => void;
   SV_Shutdown?: (finalmsg: string, reconnect: qboolean) => void;
   SV_Frame?: (msec: number) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (server runtime facade context)
+ * Category: New
+ * Purpose: Provide the runtime state needed to bind facade procedures to host hooks.
+ */
 export interface ServerHostFacadeBindingsContext {
   facade: Pick<ServerRuntimeFacade, "main">;
   sv: server_t;
@@ -28,9 +40,17 @@ export interface ServerHostFacadeBindingsContext {
   onShutdown?: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (server host bridge state)
+ * Category: New
+ * Purpose: Store the current optional host hook bindings.
+ */
 let bindings: ServerHostBindings = {};
 
 /**
+ * Original name: N/A
+ * Source: N/A (server host bridge configuration)
  * Category: New
  * Purpose: Attach explicit top-level server hooks used by the qcommon host runtime.
  *
@@ -42,6 +62,8 @@ export function configureServerHost(next: ServerHostBindings): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server host bridge reset)
  * Category: New
  * Purpose: Clear the attached top-level server hooks and restore no-op defaults.
  *
@@ -53,6 +75,8 @@ export function resetServerHost(): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server runtime facade binding)
  * Category: New
  * Purpose: Attach a server runtime facade to the top-level host-facing `SV_*` entry points.
  *
@@ -77,11 +101,14 @@ export function configureServerHostFromFacade(context: ServerHostFacadeBindingsC
 /**
  * Original name: SV_Init
  * Source: server/sv_null.c
- * Category: Bridged
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Calls the attached host binding when configured, otherwise remains a no-op like `sv_null`.
+ *
+ * Porting notes:
+ * - The strict `sv_null.c` owner remains `sv_null.ts`; this facade only exposes configurable host wiring.
  */
 export function SV_Init(): void {
   bindings.SV_Init?.();
@@ -90,11 +117,14 @@ export function SV_Init(): void {
 /**
  * Original name: SV_Shutdown
  * Source: server/sv_null.c
- * Category: Bridged
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Calls the attached host binding when configured, otherwise remains a no-op like `sv_null`.
+ *
+ * Porting notes:
+ * - The strict `sv_null.c` owner remains `sv_null.ts`; this facade only exposes configurable host wiring.
  */
 export function SV_Shutdown(finalmsg: string, reconnect: boolean): void {
   bindings.SV_Shutdown?.(finalmsg, reconnect);
@@ -103,11 +133,14 @@ export function SV_Shutdown(finalmsg: string, reconnect: boolean): void {
 /**
  * Original name: SV_Frame
  * Source: server/sv_null.c
- * Category: Bridged
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
  * - Calls the attached host binding when configured, otherwise remains a no-op like `sv_null`.
+ *
+ * Porting notes:
+ * - The strict `sv_null.c` owner remains `sv_null.ts`; this facade only exposes configurable host wiring.
  */
 export function SV_Frame(time: number): void {
   bindings.SV_Frame?.(time);

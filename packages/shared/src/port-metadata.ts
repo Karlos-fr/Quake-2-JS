@@ -10,6 +10,8 @@
  */
 
 /**
+ * Original name: N/A
+ * Source: N/A (port metadata convention)
  * Category: New
  * Purpose: Enumerate the allowed categories used in file and function port headers.
  *
@@ -19,6 +21,8 @@
 export type PortCategory = "Ported" | "New" | "Adapter" | "NewTooling";
 
 /**
+ * Original name: N/A
+ * Source: N/A (port metadata convention)
  * Category: New
  * Purpose: Enumerate the allowed fidelity levels used for source ports and adapters.
  *
@@ -28,6 +32,8 @@ export type PortCategory = "Ported" | "New" | "Adapter" | "NewTooling";
 export type FidelityLevel = "Strict" | "Close" | "Adapter" | "NewTooling";
 
 /**
+ * Original name: N/A
+ * Source: N/A (port metadata convention)
  * Category: New
  * Purpose: Describe the metadata block that can be attached to ported files or functions.
  *

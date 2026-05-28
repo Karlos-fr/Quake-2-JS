@@ -35,16 +35,51 @@ import {
 import type { dlight_t, entity_t, refdef_t } from "../../client/src/ref.js";
 import { SURF_DRAWSKY, SURF_DRAWTURB, type mnode_child_t, type mnode_t, type model_t, type msurface_t } from "./gl-model.js";
 
+/**
+ * Original name: DLIGHT_CUTOFF
+ * Source: ref_gl/gl_light.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the original dynamic-light cutoff threshold used by marking and lightmap accumulation.
+ */
 export const DLIGHT_CUTOFF = 64;
+
+/**
+ * Original name: N/A
+ * Source: N/A (typed blocklight buffer sizing helper)
+ * Category: New
+ * Purpose: Express the original `s_blocklights[34*34*3]` storage size for the typed runtime buffer.
+ */
 const BLOCKLIGHT_BYTES = 34 * 34 * 3;
+
+/**
+ * Original name: N/A
+ * Source: N/A (typed blocklight bounds helper)
+ * Category: New
+ * Purpose: Mirror the original `sizeof(s_blocklights)>>4` lightmap surface-size guard for typed arrays.
+ */
 const MAX_BLOCKLIGHT_SURFACE_SIZE = BLOCKLIGHT_BYTES >> 2;
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer hook adapter)
+ * Category: New
+ * Purpose: Decouple the ported `gl_light.c` CPU path from concrete Three.js/immediate-mode rendering calls.
+ */
 export interface GlLightHooks {
   beginFlashblendDlights?: () => void;
   renderDlight?: (light: dlight_t, center: vec3_t, ring: vec3_t[], radius: number) => void;
   endFlashblendDlights?: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit renderer light runtime)
+ * Category: New
+ * Purpose: Replace `gl_light.c` file globals and imported renderer globals with explicit mutable state.
+ */
 export interface GlLightRuntime {
   r_dlightframecount: number;
   r_framecount: number;
@@ -66,6 +101,8 @@ export interface GlLightRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit renderer light runtime)
  * Category: New
  * Purpose: Create the explicit runtime replacing `gl_light.c` globals and file-statics.
  */
@@ -228,9 +265,9 @@ export function R_PushDlights(runtime: GlLightRuntime): void {
 }
 
 /**
- * Original source path: R_DrawInlineBModel -> R_MarkLights
+ * Original name: N/A
  * Source: ref_gl/gl_rsurf.c + ref_gl/gl_light.c
- * Category: Ported integration
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -683,6 +720,8 @@ export function R_BuildLightMap(runtime: GlLightRuntime, surf: msurface_t, dest:
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (gl_rsurf light hook adapter)
  * Category: New
  * Purpose: Expose `gl_light.c` hooks in the shape expected by the existing `gl_rsurf.c` port.
  */
@@ -701,6 +740,8 @@ export function createGlLightRsurfHooks(runtime: GlLightRuntime) {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (gl_rmain light hook adapter)
  * Category: New
  * Purpose: Expose `gl_light.c` hooks in the shape consumed by the `gl_rmain.c` port.
  *
@@ -725,6 +766,8 @@ export function createGlLightRmainHooks(runtime: GlLightRuntime) {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light state setter)
  * Category: New
  * Purpose: Bind the world model consumed by the light BSP traversal routines.
  */
@@ -733,6 +776,8 @@ export function setGlLightWorldModel(runtime: GlLightRuntime, model: model_t | n
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light state setter)
  * Category: New
  * Purpose: Bind the current refdef consumed by dynamic-light, style and point-light sampling.
  */
@@ -741,6 +786,8 @@ export function setGlLightRefdef(runtime: GlLightRuntime, refdef: refdef_t | nul
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light state setter)
  * Category: New
  * Purpose: Bind the current entity used by `R_LightPoint` dynamic-light accumulation.
  */
@@ -749,6 +796,8 @@ export function setGlLightCurrentEntity(runtime: GlLightRuntime, entity: entity_
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light state setter)
  * Category: New
  * Purpose: Bind the current view vectors used by the flashblend dlight renderer.
  */
@@ -773,6 +822,8 @@ export function setGlLightViewVectors(runtime: GlLightRuntime, options: {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light state setter)
  * Category: New
  * Purpose: Bind the current frame index used by dlight marking and lightmap rebuild checks.
  */
@@ -781,6 +832,8 @@ export function setGlLightFrameCount(runtime: GlLightRuntime, frameCount: number
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light cvar adapter)
  * Category: New
  * Purpose: Toggle the original `gl_flashblend` behavior.
  */
@@ -789,6 +842,8 @@ export function setGlFlashblendEnabled(runtime: GlLightRuntime, enabled: boolean
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light cvar adapter)
  * Category: New
  * Purpose: Preserve the current `gl_modulate` scalar used across static and dynamic lighting.
  */
@@ -797,6 +852,8 @@ export function setGlModulate(runtime: GlLightRuntime, value: number): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer light cvar adapter)
  * Category: New
  * Purpose: Preserve the current `gl_monolightmap` mode consumed by `R_BuildLightMap`.
  */
@@ -804,14 +861,32 @@ export function setGlMonolightmapMode(runtime: GlLightRuntime, mode: string): vo
   runtime.gl_monolightmap = mode;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (BSP child type guard)
+ * Category: New
+ * Purpose: Distinguish Quake BSP nodes from leaves in the typed renderer model graph.
+ */
 function isMNode(node: mnode_child_t): node is mnode_t {
   return node.contents === -1;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (texture-axis dot helper)
+ * Category: New
+ * Purpose: Share the lightmap texture-axis projection used by the ported lighting routines.
+ */
 function dotTexAxis(point: vec3_t, axis: [number, number, number, number]): number {
   return DotProduct(point, [axis[0], axis[1], axis[2]]) + axis[3];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (plane-distance helper)
+ * Category: New
+ * Purpose: Preserve axial-plane fast paths for BSP light-point tracing in typed code.
+ */
 function dotPlaneDistance(point: vec3_t, plane: cplane_t): number {
   switch (plane.type) {
     case PLANE_X:

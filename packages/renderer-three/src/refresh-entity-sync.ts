@@ -72,11 +72,25 @@ import {
   type QuakeTextureLightingSettings
 } from "./quake-texture-intensity.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (refresh entity model extension helper)
+ * Category: New
+ * Purpose: Identify refresh entities backed by Quake II MD2 alias models.
+ */
 const MD2_MODEL_EXTENSION = ".md2";
+/**
+ * Original name: N/A
+ * Source: N/A (refresh entity model extension helper)
+ * Category: New
+ * Purpose: Identify refresh entities backed by Quake II SP2 sprite models.
+ */
 const SPRITE_MODEL_EXTENSION = ".sp2";
 const DEPTHHACK_RENDER_ORDER = 10;
 type AliasLightSampler = (origin: readonly [number, number, number]) => [number, number, number];
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
  * Category: New
  * Purpose: Hold one renderable MD2 instance bound to a client refresh entity key.
  *
@@ -93,6 +107,12 @@ interface RefreshEntityMd2Instance {
   shadowMesh: Mesh<BufferGeometry, MeshBasicMaterial>;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
+ * Category: New
+ * Purpose: Hold one renderable SP2 sprite instance bound to a client refresh entity key.
+ */
 interface RefreshEntitySpriteInstance {
   kind: "sprite";
   key: string;
@@ -104,6 +124,12 @@ interface RefreshEntitySpriteInstance {
   spriteRuntime: GlRmainRuntime;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
+ * Category: New
+ * Purpose: Track inline brush refresh entities that are accounted for outside the alias/sprite mesh path.
+ */
 interface RefreshEntityInlineBrushInstance {
   kind: "inline-brush";
   key: string;
@@ -112,12 +138,30 @@ interface RefreshEntityInlineBrushInstance {
   root: Group;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
+ * Category: New
+ * Purpose: Describe any scene instance managed by the refresh entity sync layer.
+ */
 type RefreshEntityInstance = RefreshEntityMd2Instance | RefreshEntitySpriteInstance | RefreshEntityInlineBrushInstance;
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js sprite texture handle)
+ * Category: New
+ * Purpose: Store a Three.js texture inside the image handle expected by the ported sprite draw path.
+ */
 interface ThreeSpriteImageHandle {
   texture: Texture;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (R_DrawEntitiesOnList queue adapter)
+ * Category: New
+ * Purpose: Attach client refresh source data to the `entity_t` shape consumed by the ported entity dispatcher.
+ */
 type QueuedRefreshEntity = entity_t & {
   userData: {
     source: ClientRenderEntity;
@@ -126,6 +170,12 @@ type QueuedRefreshEntity = entity_t & {
   };
 };
 
+/**
+ * Original name: N/A
+ * Source: N/A (R_DrawEntitiesOnList draw context adapter)
+ * Category: New
+ * Purpose: Hold the per-frame renderer state required while ported draw callbacks dispatch queued entities.
+ */
 interface RefreshEntityDrawContext {
   runtime: ClientRuntime;
   refreshFrame: ClientRefreshFrame | null;
@@ -137,6 +187,8 @@ interface RefreshEntityDrawContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh entity sync stats)
  * Category: New
  * Purpose: Report the visible and rendered entity counts produced by the sync step.
  *
@@ -154,6 +206,8 @@ export interface RefreshEntitySyncStats {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
  * Category: New
  * Purpose: Hold the imperative sync hook used by the browser renderer to mirror the current client refresh frame.
  */
@@ -170,6 +224,8 @@ export interface ThreeRefreshEntitySync {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
  * Category: New
  * Purpose: Build one Three.js adapter that renders client refresh entities backed by MD2 alias models and SP2 sprites.
  *
@@ -426,6 +482,12 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
   };
 }
 
+/**
+ * Original name: R_DrawEntitiesOnList entity dispatch adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Convert one client refresh entity into the `entity_t` shape expected by the ported refresh dispatcher.
+ */
 function createQueuedRefreshEntity(
   source: ClientRenderEntity,
   instance: RefreshEntityInstance,
@@ -456,12 +518,24 @@ function createQueuedRefreshEntity(
   return entity;
 }
 
+/**
+ * Original name: R_DrawEntitiesOnList model dispatch adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Create the minimal model descriptor needed for alias, sprite and brush dispatch.
+ */
 function createQueuedModel(type: modtype_t): model_t {
   const model = createModel();
   model.type = type;
   return model;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (R_DrawEntitiesOnList draw context guard)
+ * Category: New
+ * Purpose: Fail fast if a ported draw callback is invoked outside the active entity sync pass.
+ */
 function requireEntityDrawContext(context: RefreshEntityDrawContext | null): RefreshEntityDrawContext {
   if (!context) {
     throw new Error("refresh-entity-sync: missing R_DrawEntitiesOnList draw context");
@@ -469,6 +543,12 @@ function requireEntityDrawContext(context: RefreshEntityDrawContext | null): Ref
   return context;
 }
 
+/**
+ * Original name: r_drawentities cvar adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Provide the cvar-like shape consumed by the ported `R_DrawEntitiesOnList` path.
+ */
 function createRuntimeCvar(name: string, value: number) {
   return {
     name,
@@ -480,6 +560,12 @@ function createRuntimeCvar(name: string, value: number) {
   };
 }
 
+/**
+ * Original name: R_SetFrustum / R_CullAliasModel frustum adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Convert the active Three.js camera frustum into Quake II cplanes for alias-model culling.
+ */
 function buildAliasCullFrustum(camera: Camera): [cplane_t, cplane_t, cplane_t, cplane_t] | null {
   if (!("projectionMatrix" in camera) || !("matrixWorldInverse" in camera)) {
     return null;
@@ -500,6 +586,12 @@ function buildAliasCullFrustum(camera: Camera): [cplane_t, cplane_t, cplane_t, c
   ];
 }
 
+/**
+ * Original name: R_SetFrustum plane adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Convert one Three.js frustum plane into the cplane shape used by ported alias culling.
+ */
 function convertThreePlaneToQ2Plane(plane: Frustum["planes"][number]): cplane_t {
   return {
     normal: [plane.normal.x, plane.normal.y, plane.normal.z],
@@ -511,6 +603,8 @@ function convertThreePlaneToQ2Plane(plane: Frustum["planes"][number]): cplane_t 
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (client refresh model resolver)
  * Category: New
  * Purpose: Resolve the current model path for one refresh entity through the client model configstrings.
  */
@@ -540,6 +634,8 @@ function resolveRefreshModelPath(runtime: ClientRuntime, entity: ClientRenderEnt
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (client refresh model classifier)
  * Category: New
  * Purpose: Classify why one refresh entity is outside the current MD2 world-object adapter scope.
  *
@@ -579,6 +675,8 @@ function classifyRefreshModelSkipReason(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (refresh entity instance key)
  * Category: New
  * Purpose: Build the stable key used to pair one refresh entity with its linked-model slot.
  */
@@ -587,6 +685,8 @@ function buildRefreshEntityKey(entity: ClientRenderEntity): string {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
  * Category: New
  * Purpose: Create one MD2-backed scene instance for the requested refresh entity model path.
  */
@@ -645,6 +745,8 @@ function createRefreshEntityInstance(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity adapter)
  * Category: New
  * Purpose: Apply the current refresh-entity transform and frame state onto one existing MD2 scene instance.
  */
@@ -737,6 +839,8 @@ function updateRefreshEntityInstance(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (inline brush refresh entity adapter)
  * Category: New
  * Purpose: Represent one inline BSP model already handled by the world brush renderer.
  *
@@ -760,6 +864,8 @@ function createRefreshInlineBrushInstance(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (inline brush refresh entity adapter)
  * Category: New
  * Purpose: Keep the placeholder transform synchronized with the client refresh entity.
  */
@@ -772,6 +878,12 @@ function updateRefreshInlineBrushInstance(
   instance.root.visible = true;
 }
 
+/**
+ * Original name: R_DrawAliasModel shadelight adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
+ * Purpose: Build the base alias light sample passed into the ported alias-light rules.
+ */
 function computeRefreshAliasLight(
   refreshFrame: ClientRefreshFrame | null,
   origin: readonly [number, number, number],
@@ -803,6 +915,12 @@ function computeRefreshAliasLight(
   return shadelight;
 }
 
+/**
+ * Original name: GL_DrawAliasFrameLerp vertex color adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
+ * Purpose: Apply ported alias shadedot colors to the Three.js mesh color attribute.
+ */
 function applyAliasVertexColorAttribute(
   instance: RefreshEntityMd2Instance,
   frameIndex: number,
@@ -833,6 +951,8 @@ function applyAliasVertexColorAttribute(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (RF_WEAPONMODEL scene parent helper)
  * Category: New
  * Purpose: Route refresh entities either to the world root or to the camera-bound first-person weapon root.
  *
@@ -844,7 +964,9 @@ function getRefreshEntityParent(entity: ClientRenderEntity, worldRoot: Group, vi
 }
 
 /**
- * Category: New
+ * Original name: R_DrawAliasModel / R_RotateForEntity rotation adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
  * Purpose: Apply the canonical Quake II alias-model rotation convention extracted from `R_DrawAliasModel` and `R_RotateForEntity`.
  *
  * Constraints:
@@ -861,7 +983,9 @@ function applyAliasEntityRotation(root: Group, entity: ClientRenderEntity): void
 }
 
 /**
- * Category: New
+ * Original name: R_DrawAliasModel skin selection adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
  * Purpose: Resolve the Quake II MD2 skin path selected by one entity `skinnum`.
  *
  * Constraints:
@@ -874,6 +998,12 @@ function resolveMd2SkinPath(
   return model.skins[skinnum] ?? model.skins[0];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (MD2 skin texture cache helper)
+ * Category: New
+ * Purpose: Cache resolved MD2 skin textures so repeated refresh entities share the same GPU texture.
+ */
 function getCachedMd2SkinTexture(
   filesystem: VirtualFilesystem,
   cache: Map<string, Texture | null>,
@@ -891,6 +1021,8 @@ function getCachedMd2SkinTexture(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity lifecycle)
  * Category: New
  * Purpose: Remove one scene instance that is no longer referenced by the current refresh frame.
  */
@@ -905,6 +1037,12 @@ function removeRefreshEntityInstance(instances: Map<string, RefreshEntityInstanc
   instances.delete(key);
 }
 
+/**
+ * Original name: R_DrawSpriteModel instance adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Build the Three.js mesh and ported sprite runtime used by `R_DrawSpriteModel`.
+ */
 function createRefreshSpriteInstance(
   filesystem: VirtualFilesystem,
   spriteCache: Map<string, model_t | null>,
@@ -959,6 +1097,12 @@ function createRefreshSpriteInstance(
   };
 }
 
+/**
+ * Original name: R_DrawSpriteModel refresh adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Feed one client refresh sprite entity into the ported sprite draw path.
+ */
 function updateRefreshSpriteInstance(
   refreshFrame: ClientRefreshFrame | null,
   instance: RefreshEntitySpriteInstance,
@@ -993,6 +1137,12 @@ function updateRefreshSpriteInstance(
   instance.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? DEPTHHACK_RENDER_ORDER : 0;
 }
 
+/**
+ * Original name: R_DrawSpriteModel quad submission adapter
+ * Source: Quake-2-master/ref_gl/gl_rmain.c
+ * Category: Adapter
+ * Purpose: Copy the ported sprite quad vertices and texture into the Three.js sprite mesh.
+ */
 function applySpriteQuad(
   mesh: Mesh<BufferGeometry, MeshBasicMaterial>,
   texture: image_t | null,
@@ -1023,6 +1173,12 @@ function applySpriteQuad(
   }
 }
 
+/**
+ * Original name: Mod_LoadSpriteModel sprite adapter
+ * Source: Quake-2-master/ref_gl/gl_model.c
+ * Category: Adapter
+ * Purpose: Load SP2 sprite data and frame images into the model shape consumed by `R_DrawSpriteModel`.
+ */
 function loadSpriteModel(
   filesystem: VirtualFilesystem,
   modelPath: string,
@@ -1050,6 +1206,12 @@ function loadSpriteModel(
   }
 }
 
+/**
+ * Original name: Mod_LoadSpriteModel / GL_FindImage sprite texture adapter
+ * Source: Quake-2-master/ref_gl/gl_model.c
+ * Category: Adapter
+ * Purpose: Resolve one sprite frame PCX into a Three.js texture for the ported sprite draw path.
+ */
 function loadSpriteTexture(
   filesystem: VirtualFilesystem,
   path: string,
@@ -1087,6 +1249,12 @@ function loadSpriteTexture(
   }
 }
 
+/**
+ * Original name: GL_DrawAliasShadow mesh adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
+ * Purpose: Build the Three.js geometry and material that receive projected alias shadow vertices.
+ */
 function createMd2ShadowMesh(md2: Md2MeshInstance): Mesh<BufferGeometry, MeshBasicMaterial> {
   const sourcePosition = md2.mesh.geometry.getAttribute("position") as BufferAttribute;
   const shadowGeometry = new BufferGeometry();
@@ -1104,6 +1272,12 @@ function createMd2ShadowMesh(md2: Md2MeshInstance): Mesh<BufferGeometry, MeshBas
   return shadowMesh;
 }
 
+/**
+ * Original name: R_DrawAliasModel shadow adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
+ * Purpose: Apply the ported alias shadow projection when `gl_shadows`-style rendering is enabled.
+ */
 function updateRefreshAliasShadow(
   instance: RefreshEntityMd2Instance,
   entity: ClientRenderEntity,
@@ -1136,6 +1310,12 @@ function updateRefreshAliasShadow(
   instance.shadowMesh.geometry.computeBoundingSphere();
 }
 
+/**
+ * Original name: GL_DrawAliasShadow lightspot adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
+ * Purpose: Approximate the original `lightspot` height used by alias shadow projection.
+ */
 function resolveAliasShadowLheight(
   entity: ClientRenderEntity,
   shadowReceiverRoot: Object3D | null,
@@ -1160,6 +1340,12 @@ function resolveAliasShadowLheight(
   return entity.origin[2] - hits[0].point.z;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js sprite texture handle)
+ * Category: New
+ * Purpose: Extract the Three.js texture stored in the image handle passed through `R_DrawSpriteModel`.
+ */
 function asSpriteTexture(image: image_t | null): Texture | null {
   if (!image || typeof image !== "object") {
     return null;
@@ -1169,6 +1355,12 @@ function asSpriteTexture(image: image_t | null): Texture | null {
   return candidate.texture ?? null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (view weapon camera projection helper)
+ * Category: New
+ * Purpose: Convert a world-space view weapon origin into camera-local coordinates from the refresh frame vectors.
+ */
 function projectViewWeaponToCameraLocal(
   refreshFrame: ClientRefreshFrame | null,
   worldOrigin: [number, number, number]
@@ -1191,6 +1383,12 @@ function projectViewWeaponToCameraLocal(
   ];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (view weapon camera projection helper)
+ * Category: New
+ * Purpose: Resolve the camera-local origin for first-person weapon models.
+ */
 function buildViewWeaponLocalOrigin(
   attachedCamera: Camera | null,
   refreshFrame: ClientRefreshFrame | null,
@@ -1205,6 +1403,12 @@ function buildViewWeaponLocalOrigin(
   return [localOrigin.x, localOrigin.y, localOrigin.z];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (view weapon camera pose helper)
+ * Category: New
+ * Purpose: Build the camera-local first-person weapon pose used by the Three.js scene graph.
+ */
 function buildViewWeaponLocalPose(
   attachedCamera: Camera | null,
   refreshFrame: ClientRefreshFrame | null,
@@ -1228,6 +1432,12 @@ function buildViewWeaponLocalPose(
   };
 }
 
+/**
+ * Original name: R_DrawAliasModel / R_RotateForEntity rotation adapter
+ * Source: Quake-2-master/ref_gl/gl_mesh.c
+ * Category: Adapter
+ * Purpose: Build the Three.js quaternion equivalent of the alias-model rotation convention.
+ */
 function buildAliasEntityQuaternion(entity: ClientRenderEntity): Quaternion {
   const pitchRadians = MathUtils.degToRad(entity.angles[0]);
   const yawRadians = MathUtils.degToRad(entity.angles[1]);
@@ -1236,6 +1446,8 @@ function buildAliasEntityQuaternion(entity: ClientRenderEntity): Quaternion {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js refresh entity lifecycle)
  * Category: New
  * Purpose: Dispose one detached scene subtree so temporary MD2 replacements do not leak GPU resources.
  */

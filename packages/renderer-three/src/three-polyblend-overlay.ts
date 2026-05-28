@@ -24,6 +24,12 @@ import {
 import type { ClientRefreshFrame } from "../../client/src/refresh.js";
 import type { GlRmainHooks } from "./gl_rmain.js";
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js polyblend scene adapter)
+ * Category: New
+ * Purpose: Expose the scene, camera and hook surface used to render view blends as a Three.js overlay.
+ */
 export interface ThreePolyblendOverlay {
   scene: Scene;
   camera: OrthographicCamera;
@@ -37,6 +43,8 @@ export interface ThreePolyblendOverlay {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js polyblend scene adapter)
  * Category: New
  * Purpose: Create the fullscreen overlay used by the split Three.js runtime to display `R_PolyBlend`-style view blends.
  */
@@ -120,6 +128,8 @@ export function createThreePolyblendOverlay(): ThreePolyblendOverlay {
 }
 
 /**
+ * Original name: N/A
+ * Source declaree: N/A (Three.js overlay geometry helper)
  * Category: New
  * Purpose: Build a centered unit quad that is scaled to the current viewport.
  */
@@ -135,6 +145,12 @@ function createUnitQuadGeometry(): BufferGeometry {
   return geometry;
 }
 
+/**
+ * Original name: N/A
+ * Source declaree: N/A (local color channel helper)
+ * Category: New
+ * Purpose: Clamp overlay color and alpha channels to the normalized range expected by Three.js materials.
+ */
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
 }

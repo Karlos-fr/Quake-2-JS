@@ -110,7 +110,7 @@ let painAnimationCycle = 0;
 
 /**
  * Original name: SV_CalcRoll
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -138,7 +138,7 @@ export function SV_CalcRoll(
 
 /**
  * Original name: G_SetClientEffects
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -190,7 +190,7 @@ export function G_SetClientEffects(ent: GameEntity, runtime: GameRuntime): void 
 
 /**
  * Original name: G_SetClientEvent
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -211,7 +211,7 @@ export function G_SetClientEvent(ent: GameEntity, frame: PlayerViewFrameState): 
 
 /**
  * Original name: G_SetClientSound
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -251,7 +251,7 @@ export function G_SetClientSound(ent: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: G_SetClientFrame
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -308,7 +308,7 @@ export function G_SetClientFrame(ent: GameEntity, frame: PlayerViewFrameState): 
 
 /**
  * Original name: P_DamageFeedback
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -428,7 +428,7 @@ export function P_DamageFeedback(
 
 /**
  * Original name: P_FallingDamage
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -503,7 +503,7 @@ export function P_FallingDamage(ent: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: P_WorldEffects
- * Source: game/p_view.c
+ * Source: Quake-2-master/game/p_view.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -1037,6 +1037,12 @@ export function createPlayerViewFrameState(): PlayerViewFrameState {
   };
 }
 
+/**
+ * Original name: newanim block
+ * Source: Quake-2-master/game/p_view.c (`G_SetClientFrame`)
+ * Category: Adapter
+ * Purpose: Keep the original `G_SetClientFrame` goto target as a local structured helper.
+ */
 function setClientBaseAnimation(ent: GameEntity, client: GameClient, duck: boolean, run: boolean): void {
   client.anim_priority = ANIM_BASIC;
   client.anim_duck = duck;
@@ -1071,36 +1077,78 @@ function setClientBaseAnimation(ent: GameEntity, client: GameClient, duck: boole
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function dotProduct(left: vec3_t, right: vec3_t): number {
   return left[0] * right[0] + left[1] * right[1] + left[2] * right[2];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function addVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function addVec3Into(target: vec3_t, addend: vec3_t): void {
   target[0] += addend[0];
   target[1] += addend[1];
   target[2] += addend[2];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function clearVec3(target: vec3_t): void {
   target[0] = 0;
   target[1] = 0;
   target[2] = 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function copyVec3(source: vec3_t, target: vec3_t): void {
   target[0] = source[0];
   target[1] = source[1];
   target[2] = source[2];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function normalizeVec3(value: vec3_t): vec3_t {
   const length = Math.hypot(value[0], value[1], value[2]);
   if (length === 0) {
@@ -1109,12 +1157,24 @@ function normalizeVec3(value: vec3_t): vec3_t {
   return [value[0] / length, value[1] / length, value[2] / length];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local vector helper)
+ * Category: New
+ * Purpose: Keep local vector math call sites close to the original p_view.c flow without claiming shared MATHLIB ownership.
+ */
 function vectorMA(target: vec3_t, scale: number, addend: vec3_t, out: vec3_t): void {
   out[0] = target[0] + addend[0] * scale;
   out[1] = target[1] + addend[1] * scale;
   out[2] = target[2] + addend[2] * scale;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local numeric helper)
+ * Category: New
+ * Purpose: Keep p_view bounds checks compact without claiming a C/H portage entity.
+ */
 function clamp(value: number, min: number, max: number): number {
   if (value < min) {
     return min;
@@ -1125,6 +1185,12 @@ function clamp(value: number, min: number, max: number): number {
   return value;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local random helper)
+ * Category: New
+ * Purpose: Isolate C `rand() & 1` style branch selection behind a local TS helper.
+ */
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
 }

@@ -5,21 +5,21 @@
 - Fichier TS: `packages/renderer-three/src/three-beam-sync.ts`
 - Symboles TS: 14
 - Couvert C/H: 0
-- Reste a auditer: 14
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/three-beam-sync.ts` | interface | `ThreeBeamSync` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | type | `BeamEntity` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `createThreeBeamSync` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `createBeamEntities` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `createBeamEntity` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `createBeamLineSegments` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `pushLine` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `subtractVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `addScaledVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `scaleVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `vectorLength` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `clearGroup` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `loadPaletteTable` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-beam-sync.ts` | function | `createFallbackPaletteTable` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/three-beam-sync.ts` | interface | `ThreeBeamSync` | oui | `N/A` | `N/A (Three.js beam sync contract)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | type | `BeamEntity` | non | `N/A` | `N/A (Three.js beam entity adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `createThreeBeamSync` | oui | `N/A` | `N/A (Three.js beam sync adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `createBeamEntities` | non | `N/A` | `N/A (refresh beam segmentation helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `createBeamEntity` | non | `N/A` | `N/A (refresh beam entity helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `createBeamLineSegments` | non | `N/A` | `N/A (Three.js beam geometry adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `pushLine` | non | `N/A` | `N/A (line geometry helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `subtractVec3` | non | `N/A` | `N/A (vector math helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `addScaledVec3` | non | `N/A` | `N/A (vector math helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `scaleVec3` | non | `N/A` | `N/A (vector math helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `vectorLength` | non | `N/A` | `N/A (vector math helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `clearGroup` | non | `N/A` | `N/A (Three.js cleanup helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `loadPaletteTable` | non | `N/A` | `N/A (renderer palette adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-beam-sync.ts` | function | `createFallbackPaletteTable` | non | `N/A` | `N/A (renderer palette fallback)` | New |  | Hors C/H | Valide |  |

@@ -5,25 +5,25 @@
 - Fichier TS: `packages/renderer-three/src/three-gl-draw-adapter.ts`
 - Symboles TS: 18
 - Couvert C/H: 0
-- Reste a auditer: 18
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | interface | `ThreeGlDrawAdapter` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createThreeGlDrawAdapter` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createTexturedQuad` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createSolidQuad` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createQuadGeometry` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createTextureFromUpload` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createIndexedTexture` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `packedRgbaToBytes` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `indexedOrRgbaToBytes` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `indexedToRgba` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `setTextureFilter` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `applyStoredFilter` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `toThreeFilter` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `toThreeGlMinFilter` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `toThreeGlMagFilter` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `replaceTexture` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `clearGroup` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-gl-draw-adapter.ts` | interface | `TextureFilterState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | interface | `ThreeGlDrawAdapter` | oui | `N/A` | `N/A (Three.js HUD adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createThreeGlDrawAdapter` | oui | `N/A` | `N/A (Three.js HUD adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createTexturedQuad` | non | `N/A` | `N/A (Three.js HUD adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createSolidQuad` | non | `N/A` | `N/A (Three.js HUD adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createQuadGeometry` | non | `N/A` | `N/A (Three.js HUD adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createTextureFromUpload` | non | `N/A` | `N/A (Three.js texture adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `createIndexedTexture` | non | `N/A` | `N/A (Three.js texture adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `packedRgbaToBytes` | non | `N/A` | `N/A (RGBA conversion helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `indexedOrRgbaToBytes` | non | `N/A` | `N/A (RGBA conversion helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `indexedToRgba` | non | `N/A` | `N/A (RGBA conversion helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `setTextureFilter` | non | `N/A` | `N/A (Three.js texture adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `applyStoredFilter` | non | `N/A` | `N/A (Three.js texture adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `toThreeFilter` | non | `N/A` | `N/A (Three.js filter adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `toThreeGlMinFilter` | non | `N/A` | `N/A (Three.js filter adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `toThreeGlMagFilter` | non | `N/A` | `N/A (Three.js filter adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `replaceTexture` | non | `N/A` | `N/A (Three.js texture adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | function | `clearGroup` | non | `N/A` | `N/A (Three.js HUD adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-gl-draw-adapter.ts` | interface | `TextureFilterState` | non | `N/A` | `N/A (Three.js texture adapter)` | New |  | Hors C/H | Valide |  |

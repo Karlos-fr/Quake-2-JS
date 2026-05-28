@@ -5,15 +5,15 @@
 - Fichier TS: `packages/renderer-three/src/three-dlight-sync.ts`
 - Symboles TS: 8
 - Couvert C/H: 0
-- Reste a auditer: 8
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/three-dlight-sync.ts` | interface | `ThreeDlightSync` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createThreeDlightSync` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createDlightRefdef` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createFlashblendMesh` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createPointLight` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createThreeColor` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-dlight-sync.ts` | function | `clearGroup` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/three-dlight-sync.ts` | function | `disposeObject` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/three-dlight-sync.ts` | interface | `ThreeDlightSync` | oui | `N/A` | `N/A (Three.js dlight scene adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createThreeDlightSync` | oui | `N/A` | `N/A (Three.js dlight scene adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createDlightRefdef` | non | `N/A` | `N/A (Three.js dlight refdef adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createFlashblendMesh` | non | `N/A` | `N/A (Three.js flashblend mesh adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createPointLight` | non | `N/A` | `N/A (obsolete matrix row)` | New |  | Symbole absent | Manquant | Symbole absent de `three-dlight-sync.ts`; ligne obsolete a supprimer si la matrice TS est regeneree. |
+| `packages/renderer-three/src/three-dlight-sync.ts` | function | `createThreeColor` | non | `N/A` | `N/A (Three.js color adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-dlight-sync.ts` | function | `clearGroup` | non | `N/A` | `N/A (Three.js object lifecycle helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/three-dlight-sync.ts` | function | `disposeObject` | non | `N/A` | `N/A (Three.js object lifecycle helper)` | New |  | Hors C/H | Valide |  |

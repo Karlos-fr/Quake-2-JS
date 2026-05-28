@@ -4,9 +4,9 @@
 
 - Fichier TS: `packages/renderer-three/src/warpsin.ts`
 - Symboles TS: 1
-- Couvert C/H: 0
-- Reste a auditer: 1
+- Couvert C/H: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/warpsin.ts` | value | `r_turbsin` | oui |  | `Quake-2-master/Quake II original / ref_gl/warpsin.h` |  |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/renderer-three/src/warpsin.ts` | value | `r_turbsin` | oui | `r_turbsin` | `Quake-2-master/ref_gl/warpsin.h` | Ported | [`ref_gl_warpsin.h.md`](../matrices/ref_gl_warpsin.h.md) | Couvert C/H | Couvert C/H |  |

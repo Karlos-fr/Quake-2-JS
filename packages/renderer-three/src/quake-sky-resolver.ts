@@ -30,9 +30,17 @@ import {
   type Texture
 } from "three";
 
+/**
+ * Original name: N/A
+ * Source: N/A (sky texture palette path)
+ * Category: New
+ * Purpose: Locate the shared Quake II PCX palette for indexed sky faces.
+ */
 const SHARED_PALETTE_PATH = "pics/colormap.pcx";
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer sky resolver contract)
  * Category: New
  * Purpose: Describe one fully loaded Quake II sky face texture set.
  *
@@ -45,6 +53,8 @@ export interface LoadedQuakeSkyTextureSet {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer sky resolver contract)
  * Category: New
  * Purpose: Expose reusable Quake II sky resolution helpers for later renderer integration.
  *
@@ -58,7 +68,9 @@ export interface QuakeSkyResolver {
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (Three.js sky asset resolver)
+ * Category: Adapter
  * Purpose: Build a resolver for Quake II sky environment resources stored in the mounted virtual filesystem.
  *
  * Constraints:
@@ -121,7 +133,9 @@ export function createQuakeSkyResolver(filesystem: VirtualFilesystem): QuakeSkyR
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (Three.js sky asset resolver)
+ * Category: Adapter
  * Purpose: Build the canonical six-face asset-path set for one Quake II sky name.
  *
  * Constraints:
@@ -150,7 +164,9 @@ function buildSkyAssetSet(filesystem: VirtualFilesystem, skyName: string): Quake
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (Three.js sky asset resolver)
+ * Category: Adapter
  * Purpose: Resolve one sky face path using Quake II's `env/<sky><suffix>` naming convention.
  *
  * Constraints:
@@ -172,7 +188,9 @@ function resolveSkyFacePath(filesystem: VirtualFilesystem, skyName: string, face
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (Three.js sky palette loader)
+ * Category: Adapter
  * Purpose: Load the shared Quake II palette needed to decode PCX sky faces.
  *
  * Constraints:
@@ -192,7 +210,9 @@ function loadSharedPalette(filesystem: VirtualFilesystem): Uint8Array | null {
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (Three.js sky texture loader)
+ * Category: Adapter
  * Purpose: Load one sky face texture from either TGA or PCX data.
  *
  * Constraints:
@@ -222,6 +242,8 @@ function loadSkyTexture(filesystem: VirtualFilesystem, assetPath: string, palett
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (indexed image expansion helper)
  * Category: New
  * Purpose: Expand one indexed Quake image into an RGBA buffer.
  */
@@ -241,7 +263,9 @@ function expandIndexedRgba(indices: Uint8Array, paletteRgb: Uint8Array): Uint8Ar
 }
 
 /**
- * Category: New
+ * Original name: N/A
+ * Source: N/A (Three.js sky texture factory)
+ * Category: Adapter
  * Purpose: Convert one decoded sky face into a clamp-to-edge Three.js texture.
  *
  * Constraints:

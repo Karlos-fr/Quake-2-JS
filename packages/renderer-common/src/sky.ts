@@ -12,6 +12,8 @@
 export type { QuakeSkySnapshot } from "../../client/src/render-contracts.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-common sky contract)
  * Category: New
  * Purpose: Preserve the original Quake II environment face ordering shared by precache and renderer code.
  *
@@ -21,6 +23,8 @@ export type { QuakeSkySnapshot } from "../../client/src/render-contracts.js";
 export const QUAKE_SKY_FACE_SUFFIXES = ["rt", "bk", "lf", "ft", "up", "dn"] as const;
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-common sky contract)
  * Category: New
  * Purpose: Describe the canonical face-name union for one Quake II skybox.
  *
@@ -30,6 +34,8 @@ export const QUAKE_SKY_FACE_SUFFIXES = ["rt", "bk", "lf", "ft", "up", "dn"] as c
 export type QuakeSkyFaceName = (typeof QUAKE_SKY_FACE_SUFFIXES)[number];
 
 /**
+ * Original name: N/A
+ * Source: N/A (renderer-common sky contract)
  * Category: New
  * Purpose: Describe one canonical set of Quake II sky asset paths resolved from a sky name.
  *

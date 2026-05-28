@@ -34,11 +34,23 @@ import {
   setRmainParticleTexture
 } from "./gl_rmain.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js particle sync contract)
+ * Category: New
+ * Purpose: Public handle for the Three.js particle scene node and refresh-frame sync hook.
+ */
 export interface ThreeParticleSync {
   root: Group;
   apply: (refreshFrame: ClientRefreshFrame | null) => number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js particle sync options)
+ * Category: New
+ * Purpose: Browser renderer tuning knobs for the particle sync adapter.
+ */
 export interface ThreeParticleSyncOptions {
   particleSize?: number;
   particleMinSize?: number;
@@ -48,6 +60,8 @@ export interface ThreeParticleSyncOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (Three.js particle sync adapter)
  * Category: New
  * Purpose: Build one Three.js adapter that renders client refresh particles through Three.js point primitives.
  *
@@ -182,6 +196,12 @@ function setParticleObjectCount(points: Points<BufferGeometry, PointsMaterial>, 
   (points as unknown as { count: number }).count = count;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (Three.js particle attenuation helper)
+ * Category: New
+ * Purpose: Mirror the configured point-parameter attenuation when sizing synced particles.
+ */
 function computePointParameterSize(
   runtime: ReturnType<typeof createGlRmainRuntime>,
   baseSize: number,
@@ -198,10 +218,22 @@ function computePointParameterSize(
   return Math.max(minSize, Math.min(maxSize, attenuatedSize));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (particle alpha clamp helper)
+ * Category: New
+ * Purpose: Keep refresh particle alpha in the range accepted by Three.js vertex colors.
+ */
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer cvar shim)
+ * Category: New
+ * Purpose: Provide the small cvar shape required by the ported `R_DrawParticles` runtime.
+ */
 function createRuntimeCvar(name: string, value: number) {
   return {
     name,
@@ -213,6 +245,12 @@ function createRuntimeCvar(name: string, value: number) {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (renderer palette adapter)
+ * Category: New
+ * Purpose: Load Quake's palette for particle colors, with a grayscale fallback for minimal VFS tests.
+ */
 function loadPaletteTable(filesystem: VirtualFilesystem): Uint32Array {
   const paletteFile = readMountedFile(filesystem, "pics/colormap.pcx");
   if (!paletteFile) {

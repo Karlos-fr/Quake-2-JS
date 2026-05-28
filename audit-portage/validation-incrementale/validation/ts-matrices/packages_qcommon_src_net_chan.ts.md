@@ -4,19 +4,19 @@
 
 - Fichier TS: `packages/qcommon/src/net_chan.ts`
 - Symboles TS: 11
-- Couvert C/H: 0
-- Reste a auditer: 11
+- Couvert C/H: 8
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Init` | oui | `Netchan_Init` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Setup` | oui | `Netchan_Setup` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_CanReliable` | oui | `Netchan_CanReliable` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_NeedReliable` | oui | `Netchan_NeedReliable` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_OutOfBand` | oui | `Netchan_OutOfBand` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_OutOfBandPrint` | oui | `Netchan_OutOfBandPrint` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Transmit` | oui | `Netchan_Transmit` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Process` | oui | `Netchan_Process` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/qcommon/src/net_chan.ts` | function | `cloneNetAdr` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/net_chan.ts` | function | `encodeAscii` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/net_chan.ts` | function | `padPacketSize` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Init` | oui | `Netchan_Init` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Setup` | oui | `Netchan_Setup` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_CanReliable` | oui | `Netchan_CanReliable` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_NeedReliable` | oui | `Netchan_NeedReliable` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_OutOfBand` | oui | `Netchan_OutOfBand` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_OutOfBandPrint` | oui | `Netchan_OutOfBandPrint` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Transmit` | oui | `Netchan_Transmit` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `Netchan_Process` | oui | `Netchan_Process` | `Quake-2-master/qcommon/net_chan.c` | Ported | [`qcommon_net_chan.c.md`](../matrices/qcommon_net_chan.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/qcommon/src/net_chan.ts` | function | `cloneNetAdr` | non | N/A | N/A (local address-copy helper) | New |  | Hors C/H | Valide |  |
+| `packages/qcommon/src/net_chan.ts` | function | `encodeAscii` | non | N/A | N/A (local text encoding helper) | New |  | Hors C/H | Valide |  |
+| `packages/qcommon/src/net_chan.ts` | function | `padPacketSize` | non | N/A | N/A (local formatting helper) | New |  | Hors C/H | Valide |  |

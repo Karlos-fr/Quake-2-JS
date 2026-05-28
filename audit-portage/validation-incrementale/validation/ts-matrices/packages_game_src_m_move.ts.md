@@ -4,8 +4,8 @@
 
 - Fichier TS: `packages/game/src/m_move.ts`
 - Symboles TS: 20
-- Couvert C/H: 4
-- Reste a auditer: 16
+- Couvert C/H: 13
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -13,19 +13,19 @@
 | `packages/game/src/m_move.ts` | value | `DI_NODIR` | oui | `DI_NODIR` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_move.ts` | value | `c_yes` | oui | `c_yes` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/m_move.ts` | value | `c_no` | oui | `c_no` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/m_move.ts` | function | `M_CheckBottom` | oui | `M_CheckBottom` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `SV_movestep` | oui | `SV_movestep` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `M_ChangeYaw` | oui | `M_ChangeYaw` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `SV_StepDirection` | oui | `SV_StepDirection` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `SV_FixCheckBottom` | oui | `SV_FixCheckBottom` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `SV_NewChaseDir` | oui | `SV_NewChaseDir` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `SV_CloseEnough` | oui | `SV_CloseEnough` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `M_MoveToGoal` | oui | `M_MoveToGoal` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `M_walkmove` | oui | `M_walkmove` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/m_move.ts` | function | `M_CheckBottomReal` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_move.ts` | function | `relinkMonster` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_move.ts` | function | `setEntityOrigin` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_move.ts` | function | `addVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_move.ts` | function | `ensureCollision` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_move.ts` | function | `asGameEntity` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/m_move.ts` | function | `randomInt` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/m_move.ts` | function | `M_CheckBottom` | oui | `M_CheckBottom` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `SV_movestep` | oui | `SV_movestep` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `M_ChangeYaw` | oui | `M_ChangeYaw` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `SV_StepDirection` | oui | `SV_StepDirection` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `SV_FixCheckBottom` | oui | `SV_FixCheckBottom` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `SV_NewChaseDir` | oui | `SV_NewChaseDir` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `SV_CloseEnough` | oui | `SV_CloseEnough` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `M_MoveToGoal` | oui | `M_MoveToGoal` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `M_walkmove` | oui | `M_walkmove` | `Quake-2-master/game/m_move.c` | Ported | [`game_m_move.c.md`](../matrices/game_m_move.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/m_move.ts` | function | `M_CheckBottomReal` | non | `N/A` | `Quake-2-master/game/m_move.c (M_CheckBottom realcheck block)` | Adapter |  | Adapter local | Valide |  |
+| `packages/game/src/m_move.ts` | function | `relinkMonster` | non | `N/A` | `N/A (local relink helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_move.ts` | function | `setEntityOrigin` | non | `N/A` | `N/A (local origin sync helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_move.ts` | function | `addVec3` | non | `N/A` | `N/A (local vector helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_move.ts` | function | `ensureCollision` | non | `N/A` | `N/A (runtime guard helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_move.ts` | function | `asGameEntity` | non | `N/A` | `N/A (trace entity adapter helper)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/m_move.ts` | function | `randomInt` | non | `N/A` | `N/A (local random helper)` | New |  | Hors C/H | Valide |  |

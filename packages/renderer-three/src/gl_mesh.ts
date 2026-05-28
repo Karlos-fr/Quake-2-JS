@@ -36,10 +36,25 @@ import { SHADEDOT_QUANT, getAliasShadedots } from "./anormtab.js";
 import type { Md2Model } from "../../formats/src/index.js";
 
 export const NUMVERTEXNORMALS = 162;
+/**
+ * Original name: N/A
+ * Source: N/A (local RF_GLOW tuning constant)
+ * Category: New
+ * Purpose: Preserve the glow modulation scale used by the extracted alias lighting helper.
+ */
 const RF_GLOW_SCALE = 0.1;
+
+/**
+ * Original name: N/A
+ * Source: N/A (local RF_GLOW tuning constant)
+ * Category: New
+ * Purpose: Preserve the glow modulation frequency used by the extracted alias lighting helper.
+ */
 const RF_GLOW_RATE = 7;
 
 /**
+ * Original name: N/A
+ * Source: N/A (alias shading option shape)
  * Category: New
  * Purpose: Describe the inputs used to compute alias-model shadelight in the `R_DrawAliasModel` style.
  */
@@ -52,6 +67,8 @@ export interface AliasShadeLightOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (alias culling state shape)
  * Category: New
  * Purpose: Describe the alias entity transform/frame state required by `R_CullAliasModel`.
  */
@@ -63,6 +80,8 @@ export interface AliasCullEntityState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (alias frame-pair result shape)
  * Category: New
  * Purpose: Report the sanitized alias frame pair used by `R_DrawAliasModel` / `R_CullAliasModel` style guards.
  */
@@ -319,6 +338,12 @@ export function R_CullAliasModel(
   return { culled: isAliasBoundingBoxCulled(bbox, frustum), bbox };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias cull helper)
+ * Category: New
+ * Purpose: Clamp culling frame indices independently while preserving the extracted public guard behavior.
+ */
 function sanitizeAliasCullFramePair(frame: number, oldframe: number, numFrames: number): AliasFramePair {
   if (numFrames <= 0) {
     return { frame: 0, oldframe: 0, corrected: true };
@@ -333,6 +358,12 @@ function sanitizeAliasCullFramePair(frame: number, oldframe: number, numFrames: 
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias cull helper)
+ * Category: New
+ * Purpose: Compute the merged alias frame bounds used before frustum testing.
+ */
 function computeAliasFrameBounds(
   frame: Md2Model["frames"][number],
   oldframe: Md2Model["frames"][number],
@@ -358,6 +389,12 @@ function computeAliasFrameBounds(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias cull helper)
+ * Category: New
+ * Purpose: Expand min/max alias bounds into the original eight-point culling box.
+ */
 function buildAliasBoundingBox(mins: vec3_t, maxs: vec3_t): vec3_t[] {
   const bbox: vec3_t[] = [];
   for (let index = 0; index < 8; index += 1) {
@@ -371,6 +408,12 @@ function buildAliasBoundingBox(mins: vec3_t, maxs: vec3_t): vec3_t[] {
   return bbox;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias cull helper)
+ * Category: New
+ * Purpose: Apply the alias entity transform to the eight-point culling box.
+ */
 function rotateAndTranslateAliasBoundingBox(bbox: vec3_t[], entityAngles: vec3_t, entityOrigin: vec3_t): void {
   const angles: vec3_t = [entityAngles[0], -entityAngles[1], entityAngles[2]];
   const vectors = AngleVectors(angles);
@@ -386,6 +429,12 @@ function rotateAndTranslateAliasBoundingBox(bbox: vec3_t[], entityAngles: vec3_t
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias cull helper)
+ * Category: New
+ * Purpose: Evaluate the original aggregate frustum mask over the transformed alias bounds.
+ */
 function isAliasBoundingBoxCulled(
   bbox: vec3_t[],
   frustum: readonly [cplane_t, cplane_t, cplane_t, cplane_t]
@@ -407,6 +456,12 @@ function isAliasBoundingBoxCulled(
   return aggregateMask !== 0;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias lighting helper)
+ * Category: New
+ * Purpose: Detect mono-lightmap modes for extracted alias model lighting.
+ */
 function shouldApplyAliasMonoLightmap(mode?: string): boolean {
   if (!mode || mode.length === 0) {
     return false;
@@ -415,6 +470,12 @@ function shouldApplyAliasMonoLightmap(mode?: string): boolean {
   return mode[0] !== "0";
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local alias lighting helper)
+ * Category: New
+ * Purpose: Collapse alias shadelight to the max component for mono-lightmap modes.
+ */
 function applyAliasMonoLightmap(shadelight: vec3_t): void {
   const mono = Math.max(shadelight[0], shadelight[1], shadelight[2]);
   shadelight[0] = mono;

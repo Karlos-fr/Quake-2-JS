@@ -5,14 +5,14 @@
 - Fichier TS: `packages/renderer-three/src/particle-sync.ts`
 - Symboles TS: 7
 - Couvert C/H: 0
-- Reste a auditer: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/renderer-three/src/particle-sync.ts` | interface | `ThreeParticleSync` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/particle-sync.ts` | interface | `ThreeParticleSyncOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/particle-sync.ts` | function | `createThreeParticleSync` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/renderer-three/src/particle-sync.ts` | function | `computePointParameterSize` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/particle-sync.ts` | function | `clamp01` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/particle-sync.ts` | function | `createRuntimeCvar` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/renderer-three/src/particle-sync.ts` | function | `loadPaletteTable` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/renderer-three/src/particle-sync.ts` | interface | `ThreeParticleSync` | oui | `N/A` | `N/A (Three.js particle sync contract)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/particle-sync.ts` | interface | `ThreeParticleSyncOptions` | oui | `N/A` | `N/A (Three.js particle sync options)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/particle-sync.ts` | function | `createThreeParticleSync` | oui | `N/A` | `N/A (Three.js particle sync adapter)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/particle-sync.ts` | function | `computePointParameterSize` | non | `N/A` | `N/A (Three.js particle attenuation helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/particle-sync.ts` | function | `clamp01` | non | `N/A` | `N/A (particle alpha clamp helper)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/particle-sync.ts` | function | `createRuntimeCvar` | non | `N/A` | `N/A (renderer cvar shim)` | New |  | Hors C/H | Valide |  |
+| `packages/renderer-three/src/particle-sync.ts` | function | `loadPaletteTable` | non | `N/A` | `N/A (renderer palette adapter)` | New |  | Hors C/H | Valide |  |

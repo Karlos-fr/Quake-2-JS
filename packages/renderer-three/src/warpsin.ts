@@ -1,6 +1,6 @@
 /**
  * File: warpsin.ts
- * Source: Quake II original / ref_gl/warpsin.h
+ * Source: Quake-2-master/ref_gl/warpsin.h
  * Purpose: Preserve the canonical 256-entry turbulence sine table used by `gl_warp.c`.
  * Original name: r_turbsin
  * Category: Ported

@@ -51,15 +51,25 @@ import type { ServerWorldProcedures, server_t } from "./server.js";
 import { server_state_t } from "./server.js";
 
 /**
- * Original name: AREA_DEPTH / AREA_NODES
+ * Original name: AREA_DEPTH
  * Source: server/sv_world.c
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
- * - Defines the fixed depth and node budget for the uniformly subdivided server area tree.
+ * - Defines the fixed depth for the uniformly subdivided server area tree.
  */
 const AREA_DEPTH = 4;
+
+/**
+ * Original name: AREA_NODES
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the fixed node budget for the uniformly subdivided server area tree.
+ */
 const AREA_NODES = 32;
 
 /**
@@ -71,13 +81,14 @@ const AREA_NODES = 32;
 const MAX_TOTAL_ENT_LEAFS = 128;
 
 /**
- * Original name: areanode_t
+ * Original name: areanode_s
  * Source: server/sv_world.c
  * Category: Ported
  * Fidelity level: Close
  *
  * Porting notes:
  * - Keeps the original axis/dist/children/link-head layout with TypeScript references.
+ * - The TypeScript symbol uses the C typedef name `areanode_t`.
  */
 interface areanode_t {
   axis: number;
@@ -110,6 +121,15 @@ interface moveclip_t {
   contentmask: number;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit server world state)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Replaces the file-static globals from `server/sv_world.c` with explicit per-runtime state.
+ */
 interface ServerWorldState {
   sv_areanodes: areanode_t[];
   sv_numareanodes: number;
@@ -123,7 +143,11 @@ interface ServerWorldState {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (runtime dependency context)
  * Category: New
+ * Fidelity level: NewTooling
+ *
  * Purpose: Hold the explicit runtime dependencies required by the `sv_world.c` port.
  *
  * Constraints:
@@ -138,7 +162,11 @@ export interface ServerWorldContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (procedure factory)
  * Category: New
+ * Fidelity level: NewTooling
+ *
  * Purpose: Build the `sv_world.c` procedure table bound to one explicit server world context.
  *
  * Constraints:
@@ -496,6 +524,15 @@ export function createServerWorldProcedures(context: ServerWorldContext): Server
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (explicit server world state initializer)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Initializes the TypeScript holder for `sv_world.c` file-static state.
+ */
 function createServerWorldState(): ServerWorldState {
   return {
     sv_areanodes: [],
@@ -510,6 +547,15 @@ function createServerWorldState(): ServerWorldState {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (safe model lookup helper)
+ * Category: New
+ * Fidelity level: NewTooling
+ *
+ * Purpose:
+ * - Centralizes nullable server model lookup for the explicit-context port.
+ */
 function getServerModel(sv: server_t, modelIndex: number): cmodel_t | null {
   const model = sv.models[modelIndex] as cmodel_t | null | undefined;
   if (!model) {

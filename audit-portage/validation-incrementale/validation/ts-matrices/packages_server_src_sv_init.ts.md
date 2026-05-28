@@ -5,14 +5,14 @@
 - Fichier TS: `packages/server/src/sv_init.ts`
 - Symboles TS: 7
 - Couvert C/H: 0
-- Reste a auditer: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/server/src/sv_init.ts` | value | `SAVEGAME_FRAME_COUNT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_init.ts` | interface | `ServerInitContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_init.ts` | function | `createServerInitProcedures` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_init.ts` | function | `cloneEntityState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_init.ts` | function | `zeroClientCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_init.ts` | function | `endsWithInsensitive` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_init.ts` | function | `formatPrintf` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/server/src/sv_init.ts` | value | `SAVEGAME_FRAME_COUNT` | non | `N/A` | `N/A (named savegame restore loop count)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_init.ts` | interface | `ServerInitContext` | oui | `N/A` | `N/A (server init dependency context)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_init.ts` | function | `createServerInitProcedures` | oui | `N/A` | `N/A (server init procedure factory)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_init.ts` | function | `cloneEntityState` | non | `N/A` | `N/A (entity state copy helper)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_init.ts` | function | `zeroClientCommand` | non | `N/A` | `N/A (client command reset helper)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_init.ts` | function | `endsWithInsensitive` | non | `N/A` | `N/A (case-insensitive suffix helper)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_init.ts` | function | `formatPrintf` | non | `N/A` | `N/A (local printf formatter)` | New |  | Hors C/H | Valide |  |
