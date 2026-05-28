@@ -54,6 +54,7 @@ export interface WebAppCommandBridgeHooks {
   onBeginLoading?: () => void;
   onKillServer?: () => void;
   onMapRequested?: (map: string, source: "gamemap" | "map") => void;
+  getNewGameMap?: () => string;
 }
 
 /**
@@ -96,12 +97,13 @@ export function registerWebAppCommandBridge(
   });
 
   registerCommand(cmd, "newgame", () => {
+    const map = hooks.getNewGameMap?.() ?? "*base1";
     state.phase = "newgame";
     state.transitions.push("newgame");
-    state.requestedMap = "*base1";
+    state.requestedMap = map;
     Cvar_ForceSet(cvar, "deathmatch", "0");
     Cvar_ForceSet(cvar, "coop", "0");
-    Cbuf_AddText(cmd, "gamemap \"*base1\"\n");
+    Cbuf_AddText(cmd, `gamemap "${map}"\n`);
   });
 
   registerCommand(cmd, "gamemap", () => {

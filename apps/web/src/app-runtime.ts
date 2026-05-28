@@ -1560,6 +1560,7 @@ function createWebAppRuntime(filesystem: VirtualFilesystem, page: WebAppPage): W
       localTransport.clear();
       client.cls.state = connstate_t.ca_disconnected;
     },
+    getNewGameMap: () => selectWebAppNewGameMap(filesystem),
     onMapRequested: (map, source) => {
       printToConsole(`${source} ${map}: preparation du host jeu final.`);
       beginAuthoritativeConnection(map);
@@ -2401,6 +2402,28 @@ function isCompatibleAttractLoopDemo(filesystem: VirtualFilesystem, demo: string
 
   const protocol = view.getInt32(payloadOffset + 1, true);
   return protocol === PROTOCOL_VERSION || protocol === 26;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (web command bridge adapter)
+ * Category: New
+ * Purpose: Select a legal single-player start map for the mounted asset set.
+ *
+ * Constraints:
+ * - Must preserve the retail Quake II start command when `base1.bsp` is present.
+ * - Must let the public shareware deployment start from `demo1.bsp` instead of crashing on missing retail assets.
+ */
+function selectWebAppNewGameMap(filesystem: VirtualFilesystem): string {
+  if (readMountedFile(filesystem, "maps/base1.bsp")) {
+    return "*base1";
+  }
+
+  if (readMountedFile(filesystem, "maps/demo1.bsp")) {
+    return "*demo1";
+  }
+
+  return "*base1";
 }
 
 /**
