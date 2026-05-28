@@ -279,13 +279,17 @@ import {
  * Porting notes:
  * - These constants are application bootstrap settings, not C/H-owned runtime symbols.
  */
+const PUBLIC_BASE_URL = import.meta.env.BASE_URL;
+
 const BASEQ2_PAK_CANDIDATES = [
   "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2/pak0.pak",
+  `${PUBLIC_BASE_URL}baseq2/pak0.pak`,
   "/baseq2/pak0.pak"
 ];
 
 const LOOSE_VIDEO_CANDIDATES = [
   "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2",
+  `${PUBLIC_BASE_URL}baseq2`,
   "/baseq2"
 ];
 
@@ -610,8 +614,10 @@ async function createMountedFilesystem(): Promise<VirtualFilesystem> {
   const looseVideos = new Map<string, Uint8Array>();
 
   for (const name of STARTUP_CINEMATICS) {
-    const bytes = await fetchFirstBytes(LOOSE_VIDEO_CANDIDATES.map((base) => `${base}/video/${name}`));
-    looseVideos.set(`video/${name}`, bytes);
+    const bytes = await fetchOptionalFirstBytes(LOOSE_VIDEO_CANDIDATES.map((base) => `${base}/video/${name}`));
+    if (bytes) {
+      looseVideos.set(`video/${name}`, bytes);
+    }
   }
 
   const filesystem = createVirtualFilesystem();
@@ -637,6 +643,21 @@ async function fetchFirstBytes(urls: string[]): Promise<Uint8Array> {
   }
 
   throw new Error(`Aucun fichier accessible:\n${errors.join("\n")}`);
+}
+
+async function fetchOptionalFirstBytes(urls: string[]): Promise<Uint8Array | null> {
+  for (const url of urls) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        return new Uint8Array(await response.arrayBuffer());
+      }
+    } catch {
+      // Optional loose assets can still be loaded later from mounted PAK archives.
+    }
+  }
+
+  return null;
 }
 
 function readWebAppMapList(filesystem: VirtualFilesystem): ClientMenuMapEntry[] | null {

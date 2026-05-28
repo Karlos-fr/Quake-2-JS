@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  base: process.env.GITHUB_PAGES === "1" ? "/Quake-2-JS/" : "/",
   plugins: [
     {
       name: "quake2js-root-only",
