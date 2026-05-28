@@ -1,13 +1,13 @@
 /**
  * File: web-render-bootstrap.ts
- * Purpose: Hold the web renderer, scene and camera bootstrap helpers used by the Quake2JS browser demo.
+ * Purpose: Hold the web renderer, scene and camera bootstrap helpers used by the Quake2JS browser app.
  *
  * This file is not a direct source port.
  * It is an adapter layer for Three.js renderer and scene bootstrap.
  *
  * Dependencies:
- * - apps/web/src/local-client-controller.ts
  * - packages/formats
+ * - packages/client
  * - three
  */
 
@@ -22,13 +22,13 @@ import {
 } from "three";
 import { WebGPURenderer } from "three/webgpu";
 import type { BspMap } from "../../../packages/formats/src/index.js";
-import type { LocalClientController } from "./local-client-controller.js";
+import type { QuakeSkySnapshot } from "../../../packages/client/src/index.js";
 
 /**
  * Original name: N/A
  * Source: N/A (web renderer bootstrap)
  * Category: New
- * Purpose: Describe the active Three.js renderer used by the browser demo.
+ * Purpose: Describe the active Three.js renderer used by the browser app.
  */
 export type ActiveRenderer = WebGPURenderer | WebGLRenderer;
 
@@ -135,7 +135,7 @@ export function getInlineModelRenderOrigin(map: BspMap, modelIndex: number): [nu
  * Constraints:
  * - Must stay readable without assuming the renderer sky implementation already exists.
  */
-export function formatSkySnapshot(skySnapshot: LocalClientController["skySnapshot"]): string {
+export function formatSkySnapshot(skySnapshot: QuakeSkySnapshot | null): string {
   if (!skySnapshot) {
     return "aucun";
   }

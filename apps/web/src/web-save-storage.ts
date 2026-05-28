@@ -1,6 +1,6 @@
 /**
  * File: web-save-storage.ts
- * Purpose: Persist logical Quake II savegame files for the browser full-game host.
+ * Purpose: Persist logical Quake II savegame files for the browser web-app host.
  *
  * This file is not a direct source port.
  * It is a web adapter for `baseq2/save/...` logical files used by `sv_ccmds.ts`.

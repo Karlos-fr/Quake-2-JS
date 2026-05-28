@@ -6,23 +6,16 @@
 | Fichier TS | Symboles | Couvert C/H | Reste a auditer |
 | --- | ---: | ---: | ---: |
 | [`apps/web/src/full-game-command-bridge.ts`](ts-matrices/apps_web_src_full-game-command-bridge.ts.md) | 7 | 0 | 7 |
-| [`apps/web/src/full-game-local-session.ts`](ts-matrices/apps_web_src_full-game-local-session.ts.md) | 9 | 0 | 9 |
 | [`apps/web/src/full-game-local-transport.ts`](ts-matrices/apps_web_src_full-game-local-transport.ts.md) | 5 | 0 | 5 |
-| [`apps/web/src/full-game-render-loop.ts`](ts-matrices/apps_web_src_full-game-render-loop.ts.md) | 13 | 0 | 13 |
+| [`apps/web/src/full-game-render-loop.ts`](ts-matrices/apps_web_src_full-game-render-loop.ts.md) | 12 | 0 | 12 |
 | [`apps/web/src/full-game-render-source.ts`](ts-matrices/apps_web_src_full-game-render-source.ts.md) | 8 | 0 | 8 |
 | [`apps/web/src/full-game-server-host.ts`](ts-matrices/apps_web_src_full-game-server-host.ts.md) | 15 | 0 | 15 |
 | [`apps/web/src/full-game.ts`](ts-matrices/apps_web_src_full-game.ts.md) | 94 | 0 | 94 |
-| [`apps/web/src/local-client-controller.ts`](ts-matrices/apps_web_src_local-client-controller.ts.md) | 5 | 0 | 5 |
-| [`apps/web/src/local-collision-adapter.ts`](ts-matrices/apps_web_src_local-collision-adapter.ts.md) | 1 | 0 | 1 |
-| [`apps/web/src/main.ts`](ts-matrices/apps_web_src_main.ts.md) | 6 | 0 | 6 |
 | [`apps/web/src/refresh-debug-layer.ts`](ts-matrices/apps_web_src_refresh-debug-layer.ts.md) | 5 | 0 | 5 |
 | [`apps/web/src/web-config-commands.ts`](ts-matrices/apps_web_src_web-config-commands.ts.md) | 1 | 0 | 1 |
 | [`apps/web/src/web-config-storage.ts`](ts-matrices/apps_web_src_web-config-storage.ts.md) | 10 | 0 | 10 |
-| [`apps/web/src/web-demo-loop.ts`](ts-matrices/apps_web_src_web-demo-loop.ts.md) | 2 | 0 | 2 |
-| [`apps/web/src/web-map-bootstrap.ts`](ts-matrices/apps_web_src_web-map-bootstrap.ts.md) | 5 | 0 | 5 |
 | [`apps/web/src/web-render-bootstrap.ts`](ts-matrices/apps_web_src_web-render-bootstrap.ts.md) | 7 | 0 | 7 |
 | [`apps/web/src/web-save-storage.ts`](ts-matrices/apps_web_src_web-save-storage.ts.md) | 15 | 0 | 15 |
-| [`apps/web/src/web-shell.ts`](ts-matrices/apps_web_src_web-shell.ts.md) | 11 | 0 | 11 |
 | [`apps/web/vite.config.ts`](ts-matrices/apps_web_vite.config.ts.md) | 0 | 0 | 0 |
 | [`packages/client/src/cdaudio.ts`](ts-matrices/packages_client_src_cdaudio.ts.md) | 12 | 0 | 12 |
 | [`packages/client/src/cl_cin.ts`](ts-matrices/packages_client_src_cl_cin.ts.md) | 16 | 0 | 16 |

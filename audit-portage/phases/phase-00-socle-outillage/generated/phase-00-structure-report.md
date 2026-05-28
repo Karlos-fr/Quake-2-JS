@@ -152,23 +152,16 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 | TS | Source header |
 | --- | --- |
 | apps/web/src/full-game-command-bridge.ts |  |
-| apps/web/src/full-game-local-session.ts |  |
 | apps/web/src/full-game-local-transport.ts |  |
 | apps/web/src/full-game-render-loop.ts |  |
 | apps/web/src/full-game-render-source.ts |  |
 | apps/web/src/full-game-server-host.ts |  |
 | apps/web/src/full-game.ts |  |
-| apps/web/src/local-client-controller.ts |  |
-| apps/web/src/local-collision-adapter.ts |  |
-| apps/web/src/main.ts |  |
 | apps/web/src/refresh-debug-layer.ts |  |
 | apps/web/src/web-config-commands.ts |  |
 | apps/web/src/web-config-storage.ts |  |
-| apps/web/src/web-demo-loop.ts |  |
-| apps/web/src/web-map-bootstrap.ts |  |
 | apps/web/src/web-render-bootstrap.ts |  |
 | apps/web/src/web-save-storage.ts |  |
-| apps/web/src/web-shell.ts |  |
 | apps/web/vite.config.ts |  |
 | packages/client/src/download.ts | Quake II original / client/cl_parse.c |
 | packages/client/src/index.ts |  |
@@ -246,12 +239,7 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 
 | TS |
 | --- |
-| apps/web/src/full-game-local-session.ts |
 | apps/web/src/full-game.ts |
-| apps/web/src/local-collision-adapter.ts |
-| apps/web/src/main.ts |
-| apps/web/src/web-map-bootstrap.ts |
-| apps/web/src/web-shell.ts |
 | packages/client/src/cl_cin.ts |
 | packages/client/src/cl_fx.ts |
 | packages/client/src/cl_parse.ts |
@@ -344,23 +332,16 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 | TS |
 | --- |
 | apps/web/src/full-game-command-bridge.ts |
-| apps/web/src/full-game-local-session.ts |
 | apps/web/src/full-game-local-transport.ts |
 | apps/web/src/full-game-render-loop.ts |
 | apps/web/src/full-game-render-source.ts |
 | apps/web/src/full-game-server-host.ts |
 | apps/web/src/full-game.ts |
-| apps/web/src/local-client-controller.ts |
-| apps/web/src/local-collision-adapter.ts |
-| apps/web/src/main.ts |
 | apps/web/src/refresh-debug-layer.ts |
 | apps/web/src/web-config-commands.ts |
 | apps/web/src/web-config-storage.ts |
-| apps/web/src/web-demo-loop.ts |
-| apps/web/src/web-map-bootstrap.ts |
 | apps/web/src/web-render-bootstrap.ts |
 | apps/web/src/web-save-storage.ts |
-| apps/web/src/web-shell.ts |
 | packages/client/src/index.ts |
 | packages/client/src/local-brush-models.ts |
 | packages/client/src/local-client-bootstrap.ts |

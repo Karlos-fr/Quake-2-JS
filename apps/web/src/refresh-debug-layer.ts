@@ -6,7 +6,7 @@
  * It is an adapter layer for visual debugging in the browser renderer.
  *
  * Dependencies:
- * - apps/web/src/local-client-controller.ts
+ * - packages/client
  * - three
  */
 
@@ -22,7 +22,7 @@ import {
   SphereGeometry,
   Vector3
 } from "three";
-import type { LocalClientController } from "./local-client-controller.js";
+import type { ClientRefreshFrame } from "../../../packages/client/src/index.js";
 
 /**
  * Category: New
@@ -35,7 +35,7 @@ import type { LocalClientController } from "./local-client-controller.js";
  */
 export function createRefreshDebugLayer(): {
   root: Group;
-  update: (frame: LocalClientController["refreshFrame"]) => void;
+  update: (frame: ClientRefreshFrame | null) => void;
 } {
   const root = new Group();
   const forceWalls = new Group();
@@ -90,7 +90,7 @@ function createLineObject(start: [number, number, number], end: [number, number,
  * Purpose: Create one minimal debug object representing a client sustain effect.
  */
 function createSustainObject(
-  sustain: NonNullable<LocalClientController["refreshFrame"]>["sustains"][number],
+  sustain: ClientRefreshFrame["sustains"][number],
   steamMaterial: LineBasicMaterial,
   widowMaterial: MeshBasicMaterial,
   nukeMaterial: MeshBasicMaterial
