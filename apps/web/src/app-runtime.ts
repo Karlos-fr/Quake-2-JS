@@ -50,11 +50,13 @@ import {
   Com_BlockChecksum,
   MAX_ITEMS,
   PRINT_ALL,
+  PROTOCOL_VERSION,
   Qcommon_Frame,
   Qcommon_Init,
   Qcommon_Shutdown,
   Sys_AppActivate,
   AngleVectors,
+  svc_ops_e,
   CM_InlineModel,
   createCommandRuntime,
   createQcommonGlobals,
@@ -2362,12 +2364,43 @@ function buildAvailableAttractLoopMedia(filesystem: VirtualFilesystem): string[]
   }
 
   for (const demo of ["q2demo1.dm2", "demo1.dm2", "demo2.dm2"]) {
-    if (readMountedFile(filesystem, `demos/${demo}`)) {
+    if (isCompatibleAttractLoopDemo(filesystem, demo)) {
       media.push(demo);
     }
   }
 
   return media;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (web attract-loop adapter)
+ * Category: New
+ * Purpose: Skip bundled demos recorded with an unsupported Quake II network protocol.
+ *
+ * Constraints:
+ * - Must inspect the mounted `.dm2` payload before queueing `demomap`; otherwise an old shareware
+ *   demo can crash the first browser frame with "Server returned version 31, not 34".
+ */
+function isCompatibleAttractLoopDemo(filesystem: VirtualFilesystem, demo: string): boolean {
+  const file = readMountedFile(filesystem, `demos/${demo}`);
+  if (!file || file.bytes.length < 9) {
+    return false;
+  }
+
+  const view = new DataView(file.bytes.buffer, file.bytes.byteOffset, file.bytes.byteLength);
+  const messageLength = view.getInt32(0, true);
+  if (messageLength < 5 || messageLength + 4 > file.bytes.length) {
+    return false;
+  }
+
+  const payloadOffset = 4;
+  if (file.bytes[payloadOffset] !== svc_ops_e.svc_serverdata) {
+    return false;
+  }
+
+  const protocol = view.getInt32(payloadOffset + 1, true);
+  return protocol === PROTOCOL_VERSION || protocol === 26;
 }
 
 /**
