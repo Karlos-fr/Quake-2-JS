@@ -112,36 +112,6 @@ http://localhost:5173/
 
 The game is served from the root page. There is no separate demo page or alternate full-game page.
 
-## GitHub Pages
-
-This repository is ready to deploy the web app to GitHub Pages through GitHub Actions.
-
-In the GitHub repository settings, enable:
-
-```text
-Settings > Pages > Source > GitHub Actions
-```
-
-Every push to `master` will build and publish:
-
-```text
-apps/web/dist/
-```
-
-For this repository, the expected public URL is:
-
-```text
-https://karlos-fr.github.io/Quake-2-JS/
-```
-
-The production build uses the `/Quake-2-JS/` base path so public assets are loaded from:
-
-```text
-https://karlos-fr.github.io/Quake-2-JS/baseq2/
-```
-
-Do not publish retail Quake II assets unless you have the right to redistribute them. A public GitHub Pages deployment should use legally redistributable demo/shareware data, or let users provide their own `pak0.pak` locally.
-
 ## Useful Commands
 
 ```bash

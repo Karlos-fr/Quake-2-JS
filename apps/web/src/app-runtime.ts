@@ -280,17 +280,18 @@ import {
  * - These constants are application bootstrap settings, not C/H-owned runtime symbols.
  */
 const PUBLIC_BASE_URL = import.meta.env.BASE_URL;
+const LOCAL_BASEQ2_URL = "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2";
+const ROOT_BASEQ2_URL = "/baseq2";
 
 const BASEQ2_PAK_CANDIDATES = [
-  "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2/pak0.pak",
+  ...(import.meta.env.DEV ? [`${LOCAL_BASEQ2_URL}/pak0.pak`] : []),
   `${PUBLIC_BASE_URL}baseq2/pak0.pak`,
-  "/baseq2/pak0.pak"
+  ...(import.meta.env.DEV ? [`${ROOT_BASEQ2_URL}/pak0.pak`] : [])
 ];
 
 const LOOSE_VIDEO_CANDIDATES = [
-  "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2",
-  `${PUBLIC_BASE_URL}baseq2`,
-  "/baseq2"
+  ...(import.meta.env.DEV ? [LOCAL_BASEQ2_URL] : []),
+  ...(import.meta.env.DEV ? [`${PUBLIC_BASE_URL}baseq2`, ROOT_BASEQ2_URL] : [])
 ];
 
 const STARTUP_CINEMATICS = [
@@ -486,10 +487,12 @@ async function bootstrap(): Promise<void> {
     page.status.textContent = "Echec du chargement.";
     page.log.style.display = "block";
     page.log.textContent = [
-      "Impossible de lancer la page de deroulement Quake II.",
+      "Impossible de lancer la page Quake II.",
       message,
-      "En dev, Vite doit pouvoir lire l'installation locale via /@fs/.",
-      "Alternative: placer pak0.pak et baseq2/video/*.cin sous apps/web/public/baseq2/."
+      import.meta.env.DEV
+        ? "En dev, Vite essaie l'installation locale puis apps/web/public/baseq2/."
+        : `En production, pak0.pak doit etre publie sous ${PUBLIC_BASE_URL}baseq2/pak0.pak.`,
+      "Les cinematics .cin sont optionnelles avec le pack demo shareware."
     ].join("\n");
   }
 }
@@ -2316,13 +2319,20 @@ function startNextCinematic(runtime: WebAppRuntime, page: WebAppPage): void {
 }
 
 function startWebAppAttractLoop(runtime: WebAppRuntime, page: WebAppPage): void {
+  const media = buildAvailableAttractLoopMedia(runtime.filesystem);
+  if (media.length === 0) {
+    enterMainMenu(runtime, page);
+    return;
+  }
+
   runtime.mode = "loading";
   runtime.menu.keys.state.key_dest = keydest_t.key_game;
   runtime.client.cls.state = connstate_t.ca_disconnected;
-  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d1 \"demomap idlog.cin ; set nextserver q2js_d2\"\n");
-  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d2 \"demomap ntro.cin ; set nextserver q2js_d3\"\n");
-  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d3 \"demomap demo1.dm2 ; set nextserver q2js_d4\"\n");
-  Cbuf_AddText(runtime.menu.cmd, "alias q2js_d4 \"demomap demo2.dm2 ; set nextserver q2js_d1\"\n");
+  for (let index = 0; index < media.length; index += 1) {
+    const alias = `q2js_d${index + 1}`;
+    const nextAlias = `q2js_d${((index + 1) % media.length) + 1}`;
+    Cbuf_AddText(runtime.menu.cmd, `alias ${alias} "demomap ${media[index]} ; set nextserver ${nextAlias}"\n`);
+  }
   Cbuf_AddText(runtime.menu.cmd, "q2js_d1\n");
   executeRuntimeCommandBuffer(runtime, page);
   if (runtime.serverHost.hasActiveAttractLoop()) {
@@ -2330,6 +2340,34 @@ function startWebAppAttractLoop(runtime: WebAppRuntime, page: WebAppPage): void 
   }
   page.status.textContent = "Boucle de demonstration Quake II.";
   page.status.style.display = "block";
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (web attract-loop adapter)
+ * Category: New
+ * Purpose: Build an attract-loop sequence only from media present in the mounted demo/full assets.
+ *
+ * Constraints:
+ * - Must avoid hard-coding retail demo names when the shareware pack only provides `q2demo1.dm2`.
+ * - Must pass `.dm2` names exactly as `SV_BeginDemoserver` expects under `demos/`.
+ */
+function buildAvailableAttractLoopMedia(filesystem: VirtualFilesystem): string[] {
+  const media: string[] = [];
+
+  for (const cinematic of STARTUP_CINEMATICS) {
+    if (readMountedFile(filesystem, `video/${cinematic}`)) {
+      media.push(cinematic);
+    }
+  }
+
+  for (const demo of ["q2demo1.dm2", "demo1.dm2", "demo2.dm2"]) {
+    if (readMountedFile(filesystem, `demos/${demo}`)) {
+      media.push(demo);
+    }
+  }
+
+  return media;
 }
 
 /**
