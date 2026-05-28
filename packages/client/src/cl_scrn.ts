@@ -1301,7 +1301,7 @@ export function SCR_DrawHudRef(
  * - Draws the selected crosshair picture centered in the current rendered viewport.
  *
  * Porting notes:
- * - Proprietary port lives in `packages/client/src/view.ts`; this helper adapts it for the HUD/ref path.
+ * - Proprietary port lives in `packages/client/src/cl_view.ts`; this helper adapts it for the HUD/ref path.
  */
 export function SCR_DrawCrosshairRef(
   runtime: ClientRuntime,

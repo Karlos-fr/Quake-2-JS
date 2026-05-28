@@ -55,7 +55,7 @@ import {
 import { CL_BuildPacketEntitySnapshots, type ClientInterpolatedEntity } from "./cl_ents.js";
 import { CL_BuildTEntRefresh, type ClientBeamRender, type ClientExplosionRender, type ClientForceWallRender } from "./cl_tent.js";
 import type { ClientSustainRender } from "./cl_tent.js";
-import { CL_CalcViewValues, CL_UpdateLerpFraction, type ClientViewOptions, type ClientViewValues } from "./view.js";
+import { CL_CalcViewValues, CL_UpdateLerpFraction, type ClientViewOptions, type ClientViewValues } from "./cl_view.js";
 import { connstate_t, type ClientRuntime } from "./client.js";
 
 /**

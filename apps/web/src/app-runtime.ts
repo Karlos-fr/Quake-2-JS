@@ -207,15 +207,8 @@ import {
   type ClientSndDmaContext
 } from "../../../packages/client/src/snd_dma.js";
 import { createClientSoundLocalContext, type ClientSoundLocalContext, type playsound_t, type sfx_t } from "../../../packages/client/src/snd_loc.js";
-import {
-  CL_CalcViewValues,
-  CL_PredictMovement,
-  CL_UpdateLerpFraction,
-  CL_PrepRefresh,
-  createClientPredictionCollisionSource,
-  createClientViewContext,
-  V_Init
-} from "../../../packages/client/src/view.js";
+import { CL_CalcViewValues, CL_UpdateLerpFraction, CL_PrepRefresh, createClientViewContext, V_Init } from "../../../packages/client/src/cl_view.js";
+import { CL_PredictMovement, createClientPredictionCollisionSource } from "../../../packages/client/src/cl_pred.js";
 import { createRefExport, type refexport_t, type refimport_t } from "../../../packages/client/src/ref.js";
 import { createClientRuntime, connstate_t, type ClientRuntime } from "../../../packages/client/src/client.js";
 import type { ClientRefreshFrame } from "../../../packages/client/src/index.js";

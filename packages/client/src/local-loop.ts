@@ -6,7 +6,7 @@
  * It is a runtime-side helper layer for the current standalone client loop.
  *
  * Dependencies:
- * - packages/client/src/view.ts
+ * - packages/client/src/cl_view.ts
  * - packages/qcommon
  */
 
@@ -23,7 +23,7 @@ import {
   CL_CalcViewValues,
   CL_UpdateLerpFraction,
   type ClientViewValues
-} from "./view.js";
+} from "./cl_view.js";
 import { createFrame, type ClientRuntime } from "./client.js";
 
 /**

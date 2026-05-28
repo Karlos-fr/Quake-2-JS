@@ -30,3 +30,13 @@ Aucun pour `client/cl_view.c`: toutes les entrees sont maintenant `Valide` ou `N
 ## Blocages
 
 - Aucun.
+
+## Session 2026-05-28 - redecoupage lot 2
+
+- Lot traite: separation de `client/cl_view.c` et `client/cl_pred.c`.
+- Correction appliquee: l'ancien `packages/client/src/view.ts` a ete remplace par `packages/client/src/cl_view.ts` comme cible principale de `client/cl_view.c`.
+- Raccord final: aucune facade `view.ts` conservee; les consommateurs importent directement `cl_view.ts` ou `cl_pred.ts`.
+- Deplacement hors fichier: les fonctions et helpers de prediction `client/cl_pred.c` vivent maintenant dans `packages/client/src/cl_pred.ts`.
+- Imports mis a jour: `cl_tent.ts`, `local-loop.ts`, `menu-player-config.ts`, `refresh.ts`, `apps/web/src/app-runtime.ts` et `packages/client/src/index.ts` consomment directement `cl_view.ts`.
+- Matrice: `client_cl_view.c.md` mise a jour vers `packages/client/src/cl_view.ts`, verdict `strict-ok`.
+- Validations lancees: `npm run typecheck` OK; `npm run build --workspace @quake2js/web` OK.

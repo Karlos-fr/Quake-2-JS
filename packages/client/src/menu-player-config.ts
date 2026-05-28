@@ -42,7 +42,7 @@ import {
   MTYPE_SPINCONTROL,
   QMF_LEFT_JUSTIFY
 } from "./qmenu.js";
-import { CalcFov } from "./view.js";
+import { CalcFov } from "./cl_view.js";
 
 /**
  * Original name: MAX_DISPLAYNAME

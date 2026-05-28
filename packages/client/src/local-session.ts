@@ -48,7 +48,7 @@ import {
   promoteLocalPredictedState,
   type LocalClientCollisionAdapter
 } from "./local-loop.js";
-import { createClientPredictionCollisionSource } from "./view.js";
+import { createClientPredictionCollisionSource } from "./cl_pred.js";
 import {
   initializeLocalHudState,
 } from "./local-client-bootstrap.js";

@@ -638,12 +638,7 @@ export {
 export {
   CalcFov,
   CL_CalcViewValues,
-  CL_CheckPredictionError,
-  CL_ClipMoveToEntities,
   CL_PrepRefresh,
-  CL_PMpointcontents,
-  CL_PMTrace,
-  CL_PredictMovement,
   CL_UpdateLerpFraction,
   SCR_DrawCrosshair,
   V_AddEntity,
@@ -660,11 +655,13 @@ export {
   V_TestParticles,
   V_Init,
   V_Viewpos_f,
-  createClientPredictionCollisionSource,
   createClientViewContext,
   createClientViewDebugState,
   createClientViewScene
-} from "./view.js";
+} from "./cl_view.js";
+export {
+  createClientPredictionCollisionSource
+} from "./cl_pred.js";
 export {
   CL_BuildPacketEntitySnapshots,
   CL_BuildFrameEntityEventEffects,
@@ -960,8 +957,9 @@ export type {
   LocalClientSessionSnapshotHooks,
   LocalClientSessionState
 } from "./local-session.js";
-export type { ClientPredictionCollisionSource, ClientViewOptions, ClientViewValues } from "./view.js";
-export type { ClientPrepRefreshOptions, ClientPrepRefreshResult } from "./view.js";
+export type { ClientViewOptions, ClientViewValues } from "./cl_view.js";
+export type { ClientPredictionCollisionSource, ClientPredictionOptions } from "./cl_pred.js";
+export type { ClientPrepRefreshOptions, ClientPrepRefreshResult } from "./cl_view.js";
 export type {
   HudBounds,
   HudDrawCommand,

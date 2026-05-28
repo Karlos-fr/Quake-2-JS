@@ -33,7 +33,7 @@ import {
 } from "../../qcommon/src/index.js";
 import type { ClientTempEntityPacket } from "./cl_parse.js";
 import type { ClientDynamicLight } from "./refresh.js";
-import type { ClientViewValues } from "./view.js";
+import type { ClientViewValues } from "./cl_view.js";
 import { CL_Flashlight, CL_Heatbeam, CL_MonsterPlasma_Shell, CL_Nukeblast, CL_ParticleSteamEffect2, CL_Widowbeamout } from "./cl_newfx.js";
 import {
   createClientBeam,

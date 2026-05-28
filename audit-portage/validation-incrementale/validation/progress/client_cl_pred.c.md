@@ -30,3 +30,13 @@ Statut: Termine
 ## Prochain lot recommande
 
 - Aucun pour `client/cl_pred.c`: toutes les entrees de la matrice sont `Valide` ou `Non applicable`.
+
+## Session 2026-05-28 - redecoupage lot 2
+
+- Lot traite: separation de `client/cl_pred.c` hors de l'ancien fichier mixte `view.ts`.
+- Correction appliquee: creation de `packages/client/src/cl_pred.ts` comme cible principale de `client/cl_pred.c`.
+- Deplacement: `CL_CheckPredictionError`, `CL_ClipMoveToEntities`, `CL_PMTrace`, `CL_PMpointcontents`, `CL_PredictMovement`, `createClientPredictionCollisionSource` et les helpers prediction locaux ont ete sortis de `cl_view.ts`.
+- Raccord final: aucune facade `view.ts` conservee; les consommateurs importent directement `cl_pred.ts` ou `cl_view.ts`.
+- Imports mis a jour: `cl_parse.ts`, `local-session.ts`, `apps/web/src/app-runtime.ts` et `packages/client/src/index.ts` consomment directement `cl_pred.ts`.
+- Matrice: `client_cl_pred.c.md` mise a jour vers `packages/client/src/cl_pred.ts`, verdict `strict-ok`.
+- Validations lancees: `npm run typecheck` OK; `npm run build --workspace @quake2js/web` OK.

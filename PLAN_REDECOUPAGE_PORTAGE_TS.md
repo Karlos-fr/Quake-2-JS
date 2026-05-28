@@ -64,19 +64,18 @@ But : separer `client/cl_view.c` et `client/cl_pred.c`.
 
 Actions :
 
-- Renommer ou recreer `packages/client/src/cl_view.ts` comme cible principale de
+- [x] Renommer ou recreer `packages/client/src/cl_view.ts` comme cible principale de
   `client/cl_view.c`.
-- Creer `packages/client/src/cl_pred.ts` pour les fonctions et helpers issus de
+- [x] Creer `packages/client/src/cl_pred.ts` pour les fonctions et helpers issus de
   `client/cl_pred.c`.
-- Laisser `view.ts` uniquement si c'est une facade nouvelle clairement marquee
-  `Category: New`, ou le supprimer si inutile.
-- Mettre a jour les imports depuis le client, le web et les exports publics.
-- Mettre a jour `client_cl_view.c.md` et `client_cl_pred.c.md`.
+- [x] Supprimer `view.ts` apres recablage direct vers `cl_view.ts` et `cl_pred.ts`.
+- [x] Mettre a jour les imports depuis le client, le web et les exports publics.
+- [x] Mettre a jour `client_cl_view.c.md` et `client_cl_pred.c.md`.
 
 Validation :
 
-- `npm run typecheck`
-- `npm run build --workspace @quake2js/web`
+- [x] `npm run typecheck`
+- [x] `npm run build --workspace @quake2js/web`
 
 ### Lot 3 - Headers client screen/sound
 
