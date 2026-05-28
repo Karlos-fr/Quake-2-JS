@@ -4,14 +4,14 @@
 
 - Fichier TS: `packages/game/src/p_trail.ts`
 - Symboles TS: 10
-- Couvert C/H: 0
-- Reste a auditer: 9
+- Couvert C/H: 3
+- Reste a auditer: 6
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/p_trail.ts` | value | `TRAIL_LENGTH` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/p_trail.ts` | function | `NEXT` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/game/src/p_trail.ts` | function | `PREV` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/p_trail.ts` | value | `TRAIL_LENGTH` | oui | `TRAIL_LENGTH` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/p_trail.ts` | function | `NEXT` | non | `NEXT` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/p_trail.ts` | function | `PREV` | non | `PREV` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/p_trail.ts` | function | `PlayerTrail_Init` | oui | `PlayerTrail_Init` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_trail.ts` | function | `PlayerTrail_Add` | oui | `PlayerTrail_Add` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_trail.ts` | function | `PlayerTrail_New` | oui | `PlayerTrail_New` | `Quake-2-master/game/p_trail.c` | Ported | [`game_p_trail.c.md`](../matrices/game_p_trail.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |

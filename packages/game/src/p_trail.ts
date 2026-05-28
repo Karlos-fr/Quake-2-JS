@@ -21,12 +21,39 @@ import { vectoyaw } from "./g_utils.js";
 import { spawnGameEntity } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
+/**
+ * Original name: TRAIL_LENGTH
+ * Source: game/p_trail.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Size of the circular player trail marker list.
+ */
 export const TRAIL_LENGTH = 8;
 
+/**
+ * Original name: NEXT
+ * Source: game/p_trail.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances an index in the power-of-two trail ring.
+ */
 function NEXT(n: number): number {
   return (n + 1) & (TRAIL_LENGTH - 1);
 }
 
+/**
+ * Original name: PREV
+ * Source: game/p_trail.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Moves an index backward in the power-of-two trail ring.
+ */
 function PREV(n: number): number {
   return (n - 1) & (TRAIL_LENGTH - 1);
 }

@@ -4,15 +4,15 @@
 
 - Fichier TS: `packages/math/src/q_shared.ts`
 - Symboles TS: 33
-- Couvert C/H: 0
-- Reste a auditer: 33
+- Couvert C/H: 2
+- Reste a auditer: 29
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/math/src/q_shared.ts` | value | `vec3_origin` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/math/src/q_shared.ts` | function | `cloneVec3` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/math/src/q_shared.ts` | function | `VectorClear` | oui | `VectorClear` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
-| `packages/math/src/q_shared.ts` | function | `VectorCopy` | oui | `VectorCopy` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
+| `packages/math/src/q_shared.ts` | value | `vec3_origin` | oui | `vec3_origin` | `Quake-2-master/game/q_shared.c` | Ported | [`game_q_shared.c.md`](../matrices/game_q_shared.c.md) | TS sans lien source documente | Valide | Matrice C/H sans ligne globale dediee; preuve directe dans `q_shared.c`/`q_shared.h`. |
+| `packages/math/src/q_shared.ts` | function | `cloneVec3` | oui | `N/A` | `N/A (local tuple helper)` | New |  | Hors C/H | Valide |  |
+| `packages/math/src/q_shared.ts` | function | `VectorClear` | oui | `VectorClear` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Ownership justifie | Couvert C/H | Package math partage volontairement les helpers MATHLIB reutilises par qcommon/game/server/renderer. |
+| `packages/math/src/q_shared.ts` | function | `VectorCopy` | oui | `VectorCopy` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Ownership justifie | Couvert C/H | Package math partage volontairement les helpers MATHLIB reutilises par qcommon/game/server/renderer. |
 | `packages/math/src/q_shared.ts` | function | `VectorAdd` | oui | `VectorAdd` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
 | `packages/math/src/q_shared.ts` | function | `VectorSubtract` | oui | `VectorSubtract` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
 | `packages/math/src/q_shared.ts` | function | `VectorScale` | oui | `VectorScale` | `Quake-2-master/game/q_shared.h` | Ported | [`game_q_shared.h.md`](../matrices/game_q_shared.h.md) | Doublon potentiel | A verifier | Plusieurs symboles TS declarent le meme portage source. Ownership aussi suspect: le package TS ne correspond pas au module source attendu. |

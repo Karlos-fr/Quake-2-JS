@@ -5,12 +5,12 @@
 - Fichier TS: `packages/game/src/touch.ts`
 - Symboles TS: 5
 - Couvert C/H: 2
-- Reste a auditer: 3
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `packages/game/src/touch.ts` | function | `G_TouchTriggers` | oui | `G_TouchTriggers` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
 | `packages/game/src/touch.ts` | function | `G_TouchSolids` | oui | `G_TouchSolids` | `Quake-2-master/game/g_utils.c` | Ported | [`game_g_utils.c.md`](../matrices/game_g_utils.c.md) | Couvert C/H | Couvert C/H |  |
-| `packages/game/src/touch.ts` | function | `touchTriggerEntities` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/touch.ts` | function | `getActorBounds` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/touch.ts` | function | `hasNonZeroExtents` | non |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/touch.ts` | function | `touchTriggerEntities` | oui | N/A | N/A (local compatibility wrapper) | New |  | Hors C/H | Valide |  |
+| `packages/game/src/touch.ts` | function | `getActorBounds` | non | N/A | N/A (local bounds helper) | New |  | Hors C/H | Valide |  |
+| `packages/game/src/touch.ts` | function | `hasNonZeroExtents` | non | N/A | N/A (local bounds helper) | New |  | Hors C/H | Valide |  |

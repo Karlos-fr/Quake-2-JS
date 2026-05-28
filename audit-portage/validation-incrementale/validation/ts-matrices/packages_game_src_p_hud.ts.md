@@ -5,12 +5,12 @@
 - Fichier TS: `packages/game/src/p_hud.ts`
 - Symboles TS: 15
 - Couvert C/H: 0
-- Reste a auditer: 15
+- Reste a auditer: 13
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/p_hud.ts` | interface | `GameHudHooks` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/p_hud.ts` | interface | `GameHudHelpComputerData` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/p_hud.ts` | interface | `GameHudHooks` | oui | `N/A` | `N/A (local HUD hook contract)` | New |  | Hors C/H | Valide |  |
+| `packages/game/src/p_hud.ts` | interface | `GameHudHelpComputerData` | oui | `N/A` | `N/A (local help-computer data contract)` | New |  | Hors C/H | Valide |  |
 | `packages/game/src/p_hud.ts` | function | `MoveClientToIntermission` | oui | `MoveClientToIntermission` | `Quake-2-master/game/p_hud.c` | Ported | [`game_p_hud.c.md`](../matrices/game_p_hud.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_hud.ts` | function | `BeginIntermission` | oui | `BeginIntermission` | `Quake-2-master/game/p_hud.c` | Ported | [`game_p_hud.c.md`](../matrices/game_p_hud.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_hud.ts` | function | `DeathmatchScoreboardMessage` | oui | `DeathmatchScoreboardMessage` | `Quake-2-master/game/p_hud.c` | Ported | [`game_p_hud.c.md`](../matrices/game_p_hud.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |

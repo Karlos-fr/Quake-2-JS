@@ -85,6 +85,8 @@ import { PlayerNoise } from "./p_weapon.js";
 import { emitGameSound, registerGameSound, type GameClient, type GameEntity, type GameRuntime } from "./runtime.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (local frame-state adapter)
  * Category: New
  * Purpose: Preserve the temporary per-frame bob state that originally lived in `p_view.c` file statics.
  */
@@ -98,6 +100,12 @@ export interface PlayerViewFrameState {
   bobfracsin: number;
 }
 
+/**
+ * Original name: i
+ * Source: game/p_view.c (`P_DamageFeedback` function-local static)
+ * Category: Adapter
+ * Purpose: Preserve the C function-local static pain animation cycle in module scope.
+ */
 let painAnimationCycle = 0;
 
 /**
@@ -1012,6 +1020,8 @@ export function ClientEndServerFrame(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local frame-state adapter)
  * Category: New
  * Purpose: Create the zero-initialized temporary frame state used by `ClientEndServerFrame`.
  */

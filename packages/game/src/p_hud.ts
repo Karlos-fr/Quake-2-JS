@@ -46,6 +46,8 @@ import { emitGameSound, registerGameImage } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (local HUD hook contract)
  * Category: New
  * Purpose: Keep the remaining unported intermission-side effects explicit.
  */
@@ -54,6 +56,8 @@ export interface GameHudHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local help-computer data contract)
  * Category: New
  * Purpose: Carry the global gameplay state that the original help-computer layout pulled from `game` and `level`.
  */

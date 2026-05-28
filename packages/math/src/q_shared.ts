@@ -9,9 +9,20 @@
  * - None
  */
 
+/**
+ * Original name: vec3_origin
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Provides the canonical zero vector shared by Quake II math call sites.
+ */
 export const vec3_origin: [number, number, number] = [0, 0, 0];
 
 /**
+ * Original name: N/A
+ * Source: N/A (local tuple helper)
  * Category: New
  * Purpose: Clone a Quake-style vec3 tuple.
  *

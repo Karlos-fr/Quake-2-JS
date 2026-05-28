@@ -4,17 +4,17 @@
 
 - Fichier TS: `packages/memory/src/sizebuf.ts`
 - Symboles TS: 9
-- Couvert C/H: 1
-- Reste a auditer: 6
+- Couvert C/H: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `packages/memory/src/sizebuf.ts` | interface | `sizebuf_t` | oui | `sizebuf_s` | `Quake-2-master/qcommon/qcommon.h` | Ported | [`qcommon_qcommon.h.md`](../matrices/qcommon_qcommon.h.md) | Couvert C/H | Couvert C/H | TS symbol keeps the C typedef name; C/H matrix tracks owning struct `sizebuf_s`. |
 | `packages/memory/src/sizebuf.ts` | function | `createSizeBuffer` | oui | `N/A` | `N/A (local allocation helper)` | New |  | Nouveau explicite | Valide |  |
-| `packages/memory/src/sizebuf.ts` | function | `SZ_Init` | oui | `SZ_Init` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
-| `packages/memory/src/sizebuf.ts` | function | `SZ_Clear` | oui | `SZ_Clear` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
-| `packages/memory/src/sizebuf.ts` | function | `MSG_BeginReading` | oui | `MSG_BeginReading` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
-| `packages/memory/src/sizebuf.ts` | function | `SZ_GetSpace` | oui | `SZ_GetSpace` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
-| `packages/memory/src/sizebuf.ts` | function | `SZ_Write` | oui | `SZ_Write` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
-| `packages/memory/src/sizebuf.ts` | function | `SZ_Print` | oui | `SZ_Print` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Ownership suspect | A verifier | Le package TS ne correspond pas au module source attendu. |
+| `packages/memory/src/sizebuf.ts` | function | `SZ_Init` | oui | `SZ_Init` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Couvert C/H | Couvert C/H | Ownership TS justifie: primitive sizebuf mutualisee dans `packages/memory`, ciblee par la matrice C/H; aucun autre proprietaire TS trouve. |
+| `packages/memory/src/sizebuf.ts` | function | `SZ_Clear` | oui | `SZ_Clear` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Couvert C/H | Couvert C/H | Ownership TS justifie: primitive sizebuf mutualisee dans `packages/memory`, ciblee par la matrice C/H; aucun autre proprietaire TS trouve. |
+| `packages/memory/src/sizebuf.ts` | function | `MSG_BeginReading` | oui | `MSG_BeginReading` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Couvert C/H | Couvert C/H | Ownership TS justifie: primitive sizebuf mutualisee dans `packages/memory`, ciblee par la matrice C/H; aucun autre proprietaire TS trouve. |
+| `packages/memory/src/sizebuf.ts` | function | `SZ_GetSpace` | oui | `SZ_GetSpace` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Couvert C/H | Couvert C/H | Ownership TS justifie: primitive sizebuf mutualisee dans `packages/memory`, ciblee par la matrice C/H; aucun autre proprietaire TS trouve. |
+| `packages/memory/src/sizebuf.ts` | function | `SZ_Write` | oui | `SZ_Write` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Couvert C/H | Couvert C/H | Ownership TS justifie: primitive sizebuf mutualisee dans `packages/memory`, ciblee par la matrice C/H; aucun autre proprietaire TS trouve. |
+| `packages/memory/src/sizebuf.ts` | function | `SZ_Print` | oui | `SZ_Print` | `Quake-2-master/qcommon/common.c` | Ported | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Couvert C/H | Couvert C/H | Ownership TS justifie: primitive sizebuf mutualisee dans `packages/memory`, ciblee par la matrice C/H; aucun autre proprietaire TS trouve. |
 | `packages/memory/src/sizebuf.ts` | function | `encodeCString` | non | `N/A` | `N/A (local string encoding helper)` | New |  | Nouveau explicite | Valide |  |

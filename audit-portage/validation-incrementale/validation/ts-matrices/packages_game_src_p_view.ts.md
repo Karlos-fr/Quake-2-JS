@@ -5,12 +5,12 @@
 - Fichier TS: `packages/game/src/p_view.ts`
 - Symboles TS: 26
 - Couvert C/H: 0
-- Reste a auditer: 26
+- Reste a auditer: 23
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/p_view.ts` | interface | `PlayerViewFrameState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/game/src/p_view.ts` | value | `painAnimationCycle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/game/src/p_view.ts` | interface | `PlayerViewFrameState` | oui | N/A | N/A (local frame-state adapter) | New |  | Hors C/H | Valide | Encapsule les statics C `forward`/`right`/`up` et les champs bob deja valides dans `game_p_view.c.md`; helper de structuration TS local. |
+| `packages/game/src/p_view.ts` | value | `painAnimationCycle` | non | `i` | `Quake-2-master/game/p_view.c` (`P_DamageFeedback` function-local static) | Adapter |  | Adapter local | Valide | Adapte le `static int i` local de `P_DamageFeedback` en variable module TS; proprietaire comportemental reste `P_DamageFeedback`. |
 | `packages/game/src/p_view.ts` | function | `SV_CalcRoll` | oui | `SV_CalcRoll` | `Quake-2-master/game/p_view.c` | Ported | [`game_p_view.c.md`](../matrices/game_p_view.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_view.ts` | function | `G_SetClientEffects` | oui | `G_SetClientEffects` | `Quake-2-master/game/p_view.c` | Ported | [`game_p_view.c.md`](../matrices/game_p_view.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_view.ts` | function | `G_SetClientEvent` | oui | `G_SetClientEvent` | `Quake-2-master/game/p_view.c` | Ported | [`game_p_view.c.md`](../matrices/game_p_view.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
@@ -24,7 +24,7 @@
 | `packages/game/src/p_view.ts` | function | `SV_AddBlend` | oui | `SV_AddBlend` | `Quake-2-master/game/p_view.c` | Ported | [`game_p_view.c.md`](../matrices/game_p_view.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_view.ts` | function | `SV_CalcBlend` | oui | `SV_CalcBlend` | `Quake-2-master/game/p_view.c` | Ported | [`game_p_view.c.md`](../matrices/game_p_view.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
 | `packages/game/src/p_view.ts` | function | `ClientEndServerFrame` | oui | `ClientEndServerFrame` | `Quake-2-master/game/p_view.c` | Ported | [`game_p_view.c.md`](../matrices/game_p_view.c.md) | A auditer | A verifier | Entite source trouvee mais pas encore couverte par une validation finale. |
-| `packages/game/src/p_view.ts` | function | `createPlayerViewFrameState` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/game/src/p_view.ts` | function | `createPlayerViewFrameState` | oui | N/A | N/A (local frame-state adapter) | New |  | Hors C/H | Valide | Constructeur zero-initialized pour `PlayerViewFrameState`; pas d'entite C/H autonome. |
 | `packages/game/src/p_view.ts` | function | `setClientBaseAnimation` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/p_view.ts` | function | `dotProduct` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
 | `packages/game/src/p_view.ts` | function | `addVec3` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |

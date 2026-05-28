@@ -97,6 +97,8 @@ export function G_TouchSolids(runtime: GameRuntime, trigger: GameEntity): void {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local compatibility wrapper)
  * Category: New
  * Purpose: Preserve the existing helper name while routing through the strict `G_TouchTriggers` port.
  */
@@ -105,6 +107,8 @@ export function touchTriggerEntities(runtime: GameRuntime, actor: GameEntity): v
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local bounds helper)
  * Category: New
  * Purpose: Convert one actor entity into absolute world bounds using the runtime spatial fields.
  */
@@ -120,6 +124,8 @@ function getActorBounds(actor: GameEntity): { mins: [number, number, number]; ma
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local bounds helper)
  * Category: New
  * Purpose: Reject empty placeholder bounds so only meaningful trigger volumes participate.
  */
