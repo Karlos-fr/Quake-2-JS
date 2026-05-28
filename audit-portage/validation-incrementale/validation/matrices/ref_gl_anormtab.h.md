@@ -10,4 +10,3 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/anormtab.h` | table | `r_avertexnormal_dots` | `packages/renderer-three/src/anormtab.ts` | `R_AVERTEXNORMAL_DOTS` | Valide | strict-ok |  |

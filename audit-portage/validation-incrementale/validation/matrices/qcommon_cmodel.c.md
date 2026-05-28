@@ -156,7 +156,7 @@
 | `Quake-2-master/qcommon/cmodel.c` | global | `k` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `brushnum` | `packages/qcommon/src/cmodel.ts` | `brushnum` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `leaf` | `packages/qcommon/src/cmodel.ts` | `leaf` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TestInLeaf` | `packages/qcommon/src/cmodel.ts` | `CM_TestInLeafs` | Valide | A redecouper | Renomme en adapter explicite pour remplacer les globals temporaires; preuve stationary trace dans `quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TestInLeaf` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Renomme en adapter explicite pour remplacer les globals temporaires; preuve stationary trace dans `quake2-cmodel.ts`. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `k` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `brushnum` | `packages/qcommon/src/cmodel.ts` | `brushnum` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `leaf` | `packages/qcommon/src/cmodel.ts` | `leaf` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |

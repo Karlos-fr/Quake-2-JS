@@ -910,20 +910,6 @@ export function initializeDoorPlanEntities(runtime: GameRuntime): void {
 
 /**
  * Original name: N/A
- * Source declaree: N/A (local team-link reset helper)
- * Category: New
- * Purpose: Reset team runtime links before rebuilding them from the original BSP order.
- */
-function clearTeamLinks(runtime: GameRuntime): void {
-  for (const entity of runtime.entities) {
-    entity.teammaster = null;
-    entity.teamchain = null;
-    entity.flags &= ~FL_TEAMSLAVE;
-  }
-}
-
-/**
- * Original name: N/A
  * Source declaree: N/A (local g_main context bridge)
  * Category: New
  */

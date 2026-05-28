@@ -2607,16 +2607,6 @@ function getMuzzleFlashDefinition(weaponId: number, volume: number): {
 
 /**
  * Original name: N/A
- * Source: N/A (muzzleflash metadata helper)
- * Category: New
- * Purpose: Convert one monster muzzle flash id into a first coarse family name.
- */
-function getMuzzleFlash2Kind(flashNumber: number): string {
-  return getMuzzleFlash2Definition(flashNumber).kind;
-}
-
-/**
- * Original name: N/A
  * Source: N/A (temp-entity metadata helper)
  * Category: New
  * Purpose: Convert one temp entity packet into a stable readable kind string.
@@ -2714,34 +2704,6 @@ function createTempEntityMarker(
   }
   if (extras.magnitude !== undefined) {
     effect.magnitude = extras.magnitude;
-  }
-  return effect;
-}
-
-/**
- * Original name: N/A
- * Source: N/A (particle metadata helper)
- * Category: New
- * Purpose: Build one particle-effect marker using explicit direction and palette inputs.
- */
-function createParticleEffectMarker(
-  kind: string,
-  position: vec3_t,
-  direction: vec3_t,
-  color: number,
-  count: number,
-  packet?: ClientTempEntityPacket
-): ClientActionEffect {
-  const effect: ClientActionEffect = {
-    category: "particle",
-    kind,
-    position: [...position],
-    direction: [...direction],
-    color,
-    count
-  };
-  if (packet) {
-    effect.packet = packet;
   }
   return effect;
 }
@@ -3790,20 +3752,6 @@ function spawnTrapParticles(runtime: ClientRuntime, adjustedOrigin: vec3_t): voi
  * Original name: N/A
  * Source: N/A (local vector helper)
  * Category: New
- * Purpose: Compute `a + scalar * direction` by value.
- */
-function addScaledVector(base: vec3_t, direction: vec3_t, scalar: number): vec3_t {
-  return [
-    base[0] + direction[0] * scalar,
-    base[1] + direction[1] * scalar,
-    base[2] + direction[2] * scalar
-  ];
-}
-
-/**
- * Original name: N/A
- * Source: N/A (local vector helper)
- * Category: New
  * Purpose: Subtract two vectors by value.
  */
 function subtractVec3(a: vec3_t, b: vec3_t): vec3_t {
@@ -3826,16 +3774,6 @@ function normalizeVectorCopy(vector: vec3_t): number {
   vector[1] /= length;
   vector[2] /= length;
   return length;
-}
-
-/**
- * Original name: N/A
- * Source: N/A (local math helper)
- * Category: New
- * Purpose: Reproduce floating-point modulo behavior for the heatbeam ring offset.
- */
-function floatMod(value: number, divisor: number): number {
-  return value - (Math.floor(value / divisor) * divisor);
 }
 
 /**
@@ -3887,24 +3825,6 @@ function randomRicochetSound(): string | null {
     return "world/ric3.wav";
   }
   return null;
-}
-
-/**
- * Original name: N/A
- * Source: N/A (local vector helper)
- * Category: New
- * Purpose: Build one normalized random direction vector.
- */
-function normalizeRandomDirection(): vec3_t {
-  const dir: vec3_t = [crand(), crand(), crand()];
-  const length = Math.sqrt((dir[0] * dir[0]) + (dir[1] * dir[1]) + (dir[2] * dir[2]));
-  if (length === 0) {
-    return [0, 0, 1];
-  }
-  dir[0] /= length;
-  dir[1] /= length;
-  dir[2] /= length;
-  return dir;
 }
 
 /**

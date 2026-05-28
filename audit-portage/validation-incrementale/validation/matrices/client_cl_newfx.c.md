@@ -12,6 +12,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/client/cl_newfx.c` | global | `cl_numparticles` | `packages/client/src/cl_newfx.ts` |  | Non applicable | A redecouper | Declaration externe; owner effectif `client_state_t.cl_numparticles` / `CL_ClearParticles`. |
 | `Quake-2-master/client/cl_newfx.c` | global | `vid_ref` | `packages/client/src/cl_newfx.ts` |  | Non applicable | A redecouper | Declaration externe non utilisee par ce fichier; `vidref_val` est porte dans l'etat client pour `CL_ColorFlash`. |
+| `Quake-2-master/client/cl_newfx.c` | function | `MakeNormalVectors` | `packages/client/src/cl_newfx.ts` | `MakeNormalVectors` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | function | `vectoangles2` | `packages/client/src/cl_newfx.ts` | `vectoangles2` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | global | `forward` | `packages/client/src/cl_newfx.ts` | `forward` | Non applicable | A redecouper | Local C de `vectoangles2`. |
 | `Quake-2-master/client/cl_newfx.c` | global | `pitch` | `packages/client/src/cl_newfx.ts` | `pitch` | Non applicable | A redecouper | Local C de `vectoangles2`. |

@@ -43,9 +43,9 @@
 | `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver` | `packages/server/src/sv_user.ts` | `SV_Nextserver` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | global | `v` | `packages/server/src/sv_user.ts` | `v` | Non applicable | A redecouper | Variable locale de `SV_Nextserver`. |
 | `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver_f` | `packages/server/src/sv_user.ts` | `SV_Nextserver_f` | Valide | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | struct | `ucmd_t` | `packages/server/src/sv_user.ts` | `ucmd_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | struct | `ucmd_t` | `packages/server/src/sv_user.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | Non applicable | A redecouper | Champ de `ucmd_t`, pas une entite globale proprietaire. |
-| `Quake-2-master/server/sv_user.c` | table | `ucmds` | `packages/server/src/sv_user.ts` | `ucmds` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | table | `ucmds` | `packages/server/src/sv_user.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | function | `SV_ExecuteUserCommand` | `packages/server/src/sv_user.ts` | `SV_ExecuteUserCommand` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | function | `SV_ClientThink` | `packages/server/src/sv_user.ts` | `SV_ClientThink` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | macro | `MAX_STRINGCMDS` | `packages/server/src/sv_user.ts` | `MAX_STRINGCMDS` | Valide | A redecouper |  |

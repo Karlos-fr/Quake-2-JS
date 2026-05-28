@@ -10,10 +10,10 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/console.c` | global | `con_notifytime` | `packages/client/src/console.ts` | `con_notifytime` | Valide | A redecouper |  |
-| `Quake-2-master/client/console.c` | macro | `MAXCMDLINE` | `packages/client/src/keys.ts` | `MAXCMDLINE` | Valide | A redecouper | Ownership deplace avec l'etat de saisie console de `keys.c`; importe par `console.ts`. |
-| `Quake-2-master/client/console.c` | global | `edit_line` | `packages/client/src/keys.ts` | `edit_line` | Non applicable | A redecouper | Extern `keys.c`, valide dans la matrice `client_keys.c.md`. |
-| `Quake-2-master/client/console.c` | global | `key_linepos` | `packages/client/src/keys.ts` | `key_linepos` | Non applicable | A redecouper | Extern `keys.c`, valide dans la matrice `client_keys.c.md`. |
+| `Quake-2-master/client/console.c` | global | `con_notifytime` | `packages/client/src/console.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/console.c` | macro | `MAXCMDLINE` | `packages/client/src/console.ts` |  | Valide | A redecouper | Ownership deplace avec l'etat de saisie console de `keys.c`; importe par `console.ts`. |
+| `Quake-2-master/client/console.c` | global | `edit_line` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Extern `keys.c`, valide dans la matrice `client_keys.c.md`. |
+| `Quake-2-master/client/console.c` | global | `key_linepos` | `packages/client/src/console.ts` |  | Non applicable | A redecouper | Extern `keys.c`, valide dans la matrice `client_keys.c.md`. |
 | `Quake-2-master/client/console.c` | function | `DrawString` | `packages/client/src/console.ts` | `DrawString` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | function | `DrawAltString` | `packages/client/src/console.ts` | `DrawAltString` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | function | `Key_ClearTyping` | `packages/client/src/console.ts` | `Key_ClearTyping` | Valide | A redecouper |  |
@@ -35,7 +35,7 @@
 | `Quake-2-master/client/console.c` | function | `Con_Linefeed` | `packages/client/src/console.ts` | `Con_Linefeed` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | function | `Con_Print` | `packages/client/src/console.ts` | `Con_Print` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | global | `y` | `packages/client/src/console.ts` | `y` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
-| `Quake-2-master/client/console.c` | global | `cr` | `packages/client/src/console.ts` | `conPrintCarriageReturn` | Valide | A redecouper | Static local C porte en etat prive TS pour preserver le retour chariot entre appels. |
+| `Quake-2-master/client/console.c` | global | `cr` | `packages/client/src/console.ts` | `cr` | Valide | A redecouper | Static local C porte en etat prive TS pour preserver le retour chariot entre appels. |
 | `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
 | `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
 | `Quake-2-master/client/console.c` | function | `Con_CenteredPrint` | `packages/client/src/console.ts` | `Con_CenteredPrint` | Valide | A redecouper |  |

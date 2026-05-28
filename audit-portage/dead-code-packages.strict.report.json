@@ -1,0 +1,25 @@
+{
+  "scope": "tsconfig apps/**/*.ts + packages/**/*.ts",
+  "mode": "strict",
+  "notes": [
+    "Findings are candidates. Dynamic imports, string-based registries and external package consumers can require manual review.",
+    "Package src/index.ts files are treated as entrypoints for file-level analysis.",
+    "Strict mode keeps file-level candidates and non-exported top-level declarations with no references."
+  ],
+  "counts": {
+    "unusedFiles": 0,
+    "retainedUnusedFiles": 1,
+    "unusedTopLevel": 0,
+    "exportedWithoutExternalReferences": 0
+  },
+  "unusedFiles": [],
+  "retainedUnusedFiles": [
+    {
+      "file": "packages/server/src/sv_null.ts",
+      "reason": "No static import or re-export from the analyzed TypeScript graph",
+      "retainedReason": "Strict owner for Quake-2-master/server/sv_null.c; intentionally retained even when the full-server host uses host.ts adapters."
+    }
+  ],
+  "unusedTopLevel": [],
+  "exportedWithoutExternalReferences": []
+}

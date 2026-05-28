@@ -66,6 +66,7 @@
 | `Quake-2-master/client/snd_dma.c` | global | `source_vec` | `packages/client/src/snd_dma.ts` | `source_vec` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_Spatialize` | `packages/client/src/snd_dma.ts` | `S_Spatialize` | Valide | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `origin` | `packages/client/src/snd_dma.ts` | `origin` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_AllocPlaysound` | `packages/client/src/snd_dma.ts` | `S_AllocPlaysound` | Valide | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_FreePlaysound` | `packages/client/src/snd_dma.ts` | `S_FreePlaysound` | Valide | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_IssuePlaysound` | `packages/client/src/snd_dma.ts` | `S_IssuePlaysound` | Valide | A redecouper |  |
@@ -110,3 +111,5 @@
 | `Quake-2-master/client/snd_dma.c` | function | `strcpy` | `packages/client/src/snd_dma.ts` |  | Non applicable | A redecouper | Appel libc dans `S_Play`, remplace par assignation/concat string TS. |
 | `Quake-2-master/client/snd_dma.c` | function | `S_SoundList` | `packages/client/src/snd_dma.ts` | `S_SoundList` | Valide | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | Non applicable | A redecouper | Variable locale de `S_SoundList`, pas une entite proprietaire. |
+| `Quake-2-master/client/snd_dma.c` | function | `Com_Printf` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_dma.c` | function | `Com_Printf` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |

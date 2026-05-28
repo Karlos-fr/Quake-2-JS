@@ -10,27 +10,27 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/common.c` | macro | `MAXPRINTMSG` | `packages/qcommon/src/common.ts` | `MAXPRINTMSG` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | macro | `MAXPRINTMSG` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | macro | `MAX_NUM_ARGVS` | `packages/qcommon/src/common.ts` | `MAX_NUM_ARGVS` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `com_argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `com_argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `realtime` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Global C non externe et non reference dans le runtime original; les horloges vivantes sont `cls.realtime` et `svs.realtime`. |
-| `Quake-2-master/qcommon/common.c` | global | `host_speeds` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.host_speeds` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `log_stats` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.log_stats` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `developer` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.developer` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `timescale` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.timescale` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `fixedtime` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.fixedtime` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `logfile_active` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.logfile_active` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `showtrace` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.showtrace` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `dedicated` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.dedicated` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `server_state` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.server_state` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_before_game` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_before_game` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_after_game` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_after_game` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_before_ref` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_before_ref` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `time_after_ref` | `packages/qcommon/src/qcommon.ts` | `QcommonGlobals.time_after_ref` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `rd_target` | `packages/qcommon/src/common.ts` | `CommonRuntime.rd_target` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `rd_buffer` | `packages/qcommon/src/common.ts` | `CommonRuntime.rd_buffer` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `rd_buffersize` | `packages/qcommon/src/common.ts` | `CommonRuntime.rd_buffersize` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `host_speeds` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `log_stats` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `developer` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `timescale` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `fixedtime` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `logfile_active` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `showtrace` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `dedicated` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `server_state` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_before_game` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_after_game` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_before_ref` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `time_after_ref` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `rd_target` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `rd_buffer` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `rd_buffersize` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_BeginRedirect` | `packages/qcommon/src/common.ts` | `Com_BeginRedirect` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_EndRedirect` | `packages/qcommon/src/common.ts` | `Com_EndRedirect` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_Printf` | `packages/qcommon/src/common.ts` | `Com_Printf` | Valide | A redecouper |  |
@@ -43,7 +43,7 @@
 | `Quake-2-master/qcommon/common.c` | function | `Com_Error` | `packages/qcommon/src/qcommon.ts` | `Com_Error` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `argptr` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale va_list de `Com_Error`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | global | `msg` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Buffer statique de `Com_Error`; remplace par message string de l'exception structuree. |
-| `Quake-2-master/qcommon/common.c` | global | `recursive` | `packages/qcommon/src/qcommon.ts` | `QcommonMiscRuntime.recursive_error` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `recursive` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `jmp` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel `setjmp` externe remplace par exceptions structurees `QcommonSignal`. |
 | `Quake-2-master/qcommon/common.c` | function | `jmp` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Appel `longjmp` externe remplace par exceptions structurees `QcommonSignal`. |
 | `Quake-2-master/qcommon/common.c` | function | `Com_Quit` | `packages/qcommon/src/qcommon.ts` | `Com_Quit` | Valide | A redecouper |  |
@@ -121,7 +121,7 @@
 | `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `COM_InitArgv`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | global | `com_argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `COM_AddParm` | `packages/qcommon/src/common.ts` | `COM_AddParm` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `memsearch` | `packages/qcommon/src/common.ts` | `memsearch` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `memsearch` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `memsearch`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `CopyString` | `packages/qcommon/src/qcommon.ts` | `CopyString` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `out` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local C de `CopyString`; remplace par string JS owned-copy. |
@@ -131,31 +131,34 @@
 | `Quake-2-master/qcommon/common.c` | global | `o` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Pointeur local C de `Info_Print`; remplace par index/string slices. |
 | `Quake-2-master/qcommon/common.c` | global | `l` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Longueur locale C de `Info_Print`; couverte par le padding TS. |
 | `Quake-2-master/qcommon/common.c` | global | `o` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Pointeur local C de `Info_Print`; remplace par index/string slices. |
-| `Quake-2-master/qcommon/common.c` | macro | `Z_MAGIC` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Garde pointeur C remplace par identite `Map` des allocations TS. |
-| `Quake-2-master/qcommon/common.c` | struct | `zhead_s` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Header malloc C remplace par metadata `zone_allocations`. |
-| `Quake-2-master/qcommon/common.c` | global | `magic` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Champ `zhead_s` remplace par verification de reference `Map`. |
-| `Quake-2-master/qcommon/common.c` | global | `tag` | `packages/qcommon/src/qcommon.ts` | `tag` | Non applicable | A redecouper | Champ metadata de zone couvert par `Z_TagMalloc`/`Z_FreeTags`. |
-| `Quake-2-master/qcommon/common.c` | global | `size` | `packages/qcommon/src/qcommon.ts` | `size` | Non applicable | A redecouper | Champ metadata de zone couvert par `Z_TagMalloc`/`Z_Stats_f`. |
-| `Quake-2-master/qcommon/common.c` | global | `z_chain` | `packages/qcommon/src/qcommon.ts` | `zone_allocations` | Non applicable | A redecouper | Liste chainee C remplacee par `Map` d'allocations. |
+| `Quake-2-master/qcommon/common.c` | macro | `Z_MAGIC` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Garde pointeur C remplace par identite `Map` des allocations TS. |
+| `Quake-2-master/qcommon/common.c` | struct | `zhead_s` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Header malloc C remplace par metadata `zone_allocations`. |
+| `Quake-2-master/qcommon/common.c` | global | `magic` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Champ `zhead_s` remplace par verification de reference `Map`. |
+| `Quake-2-master/qcommon/common.c` | global | `tag` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Champ metadata de zone couvert par `Z_TagMalloc`/`Z_FreeTags`. |
+| `Quake-2-master/qcommon/common.c` | global | `size` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Champ metadata de zone couvert par `Z_TagMalloc`/`Z_Stats_f`. |
+| `Quake-2-master/qcommon/common.c` | global | `z_chain` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Liste chainee C remplacee par `Map` d'allocations. |
 | `Quake-2-master/qcommon/common.c` | function | `Z_Free` | `packages/qcommon/src/qcommon.ts` | `Z_Free` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Z_Stats_f` | `packages/qcommon/src/qcommon.ts` | `Z_Stats_f` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Z_Stats_f` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Z_FreeTags` | `packages/qcommon/src/qcommon.ts` | `Z_FreeTags` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Z_Malloc` | `packages/qcommon/src/qcommon.ts` | `Z_Malloc` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCheckByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCheckByte` | Valide | A redecouper | Stub fatal volontaire: le C appelle `Sys_Error` avant le bloc obsolete sous `#if 0`. |
-| `Quake-2-master/qcommon/common.c` | global | `chktbl` | `packages/qcommon/src/qcommon.ts` | `chktbl` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCheckByte` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper | Stub fatal volontaire: le C appelle `Sys_Error` avant le bloc obsolete sous `#if 0`. |
+| `Quake-2-master/qcommon/common.c` | global | `chktbl` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `COM_BlockSequenceCRCByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCRCByte` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `n` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Variable locale de `COM_BlockSequenceCRCByte`; couverte avec la fonction. |
-| `Quake-2-master/qcommon/common.c` | global | `p` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Pointeur local de `COM_BlockSequenceCRCByte`; remplace par index `start` dans `chktbl`. |
-| `Quake-2-master/qcommon/common.c` | global | `x` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Accumulateur local de `COM_BlockSequenceCRCByte`; couvert avec la somme TS. |
+| `Quake-2-master/qcommon/common.c` | global | `n` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de `COM_BlockSequenceCRCByte`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | global | `p` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Pointeur local de `COM_BlockSequenceCRCByte`; remplace par index `start` dans `chktbl`. |
+| `Quake-2-master/qcommon/common.c` | global | `x` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Accumulateur local de `COM_BlockSequenceCRCByte`; couvert avec la somme TS. |
 | `Quake-2-master/qcommon/common.c` | global | `chkb` | `packages/qcommon/src/qcommon.ts` | `chkb` | Non applicable | A redecouper | Buffer local de `COM_BlockSequenceCRCByte`; couvert avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | Non applicable | A redecouper | Variable locale de `COM_BlockSequenceCRCByte`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Com_Error_f` | `packages/qcommon/src/qcommon.ts` | `Com_Error_f` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Key_Init` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `SCR_EndLoadingPlaque` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `Com_Error_f` | `packages/qcommon/src/common.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local de construction de la cvar `version`; couvert par `Qcommon_Init`. |
+| `Quake-2-master/qcommon/common.c` | function | `Cbuf_AddText` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Qcommon_Frame` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Frame` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Local console input de `Qcommon_Frame`; couvert par l'option `consoleInput`. |
 | `Quake-2-master/qcommon/common.c` | global | `c_pointcontents` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Externe defini dans `qcommon/cmodel.c`; seule la remise a zero showtrace est couverte par `Qcommon_Frame`. |

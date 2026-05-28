@@ -16,5 +16,5 @@
 | `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_UpdateSwapInterval` | `packages/renderer-three/src/gl_rmisc.ts` | `GL_UpdateSwapInterval` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmisc.c` | function | `R_InitParticleTexture` | `packages/renderer-three/src/gl_rmisc.ts` | `R_InitParticleTexture` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmisc.c` | typedef | `image_type` | `packages/renderer-three/src/gl_rmisc.ts` | `image_type` | Non applicable | split-undocumented | Generated from `_TargaHeader` field, covered by `TargaHeader`. |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | struct | `_TargaHeader` | `packages/renderer-three/src/gl_rmisc.ts` | `TargaHeader` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | struct | `_TargaHeader` | `packages/renderer-three/src/gl_rmisc.ts` | `_TargaHeader` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmisc.c` | global | `colormap_size` | `packages/renderer-three/src/gl_rmisc.ts` | `colormap_size` | Non applicable | split-undocumented | Generated from `_TargaHeader` field, covered by `TargaHeader`. |

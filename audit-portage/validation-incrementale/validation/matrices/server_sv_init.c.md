@@ -10,7 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_init.c` | global | `sv` | `packages/server/src/sv_init.ts` | `ServerInitContext.sv` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `sv` | `packages/server/src/sv_init.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | function | `SV_ModelIndex` | `packages/server/src/sv_init.ts` | `SV_ModelIndex` | Valide | A redecouper |  |
@@ -39,4 +39,5 @@
 | `Quake-2-master/server/sv_init.c` | global | `ch` | `packages/server/src/sv_init.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | global | `l` | `packages/server/src/sv_init.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `Cvar_Set` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | Non applicable | A redecouper |  |

@@ -28,6 +28,7 @@
 | `Quake-2-master/server/sv_send.c` | global | `mask` | `packages/server/src/sv_send.ts` | `mask` | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `j` | `packages/server/src/sv_send.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `reliable` | `packages/server/src/sv_send.ts` | `reliable` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SZ_Write` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | function | `SV_StartSound` | `packages/server/src/sv_send.ts` | `SV_StartSound` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `sendchan` | `packages/server/src/sv_send.ts` | `sendchan` | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `flags` | `packages/server/src/sv_send.ts` | `flags` | Non applicable | A redecouper |  |
@@ -41,6 +42,7 @@
 | `Quake-2-master/server/sv_send.c` | function | `SV_SendClientDatagram` | `packages/server/src/sv_send.ts` | `SV_SendClientDatagram` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `msg_buf` | `packages/server/src/sv_send.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `msg` | `packages/server/src/sv_send.ts` | `msg` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SZ_Write` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | function | `SV_DemoCompleted` | `packages/server/src/sv_send.ts` | `SV_DemoCompleted` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | function | `SV_RateDrop` | `packages/server/src/sv_send.ts` | `SV_RateDrop` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `total` | `packages/server/src/sv_send.ts` | `total` | Non applicable | A redecouper |  |

@@ -41,7 +41,7 @@
 | `Quake-2-master/client/ref.h` | struct | `dlight_t` | `packages/client/src/ref.ts` | `dlight_t` | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `intensity` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | struct | `particle_t` | `packages/client/src/ref.ts` | `particle_t` | Valide | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `color` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | struct | `lightstyle_t` | `packages/client/src/ref.ts` | `lightstyle_t` | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `rgb` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
@@ -50,7 +50,7 @@
 | `Quake-2-master/client/ref.h` | global | `vieworg` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `viewangles` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `blend` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `time` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `time` | `packages/client/src/cl_scrn.ts` | `time` | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `rdflags` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `areabits` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `num_entities` | `packages/client/src/ref.ts` |  | Valide | A redecouper |  |
@@ -60,4 +60,3 @@
 | `Quake-2-master/client/ref.h` | struct | `refexport_t` | `packages/client/src/ref.ts` | `refexport_t` | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | global | `api_version` | `packages/client/src/ref.ts` | `API_VERSION` | Valide | A redecouper |  |
 | `Quake-2-master/client/ref.h` | struct | `refimport_t` | `packages/client/src/ref.ts` | `refimport_t` | Valide | A redecouper |  |
-| `Quake-2-master/client/ref.h` | typedef | `GetRefAPI_t` | `packages/client/src/ref.ts` | `GetRefAPI_t` | Valide | A redecouper |  |

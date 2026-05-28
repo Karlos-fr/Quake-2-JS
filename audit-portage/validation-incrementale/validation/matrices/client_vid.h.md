@@ -10,10 +10,10 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/vid.h` | struct | `vrect_s` | `packages/client/src/cl_scrn.ts` | `vrect_t` | Valide | A redecouper | C tag porte sous le typedef public `vrect_t`; reexport par `vid.ts`. |
+| `Quake-2-master/client/vid.h` | struct | `vrect_s` | `packages/client/src/vid.ts` |  | Valide | A redecouper | C tag porte sous le typedef public `vrect_t`; reexport par `vid.ts`. |
 | `Quake-2-master/client/vid.h` | struct | `viddef_t` | `packages/client/src/vid.ts` | `viddef_t` | Valide | A redecouper |  |
-| `Quake-2-master/client/vid.h` | field | `width` | `packages/client/src/vid.ts` | `viddef_t.width` | Valide | A redecouper |  |
-| `Quake-2-master/client/vid.h` | field | `height` | `packages/client/src/vid.ts` | `viddef_t.height` | Valide | A redecouper |  |
+| `Quake-2-master/client/vid.h` | global | `width` | `packages/client/src/cl_scrn.ts` | `width` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | global | `height` | `packages/client/src/cl_scrn.ts` | `height` | A verifier | A redecouper |  |
 | `Quake-2-master/client/vid.h` | function | `VID_Init` | `packages/client/src/vid.ts` | `VID_Init` | Valide | A redecouper |  |
 | `Quake-2-master/client/vid.h` | function | `VID_Shutdown` | `packages/client/src/vid.ts` | `VID_Shutdown` | Valide | A redecouper |  |
 | `Quake-2-master/client/vid.h` | function | `VID_CheckChanges` | `packages/client/src/vid.ts` | `VID_CheckChanges` | Valide | A redecouper |  |

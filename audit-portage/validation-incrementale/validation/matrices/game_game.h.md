@@ -15,28 +15,27 @@
 | `Quake-2-master/game/game.h` | macro | `SVF_DEADMONSTER` | `packages/game/src/runtime.ts` | `SVF_DEADMONSTER` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | macro | `SVF_MONSTER` | `packages/game/src/runtime.ts` | `SVF_MONSTER` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | enum | `solid_t` | `packages/game/src/game.ts` | `solid_t` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` | `link_s` | Valide | A redecouper | Alias `link_s` ajoute dans `game.ts`; `link_t` reste le typedef C. |
+| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` |  | Valide | A redecouper | Alias `link_s` ajoute dans `game.ts`; `link_t` reste le typedef C. |
 | `Quake-2-master/game/game.h` | macro | `MAX_ENT_CLUSTERS` | `packages/game/src/game.ts` | `MAX_ENT_CLUSTERS` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts` | `gclient_s` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `ps` | `packages/game/src/game.ts` | `GameClientServerFields.ps` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `ping` | `packages/game/src/game.ts` | `GameClientServerFields.ping` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `edict_s` | `packages/game/src/game.ts` | `edict_s` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `s` | `packages/game/src/game.ts` | `GameEdictServerFields.s` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `client` | `packages/game/src/game.ts` | `GameEdictServerFields.client` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `inuse` | `packages/game/src/game.ts` | `GameEdictServerFields.inuse` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `linkcount` | `packages/game/src/game.ts` | `GameEdictServerFields.linkcount` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `area` | `packages/game/src/game.ts` | `GameEdictServerFields.area` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `num_clusters` | `packages/game/src/game.ts` | `GameEdictServerFields.num_clusters` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `clusternums` | `packages/game/src/game.ts` | `GameEdictServerFields.clusternums` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `headnode` | `packages/game/src/game.ts` | `GameEdictServerFields.headnode` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `svflags` | `packages/game/src/game.ts` | `GameEdictServerFields.svflags` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `solid` | `packages/game/src/game.ts` | `GameEdictServerFields.solid` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `clipmask` | `packages/game/src/game.ts` | `GameEdictServerFields.clipmask` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `owner` | `packages/game/src/game.ts` | `GameEdictServerFields.owner` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `ps` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `ping` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `edict_s` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `s` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `inuse` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `linkcount` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `area` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `num_clusters` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `clusternums` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `headnode` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `svflags` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `solid` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `clipmask` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `owner` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | struct | `game_import_t` | `packages/game/src/game.ts` | `game_import_t` | Valide | A redecouper | Preuves session: callbacks C compares, entete verifie, branchement `SV_InitGameProgs`/`GetGameApi` exerce; tests `verify:game:header`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. Correction: `scripts/verify/quake2-game-header.ts`. |
 | `Quake-2-master/game/game.h` | struct | `game_export_t` | `packages/game/src/game.ts` | `game_export_t` | Valide | A redecouper | Preuves session: 20 champs/callbacks C compares, entete verifie, branchement `GetGameApi`/`SV_InitGameProgs` exerce; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. Correction: `scripts/verify/quake2-game-header.ts`. |
-| `Quake-2-master/game/game.h` | global | `apiversion` | `packages/game/src/game.ts` | `game_export_t.apiversion` | Valide | A redecouper | Preuves session: champ C compare, valeur `GAME_API_VERSION` verifiee via `GetGameApi`, branchement `SV_InitGameProgs` exerce; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. Correction: `scripts/verify/quake2-game-header.ts`. |
-| `Quake-2-master/game/game.h` | global | `edict_size` | `packages/game/src/game.ts` | `game_export_t.edict_size` | Valide | A redecouper | Preuves session: champ C compare; correction `packages/game/src/g_main.ts` remplace le placeholder `0` par un getter de marqueur de forme edict runtime; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. |
-| `Quake-2-master/game/game.h` | global | `num_edicts` | `packages/game/src/game.ts` | `game_export_t.num_edicts` | Valide | A redecouper | Preuves session: champ C compare; getter TS synchronise `context.runtime.entities.length`, consomme par boucles serveur/snapshots; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. |
-| `Quake-2-master/game/game.h` | global | `max_edicts` | `packages/game/src/game.ts` | `game_export_t.max_edicts` | Valide | A redecouper | Preuves session: champ C compare; getter TS synchronise `context.runtime.maxentities`, issu du cvar `maxentities`; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. |
+| `Quake-2-master/game/game.h` | global | `apiversion` | `packages/game/src/game.ts` |  | Valide | A redecouper | Preuves session: champ C compare, valeur `GAME_API_VERSION` verifiee via `GetGameApi`, branchement `SV_InitGameProgs` exerce; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. Correction: `scripts/verify/quake2-game-header.ts`. |
+| `Quake-2-master/game/game.h` | global | `edict_size` | `packages/game/src/game.ts` |  | Valide | A redecouper | Preuves session: champ C compare; correction `packages/game/src/g_main.ts` remplace le placeholder `0` par un getter de marqueur de forme edict runtime; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. |
+| `Quake-2-master/game/game.h` | global | `num_edicts` | `packages/game/src/game.ts` |  | Valide | A redecouper | Preuves session: champ C compare; getter TS synchronise `context.runtime.entities.length`, consomme par boucles serveur/snapshots; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. |
+| `Quake-2-master/game/game.h` | global | `max_edicts` | `packages/game/src/game.ts` |  | Valide | A redecouper | Preuves session: champ C compare; getter TS synchronise `context.runtime.maxentities`, issu du cvar `maxentities`; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. |
 | `Quake-2-master/game/game.h` | function | `GetGameApi` | `packages/game/src/game.ts` | `GetGameApi` | Valide | A redecouper | Preuves session: declaration `game.h` comparee au type TS, implementation `g_main.c`/`g_main.ts` comparee, entetes enrichis; branchement `SV_InitGameProgs`/apps web/renderer verifie; tests `verify:game:header`, `verify:g-main`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. |

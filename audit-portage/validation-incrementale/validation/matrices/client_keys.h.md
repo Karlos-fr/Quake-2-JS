@@ -97,12 +97,12 @@
 | `Quake-2-master/client/keys.h` | macro | `K_AUX32` | `packages/client/src/keys.ts` | `K_AUX32` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | macro | `K_MWHEELDOWN` | `packages/client/src/keys.ts` | `K_MWHEELDOWN` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | macro | `K_MWHEELUP` | `packages/client/src/keys.ts` | `K_MWHEELUP` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `keybindings` | `packages/client/src/keys.ts` | `client_key_state_t.keybindings` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `key_repeats` | `packages/client/src/keys.ts` | `client_key_state_t.key_repeats` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `anykeydown` | `packages/client/src/keys.ts` | `client_key_state_t.anykeydown` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `chat_buffer` | `packages/client/src/keys.ts` | `client_key_state_t.chat_buffer` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `chat_bufferlen` | `packages/client/src/keys.ts` | `client_key_state_t.chat_bufferlen` | Valide | A redecouper |  |
-| `Quake-2-master/client/keys.h` | global | `chat_team` | `packages/client/src/keys.ts` | `client_key_state_t.chat_team` | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `keybindings` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `key_repeats` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `anykeydown` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `chat_buffer` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `chat_bufferlen` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/keys.h` | global | `chat_team` | `packages/client/src/keys.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | function | `Key_Event` | `packages/client/src/keys.ts` | `Key_Event` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | function | `Key_Init` | `packages/client/src/keys.ts` | `Key_Init` | Valide | A redecouper |  |
 | `Quake-2-master/client/keys.h` | function | `Key_WriteBindings` | `packages/client/src/keys.ts` | `Key_WriteBindings` | Valide | A redecouper |  |

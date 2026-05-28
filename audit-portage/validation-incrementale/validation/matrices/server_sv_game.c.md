@@ -12,6 +12,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/server/sv_game.c` | function | `PF_Unicast` | `packages/server/src/sv_game.ts` | `PF_Unicast` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `p` | `packages/server/src/sv_game.ts` | `p` | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
+| `Quake-2-master/server/sv_game.c` | function | `SZ_Write` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `PF_dprintf` | `packages/server/src/sv_game.ts` | `PF_dprintf` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
@@ -19,6 +20,7 @@
 | `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_game.c` | global | `n` | `packages/server/src/sv_game.ts` | `n` | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
+| `Quake-2-master/server/sv_game.c` | function | `Com_Printf` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `PF_centerprintf` | `packages/server/src/sv_game.ts` | `PF_centerprintf` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
@@ -48,4 +50,5 @@
 | `Quake-2-master/server/sv_game.c` | global | `mask` | `packages/server/src/sv_game.ts` | `mask` | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_game.c` | function | `PF_StartSound` | `packages/server/src/sv_game.ts` | `PF_StartSound` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `SV_ShutdownGameProgs` | `packages/server/src/sv_game.ts` | `SV_ShutdownGameProgs` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `SCR_DebugGraph` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `SV_InitGameProgs` | `packages/server/src/sv_game.ts` | `SV_InitGameProgs` | Valide | A redecouper |  |

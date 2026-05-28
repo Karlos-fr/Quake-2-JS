@@ -10,4 +10,3 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/anorms.h` | table | `r_avertexnormals` include table | `packages/qcommon/src/anorms.ts` | `BYTE_DIRS` | Valide | manual-runtime-matrix-row |  |

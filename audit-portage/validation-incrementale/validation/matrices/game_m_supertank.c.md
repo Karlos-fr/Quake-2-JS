@@ -10,6 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Quake-2-master/game/m_supertank.c` | function | `visible` | `packages/game/src/m_supertank.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | global | `sound_pain1` | `packages/game/src/m_supertank.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | global | `sound_pain2` | `packages/game/src/m_supertank.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | global | `sound_pain3` | `packages/game/src/m_supertank.ts` | `SOUND_PAIN3` | Valide | A redecouper |  |
@@ -76,10 +77,15 @@
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_reattack1` | `packages/game/src/m_supertank.ts` | `supertank_reattack1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_pain` | `packages/game/src/m_supertank.ts` | `supertank_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertankRocket` | `packages/game/src/m_supertank.ts` | `supertankRocket` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `flash_number` | `packages/game/src/m_supertank.ts` | `flash_number` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `flash_number` | `packages/game/src/m_supertank.ts` | `flash_number` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertankMachineGun` | `packages/game/src/m_supertank.ts` | `supertankMachineGun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `flash_number` | `packages/game/src/m_supertank.ts` | `flash_number` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_attack` | `packages/game/src/m_supertank.ts` | `supertank_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `range` | `packages/game/src/m_supertank.ts` | `range` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_dead` | `packages/game/src/m_supertank.ts` | `supertank_dead` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `BossExplode` | `packages/game/src/m_supertank.ts` | `BossExplode` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `n` | `packages/game/src/m_supertank.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_die` | `packages/game/src/m_supertank.ts` | `supertank_die` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `SP_monster_supertank` | `packages/game/src/m_supertank.ts` | `SP_monster_supertank` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_stand` | `packages/game/src/m_supertank.ts` | `supertank_frames_stand` | Valide | matched |  |

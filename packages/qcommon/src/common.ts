@@ -1037,26 +1037,6 @@ export function Info_Print(s: string): string[] {
 
 /**
  * Original name: N/A
- * Source: N/A (local info-string helper)
- * Category: New
- * Purpose: Parse a Quake-style info string into ordered key/value pairs.
- *
- * Constraints:
- * - Must tolerate empty strings and malformed tails without throwing.
- */
-function parseInfoString(info: string): Array<{ key: string; value: string }> {
-  const pairs: Array<{ key: string; value: string }> = [];
-  const tokens = info.split("\\").filter((token) => token.length > 0);
-
-  for (let index = 0; index + 1 < tokens.length; index += 2) {
-    pairs.push({ key: tokens[index], value: tokens[index + 1] });
-  }
-
-  return pairs;
-}
-
-/**
- * Original name: N/A
  * Source: N/A (host endian detector)
  * Category: New
  * Purpose: Detect the host numeric endianness once for the q_shared byte-order helpers.

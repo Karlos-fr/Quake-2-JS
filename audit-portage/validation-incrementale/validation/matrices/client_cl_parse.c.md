@@ -10,15 +10,16 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_parse.c` | global | `svc_strings` | `packages/qcommon/src/protocol.ts` | `svc_strings` | Valide | A redecouper | Deplace vers protocol shared; TS corrige la typo debug C `svc_muzzlflash2`. |
+| `Quake-2-master/client/cl_parse.c` | global | `svc_strings` | `packages/client/src/cl_parse.ts` |  | Valide | A redecouper | Deplace vers protocol shared; TS corrige la typo debug C `svc_muzzlflash2`. |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_DownloadFileName` | `packages/client/src/download.ts` | `CL_DownloadFileName` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | function | `Com_sprintf` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_CheckOrDownloadFile` | `packages/client/src/download.ts` | `CL_CheckOrDownloadFile` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `name` | `packages/client/src/download.ts` |  | Non applicable | A redecouper | Local C de `CL_CheckOrDownloadFile`; pas une entite proprietaire. |
-| `Quake-2-master/client/cl_parse.c` | global | `len` | `packages/client/src/download.ts` |  | Non applicable | A redecouper | Local C de reprise download; remplace par `resumeSize`. |
+| `Quake-2-master/client/cl_parse.c` | global | `name` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de `CL_CheckOrDownloadFile`; pas une entite proprietaire. |
+| `Quake-2-master/client/cl_parse.c` | global | `len` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de reprise download; remplace par `resumeSize`. |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_Download_f` | `packages/client/src/download.ts` | `CL_Download_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `filename` | `packages/client/src/download.ts` |  | Non applicable | A redecouper | Local C de `CL_Download_f`; pas une entite proprietaire. |
+| `Quake-2-master/client/cl_parse.c` | global | `filename` | `packages/client/src/download.ts` | `filename` | Non applicable | A redecouper | Local C de `CL_Download_f`; pas une entite proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_RegisterSounds` | `packages/client/src/sound.ts` | `CL_RegisterSounds` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/sound.ts` |  | Non applicable | A redecouper | Local C de `CL_RegisterSounds`; pas une entite proprietaire. |
+| `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper | Local C de `CL_RegisterSounds`; pas une entite proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_ParseDownload` | `packages/client/src/cl_parse.ts` | `CL_ParseDownload` | Valide | A redecouper | Hook IO write/close/rename ajoute dans `cl_parse.ts`; preuve `npm run verify:cl-parse`, `npm run verify:full-game:server-host`, `npm run verify:full-game:render-source`, `npm run typecheck`. |
 | `Quake-2-master/client/cl_parse.c` | global | `name` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de `CL_ParseDownload`; pas une entite proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | global | `r` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de rename dans `CL_ParseDownload`; couvert par les hooks rename valides. |
@@ -58,9 +59,9 @@
 | `Quake-2-master/client/cl_parse.c` | global | `attenuation` | `packages/client/src/cl_parse.ts` | `attenuation` | Non applicable | A redecouper | Local C de `CL_ParseStartSoundPacket`; doublon matriciel non proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | global | `ofs` | `packages/client/src/cl_parse.ts` | `ofs` | Non applicable | A redecouper | Local C de `CL_ParseStartSoundPacket`; doublon matriciel non proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | global | `pos` | `packages/client/src/cl_parse.ts` | `pos` | Non applicable | A redecouper | Local C de `CL_ParseStartSoundPacket`; doublon matriciel non proprietaire. |
-| `Quake-2-master/client/cl_parse.c` | function | `SHOWNET` | `packages/client/src/cl_parse.ts` | `SHOWNET` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_parse.c` | function | `SHOWNET` | `packages/client/src/cl_parse.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_ParseServerMessage` | `packages/client/src/cl_parse.ts` | `CL_ParseServerMessage` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `cmd` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de `CL_ParseServerMessage`; pas une entite proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | global | `s` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Local C de `CL_ParseServerMessage`; pas une entite proprietaire. |
 | `Quake-2-master/client/cl_parse.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper | Local C de `CL_ParseServerMessage`; pas une entite proprietaire. |
-| `Quake-2-master/client/cl_parse.c` | function | `SHOWNET` | `packages/client/src/cl_parse.ts` | `SHOWNET` | Non applicable | A redecouper | Doublon matriciel de `SHOWNET`; entite validee sur la ligne proprietaire. |
+| `Quake-2-master/client/cl_parse.c` | function | `SHOWNET` | `packages/client/src/cl_parse.ts` |  | Non applicable | A redecouper | Doublon matriciel de `SHOWNET`; entite validee sur la ligne proprietaire. |

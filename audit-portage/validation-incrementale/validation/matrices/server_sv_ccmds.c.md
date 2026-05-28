@@ -18,7 +18,7 @@
 | `Quake-2-master/server/sv_ccmds.c` | function | `SV_WipeSavegame` | `packages/server/src/sv_ccmds.ts` | `SV_WipeSavegame` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts` | `name` | Non applicable | A redecouper | Variable locale generee par la matrice. |
 | `Quake-2-master/server/sv_ccmds.c` | global | `s` | `packages/server/src/sv_ccmds.ts` | `s` | Non applicable | A redecouper | Variable locale generee par la matrice. |
-| `Quake-2-master/server/sv_ccmds.c` | function | `CopyFile` | `packages/server/src/sv_ccmds.ts` | `CopyFile` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `CopyFile` | `packages/server/src/sv_ccmds.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_ccmds.c` | global | `l` | `packages/server/src/sv_ccmds.ts` |  | Non applicable | A redecouper | Variable locale generee par la matrice. |
 | `Quake-2-master/server/sv_ccmds.c` | global | `buffer` | `packages/server/src/sv_ccmds.ts` |  | Non applicable | A redecouper | Variable locale generee par la matrice. |
 | `Quake-2-master/server/sv_ccmds.c` | function | `SV_CopySaveGame` | `packages/server/src/sv_ccmds.ts` | `SV_CopySaveGame` | Valide | A redecouper |  |

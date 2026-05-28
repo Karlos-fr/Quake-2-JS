@@ -1239,26 +1239,6 @@ export function Menu_TallySlots(context: ClientQMenuContext, menu: menuframework
 }
 
 /**
- * Original name: Menulist_DoEnter
- * Source: Quake-2-master/client/qmenu.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Updates the list value from the menu cursor and invokes the item callback.
- *
- * Porting notes:
- * - Kept for source parity; the active Quake II `Menu_SelectItem` path leaves list enter disabled.
- */
-function Menulist_DoEnter(l: menulist_s): void {
-  const start = Math.trunc(l.generic.y / 10) + 1;
-  const cursor = l.generic.parent?.cursor ?? 0;
-
-  l.curvalue = cursor - start;
-  l.generic.callback?.(l);
-}
-
-/**
  * Original name: MenuList_Draw
  * Source: Quake-2-master/client/qmenu.c
  * Category: Ported
@@ -1405,28 +1385,6 @@ function Slider_Draw(context: ClientQMenuContext, s: menuslider_s): void {
     s.generic.y + parentY,
     131
   );
-}
-
-/**
- * Original name: SpinControl_DoEnter
- * Source: Quake-2-master/client/qmenu.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Advances a spincontrol with wraparound and invokes the item callback.
- *
- * Porting notes:
- * - Kept for source parity; the active Quake II `Menu_SelectItem` path leaves spincontrol enter disabled.
- */
-function SpinControl_DoEnter(s: menulist_s): void {
-  s.curvalue += 1;
-
-  if (!s.itemnames || s.itemnames[s.curvalue] === null || s.itemnames[s.curvalue] === undefined) {
-    s.curvalue = 0;
-  }
-
-  s.generic.callback?.(s);
 }
 
 /**

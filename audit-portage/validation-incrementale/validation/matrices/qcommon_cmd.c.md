@@ -10,6 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Porte comme `MAX_ALIAS_NAME`; alias trop long teste. |
 | `Quake-2-master/qcommon/cmd.c` | struct | `cmdalias_s` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Porte par `CommandAlias` et `cmd_aliases`; liste chainee remplacee par tableau runtime. |
 | `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts` | `name` | Valide | A redecouper | Champ `CommandAlias.name`. |

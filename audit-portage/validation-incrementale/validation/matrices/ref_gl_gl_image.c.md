@@ -10,16 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `gltextures` | `packages/renderer-three/src/gl_image.ts` | `gltextures` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `intensitytable` | `packages/renderer-three/src/gl_image.ts` | `intensitytable` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `gammatable` | `packages/renderer-three/src/gl_image.ts` | `gammatable` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `intensity` | `packages/renderer-three/src/gl_image.ts` | `intensity_value` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `d_8to24table` | `packages/renderer-three/src/gl_image.ts` | `d_8to24table` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | table | `modes` | `packages/renderer-three/src/gl_image.ts` | `modes` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | table | `gl_alpha_modes` | `packages/renderer-three/src/gl_image.ts` | `gl_alpha_modes` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | table | `gl_solid_modes` | `packages/renderer-three/src/gl_image.ts` | `gl_solid_modes` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `scrap_allocated` | `packages/renderer-three/src/gl_image.ts` | `scrap_allocated` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `scrap_texels` | `packages/renderer-three/src/gl_image.ts` | `scrap_texels` | Valide | ajoute-session |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `Draw_GetPalette` | `packages/renderer-three/src/gl_image.ts` | `Draw_GetPalette` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_Bind` | `packages/renderer-three/src/gl_image.ts` | `GL_Bind` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_BuildPalettedTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_BuildPalettedTexture` | Valide | split-undocumented |  |
@@ -57,9 +47,9 @@
 | `Quake-2-master/ref_gl/gl_image.c` | typedef | `image_type` | `packages/renderer-three/src/gl_image.ts` | `image_type` | Non applicable | split-undocumented | Generated from TGA header field, covered by `_TargaHeader`. |
 | `Quake-2-master/ref_gl/gl_image.c` | typedef | `name` | `packages/renderer-three/src/gl_image.ts` | `name` | Non applicable | split-undocumented | Generated from local/parameter token, not a source-owned entity. |
 | `Quake-2-master/ref_gl/gl_image.c` | typedef | `y` | `packages/renderer-three/src/gl_image.ts` | `y` | Non applicable | split-undocumented | Generated from local token, not a source-owned entity. |
-| `Quake-2-master/ref_gl/gl_image.c` | struct | `_TargaHeader` | `packages/formats/src/tga.ts` | `TargaHeader` | Valide | split-undocumented | Parser ownership moved to shared formats package. |
-| `Quake-2-master/ref_gl/gl_image.c` | struct | `image_s` | `packages/renderer-three/src/gl_model.ts` | `image_t` | Non applicable | split-undocumented | Struct is defined in `gl_local.h`; validate in that source matrix. |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `base_textureid` | `packages/renderer-three/src/gl_image.ts` | `TEXNUM_IMAGES` | Non applicable | split-undocumented | Legacy global not read by the C runtime; the port uses the source `TEXNUM_IMAGES` expression directly when assigning image texnums. |
+| `Quake-2-master/ref_gl/gl_image.c` | struct | `_TargaHeader` | `packages/renderer-three/src/gl_image.ts` | `_TargaHeader` | Valide | split-undocumented | Parser ownership moved to shared formats package. |
+| `Quake-2-master/ref_gl/gl_image.c` | struct | `image_s` | `packages/renderer-three/src/gl_image.ts` | `image_s` | Non applicable | split-undocumented | Struct is defined in `gl_local.h`; validate in that source matrix. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `base_textureid` | `packages/renderer-three/src/gl_image.ts` | `base_textureid` | Non applicable | split-undocumented | Legacy global not read by the C runtime; the port uses the source `TEXNUM_IMAGES` expression directly when assigning image texnums. |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `breakOut` | `packages/renderer-three/src/gl_image.ts` | `breakOut` | Non applicable | split-undocumented | Generated from local label, not a global entity. |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `colormap_size` | `packages/renderer-three/src/gl_image.ts` | `colormap_size` | Non applicable | split-undocumented | Generated from `_TargaHeader` field, covered by `TargaHeader`. |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `comp` | `packages/renderer-three/src/gl_image.ts` | `comp` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |

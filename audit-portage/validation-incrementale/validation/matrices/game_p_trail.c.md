@@ -11,9 +11,9 @@
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/game/p_trail.c` | macro | `TRAIL_LENGTH` | `packages/game/src/p_trail.ts` | `TRAIL_LENGTH` | Valide | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `trail` | `packages/game/src/p_trail.ts` | `runtime.playerTrail.trail` | Valide | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `trail_head` | `packages/game/src/p_trail.ts` | `runtime.playerTrail.trail_head` | Valide | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `trail_active` | `packages/game/src/p_trail.ts` | `runtime.playerTrail.trail_active` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `trail` | `packages/game/src/p_trail.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `trail_head` | `packages/game/src/p_trail.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `trail_active` | `packages/game/src/p_trail.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/p_trail.c` | macro | `NEXT` | `packages/game/src/p_trail.ts` | `NEXT` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_trail.c` | macro | `PREV` | `packages/game/src/p_trail.ts` | `PREV` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_Init` | `packages/game/src/p_trail.ts` | `PlayerTrail_Init` | Valide | A redecouper |  |

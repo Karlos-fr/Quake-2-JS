@@ -13,10 +13,25 @@
 | `Quake-2-master/game/p_hud.c` | function | `MoveClientToIntermission` | `packages/game/src/p_hud.ts` | `MoveClientToIntermission` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `BeginIntermission` | `packages/game/src/p_hud.ts` | `BeginIntermission` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `DeathmatchScoreboardMessage` | `packages/game/src/p_hud.ts` | `DeathmatchScoreboardMessage` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `entry` | `packages/game/src/p_hud.ts` | `entry` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `string` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `stringlength` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `sorted` | `packages/game/src/p_hud.ts` | `sorted` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `sortedscores` | `packages/game/src/p_hud.ts` | `sortedScores` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `picnum` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `cl_ent` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `tag` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `tag` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `DeathmatchScoreboard` | `packages/game/src/p_hud.ts` | `DeathmatchScoreboard` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `Cmd_Score_f` | `packages/game/src/p_hud.ts` | `Cmd_Score_f` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `HelpComputer` | `packages/game/src/p_hud.ts` | `HelpComputer` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `string` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `sk` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `sk` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `Cmd_Help_f` | `packages/game/src/p_hud.ts` | `Cmd_Help_f` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `G_SetStats` | `packages/game/src/p_hud.ts` | `G_SetStats` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `item` | `packages/game/src/p_hud.ts` | `item` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `power_armor_type` | `packages/game/src/p_hud.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `G_CheckChaseStats` | `packages/game/src/p_hud.ts` | `G_CheckChaseStats` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_hud.c` | global | `i` | `packages/game/src/p_hud.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_hud.c` | function | `G_SetSpectatorStats` | `packages/game/src/p_hud.ts` | `G_SetSpectatorStats` | Valide | A redecouper |  |

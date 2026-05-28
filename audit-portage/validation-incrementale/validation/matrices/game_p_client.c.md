@@ -11,42 +11,102 @@
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/game/p_client.c` | function | `ClientUserinfoChanged` | `packages/game/src/p_client.ts` | `ClientUserinfoChanged` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `SP_misc_teleporter_dest` | `packages/game/src/g_misc.ts` | `SP_misc_teleporter_dest` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SP_FixCoopSpots` | `packages/game/src/p_client.ts` | `SP_FixCoopSpots` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `spot` | `packages/game/src/p_client.ts` | `spot` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SP_CreateCoopSpots` | `packages/game/src/p_client.ts` | `SP_CreateCoopSpots` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `spot` | `packages/game/src/p_client.ts` | `spot` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SP_info_player_start` | `packages/game/src/p_client.ts` | `SP_info_player_start` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SP_info_player_deathmatch` | `packages/game/src/p_client.ts` | `SP_info_player_deathmatch` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SP_info_player_coop` | `packages/game/src/p_client.ts` | `SP_info_player_coop` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SP_info_player_intermission` | `packages/game/src/p_client.ts` | `SP_info_player_intermission` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `player_pain` | `packages/game/src/p_client.ts` | `player_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `IsFemale` | `packages/game/src/p_client.ts` | `IsFemale` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `info` | `packages/game/src/p_client.ts` | `info` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `IsNeutral` | `packages/game/src/p_client.ts` | `IsNeutral` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `info` | `packages/game/src/p_client.ts` | `info` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientObituary` | `packages/game/src/p_client.ts` | `ClientObituary` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `mod` | `packages/game/src/p_client.ts` | `mod` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `message` | `packages/game/src/p_client.ts` | `message` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `message2` | `packages/game/src/p_client.ts` | `message2` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `ff` | `packages/game/src/p_client.ts` | `ff` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `message` | `packages/game/src/p_client.ts` | `message` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `message` | `packages/game/src/p_client.ts` | `message` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `message` | `packages/game/src/p_client.ts` | `message` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `Touch_Item` | `packages/game/src/g_items.ts` | `Touch_Item` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `TossClientWeapon` | `packages/game/src/p_client.ts` | `TossClientWeapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `item` | `packages/game/src/p_client.ts` | `item` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `drop` | `packages/game/src/p_client.ts` | `drop` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `quad` | `packages/game/src/p_client.ts` | `quad` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `spread` | `packages/game/src/p_client.ts` | `spread` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `quad` | `packages/game/src/p_client.ts` | `quad` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `spread` | `packages/game/src/p_client.ts` | `spread` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `LookAtKiller` | `packages/game/src/p_client.ts` | `LookAtKiller` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `dir` | `packages/game/src/p_client.ts` | `dir` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `player_die` | `packages/game/src/p_client.ts` | `player_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `n` | `packages/game/src/g_misc.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `i` | `packages/game/src/p_client.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `InitClientPersistant` | `packages/game/src/p_client.ts` | `InitClientPersistant` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `item` | `packages/game/src/p_client.ts` | `item` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `InitClientResp` | `packages/game/src/p_client.ts` | `InitClientResp` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SaveClientData` | `packages/game/src/p_client.ts` | `SaveClientData` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `i` | `packages/game/src/p_client.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `ent` | `packages/game/src/p_client.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `FetchClientEntData` | `packages/game/src/p_client.ts` | `FetchClientEntData` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `PlayersRangeFromSpot` | `packages/game/src/p_client.ts` | `PlayersRangeFromSpot` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `player` | `packages/game/src/p_client.ts` | `player` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `bestplayerdistance` | `packages/game/src/p_client.ts` | `bestPlayerDistance` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `n` | `packages/game/src/g_misc.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `playerdistance` | `packages/game/src/p_client.ts` | `playerDistance` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SelectRandomDeathmatchSpawnPoint` | `packages/game/src/p_client.ts` | `SelectRandomDeathmatchSpawnPoint` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `count` | `packages/game/src/p_client.ts` | `count` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `selection` | `packages/game/src/p_client.ts` | `selection` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SelectFarthestDeathmatchSpawnPoint` | `packages/game/src/p_client.ts` | `SelectFarthestDeathmatchSpawnPoint` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `bestspot` | `packages/game/src/p_client.ts` | `bestSpot` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `spot` | `packages/game/src/p_client.ts` | `spot` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SelectDeathmatchSpawnPoint` | `packages/game/src/p_client.ts` | `SelectDeathmatchSpawnPoint` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `SelectFarthestDeathmatchSpawnPoint` | `packages/game/src/p_client.ts` | `SelectFarthestDeathmatchSpawnPoint` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `SelectRandomDeathmatchSpawnPoint` | `packages/game/src/p_client.ts` | `SelectRandomDeathmatchSpawnPoint` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SelectCoopSpawnPoint` | `packages/game/src/p_client.ts` | `SelectCoopSpawnPoint` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `index` | `packages/game/src/p_client.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `spot` | `packages/game/src/p_client.ts` | `spot` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `target` | `packages/game/src/p_client.ts` | `target` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `SelectSpawnPoint` | `packages/game/src/p_client.ts` | `SelectSpawnPoint` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `spot` | `packages/game/src/p_client.ts` | `spot` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `InitBodyQue` | `packages/game/src/p_client.ts` | `InitBodyQue` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `i` | `packages/game/src/p_client.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `ent` | `packages/game/src/p_client.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `body_die` | `packages/game/src/p_client.ts` | `body_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `n` | `packages/game/src/g_misc.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `CopyToBodyQue` | `packages/game/src/p_client.ts` | `CopyToBodyQue` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `body` | `packages/game/src/p_client.ts` | `body` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `respawn` | `packages/game/src/p_client.ts` | `respawn` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `spectator_respawn` | `packages/game/src/p_client.ts` | `spectator_respawn` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `value` | `packages/game/src/p_client.ts` | `value` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `value` | `packages/game/src/p_client.ts` | `value` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `PutClientInServer` | `packages/game/src/p_client.ts` | `PutClientInServer` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `index` | `packages/game/src/p_client.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `i` | `packages/game/src/p_client.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `userinfo` | `packages/game/src/p_client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `userinfo` | `packages/game/src/p_client.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientBeginDeathmatch` | `packages/game/src/p_client.ts` | `ClientBeginDeathmatch` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientBegin` | `packages/game/src/p_client.ts` | `ClientBegin` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `i` | `packages/game/src/p_client.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `ClientUserinfoChanged` | `packages/game/src/p_client.ts` | `ClientUserinfoChanged` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `s` | `packages/game/src/p_client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `playernum` | `packages/game/src/p_client.ts` | `playernum` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientConnect` | `packages/game/src/p_client.ts` | `ClientConnect` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `value` | `packages/game/src/p_client.ts` | `value` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientDisconnect` | `packages/game/src/p_client.ts` | `ClientDisconnect` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `playernum` | `packages/game/src/p_client.ts` | `playernum` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | global | `pm_passent` | `packages/game/src/p_client.ts` |  | Valide | A redecouper | Remplace par le parametre explicite `passent` de `PM_trace` et la fermeture `buildClientPmove`; evite la globale mutable C. |
 | `Quake-2-master/game/p_client.c` | function | `PM_trace` | `packages/game/src/p_client.ts` | `PM_trace` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `CheckBlock` | `packages/game/src/p_client.ts` | `CheckBlock` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `PrintPmove` | `packages/game/src/p_client.ts` | `PrintPmove` | Valide | A redecouper | `packages/game/src/p_client.ts` corrige pour conserver le `\n` final du `Com_Printf` C. |
 | `Quake-2-master/game/p_client.c` | function | `ClientThink` | `packages/game/src/p_client.ts` | `ClientThink` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `other` | `packages/game/src/p_client.ts` | `other` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `pm` | `packages/game/src/p_client.ts` | `pm` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `GetChaseTarget` | `packages/game/src/g_chase.ts` | `GetChaseTarget` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientBeginServerFrame` | `packages/game/src/p_client.ts` | `ClientBeginServerFrame` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `buttonMask` | `packages/game/src/p_client.ts` | `buttonMask` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `buttonMask` | `packages/game/src/p_client.ts` | `buttonMask` | A verifier | A redecouper |  |

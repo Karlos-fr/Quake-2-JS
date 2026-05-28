@@ -23,10 +23,10 @@
 | `Quake-2-master/client/qmenu.c` | function | `SpinControl_DoSlide` | `packages/client/src/qmenu.ts` | `SpinControl_DoSlide` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | macro | `RCOLUMN_OFFSET` | `packages/client/src/qmenu.ts` | `RCOLUMN_OFFSET` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | macro | `LCOLUMN_OFFSET` | `packages/client/src/qmenu.ts` | `LCOLUMN_OFFSET` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | macro | `VID_WIDTH` | `packages/client/src/qmenu.ts` | `ClientQMenuState.vidWidth` | Valide | A redecouper | Remplace `viddef.width` par etat runtime explicite. |
-| `Quake-2-master/client/qmenu.c` | macro | `VID_HEIGHT` | `packages/client/src/qmenu.ts` | `ClientQMenuState.vidHeight` | Valide | A redecouper | Remplace `viddef.height` par etat runtime explicite. |
-| `Quake-2-master/client/qmenu.c` | macro | `Draw_Char` | `packages/client/src/qmenu.ts` | `emitDrawChar` | Valide | A redecouper | Sortie branchee via `onDrawChar` vers le ref web. |
-| `Quake-2-master/client/qmenu.c` | macro | `Draw_Fill` | `packages/client/src/qmenu.ts` | `emitDrawFill` | Valide | A redecouper | Sortie branchee via `onDrawFill` vers le ref web. |
+| `Quake-2-master/client/qmenu.c` | macro | `VID_WIDTH` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper | Remplace `viddef.width` par etat runtime explicite. |
+| `Quake-2-master/client/qmenu.c` | macro | `VID_HEIGHT` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper | Remplace `viddef.height` par etat runtime explicite. |
+| `Quake-2-master/client/qmenu.c` | macro | `Draw_Char` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper | Sortie branchee via `onDrawChar` vers le ref web. |
+| `Quake-2-master/client/qmenu.c` | macro | `Draw_Fill` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper | Sortie branchee via `onDrawFill` vers le ref web. |
 | `Quake-2-master/client/qmenu.c` | function | `Action_DoEnter` | `packages/client/src/qmenu.ts` | `Action_DoEnter` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | function | `Action_Draw` | `packages/client/src/qmenu.ts` | `Action_Draw` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | function | `Menu_DrawString` | `packages/client/src/qmenu.ts` | `Menu_DrawString` | Valide | A redecouper |  |
@@ -38,7 +38,7 @@
 | `Quake-2-master/client/qmenu.c` | global | `offset` | `packages/client/src/qmenu.ts` | `offset` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
 | `Quake-2-master/client/qmenu.c` | global | `offset` | `packages/client/src/qmenu.ts` | `offset` | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
 | `Quake-2-master/client/qmenu.c` | function | `Field_Key` | `packages/client/src/qmenu.ts` | `Field_Key` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.c` | global | `keydown` | `packages/client/src/qmenu.ts` | `ClientQMenuState.keydown` | Valide | A redecouper | Remplace l'extern C `keydown[]` par etat runtime explicite. |
+| `Quake-2-master/client/qmenu.c` | global | `keydown` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper | Remplace l'extern C `keydown[]` par etat runtime explicite. |
 | `Quake-2-master/client/qmenu.c` | global | `cbd` | `packages/client/src/qmenu.ts` |  | Non applicable | A redecouper | Variable locale detectee comme globale par la matrice. |
 | `Quake-2-master/client/qmenu.c` | function | `Menu_AddItem` | `packages/client/src/qmenu.ts` | `Menu_AddItem` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.c` | function | `Menu_AdjustCursor` | `packages/client/src/qmenu.ts` | `Menu_AdjustCursor` | Valide | A redecouper |  |

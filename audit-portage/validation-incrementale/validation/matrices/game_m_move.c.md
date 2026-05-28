@@ -11,8 +11,6 @@
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/game/m_move.c` | macro | `STEPSIZE` | `packages/game/src/m_move.ts` | `STEPSIZE` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `c_yes` | `packages/game/src/m_move.ts` | `c_yes` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `c_no` | `packages/game/src/m_move.ts` | `c_no` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_move.c` | function | `M_CheckBottom` | `packages/game/src/m_move.ts` | `M_CheckBottom` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_move.c` | global | `trace` | `packages/game/src/m_move.ts` | `trace` | Non applicable | A redecouper | Variable locale de `M_CheckBottom`; comportement valide avec la fonction. |
 | `Quake-2-master/game/m_move.c` | function | `SV_movestep` | `packages/game/src/m_move.ts` | `SV_movestep` | Valide | A redecouper |  |

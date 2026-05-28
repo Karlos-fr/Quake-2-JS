@@ -30,18 +30,18 @@
 | `Quake-2-master/client/qmenu.h` | macro | `QMF_LEFT_JUSTIFY` | `packages/client/src/qmenu.ts` | `QMF_LEFT_JUSTIFY` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | macro | `QMF_GRAYED` | `packages/client/src/qmenu.ts` | `QMF_GRAYED` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | macro | `QMF_NUMBERSONLY` | `packages/client/src/qmenu.ts` | `QMF_NUMBERSONLY` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | struct | `_tag_menuframework` | `packages/client/src/qmenu.ts` | `menuframework_s` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | struct | `_tag_menuframework` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` | `cursor` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `nitems` | `packages/client/src/qmenu.ts` | `nitems` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `nslots` | `packages/client/src/qmenu.ts` | `nslots` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `statusbar` | `packages/client/src/qmenu.ts` | `statusbar` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `nslots` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `statusbar` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | struct | `menucommon_s` | `packages/client/src/qmenu.ts` | `menucommon_s` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `type` | `packages/client/src/qmenu.ts` | `type` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `type` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `name` | `packages/client/src/qmenu.ts` | `name` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `cursor_offset` | `packages/client/src/qmenu.ts` | `cursor_offset` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `localdata` | `packages/client/src/qmenu.ts` | `localdata` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `flags` | `packages/client/src/qmenu.ts` | `flags` | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `statusbar` | `packages/client/src/qmenu.ts` | `statusbar` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `cursor_offset` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `localdata` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `flags` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `statusbar` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | struct | `menufield_s` | `packages/client/src/qmenu.ts` | `menufield_s` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `buffer` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` | `cursor` | Valide | A redecouper |  |

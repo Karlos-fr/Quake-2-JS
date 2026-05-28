@@ -14,6 +14,7 @@
 | `Quake-2-master/server/sv_ents.c` | global | `from_num_entities` | `packages/server/src/sv_ents.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_ents.c` | global | `bits` | `packages/server/src/sv_ents.ts` | `bits` | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_ents.c` | global | `from_num_entities` | `packages/server/src/sv_ents.ts` |  | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
+| `Quake-2-master/server/sv_ents.c` | function | `MSG_WriteByte` | `packages/server/src/sv_ents.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_ents.c` | function | `SV_WritePlayerstateToClient` | `packages/server/src/sv_ents.ts` | `SV_WritePlayerstateToClient` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_ents.c` | global | `i` | `packages/server/src/sv_ents.ts` | `i` | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |
 | `Quake-2-master/server/sv_ents.c` | global | `pflags` | `packages/server/src/sv_ents.ts` | `pflags` | Non applicable | A redecouper | Variable locale generee comme globale par la matrice. |

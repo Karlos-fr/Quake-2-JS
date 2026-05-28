@@ -10,6 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Quake-2-master/game/m_chick.c` | function | `visible` | `packages/game/src/m_chick.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_chick.c` | function | `chick_stand` | `packages/game/src/m_chick.ts` | `chick_stand` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_chick.c` | function | `chick_run` | `packages/game/src/m_chick.ts` | `chick_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_chick.c` | function | `chick_reslash` | `packages/game/src/m_chick.ts` | `chick_reslash` | Valide | A redecouper | TS garde `self.enemy` nul avant les checks originaux; deviation documentee dans le header de fonction. |

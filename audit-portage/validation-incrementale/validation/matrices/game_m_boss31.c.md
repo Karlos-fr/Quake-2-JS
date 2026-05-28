@@ -10,6 +10,8 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Quake-2-master/game/m_boss31.c` | function | `SP_monster_makron` | `packages/game/src/m_boss32.ts` | `SP_monster_makron` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `visible` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_pain1` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN1` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; chemin `boss3/bs3pain1.wav`. |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_pain2` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN2` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; chemin `boss3/bs3pain2.wav`. |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_pain3` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN3` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; chemin `boss3/bs3pain3.wav`. |
@@ -24,6 +26,8 @@
 | `Quake-2-master/game/m_boss31.c` | global | `sound_step_left` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_LEFT` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission `jorg_step_left` couverte. |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_step_right` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_RIGHT` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission `jorg_step_right` couverte. |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_death_hit` | `packages/game/src/m_boss31.ts` | `SOUND_DEATH_HIT` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission `jorg_death_hit` couverte. |
+| `Quake-2-master/game/m_boss31.c` | function | `BossExplode` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `MakronToss` | `packages/game/src/m_boss32.ts` | `MakronToss` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_search` | `packages/game/src/m_boss31.ts` | `jorg_search` | Valide | A redecouper | Preuves session: comparaison C/TS, commentaire d'entete verifie, tests m-boss31/source-parity/header/full-game/web/three/typecheck; `SP_monster_jorg` branche `monsterinfo.search`; apps/web consomme les sons runtime; renderer-three non applicable justifie: son sans sortie visible. |
 | `Quake-2-master/game/m_boss31.c` | global | `r` | `packages/game/src/m_boss31.ts` | `r` | Non applicable | A redecouper | Variable locale de `jorg_search`, couverte par la validation de `jorg_search`; pas d'entite TS autonome attendue. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_dead` | `packages/game/src/m_boss31.ts` | `jorg_dead` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_dead` validee sur la ligne fonction plus bas. |
@@ -99,6 +103,7 @@
 | `Quake-2-master/game/m_boss31.c` | global | `enemy_infront` | `packages/game/src/m_boss31.ts` |  | Non applicable | A redecouper | Variable locale assignee mais jamais utilisee par le C; pas d'effet de portage attendu. |
 | `Quake-2-master/game/m_boss31.c` | global | `enemy_range` | `packages/game/src/m_boss31.ts` | `enemy_range` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `enemy_yaw` | `packages/game/src/m_boss31.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `MakronPrecache` | `packages/game/src/m_boss32.ts` | `MakronPrecache` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `SP_monster_jorg` | `packages/game/src/m_boss31.ts` | `SP_monster_jorg` | Valide | A redecouper | Preuves session: comparaison C/TS, commentaire d'entete complete, tests m-boss31/source-parity/header/full-game/web/three/typecheck; spawn branche via `g_spawn.ts`, save/index verifies; renderer-three consomme les modeles/frames via flux refresh. |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_stand` | `packages/game/src/m_boss31.ts` | `jorg_frames_stand` | Valide | matched | Preuves session: source-parity plus assertions ciblees sur longueurs, distances et callbacks. |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_run` | `packages/game/src/m_boss31.ts` | `jorg_frames_run` | Valide | matched | Preuves session: source-parity plus assertions ciblees sur longueurs, distances et callbacks. |

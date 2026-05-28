@@ -10,6 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Quake-2-master/game/m_boss32.c` | function | `visible` | `packages/game/src/m_boss32.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronRailgun` | `packages/game/src/m_boss32.ts` | `MakronRailgun` | Non applicable | A redecouper | Forward declaration; definition row remains to validate. |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronSaveloc` | `packages/game/src/m_boss32.ts` | `MakronSaveloc` | Non applicable | A redecouper | Forward declaration; definition row remains to validate. |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronHyperblaster` | `packages/game/src/m_boss32.ts` | `MakronHyperblaster` | Non applicable | A redecouper | Forward declaration; definition row remains to validate. |
@@ -104,10 +105,10 @@
 | `Quake-2-master/game/m_boss32.c` | function | `MakronPrecache` | `packages/game/src/m_boss32.ts` | `MakronPrecache` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `SP_monster_makron` | `packages/game/src/m_boss32.ts` | `SP_monster_makron` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronSpawn` | `packages/game/src/m_boss32.ts` | `MakronSpawn` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `vec` | `packages/game/src/m_boss32.ts` | `vec` | Non applicable | Local vector covered by `MakronSpawn`. |
-| `Quake-2-master/game/m_boss32.c` | global | `player` | `packages/game/src/m_boss32.ts` | `player` | Non applicable | Local sight client pointer covered by `MakronSpawn`. |
+| `Quake-2-master/game/m_boss32.c` | global | `vec` | `packages/game/src/m_boss32.ts` | `vec` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `player` | `packages/game/src/m_boss32.ts` | `player` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronToss` | `packages/game/src/m_boss32.ts` | `MakronToss` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `ent` | `packages/game/src/m_boss32.ts` | `ent` | Non applicable | Local spawned entity covered by `MakronToss`. |
+| `Quake-2-master/game/m_boss32.c` | global | `ent` | `packages/game/src/m_boss32.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_stand` | `packages/game/src/m_boss32.ts` | `makron_frames_stand` | Valide | matched |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_run` | `packages/game/src/m_boss32.ts` | `makron_frames_run` | Valide | matched |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_walk` | `packages/game/src/m_boss32.ts` | `makron_frames_walk` | Valide | matched | C quirk preserved: `makron_move_walk` uses `makron_frames_run`. |

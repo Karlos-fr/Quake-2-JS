@@ -10,6 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `Quake-2-master/game/m_hover.c` | function | `visible` | `packages/game/src/m_hover.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | global | `sound_pain1` | `packages/game/src/m_hover.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | global | `sound_pain2` | `packages/game/src/m_hover.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | global | `sound_death1` | `packages/game/src/m_hover.ts` | `SOUND_DEATH1` | Valide | A redecouper |  |

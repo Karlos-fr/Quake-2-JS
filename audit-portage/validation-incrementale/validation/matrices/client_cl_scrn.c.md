@@ -72,7 +72,7 @@
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawLoading` | `packages/client/src/cl_scrn.ts` | `SCR_DrawLoading` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_RunConsole` | `packages/client/src/cl_scrn.ts` | `SCR_RunConsole` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_conlines` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawConsole` | `packages/client/src/cl_scrn.ts` | `SCR_DrawConsole` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawConsole` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_BeginLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_BeginLoadingPlaque` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_draw_loading` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_EndLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_EndLoadingPlaque` | Valide | A redecouper |  |
@@ -83,7 +83,7 @@
 | `Quake-2-master/client/cl_scrn.c` | global | `time` | `packages/client/src/cl_scrn.ts` | `time` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_AddDirtyPoint` | `packages/client/src/cl_scrn.ts` | `SCR_AddDirtyPoint` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DirtyScreen` | `packages/client/src/cl_scrn.ts` | `SCR_DirtyScreen` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TileClear` | `packages/client/src/cl_scrn.ts` | `SCR_TileClear` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TileClear` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | macro | `STAT_MINUS` | `packages/client/src/cl_scrn.ts` | `STAT_MINUS` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | macro | `ICON_WIDTH` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
@@ -108,6 +108,7 @@
 | `Quake-2-master/client/cl_scrn.c` | global | `width` | `packages/client/src/cl_scrn.ts` | `width` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `index` | `packages/client/src/cl_scrn.ts` | `index` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `block` | `packages/client/src/cl_scrn.ts` | `block` | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | function | `DrawString` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | Non applicable | A redecouper |  |

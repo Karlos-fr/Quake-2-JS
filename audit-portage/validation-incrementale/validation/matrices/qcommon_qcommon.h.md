@@ -25,13 +25,13 @@
 | `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | struct | `sizebuf_s` | `packages/memory/src/sizebuf.ts` | `sizebuf_t` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `allowoverflow` | `packages/memory/src/sizebuf.ts` | `allowoverflow` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `overflowed` | `packages/memory/src/sizebuf.ts` | `overflowed` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `data` | `packages/memory/src/sizebuf.ts` | `data` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `maxsize` | `packages/memory/src/sizebuf.ts` | `maxsize` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `cursize` | `packages/memory/src/sizebuf.ts` | `cursize` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `readcount` | `packages/memory/src/sizebuf.ts` | `readcount` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | struct | `sizebuf_s` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `allowoverflow` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `overflowed` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `data` | `packages/qcommon/src/qcommon.ts` | `data` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `maxsize` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `cursize` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `readcount` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Init` | `packages/memory/src/sizebuf.ts` | `SZ_Init` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Clear` | `packages/memory/src/sizebuf.ts` | `SZ_Clear` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `SZ_GetSpace` | `packages/memory/src/sizebuf.ts` | `SZ_GetSpace` | Valide | A redecouper |  |
@@ -65,7 +65,7 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_ReadDeltaUsercmd` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadData` | `packages/qcommon/src/messages.ts` | `MSG_ReadData` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `bigendien` | `packages/qcommon/src/common.ts` | `bigendien` | Valide | A redecouper | Correction: export `bigendien` ajoute dans `common.ts`. |
+| `Quake-2-master/qcommon/qcommon.h` | global | `bigendien` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper | Correction: export `bigendien` ajoute dans `common.ts`. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `BigLong` | `packages/qcommon/src/common.ts` | `BigLong` | Valide | A redecouper |  |
@@ -173,7 +173,7 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts` | `Cmd_TokenizeString` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ExecuteString` | `packages/qcommon/src/cmd.ts` | `Cmd_ExecuteString` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `cvar_vars` | `packages/qcommon/src/cvar.ts` | `cvar_vars` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `cvar_vars` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Set` | `packages/qcommon/src/cvar.ts` | `Cvar_Set` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_ForceSet` | `packages/qcommon/src/cvar.ts` | `Cvar_ForceSet` | Valide | A redecouper |  |
@@ -186,18 +186,18 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Command` | `packages/qcommon/src/cvar.ts` | `Cvar_Command` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_WriteVariables` | `packages/qcommon/src/cvar.ts` | `Cvar_WriteVariables` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Init` | `packages/qcommon/src/cvar.ts` | `Cvar_Init` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Userinfo` | `packages/qcommon/src/cvar.ts` | `Cvar_Userinfo` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Serverinfo` | `packages/qcommon/src/cvar.ts` | `Cvar_Serverinfo` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `userinfo_modified` | `packages/qcommon/src/cvar.ts` | `userinfo_modified` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Userinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_USERINFO` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Serverinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_SERVERINFO` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `userinfo_modified` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PORT_ANY` | `packages/qcommon/src/qcommon.ts` | `PORT_ANY` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `MAX_MSGLEN` | `packages/qcommon/src/qcommon.ts` | `MAX_MSGLEN` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PACKET_HEADER` | `packages/qcommon/src/qcommon.ts` | `PACKET_HEADER` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | enum | `netadrtype_t` | `packages/qcommon/src/qcommon.ts` | `netadrtype_t` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | enum | `netsrc_t` | `packages/qcommon/src/qcommon.ts` | `netsrc_t` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | struct | `netadr_t` | `packages/qcommon/src/qcommon.ts` | `netadr_t` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `ip` | `packages/qcommon/src/qcommon.ts` | `netadr_t.ip` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `ipx` | `packages/qcommon/src/qcommon.ts` | `netadr_t.ipx` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `port` | `packages/qcommon/src/qcommon.ts` | `netadr_t.port` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `ip` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `ipx` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `port` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `NET_Init` | `packages/qcommon/src/qcommon.ts` | `NET_Init` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `NET_Shutdown` | `packages/qcommon/src/qcommon.ts` | `NET_Shutdown` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `NET_Config` | `packages/qcommon/src/qcommon.ts` | `NET_Config` | Valide | A redecouper |  |
@@ -261,19 +261,19 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `CM_WritePortalState` | `packages/qcommon/src/cmodel.ts` | `CM_WritePortalState` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_airaccelerate` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:pmove`, `verify:cl-pred`, `verify:server:init`, `verify:full-game:three-renderer`, `typecheck`; global C porte via contexte explicite. |
+| `Quake-2-master/qcommon/qcommon.h` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PM_AirAccelerate` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:pmove`, `verify:cl-pred`, `verify:server:init`, `verify:full-game:three-renderer`, `typecheck`; global C porte via contexte explicite. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Pmove` | `packages/qcommon/src/pmove.ts` | `Pmove` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:pmove`, `verify:client:pmove:viewheight`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`. |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_InitFilesystem` | `packages/filesystem/src/files.ts` | `FS_InitFilesystem` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_InitFilesystem` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_Gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_NextPath` | `packages/filesystem/src/files.ts` | `FS_NextPath` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_ExecAutoexec` | `packages/filesystem/src/files.ts` | `FS_ExecAutoexec` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FOpenFile` | `packages/filesystem/src/files.ts` | `readMountedFile` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FCloseFile` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Pas de `FILE *` ouvert dans le VFS in-memory; fermeture couverte par ownership `FS_LoadFile`/`FS_FreeFile`. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FOpenFile` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_FCloseFile` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Pas de `FILE *` ouvert dans le VFS in-memory; fermeture couverte par ownership `FS_LoadFile`/`FS_FreeFile`. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_LoadFile` | `packages/filesystem/src/files.ts` | `FS_LoadFile` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_Read` | `packages/filesystem/src/files.ts` | `FS_Read` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_Read` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_FreeFile` | `packages/filesystem/src/files.ts` | `FS_FreeFile` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `FS_CreatePath` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Creation de repertoires host remplacee par montages VFS et stockage web; aucune sortie runtime/renderer visible directe. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `FS_CreatePath` | `packages/qcommon/src/qcommon.ts` |  | Non applicable | A redecouper | Creation de repertoires host remplacee par montages VFS et stockage web; aucune sortie runtime/renderer visible directe. |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_FATAL` | `packages/qcommon/src/qcommon.ts` | `ERR_FATAL` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_DROP` | `packages/qcommon/src/qcommon.ts` | `ERR_DROP` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_QUIT` | `packages/qcommon/src/qcommon.ts` | `ERR_QUIT` | Valide | A redecouper |  |

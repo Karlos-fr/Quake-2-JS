@@ -10,7 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/menu.c` | global | `m_main_cursor` | `packages/client/src/menu-types.ts` | `ClientMenuState.m_main_cursor` | Valide | A redecouper | Ported as split menu context state; verified this session with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `m_main_cursor` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified this session with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | macro | `NUM_CURSOR_FRAMES` | `packages/client/src/menu-types.ts` | `NUM_CURSOR_FRAMES` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `menu_in_sound` | `packages/client/src/menu-types.ts` | `menu_in_sound` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `menu_move_sound` | `packages/client/src/menu-types.ts` | `menu_move_sound` | Valide | A redecouper |  |
@@ -32,10 +32,10 @@
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Keys_f` | `packages/client/src/menu-options-keys.ts` | `M_Menu_Keys_f` | Non applicable | A redecouper | Prototype only; definition remains in later keys lot. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Quit_f` | `packages/client/src/menu-misc.ts` | `M_Menu_Quit_f` | Non applicable | A redecouper | Prototype only; definition remains in later misc lot. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Credits` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Prototype only; no separate owner in this file. |
-| `Quake-2-master/client/menu.c` | global | `m_entersound` | `packages/client/src/menu-types.ts` | `ClientMenuState.m_entersound` | Valide | A redecouper | Ported as split menu context state; verified enter sound with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `m_entersound` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified enter sound with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | macro | `MAX_MENU_DEPTH` | `packages/client/src/menu-types.ts` | `MAX_MENU_DEPTH` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | struct | `menulayer_t` | `packages/client/src/menu-types.ts` | `menulayer_t` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `m_menudepth` | `packages/client/src/menu-types.ts` | `ClientMenuState.m_menudepth` | Valide | A redecouper | Ported as split menu context state; stack behavior verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `m_menudepth` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; stack behavior verified with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | function | `M_Banner` | `packages/client/src/menu-draw.ts` | `M_Banner` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_PushMenu` | `packages/client/src/menu-runtime.ts` | `M_PushMenu` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `M_PushMenu`; covered by function validation. |
@@ -49,7 +49,7 @@
 | `Quake-2-master/client/menu.c` | function | `M_DrawPic` | `packages/client/src/menu-draw.ts` | `M_DrawPic` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_DrawCursor` | `packages/client/src/menu-draw.ts` | `M_DrawCursor` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `cursorname` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local C buffer replaced by template strings inside `M_DrawCursor`. |
-| `Quake-2-master/client/menu.c` | global | `cached` | `packages/client/src/menu-types.ts` | `ClientMenuState.cursorPicsCached` | Valide | A redecouper | Static local state made explicit in `ClientMenuState`; cursor cache verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `cached` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Static local state made explicit in `ClientMenuState`; cursor cache verified with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `M_DrawCursor`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | function | `M_DrawTextBox` | `packages/client/src/menu-draw.ts` | `M_DrawTextBox` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `n` | `packages/client/src/menu.ts` | `n` | Non applicable | A redecouper | Local loop variable inside `M_DrawTextBox`; covered by function validation. |
@@ -65,9 +65,9 @@
 | `Quake-2-master/client/menu.c` | function | `M_Main_Key` | `packages/client/src/menu-main-game.ts` | `M_Main_Key` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `sound` | `packages/client/src/menu-runtime.ts` | `sound` | Non applicable | A redecouper | Local variable inside `M_Main_Key`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Main_f` | `packages/client/src/menu-main-game.ts` | `M_Menu_Main_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_join_network_server_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_join_network_server_action` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_start_network_server_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_start_network_server_action` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_setup_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_setup_action` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_join_network_server_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_start_network_server_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_setup_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `Multiplayer_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `Multiplayer_MenuDraw` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `PlayerSetupFunc` | `packages/client/src/menu-multiplayer.ts` | `PlayerSetupFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `JoinNetworkServerFunc` | `packages/client/src/menu-multiplayer.ts` | `JoinNetworkServerFunc` | Valide | A redecouper |  |
@@ -77,30 +77,30 @@
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Multiplayer_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_Multiplayer_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `keys_cursor` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Unused source global; no runtime behavior to port. |
-| `Quake-2-master/client/menu.c` | global | `bind_grab` | `packages/client/src/menu-types.ts` | `ClientMenuState.bind_grab` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_keys_attack_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_change_weapon_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_walk_forward_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_backpedal_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_turn_left_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_turn_right_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_run_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_step_left_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_step_right_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_sidestep_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_look_up_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_look_down_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_center_view_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_mouse_look_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_keyboard_look_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_move_up_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_move_down_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_inventory_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_inv_use_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_inv_drop_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_inv_prev_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_inv_next_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
-| `Quake-2-master/client/menu.c` | global | `s_keys_help_computer_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_keys_actions[]` | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `bind_grab` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_keys_attack_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_change_weapon_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_walk_forward_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_backpedal_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_turn_left_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_turn_right_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_run_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_step_left_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_step_right_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_sidestep_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_look_up_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_look_down_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_center_view_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_mouse_look_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_keyboard_look_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_move_up_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_move_down_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_inventory_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_inv_use_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_inv_drop_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_inv_prev_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_inv_next_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
+| `Quake-2-master/client/menu.c` | global | `s_keys_help_computer_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as indexed key action state. |
 | `Quake-2-master/client/menu.c` | function | `M_UnbindCommand` | `packages/client/src/menu-options-keys.ts` | `M_UnbindCommand` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `j` | `packages/client/src/menu.ts` | `j` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
 | `Quake-2-master/client/menu.c` | global | `l` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
@@ -125,24 +125,24 @@
 | `Quake-2-master/client/menu.c` | global | `cmd` | `packages/client/src/keys.ts` | `cmd` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Keys_f` | `packages/client/src/menu-options-keys.ts` | `M_Menu_Keys_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `win_noalttab` | `packages/client/src/menu-options-keys.ts` | `win_noalttab` cvar | Valide | A redecouper | C pointer storage replaced by direct cvar context access. |
+| `Quake-2-master/client/menu.c` | global | `win_noalttab` | `packages/client/src/menu.ts` |  | Valide | A redecouper | C pointer storage replaced by direct cvar context access. |
 | `Quake-2-master/client/menu.c` | global | `in_joystick` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Extern cvar pointer; owning cvar is validated through options callbacks. |
-| `Quake-2-master/client/menu.c` | global | `s_options_defaults_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_defaults_action` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_customize_options_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_customize_options_action` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_sensitivity_slider` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_sensitivity_slider` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_freelook_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_freelook_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_noalttab_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_noalttab_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_alwaysrun_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_alwaysrun_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_invertmouse_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_invertmouse_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_lookspring_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_lookspring_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_lookstrafe_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_lookstrafe_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_crosshair_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_crosshair_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_sfxvolume_slider` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_sfxvolume_slider` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_joystick_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_joystick_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_cdvolume_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_cdvolume_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_quality_list` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_quality_list` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_compatibility_list` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_compatibility_list` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_options_console_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_options_console_action` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_defaults_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_customize_options_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_sensitivity_slider` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_freelook_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_noalttab_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_alwaysrun_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_invertmouse_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_lookspring_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_lookstrafe_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_crosshair_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_sfxvolume_slider` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_joystick_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_cdvolume_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_quality_list` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_compatibility_list` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_options_console_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `CrosshairFunc` | `packages/client/src/menu-options-keys.ts` | `CrosshairFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `JoystickFunc` | `packages/client/src/menu-options-keys.ts` | `JoystickFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `CustomizeControlsFunc` | `packages/client/src/menu-options-keys.ts` | `CustomizeControlsFunc` | Valide | A redecouper |  |
@@ -150,7 +150,7 @@
 | `Quake-2-master/client/menu.c` | function | `FreeLookFunc` | `packages/client/src/menu-options-keys.ts` | `FreeLookFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `MouseSpeedFunc` | `packages/client/src/menu-options-keys.ts` | `MouseSpeedFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `NoAltTabFunc` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Source callback belongs to a disabled/commented menu item. |
-| `Quake-2-master/client/menu.c` | function | `ClampCvar` | `packages/client/src/menu-options-keys.ts` | `ClampCvar` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `ClampCvar` | `packages/client/src/menu.ts` | `ClampCvar` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `ControlsSetMenuItemValues` | `packages/client/src/menu-options-keys.ts` | `ControlsSetMenuItemValues` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `ControlsResetDefaultsFunc` | `packages/client/src/menu-options-keys.ts` | `ControlsResetDefaultsFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `InvertMouseFunc` | `packages/client/src/menu-options-keys.ts` | `InvertMouseFunc` | Valide | A redecouper |  |
@@ -159,6 +159,7 @@
 | `Quake-2-master/client/menu.c` | function | `UpdateVolumeFunc` | `packages/client/src/menu-options-keys.ts` | `UpdateVolumeFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `UpdateCDVolumeFunc` | `packages/client/src/menu-options-keys.ts` | `UpdateCDVolumeFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `ConsoleFunc` | `packages/client/src/menu-options-keys.ts` | `ConsoleFunc` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `Key_ClearTyping` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `UpdateSoundQualityFunc` | `packages/client/src/menu-options-keys.ts` | `UpdateSoundQualityFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `Options_MenuInit` | `packages/client/src/menu-options-keys.ts` | `Options_MenuInit` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `cd_music_items` | `packages/client/src/menu-options-keys.ts` | `cd_music_items` | Valide | A redecouper |  |
@@ -171,9 +172,9 @@
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Options_f` | `packages/client/src/menu-options-keys.ts` | `M_Menu_Options_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Video_f` | `packages/client/src/menu-misc.ts` | `M_Menu_Video_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `credits_start_time` | `packages/client/src/menu-types.ts` | `ClientMenuState.credits_start_time` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `creditsIndex` | `packages/client/src/menu-types.ts` | `ClientMenuState.creditsIndex` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `creditsBuffer` | `packages/client/src/menu-types.ts` | `ClientMenuState.creditsBuffer` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `credits_start_time` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `creditsIndex` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `creditsBuffer` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `idcredits` | `packages/client/src/menu-main-game.ts` | `idcredits` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `xatcredits` | `packages/client/src/menu-main-game.ts` | `xatcredits` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `roguecredits` | `packages/client/src/menu-main-game.ts` | `roguecredits` | Valide | A redecouper |  |
@@ -181,18 +182,19 @@
 | `Quake-2-master/client/menu.c` | global | `bold` | `packages/client/src/menu-main-game.ts` | `bold` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
 | `Quake-2-master/client/menu.c` | global | `x` | `packages/client/src/menu.ts` | `x` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
 | `Quake-2-master/client/menu.c` | function | `M_Credits_Key` | `packages/client/src/menu-main-game.ts` | `M_Credits_Key` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `Developer_searchpath` | `packages/client/src/menu.ts` | `Developer_searchpath` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Credits_f` | `packages/client/src/menu-main-game.ts` | `M_Menu_Credits_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `n` | `packages/client/src/menu.ts` | `n` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
 | `Quake-2-master/client/menu.c` | global | `count` | `packages/client/src/menu.ts` | `count` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
 | `Quake-2-master/client/menu.c` | global | `p` | `packages/client/src/menu-main-game.ts` | `p` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
 | `Quake-2-master/client/menu.c` | global | `isdeveloper` | `packages/client/src/menu-main-game.ts` | `isdeveloper` | Non applicable | A redecouper | Local variable covered by enclosing function validation. |
-| `Quake-2-master/client/menu.c` | global | `m_game_cursor` | `packages/client/src/menu-types.ts` | `ClientMenuState.m_game_cursor` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
-| `Quake-2-master/client/menu.c` | global | `s_easy_game_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_easy_game_action` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
-| `Quake-2-master/client/menu.c` | global | `s_medium_game_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_medium_game_action` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
-| `Quake-2-master/client/menu.c` | global | `s_hard_game_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_hard_game_action` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
-| `Quake-2-master/client/menu.c` | global | `s_load_game_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_load_game_action` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
-| `Quake-2-master/client/menu.c` | global | `s_save_game_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_save_game_action` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
-| `Quake-2-master/client/menu.c` | global | `s_credits_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_credits_action` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `m_game_cursor` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_easy_game_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_medium_game_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_hard_game_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_load_game_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_save_game_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_credits_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | function | `StartGame` | `packages/client/src/menu-main-game.ts` | `StartGame` | Valide | A redecouper | Corrige: `verify:full-game:bridge` simule un client connecte avant la commande `loading`, conforme au guard source. |
 | `Quake-2-master/client/menu.c` | function | `EasyGameFunc` | `packages/client/src/menu-main-game.ts` | `EasyGameFunc` | Valide | A redecouper | Corrige: `verify:full-game:bridge` couvre la chaine `EasyGameFunc` -> `StartGame`. |
 | `Quake-2-master/client/menu.c` | function | `MediumGameFunc` | `packages/client/src/menu-main-game.ts` | `MediumGameFunc` | Valide | A redecouper | Header updated; covered by game menu callback parity in `npm run verify:menu`. |
@@ -207,8 +209,8 @@
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Valide | A redecouper | Duplicate reference from `Game_MenuKey`; function validated in runtime block. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Game_f` | `packages/client/src/menu-main-game.ts` | `M_Menu_Game_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | macro | `MAX_SAVEGAMES` | `packages/client/src/menu-types.ts` | `MAX_SAVEGAMES` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_loadgame_actions` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_loadgame_actions` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
-| `Quake-2-master/client/menu.c` | global | `m_savevalid` | `packages/client/src/menu-types.ts` | `ClientMenuState.m_savevalid` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_loadgame_actions` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `m_savevalid` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | function | `Create_Savestrings` | `packages/client/src/menu-main-game.ts` | `Create_Savestrings` | Valide | A redecouper | Filesystem read replaced by `getSaveSlots` host hook; verified with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `Create_Savestrings`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | global | `name` | `packages/client/src/menu.ts` | `name` | Non applicable | A redecouper | Local C path buffer replaced by host `getSaveSlots` hook. |
@@ -219,7 +221,7 @@
 | `Quake-2-master/client/menu.c` | function | `LoadGame_MenuKey` | `packages/client/src/menu-main-game.ts` | `LoadGame_MenuKey` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Valide | A redecouper | Duplicate reference from `LoadGame_MenuKey`; function validated in runtime block. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_LoadGame_f` | `packages/client/src/menu-main-game.ts` | `M_Menu_LoadGame_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_savegame_actions` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_savegame_actions` | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
+| `Quake-2-master/client/menu.c` | global | `s_savegame_actions` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state; verified with `npm run verify:menu`. |
 | `Quake-2-master/client/menu.c` | function | `SaveGameCallback` | `packages/client/src/menu-main-game.ts` | `SaveGameCallback` | Valide | A redecouper | Header updated. |
 | `Quake-2-master/client/menu.c` | function | `SaveGame_MenuDraw` | `packages/client/src/menu-main-game.ts` | `SaveGame_MenuDraw` | Valide | A redecouper | Header updated. |
 | `Quake-2-master/client/menu.c` | function | `SaveGame_MenuInit` | `packages/client/src/menu-main-game.ts` | `SaveGame_MenuInit` | Valide | A redecouper |  |
@@ -228,10 +230,10 @@
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Valide | A redecouper | Duplicate reference from `SaveGame_MenuKey`; function validated in runtime block. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_SaveGame_f` | `packages/client/src/menu-main-game.ts` | `M_Menu_SaveGame_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | macro | `MAX_LOCAL_SERVERS` | `packages/client/src/menu-types.ts` | `MAX_LOCAL_SERVERS` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_joinserver_search_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_joinserver_search_action` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_joinserver_address_book_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_joinserver_address_book_action` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_joinserver_server_actions` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_joinserver_server_actions` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `m_num_servers` | `packages/client/src/menu-types.ts` | `ClientMenuState.m_num_servers` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_joinserver_search_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_joinserver_address_book_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_joinserver_server_actions` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `m_num_servers` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | macro | `NO_SERVER_STRING` | `packages/client/src/menu-types.ts` | `NO_SERVER_STRING` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_AddToServerList` | `packages/client/src/menu-multiplayer.ts` | `M_AddToServerList` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `M_AddToServerList`; covered by function validation. |
@@ -249,7 +251,7 @@
 | `Quake-2-master/client/menu.c` | function | `JoinServer_MenuKey` | `packages/client/src/menu-multiplayer.ts` | `JoinServer_MenuKey` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_JoinServer_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_JoinServer_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `nummaps` | `packages/client/src/menu-types.ts` | `ClientMenuState.nummaps` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `nummaps` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `DMOptionsFunc` | `packages/client/src/menu-multiplayer.ts` | `DMOptionsFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `RulesChangeFunc` | `packages/client/src/menu-multiplayer.ts` | `RulesChangeFunc` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `StartServerActionFunc` | `packages/client/src/menu-multiplayer.ts` | `StartServerActionFunc` | Valide | A redecouper |  |
@@ -275,7 +277,7 @@
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `StartServer_MenuKey`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_StartServer_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_StartServer_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `dmoptions_statusbar` | `packages/client/src/menu-types.ts` | `ClientMenuState.dmoptions_statusbar` | Valide | A redecouper | Ported as split menu context state. |
+| `Quake-2-master/client/menu.c` | global | `dmoptions_statusbar` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state. |
 | `Quake-2-master/client/menu.c` | function | `DMFlagCallback` | `packages/client/src/menu-multiplayer.ts` | `DMFlagCallback` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `flags` | `packages/client/src/menu-multiplayer.ts` | `flags` | Non applicable | A redecouper | Local variable inside `DMFlagCallback`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | global | `bit` | `packages/client/src/menu-multiplayer.ts` | `bit` | Non applicable | A redecouper | Local variable inside `DMFlagCallback`; covered by function validation. |
@@ -297,7 +299,7 @@
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_DownloadOptions_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_DownloadOptions_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | macro | `NUM_ADDRESSBOOK_ENTRIES` | `packages/client/src/menu-types.ts` | `NUM_ADDRESSBOOK_ENTRIES` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_addressbook_fields` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_addressbook_fields` | Valide | A redecouper | Ported as split menu context state. |
+| `Quake-2-master/client/menu.c` | global | `s_addressbook_fields` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Ported as split menu context state. |
 | `Quake-2-master/client/menu.c` | function | `AddressBook_MenuInit` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuInit` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `AddressBook_MenuInit`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | global | `adr` | `packages/client/src/menu-multiplayer.ts` | `adr` | Non applicable | A redecouper | Local cvar pointer inside `AddressBook_MenuInit`; covered by function validation. |
@@ -308,20 +310,20 @@
 | `Quake-2-master/client/menu.c` | function | `Default_MenuKey` | `packages/client/src/menu-runtime.ts` | `Default_MenuKey` | Non applicable | A redecouper | External function call; owner row already validated. |
 | `Quake-2-master/client/menu.c` | function | `AddressBook_MenuDraw` | `packages/client/src/menu-multiplayer.ts` | `AddressBook_MenuDraw` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_AddressBook_f` | `packages/client/src/menu-multiplayer.ts` | `M_Menu_AddressBook_f` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_name_field` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_name_field` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_model_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_model_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_skin_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_skin_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_handedness_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_handedness_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_rate_box` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_rate_box` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_player_download_action` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_player_download_action` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_name_field` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_model_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_skin_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_handedness_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_rate_box` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_player_download_action` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | macro | `MAX_DISPLAYNAME` | `packages/client/src/menu-player-config.ts` | `MAX_DISPLAYNAME` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | macro | `MAX_PLAYERMODELS` | `packages/client/src/menu-player-config.ts` | `MAX_PLAYERMODELS` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | struct | `playermodelinfo_s` | `packages/client/src/menu-types.ts` | `PlayerModelInfo` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `nskins` | `packages/client/src/menu-types.ts` | `PlayerModelInfo.skins.length` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `displayname` | `packages/client/src/menu-types.ts` | `PlayerModelInfo.displayname` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `directory` | `packages/client/src/menu-types.ts` | `PlayerModelInfo.directory` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_pmnames` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_pmnames` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | global | `s_numplayermodels` | `packages/client/src/menu-types.ts` | `ClientMenuState.s_numplayermodels` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | struct | `playermodelinfo_s` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `nskins` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `displayname` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `directory` | `packages/client/src/menu-player-config.ts` | `directory` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_pmnames` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | global | `s_numplayermodels` | `packages/client/src/menu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `rate_tbl` | `packages/client/src/menu-player-config.ts` | `rate_tbl` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | table | `rate_tbl` | `packages/client/src/menu-player-config.ts` | `rate_tbl` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `rate_names` | `packages/client/src/menu-player-config.ts` | `rate_names` | Valide | A redecouper |  |
@@ -329,16 +331,16 @@
 | `Quake-2-master/client/menu.c` | function | `HandednessCallback` | `packages/client/src/menu-player-config.ts` | `HandednessCallback` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `RateCallback` | `packages/client/src/menu-player-config.ts` | `RateCallback` | Valide | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `ModelCallback` | `packages/client/src/menu-player-config.ts` | `ModelCallback` | Valide | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `FreeFileList` | `packages/client/src/menu-player-config.ts` | `clearPlayerModels` | Non applicable | A redecouper | Original frees C allocations; JS uses GC and clears temporary model state on escape. |
+| `Quake-2-master/client/menu.c` | function | `FreeFileList` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Original frees C allocations; JS uses GC and clears temporary model state on escape. |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `FreeFileList`; C allocation cleanup has no direct TS loop. |
-| `Quake-2-master/client/menu.c` | function | `IconOfSkinExists` | `apps/web/src/full-game.ts` | `fullGameIconOfSkinExists` | Valide | A redecouper | Browser adapter preserves the skin/icon pairing before feeding `getPlayerModels`. |
+| `Quake-2-master/client/menu.c` | function | `IconOfSkinExists` | `packages/client/src/menu.ts` |  | Valide | A redecouper | Browser adapter preserves the skin/icon pairing before feeding `getPlayerModels`. |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `IconOfSkinExists`; covered by adapter validation. |
 | `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local buffer inside `IconOfSkinExists`; replaced by string construction in adapter. |
 | `Quake-2-master/client/menu.c` | function | `PlayerConfig_ScanDirectories` | `packages/client/src/menu-player-config.ts` | `PlayerConfig_ScanDirectories` | Valide | A redecouper | `apps/web` hook now supplies loose/PAK player models via `readFullGamePlayerModels`. |
 | `Quake-2-master/client/menu.c` | global | `findname` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local filesystem pattern inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
 | `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local path/name buffer inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
 | `Quake-2-master/client/menu.c` | global | `ndirs` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local directory count inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
-| `Quake-2-master/client/menu.c` | global | `path` | `apps/web/src/full-game.ts` | `path` | Non applicable | A redecouper | Local FS_NextPath cursor inside browser adapter; covered by `PlayerConfig_ScanDirectories`. |
+| `Quake-2-master/client/menu.c` | global | `path` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local FS_NextPath cursor inside browser adapter; covered by `PlayerConfig_ScanDirectories`. |
 | `Quake-2-master/client/menu.c` | global | `i` | `packages/client/src/menu.ts` | `i` | Non applicable | A redecouper | Local loop variable inside `PlayerConfig_ScanDirectories`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | global | `npcxfiles` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local PCX count inside `PlayerConfig_ScanDirectories`; covered by hook adapter. |
 | `Quake-2-master/client/menu.c` | global | `nskins` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local valid-skin count inside `PlayerConfig_ScanDirectories`; represented by filtered `skins.length`. |
@@ -356,6 +358,7 @@
 | `Quake-2-master/client/menu.c` | global | `handedness` | `packages/client/src/menu-player-config.ts` | `handedness` | Non applicable | A redecouper | Local static table ported as module constant; covered by `PlayerConfig_MenuInit`. |
 | `Quake-2-master/client/menu.c` | global | `j` | `packages/client/src/menu.ts` | `j` | Non applicable | A redecouper | Local loop variable inside `PlayerConfig_MenuInit`; covered by function validation. |
 | `Quake-2-master/client/menu.c` | function | `PlayerConfig_MenuDraw` | `packages/client/src/menu-player-config.ts` | `PlayerConfig_MenuDraw` | Valide | A redecouper |  |
+| `Quake-2-master/client/menu.c` | function | `CalcFov` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Local C path buffer replaced by template strings inside `PlayerConfig_MenuDraw`. |
 | `Quake-2-master/client/menu.c` | global | `yaw` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Static local state ported as `ClientMenuState.player_config_yaw`. |
 | `Quake-2-master/client/menu.c` | global | `maxframe` | `packages/client/src/menu.ts` |  | Non applicable | A redecouper | Unused local in C `PlayerConfig_MenuDraw`; no runtime behavior to port. |

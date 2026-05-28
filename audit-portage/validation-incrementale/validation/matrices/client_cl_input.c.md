@@ -10,11 +10,11 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_input.c` | global | `cl_nodelta` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_nodelta` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `sys_frame_time` | `packages/client/src/cl_input.ts` | `ClientInputContext.sys_frame_time` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `frame_msec` | `packages/client/src/cl_input.ts` | `ClientInputContext.frame_msec` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `old_sys_frame_time` | `packages/client/src/cl_input.ts` | `ClientInputContext.old_sys_frame_time` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `in_impulse` | `packages/client/src/cl_input.ts` | `ClientInputContext.in_impulse` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_nodelta` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `sys_frame_time` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `frame_msec` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `old_sys_frame_time` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `in_impulse` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | function | `KeyDown` | `packages/client/src/cl_input.ts` | `KeyDown` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | global | `k` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `KeyDown`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `c` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `KeyDown`, couverte avec la fonction. |
@@ -24,47 +24,47 @@
 | `Quake-2-master/client/cl_input.c` | global | `c` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `KeyUp`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `uptime` | `packages/client/src/cl_input.ts` | `uptime` | Non applicable | A redecouper | Variable locale C de `KeyUp`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `return` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Faux positif du generateur pour le `return` de `KeyUp`. |
-| `Quake-2-master/client/cl_input.c` | function | `IN_KLookDown` | `packages/client/src/cl_input.ts` | `IN_KLookDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_KLookUp` | `packages/client/src/cl_input.ts` | `IN_KLookUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_UpDown` | `packages/client/src/cl_input.ts` | `IN_UpDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_UpUp` | `packages/client/src/cl_input.ts` | `IN_UpUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_DownDown` | `packages/client/src/cl_input.ts` | `IN_DownDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_DownUp` | `packages/client/src/cl_input.ts` | `IN_DownUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_LeftDown` | `packages/client/src/cl_input.ts` | `IN_LeftDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_LeftUp` | `packages/client/src/cl_input.ts` | `IN_LeftUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_RightDown` | `packages/client/src/cl_input.ts` | `IN_RightDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_RightUp` | `packages/client/src/cl_input.ts` | `IN_RightUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_ForwardDown` | `packages/client/src/cl_input.ts` | `IN_ForwardDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_ForwardUp` | `packages/client/src/cl_input.ts` | `IN_ForwardUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_BackDown` | `packages/client/src/cl_input.ts` | `IN_BackDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_BackUp` | `packages/client/src/cl_input.ts` | `IN_BackUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_LookupDown` | `packages/client/src/cl_input.ts` | `IN_LookupDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_LookupUp` | `packages/client/src/cl_input.ts` | `IN_LookupUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_LookdownDown` | `packages/client/src/cl_input.ts` | `IN_LookdownDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_LookdownUp` | `packages/client/src/cl_input.ts` | `IN_LookdownUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_MoveleftDown` | `packages/client/src/cl_input.ts` | `IN_MoveleftDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_MoveleftUp` | `packages/client/src/cl_input.ts` | `IN_MoveleftUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_MoverightDown` | `packages/client/src/cl_input.ts` | `IN_MoverightDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_MoverightUp` | `packages/client/src/cl_input.ts` | `IN_MoverightUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_SpeedDown` | `packages/client/src/cl_input.ts` | `IN_SpeedDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_SpeedUp` | `packages/client/src/cl_input.ts` | `IN_SpeedUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_StrafeDown` | `packages/client/src/cl_input.ts` | `IN_StrafeDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_StrafeUp` | `packages/client/src/cl_input.ts` | `IN_StrafeUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_AttackDown` | `packages/client/src/cl_input.ts` | `IN_AttackDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_AttackUp` | `packages/client/src/cl_input.ts` | `IN_AttackUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_UseDown` | `packages/client/src/cl_input.ts` | `IN_UseDown` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_UseUp` | `packages/client/src/cl_input.ts` | `IN_UseUp` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_Impulse` | `packages/client/src/cl_input.ts` | `IN_Impulse` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_KLookDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_KLookUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_UpDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_UpUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_DownDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_DownUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_LeftDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_LeftUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_RightDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_RightUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_ForwardDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_ForwardUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_BackDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_BackUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_LookupDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_LookupUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_LookdownDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_LookdownUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_MoveleftDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_MoveleftUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_MoverightDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_MoverightUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_SpeedDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_SpeedUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_StrafeDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_StrafeUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_AttackDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_AttackUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_UseDown` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_UseUp` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `IN_Impulse` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | function | `CL_KeyState` | `packages/client/src/cl_input.ts` | `CL_KeyState` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | global | `val` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `CL_KeyState`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `msec` | `packages/client/src/cl_input.ts` | `msec` | Non applicable | A redecouper | Variable locale C de `CL_KeyState`, couverte avec la fonction. |
-| `Quake-2-master/client/cl_input.c` | global | `cl_upspeed` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_upspeed` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `cl_forwardspeed` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_forwardspeed` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `cl_sidespeed` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_sidespeed` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `cl_yawspeed` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_yawspeed` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `cl_pitchspeed` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_pitchspeed` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `cl_run` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_run` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `cl_anglespeedkey` | `packages/client/src/cl_input.ts` | `ClientInputContext.cl_anglespeedkey` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_upspeed` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_forwardspeed` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_sidespeed` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_yawspeed` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_pitchspeed` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_run` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cl_anglespeedkey` | `packages/client/src/cl_input.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | function | `CL_AdjustAngles` | `packages/client/src/cl_input.ts` | `CL_AdjustAngles` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | global | `speed` | `packages/client/src/cl_input.ts` | `speed` | Non applicable | A redecouper | Variable locale C de `CL_AdjustAngles`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `speed` | `packages/client/src/cl_input.ts` | `speed` | Non applicable | A redecouper | Variable locale C de `CL_BaseMove`, couverte avec la fonction. |
@@ -84,3 +84,4 @@
 | `Quake-2-master/client/cl_input.c` | global | `i` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `nullcmd` | `packages/client/src/cl_input.ts` | `nullcmd` | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `checksumIndex` | `packages/client/src/cl_input.ts` | `checksumIndex` | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | function | `MSG_WriteLong` | `packages/client/src/cl_input.ts` |  | A verifier | A redecouper |  |
