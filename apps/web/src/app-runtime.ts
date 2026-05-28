@@ -263,6 +263,10 @@ import {
   type WebAppRenderLoop
 } from "./render-loop.js";
 import {
+  attachMobileTouchControls,
+  type MobileTouchControls
+} from "../../../packages/Extended/src/index.js";
+import {
   createWebAppServerRenderSource,
   getWebAppServerMapPath
 } from "./render-source.js";
@@ -357,6 +361,7 @@ interface WebAppRuntime {
   qcommon: QcommonMiscRuntime;
   qcommonHost: QcommonHostRuntime;
   inputDevice: ClientInputDeviceContext;
+  mobileControls: MobileTouchControls | null;
   serverHost: WebAppServerHost;
   frontendRenderer: WebAppFrontendRendererState | null;
   frontendRendererPromise: Promise<WebAppFrontendRendererState> | null;
@@ -435,6 +440,33 @@ async function bootstrap(): Promise<void> {
     const runtime = createWebAppRuntime(filesystem, page);
     page.status.textContent = "Initialisation du renderer frontend...";
     await ensureWebAppFrontendRenderer(runtime, page);
+    runtime.mobileControls = attachMobileTouchControls({
+      root: page.root,
+      isGameplayActive: () => runtime.mode === "game"
+        && runtime.menu.keys.state.key_dest === keydest_t.key_game
+        && runtime.client.cls.state === connstate_t.ca_active
+        && !runtime.isAuthoritativeLevelLoading(),
+      isMenuActive: () => runtime.menu.keys.state.key_dest === keydest_t.key_menu,
+      getTime: () => runtime.client.cls.realtime,
+      addCommandText: (text) => Cbuf_AddText(runtime.menu.cmd, text),
+      applyLookDelta: (movementX, movementY) => {
+        applyWebAppMouseLook(runtime, movementX, movementY);
+      },
+      pressMenuKey: (key) => {
+        routeWebAppMenuKey(runtime, page, key);
+      },
+      menuKeys: {
+        up: K_UPARROW,
+        down: K_DOWNARROW,
+        left: K_LEFTARROW,
+        right: K_RIGHTARROW,
+        enter: K_ENTER,
+        escape: K_ESCAPE
+      },
+      onInteract: () => {
+        void runtime.audio.unlock();
+      }
+    });
     void runtime.audio.unlock();
 
     resizeCanvas(page);
@@ -446,6 +478,7 @@ async function bootstrap(): Promise<void> {
     });
     window.addEventListener("beforeunload", () => {
       runtime.finishConfigBootstrap();
+      runtime.mobileControls?.dispose();
       runtime.shutdownClient();
       disposeWebAppFrontendRenderer(runtime);
       Qcommon_Shutdown(runtime.qcommon);
@@ -1783,6 +1816,7 @@ function createWebAppRuntime(filesystem: VirtualFilesystem, page: WebAppPage): W
     qcommon,
     qcommonHost,
     inputDevice,
+    mobileControls: null,
     serverHost,
     get frontendRenderer() {
       return frontendRenderer;
@@ -2491,6 +2525,7 @@ function frame(time: number, runtime: WebAppRuntime, page: WebAppPage): void {
     drawConsoleFrame(runtime, page);
   }
 
+  runtime.mobileControls?.update();
   requestAnimationFrame((nextTime) => frame(nextTime, runtime, page));
 }
 
@@ -4000,6 +4035,19 @@ function toggleWebAppConsole(runtime: WebAppRuntime, page: WebAppPage): void {
   toggleWebAppConsoleContext(runtime.menu, runtime.console, page, runtime.client);
 }
 
+function routeWebAppMenuKey(runtime: WebAppRuntime, page: WebAppPage, key: number): void {
+  if (runtime.menu.keys.state.key_dest !== keydest_t.key_menu) {
+    return;
+  }
+
+  M_Keydown(runtime.menu, key);
+  executeRuntimeCommandBuffer(runtime, page);
+  syncWebAppKeyDestination(runtime, page);
+  if (key === K_ESCAPE) {
+    runtime.mouse.suppressNextEscapeKeyUp = true;
+  }
+}
+
 /**
  * Original name: N/A
  * Source: N/A (web console adapter)
@@ -4096,6 +4144,10 @@ function handleKeyUp(event: KeyboardEvent, runtime: WebAppRuntime, page: WebAppP
  * Purpose: Start browser mouse-look capture for active gameplay without replacing the ported key/input runtime.
  */
 function handlePointerDown(event: PointerEvent, runtime: WebAppRuntime, page: WebAppPage): void {
+  if (isExtendedTouchControlTarget(event.target)) {
+    return;
+  }
+
   void runtime.audio.unlock();
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
@@ -4166,6 +4218,10 @@ function isWebAppAutomaticLevelLoad(runtime: WebAppRuntime): boolean {
  * Purpose: Convert browser mouse button transitions to Quake key events for active gameplay bindings.
  */
 function handleMouseButton(event: MouseEvent, down: boolean, runtime: WebAppRuntime, page: WebAppPage): void {
+  if (isExtendedTouchControlTarget(event.target)) {
+    return;
+  }
+
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
   }
@@ -4229,6 +4285,10 @@ function isTextInputTarget(target: EventTarget | null): boolean {
   return target instanceof HTMLInputElement
     || target instanceof HTMLTextAreaElement
     || target instanceof HTMLSelectElement;
+}
+
+function isExtendedTouchControlTarget(target: EventTarget | null): boolean {
+  return target instanceof Element && target.closest(".q2ext-touch") !== null;
 }
 
 /**
