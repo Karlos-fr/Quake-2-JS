@@ -3,8 +3,8 @@
 ## Rattachement Phase 02
 
 - Statut structurel : split-undocumented
-- Cible TS principale : packages/client/src/view.ts
-- Cibles TS declarees : packages/client/src/view.ts, packages/client/src/refresh.ts, packages/client/src/menu-player-config.ts, apps/web/src/local-client-controller.ts, packages/renderer-three/src/refresh-entity-sync.ts
+- Cible TS principale : packages/client/src/cl_view.ts
+- Cibles TS declarees : packages/client/src/cl_view.ts, packages/client/src/menu-player-config.ts, packages/client/src/refresh.ts, packages/renderer-three/src/refresh-entity-sync.ts
 
 ## Symboles source
 

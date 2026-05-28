@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/g_main.ts
-- Cibles TS declarees : packages/game/src/g_main.ts, packages/game/src/g_svcmds.ts, packages/game/src/g_save.ts, packages/game/src/index.ts
+- Cibles TS declarees : packages/game/src/g_main.ts, packages/game/src/g_save.ts, packages/game/src/g_svcmds.ts, packages/game/src/index.ts
 
 ## Symboles source
 

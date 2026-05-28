@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/snd_loc.h`
 - Cibles TS connues: `packages/client/src/snd_loc.ts`, `packages/client/src/index.ts`
-- Tests connus: `npm run verify:snd-loc:header`, `scripts/verify/quake2-snd-loc-header.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `missing-ts-symbols:58`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `missing-linked-test-for-some-symbols`, `missing-ts-symbols:58`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

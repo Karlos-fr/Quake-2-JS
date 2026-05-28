@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/g_monster.ts
-- Cibles TS declarees : packages/game/src/g_monster.ts, packages/game/src/runtime.ts, packages/game/src/g_ai.ts, packages/game/src/g_items.ts, packages/game/src/index.ts
+- Cibles TS declarees : packages/game/src/g_monster.ts, packages/game/src/g_ai.ts, packages/game/src/g_items.ts, packages/game/src/index.ts, packages/game/src/runtime.ts
 
 ## Symboles source
 

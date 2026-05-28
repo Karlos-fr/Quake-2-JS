@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/qcommon/src/qcommon.ts
-- Cibles TS declarees : packages/qcommon/src/qcommon.ts, packages/qcommon/src/index.ts
+- Cibles TS declarees : packages/qcommon/src/qcommon.ts, packages/qcommon/src/crc.ts, packages/qcommon/src/index.ts
 
 ## Symboles source
 

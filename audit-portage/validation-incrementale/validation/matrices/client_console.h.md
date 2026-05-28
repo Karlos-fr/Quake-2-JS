@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/console.h`
 - Cibles TS connues: `packages/client/src/console.ts`, `packages/client/src/index.ts`
-- Tests connus: `npm run verify:console`, `npm run verify:console:header`, `npm run verify:full-game:commands`, `npm run verify:full-game:console-background`, `scripts/verify/quake2-console-header.ts`, `scripts/verify/quake2-console.ts`, `scripts/verify/quake2-full-game-console-background.ts`, `scripts/verify/quake2-full-game-console-commands.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `missing-ts-symbols:7`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:4`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:7`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:4`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

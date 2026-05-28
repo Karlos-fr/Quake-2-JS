@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/server/sv_null.c`
 - Cibles TS connues: `packages/server/src/sv_null.ts`, `packages/server/src/index.ts`
-- Tests connus: `npm run verify:server:null`, `scripts/verify/quake2-sv-null.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:1`
+- Findings Phase 03: `header:stub marker detected`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:1`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

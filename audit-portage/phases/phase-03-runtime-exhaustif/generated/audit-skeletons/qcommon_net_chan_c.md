@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/qcommon/src/net_chan.ts
-- Cibles TS declarees : packages/qcommon/src/net_chan.ts, packages/qcommon/src/qcommon.ts, packages/qcommon/src/index.ts
+- Cibles TS declarees : packages/qcommon/src/net_chan.ts, packages/qcommon/src/index.ts, packages/qcommon/src/qcommon.ts
 
 ## Symboles source
 

@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/filesystem/src/files.ts
-- Cibles TS declarees : packages/filesystem/src/files.ts, packages/filesystem/src/index.ts, packages/formats/src/pak.ts
+- Cibles TS declarees : packages/filesystem/src/files.ts, packages/formats/src/pak.ts, packages/filesystem/src/index.ts
 
 ## Symboles source
 

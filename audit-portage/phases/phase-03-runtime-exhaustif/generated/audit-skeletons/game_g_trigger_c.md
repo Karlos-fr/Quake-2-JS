@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/g_trigger.ts
-- Cibles TS declarees : packages/game/src/g_trigger.ts, packages/game/src/g_spawn.ts, packages/game/src/index.ts, packages/game/src/touch.ts, packages/game/src/g_combat.ts, packages/game/src/g_items.ts
+- Cibles TS declarees : packages/game/src/g_trigger.ts, packages/game/src/g_combat.ts, packages/game/src/g_items.ts, packages/game/src/g_spawn.ts, packages/game/src/index.ts, packages/game/src/touch.ts
 
 ## Symboles source
 

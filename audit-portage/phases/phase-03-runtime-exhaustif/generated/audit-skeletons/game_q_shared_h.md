@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/qcommon/src/q_shared.ts
-- Cibles TS declarees : packages/qcommon/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/cvar.ts, packages/math/src/q_shared.ts, packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts
+- Cibles TS declarees : packages/qcommon/src/q_shared.ts, packages/game/src/runtime.ts, packages/qcommon/src/system.ts, packages/client/src/monster-flash.ts, packages/game/src/m_flash.ts, packages/math/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/cvar.ts
 
 ## Symboles source
 

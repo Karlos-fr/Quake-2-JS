@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/m_insane.c`
 - Cibles TS connues: `packages/game/src/m_insane.ts`, `packages/game/src/g_spawn.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:m-insane`, `npm run verify:m-insane:header`, `scripts/verify/quake2-m-insane-header.ts`, `scripts/verify/quake2-m-insane.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `header:temporary marker detected`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:23`
+- Findings Phase 03: `basename-collision`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:23`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

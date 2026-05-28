@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/m_supertank.ts
-- Cibles TS declarees : packages/game/src/m_supertank.ts, packages/game/src/m_flash.ts, packages/game/src/g_spawn.ts, packages/game/src/g_save.ts, packages/game/src/index.ts
+- Cibles TS declarees : packages/game/src/m_supertank.ts, packages/game/src/g_save.ts, packages/game/src/g_spawn.ts, packages/game/src/index.ts, packages/game/src/m_flash.ts
 
 ## Symboles source
 

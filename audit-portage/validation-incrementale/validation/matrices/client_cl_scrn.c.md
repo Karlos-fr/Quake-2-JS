@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/cl_scrn.c`
 - Cibles TS connues: `packages/client/src/cl_scrn.ts`, `packages/client/src/cl_main.ts`, `packages/client/src/client.ts`, `packages/renderer-three/src/gl_draw.ts`, `packages/renderer-three/src/three-gl-draw-adapter.ts`
-- Tests connus: `npm run verify:cl-scrn`, `npm run verify:client:header`, `npm run verify:client:pmove:viewheight`, `npm run verify:three-gl-draw-adapter`, `scripts/verify/quake2-cl-scrn.ts`, `scripts/verify/quake2-client-header.ts`, `scripts/verify/quake2-client-pmove-viewheight.ts`, `scripts/verify/quake2-three-gl-draw-adapter.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:50`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:9`
+- Findings Phase 03: `header:stub marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:45`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:9`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -53,7 +53,7 @@
 | `Quake-2-master/client/cl_scrn.c` | global | `s` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `line` | `packages/client/src/cl_scrn.ts` | `line` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawCenterString` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | global | `start` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | global | `start` | `packages/client/src/cl_scrn.ts` | `start` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `l` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `j` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `remaining` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
@@ -72,7 +72,7 @@
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawLoading` | `packages/client/src/cl_scrn.ts` | `SCR_DrawLoading` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_RunConsole` | `packages/client/src/cl_scrn.ts` | `SCR_RunConsole` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_conlines` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawConsole` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawConsole` | `packages/client/src/cl_scrn.ts` | `SCR_DrawConsole` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_BeginLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_BeginLoadingPlaque` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `scr_draw_loading` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_EndLoadingPlaque` | `packages/client/src/cl_scrn.ts` | `SCR_EndLoadingPlaque` | Valide | A redecouper |  |
@@ -83,7 +83,7 @@
 | `Quake-2-master/client/cl_scrn.c` | global | `time` | `packages/client/src/cl_scrn.ts` | `time` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_AddDirtyPoint` | `packages/client/src/cl_scrn.ts` | `SCR_AddDirtyPoint` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DirtyScreen` | `packages/client/src/cl_scrn.ts` | `SCR_DirtyScreen` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TileClear` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | function | `SCR_TileClear` | `packages/client/src/cl_scrn.ts` | `SCR_TileClear` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | macro | `STAT_MINUS` | `packages/client/src/cl_scrn.ts` | `STAT_MINUS` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | macro | `ICON_WIDTH` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
@@ -118,6 +118,6 @@
 | `Quake-2-master/client/cl_scrn.c` | macro | `STAT_LAYOUTS` | `packages/client/src/cl_scrn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_DrawLayout` | `packages/client/src/cl_scrn.ts` | `SCR_DrawLayout` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | function | `SCR_UpdateScreen` | `packages/client/src/cl_scrn.ts` | `SCR_UpdateScreen` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | global | `numframes` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | global | `numframes` | `packages/client/src/cl_scrn.ts` | `numframes` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | global | `separation` | `packages/client/src/cl_scrn.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/client/cl_scrn.c` | global | `separation` | `packages/client/src/cl_scrn.ts` | `separation` | Non applicable | A redecouper |  |

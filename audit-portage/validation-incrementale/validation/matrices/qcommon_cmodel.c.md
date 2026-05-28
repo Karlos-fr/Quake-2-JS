@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/qcommon/cmodel.c`
 - Cibles TS connues: `packages/qcommon/src/cmodel.ts`, `packages/qcommon/src/index.ts`
-- Tests connus: `scripts/verify/quake2-cmodel.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-ts-symbols:108`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:16`
+- Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:108`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:16`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

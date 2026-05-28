@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/m_flipper.h`
 - Cibles TS connues: `packages/game/src/m_flipper.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:m-flipper`, `npm run verify:m-flipper:header`, `npm run verify:m-flipper:source-parity`, `scripts/verify/quake2-m-flipper-header.ts`, `scripts/verify/quake2-m-flipper-source-parity.ts`, `scripts/verify/quake2-m-flipper.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

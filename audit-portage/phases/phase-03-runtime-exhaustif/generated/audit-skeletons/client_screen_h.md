@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/cl_scrn.ts
-- Cibles TS declarees : packages/client/src/cl_scrn.ts, packages/client/src/client.ts, packages/client/src/cl_cin.ts
+- Cibles TS declarees : packages/client/src/cl_scrn.ts, packages/client/src/screen.ts, packages/client/src/cl_cin.ts, packages/client/src/client.ts
 
 ## Symboles source
 

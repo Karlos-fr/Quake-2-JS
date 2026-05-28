@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/snd_mix.ts
-- Cibles TS declarees : packages/client/src/snd_mix.ts, packages/client/src/snd_loc.ts, packages/client/src/snd_dma.ts, packages/client/src/index.ts
+- Cibles TS declarees : packages/client/src/snd_mix.ts, packages/client/src/index.ts, packages/client/src/snd_dma.ts, packages/client/src/snd_loc.ts
 
 ## Symboles source
 

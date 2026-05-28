@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/qcommon/md4.c`
 - Cibles TS connues: `packages/qcommon/src/md4.ts`, `packages/qcommon/src/qcommon.ts`
-- Tests connus: `npm run verify:md4`, `npm run verify:qcommon:header`, `scripts/verify/quake2-md4.ts`, `scripts/verify/quake2-qcommon-header.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `missing-ts-symbols:4`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `missing-linked-test-for-some-symbols`, `missing-ts-symbols:4`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

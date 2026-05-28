@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/g_phys.ts
-- Cibles TS declarees : packages/game/src/g_phys.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts, packages/game/src/m_move.ts
+- Cibles TS declarees : packages/game/src/g_phys.ts, packages/game/src/m_move.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts
 
 ## Symboles source
 

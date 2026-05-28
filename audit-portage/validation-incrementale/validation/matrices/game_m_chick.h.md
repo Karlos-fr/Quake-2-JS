@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/m_chick.h`
 - Cibles TS connues: `packages/game/src/m_chick.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:m-chick`, `npm run verify:m-chick:header`, `npm run verify:m-chick:source-parity`, `scripts/verify/quake2-m-chick-header.ts`, `scripts/verify/quake2-m-chick-source-parity.ts`, `scripts/verify/quake2-m-chick.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

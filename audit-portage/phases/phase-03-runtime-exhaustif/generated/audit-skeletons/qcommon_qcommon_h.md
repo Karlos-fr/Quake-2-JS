@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/qcommon/src/qcommon.ts
-- Cibles TS declarees : packages/qcommon/src/qcommon.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/cmodel.ts, packages/qcommon/src/pmove.ts, packages/filesystem/src/files.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts
+- Cibles TS declarees : packages/qcommon/src/qcommon.ts, packages/memory/src/sizebuf.ts, packages/qcommon/src/protocol.ts, packages/filesystem/src/files.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cmodel.ts, packages/qcommon/src/common.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/messages.ts, packages/qcommon/src/pmove.ts, packages/qcommon/src/system.ts
 
 ## Symboles source
 

@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/ref.ts
-- Cibles TS declarees : packages/client/src/ref.ts, packages/qcommon/src/q_shared.ts, packages/client/src/cl_scrn.ts, packages/client/src/index.ts
+- Cibles TS declarees : packages/client/src/ref.ts, packages/client/src/cl_scrn.ts, packages/client/src/index.ts, packages/qcommon/src/q_shared.ts
 
 ## Symboles source
 

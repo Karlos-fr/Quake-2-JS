@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/g_turret.c`
 - Cibles TS connues: `packages/game/src/g_turret.ts`, `packages/game/src/g_spawn.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:g-turret`, `scripts/verify/quake2-g-turret.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `missing-ts-symbols:4`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:16`
+- Findings Phase 03: `missing-linked-test-for-some-symbols`, `missing-ts-symbols:4`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:16`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

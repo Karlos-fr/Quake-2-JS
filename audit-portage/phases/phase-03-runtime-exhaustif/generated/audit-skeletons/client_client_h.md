@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/client.ts
-- Cibles TS declarees : packages/client/src/client.ts, packages/client/src/keys.ts, packages/client/src/index.ts
+- Cibles TS declarees : packages/client/src/client.ts, packages/client/src/cl_tent.ts, packages/client/src/index.ts, packages/client/src/keys.ts
 
 ## Symboles source
 

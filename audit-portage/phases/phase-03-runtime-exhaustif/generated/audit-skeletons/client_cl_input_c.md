@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/cl_input.ts
-- Cibles TS declarees : packages/client/src/cl_input.ts, packages/client/src/input.ts, packages/client/src/client.ts
+- Cibles TS declarees : packages/client/src/cl_input.ts, packages/client/src/client.ts, packages/client/src/input.ts
 
 ## Symboles source
 

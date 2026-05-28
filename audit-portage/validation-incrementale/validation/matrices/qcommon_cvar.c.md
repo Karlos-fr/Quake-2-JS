@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/qcommon/cvar.c`
 - Cibles TS connues: `packages/qcommon/src/cvar.ts`
-- Tests connus: `npm run verify:cvar`, `scripts/verify/quake2-cvar.ts`
+- Tests connus: aucun
 - Verdict Phase 03: Partiel
-- Findings Phase 03: `missing-ts-symbols:26`, `unreachable-functions:5`, `missing-ts-symbol`
+- Findings Phase 03: `missing-linked-test-for-some-symbols`, `missing-ts-symbols:26`, `unreachable-functions:5`, `missing-ts-symbol`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/menu.ts
-- Cibles TS declarees : packages/client/src/menu.ts, packages/client/src/menu-main-game.ts, packages/client/src/menu-multiplayer.ts, packages/client/src/menu-options-keys.ts, packages/client/src/menu-player-config.ts, packages/client/src/menu-draw.ts, packages/client/src/menu-misc.ts, packages/client/src/menu-runtime.ts, packages/client/src/menu-types.ts, packages/client/src/qmenu.ts, packages/client/src/keys.ts, packages/client/src/vid.ts
+- Cibles TS declarees : packages/client/src/menu.ts, packages/client/src/menu-draw.ts, packages/client/src/menu-main-game.ts, packages/client/src/menu-misc.ts, packages/client/src/menu-multiplayer.ts, packages/client/src/menu-options-keys.ts, packages/client/src/menu-player-config.ts, packages/client/src/menu-runtime.ts, packages/client/src/menu-types.ts, packages/client/src/keys.ts, packages/client/src/qmenu.ts, packages/client/src/vid.ts
 
 ## Symboles source
 

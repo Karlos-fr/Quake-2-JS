@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/m_boss32.h`
 - Cibles TS connues: `packages/game/src/m_boss32.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:m-boss32`, `npm run verify:m-boss32:header`, `npm run verify:m-boss32:source-parity`, `scripts/verify/quake2-m-boss32-header.ts`, `scripts/verify/quake2-m-boss32-source-parity.ts`, `scripts/verify/quake2-m-boss32.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `basename-collision`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

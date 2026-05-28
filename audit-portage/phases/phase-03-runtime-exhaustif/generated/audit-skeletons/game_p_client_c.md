@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/p_client.ts
-- Cibles TS declarees : packages/game/src/p_client.ts, packages/game/src/g_items.ts, packages/game/src/g_utils.ts, packages/game/src/g_misc.ts, packages/game/src/p_hud.ts, packages/game/src/g_spawn.ts, packages/game/src/g_combat.ts, packages/game/src/runtime.ts, packages/game/src/g_chase.ts, packages/game/src/index.ts
+- Cibles TS declarees : packages/game/src/p_client.ts, packages/game/src/g_chase.ts, packages/game/src/g_combat.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, packages/game/src/g_spawn.ts, packages/game/src/g_utils.ts, packages/game/src/index.ts, packages/game/src/p_hud.ts, packages/game/src/runtime.ts
 
 ## Symboles source
 

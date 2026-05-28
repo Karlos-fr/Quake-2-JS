@@ -70,9 +70,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 0,
-        "targetFunctions": 50,
+        "targetFunctions": 61,
         "targetTypes": 5,
-        "targetConstants": 76
+        "targetConstants": 82
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -249,6 +249,7 @@
       "basenameCollisionSources": [],
       "importImpactFiles": [
         "packages/client/src/cl_scrn.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/index.ts"
       ],
       "renameProposal": null,
@@ -257,9 +258,9 @@
         "sourceMacros": 0,
         "sourceTypes": 2,
         "sourceGlobals": 22,
-        "targetFunctions": 102,
-        "targetTypes": 44,
-        "targetConstants": 129
+        "targetFunctions": 105,
+        "targetTypes": 47,
+        "targetConstants": 156
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -274,40 +275,41 @@
       "status": "split-undocumented",
       "expectedTsFile": "cl_ents.ts",
       "strictMatches": [
-        "packages/client/src/cl_ents.ts"
+        "packages/client/src/cl_ents.ts",
+        "packages/client/src/refresh.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_ents.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/cl_parse.ts",
         "packages/client/src/refresh.ts",
-        "packages/client/src/view.ts",
-        "packages/client/src/cl_tent.ts",
         "packages/client/src/cl_newfx.ts",
-        "packages/renderer-three/src/refresh-entity-sync.ts",
-        "packages/renderer-three/src/md2-mesh-builder.ts"
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_tent.ts",
+        "packages/renderer-three/src/md2-mesh-builder.ts",
+        "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_ents.ts",
-        "packages/client/src/cl_parse.ts",
         "packages/client/src/refresh.ts",
-        "packages/client/src/view.ts",
-        "packages/client/src/cl_tent.ts",
         "packages/client/src/cl_newfx.ts",
-        "packages/renderer-three/src/refresh-entity-sync.ts",
-        "packages/renderer-three/src/md2-mesh-builder.ts"
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_tent.ts",
+        "packages/renderer-three/src/md2-mesh-builder.ts",
+        "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "stub marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/index.ts",
-        "packages/client/src/refresh.ts",
-        "packages/client/src/view.ts"
+        "packages/client/src/refresh.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -315,12 +317,13 @@
         "sourceMacros": 1,
         "sourceTypes": 2,
         "sourceGlobals": 30,
-        "targetFunctions": 237,
-        "targetTypes": 41,
-        "targetConstants": 458
+        "targetFunctions": 192,
+        "targetTypes": 31,
+        "targetConstants": 394
       },
       "findings": [
-        "multiple-declared-ts-targets"
+        "multiple-declared-ts-targets",
+        "header:stub marker detected"
       ]
     },
     {
@@ -335,23 +338,23 @@
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_fx.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/cl_newfx.ts",
-        "packages/client/src/cl_parse.ts",
-        "packages/client/src/refresh.ts",
-        "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/cl_newfx.ts",
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
+        "packages/client/src/monster-flash.ts",
+        "packages/client/src/refresh.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_fx.ts",
-        "packages/client/src/cl_newfx.ts",
-        "packages/client/src/cl_parse.ts",
-        "packages/client/src/refresh.ts",
-        "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/cl_newfx.ts",
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
+        "packages/client/src/monster-flash.ts",
+        "packages/client/src/refresh.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -362,7 +365,7 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/cl_parse.ts",
@@ -378,9 +381,9 @@
         "sourceMacros": 1,
         "sourceTypes": 3,
         "sourceGlobals": 33,
-        "targetFunctions": 241,
+        "targetFunctions": 232,
         "targetTypes": 42,
-        "targetConstants": 294
+        "targetConstants": 325
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -400,13 +403,13 @@
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_input.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/input.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/client.ts",
+        "packages/client/src/input.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_input.ts",
-        "packages/client/src/input.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/client.ts",
+        "packages/client/src/input.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -414,7 +417,7 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/index.ts",
         "packages/client/src/local-input.ts",
         "packages/client/src/local-session.ts"
@@ -425,8 +428,8 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 18,
-        "targetFunctions": 47,
-        "targetTypes": 30,
+        "targetFunctions": 78,
+        "targetTypes": 31,
         "targetConstants": 40
       },
       "findings": [
@@ -459,6 +462,7 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/index.ts"
@@ -469,9 +473,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 3,
-        "targetFunctions": 113,
-        "targetTypes": 26,
-        "targetConstants": 160
+        "targetFunctions": 98,
+        "targetTypes": 29,
+        "targetConstants": 184
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -485,25 +489,26 @@
       "status": "split-undocumented",
       "expectedTsFile": "cl_main.ts",
       "strictMatches": [
-        "packages/client/src/cl_main.ts"
+        "packages/client/src/cl_main.ts",
+        "packages/client/src/precache.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_main.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/download.ts",
         "packages/client/src/precache.ts",
-        "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
+        "packages/client/src/download.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/sound.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_main.ts",
-        "packages/client/src/download.ts",
         "packages/client/src/precache.ts",
-        "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
+        "packages/client/src/download.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/sound.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -511,7 +516,7 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/index.ts",
         "packages/client/src/precache.ts"
@@ -522,8 +527,8 @@
         "sourceMacros": 3,
         "sourceTypes": 1,
         "sourceGlobals": 24,
-        "targetFunctions": 112,
-        "targetTypes": 36,
+        "targetFunctions": 107,
+        "targetTypes": 37,
         "targetConstants": 172
       },
       "findings": [
@@ -542,16 +547,16 @@
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_newfx.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/cl_tent.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_tent.ts",
         "packages/client/src/refresh.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_newfx.ts",
-        "packages/client/src/cl_tent.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_tent.ts",
         "packages/client/src/refresh.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -570,9 +575,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 21,
-        "targetFunctions": 225,
+        "targetFunctions": 218,
         "targetTypes": 19,
-        "targetConstants": 287
+        "targetConstants": 307
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -586,21 +591,26 @@
       "status": "split-undocumented",
       "expectedTsFile": "cl_parse.ts",
       "strictMatches": [
-        "packages/client/src/cl_parse.ts"
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/download.ts",
+        "packages/client/src/sky.ts",
+        "packages/client/src/sound-registration.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_parse.ts",
       "declaredSecondaryTsTargets": [
         "packages/client/src/download.ts",
-        "packages/client/src/sound.ts",
+        "packages/client/src/sky.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/sky.ts"
+        "packages/client/src/sound.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_parse.ts",
         "packages/client/src/download.ts",
-        "packages/client/src/sound.ts",
+        "packages/client/src/sky.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/sky.ts"
+        "packages/client/src/sound.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -611,18 +621,20 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-server-host.ts",
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/server-host.ts",
+        "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_main.ts",
         "packages/client/src/cl_tent.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/download.ts",
         "packages/client/src/index.ts",
         "packages/client/src/local-gameplay-sync.ts",
         "packages/client/src/precache.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/sound.ts",
-        "packages/client/src/view.ts"
+        "packages/client/src/sound-registration.ts",
+        "packages/qcommon/src/protocol.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -630,9 +642,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 14,
-        "targetFunctions": 113,
-        "targetTypes": 26,
-        "targetConstants": 154
+        "targetFunctions": 112,
+        "targetTypes": 31,
+        "targetConstants": 179
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -645,69 +657,44 @@
       "sourceBasename": "cl_pred",
       "scope": "core-runtime",
       "expectedStatus": "to-port",
-      "status": "wrong-name",
+      "status": "strict-ok",
       "expectedTsFile": "cl_pred.ts",
-      "strictMatches": [],
-      "declaredPrimaryTsTarget": "packages/client/src/view.ts",
+      "strictMatches": [
+        "packages/client/src/cl_pred.ts"
+      ],
+      "declaredPrimaryTsTarget": "packages/client/src/cl_pred.ts",
       "declaredSecondaryTsTargets": [],
       "declaredTsTargets": [
-        "packages/client/src/view.ts"
+        "packages/client/src/cl_pred.ts"
       ],
-      "primaryBasenameMatchesSource": false,
+      "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [
-        "stub marker detected",
         "temporary marker detected"
       ],
-      "modernNameFindings": [
-        "primary-basename 'view' differs from source basename 'cl_pred'",
-        "primary basename 'view' looks modernized or abstract"
-      ],
+      "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
-        "packages/client/src/cl_parse.ts",
-        "packages/client/src/cl_scrn.ts",
-        "packages/client/src/cl_tent.ts",
+        "apps/web/src/app-runtime.ts",
+        "packages/client/src/cl_ents.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/index.ts",
-        "packages/client/src/local-loop.ts",
-        "packages/client/src/local-session.ts",
-        "packages/client/src/menu-player-config.ts",
-        "packages/client/src/refresh.ts"
+        "packages/client/src/local-session.ts"
       ],
-      "renameProposal": {
-        "from": "packages/client/src/view.ts",
-        "toFileName": "cl_pred.ts",
-        "proposedPath": "packages/client/src/cl_pred.ts",
-        "reason": "primary TS target does not use the source basename",
-        "importImpactFiles": [
-          "apps/web/src/full-game.ts",
-          "packages/client/src/cl_parse.ts",
-          "packages/client/src/cl_scrn.ts",
-          "packages/client/src/cl_tent.ts",
-          "packages/client/src/index.ts",
-          "packages/client/src/local-loop.ts",
-          "packages/client/src/local-session.ts",
-          "packages/client/src/menu-player-config.ts",
-          "packages/client/src/refresh.ts"
-        ]
-      },
+      "renameProposal": null,
       "inventory": {
         "sourceFunctions": 5,
         "sourceMacros": 0,
         "sourceTypes": 1,
         "sourceGlobals": 12,
-        "targetFunctions": 46,
-        "targetTypes": 11,
-        "targetConstants": 88
+        "targetFunctions": 13,
+        "targetTypes": 2,
+        "targetConstants": 33
       },
       "findings": [
         "strict-basename-target-missing",
         "declared-target-not-strict-basename",
-        "header:stub marker detected",
-        "header:temporary marker detected",
-        "name:primary-basename 'view' differs from source basename 'cl_pred'",
-        "name:primary basename 'view' looks modernized or abstract"
+        "header:temporary marker detected"
       ]
     },
     {
@@ -742,14 +729,15 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-render-source.ts",
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/render-source.ts",
         "packages/client/src/cl_input.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/index.ts",
         "packages/client/src/menu-runtime.ts",
-        "packages/client/src/vid.ts",
-        "packages/client/src/view.ts"
+        "packages/client/src/screen.ts",
+        "packages/client/src/vid.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -757,9 +745,9 @@
         "sourceMacros": 6,
         "sourceTypes": 2,
         "sourceGlobals": 32,
-        "targetFunctions": 172,
-        "targetTypes": 51,
-        "targetConstants": 200
+        "targetFunctions": 175,
+        "targetTypes": 54,
+        "targetConstants": 230
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -774,42 +762,47 @@
       "status": "split-undocumented",
       "expectedTsFile": "cl_tent.ts",
       "strictMatches": [
-        "packages/client/src/cl_tent.ts"
+        "packages/client/src/cl_tent.ts",
+        "packages/client/src/sound-registration.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_tent.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/cl_parse.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_newfx.ts",
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/refresh.ts",
-        "packages/client/src/sound.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/sound.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_tent.ts",
-        "packages/client/src/cl_parse.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_newfx.ts",
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/refresh.ts",
-        "packages/client/src/sound.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/sound.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [
+        "stub marker detected",
         "temporary marker detected"
       ],
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_view.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/index.ts",
         "packages/client/src/local-gameplay-sync.ts",
         "packages/client/src/refresh.ts",
-        "packages/client/src/sound.ts",
-        "packages/client/src/view.ts"
+        "packages/client/src/sound-registration.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -817,12 +810,13 @@
         "sourceMacros": 3,
         "sourceTypes": 6,
         "sourceGlobals": 30,
-        "targetFunctions": 249,
-        "targetTypes": 44,
-        "targetConstants": 302
+        "targetFunctions": 257,
+        "targetTypes": 46,
+        "targetConstants": 323
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:stub marker detected",
         "header:temporary marker detected"
       ]
     },
@@ -833,68 +827,48 @@
       "expectedStatus": "to-port",
       "status": "split-undocumented",
       "expectedTsFile": "cl_view.ts",
-      "strictMatches": [],
-      "declaredPrimaryTsTarget": "packages/client/src/view.ts",
+      "strictMatches": [
+        "packages/client/src/cl_view.ts"
+      ],
+      "declaredPrimaryTsTarget": "packages/client/src/cl_view.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/refresh.ts",
         "packages/client/src/menu-player-config.ts",
-        "apps/web/src/local-client-controller.ts",
+        "packages/client/src/refresh.ts",
         "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "declaredTsTargets": [
-        "packages/client/src/view.ts",
-        "packages/client/src/refresh.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/menu-player-config.ts",
-        "apps/web/src/local-client-controller.ts",
+        "packages/client/src/refresh.ts",
         "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
-      "primaryBasenameMatchesSource": false,
+      "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [
         "stub marker detected",
         "temporary marker detected"
       ],
-      "modernNameFindings": [
-        "primary-basename 'view' differs from source basename 'cl_view'",
-        "primary basename 'view' looks modernized or abstract"
-      ],
+      "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_tent.ts",
         "packages/client/src/index.ts",
         "packages/client/src/local-loop.ts",
-        "packages/client/src/local-session.ts",
         "packages/client/src/menu-player-config.ts",
         "packages/client/src/refresh.ts"
       ],
-      "renameProposal": {
-        "from": "packages/client/src/view.ts",
-        "toFileName": "cl_view.ts",
-        "proposedPath": "packages/client/src/cl_view.ts",
-        "reason": "primary TS target does not use the source basename",
-        "importImpactFiles": [
-          "apps/web/src/full-game.ts",
-          "packages/client/src/cl_parse.ts",
-          "packages/client/src/cl_scrn.ts",
-          "packages/client/src/cl_tent.ts",
-          "packages/client/src/index.ts",
-          "packages/client/src/local-loop.ts",
-          "packages/client/src/local-session.ts",
-          "packages/client/src/menu-player-config.ts",
-          "packages/client/src/refresh.ts"
-        ]
-      },
+      "renameProposal": null,
       "inventory": {
         "sourceFunctions": 17,
         "sourceMacros": 0,
         "sourceTypes": 1,
         "sourceGlobals": 11,
-        "targetFunctions": 111,
-        "targetTypes": 26,
-        "targetConstants": 254
+        "targetFunctions": 98,
+        "targetTypes": 24,
+        "targetConstants": 214
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -902,9 +876,7 @@
         "adapter-target-declared",
         "declared-target-not-strict-basename",
         "header:stub marker detected",
-        "header:temporary marker detected",
-        "name:primary-basename 'view' differs from source basename 'cl_view'",
-        "name:primary basename 'view' looks modernized or abstract"
+        "header:temporary marker detected"
       ]
     },
     {
@@ -915,17 +887,20 @@
       "status": "split-undocumented",
       "expectedTsFile": "client.ts",
       "strictMatches": [
+        "packages/client/src/cl_tent.ts",
         "packages/client/src/client.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/client.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/keys.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/cl_tent.ts",
+        "packages/client/src/index.ts",
+        "packages/client/src/keys.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/client.ts",
-        "packages/client/src/keys.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/cl_tent.ts",
+        "packages/client/src/index.ts",
+        "packages/client/src/keys.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -935,16 +910,14 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-command-bridge.ts",
-        "apps/web/src/full-game-local-session.ts",
-        "apps/web/src/full-game-render-loop.ts",
-        "apps/web/src/full-game-render-source.ts",
-        "apps/web/src/full-game-server-host.ts",
-        "apps/web/src/full-game.ts",
-        "apps/web/src/local-client-controller.ts",
-        "apps/web/src/local-collision-adapter.ts",
-        "apps/web/src/main.ts",
-        "apps/web/src/web-demo-loop.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/command-bridge.ts",
+        "apps/web/src/keymap.ts",
+        "apps/web/src/refresh-debug-layer.ts",
+        "apps/web/src/render-loop.ts",
+        "apps/web/src/render-source.ts",
+        "apps/web/src/server-host.ts",
+        "apps/web/src/web-render-bootstrap.ts",
         "apps/web/src/web-save-storage.ts",
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_ents.ts",
@@ -954,11 +927,14 @@
         "packages/client/src/cl_main.ts",
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_pred.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_tent.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/console.ts",
         "packages/client/src/download.ts",
         "packages/client/src/index.ts",
+        "packages/client/src/input.ts",
         "packages/client/src/keys.ts",
         "packages/client/src/local-brush-models.ts",
         "packages/client/src/local-client-bootstrap.ts",
@@ -966,22 +942,36 @@
         "packages/client/src/local-input.ts",
         "packages/client/src/local-loop.ts",
         "packages/client/src/local-session.ts",
+        "packages/client/src/menu-misc.ts",
+        "packages/client/src/menu-options-keys.ts",
+        "packages/client/src/menu-player-config.ts",
+        "packages/client/src/menu-runtime.ts",
         "packages/client/src/menu-types.ts",
         "packages/client/src/precache.ts",
+        "packages/client/src/qmenu.ts",
+        "packages/client/src/ref.ts",
         "packages/client/src/refresh.ts",
+        "packages/client/src/screen.ts",
         "packages/client/src/sky.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/sound.ts",
-        "packages/client/src/view.ts",
+        "packages/client/src/snd_loc.ts",
+        "packages/client/src/snd_mem.ts",
+        "packages/client/src/snd_mix.ts",
+        "packages/client/src/sound-registration.ts",
+        "packages/client/src/vid.ts",
+        "packages/game/src/g_func.ts",
+        "packages/game/src/g_main.ts",
         "packages/game/src/g_save.ts",
         "packages/game/src/m_actor.ts",
         "packages/game/src/runtime.ts",
         "packages/platform/src/web-audio-adapter.ts",
+        "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/qcommon.ts",
         "packages/renderer-common/src/sky.ts",
         "packages/renderer-three/src/gl-world-scene-adapter.ts",
         "packages/renderer-three/src/gl_light.ts",
         "packages/renderer-three/src/gl_local.ts",
+        "packages/renderer-three/src/gl_model.ts",
         "packages/renderer-three/src/gl_rmain.ts",
         "packages/renderer-three/src/md2-mesh-builder.ts",
         "packages/renderer-three/src/particle-sync.ts",
@@ -997,9 +987,9 @@
         "sourceMacros": 7,
         "sourceTypes": 18,
         "sourceGlobals": 9,
-        "targetFunctions": 56,
-        "targetTypes": 31,
-        "targetConstants": 129
+        "targetFunctions": 116,
+        "targetTypes": 36,
+        "targetConstants": 209
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -1032,9 +1022,9 @@
         "Quake-2-master/client/console.h"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
-        "packages/client/src/index.ts",
-        "packages/client/src/view.ts"
+        "apps/web/src/app-runtime.ts",
+        "packages/client/src/cl_view.ts",
+        "packages/client/src/index.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -1077,9 +1067,9 @@
         "Quake-2-master/client/console.c"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
-        "packages/client/src/index.ts",
-        "packages/client/src/view.ts"
+        "apps/web/src/app-runtime.ts",
+        "packages/client/src/cl_view.ts",
+        "packages/client/src/index.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -1120,6 +1110,7 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_input.ts",
         "packages/client/src/index.ts"
       ],
@@ -1129,8 +1120,8 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 0,
-        "targetFunctions": 7,
-        "targetTypes": 2,
+        "targetFunctions": 8,
+        "targetTypes": 3,
         "targetConstants": 0
       },
       "findings": [
@@ -1165,7 +1156,8 @@
         "Quake-2-master/client/keys.h"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/keymap.ts",
         "packages/client/src/cl_main.ts",
         "packages/client/src/console.ts",
         "packages/client/src/index.ts",
@@ -1224,7 +1216,8 @@
         "Quake-2-master/client/keys.c"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/keymap.ts",
         "packages/client/src/cl_main.ts",
         "packages/client/src/console.ts",
         "packages/client/src/index.ts",
@@ -1263,34 +1256,42 @@
       "status": "split-undocumented",
       "expectedTsFile": "menu.ts",
       "strictMatches": [
+        "packages/client/src/menu-draw.ts",
+        "packages/client/src/menu-main-game.ts",
+        "packages/client/src/menu-misc.ts",
+        "packages/client/src/menu-multiplayer.ts",
+        "packages/client/src/menu-options-keys.ts",
+        "packages/client/src/menu-player-config.ts",
+        "packages/client/src/menu-runtime.ts",
+        "packages/client/src/menu-types.ts",
         "packages/client/src/menu.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/menu.ts",
       "declaredSecondaryTsTargets": [
+        "packages/client/src/menu-draw.ts",
         "packages/client/src/menu-main-game.ts",
+        "packages/client/src/menu-misc.ts",
         "packages/client/src/menu-multiplayer.ts",
         "packages/client/src/menu-options-keys.ts",
         "packages/client/src/menu-player-config.ts",
-        "packages/client/src/menu-draw.ts",
-        "packages/client/src/menu-misc.ts",
         "packages/client/src/menu-runtime.ts",
         "packages/client/src/menu-types.ts",
-        "packages/client/src/qmenu.ts",
         "packages/client/src/keys.ts",
+        "packages/client/src/qmenu.ts",
         "packages/client/src/vid.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/menu.ts",
+        "packages/client/src/menu-draw.ts",
         "packages/client/src/menu-main-game.ts",
+        "packages/client/src/menu-misc.ts",
         "packages/client/src/menu-multiplayer.ts",
         "packages/client/src/menu-options-keys.ts",
         "packages/client/src/menu-player-config.ts",
-        "packages/client/src/menu-draw.ts",
-        "packages/client/src/menu-misc.ts",
         "packages/client/src/menu-runtime.ts",
         "packages/client/src/menu-types.ts",
-        "packages/client/src/qmenu.ts",
         "packages/client/src/keys.ts",
+        "packages/client/src/qmenu.ts",
         "packages/client/src/vid.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -1299,9 +1300,11 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "apps/web/src/web-save-storage.ts",
+        "packages/client/src/cl_main.ts",
         "packages/client/src/index.ts",
+        "packages/client/src/keys.ts",
         "packages/client/src/menu-draw.ts",
         "packages/client/src/menu-main-game.ts",
         "packages/client/src/menu-misc.ts",
@@ -1318,9 +1321,9 @@
         "sourceMacros": 9,
         "sourceTypes": 2,
         "sourceGlobals": 149,
-        "targetFunctions": 234,
+        "targetFunctions": 232,
         "targetTypes": 34,
-        "targetConstants": 335
+        "targetConstants": 333
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -1352,7 +1355,7 @@
         "Quake-2-master/client/qmenu.h"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/index.ts",
         "packages/client/src/menu-main-game.ts",
         "packages/client/src/menu-multiplayer.ts",
@@ -1368,9 +1371,9 @@
         "sourceMacros": 7,
         "sourceTypes": 0,
         "sourceGlobals": 13,
-        "targetFunctions": 47,
+        "targetFunctions": 45,
         "targetTypes": 14,
-        "targetConstants": 52
+        "targetConstants": 50
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -1405,7 +1408,7 @@
         "Quake-2-master/client/qmenu.c"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/index.ts",
         "packages/client/src/menu-main-game.ts",
         "packages/client/src/menu-multiplayer.ts",
@@ -1421,9 +1424,9 @@
         "sourceMacros": 20,
         "sourceTypes": 4,
         "sourceGlobals": 0,
-        "targetFunctions": 80,
+        "targetFunctions": 78,
         "targetTypes": 21,
-        "targetConstants": 169
+        "targetConstants": 167
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -1442,15 +1445,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/client/src/ref.ts",
       "declaredSecondaryTsTargets": [
-        "packages/qcommon/src/q_shared.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/qcommon/src/q_shared.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/ref.ts",
-        "packages/qcommon/src/q_shared.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/qcommon/src/q_shared.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -1458,24 +1461,25 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-render-loop.ts",
-        "apps/web/src/full-game-render-source.ts",
-        "apps/web/src/full-game.ts",
-        "apps/web/src/main.ts",
-        "apps/web/src/web-demo-loop.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/render-loop.ts",
+        "apps/web/src/render-source.ts",
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_inv.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_tent.ts",
+        "packages/client/src/cl_view.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/index.ts",
         "packages/client/src/menu-player-config.ts",
         "packages/client/src/menu-types.ts",
-        "packages/client/src/view.ts",
+        "packages/formats/src/tga.ts",
         "packages/renderer-three/src/gl-world-scene-adapter.ts",
         "packages/renderer-three/src/gl_light.ts",
         "packages/renderer-three/src/gl_local.ts",
         "packages/renderer-three/src/gl_rmain.ts",
+        "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/index.ts",
         "packages/renderer-three/src/md2-mesh-builder.ts",
         "packages/renderer-three/src/particle-sync.ts",
@@ -1483,7 +1487,8 @@
         "packages/renderer-three/src/refresh-entity-sync.ts",
         "packages/renderer-three/src/three-beam-sync.ts",
         "packages/renderer-three/src/three-dlight-sync.ts",
-        "packages/renderer-three/src/three-polyblend-overlay.ts"
+        "packages/renderer-three/src/three-polyblend-overlay.ts",
+        "packages/renderer-three/src/warpsin.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -1491,9 +1496,9 @@
         "sourceMacros": 17,
         "sourceTypes": 9,
         "sourceGlobals": 0,
-        "targetFunctions": 79,
-        "targetTypes": 51,
-        "targetConstants": 362
+        "targetFunctions": 84,
+        "targetTypes": 54,
+        "targetConstants": 398
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -1506,16 +1511,20 @@
       "expectedStatus": "to-port",
       "status": "split-undocumented",
       "expectedTsFile": "screen.ts",
-      "strictMatches": [],
+      "strictMatches": [
+        "packages/client/src/screen.ts"
+      ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_scrn.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/client.ts",
-        "packages/client/src/cl_cin.ts"
+        "packages/client/src/screen.ts",
+        "packages/client/src/cl_cin.ts",
+        "packages/client/src/client.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/client.ts",
-        "packages/client/src/cl_cin.ts"
+        "packages/client/src/screen.ts",
+        "packages/client/src/cl_cin.ts",
+        "packages/client/src/client.ts"
       ],
       "primaryBasenameMatchesSource": false,
       "hasAcceptedSplitException": false,
@@ -1528,14 +1537,15 @@
       ],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-render-source.ts",
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/render-source.ts",
         "packages/client/src/cl_input.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/index.ts",
         "packages/client/src/menu-runtime.ts",
-        "packages/client/src/vid.ts",
-        "packages/client/src/view.ts"
+        "packages/client/src/screen.ts",
+        "packages/client/src/vid.ts"
       ],
       "renameProposal": {
         "from": "packages/client/src/cl_scrn.ts",
@@ -1543,14 +1553,15 @@
         "proposedPath": "packages/client/src/screen.ts",
         "reason": "primary TS target does not use the source basename",
         "importImpactFiles": [
-          "apps/web/src/full-game-render-source.ts",
-          "apps/web/src/full-game.ts",
+          "apps/web/src/app-runtime.ts",
+          "apps/web/src/render-source.ts",
           "packages/client/src/cl_input.ts",
           "packages/client/src/cl_parse.ts",
+          "packages/client/src/cl_view.ts",
           "packages/client/src/index.ts",
           "packages/client/src/menu-runtime.ts",
-          "packages/client/src/vid.ts",
-          "packages/client/src/view.ts"
+          "packages/client/src/screen.ts",
+          "packages/client/src/vid.ts"
         ]
       },
       "inventory": {
@@ -1558,9 +1569,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 4,
-        "targetFunctions": 102,
-        "targetTypes": 44,
-        "targetConstants": 129
+        "targetFunctions": 105,
+        "targetTypes": 47,
+        "targetConstants": 156
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -1583,15 +1594,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/client/src/snd_dma.ts",
       "declaredSecondaryTsTargets": [
+        "packages/client/src/index.ts",
         "packages/client/src/snd_loc.ts",
-        "packages/client/src/snd_mix.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_mix.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/snd_dma.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_loc.ts",
-        "packages/client/src/snd_mix.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_mix.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -1601,8 +1612,9 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
-        "packages/client/src/index.ts"
+        "apps/web/src/app-runtime.ts",
+        "packages/client/src/index.ts",
+        "packages/client/src/menu-types.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -1610,9 +1622,9 @@
         "sourceMacros": 4,
         "sourceTypes": 1,
         "sourceGlobals": 38,
-        "targetFunctions": 79,
+        "targetFunctions": 82,
         "targetTypes": 14,
-        "targetConstants": 114
+        "targetConstants": 119
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -1643,12 +1655,12 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
         "packages/client/src/snd_mem.ts",
         "packages/client/src/snd_mix.ts",
-        "packages/client/src/sound-public.ts",
+        "packages/client/src/sound.ts",
         "packages/platform/src/web-audio-adapter.ts"
       ],
       "renameProposal": null,
@@ -1677,17 +1689,17 @@
       ],
       "declaredPrimaryTsTarget": "packages/client/src/snd_mem.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/snd_mix.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts",
+        "packages/client/src/snd_mix.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/snd_mem.ts",
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/snd_mix.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts",
+        "packages/client/src/snd_mix.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -1706,9 +1718,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 14,
-        "targetFunctions": 93,
+        "targetFunctions": 96,
         "targetTypes": 16,
-        "targetConstants": 141
+        "targetConstants": 146
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -1727,15 +1739,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/client/src/snd_mix.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/snd_mix.ts",
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -1752,9 +1764,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 13,
-        "targetFunctions": 79,
+        "targetFunctions": 82,
         "targetTypes": 14,
-        "targetConstants": 114
+        "targetConstants": 119
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -1770,50 +1782,47 @@
       "strictMatches": [
         "packages/client/src/sound.ts"
       ],
-      "declaredPrimaryTsTarget": "packages/client/src/sound-public.ts",
+      "declaredPrimaryTsTarget": "packages/client/src/sound.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts"
       ],
       "declaredTsTargets": [
-        "packages/client/src/sound-public.ts",
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/sound.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts"
       ],
-      "primaryBasenameMatchesSource": false,
+      "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [],
-      "modernNameFindings": [
-        "primary-basename 'sound-public' differs from source basename 'sound'"
-      ],
+      "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "packages/client/src/index.ts"
+        "apps/web/src/app-runtime.ts",
+        "packages/client/src/cl_main.ts",
+        "packages/client/src/index.ts",
+        "packages/client/src/snd_dma.ts",
+        "packages/client/src/sound-registration.ts",
+        "packages/game/src/g_func.ts",
+        "packages/game/src/m_berserk.ts",
+        "packages/game/src/m_infantry.ts",
+        "packages/game/src/m_soldier.ts"
       ],
-      "renameProposal": {
-        "from": "packages/client/src/sound-public.ts",
-        "toFileName": "sound.ts",
-        "proposedPath": "packages/client/src/sound.ts",
-        "reason": "primary TS target does not use the source basename",
-        "importImpactFiles": [
-          "packages/client/src/index.ts"
-        ]
-      },
+      "renameProposal": null,
       "inventory": {
         "sourceFunctions": 11,
         "sourceMacros": 0,
         "sourceTypes": 1,
         "sourceGlobals": 0,
-        "targetFunctions": 80,
+        "targetFunctions": 83,
         "targetTypes": 15,
-        "targetConstants": 73
+        "targetConstants": 78
       },
       "findings": [
         "multiple-declared-ts-targets",
-        "declared-target-not-strict-basename",
-        "name:primary-basename 'sound-public' differs from source basename 'sound'"
+        "declared-target-not-strict-basename"
       ]
     },
     {
@@ -1829,14 +1838,14 @@
       "declaredPrimaryTsTarget": "packages/client/src/vid.ts",
       "declaredSecondaryTsTargets": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/vid-menu.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/client/src/vid-menu.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/vid.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/vid-menu.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/client/src/vid-menu.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -1844,11 +1853,12 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/index.ts",
         "packages/client/src/menu-misc.ts",
         "packages/client/src/menu-types.ts",
+        "packages/client/src/qmenu.ts",
         "packages/client/src/vid-menu.ts",
         "packages/renderer-three/src/gl_local.ts"
       ],
@@ -1858,9 +1868,9 @@
         "sourceMacros": 0,
         "sourceTypes": 3,
         "sourceGlobals": 1,
-        "targetFunctions": 86,
-        "targetTypes": 22,
-        "targetConstants": 116
+        "targetFunctions": 90,
+        "targetTypes": 25,
+        "targetConstants": 145
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -3034,20 +3044,20 @@
       "declaredPrimaryTsTarget": "packages/game/src/g_ai.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/g_monster.ts",
-        "packages/game/src/m_move.ts",
         "packages/game/src/g_utils.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_move.ts",
         "packages/game/src/p_trail.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_monster.ts",
-        "packages/game/src/m_move.ts",
         "packages/game/src/g_utils.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_move.ts",
         "packages/game/src/p_trail.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3094,9 +3104,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 23,
-        "targetFunctions": 174,
-        "targetTypes": 31,
-        "targetConstants": 301
+        "targetFunctions": 175,
+        "targetTypes": 32,
+        "targetConstants": 291
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3116,16 +3126,16 @@
       "declaredPrimaryTsTarget": "packages/game/src/g_chase.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/g_cmds.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/p_client.ts",
-        "packages/game/src/p_hud.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/p_hud.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_chase.ts",
         "packages/game/src/g_cmds.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/p_client.ts",
-        "packages/game/src/p_hud.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/p_hud.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3147,7 +3157,7 @@
         "sourceGlobals": 4,
         "targetFunctions": 114,
         "targetTypes": 6,
-        "targetConstants": 148
+        "targetConstants": 147
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3166,20 +3176,20 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_cmds.ts",
       "declaredSecondaryTsTargets": [
+        "packages/game/src/g_items.ts",
         "packages/game/src/g_main.ts",
         "packages/game/src/index.ts",
-        "packages/game/src/g_items.ts",
-        "packages/game/src/p_hud.ts",
         "packages/game/src/p_client.ts",
+        "packages/game/src/p_hud.ts",
         "packages/game/src/p_weapon.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_cmds.ts",
+        "packages/game/src/g_items.ts",
         "packages/game/src/g_main.ts",
         "packages/game/src/index.ts",
-        "packages/game/src/g_items.ts",
-        "packages/game/src/p_hud.ts",
         "packages/game/src/p_client.ts",
+        "packages/game/src/p_hud.ts",
         "packages/game/src/p_weapon.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -3190,6 +3200,7 @@
         "Quake-2-master/ctf/g_cmds.c"
       ],
       "importImpactFiles": [
+        "packages/game/src/g_combat.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_main.ts",
         "packages/game/src/index.ts"
@@ -3200,9 +3211,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 6,
-        "targetFunctions": 238,
+        "targetFunctions": 252,
         "targetTypes": 18,
-        "targetConstants": 292
+        "targetConstants": 272
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3221,16 +3232,16 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_combat.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_weapon.ts",
-        "packages/game/src/g_utils.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_utils.ts",
+        "packages/game/src/g_weapon.ts",
         "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_combat.ts",
-        "packages/game/src/g_weapon.ts",
-        "packages/game/src/g_utils.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_utils.ts",
+        "packages/game/src/g_weapon.ts",
         "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -3263,8 +3274,8 @@
         "sourceTypes": 0,
         "sourceGlobals": 21,
         "targetFunctions": 193,
-        "targetTypes": 40,
-        "targetConstants": 348
+        "targetTypes": 41,
+        "targetConstants": 318
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3284,14 +3295,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_func.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_misc.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_func.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_misc.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -3305,7 +3316,8 @@
         "packages/game/src/g_misc.ts",
         "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -3313,9 +3325,9 @@
         "sourceMacros": 19,
         "sourceTypes": 0,
         "sourceGlobals": 25,
-        "targetFunctions": 194,
+        "targetFunctions": 215,
         "targetTypes": 2,
-        "targetConstants": 115
+        "targetConstants": 156
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3334,19 +3346,19 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_items.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/p_weapon.ts",
-        "packages/game/src/local-game-bootstrap.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_combat.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/local-game-bootstrap.ts",
+        "packages/game/src/p_weapon.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_items.ts",
-        "packages/game/src/p_weapon.ts",
-        "packages/game/src/local-game-bootstrap.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_combat.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/local-game-bootstrap.ts",
+        "packages/game/src/p_weapon.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3382,9 +3394,9 @@
         "sourceMacros": 2,
         "sourceTypes": 0,
         "sourceGlobals": 30,
-        "targetFunctions": 133,
+        "targetFunctions": 163,
         "targetTypes": 17,
-        "targetConstants": 195
+        "targetConstants": 212
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3405,15 +3417,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_local.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_items.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_local.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_items.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3438,6 +3450,7 @@
         "packages/game/src/g_target.ts",
         "packages/game/src/g_trigger.ts",
         "packages/game/src/g_turret.ts",
+        "packages/game/src/g_weapon.ts",
         "packages/game/src/index.ts",
         "packages/game/src/m_actor.ts",
         "packages/game/src/m_berserk.ts",
@@ -3465,6 +3478,7 @@
         "packages/game/src/p_client.ts",
         "packages/game/src/p_hud.ts",
         "packages/game/src/p_view.ts",
+        "packages/game/src/p_weapon.ts",
         "packages/game/src/runtime.ts"
       ],
       "renameProposal": null,
@@ -3473,9 +3487,9 @@
         "sourceMacros": 173,
         "sourceTypes": 20,
         "sourceGlobals": 11,
-        "targetFunctions": 130,
-        "targetTypes": 51,
-        "targetConstants": 338
+        "targetFunctions": 134,
+        "targetTypes": 53,
+        "targetConstants": 310
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3494,14 +3508,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_main.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_svcmds.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_svcmds.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_main.ts",
-        "packages/game/src/g_svcmds.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_svcmds.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -3515,6 +3529,7 @@
       ],
       "importImpactFiles": [
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "renameProposal": null,
@@ -3523,9 +3538,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 10,
-        "targetFunctions": 74,
+        "targetFunctions": 83,
         "targetTypes": 11,
-        "targetConstants": 82
+        "targetConstants": 84
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3563,8 +3578,10 @@
         "Quake-2-master/ctf/g_misc.c"
       ],
       "importImpactFiles": [
+        "packages/game/src/g_func.ts",
         "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
+        "packages/game/src/g_weapon.ts",
         "packages/game/src/index.ts",
         "packages/game/src/m_actor.ts",
         "packages/game/src/m_berserk.ts",
@@ -3593,9 +3610,9 @@
         "sourceMacros": 2,
         "sourceTypes": 1,
         "sourceGlobals": 19,
-        "targetFunctions": 99,
+        "targetFunctions": 121,
         "targetTypes": 2,
-        "targetConstants": 59
+        "targetConstants": 100
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3615,17 +3632,17 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_monster.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_items.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_monster.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_items.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3640,6 +3657,7 @@
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_main.ts",
         "packages/game/src/g_misc.ts",
+        "packages/game/src/g_phys.ts",
         "packages/game/src/g_save.ts",
         "packages/game/src/g_turret.ts",
         "packages/game/src/index.ts",
@@ -3671,9 +3689,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 9,
-        "targetFunctions": 185,
-        "targetTypes": 38,
-        "targetConstants": 290
+        "targetFunctions": 187,
+        "targetTypes": 39,
+        "targetConstants": 262
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3693,15 +3711,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_phys.ts",
       "declaredSecondaryTsTargets": [
+        "packages/game/src/m_move.ts",
         "packages/game/src/runtime.ts",
-        "packages/game/src/touch.ts",
-        "packages/game/src/m_move.ts"
+        "packages/game/src/touch.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_phys.ts",
+        "packages/game/src/m_move.ts",
         "packages/game/src/runtime.ts",
-        "packages/game/src/touch.ts",
-        "packages/game/src/m_move.ts"
+        "packages/game/src/touch.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3722,9 +3740,9 @@
         "sourceMacros": 5,
         "sourceTypes": 1,
         "sourceGlobals": 27,
-        "targetFunctions": 127,
-        "targetTypes": 31,
-        "targetConstants": 266
+        "targetFunctions": 129,
+        "targetTypes": 32,
+        "targetConstants": 255
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3755,7 +3773,8 @@
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [
-        "stub marker detected"
+        "stub marker detected",
+        "temporary marker detected"
       ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
@@ -3763,6 +3782,7 @@
       ],
       "importImpactFiles": [
         "packages/game/src/g_main.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "renameProposal": null,
@@ -3771,13 +3791,14 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 6,
-        "targetFunctions": 61,
+        "targetFunctions": 70,
         "targetTypes": 8,
-        "targetConstants": 60
+        "targetConstants": 62
       },
       "findings": [
         "multiple-declared-ts-targets",
         "header:stub marker detected",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -3793,21 +3814,24 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_spawn.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_main.ts",
         "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_main.ts",
         "packages/game/src/g_misc.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_main.ts",
         "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_main.ts",
         "packages/game/src/g_misc.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "stub marker detected",
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/ctf/g_spawn.c"
@@ -3824,12 +3848,14 @@
         "sourceMacros": 0,
         "sourceTypes": 1,
         "sourceGlobals": 8,
-        "targetFunctions": 212,
+        "targetFunctions": 241,
         "targetTypes": 31,
-        "targetConstants": 279
+        "targetConstants": 304
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:stub marker detected",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -3870,9 +3896,9 @@
         "sourceMacros": 1,
         "sourceTypes": 1,
         "sourceGlobals": 6,
-        "targetFunctions": 42,
+        "targetFunctions": 49,
         "targetTypes": 7,
-        "targetConstants": 57
+        "targetConstants": 58
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3891,17 +3917,17 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_target.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_main.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_target.ts",
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_main.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3923,9 +3949,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 11,
-        "targetFunctions": 147,
-        "targetTypes": 36,
-        "targetConstants": 241
+        "targetFunctions": 180,
+        "targetTypes": 37,
+        "targetConstants": 272
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -3945,19 +3971,19 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_trigger.ts",
       "declaredSecondaryTsTargets": [
+        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_items.ts",
         "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts",
-        "packages/game/src/touch.ts",
-        "packages/game/src/g_combat.ts",
-        "packages/game/src/g_items.ts"
+        "packages/game/src/touch.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_trigger.ts",
+        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_items.ts",
         "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts",
-        "packages/game/src/touch.ts",
-        "packages/game/src/g_combat.ts",
-        "packages/game/src/g_items.ts"
+        "packages/game/src/touch.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -3977,9 +4003,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 8,
-        "targetFunctions": 114,
+        "targetFunctions": 137,
         "targetTypes": 11,
-        "targetConstants": 138
+        "targetConstants": 159
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4022,9 +4048,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 13,
-        "targetFunctions": 24,
+        "targetFunctions": 48,
         "targetTypes": 2,
-        "targetConstants": 43
+        "targetConstants": 82
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -4038,19 +4064,20 @@
       "status": "split-undocumented",
       "expectedTsFile": "g_utils.ts",
       "strictMatches": [
-        "packages/game/src/g_utils.ts"
+        "packages/game/src/g_utils.ts",
+        "packages/game/src/touch.ts"
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_utils.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/touch.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/g_weapon.ts"
+        "packages/game/src/g_weapon.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_utils.ts",
         "packages/game/src/touch.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/g_weapon.ts"
+        "packages/game/src/g_weapon.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -4068,10 +4095,12 @@
         "packages/game/src/g_combat.ts",
         "packages/game/src/g_func.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_local.ts",
         "packages/game/src/g_main.ts",
         "packages/game/src/g_misc.ts",
         "packages/game/src/g_monster.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_target.ts",
         "packages/game/src/g_trigger.ts",
         "packages/game/src/g_turret.ts",
@@ -4111,9 +4140,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 13,
-        "targetFunctions": 124,
-        "targetTypes": 31,
-        "targetConstants": 250
+        "targetFunctions": 125,
+        "targetTypes": 32,
+        "targetConstants": 240
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4135,15 +4164,15 @@
       "declaredPrimaryTsTarget": "packages/game/src/g_weapon.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/g_combat.ts",
-        "packages/game/src/g_utils.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_utils.ts",
         "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/g_weapon.ts",
         "packages/game/src/g_combat.ts",
-        "packages/game/src/g_utils.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_utils.ts",
         "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -4178,8 +4207,8 @@
         "sourceTypes": 0,
         "sourceGlobals": 25,
         "targetFunctions": 193,
-        "targetTypes": 40,
-        "targetConstants": 348
+        "targetTypes": 41,
+        "targetConstants": 318
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4212,26 +4241,41 @@
         "Quake-2-master/ctf/game.h"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game-command-bridge.ts",
-        "apps/web/src/full-game-local-session.ts",
-        "apps/web/src/full-game-render-loop.ts",
-        "apps/web/src/full-game-server-host.ts",
-        "apps/web/src/local-client-controller.ts",
-        "apps/web/src/local-collision-adapter.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/command-bridge.ts",
+        "apps/web/src/render-loop.ts",
+        "apps/web/src/server-host.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/local-brush-models.ts",
         "packages/client/src/local-gameplay-sync.ts",
         "packages/client/src/local-session.ts",
         "packages/client/src/monster-flash.ts",
+        "packages/game/src/g_ai.ts",
+        "packages/game/src/g_chase.ts",
         "packages/game/src/g_cmds.ts",
+        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_func.ts",
+        "packages/game/src/g_items.ts",
         "packages/game/src/g_local.ts",
         "packages/game/src/g_main.ts",
         "packages/game/src/g_svcmds.ts",
         "packages/game/src/index.ts",
         "packages/game/src/local-game-bootstrap.ts",
+        "packages/game/src/m_actor.ts",
+        "packages/game/src/m_berserk.ts",
+        "packages/game/src/m_boss2.ts",
+        "packages/game/src/m_boss32.ts",
+        "packages/game/src/m_gunner.ts",
+        "packages/game/src/m_medic.ts",
+        "packages/game/src/m_move.ts",
+        "packages/game/src/m_mutant.ts",
+        "packages/game/src/m_player.ts",
+        "packages/game/src/m_rider.ts",
         "packages/game/src/p_client.ts",
+        "packages/game/src/p_view.ts",
         "packages/game/src/p_weapon.ts",
         "packages/game/src/runtime.ts",
+        "packages/qcommon/src/q_shared.ts",
         "packages/server/src/runtime.ts",
         "packages/server/src/server.ts",
         "packages/server/src/sv_ccmds.ts",
@@ -4249,9 +4293,9 @@
         "sourceMacros": 5,
         "sourceTypes": 9,
         "sourceGlobals": 0,
-        "targetFunctions": 67,
-        "targetTypes": 40,
-        "targetConstants": 163
+        "targetFunctions": 69,
+        "targetTypes": 44,
+        "targetConstants": 152
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4270,19 +4314,19 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_actor.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/g_monster.ts",
+        "packages/client/src/local-gameplay-sync.ts",
         "packages/game/src/g_main.ts",
-        "packages/client/src/local-gameplay-sync.ts"
+        "packages/game/src/g_monster.ts",
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_actor.ts",
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/g_monster.ts",
+        "packages/client/src/local-gameplay-sync.ts",
         "packages/game/src/g_main.ts",
-        "packages/client/src/local-gameplay-sync.ts"
+        "packages/game/src/g_monster.ts",
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -4301,9 +4345,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 13,
-        "targetFunctions": 181,
-        "targetTypes": 39,
-        "targetConstants": 813
+        "targetFunctions": 215,
+        "targetTypes": 40,
+        "targetConstants": 843
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4366,14 +4410,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_berserk.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_berserk.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -4396,9 +4440,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 19,
-        "targetFunctions": 57,
+        "targetFunctions": 83,
         "targetTypes": 6,
-        "targetConstants": 320
+        "targetConstants": 360
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4466,19 +4510,21 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_boss2.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_boss2.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "stub marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_boss2.h"
@@ -4494,12 +4540,13 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 27,
-        "targetFunctions": 66,
+        "targetFunctions": 92,
         "targetTypes": 6,
-        "targetConstants": 282
+        "targetConstants": 322
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:stub marker detected",
         "basename-collision"
       ]
     },
@@ -4523,7 +4570,9 @@
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "stub marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_boss2.c"
@@ -4545,6 +4594,7 @@
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:stub marker detected",
         "basename-collision"
       ]
     },
@@ -4560,14 +4610,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_boss3.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_boss3.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -4588,9 +4638,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 0,
-        "targetFunctions": 41,
+        "targetFunctions": 67,
         "targetTypes": 6,
-        "targetConstants": 40
+        "targetConstants": 80
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -4608,17 +4658,17 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_boss31.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/m_boss32.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_boss32.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_boss31.ts",
-        "packages/game/src/m_boss32.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_boss32.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -4638,9 +4688,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 38,
-        "targetFunctions": 103,
+        "targetFunctions": 129,
         "targetTypes": 6,
-        "targetConstants": 869
+        "targetConstants": 936
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4685,7 +4735,7 @@
         "sourceGlobals": 0,
         "targetFunctions": 31,
         "targetTypes": 0,
-        "targetConstants": 261
+        "targetConstants": 272
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4704,28 +4754,29 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_boss32.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/m_boss31.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_boss31.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_boss32.ts",
-        "packages/game/src/m_boss31.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_boss31.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_boss32.h"
       ],
       "importImpactFiles": [
         "packages/game/src/g_save.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts",
         "packages/game/src/m_boss3.ts",
         "packages/game/src/m_boss31.ts"
@@ -4736,12 +4787,13 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 39,
-        "targetFunctions": 103,
+        "targetFunctions": 129,
         "targetTypes": 6,
-        "targetConstants": 869
+        "targetConstants": 936
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -4765,14 +4817,15 @@
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_boss32.c"
       ],
       "importImpactFiles": [
         "packages/game/src/g_save.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts",
         "packages/game/src/m_boss3.ts",
         "packages/game/src/m_boss31.ts"
@@ -4785,10 +4838,11 @@
         "sourceGlobals": 0,
         "targetFunctions": 35,
         "targetTypes": 0,
-        "targetConstants": 570
+        "targetConstants": 586
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -4804,14 +4858,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_brain.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_brain.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -4832,9 +4886,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 31,
-        "targetFunctions": 65,
+        "targetFunctions": 91,
         "targetTypes": 6,
-        "targetConstants": 320
+        "targetConstants": 360
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4898,14 +4952,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_chick.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_chick.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -4926,9 +4980,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 38,
-        "targetFunctions": 69,
+        "targetFunctions": 95,
         "targetTypes": 6,
-        "targetConstants": 400
+        "targetConstants": 440
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -4992,35 +5046,35 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_flash.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_fx.ts",
+        "packages/client/src/monster-flash.ts",
         "packages/game/src/m_actor.ts",
         "packages/game/src/m_chick.ts",
-        "packages/game/src/m_flyer.ts",
         "packages/game/src/m_float.ts",
+        "packages/game/src/m_flyer.ts",
         "packages/game/src/m_gladiator.ts",
         "packages/game/src/m_gunner.ts",
         "packages/game/src/m_hover.ts",
         "packages/game/src/m_infantry.ts",
         "packages/game/src/m_medic.ts",
-        "packages/game/src/m_tank.ts",
-        "packages/game/src/m_supertank.ts"
+        "packages/game/src/m_supertank.ts",
+        "packages/game/src/m_tank.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_flash.ts",
-        "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_fx.ts",
+        "packages/client/src/monster-flash.ts",
         "packages/game/src/m_actor.ts",
         "packages/game/src/m_chick.ts",
-        "packages/game/src/m_flyer.ts",
         "packages/game/src/m_float.ts",
+        "packages/game/src/m_flyer.ts",
         "packages/game/src/m_gladiator.ts",
         "packages/game/src/m_gunner.ts",
         "packages/game/src/m_hover.ts",
         "packages/game/src/m_infantry.ts",
         "packages/game/src/m_medic.ts",
-        "packages/game/src/m_tank.ts",
-        "packages/game/src/m_supertank.ts"
+        "packages/game/src/m_supertank.ts",
+        "packages/game/src/m_tank.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -5052,9 +5106,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 0,
-        "targetFunctions": 377,
+        "targetFunctions": 380,
         "targetTypes": 3,
-        "targetConstants": 3407
+        "targetConstants": 3510
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -5072,15 +5126,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_flipper.ts",
       "declaredSecondaryTsTargets": [
+        "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/index.ts",
-        "packages/game/src/g_save.ts"
+        "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_flipper.ts",
+        "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/index.ts",
-        "packages/game/src/g_save.ts"
+        "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -5100,9 +5154,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 19,
-        "targetFunctions": 55,
+        "targetFunctions": 81,
         "targetTypes": 6,
-        "targetConstants": 237
+        "targetConstants": 277
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5166,14 +5220,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_float.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_float.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -5194,9 +5248,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 27,
-        "targetFunctions": 57,
+        "targetFunctions": 83,
         "targetTypes": 6,
-        "targetConstants": 337
+        "targetConstants": 377
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5260,14 +5314,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_flyer.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_flyer.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -5288,9 +5342,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 31,
-        "targetFunctions": 67,
+        "targetFunctions": 93,
         "targetTypes": 6,
-        "targetConstants": 255
+        "targetConstants": 295
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5354,14 +5408,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_gladiator.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_gladiator.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -5382,9 +5436,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 24,
-        "targetFunctions": 60,
+        "targetFunctions": 86,
         "targetTypes": 6,
-        "targetConstants": 174
+        "targetConstants": 214
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5448,17 +5502,17 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_gunner.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_gunner.ts",
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -5478,9 +5532,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 26,
-        "targetFunctions": 71,
+        "targetFunctions": 97,
         "targetTypes": 6,
-        "targetConstants": 311
+        "targetConstants": 424
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5544,14 +5598,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_hover.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_hover.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -5572,9 +5626,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 28,
-        "targetFunctions": 55,
+        "targetFunctions": 81,
         "targetTypes": 6,
-        "targetConstants": 300
+        "targetConstants": 340
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5638,15 +5692,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_infantry.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_turret.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_infantry.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_turret.ts",
         "packages/game/src/index.ts"
       ],
@@ -5669,9 +5723,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 27,
-        "targetFunctions": 86,
+        "targetFunctions": 112,
         "targetTypes": 6,
-        "targetConstants": 334
+        "targetConstants": 385
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5717,7 +5771,7 @@
         "sourceGlobals": 0,
         "targetFunctions": 30,
         "targetTypes": 0,
-        "targetConstants": 266
+        "targetConstants": 277
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5763,9 +5817,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 23,
-        "targetFunctions": 26,
+        "targetFunctions": 50,
         "targetTypes": 2,
-        "targetConstants": 343
+        "targetConstants": 382
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5832,19 +5886,21 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_medic.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_medic.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_medic.h"
@@ -5860,12 +5916,13 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 27,
-        "targetFunctions": 68,
+        "targetFunctions": 94,
         "targetTypes": 6,
-        "targetConstants": 329
+        "targetConstants": 369
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -5889,7 +5946,9 @@
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_medic.c"
@@ -5911,6 +5970,7 @@
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -5926,13 +5986,13 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_move.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_move.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -5957,9 +6017,9 @@
         "sourceMacros": 2,
         "sourceTypes": 0,
         "sourceGlobals": 13,
-        "targetFunctions": 83,
-        "targetTypes": 30,
-        "targetConstants": 197
+        "targetFunctions": 85,
+        "targetTypes": 31,
+        "targetConstants": 185
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -5979,14 +6039,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_mutant.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_mutant.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -6007,9 +6067,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 34,
-        "targetFunctions": 72,
+        "targetFunctions": 98,
         "targetTypes": 6,
-        "targetConstants": 248
+        "targetConstants": 288
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6073,14 +6133,14 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_parasite.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_parasite.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -6101,9 +6161,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 28,
-        "targetFunctions": 65,
+        "targetFunctions": 91,
         "targetTypes": 6,
-        "targetConstants": 215
+        "targetConstants": 255
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6254,20 +6314,22 @@
       "declaredPrimaryTsTarget": "packages/game/src/m_soldier.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/g_combat.ts",
-        "packages/game/src/runtime.ts",
+        "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_save.ts"
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_soldier.ts",
         "packages/game/src/g_combat.ts",
-        "packages/game/src/runtime.ts",
+        "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_save.ts"
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_soldier.h"
@@ -6283,12 +6345,13 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 41,
-        "targetFunctions": 167,
-        "targetTypes": 38,
-        "targetConstants": 816
+        "targetFunctions": 193,
+        "targetTypes": 39,
+        "targetConstants": 843
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -6312,7 +6375,9 @@
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_soldier.c"
@@ -6328,12 +6393,13 @@
         "sourceMacros": 476,
         "sourceTypes": 0,
         "sourceGlobals": 0,
-        "targetFunctions": 43,
+        "targetFunctions": 42,
         "targetTypes": 0,
         "targetConstants": 579
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -6349,21 +6415,23 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_supertank.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_supertank.ts",
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_supertank.h"
@@ -6381,12 +6449,13 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 29,
-        "targetFunctions": 62,
+        "targetFunctions": 88,
         "targetTypes": 6,
-        "targetConstants": 359
+        "targetConstants": 472
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -6410,7 +6479,9 @@
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "temporary marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/game/m_supertank.c"
@@ -6434,6 +6505,7 @@
       },
       "findings": [
         "multiple-declared-ts-targets",
+        "header:temporary marker detected",
         "basename-collision"
       ]
     },
@@ -6449,17 +6521,17 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/m_tank.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/m_tank.ts",
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6479,9 +6551,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 35,
-        "targetFunctions": 67,
+        "targetFunctions": 93,
         "targetTypes": 6,
-        "targetConstants": 426
+        "targetConstants": 539
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6545,27 +6617,27 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/p_client.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/g_items.ts",
-        "packages/game/src/g_utils.ts",
-        "packages/game/src/g_misc.ts",
-        "packages/game/src/p_hud.ts",
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_combat.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_chase.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_items.ts",
+        "packages/game/src/g_misc.ts",
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/g_utils.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/p_hud.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/p_client.ts",
-        "packages/game/src/g_items.ts",
-        "packages/game/src/g_utils.ts",
-        "packages/game/src/g_misc.ts",
-        "packages/game/src/p_hud.ts",
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_combat.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_chase.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_items.ts",
+        "packages/game/src/g_misc.ts",
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/g_utils.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/p_hud.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6591,9 +6663,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 22,
-        "targetFunctions": 334,
-        "targetTypes": 44,
-        "targetConstants": 468
+        "targetFunctions": 357,
+        "targetTypes": 45,
+        "targetConstants": 481
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6613,19 +6685,19 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/p_hud.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_main.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/p_client.ts",
         "packages/game/src/p_view.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/p_hud.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_main.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/p_client.ts",
         "packages/game/src/p_view.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6648,9 +6720,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 6,
-        "targetFunctions": 192,
-        "targetTypes": 38,
-        "targetConstants": 345
+        "targetFunctions": 202,
+        "targetTypes": 39,
+        "targetConstants": 334
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6670,14 +6742,14 @@
       "declaredPrimaryTsTarget": "packages/game/src/p_trail.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/g_ai.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/p_trail.ts",
         "packages/game/src/g_ai.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6688,8 +6760,8 @@
       ],
       "importImpactFiles": [
         "packages/game/src/g_ai.ts",
-        "packages/game/src/g_main.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts",
         "packages/game/src/p_client.ts"
       ],
@@ -6699,9 +6771,9 @@
         "sourceMacros": 3,
         "sourceTypes": 0,
         "sourceGlobals": 6,
-        "targetFunctions": 105,
-        "targetTypes": 30,
-        "targetConstants": 214
+        "targetFunctions": 106,
+        "targetTypes": 31,
+        "targetConstants": 202
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6721,14 +6793,14 @@
       "declaredPrimaryTsTarget": "packages/game/src/p_view.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/g_main.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/p_view.ts",
         "packages/game/src/g_main.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6749,9 +6821,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 29,
-        "targetFunctions": 120,
-        "targetTypes": 35,
-        "targetConstants": 242
+        "targetFunctions": 130,
+        "targetTypes": 36,
+        "targetConstants": 232
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6771,19 +6843,19 @@
       ],
       "declaredPrimaryTsTarget": "packages/game/src/p_weapon.ts",
       "declaredSecondaryTsTargets": [
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_weapon.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/local-game-bootstrap.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/game/src/p_weapon.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_weapon.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/local-game-bootstrap.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6809,9 +6881,9 @@
         "sourceMacros": 6,
         "sourceTypes": 0,
         "sourceGlobals": 21,
-        "targetFunctions": 209,
-        "targetTypes": 44,
-        "targetConstants": 359
+        "targetFunctions": 217,
+        "targetTypes": 45,
+        "targetConstants": 325
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6833,16 +6905,16 @@
       "declaredPrimaryTsTarget": "packages/math/src/q_shared.ts",
       "declaredSecondaryTsTargets": [
         "packages/qcommon/src/common.ts",
-        "packages/qcommon/src/system.ts",
+        "packages/qcommon/src/index.ts",
         "packages/qcommon/src/q_shared.ts",
-        "packages/qcommon/src/index.ts"
+        "packages/qcommon/src/system.ts"
       ],
       "declaredTsTargets": [
         "packages/math/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
-        "packages/qcommon/src/system.ts",
+        "packages/qcommon/src/index.ts",
         "packages/qcommon/src/q_shared.ts",
-        "packages/qcommon/src/index.ts"
+        "packages/qcommon/src/system.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6855,6 +6927,8 @@
       ],
       "importImpactFiles": [
         "packages/game/src/g_ai.ts",
+        "packages/game/src/g_items.ts",
+        "packages/game/src/g_misc.ts",
         "packages/game/src/g_monster.ts",
         "packages/game/src/g_phys.ts",
         "packages/game/src/g_target.ts",
@@ -6862,11 +6936,15 @@
         "packages/game/src/m_boss2.ts",
         "packages/game/src/m_boss31.ts",
         "packages/game/src/m_boss32.ts",
+        "packages/game/src/m_move.ts",
         "packages/game/src/p_view.ts",
+        "packages/game/src/runtime.ts",
         "packages/qcommon/src/anorms.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/crc.ts",
+        "packages/qcommon/src/cvar.ts",
         "packages/qcommon/src/index.ts",
         "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/net_chan.ts",
@@ -6882,9 +6960,9 @@
         "sourceMacros": 1,
         "sourceTypes": 1,
         "sourceGlobals": 24,
-        "targetFunctions": 87,
+        "targetFunctions": 99,
         "targetTypes": 28,
-        "targetConstants": 333
+        "targetConstants": 365
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -6900,26 +6978,30 @@
       "status": "split-undocumented",
       "expectedTsFile": "q_shared.ts",
       "strictMatches": [
+        "packages/game/src/runtime.ts",
         "packages/math/src/q_shared.ts",
-        "packages/qcommon/src/q_shared.ts"
+        "packages/qcommon/src/q_shared.ts",
+        "packages/qcommon/src/system.ts"
       ],
       "declaredPrimaryTsTarget": "packages/qcommon/src/q_shared.ts",
       "declaredSecondaryTsTargets": [
-        "packages/qcommon/src/common.ts",
+        "packages/game/src/runtime.ts",
         "packages/qcommon/src/system.ts",
-        "packages/qcommon/src/cvar.ts",
-        "packages/math/src/q_shared.ts",
+        "packages/client/src/monster-flash.ts",
         "packages/game/src/m_flash.ts",
-        "packages/client/src/monster-flash.ts"
+        "packages/math/src/q_shared.ts",
+        "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/cvar.ts"
       ],
       "declaredTsTargets": [
         "packages/qcommon/src/q_shared.ts",
-        "packages/qcommon/src/common.ts",
+        "packages/game/src/runtime.ts",
         "packages/qcommon/src/system.ts",
-        "packages/qcommon/src/cvar.ts",
-        "packages/math/src/q_shared.ts",
+        "packages/client/src/monster-flash.ts",
         "packages/game/src/m_flash.ts",
-        "packages/client/src/monster-flash.ts"
+        "packages/math/src/q_shared.ts",
+        "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/cvar.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -6932,6 +7014,8 @@
       ],
       "importImpactFiles": [
         "packages/game/src/g_ai.ts",
+        "packages/game/src/g_items.ts",
+        "packages/game/src/g_misc.ts",
         "packages/game/src/g_monster.ts",
         "packages/game/src/g_phys.ts",
         "packages/game/src/g_target.ts",
@@ -6939,12 +7023,16 @@
         "packages/game/src/m_boss2.ts",
         "packages/game/src/m_boss31.ts",
         "packages/game/src/m_boss32.ts",
+        "packages/game/src/m_move.ts",
         "packages/game/src/p_view.ts",
+        "packages/game/src/runtime.ts",
         "packages/math/src/q_shared.ts",
         "packages/qcommon/src/anorms.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/crc.ts",
+        "packages/qcommon/src/cvar.ts",
         "packages/qcommon/src/index.ts",
         "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/net_chan.ts",
@@ -6959,9 +7047,9 @@
         "sourceMacros": 490,
         "sourceTypes": 29,
         "sourceGlobals": 3,
-        "targetFunctions": 113,
-        "targetTypes": 31,
-        "targetConstants": 353
+        "targetFunctions": 194,
+        "targetTypes": 62,
+        "targetConstants": 609
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -8153,6 +8241,7 @@
       "importImpactFiles": [
         "packages/qcommon/src/cvar.ts",
         "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/qcommon.ts",
         "packages/qcommon/src/runtime.ts"
       ],
       "renameProposal": null,
@@ -8161,7 +8250,7 @@
         "sourceMacros": 2,
         "sourceTypes": 3,
         "sourceGlobals": 16,
-        "targetFunctions": 36,
+        "targetFunctions": 35,
         "targetTypes": 7,
         "targetConstants": 44
       },
@@ -8224,19 +8313,21 @@
       "status": "split-undocumented",
       "expectedTsFile": "common.ts",
       "strictMatches": [
-        "packages/qcommon/src/common.ts"
+        "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/messages.ts"
       ],
       "declaredPrimaryTsTarget": "packages/qcommon/src/common.ts",
       "declaredSecondaryTsTargets": [
-        "packages/qcommon/src/messages.ts",
         "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/qcommon.ts",
         "packages/qcommon/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/qcommon/src/common.ts",
-        "packages/qcommon/src/messages.ts",
         "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/qcommon.ts",
         "packages/qcommon/src/runtime.ts"
       ],
@@ -8249,10 +8340,12 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
+        "packages/client/src/menu-types.ts",
         "packages/game/src/g_cmds.ts",
-        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_main.ts",
         "packages/game/src/p_client.ts",
         "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/anorms.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
         "packages/qcommon/src/index.ts",
@@ -8267,8 +8360,8 @@
         "sourceTypes": 2,
         "sourceGlobals": 29,
         "targetFunctions": 144,
-        "targetTypes": 18,
-        "targetConstants": 119
+        "targetTypes": 19,
+        "targetConstants": 140
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -8283,13 +8376,17 @@
       "expectedStatus": "to-port",
       "status": "split-undocumented",
       "expectedTsFile": "crc.ts",
-      "strictMatches": [],
+      "strictMatches": [
+        "packages/qcommon/src/crc.ts"
+      ],
       "declaredPrimaryTsTarget": "packages/qcommon/src/qcommon.ts",
       "declaredSecondaryTsTargets": [
+        "packages/qcommon/src/crc.ts",
         "packages/qcommon/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/qcommon/src/qcommon.ts",
+        "packages/qcommon/src/crc.ts",
         "packages/qcommon/src/index.ts"
       ],
       "primaryBasenameMatchesSource": false,
@@ -8305,15 +8402,11 @@
         "Quake-2-master/qcommon/crc.h"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game-command-bridge.ts",
-        "apps/web/src/full-game-local-session.ts",
-        "apps/web/src/full-game-local-transport.ts",
-        "apps/web/src/full-game-render-source.ts",
-        "apps/web/src/full-game-server-host.ts",
-        "apps/web/src/full-game.ts",
-        "apps/web/src/local-client-controller.ts",
-        "apps/web/src/local-collision-adapter.ts",
-        "apps/web/src/main.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/command-bridge.ts",
+        "apps/web/src/local-transport.ts",
+        "apps/web/src/render-source.ts",
+        "apps/web/src/server-host.ts",
         "apps/web/src/web-config-commands.ts",
         "packages/client/src/cdaudio.ts",
         "packages/client/src/cl_cin.ts",
@@ -8324,8 +8417,10 @@
         "packages/client/src/cl_main.ts",
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_pred.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_tent.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/client.ts",
         "packages/client/src/console.ts",
         "packages/client/src/download.ts",
@@ -8350,10 +8445,15 @@
         "packages/client/src/snd_dma.ts",
         "packages/client/src/snd_loc.ts",
         "packages/client/src/snd_mem.ts",
-        "packages/client/src/sound-public.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/sound.ts",
         "packages/client/src/vid-menu.ts",
-        "packages/client/src/view.ts",
+        "packages/formats/src/md2.ts",
+        "packages/formats/src/pak.ts",
+        "packages/formats/src/pcx.ts",
+        "packages/formats/src/qfiles.ts",
+        "packages/formats/src/sp2.ts",
+        "packages/formats/src/wal.ts",
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_chase.ts",
         "packages/game/src/g_cmds.ts",
@@ -8366,6 +8466,7 @@
         "packages/game/src/g_monster.ts",
         "packages/game/src/g_phys.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_svcmds.ts",
         "packages/game/src/g_target.ts",
         "packages/game/src/g_trigger.ts",
@@ -8405,23 +8506,29 @@
         "packages/game/src/p_weapon.ts",
         "packages/game/src/runtime.ts",
         "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/cmd.ts",
+        "packages/qcommon/src/cmodel.ts",
+        "packages/qcommon/src/common.ts",
         "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/net_chan.ts",
         "packages/qcommon/src/protocol.ts",
+        "packages/qcommon/src/q_shared.ts",
         "packages/qcommon/src/runtime.ts",
-        "packages/renderer-three/src/gl-model-loader.ts",
-        "packages/renderer-three/src/gl-model.ts",
+        "packages/qcommon/src/system.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_light.ts",
         "packages/renderer-three/src/gl_local.ts",
         "packages/renderer-three/src/gl_mesh.ts",
+        "packages/renderer-three/src/gl_model.ts",
         "packages/renderer-three/src/gl_rmain.ts",
         "packages/renderer-three/src/gl_rmisc.ts",
         "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/gl_warp.ts",
         "packages/renderer-three/src/md2-mesh-builder.ts",
         "packages/renderer-three/src/particle-sync.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
         "packages/renderer-three/src/refresh-entity-sync.ts",
         "packages/renderer-three/src/three-beam-sync.ts",
         "packages/server/src/host.ts",
@@ -8442,15 +8549,11 @@
         "proposedPath": "packages/qcommon/src/crc.ts",
         "reason": "primary TS target does not use the source basename",
         "importImpactFiles": [
-          "apps/web/src/full-game-command-bridge.ts",
-          "apps/web/src/full-game-local-session.ts",
-          "apps/web/src/full-game-local-transport.ts",
-          "apps/web/src/full-game-render-source.ts",
-          "apps/web/src/full-game-server-host.ts",
-          "apps/web/src/full-game.ts",
-          "apps/web/src/local-client-controller.ts",
-          "apps/web/src/local-collision-adapter.ts",
-          "apps/web/src/main.ts",
+          "apps/web/src/app-runtime.ts",
+          "apps/web/src/command-bridge.ts",
+          "apps/web/src/local-transport.ts",
+          "apps/web/src/render-source.ts",
+          "apps/web/src/server-host.ts",
           "apps/web/src/web-config-commands.ts",
           "packages/client/src/cdaudio.ts",
           "packages/client/src/cl_cin.ts",
@@ -8461,8 +8564,10 @@
           "packages/client/src/cl_main.ts",
           "packages/client/src/cl_newfx.ts",
           "packages/client/src/cl_parse.ts",
+          "packages/client/src/cl_pred.ts",
           "packages/client/src/cl_scrn.ts",
           "packages/client/src/cl_tent.ts",
+          "packages/client/src/cl_view.ts",
           "packages/client/src/client.ts",
           "packages/client/src/console.ts",
           "packages/client/src/download.ts",
@@ -8487,10 +8592,15 @@
           "packages/client/src/snd_dma.ts",
           "packages/client/src/snd_loc.ts",
           "packages/client/src/snd_mem.ts",
-          "packages/client/src/sound-public.ts",
+          "packages/client/src/sound-registration.ts",
           "packages/client/src/sound.ts",
           "packages/client/src/vid-menu.ts",
-          "packages/client/src/view.ts",
+          "packages/formats/src/md2.ts",
+          "packages/formats/src/pak.ts",
+          "packages/formats/src/pcx.ts",
+          "packages/formats/src/qfiles.ts",
+          "packages/formats/src/sp2.ts",
+          "packages/formats/src/wal.ts",
           "packages/game/src/g_ai.ts",
           "packages/game/src/g_chase.ts",
           "packages/game/src/g_cmds.ts",
@@ -8503,6 +8613,7 @@
           "packages/game/src/g_monster.ts",
           "packages/game/src/g_phys.ts",
           "packages/game/src/g_save.ts",
+          "packages/game/src/g_spawn.ts",
           "packages/game/src/g_svcmds.ts",
           "packages/game/src/g_target.ts",
           "packages/game/src/g_trigger.ts",
@@ -8542,23 +8653,29 @@
           "packages/game/src/p_weapon.ts",
           "packages/game/src/runtime.ts",
           "packages/memory/src/sizebuf.ts",
+          "packages/qcommon/src/cmd.ts",
+          "packages/qcommon/src/cmodel.ts",
+          "packages/qcommon/src/common.ts",
           "packages/qcommon/src/index.ts",
+          "packages/qcommon/src/messages.ts",
           "packages/qcommon/src/net_chan.ts",
           "packages/qcommon/src/protocol.ts",
+          "packages/qcommon/src/q_shared.ts",
           "packages/qcommon/src/runtime.ts",
-          "packages/renderer-three/src/gl-model-loader.ts",
-          "packages/renderer-three/src/gl-model.ts",
+          "packages/qcommon/src/system.ts",
           "packages/renderer-three/src/gl_draw.ts",
           "packages/renderer-three/src/gl_image.ts",
           "packages/renderer-three/src/gl_light.ts",
           "packages/renderer-three/src/gl_local.ts",
           "packages/renderer-three/src/gl_mesh.ts",
+          "packages/renderer-three/src/gl_model.ts",
           "packages/renderer-three/src/gl_rmain.ts",
           "packages/renderer-three/src/gl_rmisc.ts",
           "packages/renderer-three/src/gl_rsurf.ts",
           "packages/renderer-three/src/gl_warp.ts",
           "packages/renderer-three/src/md2-mesh-builder.ts",
           "packages/renderer-three/src/particle-sync.ts",
+          "packages/renderer-three/src/ref-gl-host.ts",
           "packages/renderer-three/src/refresh-entity-sync.ts",
           "packages/renderer-three/src/three-beam-sync.ts",
           "packages/server/src/host.ts",
@@ -8579,9 +8696,9 @@
         "sourceMacros": 2,
         "sourceTypes": 0,
         "sourceGlobals": 1,
-        "targetFunctions": 69,
-        "targetTypes": 13,
-        "targetConstants": 53
+        "targetFunctions": 66,
+        "targetTypes": 14,
+        "targetConstants": 60
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -8600,13 +8717,17 @@
       "expectedStatus": "to-port",
       "status": "split-undocumented",
       "expectedTsFile": "crc.ts",
-      "strictMatches": [],
+      "strictMatches": [
+        "packages/qcommon/src/crc.ts"
+      ],
       "declaredPrimaryTsTarget": "packages/qcommon/src/qcommon.ts",
       "declaredSecondaryTsTargets": [
+        "packages/qcommon/src/crc.ts",
         "packages/qcommon/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/qcommon/src/qcommon.ts",
+        "packages/qcommon/src/crc.ts",
         "packages/qcommon/src/index.ts"
       ],
       "primaryBasenameMatchesSource": false,
@@ -8622,15 +8743,11 @@
         "Quake-2-master/qcommon/crc.c"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game-command-bridge.ts",
-        "apps/web/src/full-game-local-session.ts",
-        "apps/web/src/full-game-local-transport.ts",
-        "apps/web/src/full-game-render-source.ts",
-        "apps/web/src/full-game-server-host.ts",
-        "apps/web/src/full-game.ts",
-        "apps/web/src/local-client-controller.ts",
-        "apps/web/src/local-collision-adapter.ts",
-        "apps/web/src/main.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/command-bridge.ts",
+        "apps/web/src/local-transport.ts",
+        "apps/web/src/render-source.ts",
+        "apps/web/src/server-host.ts",
         "apps/web/src/web-config-commands.ts",
         "packages/client/src/cdaudio.ts",
         "packages/client/src/cl_cin.ts",
@@ -8641,8 +8758,10 @@
         "packages/client/src/cl_main.ts",
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_pred.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_tent.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/client.ts",
         "packages/client/src/console.ts",
         "packages/client/src/download.ts",
@@ -8667,10 +8786,15 @@
         "packages/client/src/snd_dma.ts",
         "packages/client/src/snd_loc.ts",
         "packages/client/src/snd_mem.ts",
-        "packages/client/src/sound-public.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/sound.ts",
         "packages/client/src/vid-menu.ts",
-        "packages/client/src/view.ts",
+        "packages/formats/src/md2.ts",
+        "packages/formats/src/pak.ts",
+        "packages/formats/src/pcx.ts",
+        "packages/formats/src/qfiles.ts",
+        "packages/formats/src/sp2.ts",
+        "packages/formats/src/wal.ts",
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_chase.ts",
         "packages/game/src/g_cmds.ts",
@@ -8683,6 +8807,7 @@
         "packages/game/src/g_monster.ts",
         "packages/game/src/g_phys.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_svcmds.ts",
         "packages/game/src/g_target.ts",
         "packages/game/src/g_trigger.ts",
@@ -8722,23 +8847,29 @@
         "packages/game/src/p_weapon.ts",
         "packages/game/src/runtime.ts",
         "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/cmd.ts",
+        "packages/qcommon/src/cmodel.ts",
+        "packages/qcommon/src/common.ts",
         "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/net_chan.ts",
         "packages/qcommon/src/protocol.ts",
+        "packages/qcommon/src/q_shared.ts",
         "packages/qcommon/src/runtime.ts",
-        "packages/renderer-three/src/gl-model-loader.ts",
-        "packages/renderer-three/src/gl-model.ts",
+        "packages/qcommon/src/system.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_light.ts",
         "packages/renderer-three/src/gl_local.ts",
         "packages/renderer-three/src/gl_mesh.ts",
+        "packages/renderer-three/src/gl_model.ts",
         "packages/renderer-three/src/gl_rmain.ts",
         "packages/renderer-three/src/gl_rmisc.ts",
         "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/gl_warp.ts",
         "packages/renderer-three/src/md2-mesh-builder.ts",
         "packages/renderer-three/src/particle-sync.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
         "packages/renderer-three/src/refresh-entity-sync.ts",
         "packages/renderer-three/src/three-beam-sync.ts",
         "packages/server/src/host.ts",
@@ -8759,15 +8890,11 @@
         "proposedPath": "packages/qcommon/src/crc.ts",
         "reason": "primary TS target does not use the source basename",
         "importImpactFiles": [
-          "apps/web/src/full-game-command-bridge.ts",
-          "apps/web/src/full-game-local-session.ts",
-          "apps/web/src/full-game-local-transport.ts",
-          "apps/web/src/full-game-render-source.ts",
-          "apps/web/src/full-game-server-host.ts",
-          "apps/web/src/full-game.ts",
-          "apps/web/src/local-client-controller.ts",
-          "apps/web/src/local-collision-adapter.ts",
-          "apps/web/src/main.ts",
+          "apps/web/src/app-runtime.ts",
+          "apps/web/src/command-bridge.ts",
+          "apps/web/src/local-transport.ts",
+          "apps/web/src/render-source.ts",
+          "apps/web/src/server-host.ts",
           "apps/web/src/web-config-commands.ts",
           "packages/client/src/cdaudio.ts",
           "packages/client/src/cl_cin.ts",
@@ -8778,8 +8905,10 @@
           "packages/client/src/cl_main.ts",
           "packages/client/src/cl_newfx.ts",
           "packages/client/src/cl_parse.ts",
+          "packages/client/src/cl_pred.ts",
           "packages/client/src/cl_scrn.ts",
           "packages/client/src/cl_tent.ts",
+          "packages/client/src/cl_view.ts",
           "packages/client/src/client.ts",
           "packages/client/src/console.ts",
           "packages/client/src/download.ts",
@@ -8804,10 +8933,15 @@
           "packages/client/src/snd_dma.ts",
           "packages/client/src/snd_loc.ts",
           "packages/client/src/snd_mem.ts",
-          "packages/client/src/sound-public.ts",
+          "packages/client/src/sound-registration.ts",
           "packages/client/src/sound.ts",
           "packages/client/src/vid-menu.ts",
-          "packages/client/src/view.ts",
+          "packages/formats/src/md2.ts",
+          "packages/formats/src/pak.ts",
+          "packages/formats/src/pcx.ts",
+          "packages/formats/src/qfiles.ts",
+          "packages/formats/src/sp2.ts",
+          "packages/formats/src/wal.ts",
           "packages/game/src/g_ai.ts",
           "packages/game/src/g_chase.ts",
           "packages/game/src/g_cmds.ts",
@@ -8820,6 +8954,7 @@
           "packages/game/src/g_monster.ts",
           "packages/game/src/g_phys.ts",
           "packages/game/src/g_save.ts",
+          "packages/game/src/g_spawn.ts",
           "packages/game/src/g_svcmds.ts",
           "packages/game/src/g_target.ts",
           "packages/game/src/g_trigger.ts",
@@ -8859,23 +8994,29 @@
           "packages/game/src/p_weapon.ts",
           "packages/game/src/runtime.ts",
           "packages/memory/src/sizebuf.ts",
+          "packages/qcommon/src/cmd.ts",
+          "packages/qcommon/src/cmodel.ts",
+          "packages/qcommon/src/common.ts",
           "packages/qcommon/src/index.ts",
+          "packages/qcommon/src/messages.ts",
           "packages/qcommon/src/net_chan.ts",
           "packages/qcommon/src/protocol.ts",
+          "packages/qcommon/src/q_shared.ts",
           "packages/qcommon/src/runtime.ts",
-          "packages/renderer-three/src/gl-model-loader.ts",
-          "packages/renderer-three/src/gl-model.ts",
+          "packages/qcommon/src/system.ts",
           "packages/renderer-three/src/gl_draw.ts",
           "packages/renderer-three/src/gl_image.ts",
           "packages/renderer-three/src/gl_light.ts",
           "packages/renderer-three/src/gl_local.ts",
           "packages/renderer-three/src/gl_mesh.ts",
+          "packages/renderer-three/src/gl_model.ts",
           "packages/renderer-three/src/gl_rmain.ts",
           "packages/renderer-three/src/gl_rmisc.ts",
           "packages/renderer-three/src/gl_rsurf.ts",
           "packages/renderer-three/src/gl_warp.ts",
           "packages/renderer-three/src/md2-mesh-builder.ts",
           "packages/renderer-three/src/particle-sync.ts",
+          "packages/renderer-three/src/ref-gl-host.ts",
           "packages/renderer-three/src/refresh-entity-sync.ts",
           "packages/renderer-three/src/three-beam-sync.ts",
           "packages/server/src/host.ts",
@@ -8896,9 +9037,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 0,
-        "targetFunctions": 69,
-        "targetTypes": 13,
-        "targetConstants": 53
+        "targetFunctions": 66,
+        "targetTypes": 14,
+        "targetConstants": 60
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -8931,9 +9072,12 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
+        "packages/client/src/cl_view.ts",
+        "packages/client/src/keys.ts",
+        "packages/client/src/menu-main-game.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/view.ts",
         "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/net_chan.ts",
         "packages/qcommon/src/qcommon.ts",
         "packages/qcommon/src/runtime.ts",
         "packages/renderer-three/src/gl_local.ts",
@@ -8948,7 +9092,7 @@
         "sourceGlobals": 5,
         "targetFunctions": 25,
         "targetTypes": 3,
-        "targetConstants": 18
+        "targetConstants": 19
       },
       "findings": []
     },
@@ -8960,36 +9104,36 @@
       "status": "split-undocumented",
       "expectedTsFile": "files.ts",
       "strictMatches": [
-        "packages/filesystem/src/files.ts"
+        "packages/filesystem/src/files.ts",
+        "packages/formats/src/pak.ts"
       ],
       "declaredPrimaryTsTarget": "packages/filesystem/src/files.ts",
       "declaredSecondaryTsTargets": [
-        "packages/filesystem/src/index.ts",
-        "packages/formats/src/pak.ts"
+        "packages/formats/src/pak.ts",
+        "packages/filesystem/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/filesystem/src/files.ts",
-        "packages/filesystem/src/index.ts",
-        "packages/formats/src/pak.ts"
+        "packages/formats/src/pak.ts",
+        "packages/filesystem/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
-      "headerFindings": [],
+      "headerFindings": [
+        "stub marker detected"
+      ],
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-local-session.ts",
-        "apps/web/src/full-game-render-loop.ts",
-        "apps/web/src/full-game-server-host.ts",
-        "apps/web/src/full-game.ts",
-        "apps/web/src/main.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/render-loop.ts",
+        "apps/web/src/server-host.ts",
         "apps/web/src/web-config-storage.ts",
-        "apps/web/src/web-demo-loop.ts",
-        "apps/web/src/web-map-bootstrap.ts",
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_main.ts",
         "packages/client/src/console.ts",
         "packages/client/src/menu-main-game.ts",
+        "packages/client/src/menu-multiplayer.ts",
         "packages/filesystem/src/index.ts",
         "packages/formats/src/pak.ts",
         "packages/platform/src/web-audio-adapter.ts",
@@ -9008,12 +9152,13 @@
         "sourceMacros": 2,
         "sourceTypes": 7,
         "sourceGlobals": 15,
-        "targetFunctions": 30,
-        "targetTypes": 10,
-        "targetConstants": 51
+        "targetFunctions": 39,
+        "targetTypes": 16,
+        "targetConstants": 81
       },
       "findings": [
-        "multiple-declared-ts-targets"
+        "multiple-declared-ts-targets",
+        "header:stub marker detected"
       ]
     },
     {
@@ -9050,9 +9195,9 @@
         "sourceMacros": 19,
         "sourceTypes": 4,
         "sourceGlobals": 6,
-        "targetFunctions": 84,
-        "targetTypes": 15,
-        "targetConstants": 80
+        "targetFunctions": 77,
+        "targetTypes": 16,
+        "targetConstants": 82
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -9070,13 +9215,13 @@
       ],
       "declaredPrimaryTsTarget": "packages/qcommon/src/net_chan.ts",
       "declaredSecondaryTsTargets": [
-        "packages/qcommon/src/qcommon.ts",
-        "packages/qcommon/src/index.ts"
+        "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/qcommon.ts"
       ],
       "declaredTsTargets": [
         "packages/qcommon/src/net_chan.ts",
-        "packages/qcommon/src/qcommon.ts",
-        "packages/qcommon/src/index.ts"
+        "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/qcommon.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -9093,9 +9238,9 @@
         "sourceMacros": 0,
         "sourceTypes": 0,
         "sourceGlobals": 7,
-        "targetFunctions": 80,
-        "targetTypes": 13,
-        "targetConstants": 65
+        "targetFunctions": 76,
+        "targetTypes": 14,
+        "targetConstants": 69
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -9119,8 +9264,7 @@
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [
-        "stub marker detected",
-        "temporary marker detected"
+        "stub marker detected"
       ],
       "modernNameFindings": [],
       "basenameCollisionSources": [],
@@ -9138,8 +9282,7 @@
         "targetConstants": 67
       },
       "findings": [
-        "header:stub marker detected",
-        "header:temporary marker detected"
+        "header:stub marker detected"
       ]
     },
     {
@@ -9150,36 +9293,38 @@
       "status": "split-undocumented",
       "expectedTsFile": "qcommon.ts",
       "strictMatches": [
+        "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/qcommon.ts"
       ],
       "declaredPrimaryTsTarget": "packages/qcommon/src/qcommon.ts",
       "declaredSecondaryTsTargets": [
-        "packages/qcommon/src/messages.ts",
         "packages/memory/src/sizebuf.ts",
-        "packages/memory/src/binary-io.ts",
         "packages/qcommon/src/protocol.ts",
-        "packages/qcommon/src/cmd.ts",
-        "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/cmodel.ts",
-        "packages/qcommon/src/pmove.ts",
         "packages/filesystem/src/files.ts",
-        "packages/qcommon/src/md4.ts",
+        "packages/memory/src/binary-io.ts",
+        "packages/qcommon/src/cmd.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/cvar.ts",
+        "packages/qcommon/src/md4.ts",
+        "packages/qcommon/src/messages.ts",
+        "packages/qcommon/src/pmove.ts",
         "packages/qcommon/src/system.ts"
       ],
       "declaredTsTargets": [
         "packages/qcommon/src/qcommon.ts",
-        "packages/qcommon/src/messages.ts",
         "packages/memory/src/sizebuf.ts",
-        "packages/memory/src/binary-io.ts",
         "packages/qcommon/src/protocol.ts",
-        "packages/qcommon/src/cmd.ts",
-        "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/cmodel.ts",
-        "packages/qcommon/src/pmove.ts",
         "packages/filesystem/src/files.ts",
-        "packages/qcommon/src/md4.ts",
+        "packages/memory/src/binary-io.ts",
+        "packages/qcommon/src/cmd.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/cvar.ts",
+        "packages/qcommon/src/md4.ts",
+        "packages/qcommon/src/messages.ts",
+        "packages/qcommon/src/pmove.ts",
         "packages/qcommon/src/system.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -9190,15 +9335,11 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-command-bridge.ts",
-        "apps/web/src/full-game-local-session.ts",
-        "apps/web/src/full-game-local-transport.ts",
-        "apps/web/src/full-game-render-source.ts",
-        "apps/web/src/full-game-server-host.ts",
-        "apps/web/src/full-game.ts",
-        "apps/web/src/local-client-controller.ts",
-        "apps/web/src/local-collision-adapter.ts",
-        "apps/web/src/main.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/command-bridge.ts",
+        "apps/web/src/local-transport.ts",
+        "apps/web/src/render-source.ts",
+        "apps/web/src/server-host.ts",
         "apps/web/src/web-config-commands.ts",
         "packages/client/src/cdaudio.ts",
         "packages/client/src/cl_cin.ts",
@@ -9209,8 +9350,10 @@
         "packages/client/src/cl_main.ts",
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_pred.ts",
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_tent.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/client.ts",
         "packages/client/src/console.ts",
         "packages/client/src/download.ts",
@@ -9235,10 +9378,15 @@
         "packages/client/src/snd_dma.ts",
         "packages/client/src/snd_loc.ts",
         "packages/client/src/snd_mem.ts",
-        "packages/client/src/sound-public.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/sound.ts",
         "packages/client/src/vid-menu.ts",
-        "packages/client/src/view.ts",
+        "packages/formats/src/md2.ts",
+        "packages/formats/src/pak.ts",
+        "packages/formats/src/pcx.ts",
+        "packages/formats/src/qfiles.ts",
+        "packages/formats/src/sp2.ts",
+        "packages/formats/src/wal.ts",
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_chase.ts",
         "packages/game/src/g_cmds.ts",
@@ -9251,6 +9399,7 @@
         "packages/game/src/g_monster.ts",
         "packages/game/src/g_phys.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_svcmds.ts",
         "packages/game/src/g_target.ts",
         "packages/game/src/g_trigger.ts",
@@ -9290,23 +9439,29 @@
         "packages/game/src/p_weapon.ts",
         "packages/game/src/runtime.ts",
         "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/cmd.ts",
+        "packages/qcommon/src/cmodel.ts",
+        "packages/qcommon/src/common.ts",
         "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/net_chan.ts",
         "packages/qcommon/src/protocol.ts",
+        "packages/qcommon/src/q_shared.ts",
         "packages/qcommon/src/runtime.ts",
-        "packages/renderer-three/src/gl-model-loader.ts",
-        "packages/renderer-three/src/gl-model.ts",
+        "packages/qcommon/src/system.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_light.ts",
         "packages/renderer-three/src/gl_local.ts",
         "packages/renderer-three/src/gl_mesh.ts",
+        "packages/renderer-three/src/gl_model.ts",
         "packages/renderer-three/src/gl_rmain.ts",
         "packages/renderer-three/src/gl_rmisc.ts",
         "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/gl_warp.ts",
         "packages/renderer-three/src/md2-mesh-builder.ts",
         "packages/renderer-three/src/particle-sync.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
         "packages/renderer-three/src/refresh-entity-sync.ts",
         "packages/renderer-three/src/three-beam-sync.ts",
         "packages/server/src/host.ts",
@@ -9327,9 +9482,9 @@
         "sourceMacros": 81,
         "sourceTypes": 11,
         "sourceGlobals": 9,
-        "targetFunctions": 349,
-        "targetTypes": 52,
-        "targetConstants": 442
+        "targetFunctions": 358,
+        "targetTypes": 57,
+        "targetConstants": 500
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -9344,24 +9499,29 @@
       "status": "split-undocumented",
       "expectedTsFile": "qfiles.ts",
       "strictMatches": [
-        "packages/formats/src/qfiles.ts"
+        "packages/formats/src/md2.ts",
+        "packages/formats/src/pak.ts",
+        "packages/formats/src/pcx.ts",
+        "packages/formats/src/qfiles.ts",
+        "packages/formats/src/sp2.ts",
+        "packages/formats/src/wal.ts"
       ],
       "declaredPrimaryTsTarget": "packages/formats/src/qfiles.ts",
       "declaredSecondaryTsTargets": [
+        "packages/formats/src/md2.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
-        "packages/formats/src/wal.ts",
-        "packages/formats/src/md2.ts",
         "packages/formats/src/sp2.ts",
+        "packages/formats/src/wal.ts",
         "packages/formats/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/formats/src/qfiles.ts",
+        "packages/formats/src/md2.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
-        "packages/formats/src/wal.ts",
-        "packages/formats/src/md2.ts",
         "packages/formats/src/sp2.ts",
+        "packages/formats/src/wal.ts",
         "packages/formats/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -9378,9 +9538,10 @@
         "packages/formats/src/pcx.ts",
         "packages/formats/src/sp2.ts",
         "packages/formats/src/wal.ts",
-        "packages/game/src/g_main.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/runtime.ts",
-        "packages/qcommon/src/cmodel.ts"
+        "packages/qcommon/src/cmodel.ts",
+        "packages/qcommon/src/q_shared.ts"
       ],
       "renameProposal": null,
       "inventory": {
@@ -9389,8 +9550,8 @@
         "sourceTypes": 21,
         "sourceGlobals": 0,
         "targetFunctions": 59,
-        "targetTypes": 32,
-        "targetConstants": 229
+        "targetTypes": 34,
+        "targetConstants": 234
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -9527,14 +9688,17 @@
       "status": "split-undocumented",
       "expectedTsFile": "gl_image.ts",
       "strictMatches": [
+        "packages/formats/src/tga.ts",
         "packages/renderer-three/src/gl_image.ts"
       ],
       "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_image.ts",
       "declaredSecondaryTsTargets": [
+        "packages/formats/src/tga.ts",
         "packages/renderer-three/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/renderer-three/src/gl_image.ts",
+        "packages/formats/src/tga.ts",
         "packages/renderer-three/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -9558,9 +9722,9 @@
         "sourceMacros": 9,
         "sourceTypes": 5,
         "sourceGlobals": 37,
-        "targetFunctions": 54,
-        "targetTypes": 8,
-        "targetConstants": 121
+        "targetFunctions": 62,
+        "targetTypes": 10,
+        "targetConstants": 139
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -9579,15 +9743,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_light.ts",
       "declaredSecondaryTsTargets": [
-        "packages/renderer-three/src/index.ts",
+        "packages/renderer-three/src/gl_rmain.ts",
         "packages/renderer-three/src/gl_rsurf.ts",
-        "packages/renderer-three/src/gl_rmain.ts"
+        "packages/renderer-three/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/renderer-three/src/gl_light.ts",
-        "packages/renderer-three/src/index.ts",
+        "packages/renderer-three/src/gl_rmain.ts",
         "packages/renderer-three/src/gl_rsurf.ts",
-        "packages/renderer-three/src/gl_rmain.ts"
+        "packages/renderer-three/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -9608,9 +9772,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 23,
-        "targetFunctions": 130,
+        "targetFunctions": 134,
         "targetTypes": 18,
-        "targetConstants": 246
+        "targetConstants": 247
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -9630,12 +9794,11 @@
       ],
       "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_local.ts",
       "declaredSecondaryTsTargets": [
-        "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_draw.ts",
-        "packages/renderer-three/src/gl_rsurf.ts",
-        "packages/renderer-three/src/gl-model.ts",
+        "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_light.ts",
         "packages/renderer-three/src/gl_rmain.ts",
+        "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/gl_warp.ts",
         "packages/renderer-three/src/qgl.ts",
         "packages/renderer-three/src/ref-gl-bootstrap.ts",
@@ -9643,12 +9806,11 @@
       ],
       "declaredTsTargets": [
         "packages/renderer-three/src/gl_local.ts",
-        "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_draw.ts",
-        "packages/renderer-three/src/gl_rsurf.ts",
-        "packages/renderer-three/src/gl-model.ts",
+        "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_light.ts",
         "packages/renderer-three/src/gl_rmain.ts",
+        "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/gl_warp.ts",
         "packages/renderer-three/src/qgl.ts",
         "packages/renderer-three/src/ref-gl-bootstrap.ts",
@@ -9662,9 +9824,11 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
+        "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/gl_image.ts",
         "packages/renderer-three/src/gl_rmain.ts",
         "packages/renderer-three/src/gl_rmisc.ts",
+        "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/index.ts"
       ],
       "renameProposal": null,
@@ -9673,9 +9837,9 @@
         "sourceMacros": 43,
         "sourceTypes": 9,
         "sourceGlobals": 20,
-        "targetFunctions": 288,
-        "targetTypes": 89,
-        "targetConstants": 573
+        "targetFunctions": 281,
+        "targetTypes": 75,
+        "targetConstants": 566
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -9695,18 +9859,12 @@
       "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_mesh.ts",
       "declaredSecondaryTsTargets": [
         "packages/renderer-three/src/md2-mesh-builder.ts",
-        "packages/renderer-three/src/refresh-entity-sync.ts",
-        "apps/web/src/main.ts",
-        "apps/web/src/web-demo-loop.ts",
-        "apps/web/src/local-client-controller.ts"
+        "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "declaredTsTargets": [
         "packages/renderer-three/src/gl_mesh.ts",
         "packages/renderer-three/src/md2-mesh-builder.ts",
-        "packages/renderer-three/src/refresh-entity-sync.ts",
-        "apps/web/src/main.ts",
-        "apps/web/src/web-demo-loop.ts",
-        "apps/web/src/local-client-controller.ts"
+        "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -9714,6 +9872,7 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
+        "packages/qcommon/src/anorms.ts",
         "packages/renderer-three/src/anormtab.ts",
         "packages/renderer-three/src/index.ts",
         "packages/renderer-three/src/md2-mesh-builder.ts",
@@ -9725,9 +9884,9 @@
         "sourceMacros": 2,
         "sourceTypes": 1,
         "sourceGlobals": 17,
-        "targetFunctions": 71,
-        "targetTypes": 18,
-        "targetConstants": 256
+        "targetFunctions": 65,
+        "targetTypes": 16,
+        "targetConstants": 194
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -9739,82 +9898,26 @@
       "sourceBasename": "gl_model",
       "scope": "renderer-ref-gl",
       "expectedStatus": "to-port",
-      "status": "wrong-name",
+      "status": "strict-ok",
       "expectedTsFile": "gl_model.ts",
-      "strictMatches": [],
-      "declaredPrimaryTsTarget": "packages/renderer-three/src/gl-model-loader.ts",
+      "strictMatches": [
+        "packages/renderer-three/src/gl_model.ts"
+      ],
+      "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_model.ts",
       "declaredSecondaryTsTargets": [],
       "declaredTsTargets": [
-        "packages/renderer-three/src/gl-model-loader.ts"
+        "packages/renderer-three/src/gl_model.ts"
       ],
-      "primaryBasenameMatchesSource": false,
+      "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [
         "stub marker detected"
       ],
-      "modernNameFindings": [
-        "primary-basename 'gl-model-loader' differs from source basename 'gl_model'"
-      ],
+      "modernNameFindings": [],
       "basenameCollisionSources": [
         "Quake-2-master/ref_gl/gl_model.h"
       ],
       "importImpactFiles": [
-        "packages/renderer-three/src/gl-world-scene-adapter.ts",
-        "packages/renderer-three/src/gl_rsurf.ts",
-        "packages/renderer-three/src/index.ts"
-      ],
-      "renameProposal": {
-        "from": "packages/renderer-three/src/gl-model-loader.ts",
-        "toFileName": "gl_model.ts",
-        "proposedPath": "packages/renderer-three/src/gl_model.ts",
-        "reason": "primary TS target does not use the source basename",
-        "importImpactFiles": [
-          "packages/renderer-three/src/gl-world-scene-adapter.ts",
-          "packages/renderer-three/src/gl_rsurf.ts",
-          "packages/renderer-three/src/index.ts"
-        ]
-      },
-      "inventory": {
-        "sourceFunctions": 24,
-        "sourceMacros": 1,
-        "sourceTypes": 1,
-        "sourceGlobals": 16,
-        "targetFunctions": 43,
-        "targetTypes": 4,
-        "targetConstants": 91
-      },
-      "findings": [
-        "strict-basename-target-missing",
-        "declared-target-not-strict-basename",
-        "header:stub marker detected",
-        "name:primary-basename 'gl-model-loader' differs from source basename 'gl_model'",
-        "basename-collision"
-      ]
-    },
-    {
-      "sourcePath": "Quake-2-master/ref_gl/gl_model.h",
-      "sourceBasename": "gl_model",
-      "scope": "renderer-ref-gl",
-      "expectedStatus": "to-port",
-      "status": "wrong-name",
-      "expectedTsFile": "gl_model.ts",
-      "strictMatches": [],
-      "declaredPrimaryTsTarget": "packages/renderer-three/src/gl-model.ts",
-      "declaredSecondaryTsTargets": [],
-      "declaredTsTargets": [
-        "packages/renderer-three/src/gl-model.ts"
-      ],
-      "primaryBasenameMatchesSource": false,
-      "hasAcceptedSplitException": false,
-      "headerFindings": [],
-      "modernNameFindings": [
-        "primary-basename 'gl-model' differs from source basename 'gl_model'"
-      ],
-      "basenameCollisionSources": [
-        "Quake-2-master/ref_gl/gl_model.c"
-      ],
-      "importImpactFiles": [
-        "packages/renderer-three/src/gl-model-loader.ts",
         "packages/renderer-three/src/gl-world-scene-adapter.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/gl_image.ts",
@@ -9824,40 +9927,77 @@
         "packages/renderer-three/src/gl_rsurf.ts",
         "packages/renderer-three/src/gl_warp.ts",
         "packages/renderer-three/src/index.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
         "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
-      "renameProposal": {
-        "from": "packages/renderer-three/src/gl-model.ts",
-        "toFileName": "gl_model.ts",
-        "proposedPath": "packages/renderer-three/src/gl_model.ts",
-        "reason": "primary TS target does not use the source basename",
-        "importImpactFiles": [
-          "packages/renderer-three/src/gl-model-loader.ts",
-          "packages/renderer-three/src/gl-world-scene-adapter.ts",
-          "packages/renderer-three/src/gl_draw.ts",
-          "packages/renderer-three/src/gl_image.ts",
-          "packages/renderer-three/src/gl_light.ts",
-          "packages/renderer-three/src/gl_local.ts",
-          "packages/renderer-three/src/gl_rmain.ts",
-          "packages/renderer-three/src/gl_rsurf.ts",
-          "packages/renderer-three/src/gl_warp.ts",
-          "packages/renderer-three/src/index.ts",
-          "packages/renderer-three/src/refresh-entity-sync.ts"
-        ]
+      "renameProposal": null,
+      "inventory": {
+        "sourceFunctions": 24,
+        "sourceMacros": 1,
+        "sourceTypes": 1,
+        "sourceGlobals": 16,
+        "targetFunctions": 58,
+        "targetTypes": 18,
+        "targetConstants": 100
       },
+      "findings": [
+        "strict-basename-target-missing",
+        "declared-target-not-strict-basename",
+        "header:stub marker detected",
+        "basename-collision"
+      ]
+    },
+    {
+      "sourcePath": "Quake-2-master/ref_gl/gl_model.h",
+      "sourceBasename": "gl_model",
+      "scope": "renderer-ref-gl",
+      "expectedStatus": "to-port",
+      "status": "strict-ok",
+      "expectedTsFile": "gl_model.ts",
+      "strictMatches": [
+        "packages/renderer-three/src/gl_model.ts"
+      ],
+      "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_model.ts",
+      "declaredSecondaryTsTargets": [],
+      "declaredTsTargets": [
+        "packages/renderer-three/src/gl_model.ts"
+      ],
+      "primaryBasenameMatchesSource": true,
+      "hasAcceptedSplitException": false,
+      "headerFindings": [
+        "stub marker detected"
+      ],
+      "modernNameFindings": [],
+      "basenameCollisionSources": [
+        "Quake-2-master/ref_gl/gl_model.c"
+      ],
+      "importImpactFiles": [
+        "packages/renderer-three/src/gl-world-scene-adapter.ts",
+        "packages/renderer-three/src/gl_draw.ts",
+        "packages/renderer-three/src/gl_image.ts",
+        "packages/renderer-three/src/gl_light.ts",
+        "packages/renderer-three/src/gl_local.ts",
+        "packages/renderer-three/src/gl_rmain.ts",
+        "packages/renderer-three/src/gl_rsurf.ts",
+        "packages/renderer-three/src/gl_warp.ts",
+        "packages/renderer-three/src/index.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
+        "packages/renderer-three/src/refresh-entity-sync.ts"
+      ],
+      "renameProposal": null,
       "inventory": {
         "sourceFunctions": 7,
         "sourceMacros": 9,
         "sourceTypes": 15,
         "sourceGlobals": 0,
-        "targetFunctions": 15,
-        "targetTypes": 14,
-        "targetConstants": 9
+        "targetFunctions": 58,
+        "targetTypes": 18,
+        "targetConstants": 100
       },
       "findings": [
         "strict-basename-target-missing",
         "declared-target-not-strict-basename",
-        "name:primary-basename 'gl-model' differs from source basename 'gl_model'",
+        "header:stub marker detected",
         "basename-collision"
       ]
     },
@@ -9873,19 +10013,19 @@
       ],
       "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_rmain.ts",
       "declaredSecondaryTsTargets": [
-        "packages/renderer-three/src/ref-gl-host.ts",
-        "packages/renderer-three/src/particle-sync.ts",
-        "packages/renderer-three/src/refresh-entity-sync.ts",
         "packages/renderer-three/src/gl_light.ts",
-        "packages/renderer-three/src/gl_rsurf.ts"
+        "packages/renderer-three/src/gl_rsurf.ts",
+        "packages/renderer-three/src/particle-sync.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
+        "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "declaredTsTargets": [
         "packages/renderer-three/src/gl_rmain.ts",
-        "packages/renderer-three/src/ref-gl-host.ts",
-        "packages/renderer-three/src/particle-sync.ts",
-        "packages/renderer-three/src/refresh-entity-sync.ts",
         "packages/renderer-three/src/gl_light.ts",
-        "packages/renderer-three/src/gl_rsurf.ts"
+        "packages/renderer-three/src/gl_rsurf.ts",
+        "packages/renderer-three/src/particle-sync.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
+        "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -9913,9 +10053,9 @@
         "sourceMacros": 1,
         "sourceTypes": 2,
         "sourceGlobals": 26,
-        "targetFunctions": 176,
-        "targetTypes": 31,
-        "targetConstants": 395
+        "targetFunctions": 186,
+        "targetTypes": 32,
+        "targetConstants": 404
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -9960,9 +10100,9 @@
         "sourceMacros": 0,
         "sourceTypes": 2,
         "sourceGlobals": 1,
-        "targetFunctions": 126,
+        "targetFunctions": 127,
         "targetTypes": 35,
-        "targetConstants": 291
+        "targetConstants": 296
       },
       "findings": [
         "multiple-declared-ts-targets"
@@ -9980,12 +10120,10 @@
       ],
       "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_rsurf.ts",
       "declaredSecondaryTsTargets": [
-        "packages/renderer-three/src/gl-model-loader.ts",
         "packages/renderer-three/src/index.ts"
       ],
       "declaredTsTargets": [
         "packages/renderer-three/src/gl_rsurf.ts",
-        "packages/renderer-three/src/gl-model-loader.ts",
         "packages/renderer-three/src/index.ts"
       ],
       "primaryBasenameMatchesSource": true,
@@ -10006,9 +10144,9 @@
         "sourceMacros": 7,
         "sourceTypes": 1,
         "sourceGlobals": 25,
-        "targetFunctions": 99,
-        "targetTypes": 9,
-        "targetConstants": 174
+        "targetFunctions": 60,
+        "targetTypes": 5,
+        "targetConstants": 84
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -10023,23 +10161,24 @@
       "status": "split-undocumented",
       "expectedTsFile": "gl_warp.ts",
       "strictMatches": [
-        "packages/renderer-three/src/gl_warp.ts"
+        "packages/renderer-three/src/gl_warp.ts",
+        "packages/renderer-three/src/sky-scene-adapter.ts"
       ],
       "declaredPrimaryTsTarget": "packages/renderer-three/src/gl_warp.ts",
       "declaredSecondaryTsTargets": [
-        "packages/renderer-three/src/warpsin.ts",
-        "packages/renderer-three/src/ref-gl-host.ts",
         "packages/renderer-three/src/sky-scene-adapter.ts",
         "packages/renderer-three/src/gl-world-scene-adapter.ts",
-        "packages/renderer-three/src/quake-sky-resolver.ts"
+        "packages/renderer-three/src/quake-sky-resolver.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
+        "packages/renderer-three/src/warpsin.ts"
       ],
       "declaredTsTargets": [
         "packages/renderer-three/src/gl_warp.ts",
-        "packages/renderer-three/src/warpsin.ts",
-        "packages/renderer-three/src/ref-gl-host.ts",
         "packages/renderer-three/src/sky-scene-adapter.ts",
         "packages/renderer-three/src/gl-world-scene-adapter.ts",
-        "packages/renderer-three/src/quake-sky-resolver.ts"
+        "packages/renderer-three/src/quake-sky-resolver.ts",
+        "packages/renderer-three/src/ref-gl-host.ts",
+        "packages/renderer-three/src/warpsin.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -10060,9 +10199,9 @@
         "sourceMacros": 4,
         "sourceTypes": 0,
         "sourceGlobals": 16,
-        "targetFunctions": 81,
+        "targetFunctions": 86,
         "targetTypes": 17,
-        "targetConstants": 236
+        "targetConstants": 242
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -10942,9 +11081,13 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
-        "apps/web/src/full-game-server-host.ts",
+        "apps/web/src/app-runtime.ts",
+        "apps/web/src/command-bridge.ts",
+        "apps/web/src/local-transport.ts",
+        "apps/web/src/server-host.ts",
         "apps/web/src/web-save-storage.ts",
-        "packages/game/src/g_func.ts",
+        "packages/game/src/g_monster.ts",
+        "packages/game/src/game.ts",
         "packages/game/src/runtime.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
@@ -10988,15 +11131,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/server/src/sv_ccmds.ts",
       "declaredSecondaryTsTargets": [
+        "packages/server/src/index.ts",
         "packages/server/src/runtime.ts",
-        "packages/server/src/server.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/server.ts"
       ],
       "declaredTsTargets": [
         "packages/server/src/sv_ccmds.ts",
+        "packages/server/src/index.ts",
         "packages/server/src/runtime.ts",
-        "packages/server/src/server.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/server.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -11077,13 +11220,13 @@
       ],
       "declaredPrimaryTsTarget": "packages/server/src/sv_game.ts",
       "declaredSecondaryTsTargets": [
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/server/src/sv_game.ts",
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -11123,15 +11266,15 @@
       ],
       "declaredPrimaryTsTarget": "packages/server/src/sv_init.ts",
       "declaredSecondaryTsTargets": [
-        "packages/server/src/sv_game.ts",
+        "packages/server/src/index.ts",
         "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/sv_game.ts"
       ],
       "declaredTsTargets": [
         "packages/server/src/sv_init.ts",
-        "packages/server/src/sv_game.ts",
+        "packages/server/src/index.ts",
         "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/sv_game.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -11172,14 +11315,14 @@
       "declaredPrimaryTsTarget": "packages/server/src/sv_main.ts",
       "declaredSecondaryTsTargets": [
         "packages/server/src/host.ts",
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/server/src/sv_main.ts",
         "packages/server/src/host.ts",
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -11198,9 +11341,9 @@
         "sourceMacros": 1,
         "sourceTypes": 0,
         "sourceGlobals": 14,
-        "targetFunctions": 38,
+        "targetFunctions": 40,
         "targetTypes": 5,
-        "targetConstants": 63
+        "targetConstants": 66
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -11276,6 +11419,7 @@
       "modernNameFindings": [],
       "basenameCollisionSources": [],
       "importImpactFiles": [
+        "apps/web/src/server-host.ts",
         "packages/server/src/index.ts",
         "packages/server/src/runtime.ts"
       ],
@@ -11306,13 +11450,13 @@
       ],
       "declaredPrimaryTsTarget": "packages/server/src/sv_user.ts",
       "declaredSecondaryTsTargets": [
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "declaredTsTargets": [
         "packages/server/src/sv_user.ts",
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
@@ -11332,8 +11476,8 @@
         "sourceTypes": 1,
         "sourceGlobals": 15,
         "targetFunctions": 22,
-        "targetTypes": 3,
-        "targetConstants": 46
+        "targetTypes": 4,
+        "targetConstants": 49
       },
       "findings": [
         "multiple-declared-ts-targets",
@@ -11361,7 +11505,8 @@
       "primaryBasenameMatchesSource": true,
       "hasAcceptedSplitException": false,
       "headerFindings": [
-        "stub marker detected"
+        "stub marker detected",
+        "temporary marker detected"
       ],
       "modernNameFindings": [],
       "basenameCollisionSources": [],
@@ -11381,7 +11526,8 @@
       },
       "findings": [
         "multiple-declared-ts-targets",
-        "header:stub marker detected"
+        "header:stub marker detected",
+        "header:temporary marker detected"
       ]
     },
     {
@@ -12126,16 +12272,18 @@
       "expectedStatus": "voluntarily-excluded",
       "status": "excluded",
       "expectedTsFile": "vid_menu.ts",
-      "strictMatches": [],
+      "strictMatches": [
+        "packages/client/src/vid-menu.ts"
+      ],
       "declaredPrimaryTsTarget": "packages/client/src/vid-menu.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/vid.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/client/src/vid.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/vid-menu.ts",
-        "packages/client/src/vid.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/client/src/vid.ts"
       ],
       "primaryBasenameMatchesSource": false,
       "hasAcceptedSplitException": false,
@@ -12148,7 +12296,7 @@
         "Quake-2-master/linux/vid_menu.c"
       ],
       "importImpactFiles": [
-        "apps/web/src/full-game.ts",
+        "apps/web/src/app-runtime.ts",
         "packages/client/src/index.ts"
       ],
       "renameProposal": null,
@@ -12157,9 +12305,9 @@
         "sourceMacros": 7,
         "sourceTypes": 0,
         "sourceGlobals": 11,
-        "targetFunctions": 20,
+        "targetFunctions": 21,
         "targetTypes": 5,
-        "targetConstants": 36
+        "targetConstants": 38
       },
       "findings": [
         "multiple-declared-ts-targets",

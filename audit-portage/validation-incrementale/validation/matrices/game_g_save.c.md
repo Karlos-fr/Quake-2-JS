@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/g_save.c`
 - Cibles TS connues: `packages/game/src/g_save.ts`, `packages/game/src/g_main.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:g-save`, `scripts/verify/quake2-g-save.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `header:stub marker detected`, `missing-ts-symbols:27`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:14`
+- Findings Phase 03: `basename-collision`, `header:stub marker detected`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:27`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:14`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

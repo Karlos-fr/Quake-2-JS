@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/keys.c`
 - Cibles TS connues: `packages/client/src/keys.ts`, `packages/client/src/index.ts`
-- Tests connus: `npm run verify:keys`, `npm run verify:keys:header`, `scripts/verify/quake2-keys-header.ts`, `scripts/verify/quake2-keys.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `header:stub marker detected`, `missing-ts-symbols:25`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:8`
+- Findings Phase 03: `basename-collision`, `header:stub marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:25`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:8`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

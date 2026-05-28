@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/qcommon/pmove.c`
 - Cibles TS connues: `packages/qcommon/src/pmove.ts`
-- Tests connus: `npm run verify:client:pmove:viewheight`, `npm run verify:pmove`, `npm run verify:pmove:local-bmodel`, `scripts/verify/quake2-client-pmove-viewheight.ts`, `scripts/verify/quake2-pmove-local-bmodel.ts`, `scripts/verify/quake2-pmove.ts`
+- Tests connus: aucun
 - Verdict Phase 03: Partiel
-- Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-ts-symbols:25`, `missing-ts-symbol`
+- Findings Phase 03: `header:stub marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:25`, `missing-ts-symbol`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

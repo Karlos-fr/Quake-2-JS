@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/console.c`
 - Cibles TS connues: `packages/client/src/console.ts`, `packages/client/src/index.ts`
-- Tests connus: `npm run verify:console`, `npm run verify:console:header`, `npm run verify:full-game:commands`, `npm run verify:full-game:console-background`, `scripts/verify/quake2-console-header.ts`, `scripts/verify/quake2-console.ts`, `scripts/verify/quake2-full-game-console-background.ts`, `scripts/verify/quake2-full-game-console-commands.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `missing-ts-symbols:10`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:7`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:11`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:7`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -35,7 +35,7 @@
 | `Quake-2-master/client/console.c` | function | `Con_Linefeed` | `packages/client/src/console.ts` | `Con_Linefeed` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | function | `Con_Print` | `packages/client/src/console.ts` | `Con_Print` | Valide | A redecouper |  |
 | `Quake-2-master/client/console.c` | global | `y` | `packages/client/src/console.ts` | `y` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
-| `Quake-2-master/client/console.c` | global | `cr` | `packages/client/src/console.ts` | `cr` | Valide | A redecouper | Static local C porte en etat prive TS pour preserver le retour chariot entre appels. |
+| `Quake-2-master/client/console.c` | global | `cr` | `packages/client/src/console.ts` |  | Valide | A redecouper | Static local C porte en etat prive TS pour preserver le retour chariot entre appels. |
 | `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
 | `Quake-2-master/client/console.c` | global | `mask` | `packages/client/src/console.ts` | `mask` | Non applicable | A redecouper | Variable locale de `Con_Print`. |
 | `Quake-2-master/client/console.c` | function | `Con_CenteredPrint` | `packages/client/src/console.ts` | `Con_CenteredPrint` | Valide | A redecouper |  |

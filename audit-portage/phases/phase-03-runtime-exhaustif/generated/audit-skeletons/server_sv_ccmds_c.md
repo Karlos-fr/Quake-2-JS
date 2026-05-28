@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/server/src/sv_ccmds.ts
-- Cibles TS declarees : packages/server/src/sv_ccmds.ts, packages/server/src/runtime.ts, packages/server/src/server.ts, packages/server/src/index.ts
+- Cibles TS declarees : packages/server/src/sv_ccmds.ts, packages/server/src/index.ts, packages/server/src/runtime.ts, packages/server/src/server.ts
 
 ## Symboles source
 

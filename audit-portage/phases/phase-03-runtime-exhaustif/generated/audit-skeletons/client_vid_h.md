@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/vid.ts
-- Cibles TS declarees : packages/client/src/vid.ts, packages/client/src/cl_scrn.ts, packages/client/src/vid-menu.ts, packages/client/src/index.ts
+- Cibles TS declarees : packages/client/src/vid.ts, packages/client/src/cl_scrn.ts, packages/client/src/index.ts, packages/client/src/vid-menu.ts
 
 ## Symboles source
 

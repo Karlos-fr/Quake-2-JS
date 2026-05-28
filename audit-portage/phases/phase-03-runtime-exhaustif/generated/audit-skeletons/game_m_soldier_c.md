@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/m_soldier.ts
-- Cibles TS declarees : packages/game/src/m_soldier.ts, packages/game/src/g_combat.ts, packages/game/src/runtime.ts, packages/game/src/g_spawn.ts, packages/game/src/g_save.ts
+- Cibles TS declarees : packages/game/src/m_soldier.ts, packages/game/src/g_combat.ts, packages/game/src/g_save.ts, packages/game/src/g_spawn.ts, packages/game/src/runtime.ts
 
 ## Symboles source
 

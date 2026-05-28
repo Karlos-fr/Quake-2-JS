@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/input.h`
 - Cibles TS connues: `packages/client/src/input.ts`, `packages/client/src/index.ts`
-- Tests connus: `npm run verify:full-game:input-bindings`, `npm run verify:input:header`, `scripts/verify/quake2-full-game-input-bindings.ts`, `scripts/verify/quake2-input-header.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:2`
+- Findings Phase 03: `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:2`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

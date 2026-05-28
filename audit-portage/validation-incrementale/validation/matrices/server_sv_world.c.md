@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/server/sv_world.c`
 - Cibles TS connues: `packages/server/src/sv_world.ts`, `packages/server/src/index.ts`
-- Tests connus: `npm run verify:server:world`, `scripts/verify/quake2-sv-world.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:14`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:17`
+- Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:14`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:17`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

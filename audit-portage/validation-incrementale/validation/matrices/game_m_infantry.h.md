@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/m_infantry.h`
 - Cibles TS connues: `packages/game/src/m_infantry.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:m-infantry`, `npm run verify:m-infantry:header`, `npm run verify:m-infantry:source-parity`, `scripts/verify/quake2-m-infantry-header.ts`, `scripts/verify/quake2-m-infantry-source-parity.ts`, `scripts/verify/quake2-m-infantry.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

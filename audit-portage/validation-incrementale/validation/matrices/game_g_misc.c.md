@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/g_misc.c`
 - Cibles TS connues: `packages/game/src/g_misc.ts`, `packages/game/src/g_spawn.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:g-misc`, `scripts/verify/quake2-g-misc.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `header:temporary marker detected`, `missing-ts-symbols:9`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:84`
+- Findings Phase 03: `basename-collision`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:9`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:84`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

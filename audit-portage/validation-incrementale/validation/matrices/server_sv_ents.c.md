@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/server/sv_ents.c`
 - Cibles TS connues: `packages/server/src/sv_ents.ts`, `packages/server/src/index.ts`
-- Tests connus: `npm run verify:server:ents`, `scripts/verify/quake2-sv-ents.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:6`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `header:stub marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:6`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

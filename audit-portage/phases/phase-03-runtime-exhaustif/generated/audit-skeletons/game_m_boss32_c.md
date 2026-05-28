@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/m_boss32.ts
-- Cibles TS declarees : packages/game/src/m_boss32.ts, packages/game/src/m_boss31.ts, packages/game/src/g_spawn.ts, packages/game/src/g_save.ts, packages/game/src/index.ts
+- Cibles TS declarees : packages/game/src/m_boss32.ts, packages/game/src/g_save.ts, packages/game/src/g_spawn.ts, packages/game/src/index.ts, packages/game/src/m_boss31.ts
 
 ## Symboles source
 

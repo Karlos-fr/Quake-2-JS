@@ -4,7 +4,7 @@
 
 - Source: `Quake-2-master/client/anorms.h`
 - Cibles TS connues: `packages/qcommon/src/anorms.ts`, `packages/client/src/cl_tent.ts`
-- Tests connus: `npm run verify:anorms`, `scripts/verify/quake2-anorms.ts`
+- Tests connus: aucun
 - Verdict Phase 03: Partiel
 - Findings Phase 03: `basename-collision`, `multiple-declared-ts-targets`, `no-runtime-matrix-row`
 

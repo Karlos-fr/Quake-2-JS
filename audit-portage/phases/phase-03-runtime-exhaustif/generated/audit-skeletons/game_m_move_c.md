@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/m_move.ts
-- Cibles TS declarees : packages/game/src/m_move.ts, packages/game/src/runtime.ts, packages/game/src/index.ts
+- Cibles TS declarees : packages/game/src/m_move.ts, packages/game/src/index.ts, packages/game/src/runtime.ts
 
 ## Symboles source
 

@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/formats/src/qfiles.ts
-- Cibles TS declarees : packages/formats/src/qfiles.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts
+- Cibles TS declarees : packages/formats/src/qfiles.ts, packages/formats/src/md2.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/sp2.ts, packages/formats/src/wal.ts, packages/formats/src/index.ts
 
 ## Symboles source
 

@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/math/src/q_shared.ts
-- Cibles TS declarees : packages/math/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/index.ts
+- Cibles TS declarees : packages/math/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/index.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/system.ts
 
 ## Symboles source
 

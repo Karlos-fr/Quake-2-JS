@@ -1,6 +1,6 @@
 {
   "generatedBy": "phase-03-runtime-file-audit",
-  "generatedAt": "2026-04-30T14:12:41.924Z",
+  "generatedAt": "2026-05-28T19:00:32.310Z",
   "sourceInputs": {
     "coverageMatrix": "phase-03-runtime-coverage-matrix.json",
     "rootReachability": "phase-03-runtime-root-reachability.json",
@@ -10,10 +10,10 @@
   "summary": {
     "files": 127,
     "verdicts": {
-      "Partiel": 3,
-      "A redecouper": 124
+      "Partiel": 4,
+      "A redecouper": 123
     },
-    "filesWithTests": 125,
+    "filesWithTests": 0,
     "filesWithMissingTsSymbols": 82,
     "filesWithDeclarativeFindings": 0,
     "filesNonBranche": 0
@@ -31,12 +31,8 @@
       "sourceSymbolCount": 0,
       "matchedTsSymbolCount": 0,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-anorms.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:anorms"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
@@ -47,7 +43,6 @@
         "no-runtime-matrix-row"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-anorms.ts",
         "matrix-rows:0"
       ]
     },
@@ -65,9 +60,7 @@
       "sourceSymbolCount": 6,
       "matchedTsSymbolCount": 6,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-cdaudio.ts"
-      ],
+      "linkedTests": [],
       "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 4,
@@ -75,12 +68,12 @@
       "verdict": "A redecouper",
       "findings": [
         "adapter-target-declared",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cdaudio.ts",
         "reachable-functions:4",
         "matrix-rows:6"
       ]
@@ -100,26 +93,20 @@
       "sourceSymbolCount": 48,
       "matchedTsSymbolCount": 27,
       "missingTsSymbolCount": 21,
-      "linkedTests": [
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:client:header",
-        "verify:client:pmove:viewheight"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 10,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:21",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts",
         "reachable-functions:10",
         "matrix-rows:48"
       ]
@@ -130,42 +117,34 @@
       "primaryTsTarget": "packages/client/src/cl_ents.ts",
       "tsTargets": [
         "packages/client/src/cl_ents.ts",
-        "packages/client/src/cl_parse.ts",
         "packages/client/src/refresh.ts",
-        "packages/client/src/view.ts",
-        "packages/client/src/cl_tent.ts",
         "packages/client/src/cl_newfx.ts",
-        "packages/renderer-three/src/refresh-entity-sync.ts",
-        "packages/renderer-three/src/md2-mesh-builder.ts"
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_tent.ts",
+        "packages/renderer-three/src/md2-mesh-builder.ts",
+        "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 52,
-      "matchedTsSymbolCount": 30,
-      "missingTsSymbolCount": 22,
-      "linkedTests": [
-        "scripts/verify/quake2-refresh-entity-alias-flags.ts",
-        "scripts/verify/quake2-refresh-entity-sprite.ts",
-        "scripts/verify/quake2-web-view-weapon.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:refresh-entity:alias-flags",
-        "verify:refresh-entity:sprite",
-        "verify:refresh-entity:weapon"
-      ],
+      "matchedTsSymbolCount": 24,
+      "missingTsSymbolCount": 28,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 16,
       "unreachableFunctionCount": 1,
       "verdict": "A redecouper",
       "findings": [
-        "missing-ts-symbols:22",
+        "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:28",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:1"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-refresh-entity-alias-flags.ts,scripts/verify/quake2-refresh-entity-sprite.ts,scripts/verify/quake2-web-view-weapon.ts",
         "reachable-functions:16",
         "matrix-rows:52"
       ]
@@ -176,32 +155,22 @@
       "primaryTsTarget": "packages/client/src/cl_fx.ts",
       "tsTargets": [
         "packages/client/src/cl_fx.ts",
-        "packages/client/src/cl_newfx.ts",
-        "packages/client/src/cl_parse.ts",
-        "packages/client/src/refresh.ts",
-        "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/cl_newfx.ts",
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
+        "packages/client/src/monster-flash.ts",
+        "packages/client/src/refresh.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 145,
-      "matchedTsSymbolCount": 132,
-      "missingTsSymbolCount": 13,
-      "linkedTests": [
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-refresh-entity-alias-flags.ts",
-        "scripts/verify/quake2-refresh-entity-sprite.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:client:header",
-        "verify:client:pmove:viewheight",
-        "verify:refresh-entity:alias-flags",
-        "verify:refresh-entity:sprite"
-      ],
+      "matchedTsSymbolCount": 133,
+      "missingTsSymbolCount": 12,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 39,
       "unreachableFunctionCount": 2,
@@ -209,13 +178,13 @@
       "findings": [
         "header:stub marker detected",
         "header:temporary marker detected",
-        "missing-ts-symbols:13",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:12",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-refresh-entity-alias-flags.ts,scripts/verify/quake2-refresh-entity-sprite.ts",
         "reachable-functions:39",
         "matrix-rows:145"
       ]
@@ -226,41 +195,29 @@
       "primaryTsTarget": "packages/client/src/cl_input.ts",
       "tsTargets": [
         "packages/client/src/cl_input.ts",
-        "packages/client/src/input.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/client.ts",
+        "packages/client/src/input.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 75,
-      "matchedTsSymbolCount": 21,
-      "missingTsSymbolCount": 54,
-      "linkedTests": [
-        "scripts/verify/quake2-cl-input.ts",
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-full-game-input-bindings.ts",
-        "scripts/verify/quake2-input-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cl-input",
-        "verify:client:header",
-        "verify:client:pmove:viewheight",
-        "verify:full-game:input-bindings",
-        "verify:input:header"
-      ],
+      "matchedTsSymbolCount": 53,
+      "missingTsSymbolCount": 22,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 8,
       "unreachableFunctionCount": 35,
       "verdict": "A redecouper",
       "findings": [
-        "missing-ts-symbols:54",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:22",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:35"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cl-input.ts,scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-full-game-input-bindings.ts,scripts/verify/quake2-input-header.ts",
         "reachable-functions:8",
         "matrix-rows:75"
       ]
@@ -303,53 +260,33 @@
       "primaryTsTarget": "packages/client/src/cl_main.ts",
       "tsTargets": [
         "packages/client/src/cl_main.ts",
-        "packages/client/src/download.ts",
         "packages/client/src/precache.ts",
-        "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
+        "packages/client/src/download.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/sound.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 154,
-      "matchedTsSymbolCount": 53,
-      "missingTsSymbolCount": 101,
-      "linkedTests": [
-        "scripts/verify/quake2-cl-main.ts",
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-sky-phase1.ts",
-        "scripts/verify/quake2-sky-phase2.ts",
-        "scripts/verify/quake2-sky-phase3.ts",
-        "scripts/verify/quake2-sky-phase4.ts",
-        "scripts/verify/quake2-sky-phase5.ts",
-        "scripts/verify/quake2-sound-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cl-main",
-        "verify:client:header",
-        "verify:client:pmove:viewheight",
-        "verify:sky:phase1",
-        "verify:sky:phase2",
-        "verify:sky:phase3",
-        "verify:sky:phase4",
-        "verify:sky:phase5",
-        "verify:sound:header"
-      ],
+      "matchedTsSymbolCount": 55,
+      "missingTsSymbolCount": 99,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 21,
       "unreachableFunctionCount": 18,
       "verdict": "A redecouper",
       "findings": [
-        "missing-ts-symbols:101",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:99",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:18"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cl-main.ts,scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-sky-phase1.ts,scripts/verify/quake2-sky-phase2.ts,scripts/verify/quake2-sky-phase3.ts,scripts/verify/quake2-sky-phase4.ts,scripts/verify/quake2-sky-phase5.ts,scripts/verify/quake2-sound-header.ts",
         "reachable-functions:21",
         "matrix-rows:154"
       ]
@@ -360,9 +297,9 @@
       "primaryTsTarget": "packages/client/src/cl_newfx.ts",
       "tsTargets": [
         "packages/client/src/cl_newfx.ts",
-        "packages/client/src/cl_tent.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_parse.ts",
+        "packages/client/src/cl_tent.ts",
         "packages/client/src/refresh.ts"
       ],
       "structuralStatuses": [
@@ -371,26 +308,20 @@
       "sourceSymbolCount": 123,
       "matchedTsSymbolCount": 113,
       "missingTsSymbolCount": 10,
-      "linkedTests": [
-        "scripts/verify/quake2-refresh-entity-alias-flags.ts",
-        "scripts/verify/quake2-refresh-entity-sprite.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:refresh-entity:alias-flags",
-        "verify:refresh-entity:sprite"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 20,
       "unreachableFunctionCount": 7,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:10",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:7"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-refresh-entity-alias-flags.ts,scripts/verify/quake2-refresh-entity-sprite.ts",
         "reachable-functions:20",
         "matrix-rows:123"
       ]
@@ -402,34 +333,19 @@
       "tsTargets": [
         "packages/client/src/cl_parse.ts",
         "packages/client/src/download.ts",
-        "packages/client/src/sound.ts",
+        "packages/client/src/sky.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/sky.ts"
+        "packages/client/src/sound.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 55,
-      "matchedTsSymbolCount": 31,
-      "missingTsSymbolCount": 24,
-      "linkedTests": [
-        "scripts/verify/quake2-cl-parse.ts",
-        "scripts/verify/quake2-sky-phase1.ts",
-        "scripts/verify/quake2-sky-phase2.ts",
-        "scripts/verify/quake2-sky-phase3.ts",
-        "scripts/verify/quake2-sky-phase4.ts",
-        "scripts/verify/quake2-sky-phase5.ts",
-        "scripts/verify/quake2-sound-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cl-parse",
-        "verify:sky:phase1",
-        "verify:sky:phase2",
-        "verify:sky:phase3",
-        "verify:sky:phase4",
-        "verify:sky:phase5",
-        "verify:sound:header"
-      ],
+      "matchedTsSymbolCount": 33,
+      "missingTsSymbolCount": 22,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 14,
       "unreachableFunctionCount": 1,
@@ -437,13 +353,13 @@
       "findings": [
         "header:stub marker detected",
         "header:temporary marker detected",
-        "missing-ts-symbols:24",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:22",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:1"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cl-parse.ts,scripts/verify/quake2-sky-phase1.ts,scripts/verify/quake2-sky-phase2.ts,scripts/verify/quake2-sky-phase3.ts,scripts/verify/quake2-sky-phase4.ts,scripts/verify/quake2-sky-phase5.ts,scripts/verify/quake2-sound-header.ts",
         "reachable-functions:14",
         "matrix-rows:55"
       ]
@@ -451,41 +367,31 @@
     {
       "sourcePath": "Quake-2-master/client/cl_pred.c",
       "sourceBasename": "cl_pred",
-      "primaryTsTarget": "packages/client/src/view.ts",
+      "primaryTsTarget": "packages/client/src/cl_pred.ts",
       "tsTargets": [
-        "packages/client/src/view.ts"
+        "packages/client/src/cl_pred.ts"
       ],
       "structuralStatuses": [
-        "wrong-name"
+        "strict-ok"
       ],
       "sourceSymbolCount": 29,
       "matchedTsSymbolCount": 21,
       "missingTsSymbolCount": 8,
-      "linkedTests": [
-        "scripts/verify/quake2-cl-pred.ts",
-        "scripts/verify/quake2-web-view-weapon.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cl-pred",
-        "verify:refresh-entity:weapon"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 3,
-      "verdict": "A redecouper",
+      "verdict": "Partiel",
       "findings": [
         "declared-target-not-strict-basename",
-        "header:stub marker detected",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:8",
-        "name:primary basename 'view' looks modernized or abstract",
-        "name:primary-basename 'view' differs from source basename 'cl_pred'",
-        "phase02-structural-status:wrong-name",
         "strict-basename-target-missing",
         "unreachable-functions:3"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cl-pred.ts,scripts/verify/quake2-web-view-weapon.ts",
         "reachable-functions:2",
         "matrix-rows:29"
       ]
@@ -505,33 +411,23 @@
         "split-undocumented"
       ],
       "sourceSymbolCount": 111,
-      "matchedTsSymbolCount": 61,
-      "missingTsSymbolCount": 50,
-      "linkedTests": [
-        "scripts/verify/quake2-cl-scrn.ts",
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-three-gl-draw-adapter.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cl-scrn",
-        "verify:client:header",
-        "verify:client:pmove:viewheight",
-        "verify:three-gl-draw-adapter"
-      ],
+      "matchedTsSymbolCount": 66,
+      "missingTsSymbolCount": 45,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 26,
       "unreachableFunctionCount": 9,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
-        "missing-ts-symbols:50",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:45",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:9"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cl-scrn.ts,scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-three-gl-draw-adapter.ts",
         "reachable-functions:26",
         "matrix-rows:111"
       ]
@@ -542,34 +438,22 @@
       "primaryTsTarget": "packages/client/src/cl_tent.ts",
       "tsTargets": [
         "packages/client/src/cl_tent.ts",
-        "packages/client/src/cl_parse.ts",
+        "packages/client/src/sound-registration.ts",
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_newfx.ts",
+        "packages/client/src/cl_parse.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/refresh.ts",
-        "packages/client/src/sound.ts",
-        "packages/client/src/client.ts"
+        "packages/client/src/sound.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 104,
-      "matchedTsSymbolCount": 72,
-      "missingTsSymbolCount": 32,
-      "linkedTests": [
-        "scripts/verify/quake2-cl-tent.ts",
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-refresh-entity-alias-flags.ts",
-        "scripts/verify/quake2-refresh-entity-sprite.ts",
-        "scripts/verify/quake2-sound-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:client:header",
-        "verify:client:pmove:viewheight",
-        "verify:refresh-entity:alias-flags",
-        "verify:refresh-entity:sprite",
-        "verify:sound:header"
-      ],
+      "matchedTsSymbolCount": 76,
+      "missingTsSymbolCount": 28,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "protocol-or-effect-enum",
@@ -582,14 +466,15 @@
       "unreachableFunctionCount": 2,
       "verdict": "A redecouper",
       "findings": [
+        "header:stub marker detected",
         "header:temporary marker detected",
-        "missing-ts-symbols:32",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:28",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cl-tent.ts,scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-refresh-entity-alias-flags.ts,scripts/verify/quake2-refresh-entity-sprite.ts,scripts/verify/quake2-sound-header.ts",
         "declarative-tables:1",
         "reachable-functions:33",
         "matrix-rows:104"
@@ -598,12 +483,11 @@
     {
       "sourcePath": "Quake-2-master/client/cl_view.c",
       "sourceBasename": "cl_view",
-      "primaryTsTarget": "packages/client/src/view.ts",
+      "primaryTsTarget": "packages/client/src/cl_view.ts",
       "tsTargets": [
-        "packages/client/src/view.ts",
-        "packages/client/src/refresh.ts",
+        "packages/client/src/cl_view.ts",
         "packages/client/src/menu-player-config.ts",
-        "apps/web/src/local-client-controller.ts",
+        "packages/client/src/refresh.ts",
         "packages/renderer-three/src/refresh-entity-sync.ts"
       ],
       "structuralStatuses": [
@@ -612,17 +496,8 @@
       "sourceSymbolCount": 37,
       "matchedTsSymbolCount": 24,
       "missingTsSymbolCount": 13,
-      "linkedTests": [
-        "scripts/verify/quake2-cl-view.ts",
-        "scripts/verify/quake2-refresh-entity-alias-flags.ts",
-        "scripts/verify/quake2-refresh-entity-sprite.ts",
-        "scripts/verify/quake2-web-view-weapon.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:refresh-entity:alias-flags",
-        "verify:refresh-entity:sprite",
-        "verify:refresh-entity:weapon"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 13,
       "unreachableFunctionCount": 5,
@@ -632,16 +507,14 @@
         "declared-target-not-strict-basename",
         "header:stub marker detected",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:13",
         "multiple-declared-ts-targets",
-        "name:primary basename 'view' looks modernized or abstract",
-        "name:primary-basename 'view' differs from source basename 'cl_view'",
         "phase02-structural-status:split-undocumented",
         "strict-basename-target-missing",
         "unreachable-functions:5"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cl-view.ts,scripts/verify/quake2-refresh-entity-alias-flags.ts,scripts/verify/quake2-refresh-entity-sprite.ts,scripts/verify/quake2-web-view-weapon.ts",
         "reachable-functions:13",
         "matrix-rows:37"
       ]
@@ -652,40 +525,31 @@
       "primaryTsTarget": "packages/client/src/client.ts",
       "tsTargets": [
         "packages/client/src/client.ts",
-        "packages/client/src/keys.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/cl_tent.ts",
+        "packages/client/src/index.ts",
+        "packages/client/src/keys.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 276,
-      "matchedTsSymbolCount": 17,
-      "missingTsSymbolCount": 259,
-      "linkedTests": [
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-keys-header.ts",
-        "scripts/verify/quake2-keys.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:client:header",
-        "verify:client:pmove:viewheight",
-        "verify:keys",
-        "verify:keys:header"
-      ],
+      "matchedTsSymbolCount": 30,
+      "missingTsSymbolCount": 246,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 89,
       "unreachableFunctionCount": 33,
       "verdict": "A redecouper",
       "findings": [
         "header:temporary marker detected",
-        "missing-ts-symbols:259",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:246",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:33"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-keys-header.ts,scripts/verify/quake2-keys.ts",
         "reachable-functions:89",
         "matrix-rows:276"
       ]
@@ -702,33 +566,23 @@
         "split-undocumented"
       ],
       "sourceSymbolCount": 51,
-      "matchedTsSymbolCount": 41,
-      "missingTsSymbolCount": 10,
-      "linkedTests": [
-        "scripts/verify/quake2-console-header.ts",
-        "scripts/verify/quake2-console.ts",
-        "scripts/verify/quake2-full-game-console-background.ts",
-        "scripts/verify/quake2-full-game-console-commands.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:console",
-        "verify:console:header",
-        "verify:full-game:commands",
-        "verify:full-game:console-background"
-      ],
+      "matchedTsSymbolCount": 40,
+      "missingTsSymbolCount": 11,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 11,
       "unreachableFunctionCount": 7,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:10",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:11",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:7"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-console-header.ts,scripts/verify/quake2-console.ts,scripts/verify/quake2-full-game-console-background.ts,scripts/verify/quake2-full-game-console-commands.ts",
         "reachable-functions:11",
         "matrix-rows:51"
       ]
@@ -747,31 +601,21 @@
       "sourceSymbolCount": 24,
       "matchedTsSymbolCount": 17,
       "missingTsSymbolCount": 7,
-      "linkedTests": [
-        "scripts/verify/quake2-console-header.ts",
-        "scripts/verify/quake2-console.ts",
-        "scripts/verify/quake2-full-game-console-background.ts",
-        "scripts/verify/quake2-full-game-console-commands.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:console",
-        "verify:console:header",
-        "verify:full-game:commands",
-        "verify:full-game:console-background"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 6,
       "unreachableFunctionCount": 4,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:7",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:4"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-console-header.ts,scripts/verify/quake2-console.ts,scripts/verify/quake2-full-game-console-background.ts,scripts/verify/quake2-full-game-console-commands.ts",
         "reachable-functions:6",
         "matrix-rows:24"
       ]
@@ -790,25 +634,19 @@
       "sourceSymbolCount": 6,
       "matchedTsSymbolCount": 6,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-full-game-input-bindings.ts",
-        "scripts/verify/quake2-input-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:full-game:input-bindings",
-        "verify:input:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 4,
       "unreachableFunctionCount": 2,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-full-game-input-bindings.ts,scripts/verify/quake2-input-header.ts",
         "reachable-functions:4",
         "matrix-rows:6"
       ]
@@ -827,14 +665,8 @@
       "sourceSymbolCount": 52,
       "matchedTsSymbolCount": 27,
       "missingTsSymbolCount": 25,
-      "linkedTests": [
-        "scripts/verify/quake2-keys-header.ts",
-        "scripts/verify/quake2-keys.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:keys",
-        "verify:keys:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 10,
       "unreachableFunctionCount": 8,
@@ -842,13 +674,13 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:25",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:8"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-keys-header.ts,scripts/verify/quake2-keys.ts",
         "reachable-functions:10",
         "matrix-rows:52"
       ]
@@ -867,14 +699,8 @@
       "sourceSymbolCount": 99,
       "matchedTsSymbolCount": 93,
       "missingTsSymbolCount": 6,
-      "linkedTests": [
-        "scripts/verify/quake2-keys-header.ts",
-        "scripts/verify/quake2-keys.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:keys",
-        "verify:keys:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 3,
       "unreachableFunctionCount": 3,
@@ -882,13 +708,13 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:6",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:3"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-keys-header.ts,scripts/verify/quake2-keys.ts",
         "reachable-functions:3",
         "matrix-rows:99"
       ]
@@ -899,16 +725,16 @@
       "primaryTsTarget": "packages/client/src/menu.ts",
       "tsTargets": [
         "packages/client/src/menu.ts",
+        "packages/client/src/menu-draw.ts",
         "packages/client/src/menu-main-game.ts",
+        "packages/client/src/menu-misc.ts",
         "packages/client/src/menu-multiplayer.ts",
         "packages/client/src/menu-options-keys.ts",
         "packages/client/src/menu-player-config.ts",
-        "packages/client/src/menu-draw.ts",
-        "packages/client/src/menu-misc.ts",
         "packages/client/src/menu-runtime.ts",
         "packages/client/src/menu-types.ts",
-        "packages/client/src/qmenu.ts",
         "packages/client/src/keys.ts",
+        "packages/client/src/qmenu.ts",
         "packages/client/src/vid.ts"
       ],
       "structuralStatuses": [
@@ -917,34 +743,20 @@
       "sourceSymbolCount": 365,
       "matchedTsSymbolCount": 245,
       "missingTsSymbolCount": 120,
-      "linkedTests": [
-        "scripts/verify/quake2-keys-header.ts",
-        "scripts/verify/quake2-keys.ts",
-        "scripts/verify/quake2-menu.ts",
-        "scripts/verify/quake2-qmenu-header.ts",
-        "scripts/verify/quake2-qmenu.ts",
-        "scripts/verify/quake2-vid-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:keys",
-        "verify:keys:header",
-        "verify:menu",
-        "verify:qmenu",
-        "verify:qmenu:header",
-        "verify:vid:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 11,
       "unreachableFunctionCount": 148,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:120",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:148"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-keys-header.ts,scripts/verify/quake2-keys.ts,scripts/verify/quake2-menu.ts,scripts/verify/quake2-qmenu-header.ts,scripts/verify/quake2-qmenu.ts,scripts/verify/quake2-vid-header.ts",
         "reachable-functions:11",
         "matrix-rows:365"
       ]
@@ -961,30 +773,24 @@
         "split-undocumented"
       ],
       "sourceSymbolCount": 72,
-      "matchedTsSymbolCount": 62,
-      "missingTsSymbolCount": 10,
-      "linkedTests": [
-        "scripts/verify/quake2-qmenu-header.ts",
-        "scripts/verify/quake2-qmenu.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:qmenu",
-        "verify:qmenu:header"
-      ],
+      "matchedTsSymbolCount": 57,
+      "missingTsSymbolCount": 15,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 42,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:10",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:15",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:42"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-qmenu-header.ts,scripts/verify/quake2-qmenu.ts",
         "matrix-rows:72"
       ]
     },
@@ -1001,34 +807,24 @@
         "split-undocumented"
       ],
       "sourceSymbolCount": 61,
-      "matchedTsSymbolCount": 43,
-      "missingTsSymbolCount": 18,
-      "linkedTests": [
-        "scripts/verify/quake2-keys-header.ts",
-        "scripts/verify/quake2-keys.ts",
-        "scripts/verify/quake2-qmenu-header.ts",
-        "scripts/verify/quake2-qmenu.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:keys",
-        "verify:keys:header",
-        "verify:qmenu",
-        "verify:qmenu:header"
-      ],
+      "matchedTsSymbolCount": 41,
+      "missingTsSymbolCount": 20,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 14,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:18",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:20",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:14"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-keys-header.ts,scripts/verify/quake2-keys.ts,scripts/verify/quake2-qmenu-header.ts,scripts/verify/quake2-qmenu.ts",
         "matrix-rows:61"
       ]
     },
@@ -1038,9 +834,9 @@
       "primaryTsTarget": "packages/client/src/ref.ts",
       "tsTargets": [
         "packages/client/src/ref.ts",
-        "packages/qcommon/src/q_shared.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/qcommon/src/q_shared.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1048,25 +844,19 @@
       "sourceSymbolCount": 50,
       "matchedTsSymbolCount": 27,
       "missingTsSymbolCount": 23,
-      "linkedTests": [
-        "scripts/verify/quake2-ref-gl-host.ts",
-        "scripts/verify/quake2-ref-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:ref-gl-host",
-        "verify:ref:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:23",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-ref-gl-host.ts,scripts/verify/quake2-ref-header.ts",
         "matrix-rows:50"
       ]
     },
@@ -1076,8 +866,9 @@
       "primaryTsTarget": "packages/client/src/cl_scrn.ts",
       "tsTargets": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/client.ts",
-        "packages/client/src/cl_cin.ts"
+        "packages/client/src/screen.ts",
+        "packages/client/src/cl_cin.ts",
+        "packages/client/src/client.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1085,16 +876,8 @@
       "sourceSymbolCount": 24,
       "matchedTsSymbolCount": 17,
       "missingTsSymbolCount": 7,
-      "linkedTests": [
-        "scripts/verify/quake2-client-header.ts",
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-screen-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:client:header",
-        "verify:client:pmove:viewheight",
-        "verify:screen:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 14,
       "unreachableFunctionCount": 3,
@@ -1103,6 +886,7 @@
         "declared-target-not-strict-basename",
         "header:Source header 'Quake II original / client/cl_scrn.c' does not clearly reference source",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:7",
         "multiple-declared-ts-targets",
         "name:primary-basename 'cl_scrn' differs from source basename 'screen'",
@@ -1111,7 +895,6 @@
         "unreachable-functions:3"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-client-header.ts,scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-screen-header.ts",
         "reachable-functions:14",
         "matrix-rows:24"
       ]
@@ -1122,35 +905,31 @@
       "primaryTsTarget": "packages/client/src/snd_dma.ts",
       "tsTargets": [
         "packages/client/src/snd_dma.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_loc.ts",
-        "packages/client/src/snd_mix.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_mix.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 103,
-      "matchedTsSymbolCount": 70,
-      "missingTsSymbolCount": 33,
-      "linkedTests": [
-        "scripts/verify/quake2-snd-dma.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:snd-dma"
-      ],
+      "matchedTsSymbolCount": 71,
+      "missingTsSymbolCount": 32,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 29,
       "unreachableFunctionCount": 5,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
-        "missing-ts-symbols:33",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:32",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:5"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-snd-dma.ts",
         "reachable-functions:29",
         "matrix-rows:103"
       ]
@@ -1169,23 +948,19 @@
       "sourceSymbolCount": 77,
       "matchedTsSymbolCount": 19,
       "missingTsSymbolCount": 58,
-      "linkedTests": [
-        "scripts/verify/quake2-snd-loc-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:snd-loc:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 12,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:58",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-snd-loc-header.ts",
         "reachable-functions:12",
         "matrix-rows:77"
       ]
@@ -1196,10 +971,10 @@
       "primaryTsTarget": "packages/client/src/snd_mem.ts",
       "tsTargets": [
         "packages/client/src/snd_mem.ts",
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/snd_mix.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts",
+        "packages/client/src/snd_mix.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1207,25 +982,21 @@
       "sourceSymbolCount": 34,
       "matchedTsSymbolCount": 26,
       "missingTsSymbolCount": 8,
-      "linkedTests": [
-        "scripts/verify/quake2-snd-mem.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:snd-mem"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 8,
       "unreachableFunctionCount": 2,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:8",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-snd-mem.ts",
         "reachable-functions:8",
         "matrix-rows:34"
       ]
@@ -1236,9 +1007,9 @@
       "primaryTsTarget": "packages/client/src/snd_mix.ts",
       "tsTargets": [
         "packages/client/src/snd_mix.ts",
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1246,23 +1017,19 @@
       "sourceSymbolCount": 41,
       "matchedTsSymbolCount": 36,
       "missingTsSymbolCount": 5,
-      "linkedTests": [
-        "scripts/verify/quake2-snd-mix.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:snd-mix"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 11,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:5",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-snd-mix.ts",
         "reachable-functions:11",
         "matrix-rows:41"
       ]
@@ -1270,12 +1037,12 @@
     {
       "sourcePath": "Quake-2-master/client/sound.h",
       "sourceBasename": "sound",
-      "primaryTsTarget": "packages/client/src/sound-public.ts",
+      "primaryTsTarget": "packages/client/src/sound.ts",
       "tsTargets": [
-        "packages/client/src/sound-public.ts",
-        "packages/client/src/snd_loc.ts",
+        "packages/client/src/sound.ts",
+        "packages/client/src/index.ts",
         "packages/client/src/snd_dma.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/snd_loc.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1283,25 +1050,20 @@
       "sourceSymbolCount": 13,
       "matchedTsSymbolCount": 13,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-sound-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:sound:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 12,
       "unreachableFunctionCount": 1,
       "verdict": "A redecouper",
       "findings": [
         "declared-target-not-strict-basename",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
-        "name:primary-basename 'sound-public' differs from source basename 'sound'",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:1"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sound-header.ts",
         "reachable-functions:12",
         "matrix-rows:13"
       ]
@@ -1313,8 +1075,8 @@
       "tsTargets": [
         "packages/client/src/vid.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/vid-menu.ts",
-        "packages/client/src/index.ts"
+        "packages/client/src/index.ts",
+        "packages/client/src/vid-menu.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1322,24 +1084,20 @@
       "sourceSymbolCount": 10,
       "matchedTsSymbolCount": 9,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-vid-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:vid:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 4,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:4"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-vid-header.ts",
         "reachable-functions:2",
         "matrix-rows:10"
       ]
@@ -1351,11 +1109,11 @@
       "tsTargets": [
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_monster.ts",
-        "packages/game/src/m_move.ts",
         "packages/game/src/g_utils.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_move.ts",
         "packages/game/src/p_trail.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1363,25 +1121,21 @@
       "sourceSymbolCount": 48,
       "matchedTsSymbolCount": 46,
       "missingTsSymbolCount": 2,
-      "linkedTests": [
-        "scripts/verify/quake2-g-ai.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-ai"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 4,
       "unreachableFunctionCount": 18,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:2",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:18"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-ai.ts",
         "reachable-functions:4",
         "matrix-rows:48"
       ]
@@ -1393,9 +1147,9 @@
       "tsTargets": [
         "packages/game/src/g_chase.ts",
         "packages/game/src/g_cmds.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/p_client.ts",
-        "packages/game/src/p_hud.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/p_hud.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1403,23 +1157,19 @@
       "sourceSymbolCount": 14,
       "matchedTsSymbolCount": 14,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-g-chase.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-chase"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 4,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-chase.ts",
         "reachable-functions:4",
         "matrix-rows:14"
       ]
@@ -1430,11 +1180,11 @@
       "primaryTsTarget": "packages/game/src/g_cmds.ts",
       "tsTargets": [
         "packages/game/src/g_cmds.ts",
+        "packages/game/src/g_items.ts",
         "packages/game/src/g_main.ts",
         "packages/game/src/index.ts",
-        "packages/game/src/g_items.ts",
-        "packages/game/src/p_hud.ts",
         "packages/game/src/p_client.ts",
+        "packages/game/src/p_hud.ts",
         "packages/game/src/p_weapon.ts"
       ],
       "structuralStatuses": [
@@ -1443,25 +1193,21 @@
       "sourceSymbolCount": 74,
       "matchedTsSymbolCount": 66,
       "missingTsSymbolCount": 8,
-      "linkedTests": [
-        "scripts/verify/quake2-g-cmds.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-cmds"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 26,
       "unreachableFunctionCount": 1,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:8",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:1"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-cmds.ts",
         "reachable-functions:26",
         "matrix-rows:74"
       ]
@@ -1472,9 +1218,9 @@
       "primaryTsTarget": "packages/game/src/g_combat.ts",
       "tsTargets": [
         "packages/game/src/g_combat.ts",
-        "packages/game/src/g_weapon.ts",
-        "packages/game/src/g_utils.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_utils.ts",
+        "packages/game/src/g_weapon.ts",
         "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
@@ -1483,9 +1229,7 @@
       "sourceSymbolCount": 36,
       "matchedTsSymbolCount": 30,
       "missingTsSymbolCount": 6,
-      "linkedTests": [
-        "scripts/verify/quake2-g-combat.ts"
-      ],
+      "linkedTests": [],
       "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 11,
@@ -1494,12 +1238,12 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:6",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-combat.ts",
         "reachable-functions:11",
         "matrix-rows:36"
       ]
@@ -1510,8 +1254,8 @@
       "primaryTsTarget": "packages/game/src/g_func.ts",
       "tsTargets": [
         "packages/game/src/g_func.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_misc.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -1520,25 +1264,21 @@
       "sourceSymbolCount": 150,
       "matchedTsSymbolCount": 134,
       "missingTsSymbolCount": 16,
-      "linkedTests": [
-        "scripts/verify/quake2-g-func.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-func"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 3,
       "unreachableFunctionCount": 88,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:16",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:88"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-func.ts",
         "reachable-functions:3",
         "matrix-rows:150"
       ]
@@ -1549,24 +1289,20 @@
       "primaryTsTarget": "packages/game/src/g_items.ts",
       "tsTargets": [
         "packages/game/src/g_items.ts",
-        "packages/game/src/p_weapon.ts",
-        "packages/game/src/local-game-bootstrap.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_combat.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/local-game-bootstrap.ts",
+        "packages/game/src/p_weapon.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 108,
-      "matchedTsSymbolCount": 100,
-      "missingTsSymbolCount": 8,
-      "linkedTests": [
-        "scripts/verify/quake2-g-items.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-items"
-      ],
+      "matchedTsSymbolCount": 101,
+      "missingTsSymbolCount": 7,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "items-ammo-weapons",
@@ -1582,13 +1318,13 @@
         "basename-collision",
         "header:stub marker detected",
         "header:temporary marker detected",
-        "missing-ts-symbols:8",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:7",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:47"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-items.ts",
         "declarative-tables:1",
         "reachable-functions:12",
         "matrix-rows:108"
@@ -1600,35 +1336,31 @@
       "primaryTsTarget": "packages/game/src/g_local.ts",
       "tsTargets": [
         "packages/game/src/g_local.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_items.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 620,
-      "matchedTsSymbolCount": 209,
-      "missingTsSymbolCount": 411,
-      "linkedTests": [
-        "scripts/verify/quake2-g-local-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-local:header"
-      ],
+      "matchedTsSymbolCount": 214,
+      "missingTsSymbolCount": 406,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 65,
       "unreachableFunctionCount": 53,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:411",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:406",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:53"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-local-header.ts",
         "reachable-functions:65",
         "matrix-rows:620"
       ]
@@ -1639,22 +1371,18 @@
       "primaryTsTarget": "packages/game/src/g_main.ts",
       "tsTargets": [
         "packages/game/src/g_main.ts",
-        "packages/game/src/g_svcmds.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_svcmds.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 75,
-      "matchedTsSymbolCount": 30,
-      "missingTsSymbolCount": 45,
-      "linkedTests": [
-        "scripts/verify/quake2-g-main.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-main"
-      ],
+      "matchedTsSymbolCount": 31,
+      "missingTsSymbolCount": 44,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 15,
       "unreachableFunctionCount": 10,
@@ -1662,13 +1390,13 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
-        "missing-ts-symbols:45",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:44",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:10"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-main.ts",
         "reachable-functions:15",
         "matrix-rows:75"
       ]
@@ -1688,12 +1416,8 @@
       "sourceSymbolCount": 119,
       "matchedTsSymbolCount": 110,
       "missingTsSymbolCount": 9,
-      "linkedTests": [
-        "scripts/verify/quake2-g-misc.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-misc"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 6,
       "unreachableFunctionCount": 84,
@@ -1701,13 +1425,13 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:9",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:84"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-misc.ts",
         "reachable-functions:6",
         "matrix-rows:119"
       ]
@@ -1718,10 +1442,10 @@
       "primaryTsTarget": "packages/game/src/g_monster.ts",
       "tsTargets": [
         "packages/game/src/g_monster.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_ai.ts",
         "packages/game/src/g_items.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1729,12 +1453,8 @@
       "sourceSymbolCount": 45,
       "matchedTsSymbolCount": 45,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-g-monster.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-monster"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 3,
       "unreachableFunctionCount": 29,
@@ -1742,12 +1462,12 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:29"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-monster.ts",
         "reachable-functions:3",
         "matrix-rows:45"
       ]
@@ -1758,9 +1478,9 @@
       "primaryTsTarget": "packages/game/src/g_phys.ts",
       "tsTargets": [
         "packages/game/src/g_phys.ts",
+        "packages/game/src/m_move.ts",
         "packages/game/src/runtime.ts",
-        "packages/game/src/touch.ts",
-        "packages/game/src/m_move.ts"
+        "packages/game/src/touch.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1768,12 +1488,8 @@
       "sourceSymbolCount": 64,
       "matchedTsSymbolCount": 59,
       "missingTsSymbolCount": 5,
-      "linkedTests": [
-        "scripts/verify/quake2-g-phys.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-phys"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 16,
       "unreachableFunctionCount": 0,
@@ -1781,12 +1497,12 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:5",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-phys.ts",
         "reachable-functions:16",
         "matrix-rows:64"
       ]
@@ -1806,12 +1522,8 @@
       "sourceSymbolCount": 52,
       "matchedTsSymbolCount": 25,
       "missingTsSymbolCount": 27,
-      "linkedTests": [
-        "scripts/verify/quake2-g-save.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-save"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 14,
@@ -1819,6 +1531,8 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:27",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
@@ -1826,7 +1540,6 @@
         "unreachable-functions:14"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-save.ts",
         "matrix-rows:52"
       ]
     },
@@ -1836,25 +1549,19 @@
       "primaryTsTarget": "packages/game/src/g_spawn.ts",
       "tsTargets": [
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_main.ts",
         "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_main.ts",
         "packages/game/src/g_misc.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 133,
-      "matchedTsSymbolCount": 51,
-      "missingTsSymbolCount": 82,
-      "linkedTests": [
-        "scripts/verify/quake2-g-spawn.ts",
-        "scripts/verify/quake2-qfiles.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-spawn",
-        "verify:qfiles"
-      ],
+      "matchedTsSymbolCount": 58,
+      "missingTsSymbolCount": 75,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "spawn-functions",
@@ -1874,13 +1581,15 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:82",
+        "header:stub marker detected",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:75",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:113"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-spawn.ts,scripts/verify/quake2-qfiles.ts",
         "declarative-tables:2",
         "reachable-functions:1",
         "matrix-rows:133"
@@ -1901,25 +1610,21 @@
       "sourceSymbolCount": 29,
       "matchedTsSymbolCount": 14,
       "missingTsSymbolCount": 15,
-      "linkedTests": [
-        "scripts/verify/quake2-g-svcmds.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-svcmds"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 7,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:15",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:7"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-svcmds.ts",
         "reachable-functions:2",
         "matrix-rows:29"
       ]
@@ -1930,10 +1635,10 @@
       "primaryTsTarget": "packages/game/src/g_target.ts",
       "tsTargets": [
         "packages/game/src/g_target.ts",
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_main.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1941,12 +1646,8 @@
       "sourceSymbolCount": 59,
       "matchedTsSymbolCount": 53,
       "missingTsSymbolCount": 6,
-      "linkedTests": [
-        "scripts/verify/quake2-g-target.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-target"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 40,
@@ -1954,13 +1655,13 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:6",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:40"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-target.ts",
         "reachable-functions:2",
         "matrix-rows:59"
       ]
@@ -1971,11 +1672,11 @@
       "primaryTsTarget": "packages/game/src/g_trigger.ts",
       "tsTargets": [
         "packages/game/src/g_trigger.ts",
+        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_items.ts",
         "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts",
-        "packages/game/src/touch.ts",
-        "packages/game/src/g_combat.ts",
-        "packages/game/src/g_items.ts"
+        "packages/game/src/touch.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -1983,18 +1684,15 @@
       "sourceSymbolCount": 33,
       "matchedTsSymbolCount": 31,
       "missingTsSymbolCount": 2,
-      "linkedTests": [
-        "scripts/verify/quake2-g-trigger.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-trigger"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 24,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:2",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
@@ -2002,7 +1700,6 @@
         "unreachable-functions:24"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-trigger.ts",
         "matrix-rows:33"
       ]
     },
@@ -2021,17 +1718,14 @@
       "sourceSymbolCount": 27,
       "matchedTsSymbolCount": 23,
       "missingTsSymbolCount": 4,
-      "linkedTests": [
-        "scripts/verify/quake2-g-turret.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-turret"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 16,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:4",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
@@ -2039,7 +1733,6 @@
         "unreachable-functions:16"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-turret.ts",
         "matrix-rows:27"
       ]
     },
@@ -2050,21 +1743,17 @@
       "tsTargets": [
         "packages/game/src/g_utils.ts",
         "packages/game/src/touch.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/g_weapon.ts"
+        "packages/game/src/g_weapon.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 37,
-      "matchedTsSymbolCount": 28,
-      "missingTsSymbolCount": 9,
-      "linkedTests": [
-        "scripts/verify/quake2-g-utils.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:g-utils"
-      ],
+      "matchedTsSymbolCount": 29,
+      "missingTsSymbolCount": 8,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 13,
       "unreachableFunctionCount": 5,
@@ -2073,13 +1762,13 @@
         "basename-collision",
         "header:stub marker detected",
         "header:temporary marker detected",
-        "missing-ts-symbols:9",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:8",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:5"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-g-utils.ts",
         "reachable-functions:13",
         "matrix-rows:37"
       ]
@@ -2091,16 +1780,16 @@
       "tsTargets": [
         "packages/game/src/g_weapon.ts",
         "packages/game/src/g_combat.ts",
-        "packages/game/src/g_utils.ts",
         "packages/game/src/g_items.ts",
+        "packages/game/src/g_utils.ts",
         "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 69,
-      "matchedTsSymbolCount": 65,
-      "missingTsSymbolCount": 4,
+      "matchedTsSymbolCount": 66,
+      "missingTsSymbolCount": 3,
       "linkedTests": [],
       "linkedNpmScripts": [],
       "declarativeTables": [],
@@ -2110,7 +1799,7 @@
       "findings": [
         "basename-collision",
         "missing-linked-test-for-some-symbols",
-        "missing-ts-symbols:4",
+        "missing-ts-symbols:3",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:16"
@@ -2132,64 +1821,24 @@
         "split-undocumented"
       ],
       "sourceSymbolCount": 29,
-      "matchedTsSymbolCount": 9,
-      "missingTsSymbolCount": 20,
-      "linkedTests": [
-        "scripts/verify/quake2-full-game-audio-routing.ts",
-        "scripts/verify/quake2-full-game-authoritative-handshake.ts",
-        "scripts/verify/quake2-full-game-authoritative-input.ts",
-        "scripts/verify/quake2-full-game-command-bridge.ts",
-        "scripts/verify/quake2-full-game-command-forward.ts",
-        "scripts/verify/quake2-full-game-console-background.ts",
-        "scripts/verify/quake2-full-game-console-commands.ts",
-        "scripts/verify/quake2-full-game-demo-cleanup.ts",
-        "scripts/verify/quake2-full-game-gameplay-commands.ts",
-        "scripts/verify/quake2-full-game-input-bindings.ts",
-        "scripts/verify/quake2-full-game-local-transport.ts",
-        "scripts/verify/quake2-full-game-newgame.ts",
-        "scripts/verify/quake2-full-game-render-source.ts",
-        "scripts/verify/quake2-full-game-rules-transitions.ts",
-        "scripts/verify/quake2-full-game-save-slots.ts",
-        "scripts/verify/quake2-full-game-server-host.ts",
-        "scripts/verify/quake2-full-game-server-snapshots.ts",
-        "scripts/verify/quake2-full-game-three-renderer.ts",
-        "scripts/verify/quake2-game-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:full-game:audio-routing",
-        "verify:full-game:authoritative-handshake",
-        "verify:full-game:authoritative-input",
-        "verify:full-game:bridge",
-        "verify:full-game:commands",
-        "verify:full-game:console-background",
-        "verify:full-game:demo-cleanup",
-        "verify:full-game:forward",
-        "verify:full-game:gameplay",
-        "verify:full-game:input-bindings",
-        "verify:full-game:local-transport",
-        "verify:full-game:newgame",
-        "verify:full-game:render-source",
-        "verify:full-game:rules-transitions",
-        "verify:full-game:save-slots",
-        "verify:full-game:server-host",
-        "verify:full-game:server-snapshots",
-        "verify:full-game:three-renderer",
-        "verify:game:header"
-      ],
+      "matchedTsSymbolCount": 12,
+      "missingTsSymbolCount": 17,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 1,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:20",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:17",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:1"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-full-game-audio-routing.ts,scripts/verify/quake2-full-game-authoritative-handshake.ts,scripts/verify/quake2-full-game-authoritative-input.ts,scripts/verify/quake2-full-game-command-bridge.ts,scripts/verify/quake2-full-game-command-forward.ts,scripts/verify/quake2-full-game-console-background.ts,scripts/verify/quake2-full-game-console-commands.ts,scripts/verify/quake2-full-game-demo-cleanup.ts,scripts/verify/quake2-full-game-gameplay-commands.ts,scripts/verify/quake2-full-game-input-bindings.ts,scripts/verify/quake2-full-game-local-transport.ts,scripts/verify/quake2-full-game-newgame.ts,scripts/verify/quake2-full-game-render-source.ts,scripts/verify/quake2-full-game-rules-transitions.ts,scripts/verify/quake2-full-game-save-slots.ts,scripts/verify/quake2-full-game-server-host.ts,scripts/verify/quake2-full-game-server-snapshots.ts,scripts/verify/quake2-full-game-three-renderer.ts,scripts/verify/quake2-game-header.ts",
         "matrix-rows:29"
       ]
     },
@@ -2199,11 +1848,11 @@
       "primaryTsTarget": "packages/game/src/m_actor.ts",
       "tsTargets": [
         "packages/game/src/m_actor.ts",
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/g_monster.ts",
+        "packages/client/src/local-gameplay-sync.ts",
         "packages/game/src/g_main.ts",
-        "packages/client/src/local-gameplay-sync.ts"
+        "packages/game/src/g_monster.ts",
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -2211,16 +1860,8 @@
       "sourceSymbolCount": 58,
       "matchedTsSymbolCount": 57,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-local-gameplay-sync.ts",
-        "scripts/verify/quake2-m-actor-header.ts",
-        "scripts/verify/quake2-m-actor.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:local-gameplay-sync",
-        "verify:m-actor",
-        "verify:m-actor:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -2294,6 +1935,7 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
@@ -2301,7 +1943,6 @@
         "unreachable-functions:14"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-local-gameplay-sync.ts,scripts/verify/quake2-m-actor-header.ts,scripts/verify/quake2-m-actor.ts",
         "declarative-tables:11",
         "matrix-rows:58"
       ]
@@ -2320,25 +1961,19 @@
       "sourceSymbolCount": 482,
       "matchedTsSymbolCount": 482,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-actor-header.ts",
-        "scripts/verify/quake2-m-actor.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-actor",
-        "verify:m-actor:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-actor-header.ts,scripts/verify/quake2-m-actor.ts",
         "matrix-rows:482"
       ]
     },
@@ -2348,8 +1983,8 @@
       "primaryTsTarget": "packages/game/src/m_berserk.ts",
       "tsTargets": [
         "packages/game/src/m_berserk.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -2358,16 +1993,8 @@
       "sourceSymbolCount": 56,
       "matchedTsSymbolCount": 56,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-berserk-header.ts",
-        "scripts/verify/quake2-m-berserk-source-parity.ts",
-        "scripts/verify/quake2-m-berserk.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-berserk",
-        "verify:m-berserk:header",
-        "verify:m-berserk:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -2442,13 +2069,13 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:16"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-berserk-header.ts,scripts/verify/quake2-m-berserk-source-parity.ts,scripts/verify/quake2-m-berserk.ts",
         "declarative-tables:11",
         "matrix-rows:56"
       ]
@@ -2467,16 +2094,8 @@
       "sourceSymbolCount": 245,
       "matchedTsSymbolCount": 245,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-berserk-header.ts",
-        "scripts/verify/quake2-m-berserk-source-parity.ts",
-        "scripts/verify/quake2-m-berserk.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-berserk",
-        "verify:m-berserk:header",
-        "verify:m-berserk:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
@@ -2484,11 +2103,11 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-berserk-header.ts,scripts/verify/quake2-m-berserk-source-parity.ts,scripts/verify/quake2-m-berserk.ts",
         "matrix-rows:245"
       ]
     },
@@ -2498,8 +2117,8 @@
       "primaryTsTarget": "packages/game/src/m_boss2.ts",
       "tsTargets": [
         "packages/game/src/m_boss2.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -2508,16 +2127,8 @@
       "sourceSymbolCount": 69,
       "matchedTsSymbolCount": 64,
       "missingTsSymbolCount": 5,
-      "linkedTests": [
-        "scripts/verify/quake2-m-boss2-header.ts",
-        "scripts/verify/quake2-m-boss2-source-parity.ts",
-        "scripts/verify/quake2-m-boss2.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-boss2",
-        "verify:m-boss2:header",
-        "verify:m-boss2:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -2591,6 +2202,8 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:5",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
@@ -2598,7 +2211,6 @@
         "unreachable-functions:25"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-boss2-header.ts,scripts/verify/quake2-m-boss2-source-parity.ts,scripts/verify/quake2-m-boss2.ts",
         "declarative-tables:11",
         "matrix-rows:69"
       ]
@@ -2617,27 +2229,20 @@
       "sourceSymbolCount": 182,
       "matchedTsSymbolCount": 182,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-boss2-header.ts",
-        "scripts/verify/quake2-m-boss2-source-parity.ts",
-        "scripts/verify/quake2-m-boss2.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-boss2",
-        "verify:m-boss2:header",
-        "verify:m-boss2:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-boss2-header.ts,scripts/verify/quake2-m-boss2-source-parity.ts,scripts/verify/quake2-m-boss2.ts",
         "matrix-rows:182"
       ]
     },
@@ -2647,8 +2252,8 @@
       "primaryTsTarget": "packages/game/src/m_boss3.ts",
       "tsTargets": [
         "packages/game/src/m_boss3.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -2657,26 +2262,20 @@
       "sourceSymbolCount": 3,
       "matchedTsSymbolCount": 3,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-boss3-source-parity.ts",
-        "scripts/verify/quake2-m-boss3.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-boss3",
-        "verify:m-boss3:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 3,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:3"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-boss3-source-parity.ts,scripts/verify/quake2-m-boss3.ts",
         "matrix-rows:3"
       ]
     },
@@ -2686,10 +2285,10 @@
       "primaryTsTarget": "packages/game/src/m_boss31.ts",
       "tsTargets": [
         "packages/game/src/m_boss31.ts",
-        "packages/game/src/m_boss32.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_boss32.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -2697,16 +2296,8 @@
       "sourceSymbolCount": 95,
       "matchedTsSymbolCount": 90,
       "missingTsSymbolCount": 5,
-      "linkedTests": [
-        "scripts/verify/quake2-m-boss31-header.ts",
-        "scripts/verify/quake2-m-boss31-source-parity.ts",
-        "scripts/verify/quake2-m-boss31.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-boss31",
-        "verify:m-boss31:header",
-        "verify:m-boss31:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -2792,13 +2383,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:5",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:34"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-boss31-header.ts,scripts/verify/quake2-m-boss31-source-parity.ts,scripts/verify/quake2-m-boss31.ts",
         "declarative-tables:13",
         "reachable-functions:1",
         "matrix-rows:95"
@@ -2818,27 +2409,19 @@
       "sourceSymbolCount": 189,
       "matchedTsSymbolCount": 189,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-boss31-header.ts",
-        "scripts/verify/quake2-m-boss31-source-parity.ts",
-        "scripts/verify/quake2-m-boss31.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-boss31",
-        "verify:m-boss31:header",
-        "verify:m-boss31:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-boss31-header.ts,scripts/verify/quake2-m-boss31-source-parity.ts,scripts/verify/quake2-m-boss31.ts",
         "matrix-rows:189"
       ]
     },
@@ -2848,10 +2431,10 @@
       "primaryTsTarget": "packages/game/src/m_boss32.ts",
       "tsTargets": [
         "packages/game/src/m_boss32.ts",
-        "packages/game/src/m_boss31.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_boss31.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -2859,16 +2442,8 @@
       "sourceSymbolCount": 99,
       "matchedTsSymbolCount": 95,
       "missingTsSymbolCount": 4,
-      "linkedTests": [
-        "scripts/verify/quake2-m-boss32-header.ts",
-        "scripts/verify/quake2-m-boss32-source-parity.ts",
-        "scripts/verify/quake2-m-boss32.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-boss32",
-        "verify:m-boss32:header",
-        "verify:m-boss32:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -2948,13 +2523,14 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:4",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:33"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-boss32-header.ts,scripts/verify/quake2-m-boss32-source-parity.ts,scripts/verify/quake2-m-boss32.ts",
         "declarative-tables:12",
         "reachable-functions:1",
         "matrix-rows:99"
@@ -2974,27 +2550,20 @@
       "sourceSymbolCount": 492,
       "matchedTsSymbolCount": 492,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-boss32-header.ts",
-        "scripts/verify/quake2-m-boss32-source-parity.ts",
-        "scripts/verify/quake2-m-boss32.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-boss32",
-        "verify:m-boss32:header",
-        "verify:m-boss32:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-boss32-header.ts,scripts/verify/quake2-m-boss32-source-parity.ts,scripts/verify/quake2-m-boss32.ts",
         "matrix-rows:492"
       ]
     },
@@ -3004,8 +2573,8 @@
       "primaryTsTarget": "packages/game/src/m_brain.ts",
       "tsTargets": [
         "packages/game/src/m_brain.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -3014,16 +2583,8 @@
       "sourceSymbolCount": 79,
       "matchedTsSymbolCount": 79,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-brain-header.ts",
-        "scripts/verify/quake2-m-brain-source-parity.ts",
-        "scripts/verify/quake2-m-brain.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-brain",
-        "verify:m-brain:header",
-        "verify:m-brain:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -3109,13 +2670,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:24"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-brain-header.ts,scripts/verify/quake2-m-brain-source-parity.ts,scripts/verify/quake2-m-brain.ts",
         "declarative-tables:13",
         "matrix-rows:79"
       ]
@@ -3134,27 +2695,19 @@
       "sourceSymbolCount": 223,
       "matchedTsSymbolCount": 223,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-brain-header.ts",
-        "scripts/verify/quake2-m-brain-source-parity.ts",
-        "scripts/verify/quake2-m-brain.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-brain",
-        "verify:m-brain:header",
-        "verify:m-brain:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-brain-header.ts,scripts/verify/quake2-m-brain-source-parity.ts,scripts/verify/quake2-m-brain.ts",
         "matrix-rows:223"
       ]
     },
@@ -3164,8 +2717,8 @@
       "primaryTsTarget": "packages/game/src/m_chick.ts",
       "tsTargets": [
         "packages/game/src/m_chick.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -3174,16 +2727,8 @@
       "sourceSymbolCount": 98,
       "matchedTsSymbolCount": 97,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-m-chick-header.ts",
-        "scripts/verify/quake2-m-chick-source-parity.ts",
-        "scripts/verify/quake2-m-chick.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-chick",
-        "verify:m-chick:header",
-        "verify:m-chick:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -3293,13 +2838,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:29"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-chick-header.ts,scripts/verify/quake2-m-chick-source-parity.ts,scripts/verify/quake2-m-chick.ts",
         "declarative-tables:17",
         "reachable-functions:1",
         "matrix-rows:98"
@@ -3319,27 +2864,19 @@
       "sourceSymbolCount": 289,
       "matchedTsSymbolCount": 289,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-chick-header.ts",
-        "scripts/verify/quake2-m-chick-source-parity.ts",
-        "scripts/verify/quake2-m-chick.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-chick",
-        "verify:m-chick:header",
-        "verify:m-chick:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-chick-header.ts,scripts/verify/quake2-m-chick-source-parity.ts,scripts/verify/quake2-m-chick.ts",
         "matrix-rows:289"
       ]
     },
@@ -3349,19 +2886,19 @@
       "primaryTsTarget": "packages/game/src/m_flash.ts",
       "tsTargets": [
         "packages/game/src/m_flash.ts",
-        "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_fx.ts",
+        "packages/client/src/monster-flash.ts",
         "packages/game/src/m_actor.ts",
         "packages/game/src/m_chick.ts",
-        "packages/game/src/m_flyer.ts",
         "packages/game/src/m_float.ts",
+        "packages/game/src/m_flyer.ts",
         "packages/game/src/m_gladiator.ts",
         "packages/game/src/m_gunner.ts",
         "packages/game/src/m_hover.ts",
         "packages/game/src/m_infantry.ts",
         "packages/game/src/m_medic.ts",
-        "packages/game/src/m_tank.ts",
-        "packages/game/src/m_supertank.ts"
+        "packages/game/src/m_supertank.ts",
+        "packages/game/src/m_tank.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -3369,12 +2906,8 @@
       "sourceSymbolCount": 1,
       "matchedTsSymbolCount": 1,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-flash.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-flash"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "muzzle-flashes",
@@ -3387,11 +2920,11 @@
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-flash.ts",
         "declarative-tables:1",
         "matrix-rows:1"
       ]
@@ -3402,9 +2935,9 @@
       "primaryTsTarget": "packages/game/src/m_flipper.ts",
       "tsTargets": [
         "packages/game/src/m_flipper.ts",
+        "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/index.ts",
-        "packages/game/src/g_save.ts"
+        "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -3412,16 +2945,8 @@
       "sourceSymbolCount": 52,
       "matchedTsSymbolCount": 52,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-flipper-header.ts",
-        "scripts/verify/quake2-m-flipper-source-parity.ts",
-        "scripts/verify/quake2-m-flipper.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-flipper",
-        "verify:m-flipper:header",
-        "verify:m-flipper:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -3483,13 +3008,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:14"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-flipper-header.ts,scripts/verify/quake2-m-flipper-source-parity.ts,scripts/verify/quake2-m-flipper.ts",
         "declarative-tables:9",
         "matrix-rows:52"
       ]
@@ -3508,27 +3033,19 @@
       "sourceSymbolCount": 161,
       "matchedTsSymbolCount": 161,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-flipper-header.ts",
-        "scripts/verify/quake2-m-flipper-source-parity.ts",
-        "scripts/verify/quake2-m-flipper.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-flipper",
-        "verify:m-flipper:header",
-        "verify:m-flipper:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-flipper-header.ts,scripts/verify/quake2-m-flipper-source-parity.ts,scripts/verify/quake2-m-flipper.ts",
         "matrix-rows:161"
       ]
     },
@@ -3538,8 +3055,8 @@
       "primaryTsTarget": "packages/game/src/m_float.ts",
       "tsTargets": [
         "packages/game/src/m_float.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -3548,16 +3065,8 @@
       "sourceSymbolCount": 65,
       "matchedTsSymbolCount": 65,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-float-header.ts",
-        "scripts/verify/quake2-m-float-source-parity.ts",
-        "scripts/verify/quake2-m-float.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-float",
-        "verify:m-float:header",
-        "verify:m-float:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -3637,13 +3146,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:19"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-float-header.ts,scripts/verify/quake2-m-float-source-parity.ts,scripts/verify/quake2-m-float.ts",
         "declarative-tables:12",
         "matrix-rows:65"
       ]
@@ -3662,27 +3171,19 @@
       "sourceSymbolCount": 249,
       "matchedTsSymbolCount": 249,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-float-header.ts",
-        "scripts/verify/quake2-m-float-source-parity.ts",
-        "scripts/verify/quake2-m-float.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-float",
-        "verify:m-float:header",
-        "verify:m-float:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-float-header.ts,scripts/verify/quake2-m-float-source-parity.ts,scripts/verify/quake2-m-float.ts",
         "matrix-rows:249"
       ]
     },
@@ -3692,8 +3193,8 @@
       "primaryTsTarget": "packages/game/src/m_flyer.ts",
       "tsTargets": [
         "packages/game/src/m_flyer.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -3702,16 +3203,8 @@
       "sourceSymbolCount": 91,
       "matchedTsSymbolCount": 90,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-m-flyer-header.ts",
-        "scripts/verify/quake2-m-flyer-source-parity.ts",
-        "scripts/verify/quake2-m-flyer.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-flyer",
-        "verify:m-flyer:header",
-        "verify:m-flyer:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -3821,13 +3314,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:28"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-flyer-header.ts,scripts/verify/quake2-m-flyer-source-parity.ts,scripts/verify/quake2-m-flyer.ts",
         "declarative-tables:17",
         "reachable-functions:1",
         "matrix-rows:91"
@@ -3847,27 +3340,19 @@
       "sourceSymbolCount": 157,
       "matchedTsSymbolCount": 157,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-flyer-header.ts",
-        "scripts/verify/quake2-m-flyer-source-parity.ts",
-        "scripts/verify/quake2-m-flyer.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-flyer",
-        "verify:m-flyer:header",
-        "verify:m-flyer:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-flyer-header.ts,scripts/verify/quake2-m-flyer-source-parity.ts,scripts/verify/quake2-m-flyer.ts",
         "matrix-rows:157"
       ]
     },
@@ -3877,8 +3362,8 @@
       "primaryTsTarget": "packages/game/src/m_gladiator.ts",
       "tsTargets": [
         "packages/game/src/m_gladiator.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -3887,16 +3372,8 @@
       "sourceSymbolCount": 51,
       "matchedTsSymbolCount": 51,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-gladiator-header.ts",
-        "scripts/verify/quake2-m-gladiator-source-parity.ts",
-        "scripts/verify/quake2-m-gladiator.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-gladiator",
-        "verify:m-gladiator:header",
-        "verify:m-gladiator:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -3952,13 +3429,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:15"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-gladiator-header.ts,scripts/verify/quake2-m-gladiator-source-parity.ts,scripts/verify/quake2-m-gladiator.ts",
         "declarative-tables:8",
         "matrix-rows:51"
       ]
@@ -3977,27 +3454,19 @@
       "sourceSymbolCount": 91,
       "matchedTsSymbolCount": 91,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-gladiator-header.ts",
-        "scripts/verify/quake2-m-gladiator-source-parity.ts",
-        "scripts/verify/quake2-m-gladiator.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-gladiator",
-        "verify:m-gladiator:header",
-        "verify:m-gladiator:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-gladiator-header.ts,scripts/verify/quake2-m-gladiator-source-parity.ts,scripts/verify/quake2-m-gladiator.ts",
         "matrix-rows:91"
       ]
     },
@@ -4007,10 +3476,10 @@
       "primaryTsTarget": "packages/game/src/m_gunner.ts",
       "tsTargets": [
         "packages/game/src/m_gunner.ts",
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -4018,16 +3487,8 @@
       "sourceSymbolCount": 81,
       "matchedTsSymbolCount": 80,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-m-gunner-header.ts",
-        "scripts/verify/quake2-m-gunner-source-parity.ts",
-        "scripts/verify/quake2-m-gunner.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-gunner",
-        "verify:m-gunner:header",
-        "verify:m-gunner:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -4119,13 +3580,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:27"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-gunner-header.ts,scripts/verify/quake2-m-gunner-source-parity.ts,scripts/verify/quake2-m-gunner.ts",
         "declarative-tables:14",
         "reachable-functions:1",
         "matrix-rows:81"
@@ -4145,27 +3606,19 @@
       "sourceSymbolCount": 210,
       "matchedTsSymbolCount": 210,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-gunner-header.ts",
-        "scripts/verify/quake2-m-gunner-source-parity.ts",
-        "scripts/verify/quake2-m-gunner.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-gunner",
-        "verify:m-gunner:header",
-        "verify:m-gunner:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-gunner-header.ts,scripts/verify/quake2-m-gunner-source-parity.ts,scripts/verify/quake2-m-gunner.ts",
         "matrix-rows:210"
       ]
     },
@@ -4175,8 +3628,8 @@
       "primaryTsTarget": "packages/game/src/m_hover.ts",
       "tsTargets": [
         "packages/game/src/m_hover.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -4185,16 +3638,8 @@
       "sourceSymbolCount": 80,
       "matchedTsSymbolCount": 79,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-m-hover-header.ts",
-        "scripts/verify/quake2-m-hover-source-parity.ts",
-        "scripts/verify/quake2-m-hover.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-hover",
-        "verify:m-hover:header",
-        "verify:m-hover:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -4298,13 +3743,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:21"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-hover-header.ts,scripts/verify/quake2-m-hover-source-parity.ts,scripts/verify/quake2-m-hover.ts",
         "declarative-tables:16",
         "reachable-functions:1",
         "matrix-rows:80"
@@ -4324,27 +3769,19 @@
       "sourceSymbolCount": 206,
       "matchedTsSymbolCount": 206,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-hover-header.ts",
-        "scripts/verify/quake2-m-hover-source-parity.ts",
-        "scripts/verify/quake2-m-hover.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-hover",
-        "verify:m-hover:header",
-        "verify:m-hover:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-hover-header.ts,scripts/verify/quake2-m-hover-source-parity.ts,scripts/verify/quake2-m-hover.ts",
         "matrix-rows:206"
       ]
     },
@@ -4354,8 +3791,8 @@
       "primaryTsTarget": "packages/game/src/m_infantry.ts",
       "tsTargets": [
         "packages/game/src/m_infantry.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_turret.ts",
         "packages/game/src/index.ts"
       ],
@@ -4365,16 +3802,8 @@
       "sourceSymbolCount": 72,
       "matchedTsSymbolCount": 72,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-infantry-header.ts",
-        "scripts/verify/quake2-m-infantry-source-parity.ts",
-        "scripts/verify/quake2-m-infantry.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-infantry",
-        "verify:m-infantry:header",
-        "verify:m-infantry:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -4454,13 +3883,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:20"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-infantry-header.ts,scripts/verify/quake2-m-infantry-source-parity.ts,scripts/verify/quake2-m-infantry.ts",
         "declarative-tables:12",
         "matrix-rows:72"
       ]
@@ -4479,27 +3908,19 @@
       "sourceSymbolCount": 208,
       "matchedTsSymbolCount": 208,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-infantry-header.ts",
-        "scripts/verify/quake2-m-infantry-source-parity.ts",
-        "scripts/verify/quake2-m-infantry.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-infantry",
-        "verify:m-infantry:header",
-        "verify:m-infantry:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-infantry-header.ts,scripts/verify/quake2-m-infantry-source-parity.ts,scripts/verify/quake2-m-infantry.ts",
         "matrix-rows:208"
       ]
     },
@@ -4518,14 +3939,8 @@
       "sourceSymbolCount": 77,
       "matchedTsSymbolCount": 77,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-insane-header.ts",
-        "scripts/verify/quake2-m-insane.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-insane",
-        "verify:m-insane:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -4624,13 +4039,13 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:23"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-insane-header.ts,scripts/verify/quake2-m-insane.ts",
         "declarative-tables:15",
         "matrix-rows:77"
       ]
@@ -4649,14 +4064,8 @@
       "sourceSymbolCount": 283,
       "matchedTsSymbolCount": 283,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-insane-header.ts",
-        "scripts/verify/quake2-m-insane.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-insane",
-        "verify:m-insane:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
@@ -4664,11 +4073,11 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-insane-header.ts,scripts/verify/quake2-m-insane.ts",
         "matrix-rows:283"
       ]
     },
@@ -4678,8 +4087,8 @@
       "primaryTsTarget": "packages/game/src/m_medic.ts",
       "tsTargets": [
         "packages/game/src/m_medic.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -4688,16 +4097,8 @@
       "sourceSymbolCount": 76,
       "matchedTsSymbolCount": 73,
       "missingTsSymbolCount": 3,
-      "linkedTests": [
-        "scripts/verify/quake2-m-medic-header.ts",
-        "scripts/verify/quake2-m-medic-source-parity.ts",
-        "scripts/verify/quake2-m-medic.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-medic",
-        "verify:m-medic:header",
-        "verify:m-medic:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -4765,13 +4166,14 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:3",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:24"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-medic-header.ts,scripts/verify/quake2-m-medic-source-parity.ts,scripts/verify/quake2-m-medic.ts",
         "declarative-tables:10",
         "reachable-functions:1",
         "matrix-rows:76"
@@ -4791,27 +4193,20 @@
       "sourceSymbolCount": 238,
       "matchedTsSymbolCount": 238,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-medic-header.ts",
-        "scripts/verify/quake2-m-medic-source-parity.ts",
-        "scripts/verify/quake2-m-medic.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-medic",
-        "verify:m-medic:header",
-        "verify:m-medic:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-medic-header.ts,scripts/verify/quake2-m-medic-source-parity.ts,scripts/verify/quake2-m-medic.ts",
         "matrix-rows:238"
       ]
     },
@@ -4821,8 +4216,8 @@
       "primaryTsTarget": "packages/game/src/m_move.ts",
       "tsTargets": [
         "packages/game/src/m_move.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -4830,12 +4225,8 @@
       "sourceSymbolCount": 31,
       "matchedTsSymbolCount": 31,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-move.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-move"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 1,
       "unreachableFunctionCount": 9,
@@ -4843,12 +4234,12 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:9"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-move.ts",
         "reachable-functions:1",
         "matrix-rows:31"
       ]
@@ -4859,8 +4250,8 @@
       "primaryTsTarget": "packages/game/src/m_mutant.ts",
       "tsTargets": [
         "packages/game/src/m_mutant.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -4869,16 +4260,8 @@
       "sourceSymbolCount": 80,
       "matchedTsSymbolCount": 80,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-mutant-header.ts",
-        "scripts/verify/quake2-m-mutant-source-parity.ts",
-        "scripts/verify/quake2-m-mutant.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-mutant",
-        "verify:m-mutant:header",
-        "verify:m-mutant:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -4958,13 +4341,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:26"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-mutant-header.ts,scripts/verify/quake2-m-mutant-source-parity.ts,scripts/verify/quake2-m-mutant.ts",
         "declarative-tables:12",
         "matrix-rows:80"
       ]
@@ -4983,27 +4366,19 @@
       "sourceSymbolCount": 150,
       "matchedTsSymbolCount": 150,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-mutant-header.ts",
-        "scripts/verify/quake2-m-mutant-source-parity.ts",
-        "scripts/verify/quake2-m-mutant.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-mutant",
-        "verify:m-mutant:header",
-        "verify:m-mutant:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-mutant-header.ts,scripts/verify/quake2-m-mutant-source-parity.ts,scripts/verify/quake2-m-mutant.ts",
         "matrix-rows:150"
       ]
     },
@@ -5013,8 +4388,8 @@
       "primaryTsTarget": "packages/game/src/m_parasite.ts",
       "tsTargets": [
         "packages/game/src/m_parasite.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
+        "packages/game/src/g_spawn.ts",
         "packages/game/src/index.ts"
       ],
       "structuralStatuses": [
@@ -5023,16 +4398,8 @@
       "sourceSymbolCount": 86,
       "matchedTsSymbolCount": 85,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-m-parasite-header.ts",
-        "scripts/verify/quake2-m-parasite-source-parity.ts",
-        "scripts/verify/quake2-m-parasite.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-parasite",
-        "verify:m-parasite:header",
-        "verify:m-parasite:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -5124,6 +4491,7 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
@@ -5131,7 +4499,6 @@
         "unreachable-functions:30"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-parasite-header.ts,scripts/verify/quake2-m-parasite-source-parity.ts,scripts/verify/quake2-m-parasite.ts",
         "declarative-tables:14",
         "matrix-rows:86"
       ]
@@ -5150,27 +4517,19 @@
       "sourceSymbolCount": 119,
       "matchedTsSymbolCount": 119,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-parasite-header.ts",
-        "scripts/verify/quake2-m-parasite-source-parity.ts",
-        "scripts/verify/quake2-m-parasite.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-parasite",
-        "verify:m-parasite:header",
-        "verify:m-parasite:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-parasite-header.ts,scripts/verify/quake2-m-parasite-source-parity.ts,scripts/verify/quake2-m-parasite.ts",
         "matrix-rows:119"
       ]
     },
@@ -5188,23 +4547,19 @@
       "sourceSymbolCount": 199,
       "matchedTsSymbolCount": 199,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-player-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-player:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-player-header.ts",
         "matrix-rows:199"
       ]
     },
@@ -5222,22 +4577,18 @@
       "sourceSymbolCount": 61,
       "matchedTsSymbolCount": 61,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-rider-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-rider:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-rider-header.ts",
         "matrix-rows:61"
       ]
     },
@@ -5248,9 +4599,9 @@
       "tsTargets": [
         "packages/game/src/m_soldier.ts",
         "packages/game/src/g_combat.ts",
-        "packages/game/src/runtime.ts",
+        "packages/game/src/g_save.ts",
         "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_save.ts"
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -5258,16 +4609,8 @@
       "sourceSymbolCount": 123,
       "matchedTsSymbolCount": 123,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-soldier-header.ts",
-        "scripts/verify/quake2-m-soldier-source-parity.ts",
-        "scripts/verify/quake2-m-soldier.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-soldier",
-        "verify:m-soldier:header",
-        "verify:m-soldier:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -5407,13 +4750,14 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:35"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-soldier-header.ts,scripts/verify/quake2-m-soldier-source-parity.ts,scripts/verify/quake2-m-soldier.ts",
         "declarative-tables:22",
         "matrix-rows:123"
       ]
@@ -5432,27 +4776,20 @@
       "sourceSymbolCount": 476,
       "matchedTsSymbolCount": 476,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-soldier-header.ts",
-        "scripts/verify/quake2-m-soldier-source-parity.ts",
-        "scripts/verify/quake2-m-soldier.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-soldier",
-        "verify:m-soldier:header",
-        "verify:m-soldier:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-soldier-header.ts,scripts/verify/quake2-m-soldier-source-parity.ts,scripts/verify/quake2-m-soldier.ts",
         "matrix-rows:476"
       ]
     },
@@ -5462,10 +4799,10 @@
       "primaryTsTarget": "packages/game/src/m_supertank.ts",
       "tsTargets": [
         "packages/game/src/m_supertank.ts",
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -5473,16 +4810,8 @@
       "sourceSymbolCount": 78,
       "matchedTsSymbolCount": 77,
       "missingTsSymbolCount": 1,
-      "linkedTests": [
-        "scripts/verify/quake2-m-supertank-header.ts",
-        "scripts/verify/quake2-m-supertank-source-parity.ts",
-        "scripts/verify/quake2-m-supertank.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-supertank",
-        "verify:m-supertank:header",
-        "verify:m-supertank:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -5580,13 +4909,14 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:1",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:20"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-supertank-header.ts,scripts/verify/quake2-m-supertank-source-parity.ts,scripts/verify/quake2-m-supertank.ts",
         "declarative-tables:15",
         "reachable-functions:1",
         "matrix-rows:78"
@@ -5606,27 +4936,20 @@
       "sourceSymbolCount": 255,
       "matchedTsSymbolCount": 255,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-supertank-header.ts",
-        "scripts/verify/quake2-m-supertank-source-parity.ts",
-        "scripts/verify/quake2-m-supertank.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-supertank",
-        "verify:m-supertank:header",
-        "verify:m-supertank:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-supertank-header.ts,scripts/verify/quake2-m-supertank-source-parity.ts,scripts/verify/quake2-m-supertank.ts",
         "matrix-rows:255"
       ]
     },
@@ -5636,10 +4959,10 @@
       "primaryTsTarget": "packages/game/src/m_tank.ts",
       "tsTargets": [
         "packages/game/src/m_tank.ts",
-        "packages/game/src/m_flash.ts",
-        "packages/game/src/g_spawn.ts",
         "packages/game/src/g_save.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/m_flash.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -5647,16 +4970,8 @@
       "sourceSymbolCount": 100,
       "matchedTsSymbolCount": 100,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-tank-header.ts",
-        "scripts/verify/quake2-m-tank-source-parity.ts",
-        "scripts/verify/quake2-m-tank.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-tank",
-        "verify:m-tank:header",
-        "verify:m-tank:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "monster-tables",
@@ -5778,13 +5093,13 @@
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:26"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-tank-header.ts,scripts/verify/quake2-m-tank-source-parity.ts,scripts/verify/quake2-m-tank.ts",
         "declarative-tables:19",
         "matrix-rows:100"
       ]
@@ -5803,27 +5118,19 @@
       "sourceSymbolCount": 295,
       "matchedTsSymbolCount": 295,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-m-tank-header.ts",
-        "scripts/verify/quake2-m-tank-source-parity.ts",
-        "scripts/verify/quake2-m-tank.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:m-tank",
-        "verify:m-tank:header",
-        "verify:m-tank:source-parity"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-m-tank-header.ts,scripts/verify/quake2-m-tank-source-parity.ts,scripts/verify/quake2-m-tank.ts",
         "matrix-rows:295"
       ]
     },
@@ -5833,15 +5140,15 @@
       "primaryTsTarget": "packages/game/src/p_client.ts",
       "tsTargets": [
         "packages/game/src/p_client.ts",
-        "packages/game/src/g_items.ts",
-        "packages/game/src/g_utils.ts",
-        "packages/game/src/g_misc.ts",
-        "packages/game/src/p_hud.ts",
-        "packages/game/src/g_spawn.ts",
-        "packages/game/src/g_combat.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_chase.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/g_combat.ts",
+        "packages/game/src/g_items.ts",
+        "packages/game/src/g_misc.ts",
+        "packages/game/src/g_spawn.ts",
+        "packages/game/src/g_utils.ts",
+        "packages/game/src/index.ts",
+        "packages/game/src/p_hud.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -5849,12 +5156,8 @@
       "sourceSymbolCount": 100,
       "matchedTsSymbolCount": 96,
       "missingTsSymbolCount": 4,
-      "linkedTests": [
-        "scripts/verify/quake2-p-client.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:p-client"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 29,
       "unreachableFunctionCount": 16,
@@ -5862,13 +5165,13 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:4",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:16"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-p-client.ts",
         "reachable-functions:29",
         "matrix-rows:100"
       ]
@@ -5879,11 +5182,11 @@
       "primaryTsTarget": "packages/game/src/p_hud.ts",
       "tsTargets": [
         "packages/game/src/p_hud.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_main.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/p_client.ts",
         "packages/game/src/p_view.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -5891,24 +5194,20 @@
       "sourceSymbolCount": 25,
       "matchedTsSymbolCount": 15,
       "missingTsSymbolCount": 10,
-      "linkedTests": [
-        "scripts/verify/quake2-p-hud.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:p-hud"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 10,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:10",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-p-hud.ts",
         "reachable-functions:10",
         "matrix-rows:25"
       ]
@@ -5920,8 +5219,8 @@
       "tsTargets": [
         "packages/game/src/p_trail.ts",
         "packages/game/src/g_ai.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -5929,25 +5228,21 @@
       "sourceSymbolCount": 19,
       "matchedTsSymbolCount": 14,
       "missingTsSymbolCount": 5,
-      "linkedTests": [
-        "scripts/verify/quake2-p-trail.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:p-trail"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 4,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:5",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:4"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-p-trail.ts",
         "reachable-functions:2",
         "matrix-rows:19"
       ]
@@ -5959,8 +5254,8 @@
       "tsTargets": [
         "packages/game/src/p_view.ts",
         "packages/game/src/g_main.ts",
-        "packages/game/src/runtime.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/index.ts",
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -5968,12 +5263,8 @@
       "sourceSymbolCount": 49,
       "matchedTsSymbolCount": 33,
       "missingTsSymbolCount": 16,
-      "linkedTests": [
-        "scripts/verify/quake2-p-view.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:p-view"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 15,
       "unreachableFunctionCount": 0,
@@ -5981,12 +5272,12 @@
       "findings": [
         "basename-collision",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:16",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-p-view.ts",
         "reachable-functions:15",
         "matrix-rows:49"
       ]
@@ -5997,24 +5288,20 @@
       "primaryTsTarget": "packages/game/src/p_weapon.ts",
       "tsTargets": [
         "packages/game/src/p_weapon.ts",
-        "packages/game/src/runtime.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_weapon.ts",
+        "packages/game/src/index.ts",
         "packages/game/src/local-game-bootstrap.ts",
-        "packages/game/src/index.ts"
+        "packages/game/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 141,
-      "matchedTsSymbolCount": 94,
-      "missingTsSymbolCount": 47,
-      "linkedTests": [
-        "scripts/verify/quake2-p-weapon.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:p-weapon"
-      ],
+      "matchedTsSymbolCount": 95,
+      "missingTsSymbolCount": 46,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 7,
       "unreachableFunctionCount": 29,
@@ -6022,13 +5309,13 @@
       "findings": [
         "basename-collision",
         "header:stub marker detected",
-        "missing-ts-symbols:47",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:46",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:29"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-p-weapon.ts",
         "reachable-functions:7",
         "matrix-rows:141"
       ]
@@ -6040,36 +5327,32 @@
       "tsTargets": [
         "packages/math/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
-        "packages/qcommon/src/system.ts",
+        "packages/qcommon/src/index.ts",
         "packages/qcommon/src/q_shared.ts",
-        "packages/qcommon/src/index.ts"
+        "packages/qcommon/src/system.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 106,
-      "matchedTsSymbolCount": 57,
-      "missingTsSymbolCount": 49,
-      "linkedTests": [
-        "scripts/verify/quake2-q-shared-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:q-shared:header"
-      ],
+      "matchedTsSymbolCount": 64,
+      "missingTsSymbolCount": 42,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 28,
       "unreachableFunctionCount": 31,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:49",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:42",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "strict-basename-target-multiple",
         "unreachable-functions:31"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-q-shared-header.ts",
         "reachable-functions:28",
         "matrix-rows:106"
       ]
@@ -6080,41 +5363,36 @@
       "primaryTsTarget": "packages/qcommon/src/q_shared.ts",
       "tsTargets": [
         "packages/qcommon/src/q_shared.ts",
-        "packages/qcommon/src/common.ts",
+        "packages/game/src/runtime.ts",
         "packages/qcommon/src/system.ts",
-        "packages/qcommon/src/cvar.ts",
-        "packages/math/src/q_shared.ts",
+        "packages/client/src/monster-flash.ts",
         "packages/game/src/m_flash.ts",
-        "packages/client/src/monster-flash.ts"
+        "packages/math/src/q_shared.ts",
+        "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/cvar.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 630,
-      "matchedTsSymbolCount": 336,
-      "missingTsSymbolCount": 294,
-      "linkedTests": [
-        "scripts/verify/quake2-cvar.ts",
-        "scripts/verify/quake2-q-shared-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cvar",
-        "verify:q-shared:header"
-      ],
+      "matchedTsSymbolCount": 429,
+      "missingTsSymbolCount": 201,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 31,
       "unreachableFunctionCount": 28,
       "verdict": "A redecouper",
       "findings": [
         "basename-collision",
-        "missing-ts-symbols:294",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:201",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "strict-basename-target-multiple",
         "unreachable-functions:28"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cvar.ts,scripts/verify/quake2-q-shared-header.ts",
         "reachable-functions:31",
         "matrix-rows:630"
       ]
@@ -6131,14 +5409,10 @@
         "split-undocumented"
       ],
       "sourceSymbolCount": 72,
-      "matchedTsSymbolCount": 41,
-      "missingTsSymbolCount": 31,
-      "linkedTests": [
-        "scripts/verify/quake2-cmd.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cmd"
-      ],
+      "matchedTsSymbolCount": 42,
+      "missingTsSymbolCount": 30,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 13,
       "unreachableFunctionCount": 13,
@@ -6146,13 +5420,13 @@
       "findings": [
         "header:stub marker detected",
         "header:temporary marker detected",
-        "missing-ts-symbols:31",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:30",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:13"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cmd.ts",
         "reachable-functions:13",
         "matrix-rows:72"
       ]
@@ -6171,9 +5445,7 @@
       "sourceSymbolCount": 195,
       "matchedTsSymbolCount": 87,
       "missingTsSymbolCount": 108,
-      "linkedTests": [
-        "scripts/verify/quake2-cmodel.ts"
-      ],
+      "linkedTests": [],
       "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 38,
@@ -6182,13 +5454,13 @@
       "findings": [
         "header:stub marker detected",
         "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:108",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:16"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cmodel.ts",
         "reachable-functions:38",
         "matrix-rows:195"
       ]
@@ -6199,8 +5471,8 @@
       "primaryTsTarget": "packages/qcommon/src/common.ts",
       "tsTargets": [
         "packages/qcommon/src/common.ts",
-        "packages/qcommon/src/messages.ts",
         "packages/memory/src/sizebuf.ts",
+        "packages/qcommon/src/messages.ts",
         "packages/qcommon/src/qcommon.ts",
         "packages/qcommon/src/runtime.ts"
       ],
@@ -6208,14 +5480,10 @@
         "split-undocumented"
       ],
       "sourceSymbolCount": 153,
-      "matchedTsSymbolCount": 85,
-      "missingTsSymbolCount": 68,
-      "linkedTests": [
-        "scripts/verify/quake2-qcommon-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:qcommon:header"
-      ],
+      "matchedTsSymbolCount": 93,
+      "missingTsSymbolCount": 60,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 52,
       "unreachableFunctionCount": 22,
@@ -6223,13 +5491,13 @@
       "findings": [
         "header:stub marker detected",
         "header:temporary marker detected",
-        "missing-ts-symbols:68",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:60",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:22"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-qcommon-header.ts",
         "reachable-functions:52",
         "matrix-rows:153"
       ]
@@ -6240,6 +5508,7 @@
       "primaryTsTarget": "packages/qcommon/src/qcommon.ts",
       "tsTargets": [
         "packages/qcommon/src/qcommon.ts",
+        "packages/qcommon/src/crc.ts",
         "packages/qcommon/src/index.ts"
       ],
       "structuralStatuses": [
@@ -6248,16 +5517,8 @@
       "sourceSymbolCount": 8,
       "matchedTsSymbolCount": 8,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-crc-header.ts",
-        "scripts/verify/quake2-crc.ts",
-        "scripts/verify/quake2-qcommon-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:crc",
-        "verify:crc:header",
-        "verify:qcommon:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 2,
@@ -6267,6 +5528,7 @@
         "declared-target-not-strict-basename",
         "header:Source header 'Quake II original / qcommon/qcommon.h' does not clearly reference source",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "name:primary-basename 'qcommon' differs from source basename 'crc'",
         "phase02-structural-status:split-undocumented",
@@ -6274,7 +5536,6 @@
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-crc-header.ts,scripts/verify/quake2-crc.ts,scripts/verify/quake2-qcommon-header.ts",
         "reachable-functions:2",
         "matrix-rows:8"
       ]
@@ -6285,6 +5546,7 @@
       "primaryTsTarget": "packages/qcommon/src/qcommon.ts",
       "tsTargets": [
         "packages/qcommon/src/qcommon.ts",
+        "packages/qcommon/src/crc.ts",
         "packages/qcommon/src/index.ts"
       ],
       "structuralStatuses": [
@@ -6293,16 +5555,8 @@
       "sourceSymbolCount": 4,
       "matchedTsSymbolCount": 4,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-crc-header.ts",
-        "scripts/verify/quake2-crc.ts",
-        "scripts/verify/quake2-qcommon-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:crc",
-        "verify:crc:header",
-        "verify:qcommon:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 2,
@@ -6312,6 +5566,7 @@
         "declared-target-not-strict-basename",
         "header:Source header 'Quake II original / qcommon/qcommon.h' does not clearly reference source",
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "name:primary-basename 'qcommon' differs from source basename 'crc'",
         "phase02-structural-status:split-undocumented",
@@ -6319,7 +5574,6 @@
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-crc-header.ts,scripts/verify/quake2-crc.ts,scripts/verify/quake2-qcommon-header.ts",
         "reachable-functions:2",
         "matrix-rows:4"
       ]
@@ -6337,22 +5591,18 @@
       "sourceSymbolCount": 54,
       "matchedTsSymbolCount": 28,
       "missingTsSymbolCount": 26,
-      "linkedTests": [
-        "scripts/verify/quake2-cvar.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:cvar"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 28,
       "unreachableFunctionCount": 5,
       "verdict": "Partiel",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:26",
         "unreachable-functions:5"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-cvar.ts",
         "reachable-functions:28",
         "matrix-rows:54"
       ]
@@ -6363,34 +5613,30 @@
       "primaryTsTarget": "packages/filesystem/src/files.ts",
       "tsTargets": [
         "packages/filesystem/src/files.ts",
-        "packages/filesystem/src/index.ts",
-        "packages/formats/src/pak.ts"
+        "packages/formats/src/pak.ts",
+        "packages/filesystem/src/index.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 83,
-      "matchedTsSymbolCount": 21,
-      "missingTsSymbolCount": 62,
-      "linkedTests": [
-        "scripts/verify/golden-pak-summary.mjs",
-        "scripts/verify/quake2-files.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:files"
-      ],
+      "matchedTsSymbolCount": 38,
+      "missingTsSymbolCount": 45,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 21,
       "unreachableFunctionCount": 6,
       "verdict": "A redecouper",
       "findings": [
-        "missing-ts-symbols:62",
+        "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:45",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:6"
       ],
       "evidence": [
-        "tests:scripts/verify/golden-pak-summary.mjs,scripts/verify/quake2-files.ts",
         "reachable-functions:21",
         "matrix-rows:83"
       ]
@@ -6409,25 +5655,19 @@
       "sourceSymbolCount": 44,
       "matchedTsSymbolCount": 40,
       "missingTsSymbolCount": 4,
-      "linkedTests": [
-        "scripts/verify/quake2-md4.ts",
-        "scripts/verify/quake2-qcommon-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:md4",
-        "verify:qcommon:header"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 13,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:4",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-md4.ts,scripts/verify/quake2-qcommon-header.ts",
         "reachable-functions:13",
         "matrix-rows:44"
       ]
@@ -6438,35 +5678,29 @@
       "primaryTsTarget": "packages/qcommon/src/net_chan.ts",
       "tsTargets": [
         "packages/qcommon/src/net_chan.ts",
-        "packages/qcommon/src/qcommon.ts",
-        "packages/qcommon/src/index.ts"
+        "packages/qcommon/src/index.ts",
+        "packages/qcommon/src/qcommon.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 26,
-      "matchedTsSymbolCount": 15,
-      "missingTsSymbolCount": 11,
-      "linkedTests": [
-        "scripts/verify/quake2-net-chan.ts",
-        "scripts/verify/quake2-qcommon-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:net-chan",
-        "verify:qcommon:header"
-      ],
+      "matchedTsSymbolCount": 18,
+      "missingTsSymbolCount": 8,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 9,
       "unreachableFunctionCount": 2,
       "verdict": "A redecouper",
       "findings": [
-        "missing-ts-symbols:11",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:8",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:2"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-net-chan.ts,scripts/verify/quake2-qcommon-header.ts",
         "reachable-functions:9",
         "matrix-rows:26"
       ]
@@ -6484,27 +5718,18 @@
       "sourceSymbolCount": 95,
       "matchedTsSymbolCount": 70,
       "missingTsSymbolCount": 25,
-      "linkedTests": [
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-pmove-local-bmodel.ts",
-        "scripts/verify/quake2-pmove.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:client:pmove:viewheight",
-        "verify:pmove",
-        "verify:pmove:local-bmodel"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 21,
       "unreachableFunctionCount": 0,
       "verdict": "Partiel",
       "findings": [
         "header:stub marker detected",
-        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:25"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-pmove-local-bmodel.ts,scripts/verify/quake2-pmove.ts",
         "reachable-functions:21",
         "matrix-rows:95"
       ]
@@ -6515,59 +5740,40 @@
       "primaryTsTarget": "packages/qcommon/src/qcommon.ts",
       "tsTargets": [
         "packages/qcommon/src/qcommon.ts",
-        "packages/qcommon/src/messages.ts",
         "packages/memory/src/sizebuf.ts",
-        "packages/memory/src/binary-io.ts",
         "packages/qcommon/src/protocol.ts",
-        "packages/qcommon/src/cmd.ts",
-        "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/cmodel.ts",
-        "packages/qcommon/src/pmove.ts",
         "packages/filesystem/src/files.ts",
-        "packages/qcommon/src/md4.ts",
+        "packages/memory/src/binary-io.ts",
+        "packages/qcommon/src/cmd.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/common.ts",
+        "packages/qcommon/src/cvar.ts",
+        "packages/qcommon/src/md4.ts",
+        "packages/qcommon/src/messages.ts",
+        "packages/qcommon/src/pmove.ts",
         "packages/qcommon/src/system.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 321,
-      "matchedTsSymbolCount": 277,
-      "missingTsSymbolCount": 44,
-      "linkedTests": [
-        "scripts/verify/quake2-client-pmove-viewheight.ts",
-        "scripts/verify/quake2-cmd.ts",
-        "scripts/verify/quake2-cmodel.ts",
-        "scripts/verify/quake2-cvar.ts",
-        "scripts/verify/quake2-files.ts",
-        "scripts/verify/quake2-md4.ts",
-        "scripts/verify/quake2-pmove-local-bmodel.ts",
-        "scripts/verify/quake2-pmove.ts",
-        "scripts/verify/quake2-qcommon-header.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:client:pmove:viewheight",
-        "verify:cmd",
-        "verify:cvar",
-        "verify:files",
-        "verify:md4",
-        "verify:pmove",
-        "verify:pmove:local-bmodel",
-        "verify:qcommon:header"
-      ],
+      "matchedTsSymbolCount": 269,
+      "missingTsSymbolCount": 52,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 125,
       "unreachableFunctionCount": 55,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
-        "missing-ts-symbols:44",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:52",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:55"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-client-pmove-viewheight.ts,scripts/verify/quake2-cmd.ts,scripts/verify/quake2-cmodel.ts,scripts/verify/quake2-cvar.ts,scripts/verify/quake2-files.ts,scripts/verify/quake2-md4.ts,scripts/verify/quake2-pmove-local-bmodel.ts,scripts/verify/quake2-pmove.ts,scripts/verify/quake2-qcommon-header.ts",
         "reachable-functions:125",
         "matrix-rows:321"
       ]
@@ -6578,38 +5784,33 @@
       "primaryTsTarget": "packages/formats/src/qfiles.ts",
       "tsTargets": [
         "packages/formats/src/qfiles.ts",
+        "packages/formats/src/md2.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
-        "packages/formats/src/wal.ts",
-        "packages/formats/src/md2.ts",
         "packages/formats/src/sp2.ts",
+        "packages/formats/src/wal.ts",
         "packages/formats/src/index.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 226,
-      "matchedTsSymbolCount": 139,
-      "missingTsSymbolCount": 87,
-      "linkedTests": [
-        "scripts/verify/golden-pak-summary.mjs",
-        "scripts/verify/quake2-qfiles.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:qfiles"
-      ],
+      "matchedTsSymbolCount": 146,
+      "missingTsSymbolCount": 80,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
-        "missing-ts-symbols:87",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:80",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/golden-pak-summary.mjs,scripts/verify/quake2-qfiles.ts",
         "matrix-rows:226"
       ]
     },
@@ -6627,30 +5828,20 @@
       "sourceSymbolCount": 116,
       "matchedTsSymbolCount": 14,
       "missingTsSymbolCount": 102,
-      "linkedTests": [
-        "scripts/verify/quake2-full-game-server-host.ts",
-        "scripts/verify/quake2-full-game-server-snapshots.ts",
-        "scripts/verify/quake2-server-header.ts",
-        "scripts/verify/quake2-server-runtime.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:full-game:server-host",
-        "verify:full-game:server-snapshots",
-        "verify:server:header",
-        "verify:server:runtime"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 15,
       "unreachableFunctionCount": 25,
       "verdict": "A redecouper",
       "findings": [
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:102",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:25"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-full-game-server-host.ts,scripts/verify/quake2-full-game-server-snapshots.ts,scripts/verify/quake2-server-header.ts,scripts/verify/quake2-server-runtime.ts",
         "reachable-functions:15",
         "matrix-rows:116"
       ]
@@ -6661,43 +5852,31 @@
       "primaryTsTarget": "packages/server/src/sv_ccmds.ts",
       "tsTargets": [
         "packages/server/src/sv_ccmds.ts",
+        "packages/server/src/index.ts",
         "packages/server/src/runtime.ts",
-        "packages/server/src/server.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/server.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 57,
-      "matchedTsSymbolCount": 50,
-      "missingTsSymbolCount": 7,
-      "linkedTests": [
-        "scripts/verify/quake2-full-game-server-host.ts",
-        "scripts/verify/quake2-full-game-server-snapshots.ts",
-        "scripts/verify/quake2-server-header.ts",
-        "scripts/verify/quake2-server-runtime.ts",
-        "scripts/verify/quake2-sv-ccmds.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:full-game:server-host",
-        "verify:full-game:server-snapshots",
-        "verify:server:ccmds",
-        "verify:server:header",
-        "verify:server:runtime"
-      ],
+      "matchedTsSymbolCount": 51,
+      "missingTsSymbolCount": 6,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 25,
       "verdict": "A redecouper",
       "findings": [
-        "missing-ts-symbols:7",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:6",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:25"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-full-game-server-host.ts,scripts/verify/quake2-full-game-server-snapshots.ts,scripts/verify/quake2-server-header.ts,scripts/verify/quake2-server-runtime.ts,scripts/verify/quake2-sv-ccmds.ts",
         "matrix-rows:57"
       ]
     },
@@ -6715,24 +5894,20 @@
       "sourceSymbolCount": 37,
       "matchedTsSymbolCount": 31,
       "missingTsSymbolCount": 6,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-ents.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:ents"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 7,
       "unreachableFunctionCount": 0,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:6",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-ents.ts",
         "reachable-functions:7",
         "matrix-rows:37"
       ]
@@ -6743,8 +5918,8 @@
       "primaryTsTarget": "packages/server/src/sv_game.ts",
       "tsTargets": [
         "packages/server/src/sv_game.ts",
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -6752,25 +5927,21 @@
       "sourceSymbolCount": 42,
       "matchedTsSymbolCount": 27,
       "missingTsSymbolCount": 15,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-game.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:game"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 4,
       "unreachableFunctionCount": 20,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:15",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:20"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-game.ts",
         "reachable-functions:4",
         "matrix-rows:42"
       ]
@@ -6781,9 +5952,9 @@
       "primaryTsTarget": "packages/server/src/sv_init.ts",
       "tsTargets": [
         "packages/server/src/sv_init.ts",
-        "packages/server/src/sv_game.ts",
+        "packages/server/src/index.ts",
         "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/sv_game.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
@@ -6791,25 +5962,21 @@
       "sourceSymbolCount": 31,
       "matchedTsSymbolCount": 24,
       "missingTsSymbolCount": 7,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-init.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:init"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 1,
       "unreachableFunctionCount": 12,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:7",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:12"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-init.ts",
         "reachable-functions:1",
         "matrix-rows:31"
       ]
@@ -6821,34 +5988,30 @@
       "tsTargets": [
         "packages/server/src/sv_main.ts",
         "packages/server/src/host.ts",
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 83,
-      "matchedTsSymbolCount": 56,
-      "missingTsSymbolCount": 27,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-main.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:main"
-      ],
+      "matchedTsSymbolCount": 57,
+      "missingTsSymbolCount": 26,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 28,
       "unreachableFunctionCount": 1,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
-        "missing-ts-symbols:27",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:26",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:1"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-main.ts",
         "reachable-functions:28",
         "matrix-rows:83"
       ]
@@ -6867,24 +6030,20 @@
       "sourceSymbolCount": 3,
       "matchedTsSymbolCount": 3,
       "missingTsSymbolCount": 0,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-null.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:null"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 2,
       "unreachableFunctionCount": 1,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:1"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-null.ts",
         "reachable-functions:2",
         "matrix-rows:3"
       ]
@@ -6903,25 +6062,21 @@
       "sourceSymbolCount": 42,
       "matchedTsSymbolCount": 27,
       "missingTsSymbolCount": 15,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-send.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:send"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 7,
       "unreachableFunctionCount": 7,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:15",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:7"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-send.ts",
         "reachable-functions:7",
         "matrix-rows:42"
       ]
@@ -6932,21 +6087,17 @@
       "primaryTsTarget": "packages/server/src/sv_user.ts",
       "tsTargets": [
         "packages/server/src/sv_user.ts",
-        "packages/server/src/runtime.ts",
-        "packages/server/src/index.ts"
+        "packages/server/src/index.ts",
+        "packages/server/src/runtime.ts"
       ],
       "structuralStatuses": [
         "split-undocumented"
       ],
       "sourceSymbolCount": 48,
-      "matchedTsSymbolCount": 40,
-      "missingTsSymbolCount": 8,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-user.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:user"
-      ],
+      "matchedTsSymbolCount": 42,
+      "missingTsSymbolCount": 6,
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [
         {
           "category": "commands",
@@ -6960,13 +6111,13 @@
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
-        "missing-ts-symbols:8",
+        "missing-linked-test-for-some-symbols",
+        "missing-ts-symbols:6",
         "multiple-declared-ts-targets",
         "phase02-structural-status:split-undocumented",
         "unreachable-functions:10"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-user.ts",
         "declarative-tables:1",
         "reachable-functions:4",
         "matrix-rows:48"
@@ -6986,18 +6137,16 @@
       "sourceSymbolCount": 49,
       "matchedTsSymbolCount": 35,
       "missingTsSymbolCount": 14,
-      "linkedTests": [
-        "scripts/verify/quake2-sv-world.ts"
-      ],
-      "linkedNpmScripts": [
-        "verify:server:world"
-      ],
+      "linkedTests": [],
+      "linkedNpmScripts": [],
       "declarativeTables": [],
       "reachableFunctionCount": 0,
       "unreachableFunctionCount": 17,
       "verdict": "A redecouper",
       "findings": [
         "header:stub marker detected",
+        "header:temporary marker detected",
+        "missing-linked-test-for-some-symbols",
         "missing-ts-symbols:14",
         "multiple-declared-ts-targets",
         "no-function-reached-from-runtime-roots",
@@ -7005,7 +6154,6 @@
         "unreachable-functions:17"
       ],
       "evidence": [
-        "tests:scripts/verify/quake2-sv-world.ts",
         "matrix-rows:49"
       ]
     }

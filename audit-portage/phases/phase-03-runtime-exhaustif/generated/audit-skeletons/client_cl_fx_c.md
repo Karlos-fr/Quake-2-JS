@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/cl_fx.ts
-- Cibles TS declarees : packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/client.ts
+- Cibles TS declarees : packages/client/src/cl_fx.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/client.ts, packages/client/src/monster-flash.ts, packages/client/src/refresh.ts
 
 ## Symboles source
 

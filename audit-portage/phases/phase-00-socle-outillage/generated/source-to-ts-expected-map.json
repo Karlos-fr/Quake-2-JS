@@ -106,8 +106,10 @@
   {
     "sourcePath": "Quake-2-master/client/cl_pred.c",
     "expectedTsFile": "cl_pred.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/client/src/cl_pred.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/client/cl_scrn.c",
@@ -128,8 +130,10 @@
   {
     "sourcePath": "Quake-2-master/client/cl_view.c",
     "expectedTsFile": "cl_view.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/client/src/cl_view.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/client/client.h",
@@ -214,8 +218,10 @@
   {
     "sourcePath": "Quake-2-master/client/screen.h",
     "expectedTsFile": "screen.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/client/src/screen.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/client/snd_dma.c",
@@ -1358,14 +1364,18 @@
   {
     "sourcePath": "Quake-2-master/qcommon/crc.c",
     "expectedTsFile": "crc.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/qcommon/src/crc.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/qcommon/crc.h",
     "expectedTsFile": "crc.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/qcommon/src/crc.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/qcommon/cvar.c",
@@ -1482,14 +1492,18 @@
   {
     "sourcePath": "Quake-2-master/ref_gl/gl_model.c",
     "expectedTsFile": "gl_model.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/renderer-three/src/gl_model.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/ref_gl/gl_model.h",
     "expectedTsFile": "gl_model.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/renderer-three/src/gl_model.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/ref_gl/gl_rmain.c",

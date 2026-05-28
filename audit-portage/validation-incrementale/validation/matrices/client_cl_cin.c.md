@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/cl_cin.c`
 - Cibles TS connues: `packages/client/src/cl_cin.ts`, `packages/client/src/cl_scrn.ts`, `packages/client/src/client.ts`
-- Tests connus: `npm run verify:client:header`, `npm run verify:client:pmove:viewheight`, `scripts/verify/quake2-client-header.ts`, `scripts/verify/quake2-client-pmove-viewheight.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:21`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `header:stub marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:21`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

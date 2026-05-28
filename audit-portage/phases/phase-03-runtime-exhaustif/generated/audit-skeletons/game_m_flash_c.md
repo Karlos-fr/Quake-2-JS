@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/m_flash.ts
-- Cibles TS declarees : packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_fx.ts, packages/game/src/m_actor.ts, packages/game/src/m_chick.ts, packages/game/src/m_flyer.ts, packages/game/src/m_float.ts, packages/game/src/m_gladiator.ts, packages/game/src/m_gunner.ts, packages/game/src/m_hover.ts, packages/game/src/m_infantry.ts, packages/game/src/m_medic.ts, packages/game/src/m_tank.ts, packages/game/src/m_supertank.ts
+- Cibles TS declarees : packages/game/src/m_flash.ts, packages/client/src/cl_fx.ts, packages/client/src/monster-flash.ts, packages/game/src/m_actor.ts, packages/game/src/m_chick.ts, packages/game/src/m_float.ts, packages/game/src/m_flyer.ts, packages/game/src/m_gladiator.ts, packages/game/src/m_gunner.ts, packages/game/src/m_hover.ts, packages/game/src/m_infantry.ts, packages/game/src/m_medic.ts, packages/game/src/m_supertank.ts, packages/game/src/m_tank.ts
 
 ## Symboles source
 

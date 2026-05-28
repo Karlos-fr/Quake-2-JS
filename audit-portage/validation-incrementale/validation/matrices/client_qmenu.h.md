@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/qmenu.h`
 - Cibles TS connues: `packages/client/src/qmenu.ts`, `packages/client/src/keys.ts`, `packages/client/src/index.ts`
-- Tests connus: `npm run verify:keys`, `npm run verify:keys:header`, `npm run verify:qmenu`, `npm run verify:qmenu:header`, `scripts/verify/quake2-keys-header.ts`, `scripts/verify/quake2-keys.ts`, `scripts/verify/quake2-qmenu-header.ts`, `scripts/verify/quake2-qmenu.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `missing-ts-symbols:18`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:14`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:20`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:14`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -31,7 +31,7 @@
 | `Quake-2-master/client/qmenu.h` | macro | `QMF_GRAYED` | `packages/client/src/qmenu.ts` | `QMF_GRAYED` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | macro | `QMF_NUMBERSONLY` | `packages/client/src/qmenu.ts` | `QMF_NUMBERSONLY` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | struct | `_tag_menuframework` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` | `cursor` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `nitems` | `packages/client/src/qmenu.ts` | `nitems` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `nslots` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `statusbar` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
@@ -44,7 +44,7 @@
 | `Quake-2-master/client/qmenu.h` | global | `statusbar` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | struct | `menufield_s` | `packages/client/src/qmenu.ts` | `menufield_s` | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `buffer` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` | `cursor` | Valide | A redecouper |  |
+| `Quake-2-master/client/qmenu.h` | global | `cursor` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `length` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `visible_length` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/client/qmenu.h` | global | `visible_offset` | `packages/client/src/qmenu.ts` |  | Valide | A redecouper |  |

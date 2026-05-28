@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/cl_tent.ts
-- Cibles TS declarees : packages/client/src/cl_tent.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/client.ts
+- Cibles TS declarees : packages/client/src/cl_tent.ts, packages/client/src/sound-registration.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/client.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts
 
 ## Symboles source
 

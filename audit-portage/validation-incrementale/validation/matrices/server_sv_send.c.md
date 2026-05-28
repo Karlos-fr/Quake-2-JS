@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/server/sv_send.c`
 - Cibles TS connues: `packages/server/src/sv_send.ts`, `packages/server/src/index.ts`
-- Tests connus: `npm run verify:server:send`, `scripts/verify/quake2-sv-send.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:15`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:7`
+- Findings Phase 03: `header:stub marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:15`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:7`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

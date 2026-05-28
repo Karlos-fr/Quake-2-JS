@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/qcommon/src/common.ts
-- Cibles TS declarees : packages/qcommon/src/common.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/qcommon/src/qcommon.ts, packages/qcommon/src/runtime.ts
+- Cibles TS declarees : packages/qcommon/src/common.ts, packages/memory/src/sizebuf.ts, packages/qcommon/src/messages.ts, packages/qcommon/src/qcommon.ts, packages/qcommon/src/runtime.ts
 
 ## Symboles source
 

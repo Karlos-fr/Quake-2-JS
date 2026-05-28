@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/game.h`
 - Cibles TS connues: `packages/game/src/game.ts`, `packages/game/src/runtime.ts`
-- Tests connus: `npm run verify:full-game:audio-routing`, `npm run verify:full-game:authoritative-handshake`, `npm run verify:full-game:authoritative-input`, `npm run verify:full-game:bridge`, `npm run verify:full-game:commands`, `npm run verify:full-game:console-background`, `npm run verify:full-game:demo-cleanup`, `npm run verify:full-game:forward`, `npm run verify:full-game:gameplay`, `npm run verify:full-game:input-bindings`, `npm run verify:full-game:local-transport`, `npm run verify:full-game:newgame`, `npm run verify:full-game:render-source`, `npm run verify:full-game:rules-transitions`, `npm run verify:full-game:save-slots`, `npm run verify:full-game:server-host`, `npm run verify:full-game:server-snapshots`, `npm run verify:full-game:three-renderer`, `npm run verify:game:header`, `scripts/verify/quake2-full-game-audio-routing.ts`, `scripts/verify/quake2-full-game-authoritative-handshake.ts`, `scripts/verify/quake2-full-game-authoritative-input.ts`, `scripts/verify/quake2-full-game-command-bridge.ts`, `scripts/verify/quake2-full-game-command-forward.ts`, `scripts/verify/quake2-full-game-console-background.ts`, `scripts/verify/quake2-full-game-console-commands.ts`, `scripts/verify/quake2-full-game-demo-cleanup.ts`, `scripts/verify/quake2-full-game-gameplay-commands.ts`, `scripts/verify/quake2-full-game-input-bindings.ts`, `scripts/verify/quake2-full-game-local-transport.ts`, `scripts/verify/quake2-full-game-newgame.ts`, `scripts/verify/quake2-full-game-render-source.ts`, `scripts/verify/quake2-full-game-rules-transitions.ts`, `scripts/verify/quake2-full-game-save-slots.ts`, `scripts/verify/quake2-full-game-server-host.ts`, `scripts/verify/quake2-full-game-server-snapshots.ts`, `scripts/verify/quake2-full-game-three-renderer.ts`, `scripts/verify/quake2-game-header.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `missing-ts-symbols:20`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:1`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:17`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:1`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -15,12 +15,12 @@
 | `Quake-2-master/game/game.h` | macro | `SVF_DEADMONSTER` | `packages/game/src/runtime.ts` | `SVF_DEADMONSTER` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | macro | `SVF_MONSTER` | `packages/game/src/runtime.ts` | `SVF_MONSTER` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | enum | `solid_t` | `packages/game/src/game.ts` | `solid_t` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` |  | Valide | A redecouper | Alias `link_s` ajoute dans `game.ts`; `link_t` reste le typedef C. |
+| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` | `link_s` | Valide | A redecouper | Alias `link_s` ajoute dans `game.ts`; `link_t` reste le typedef C. |
 | `Quake-2-master/game/game.h` | macro | `MAX_ENT_CLUSTERS` | `packages/game/src/game.ts` | `MAX_ENT_CLUSTERS` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts` | `gclient_s` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `ps` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `ping` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `edict_s` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `edict_s` | `packages/game/src/game.ts` | `edict_s` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `s` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `inuse` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `linkcount` | `packages/game/src/game.ts` |  | Valide | A redecouper |  |

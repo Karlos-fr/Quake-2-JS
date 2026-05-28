@@ -10,7 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_inv.c` | function | `CL_ParseInventory` | `packages/client/src/cl_parse.ts` | `CL_ParseInventory` | Valide | A redecouper | Propriete revenue dans `cl_inv.ts`; `cl_parse.ts` conserve seulement le branchement `svc_inventory` et le reexport public. |
+| `Quake-2-master/client/cl_inv.c` | function | `CL_ParseInventory` | `packages/client/src/cl_inv.ts` | `CL_ParseInventory` | Valide | A redecouper | Propriete revenue dans `cl_inv.ts`; `cl_parse.ts` conserve seulement le branchement `svc_inventory` et le reexport public. |
 | `Quake-2-master/client/cl_inv.c` | global | `i` | `packages/client/src/cl_inv.ts` | `i` | Non applicable | A redecouper | Variable locale C couverte avec `CL_ParseInventory`/`CL_DrawInventory`. |
 | `Quake-2-master/client/cl_inv.c` | function | `Inv_DrawString` | `packages/client/src/cl_inv.ts` | `Inv_DrawString` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_inv.c` | function | `SetStringHighBit` | `packages/client/src/cl_inv.ts` | `SetStringHighBit` | Valide | A redecouper |  |

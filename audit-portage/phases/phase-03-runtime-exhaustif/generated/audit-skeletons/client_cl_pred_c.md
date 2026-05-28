@@ -2,9 +2,9 @@
 
 ## Rattachement Phase 02
 
-- Statut structurel : wrong-name
-- Cible TS principale : packages/client/src/view.ts
-- Cibles TS declarees : packages/client/src/view.ts
+- Statut structurel : strict-ok
+- Cible TS principale : packages/client/src/cl_pred.ts
+- Cibles TS declarees : packages/client/src/cl_pred.ts
 
 ## Symboles source
 

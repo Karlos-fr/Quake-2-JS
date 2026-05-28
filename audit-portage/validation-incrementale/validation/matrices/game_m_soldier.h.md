@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/m_soldier.h`
 - Cibles TS connues: `packages/game/src/m_soldier.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:m-soldier`, `npm run verify:m-soldier:header`, `npm run verify:m-soldier:source-parity`, `scripts/verify/quake2-m-soldier-header.ts`, `scripts/verify/quake2-m-soldier-source-parity.ts`, `scripts/verify/quake2-m-soldier.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
+- Findings Phase 03: `basename-collision`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

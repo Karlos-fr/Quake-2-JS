@@ -16,10 +16,10 @@
 | [Quake-2-master/client/cl_main.c](matrices/client_cl_main.c.md) | 154 | A redecouper | packages/client/src/cl_main.ts |
 | [Quake-2-master/client/cl_newfx.c](matrices/client_cl_newfx.c.md) | 123 | A redecouper | packages/client/src/cl_newfx.ts |
 | [Quake-2-master/client/cl_parse.c](matrices/client_cl_parse.c.md) | 55 | A redecouper | packages/client/src/cl_parse.ts |
-| [Quake-2-master/client/cl_pred.c](matrices/client_cl_pred.c.md) | 29 | A redecouper | packages/client/src/view.ts |
+| [Quake-2-master/client/cl_pred.c](matrices/client_cl_pred.c.md) | 29 | Partiel | packages/client/src/cl_pred.ts |
 | [Quake-2-master/client/cl_scrn.c](matrices/client_cl_scrn.c.md) | 111 | A redecouper | packages/client/src/cl_scrn.ts |
 | [Quake-2-master/client/cl_tent.c](matrices/client_cl_tent.c.md) | 105 | A redecouper | packages/client/src/cl_tent.ts |
-| [Quake-2-master/client/cl_view.c](matrices/client_cl_view.c.md) | 37 | A redecouper | packages/client/src/view.ts |
+| [Quake-2-master/client/cl_view.c](matrices/client_cl_view.c.md) | 37 | A redecouper | packages/client/src/cl_view.ts |
 | [Quake-2-master/client/client.h](matrices/client_client.h.md) | 276 | A redecouper | packages/client/src/client.ts |
 | [Quake-2-master/client/console.c](matrices/client_console.c.md) | 51 | A redecouper | packages/client/src/console.ts |
 | [Quake-2-master/client/console.h](matrices/client_console.h.md) | 24 | A redecouper | packages/client/src/console.ts |
@@ -35,7 +35,7 @@
 | [Quake-2-master/client/snd_loc.h](matrices/client_snd_loc.h.md) | 77 | A redecouper | packages/client/src/snd_loc.ts |
 | [Quake-2-master/client/snd_mem.c](matrices/client_snd_mem.c.md) | 34 | A redecouper | packages/client/src/snd_mem.ts |
 | [Quake-2-master/client/snd_mix.c](matrices/client_snd_mix.c.md) | 41 | A redecouper | packages/client/src/snd_mix.ts |
-| [Quake-2-master/client/sound.h](matrices/client_sound.h.md) | 13 | A redecouper | packages/client/src/sound-public.ts |
+| [Quake-2-master/client/sound.h](matrices/client_sound.h.md) | 13 | A redecouper | packages/client/src/sound.ts |
 | [Quake-2-master/client/vid.h](matrices/client_vid.h.md) | 10 | A redecouper | packages/client/src/vid.ts |
 | [Quake-2-master/game/g_ai.c](matrices/game_g_ai.c.md) | 48 | A redecouper | packages/game/src/g_ai.ts |
 | [Quake-2-master/game/g_chase.c](matrices/game_g_chase.c.md) | 14 | A redecouper | packages/game/src/g_chase.ts |
@@ -130,8 +130,8 @@
 | [Quake-2-master/ref_gl/gl_light.c](matrices/ref_gl_gl_light.c.md) | 33 | split-undocumented | packages/renderer-three/src/gl_light.ts |
 | [Quake-2-master/ref_gl/gl_local.h](matrices/ref_gl_gl_local.h.md) | 144 | split-undocumented | packages/renderer-three/src/gl_local.ts |
 | [Quake-2-master/ref_gl/gl_mesh.c](matrices/ref_gl_gl_mesh.c.md) | 25 | split-undocumented | packages/renderer-three/src/gl_mesh.ts |
-| [Quake-2-master/ref_gl/gl_model.c](matrices/ref_gl_gl_model.c.md) | 42 | wrong-name | packages/renderer-three/src/gl-model-loader.ts |
-| [Quake-2-master/ref_gl/gl_model.h](matrices/ref_gl_gl_model.h.md) | 31 | wrong-name | packages/renderer-three/src/gl-model.ts |
+| [Quake-2-master/ref_gl/gl_model.c](matrices/ref_gl_gl_model.c.md) | 42 | strict-ok | packages/renderer-three/src/gl_model.ts |
+| [Quake-2-master/ref_gl/gl_model.h](matrices/ref_gl_gl_model.h.md) | 31 | strict-ok | packages/renderer-three/src/gl_model.ts |
 | [Quake-2-master/ref_gl/gl_rmain.c](matrices/ref_gl_gl_rmain.c.md) | 60 | split-undocumented | packages/renderer-three/src/gl_rmain.ts |
 | [Quake-2-master/ref_gl/gl_rmisc.c](matrices/ref_gl_gl_rmisc.c.md) | 8 | split-undocumented | packages/renderer-three/src/gl_rmisc.ts |
 | [Quake-2-master/ref_gl/gl_rsurf.c](matrices/ref_gl_gl_rsurf.c.md) | 56 | split-undocumented | packages/renderer-three/src/gl_rsurf.ts |

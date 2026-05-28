@@ -4,14 +4,14 @@
 
 - Source: `Quake-2-master/qcommon/cmd.c`
 - Cibles TS connues: `packages/qcommon/src/cmd.ts`, `packages/qcommon/src/runtime.ts`
-- Tests connus: `npm run verify:cmd`, `scripts/verify/quake2-cmd.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-ts-symbols:31`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:13`
+- Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:30`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:13`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Porte comme `MAX_ALIAS_NAME`; alias trop long teste. |
+| `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts` | `MAX_ALIAS_NAME` | Valide | A redecouper | Porte comme `MAX_ALIAS_NAME`; alias trop long teste. |
 | `Quake-2-master/qcommon/cmd.c` | struct | `cmdalias_s` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Porte par `CommandAlias` et `cmd_aliases`; liste chainee remplacee par tableau runtime. |
 | `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts` | `name` | Valide | A redecouper | Champ `CommandAlias.name`. |
 | `Quake-2-master/qcommon/cmd.c` | global | `value` | `packages/qcommon/src/cmd.ts` | `value` | Valide | A redecouper | Champ `CommandAlias.value`. |

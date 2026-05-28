@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/cl_ents.ts
-- Cibles TS declarees : packages/client/src/cl_ents.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/view.ts, packages/client/src/cl_tent.ts, packages/client/src/cl_newfx.ts, packages/renderer-three/src/refresh-entity-sync.ts, packages/renderer-three/src/md2-mesh-builder.ts
+- Cibles TS declarees : packages/client/src/cl_ents.ts, packages/client/src/refresh.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_tent.ts, packages/renderer-three/src/md2-mesh-builder.ts, packages/renderer-three/src/refresh-entity-sync.ts
 
 ## Symboles source
 

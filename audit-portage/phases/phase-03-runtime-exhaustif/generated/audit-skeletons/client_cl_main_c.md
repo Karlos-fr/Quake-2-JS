@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/client/src/cl_main.ts
-- Cibles TS declarees : packages/client/src/cl_main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/cl_parse.ts, packages/client/src/sky.ts, packages/client/src/client.ts
+- Cibles TS declarees : packages/client/src/cl_main.ts, packages/client/src/precache.ts, packages/client/src/cl_parse.ts, packages/client/src/client.ts, packages/client/src/download.ts, packages/client/src/sky.ts, packages/client/src/sound.ts
 
 ## Symboles source
 

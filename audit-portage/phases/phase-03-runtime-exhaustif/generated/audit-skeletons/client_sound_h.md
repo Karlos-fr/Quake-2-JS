@@ -3,8 +3,8 @@
 ## Rattachement Phase 02
 
 - Statut structurel : split-undocumented
-- Cible TS principale : packages/client/src/sound-public.ts
-- Cibles TS declarees : packages/client/src/sound-public.ts, packages/client/src/snd_loc.ts, packages/client/src/snd_dma.ts, packages/client/src/index.ts
+- Cible TS principale : packages/client/src/sound.ts
+- Cibles TS declarees : packages/client/src/sound.ts, packages/client/src/index.ts, packages/client/src/snd_dma.ts, packages/client/src/snd_loc.ts
 
 ## Symboles source
 

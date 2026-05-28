@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/client/cdaudio.h`
 - Cibles TS connues: `packages/client/src/cdaudio.ts`, `packages/platform/src/web-cd-audio-adapter.ts`
-- Tests connus: `scripts/verify/quake2-cdaudio.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `adapter-target-declared`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:2`
+- Findings Phase 03: `adapter-target-declared`, `missing-linked-test-for-some-symbols`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:2`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

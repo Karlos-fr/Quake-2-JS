@@ -4,7 +4,7 @@
 
 - Statut structurel : split-undocumented
 - Cible TS principale : packages/game/src/m_actor.ts
-- Cibles TS declarees : packages/game/src/m_actor.ts, packages/game/src/g_spawn.ts, packages/game/src/runtime.ts, packages/game/src/g_monster.ts, packages/game/src/g_main.ts, packages/client/src/local-gameplay-sync.ts
+- Cibles TS declarees : packages/game/src/m_actor.ts, packages/client/src/local-gameplay-sync.ts, packages/game/src/g_main.ts, packages/game/src/g_monster.ts, packages/game/src/g_spawn.ts, packages/game/src/runtime.ts
 
 ## Symboles source
 

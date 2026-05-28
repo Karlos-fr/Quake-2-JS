@@ -1282,13 +1282,6 @@
   },
   {
     "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "Com_Printf",
-    "line": 710,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
     "caller": "S_RegisterSexedModel",
     "callee": "strcpy",
     "line": 796,
@@ -1709,258 +1702,6 @@
   },
   {
     "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "anglemod",
-    "line": 999,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "AngleVectors",
-    "line": 1005,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "VectorMA",
-    "line": 1006,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1007,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_BlasterTrail2",
-    "line": 1155,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1156,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_BlasterTrail",
-    "line": 1160,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1161,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1168,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1170,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_DiminishingTrail",
-    "line": 1174,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_DiminishingTrail",
-    "line": 1178,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_FlyEffect",
-    "line": 1182,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_BfgParticles",
-    "line": 1190,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1197,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_TrapParticles",
-    "line": 1203,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1205,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_FlagTrail",
-    "line": 1209,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1210,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_FlagTrail",
-    "line": 1214,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1215,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_TagTrail",
-    "line": 1221,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1222,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1233,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1235,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_Tracker_Shell",
-    "line": 1239,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1240,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_TrackerTrail",
-    "line": 1245,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1248,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1250,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_DiminishingTrail",
-    "line": 1257,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_IonripperTrail",
-    "line": 1262,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1263,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1268,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "CL_BlasterTrail",
-    "line": 1275,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "V_AddLight",
-    "line": 1277,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
     "caller": "CL_AddViewWeapon",
     "callee": "memset",
     "line": 1305,
@@ -2069,13 +1810,6 @@
     "caller": "CL_AddEntities",
     "callee": "CL_AddLightStyles",
     "line": 1477,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_ents.c",
-    "caller": "if",
-    "callee": "Com_Printf",
-    "line": 1452,
     "language": "c"
   },
   {
@@ -3539,27 +3273,6 @@
     "caller": "CL_DiminishingTrail",
     "callee": "crand",
     "line": 1520,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_fx.c",
-    "caller": "if",
-    "callee": "frand",
-    "line": 1502,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_fx.c",
-    "caller": "if",
-    "callee": "crand",
-    "line": 1506,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_fx.c",
-    "caller": "if",
-    "callee": "crand",
-    "line": 1507,
     "language": "c"
   },
   {
@@ -5252,41 +4965,6 @@
   {
     "file": "Quake-2-master/client/cl_main.c",
     "caller": "CL_Setenv_f",
-    "callee": "Cmd_Argv",
-    "line": 333,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_main.c",
-    "caller": "if",
-    "callee": "Cmd_Argv",
-    "line": 325,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_main.c",
-    "caller": "if",
-    "callee": "Com_Printf",
-    "line": 329,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_main.c",
-    "caller": "if",
-    "callee": "Cmd_Argv",
-    "line": 329,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_main.c",
-    "caller": "if",
-    "callee": "Com_Printf",
-    "line": 333,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_main.c",
-    "caller": "if",
     "callee": "Cmd_Argv",
     "line": 333,
     "language": "c"
@@ -9612,34 +9290,6 @@
   },
   {
     "file": "Quake-2-master/client/cl_parse.c",
-    "caller": "if",
-    "callee": "CDAudio_Play",
-    "line": 536,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_parse.c",
-    "caller": "if",
-    "callee": "CM_InlineModel",
-    "line": 544,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_parse.c",
-    "caller": "if",
-    "callee": "S_RegisterSound",
-    "line": 552,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_parse.c",
-    "caller": "if",
-    "callee": "CL_ParseClientinfo",
-    "line": 562,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_parse.c",
     "caller": "CL_ParseStartSoundPacket",
     "callee": "MSG_ReadByte",
     "line": 591,
@@ -11281,34 +10931,6 @@
     "caller": "SCR_UpdateScreen",
     "callee": "SCR_DrawLoading",
     "line": 1396,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_scrn.c",
-    "caller": "if",
-    "callee": "M_Draw",
-    "line": 1335,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_scrn.c",
-    "caller": "if",
-    "callee": "SCR_DrawConsole",
-    "line": 1346,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_scrn.c",
-    "caller": "if",
-    "callee": "SCR_DrawCinematic",
-    "line": 1352,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/cl_scrn.c",
-    "caller": "if",
-    "callee": "SCR_DrawConsole",
-    "line": 1346,
     "language": "c"
   },
   {
@@ -16710,13 +16332,6 @@
   },
   {
     "file": "Quake-2-master/client/menu.c",
-    "caller": "if",
-    "callee": "strcpy",
-    "line": 2410,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/menu.c",
     "caller": "StartServerActionFunc",
     "callee": "strcpy",
     "line": 2443,
@@ -17466,34 +17081,6 @@
   },
   {
     "file": "Quake-2-master/client/menu.c",
-    "caller": "if",
-    "callee": "Cvar_SetValue",
-    "line": 3171,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/menu.c",
-    "caller": "if",
-    "callee": "Cvar_SetValue",
-    "line": 3176,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/menu.c",
-    "caller": "if",
-    "callee": "Cvar_SetValue",
-    "line": 3181,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/menu.c",
-    "caller": "if",
-    "callee": "Cvar_SetValue",
-    "line": 3186,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/menu.c",
     "caller": "DownloadOptions_MenuInit",
     "callee": "Cvar_VariableValue",
     "line": 3212,
@@ -17882,13 +17469,6 @@
     "caller": "PlayerConfig_MenuInit",
     "callee": "Menu_AddItem",
     "line": 3761,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/menu.c",
-    "caller": "if",
-    "callee": "strcpy",
-    "line": 3636,
     "language": "c"
   },
   {
@@ -18358,20 +17938,6 @@
     "caller": "Menu_Draw",
     "callee": "Menu_DrawStatusBar",
     "line": 411,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/qmenu.c",
-    "caller": "if",
-    "callee": "Sys_Milliseconds",
-    "line": 391,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/qmenu.c",
-    "caller": "if",
-    "callee": "Sys_Milliseconds",
-    "line": 395,
     "language": "c"
   },
   {
@@ -19168,20 +18734,6 @@
   {
     "file": "Quake-2-master/client/snd_dma.c",
     "caller": "S_RawSamples",
-    "callee": "LittleShort",
-    "line": 965,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/snd_dma.c",
-    "caller": "if",
-    "callee": "LittleShort",
-    "line": 963,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/client/snd_dma.c",
-    "caller": "if",
     "callee": "LittleShort",
     "line": 965,
     "language": "c"
@@ -20035,13 +19587,6 @@
   },
   {
     "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "infront",
-    "line": 515,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
     "caller": "FacingIdeal",
     "callee": "anglemod",
     "line": 597,
@@ -20444,55 +19989,6 @@
     "caller": "ai_run",
     "callee": "G_FreeEdict",
     "line": 1112,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "PlayerTrail_PickFirst",
-    "line": 1018,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "G_ProjectSource",
-    "line": 1094,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "VectorCopy",
-    "line": 1097,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "VectorCopy",
-    "line": 1099,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "VectorCopy",
-    "line": 1100,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "VectorSubtract",
-    "line": 1101,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_ai.c",
-    "caller": "if",
-    "callee": "vectoyaw",
-    "line": 1102,
     "language": "c"
   },
   {
@@ -21471,20 +20967,6 @@
   {
     "file": "Quake-2-master/game/g_combat.c",
     "caller": "M_ReactToDamage",
-    "callee": "FoundTarget",
-    "line": 365,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_combat.c",
-    "caller": "if",
-    "callee": "FoundTarget",
-    "line": 356,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_combat.c",
-    "caller": "if",
     "callee": "FoundTarget",
     "line": 365,
     "language": "c"
@@ -22516,13 +21998,6 @@
     "caller": "train_wait",
     "callee": "train_next",
     "line": 1523,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_func.c",
-    "caller": "if",
-    "callee": "train_next",
-    "line": 1508,
     "language": "c"
   },
   {
@@ -24417,13 +23892,6 @@
   },
   {
     "file": "Quake-2-master/game/g_misc.c",
-    "caller": "if",
-    "callee": "func_clock_format_countdown",
-    "line": 1690,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_misc.c",
     "caller": "SP_func_clock",
     "callee": "vtos",
     "line": 1753,
@@ -24588,20 +24056,6 @@
     "caller": "M_WorldEffects",
     "callee": "T_Damage",
     "line": 284,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_monster.c",
-    "caller": "if",
-    "callee": "T_Damage",
-    "line": 236,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_monster.c",
-    "caller": "if",
-    "callee": "T_Damage",
-    "line": 254,
     "language": "c"
   },
   {
@@ -24803,20 +24257,6 @@
   {
     "file": "Quake-2-master/game/g_monster.c",
     "caller": "monster_start_go",
-    "callee": "vectoyaw",
-    "line": 648,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_monster.c",
-    "caller": "if",
-    "callee": "VectorSubtract",
-    "line": 647,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_monster.c",
-    "caller": "if",
     "callee": "vectoyaw",
     "line": 648,
     "language": "c"
@@ -26517,20 +25957,6 @@
   },
   {
     "file": "Quake-2-master/game/g_trigger.c",
-    "caller": "if",
-    "callee": "VectorScale",
-    "line": 401,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_trigger.c",
-    "caller": "if",
-    "callee": "VectorCopy",
-    "line": 406,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_trigger.c",
     "caller": "SP_trigger_push",
     "callee": "InitTrigger",
     "line": 425,
@@ -26954,13 +26380,6 @@
     "caller": "G_SetMovedir",
     "callee": "AngleVectors",
     "line": 325,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/g_utils.c",
-    "caller": "if",
-    "callee": "VectorCopy",
-    "line": 321,
     "language": "c"
   },
   {
@@ -28121,41 +27540,6 @@
   {
     "file": "Quake-2-master/game/m_actor.c",
     "caller": "target_actor_touch",
-    "callee": "vectoyaw",
-    "line": 580,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_actor.c",
-    "caller": "if",
-    "callee": "G_PickTarget",
-    "line": 539,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_actor.c",
-    "caller": "if",
-    "callee": "actor_stand",
-    "line": 548,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_actor.c",
-    "caller": "if",
-    "callee": "actor_run",
-    "line": 552,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_actor.c",
-    "caller": "if",
-    "callee": "VectorSubtract",
-    "line": 579,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_actor.c",
-    "caller": "if",
     "callee": "vectoyaw",
     "line": 580,
     "language": "c"
@@ -30192,20 +29576,6 @@
   },
   {
     "file": "Quake-2-master/game/m_medic.c",
-    "caller": "if",
-    "callee": "ED_CallSpawn",
-    "line": 620,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_medic.c",
-    "caller": "if",
-    "callee": "FoundTarget",
-    "line": 631,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_medic.c",
     "caller": "medic_checkattack",
     "callee": "medic_attack",
     "line": 707,
@@ -30832,13 +30202,6 @@
     "caller": "soldier_fire",
     "callee": "monster_fire_bullet",
     "line": 516,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/m_soldier.c",
-    "caller": "if",
-    "callee": "monster_fire_shotgun",
-    "line": 509,
     "language": "c"
   },
   {
@@ -31669,13 +31032,6 @@
   },
   {
     "file": "Quake-2-master/game/p_client.c",
-    "caller": "if",
-    "callee": "VectorSubtract",
-    "line": 472,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/p_client.c",
     "caller": "player_die",
     "callee": "LookAtKiller",
     "line": 525,
@@ -32134,20 +31490,6 @@
     "caller": "PutClientInServer",
     "callee": "ChangeWeapon",
     "line": 1254,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/p_client.c",
-    "caller": "if",
-    "callee": "memcpy",
-    "line": 1131,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/p_client.c",
-    "caller": "if",
-    "callee": "ClientUserinfoChanged",
-    "line": 1141,
     "language": "c"
   },
   {
@@ -32782,13 +32124,6 @@
   },
   {
     "file": "Quake-2-master/game/p_hud.c",
-    "caller": "if",
-    "callee": "GetItemByIndex",
-    "line": 426,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/p_hud.c",
     "caller": "G_CheckChaseStats",
     "callee": "memcpy",
     "line": 538,
@@ -32988,27 +32323,6 @@
     "caller": "SV_CalcBlend",
     "callee": "SV_AddBlend",
     "line": 481,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/p_view.c",
-    "caller": "if",
-    "callee": "SV_AddBlend",
-    "line": 456,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/p_view.c",
-    "caller": "if",
-    "callee": "SV_AddBlend",
-    "line": 464,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/game/p_view.c",
-    "caller": "if",
-    "callee": "SV_AddBlend",
-    "line": 472,
     "language": "c"
   },
   {
@@ -36016,34 +35330,6 @@
   },
   {
     "file": "Quake-2-master/qcommon/common.c",
-    "caller": "if",
-    "callee": "Com_Printf",
-    "line": 196,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/common.c",
-    "caller": "if",
-    "callee": "SV_Shutdown",
-    "line": 197,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/common.c",
-    "caller": "if",
-    "callee": "va",
-    "line": 197,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/common.c",
-    "caller": "if",
-    "callee": "CL_Drop",
-    "line": 198,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/common.c",
     "caller": "Com_Quit",
     "callee": "SV_Shutdown",
     "line": 228,
@@ -36558,27 +35844,6 @@
     "caller": "MSG_WriteDeltaEntity",
     "callee": "MSG_WriteShort",
     "line": 664,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/common.c",
-    "caller": "if",
-    "callee": "MSG_WriteByte",
-    "line": 587,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/common.c",
-    "caller": "if",
-    "callee": "MSG_WriteByte",
-    "line": 588,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/common.c",
-    "caller": "if",
-    "callee": "MSG_WriteByte",
-    "line": 592,
     "language": "c"
   },
   {
@@ -39355,20 +38620,6 @@
   },
   {
     "file": "Quake-2-master/qcommon/pmove.c",
-    "caller": "if",
-    "callee": "PM_Accelerate",
-    "line": 637,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/pmove.c",
-    "caller": "if",
-    "callee": "PM_StepSlideMove",
-    "line": 649,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/pmove.c",
     "caller": "PM_CheckSpecialMovement",
     "callee": "VectorNormalize",
     "line": 846,
@@ -39694,13 +38945,6 @@
     "caller": "Pmove",
     "callee": "PM_SnapPosition",
     "line": 1357,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/qcommon/pmove.c",
-    "caller": "if",
-    "callee": "PM_StepSlideMove",
-    "line": 1330,
     "language": "c"
   },
   {
@@ -42631,20 +41875,6 @@
   },
   {
     "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "Cvar_FullSet",
-    "line": 336,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "Sys_CopyProtect",
-    "line": 339,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
     "caller": "SV_Map",
     "callee": "SV_InitGame",
     "line": 403,
@@ -42837,48 +42067,6 @@
     "caller": "SV_Map",
     "callee": "SV_BroadcastCommand",
     "line": 463,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "SCR_BeginLoadingPlaque",
-    "line": 444,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "SV_BroadcastCommand",
-    "line": 445,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "SV_SpawnServer",
-    "line": 446,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "SCR_BeginLoadingPlaque",
-    "line": 450,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "SV_BroadcastCommand",
-    "line": 451,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_init.c",
-    "caller": "if",
-    "callee": "SV_SpawnServer",
-    "line": 452,
     "language": "c"
   },
   {
@@ -44143,27 +43331,6 @@
   },
   {
     "file": "Quake-2-master/server/sv_send.c",
-    "caller": "if",
-    "callee": "MSG_WriteByte",
-    "line": 41,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_send.c",
-    "caller": "if",
-    "callee": "MSG_WriteByte",
-    "line": 42,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_send.c",
-    "caller": "if",
-    "callee": "MSG_WriteString",
-    "line": 43,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_send.c",
     "caller": "SV_ClientPrintf",
     "callee": "MSG_WriteByte",
     "line": 76,
@@ -44622,20 +43789,6 @@
     "caller": "SV_SendClientMessages",
     "callee": "Netchan_Transmit",
     "line": 562,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_send.c",
-    "caller": "if",
-    "callee": "SV_RateDrop",
-    "line": 553,
-    "language": "c"
-  },
-  {
-    "file": "Quake-2-master/server/sv_send.c",
-    "caller": "if",
-    "callee": "SV_SendClientDatagram",
-    "line": 556,
     "language": "c"
   },
   {

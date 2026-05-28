@@ -220,6 +220,86 @@ function moduleStem(targetPath: string): string {
   return path.posix.basename(targetPath, path.posix.extname(targetPath));
 }
 
+function normalizeSourceRef(value: string): string {
+  return value
+    .replace(/^Quake II original\s*\/\s*/i, "")
+    .replace(/^Quake-2-master\//, "")
+    .replace(/\\/g, "/")
+    .trim();
+}
+
+function sourceHeaderReferences(sourceHeader: string | null, sourcePath: string): boolean {
+  if (!sourceHeader) {
+    return false;
+  }
+  const normalizedHeader = normalizeSourceRef(sourceHeader);
+  const normalizedSource = normalizeSourceRef(sourcePath);
+  return normalizedHeader.includes(normalizedSource);
+}
+
+function buildCurrentTsTargetsBySource(tsIndex: TsEntry[]): Map<string, string[]> {
+  const bySource = new Map<string, string[]>();
+  for (const target of tsIndex) {
+    if (!target.sourceHeader) {
+      continue;
+    }
+    for (const sourceRef of target.sourceHeader.split(/\s*(?:,| and )\s*/)) {
+      const normalized = normalizeSourceRef(sourceRef);
+      if (!normalized.endsWith(".c") && !normalized.endsWith(".h")) {
+        continue;
+      }
+      const key = `Quake-2-master/${normalized}`;
+      const bucket = bySource.get(key) ?? [];
+      bucket.push(target.path);
+      bySource.set(key, bucket);
+    }
+  }
+  for (const [sourcePath, targets] of bySource) {
+    bySource.set(sourcePath, [...new Set(targets)].sort((a, b) => a.localeCompare(b)));
+  }
+  return bySource;
+}
+
+function refreshDeclaredTargetsFromCurrentTs(
+  source: Phase01ReferenceEntry,
+  tsByPath: Map<string, TsEntry>,
+  currentTsTargetsBySource: Map<string, string[]>,
+): Phase01ReferenceEntry {
+  const currentTargets = currentTsTargetsBySource.get(source.sourcePath) ?? [];
+  if (currentTargets.length === 0) {
+    return source;
+  }
+
+  const refreshedTargets = source.declaredTsTargets.map((target) => {
+    if (tsByPath.has(target)) {
+      return target;
+    }
+    const sameBasename = currentTargets.find((candidate) => moduleStem(candidate) === source.sourceBasename);
+    return sameBasename ?? currentTargets[0] ?? target;
+  });
+  const mergedTargets = [...new Set([...refreshedTargets, ...currentTargets])].sort((a, b) => {
+    const aMatchesSource = sourceHeaderReferences(tsByPath.get(a)?.sourceHeader ?? null, source.sourcePath) ? 0 : 1;
+    const bMatchesSource = sourceHeaderReferences(tsByPath.get(b)?.sourceHeader ?? null, source.sourcePath) ? 0 : 1;
+    return aMatchesSource - bMatchesSource || a.localeCompare(b);
+  });
+  const primary =
+    source.declaredPrimaryTsTarget && tsByPath.has(source.declaredPrimaryTsTarget)
+      ? source.declaredPrimaryTsTarget
+      : mergedTargets.find((target) => moduleStem(target) === source.sourceBasename) ?? mergedTargets[0] ?? source.declaredPrimaryTsTarget;
+  const secondaries = mergedTargets.filter((target) => target !== primary);
+
+  return {
+    ...source,
+    declaredPrimaryTsTarget: primary,
+    declaredSecondaryTsTargets: secondaries,
+    declaredTsTargets: primary ? [primary, ...secondaries] : secondaries,
+    declaredTsTargetsExistingInIndex: mergedTargets.filter((target) => tsByPath.has(target)),
+    detectedExactTsTargets: [...new Set([...source.detectedExactTsTargets.filter((target) => tsByPath.has(target)), ...currentTargets])].sort((a, b) =>
+      a.localeCompare(b),
+    ),
+  };
+}
+
 function importSpecifierStem(targetPath: string): string {
   return moduleStem(targetPath);
 }
@@ -454,6 +534,7 @@ async function main(): Promise<void> {
 
   const sourceByPath = new Map(sourceIndex.map((entry) => [entry.path, entry]));
   const tsByPath = new Map(tsIndex.map((entry) => [entry.path, entry]));
+  const currentTsTargetsBySource = buildCurrentTsTargetsBySource(tsIndex);
   const sourcesByBasename = new Map<string, string[]>();
   for (const source of sourceIndex) {
     const bucket = sourcesByBasename.get(source.basename) ?? [];
@@ -461,7 +542,8 @@ async function main(): Promise<void> {
     sourcesByBasename.set(source.basename, bucket);
   }
 
-  const entries: StructuralEntry[] = phase01.referenceTable.map((source) => {
+  const entries: StructuralEntry[] = phase01.referenceTable.map((rawSource) => {
+    const source = refreshDeclaredTargetsFromCurrentTs(rawSource, tsByPath, currentTsTargetsBySource);
     const sourceEntry = sourceByPath.get(source.sourcePath);
     const targetEntries = source.declaredTsTargets.map((target) => tsByPath.get(target)).filter((entry): entry is TsEntry => entry !== undefined);
     const primaryBasenameMatchesSource = source.declaredPrimaryTsTarget !== null && moduleStem(source.declaredPrimaryTsTarget) === source.sourceBasename;

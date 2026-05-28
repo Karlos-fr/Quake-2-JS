@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/game/g_svcmds.c`
 - Cibles TS connues: `packages/game/src/g_svcmds.ts`, `packages/game/src/g_main.ts`, `packages/game/src/index.ts`
-- Tests connus: `npm run verify:g-svcmds`, `scripts/verify/quake2-g-svcmds.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `basename-collision`, `missing-ts-symbols:15`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:7`
+- Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:15`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:7`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

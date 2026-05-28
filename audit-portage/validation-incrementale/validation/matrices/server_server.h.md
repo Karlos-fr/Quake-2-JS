@@ -4,9 +4,9 @@
 
 - Source: `Quake-2-master/server/server.h`
 - Cibles TS connues: `packages/server/src/server.ts`, `packages/server/src/index.ts`
-- Tests connus: `npm run verify:full-game:server-host`, `npm run verify:full-game:server-snapshots`, `npm run verify:server:header`, `npm run verify:server:runtime`, `scripts/verify/quake2-full-game-server-host.ts`, `scripts/verify/quake2-full-game-server-snapshots.ts`, `scripts/verify/quake2-server-header.ts`, `scripts/verify/quake2-server-runtime.ts`
+- Tests connus: aucun
 - Verdict Phase 03: A redecouper
-- Findings Phase 03: `missing-ts-symbols:102`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:25`
+- Findings Phase 03: `missing-linked-test-for-some-symbols`, `missing-ts-symbols:102`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:25`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
