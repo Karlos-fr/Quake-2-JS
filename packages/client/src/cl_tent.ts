@@ -11,19 +11,23 @@
  * Deviations:
  * - Stores model references as asset-path strings instead of renderer handles.
  * - Emits structured refresh-facing beam and explosion data instead of calling renderer entry points directly.
- * - Reuses parsed temp-entity packets produced by `parse.ts` instead of reading network bytes here.
+ * - Reads temp-entity packet bytes here, then applies them to persistent temp-entity state through structured packets.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original temp-entity pipeline.
  * - `cl_tent.ts` is the principal port target for `client/cl_tent.c`.
- * - `newfx.ts` provides the helpers ported from `client/cl_newfx.c` reused by the temp-entity pipeline.
- * - `effects.ts` stays focused on the routines ported from `client/cl_fx.c`.
+ * - `cl_newfx.ts` provides the helpers ported from `client/cl_newfx.c` reused by the temp-entity pipeline.
+ * - `cl_fx.ts` stays focused on the routines ported from `client/cl_fx.c` and shared effect execution.
  * - `refresh.ts` only consumes the structured refresh output built here.
  */
 
 import {
   AngleVectors,
   DirFromByte,
+  MSG_ReadByte,
+  MSG_ReadLong,
+  MSG_ReadPos,
+  MSG_ReadShort,
   RF_BEAM,
   RF_FULLBRIGHT,
   RF_TRANSLUCENT,
@@ -31,9 +35,10 @@ import {
   temp_event_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import type { ClientTempEntityPacket } from "./cl_parse.js";
+import type { ClientParseHooks, ClientParticleEffectPacket, ClientTempEntityPacket } from "./cl_parse.js";
 import type { ClientDynamicLight } from "./refresh.js";
 import type { ClientViewValues } from "./cl_view.js";
+import { CL_ExecuteTempEntityEffects, CL_ParticleEffect } from "./cl_fx.js";
 import { CL_Flashlight, CL_Heatbeam, CL_MonsterPlasma_Shell, CL_Nukeblast, CL_ParticleSteamEffect2, CL_Widowbeamout } from "./cl_newfx.js";
 import {
   createClientBeam,
@@ -312,9 +317,9 @@ export function CL_RegisterTEntModels(runtime: ClientRuntime): { models: string[
  * - Applies one parsed temp-entity packet to the persistent client temp-entity state.
  *
  * Porting notes:
- * - Reuses the already parsed packet representation from `cl_parse.ts`.
+ * - Reuses the parsed packet representation produced by `CL_ParseTEnt`.
  * - Covers the persistent state families first: beams, player beams, lasers, explosions and sustains.
- * - `CL_ParseTEnt` remains owned by `cl_parse.ts`; this adapter applies parsed packet payloads to cl_tent state.
+ * - `CL_ParseTEnt` now lives in this file; this adapter only applies parsed packet payloads to cl_tent state.
  */
 export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntityPacket): void {
   switch (packet.type) {
@@ -1634,4 +1639,394 @@ function randomExplosionBaseframe(type: number): number {
   }
 
   return 0;
+}
+
+/**
+ * Original name: CL_ParseParticles
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the auxiliary wall-puff particle packet and forwards its exact payload.
+ *
+ * Porting notes:
+ * - Keeps the original `pos`, `dir`, `color`, `count` read order.
+ */
+export function CL_ParseParticles(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientParticleEffectPacket {
+  const packet: ClientParticleEffectPacket = {
+    kind: "particle-effect",
+    position: MSG_ReadPos(runtime.net_message),
+    directionByte: MSG_ReadByte(runtime.net_message),
+    color: MSG_ReadByte(runtime.net_message),
+    count: MSG_ReadByte(runtime.net_message)
+  };
+
+  CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), packet.color, packet.count);
+  hooks.onParticleEffect?.(packet);
+  return packet;
+}
+
+/**
+ * Original name: CL_ParseTEnt
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Parses one temporary entity event payload from the server message stream.
+ *
+ * Porting notes:
+ * - Currently covers the most common packet layouts and returns a structured packet instead of spawning effects directly.
+ * - More specialized temp entities remain to be ported incrementally as `cl_tent.c` advances.
+ */
+export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientTempEntityPacket {
+  const type = MSG_ReadByte(runtime.net_message);
+  const packet: ClientTempEntityPacket = { type };
+
+  switch (type) {
+    case temp_event_t.TE_BLOOD:
+    case temp_event_t.TE_GUNSHOT:
+    case temp_event_t.TE_SPARKS:
+    case temp_event_t.TE_SHOTGUN:
+    case temp_event_t.TE_SCREEN_SPARKS:
+    case temp_event_t.TE_SHIELD_SPARKS:
+    case temp_event_t.TE_BULLET_SPARKS:
+    case temp_event_t.TE_GREENBLOOD:
+    case temp_event_t.TE_HEATBEAM_SPARKS:
+    case temp_event_t.TE_HEATBEAM_STEAM:
+    case temp_event_t.TE_ELECTRIC_SPARKS: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.directionByte = MSG_ReadByte(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_RAILTRAIL: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.position2 = MSG_ReadPos(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_BLUEHYPERBLASTER: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.direction = MSG_ReadPos(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_GRENADE_EXPLOSION:
+    case temp_event_t.TE_EXPLOSION1:
+    case temp_event_t.TE_EXPLOSION1_BIG:
+    case temp_event_t.TE_EXPLOSION2:
+    case temp_event_t.TE_ROCKET_EXPLOSION:
+    case temp_event_t.TE_ROCKET_EXPLOSION_WATER:
+    case temp_event_t.TE_GRENADE_EXPLOSION_WATER:
+    case temp_event_t.TE_BFG_EXPLOSION:
+    case temp_event_t.TE_BFG_BIGEXPLOSION:
+    case temp_event_t.TE_BOSSTPORT:
+    case temp_event_t.TE_PLASMA_EXPLOSION:
+    case temp_event_t.TE_PLAIN_EXPLOSION:
+    case temp_event_t.TE_MOREBLOOD:
+    case temp_event_t.TE_CHAINFIST_SMOKE:
+    case temp_event_t.TE_TRACKER_EXPLOSION:
+    case temp_event_t.TE_TELEPORT_EFFECT:
+    case temp_event_t.TE_DBALL_GOAL:
+    case temp_event_t.TE_WIDOWSPLASH:
+    case temp_event_t.TE_EXPLOSION1_NP: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_LASER_SPARKS:
+    case temp_event_t.TE_SPLASH:
+    case temp_event_t.TE_WELDING_SPARKS:
+    case temp_event_t.TE_TUNNEL_SPARKS: {
+      packet.count = MSG_ReadByte(runtime.net_message);
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.directionByte = MSG_ReadByte(runtime.net_message);
+      packet.color = MSG_ReadByte(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_BLASTER:
+    case temp_event_t.TE_BLASTER2:
+    case temp_event_t.TE_FLECHETTE: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.directionByte = MSG_ReadByte(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_PARASITE_ATTACK:
+    case temp_event_t.TE_MEDIC_CABLE_ATTACK: {
+      assignBeamPacket(packet, "beam", CL_ParseBeam(runtime));
+      break;
+    }
+    case temp_event_t.TE_FLASHLIGHT: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.entity = MSG_ReadShort(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_BFG_LASER: {
+      assignBeamPacket(packet, "laser", CL_ParseLaser(runtime));
+      break;
+    }
+    case temp_event_t.TE_BUBBLETRAIL: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.position2 = MSG_ReadPos(runtime.net_message);
+      break;
+    }
+    case temp_event_t.TE_GRAPPLE_CABLE: {
+      assignBeamPacket(packet, "beam2", CL_ParseBeam2(runtime));
+      break;
+    }
+    case temp_event_t.TE_HEATBEAM:
+    case temp_event_t.TE_MONSTER_HEATBEAM: {
+      assignBeamPacket(packet, "player-beam", CL_ParsePlayerBeam(runtime, type));
+      break;
+    }
+    case temp_event_t.TE_STEAM: {
+      assignBeamPacket(packet, "steam", CL_ParseSteam(runtime));
+      break;
+    }
+    case temp_event_t.TE_FORCEWALL:
+    case temp_event_t.TE_DEBUGTRAIL:
+    case temp_event_t.TE_BUBBLETRAIL2: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.position2 = MSG_ReadPos(runtime.net_message);
+      if (type === temp_event_t.TE_FORCEWALL) {
+        packet.color = MSG_ReadByte(runtime.net_message);
+      }
+      break;
+    }
+    case temp_event_t.TE_LIGHTNING: {
+      assignBeamPacket(packet, "lightning", CL_ParseLightning(runtime));
+      break;
+    }
+    case temp_event_t.TE_WIDOWBEAMOUT: {
+      assignBeamPacket(packet, "widow", CL_ParseWidow(runtime));
+      break;
+    }
+    case temp_event_t.TE_NUKEBLAST: {
+      assignBeamPacket(packet, "nuke", CL_ParseNuke(runtime));
+      break;
+    }
+    default:
+      throw new Error(`CL_ParseTEnt: unsupported type ${type}`);
+  }
+
+  CL_AddTEntPacket(runtime, packet);
+  CL_ExecuteTempEntityEffects(runtime, packet);
+  hooks.onTempEntity?.(packet);
+  return packet;
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (local temp-entity packet helper)
+ * Category: New
+ * Purpose: Merge a specialized temp-entity payload into the currently allocated packet object.
+ *
+ * Constraints:
+ * - Must preserve the original outer `type` field while copying parsed fields by value.
+ */
+function assignBeamPacket(
+  target: ClientTempEntityPacket,
+  beamKind: NonNullable<ClientTempEntityPacket["beamKind"]>,
+  source: Partial<ClientTempEntityPacket>
+): void {
+  target.beamKind = beamKind;
+  if (source.count !== undefined) {
+    target.count = source.count;
+  }
+  if (source.color !== undefined) {
+    target.color = source.color;
+  }
+  if (source.entity !== undefined) {
+    target.entity = source.entity;
+  }
+  if (source.entity2 !== undefined) {
+    target.entity2 = source.entity2;
+  }
+  if (source.id !== undefined) {
+    target.id = source.id;
+  }
+  if (source.magnitude !== undefined) {
+    target.magnitude = source.magnitude;
+  }
+  if (source.position !== undefined) {
+    target.position = source.position;
+  }
+  if (source.position2 !== undefined) {
+    target.position2 = source.position2;
+  }
+  if (source.offset !== undefined) {
+    target.offset = source.offset;
+  }
+  if (source.directionByte !== undefined) {
+    target.directionByte = source.directionByte;
+  }
+  if (source.durationMs !== undefined) {
+    target.durationMs = source.durationMs;
+  }
+}
+
+
+/**
+ * Original name: CL_ParseBeam
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the parasite/medic-style beam payload and returns the exact packet fields it carries.
+ */
+export function CL_ParseBeam(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+  return {
+    entity: MSG_ReadShort(runtime.net_message),
+    position: MSG_ReadPos(runtime.net_message),
+    position2: MSG_ReadPos(runtime.net_message),
+    offset: [0, 0, 0]
+  };
+}
+
+/**
+ * Original name: CL_ParseBeam2
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the grapple-style beam payload, including its explicit offset.
+ */
+export function CL_ParseBeam2(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+  return {
+    entity: MSG_ReadShort(runtime.net_message),
+    position: MSG_ReadPos(runtime.net_message),
+    position2: MSG_ReadPos(runtime.net_message),
+    offset: MSG_ReadPos(runtime.net_message)
+  };
+}
+
+/**
+ * Original name: CL_ParsePlayerBeam
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the player-linked beam payload used by heatbeam-style temp entities.
+ */
+export function CL_ParsePlayerBeam(runtime: ClientRuntime, type: number): Partial<ClientTempEntityPacket> {
+  const entity = MSG_ReadShort(runtime.net_message);
+  const position = MSG_ReadPos(runtime.net_message);
+  const position2 = MSG_ReadPos(runtime.net_message);
+
+  let offset: [number, number, number];
+  if (type === temp_event_t.TE_HEATBEAM) {
+    offset = [2, 7, -3];
+  } else {
+    offset = [0, 0, 0];
+  }
+
+  return {
+    entity,
+    position,
+    position2,
+    offset
+  };
+}
+
+/**
+ * Original name: CL_ParseLightning
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the dual-entity lightning beam payload.
+ */
+export function CL_ParseLightning(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+  return {
+    entity: MSG_ReadShort(runtime.net_message),
+    entity2: MSG_ReadShort(runtime.net_message),
+    position: MSG_ReadPos(runtime.net_message),
+    position2: MSG_ReadPos(runtime.net_message),
+    offset: [0, 0, 0]
+  };
+}
+
+/**
+ * Original name: CL_ParseLaser
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the laser temp entity payload and preserves only its endpoints.
+ */
+export function CL_ParseLaser(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+  return {
+    position: MSG_ReadPos(runtime.net_message),
+    position2: MSG_ReadPos(runtime.net_message)
+  };
+}
+
+/**
+ * Original name: CL_ParseSteam
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the rogue steam payload in both instant and sustain forms.
+ */
+export function CL_ParseSteam(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+  const id = MSG_ReadShort(runtime.net_message);
+  if (id === -1) {
+    return {
+      id,
+      count: MSG_ReadByte(runtime.net_message),
+      position: MSG_ReadPos(runtime.net_message),
+      directionByte: MSG_ReadByte(runtime.net_message),
+      color: MSG_ReadByte(runtime.net_message) & 0xff,
+      magnitude: MSG_ReadShort(runtime.net_message)
+    };
+  }
+
+  return {
+    id,
+    count: MSG_ReadByte(runtime.net_message),
+    position: MSG_ReadPos(runtime.net_message),
+    directionByte: MSG_ReadByte(runtime.net_message),
+    color: MSG_ReadByte(runtime.net_message) & 0xff,
+    magnitude: MSG_ReadShort(runtime.net_message),
+    durationMs: MSG_ReadLong(runtime.net_message)
+  };
+}
+
+/**
+ * Original name: CL_ParseWidow
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the widow sustain-effect payload.
+ */
+export function CL_ParseWidow(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+  return {
+    id: MSG_ReadShort(runtime.net_message),
+    position: MSG_ReadPos(runtime.net_message),
+    durationMs: 2100
+  };
+}
+
+/**
+ * Original name: CL_ParseNuke
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the nuke sustain-effect payload.
+ */
+export function CL_ParseNuke(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+  return {
+    id: 21000,
+    position: MSG_ReadPos(runtime.net_message),
+    durationMs: 1000
+  };
 }

@@ -3,6 +3,7 @@
 ## Etat
 
 - Statut: Termine
+- 2026-05-28: redécoupage TS applique pour `CL_ParseInventory`, maintenant proprietaire dans `packages/client/src/cl_inv.ts`; `packages/client/src/cl_parse.ts` garde seulement le dispatch `svc_inventory` et le reexport public.
 - Dernier lot valide: fichier complet `client/cl_inv.c` (`CL_ParseInventory`, `Inv_DrawString`, `SetStringHighBit`, `DISPLAY_ITEMS`, `CL_DrawInventory` et locaux generes).
 - Verdict: 5 `Valide`, 7 `Non applicable`.
 

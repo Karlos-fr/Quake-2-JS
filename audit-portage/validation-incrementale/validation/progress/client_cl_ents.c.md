@@ -2,6 +2,7 @@
 
 ## Dernier lot valide
 
+- 2026-05-28: redécoupage TS applique pour les parseurs `client/cl_ents.c`: `CL_ParseEntityBits`, `CL_ParseDelta`, `CL_ParsePlayerstate`, `CL_ParseFrame`, `CL_DeltaEntity` et `CL_ParsePacketEntities` vivent maintenant dans `packages/client/src/cl_ents.ts`. `packages/client/src/cl_parse.ts` conserve seulement les imports/reexports et le dispatch runtime.
 - 2026-05-07: gros premier lot parsing/interpolation des packet entities valide: `bitcounts`, `CL_ParseEntityBits`, locaux `i`/`number`, `CL_ParseDelta`, `CL_DeltaEntity`, local `state`, `CL_ParsePacketEntities`, locaux `newnum`/`bits`/`oldstate`.
 - `bitcounts` et les temporaires locaux sont `Non applicable` car ils ne sont pas des entites TS proprietaires; `bitcounts` etait seulement un compteur C de profiling protocole.
 - 2026-05-07: lot playerstate/frame valide: `CL_ParsePlayerstate`, temporaires `flags`/`state`/`i`/`statbits`, `memset`, `CL_FireEntityEvents`, temporaire `s1`, `CL_ParseFrame`, temporaires `cmd`/`len`/`old`.

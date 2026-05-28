@@ -1,5 +1,17 @@
 # Progress - Quake-2-master/client/cl_tent.c
 
+## 2026-05-28 - Redecoupage TS parseurs temp entities
+
+Statut: `Termine`
+
+Lot traite:
+- `CL_ParseParticles`, `CL_ParseTEnt`, `CL_ParseBeam`, `CL_ParseBeam2`, `CL_ParsePlayerBeam`, `CL_ParseLightning`, `CL_ParseLaser`, `CL_ParseSteam`, `CL_ParseWidow` et `CL_ParseNuke` vivent maintenant dans `packages/client/src/cl_tent.ts`.
+- `CL_AddTEntPacket` reste un adapter d'application de paquet parse; il n'est plus presente comme proprietaire C/H de `CL_ParseTEnt`.
+- `packages/client/src/cl_parse.ts` conserve seulement le dispatch `svc_temp_entity` et les reexports publics de compatibilite.
+
+Tests:
+- `npm run typecheck`
+
 ## 2026-05-08 - Lot temp entities persistantes / beams / explosions
 
 Statut: `En cours`

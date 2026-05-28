@@ -58,8 +58,11 @@ import {
   MZ_SSHOTGUN,
   MZ_TRACKER,
   MZ_UNUSED,
+  MAX_EDICTS,
   MAX_LIGHTSTYLES,
   MAX_QPATH,
+  MSG_ReadByte,
+  MSG_ReadShort,
   NUMVERTEXNORMALS,
   ATTN_NONE,
   ATTN_NORM,
@@ -88,6 +91,7 @@ import {
 } from "../../qcommon/src/index.js";
 import type { ClientEntityEvent } from "./cl_ents.js";
 import type {
+  ClientParseHooks,
   ClientMuzzleFlash2Packet,
   ClientMuzzleFlashPacket,
   ClientParticleEffectPacket,
@@ -1447,7 +1451,7 @@ export function CL_ExecutePacketEntityEffects(
  * - Converts one parsed auxiliary particle-effect packet into normalized effect metadata.
  *
  * Porting notes:
- * - `CL_ParseParticles` remains owned by `cl_parse.ts`; this helper only exposes the parsed packet as action-effect data.
+ * - `CL_ParseParticles` is owned by `cl_tent.ts`; this helper only exposes the parsed packet as action-effect data.
  */
 export function CL_BuildParticleEffects(packet: ClientParticleEffectPacket): ClientActionEffect[] {
   return [{
@@ -3919,4 +3923,59 @@ function resetParticle(particle: cparticle_t): void {
   particle.alpha = 0;
   particle.alphavel = 0;
   particle.next = -1;
+}
+
+/**
+ * Original name: CL_ParseMuzzleFlash
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Parses one player weapon muzzle flash event.
+ *
+ * Porting notes:
+ * - Returns a structured packet and defers light, sound and particle side effects to hooks.
+ */
+export function CL_ParseMuzzleFlash(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientMuzzleFlashPacket {
+  const entity = MSG_ReadShort(runtime.net_message);
+  if (entity < 1 || entity >= MAX_EDICTS) {
+    throw new Error(`CL_ParseMuzzleFlash: bad entity ${entity}`);
+  }
+
+  const weapon = MSG_ReadByte(runtime.net_message);
+  const packet: ClientMuzzleFlashPacket = {
+    entity,
+    weapon,
+    silenced: (weapon & 128) !== 0
+  };
+  hooks.onMuzzleFlash?.(packet);
+  return packet;
+}
+
+/**
+ * Original name: CL_ParseMuzzleFlash2
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Parses one monster muzzle flash event.
+ *
+ * Porting notes:
+ * - Returns a structured packet and defers all effect spawning to hooks.
+ */
+export function CL_ParseMuzzleFlash2(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientMuzzleFlash2Packet {
+  const entity = MSG_ReadShort(runtime.net_message);
+  if (entity < 1 || entity >= MAX_EDICTS) {
+    throw new Error(`CL_ParseMuzzleFlash2: bad entity ${entity}`);
+  }
+
+  const flashNumber = MSG_ReadByte(runtime.net_message);
+  const packet: ClientMuzzleFlash2Packet = {
+    entity,
+    flashNumber
+  };
+  hooks.onMuzzleFlash2?.(packet);
+  return packet;
 }

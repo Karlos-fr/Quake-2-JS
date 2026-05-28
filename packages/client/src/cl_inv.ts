@@ -19,6 +19,7 @@
 import {
   CS_ITEMS,
   MAX_ITEMS,
+  MSG_ReadShort,
   STAT_SELECTED_ITEM
 } from "../../qcommon/src/index.js";
 import type {
@@ -308,4 +309,24 @@ function createPictureCommand(x: number, y: number, pic: string): HudPictureComm
       height: 0
     }
   };
+}
+
+/**
+ * Original name: CL_ParseInventory
+ * Source: client/cl_inv.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reads the current inventory item counts from the message stream.
+ *
+ * Porting notes:
+ * - Updates the fixed inventory array in place.
+ */
+export function CL_ParseInventory(runtime: ClientRuntime): number[] {
+  for (let index = 0; index < MAX_ITEMS; index += 1) {
+    runtime.cl.inventory[index] = MSG_ReadShort(runtime.net_message);
+  }
+
+  return runtime.cl.inventory;
 }

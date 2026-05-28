@@ -1,5 +1,7 @@
 # Progress TS - packages/client/src/cl_inv.ts
 
+- 2026-05-28: ajout de `CL_ParseInventory` comme proprietaire `client/cl_inv.c`, deplace depuis `cl_parse.ts`; `cl_parse.ts` garde le dispatch `svc_inventory`.
+
 - Fichier TS: `packages/client/src/cl_inv.ts`
 - Matrice TS: `audit-portage/validation-incrementale/validation/ts-matrices/packages_client_src_cl_inv.ts.md`
 - Lot courant: tous les symboles du fichier (`DISPLAY_ITEMS`, `ClientInventoryBindingMap`, `ClientInventoryContext`, `Inv_DrawString`, `Inv_DrawStringRef`, `SetStringHighBit`, `CL_DrawInventory`, `CL_DrawInventoryRef`, `createPictureCommand`)

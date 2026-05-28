@@ -2,6 +2,8 @@
 
 ## Dernier lot valide
 
+- 2026-05-28: `packages/client/src/cl_parse.ts` recentre sur `client/cl_parse.c`: les parseurs proprietaires de `client/cl_ents.c`, `client/cl_tent.c`, `client/cl_fx.c` et `client/cl_inv.c` sont delegues a leurs fichiers TS homonymes. Le fichier conserve le dispatch `CL_ParseServerMessage`, `CL_ParseBaseline`, les configstrings, downloads, sons et les reexports publics de compatibilite.
+
 Reliquat final `CL_ParseDownload` : adapter write/close/rename fichier.
 
 ## Preuves obtenues

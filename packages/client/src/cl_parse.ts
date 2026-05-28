@@ -1,7 +1,7 @@
 /**
  * File: cl_parse.ts
- * Source: Quake II original / client/cl_parse.c and client/cl_ents.c
- * Purpose: Port the first Quake II client message parsing routines for server data, configstrings, baselines and frames.
+ * Source: Quake II original / client/cl_parse.c
+ * Purpose: Port the Quake II client message dispatcher and cl_parse.c-owned server data, configstrings, baselines and downloads.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,6 +9,7 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
+ * - Delegates cl_ents.c, cl_fx.c, cl_tent.c and cl_inv.c packet handlers to their owner modules while re-exporting them for compatibility.
  * - Defers sound, refresh, temporary entity and inventory side effects to optional hooks.
  * - Uses explicit runtime objects instead of file-static globals.
  *
@@ -21,12 +22,7 @@ import {
   CS_IMAGES,
   CS_LIGHTS,
   CS_MODELS,
-  DirFromByte,
-  MSG_ReadAngle,
-  MSG_ReadAngle16,
   MSG_ReadByte,
-  MSG_ReadChar,
-  MSG_ReadCoord,
   MSG_ReadData,
   MSG_ReadLong,
   MSG_ReadPos,
@@ -42,11 +38,8 @@ import {
   SND_POS,
   SND_VOLUME,
   createEntityState,
-  entity_event_t,
   MAX_MODELS,
   MAX_SOUNDS,
-  pmtype_t,
-  temp_event_t,
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE,
@@ -55,67 +48,55 @@ import {
   MAX_CONFIGSTRINGS,
   MAX_CLIENTS,
   MAX_EDICTS,
-  MAX_ITEMS,
-  MAX_STATS
+  MAX_ITEMS
 } from "../../qcommon/src/index.js";
 import {
   BASEDIRNAME,
   clc_ops_e,
   PROTOCOL_VERSION,
-  PS_BLEND,
-  PS_FOV,
-  PS_KICKANGLES,
-  PS_M_DELTA_ANGLES,
-  PS_M_FLAGS,
-  PS_M_GRAVITY,
-  PS_M_ORIGIN,
-  PS_M_TIME,
-  PS_M_TYPE,
-  PS_M_VELOCITY,
-  PS_RDFLAGS,
-  PS_VIEWANGLES,
-  PS_VIEWOFFSET,
-  PS_WEAPONFRAME,
-  PS_WEAPONINDEX,
   svc_ops_e,
-  svc_strings,
-  U_ANGLE1,
-  U_ANGLE2,
-  U_ANGLE3,
-  U_EFFECTS8,
-  U_EFFECTS16,
-  U_EVENT,
-  U_FRAME8,
-  U_FRAME16,
-  U_MODEL,
-  U_MODEL2,
-  U_MODEL3,
-  U_MODEL4,
-  U_MOREBITS1,
-  U_MOREBITS2,
-  U_MOREBITS3,
-  U_NUMBER16,
-  U_OLDORIGIN,
-  U_ORIGIN1,
-  U_ORIGIN2,
-  U_ORIGIN3,
-  U_REMOVE,
-  U_RENDERFX8,
-  U_RENDERFX16,
-  U_SKIN8,
-  U_SKIN16,
-  U_SOLID,
-  U_SOUND,
-  UPDATE_MASK
+  svc_strings
 } from "../../qcommon/src/index.js";
-import { type ClientRuntime, type frame_t } from "./client.js";
-import { MAX_PARSE_ENTITIES, connstate_t, createFrame } from "./client.js";
-import { CL_FireEntityEvents, type ClientEntityEvent } from "./cl_ents.js";
-import { CL_ClearEffects, CL_ExecuteTempEntityEffects, CL_ParticleEffect, CL_SetLightstyle } from "./cl_fx.js";
+import { connstate_t, createFrame, type ClientRuntime, type frame_t } from "./client.js";
+import {
+  CL_ParseDelta,
+  CL_ParseEntityBits,
+  CL_ParseFrame,
+  CL_ParsePlayerstate,
+  type ClientEntityEvent
+} from "./cl_ents.js";
+import { CL_ClearEffects, CL_ParseMuzzleFlash, CL_ParseMuzzleFlash2, CL_SetLightstyle } from "./cl_fx.js";
+import { CL_ParseInventory } from "./cl_inv.js";
 import { CL_AddNetgraph, SCR_CenterPrint, SCR_PlayCinematic } from "./cl_scrn.js";
-import { CL_AddTEntPacket, CL_ClearTEnts } from "./cl_tent.js";
-import { CL_CheckPredictionError } from "./cl_pred.js";
+import {
+  CL_ClearTEnts,
+  CL_ParseTEnt
+} from "./cl_tent.js";
 import { createClientCinematicState, createClientScreenState, createClientSkyState } from "./client.js";
+
+export {
+  CL_ParseDelta,
+  CL_ParseEntityBits,
+  CL_ParseFrame,
+  CL_ParsePlayerstate
+} from "./cl_ents.js";
+export {
+  CL_ParseMuzzleFlash,
+  CL_ParseMuzzleFlash2
+} from "./cl_fx.js";
+export { CL_ParseInventory } from "./cl_inv.js";
+export {
+  CL_ParseBeam,
+  CL_ParseBeam2,
+  CL_ParseLaser,
+  CL_ParseLightning,
+  CL_ParseNuke,
+  CL_ParseParticles,
+  CL_ParsePlayerBeam,
+  CL_ParseSteam,
+  CL_ParseTEnt,
+  CL_ParseWidow
+} from "./cl_tent.js";
 
 /**
  * Original name: N/A
@@ -328,227 +309,6 @@ export function CL_ClearState(runtime: ClientRuntime): void {
 }
 
 /**
- * Original name: CL_ParseEntityBits
- * Source: client/cl_ents.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Reads one entity update header and returns the entity number and bitfield.
- *
- * Porting notes:
- * - Returns both values as an object instead of using an out pointer.
- */
-export function CL_ParseEntityBits(runtime: ClientRuntime): { bits: number; number: number } {
-  let total = MSG_ReadByte(runtime.net_message);
-
-  if (total & U_MOREBITS1) {
-    total |= MSG_ReadByte(runtime.net_message) << 8;
-  }
-  if (total & U_MOREBITS2) {
-    total |= MSG_ReadByte(runtime.net_message) << 16;
-  }
-  if (total & U_MOREBITS3) {
-    total |= MSG_ReadByte(runtime.net_message) << 24;
-  }
-
-  const number = (total & U_NUMBER16) !== 0
-    ? MSG_ReadShort(runtime.net_message)
-    : MSG_ReadByte(runtime.net_message);
-
-  return { bits: total, number };
-}
-
-/**
- * Original name: CL_ParseDelta
- * Source: client/cl_ents.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Applies one entity delta against a previous or baseline state.
- *
- * Porting notes:
- * - Mutates the destination entity state passed by reference, matching the original porting shape.
- */
-export function CL_ParseDelta(runtime: ClientRuntime, from: ReturnType<typeof createEntityState>, to: ReturnType<typeof createEntityState>, number: number, bits: number): void {
-  copyEntityState(from, to);
-  to.old_origin = [...from.origin];
-  to.number = number;
-
-  if (bits & U_MODEL) {
-    to.modelindex = MSG_ReadByte(runtime.net_message);
-  }
-  if (bits & U_MODEL2) {
-    to.modelindex2 = MSG_ReadByte(runtime.net_message);
-  }
-  if (bits & U_MODEL3) {
-    to.modelindex3 = MSG_ReadByte(runtime.net_message);
-  }
-  if (bits & U_MODEL4) {
-    to.modelindex4 = MSG_ReadByte(runtime.net_message);
-  }
-  if (bits & U_FRAME8) {
-    to.frame = MSG_ReadByte(runtime.net_message);
-  }
-  if (bits & U_FRAME16) {
-    to.frame = MSG_ReadShort(runtime.net_message);
-  }
-
-  if ((bits & U_SKIN8) !== 0 && (bits & U_SKIN16) !== 0) {
-    to.skinnum = MSG_ReadLong(runtime.net_message);
-  } else if (bits & U_SKIN8) {
-    to.skinnum = MSG_ReadByte(runtime.net_message);
-  } else if (bits & U_SKIN16) {
-    to.skinnum = MSG_ReadShort(runtime.net_message);
-  }
-
-  if ((bits & (U_EFFECTS8 | U_EFFECTS16)) === (U_EFFECTS8 | U_EFFECTS16)) {
-    to.effects = MSG_ReadLong(runtime.net_message);
-  } else if (bits & U_EFFECTS8) {
-    to.effects = MSG_ReadByte(runtime.net_message);
-  } else if (bits & U_EFFECTS16) {
-    to.effects = MSG_ReadShort(runtime.net_message);
-  }
-
-  if ((bits & (U_RENDERFX8 | U_RENDERFX16)) === (U_RENDERFX8 | U_RENDERFX16)) {
-    to.renderfx = MSG_ReadLong(runtime.net_message);
-  } else if (bits & U_RENDERFX8) {
-    to.renderfx = MSG_ReadByte(runtime.net_message);
-  } else if (bits & U_RENDERFX16) {
-    to.renderfx = MSG_ReadShort(runtime.net_message);
-  }
-
-  if (bits & U_ORIGIN1) {
-    to.origin[0] = MSG_ReadCoord(runtime.net_message);
-  }
-  if (bits & U_ORIGIN2) {
-    to.origin[1] = MSG_ReadCoord(runtime.net_message);
-  }
-  if (bits & U_ORIGIN3) {
-    to.origin[2] = MSG_ReadCoord(runtime.net_message);
-  }
-  if (bits & U_ANGLE1) {
-    to.angles[0] = MSG_ReadAngle(runtime.net_message);
-  }
-  if (bits & U_ANGLE2) {
-    to.angles[1] = MSG_ReadAngle(runtime.net_message);
-  }
-  if (bits & U_ANGLE3) {
-    to.angles[2] = MSG_ReadAngle(runtime.net_message);
-  }
-  if (bits & U_OLDORIGIN) {
-    to.old_origin = MSG_ReadPos(runtime.net_message);
-  }
-  if (bits & U_SOUND) {
-    to.sound = MSG_ReadByte(runtime.net_message);
-  }
-  to.event = (bits & U_EVENT) !== 0 ? MSG_ReadByte(runtime.net_message) : 0;
-  if (bits & U_SOLID) {
-    to.solid = MSG_ReadShort(runtime.net_message);
-  }
-}
-
-/**
- * Original name: CL_ParsePlayerstate
- * Source: client/cl_ents.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Reads one delta-compressed player state into the target frame.
- *
- * Porting notes:
- * - Preserves the original field-by-field update order.
- */
-export function CL_ParsePlayerstate(runtime: ClientRuntime, oldframe: frame_t | null, newframe: frame_t): void {
-  const state = newframe.playerstate;
-  const source = oldframe ? oldframe.playerstate : createFrame().playerstate;
-  copyPlayerState(source, state);
-
-  const flags = MSG_ReadShort(runtime.net_message);
-
-  if (flags & PS_M_TYPE) {
-    state.pmove.pm_type = MSG_ReadByte(runtime.net_message) as pmtype_t;
-  }
-  if (flags & PS_M_ORIGIN) {
-    state.pmove.origin[0] = MSG_ReadShort(runtime.net_message);
-    state.pmove.origin[1] = MSG_ReadShort(runtime.net_message);
-    state.pmove.origin[2] = MSG_ReadShort(runtime.net_message);
-  }
-  if (flags & PS_M_VELOCITY) {
-    state.pmove.velocity[0] = MSG_ReadShort(runtime.net_message);
-    state.pmove.velocity[1] = MSG_ReadShort(runtime.net_message);
-    state.pmove.velocity[2] = MSG_ReadShort(runtime.net_message);
-  }
-  if (flags & PS_M_TIME) {
-    state.pmove.pm_time = MSG_ReadByte(runtime.net_message);
-  }
-  if (flags & PS_M_FLAGS) {
-    state.pmove.pm_flags = MSG_ReadByte(runtime.net_message);
-  }
-  if (flags & PS_M_GRAVITY) {
-    state.pmove.gravity = MSG_ReadShort(runtime.net_message);
-  }
-  if (flags & PS_M_DELTA_ANGLES) {
-    state.pmove.delta_angles[0] = MSG_ReadShort(runtime.net_message);
-    state.pmove.delta_angles[1] = MSG_ReadShort(runtime.net_message);
-    state.pmove.delta_angles[2] = MSG_ReadShort(runtime.net_message);
-  }
-
-  if (runtime.cl.attractloop) {
-    state.pmove.pm_type = pmtype_t.PM_FREEZE;
-  }
-
-  if (flags & PS_VIEWOFFSET) {
-    state.viewoffset[0] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.viewoffset[1] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.viewoffset[2] = MSG_ReadChar(runtime.net_message) * 0.25;
-  }
-  if (flags & PS_VIEWANGLES) {
-    state.viewangles[0] = MSG_ReadAngle16(runtime.net_message);
-    state.viewangles[1] = MSG_ReadAngle16(runtime.net_message);
-    state.viewangles[2] = MSG_ReadAngle16(runtime.net_message);
-  }
-  if (flags & PS_KICKANGLES) {
-    state.kick_angles[0] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.kick_angles[1] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.kick_angles[2] = MSG_ReadChar(runtime.net_message) * 0.25;
-  }
-  if (flags & PS_WEAPONINDEX) {
-    state.gunindex = MSG_ReadByte(runtime.net_message);
-  }
-  if (flags & PS_WEAPONFRAME) {
-    state.gunframe = MSG_ReadByte(runtime.net_message);
-    state.gunoffset[0] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.gunoffset[1] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.gunoffset[2] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.gunangles[0] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.gunangles[1] = MSG_ReadChar(runtime.net_message) * 0.25;
-    state.gunangles[2] = MSG_ReadChar(runtime.net_message) * 0.25;
-  }
-  if (flags & PS_BLEND) {
-    state.blend[0] = MSG_ReadByte(runtime.net_message) / 255;
-    state.blend[1] = MSG_ReadByte(runtime.net_message) / 255;
-    state.blend[2] = MSG_ReadByte(runtime.net_message) / 255;
-    state.blend[3] = MSG_ReadByte(runtime.net_message) / 255;
-  }
-  if (flags & PS_FOV) {
-    state.fov = MSG_ReadByte(runtime.net_message);
-  }
-  if (flags & PS_RDFLAGS) {
-    state.rdflags = MSG_ReadByte(runtime.net_message);
-  }
-
-  const statbits = MSG_ReadLong(runtime.net_message);
-  for (let index = 0; index < MAX_STATS && index < state.stats.length; index += 1) {
-    if ((statbits & (1 << index)) !== 0) {
-      state.stats[index] = MSG_ReadShort(runtime.net_message);
-    }
-  }
-}
-
-/**
  * Original name: CL_ParseBaseline
  * Source: client/cl_parse.c
  * Category: Ported
@@ -736,450 +496,6 @@ function resolveDownloadFileName(runtime: ClientRuntime, filename: string): stri
 }
 
 /**
- * Original name: CL_ParseMuzzleFlash
- * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Parses one player weapon muzzle flash event.
- *
- * Porting notes:
- * - Returns a structured packet and defers light, sound and particle side effects to hooks.
- */
-export function CL_ParseMuzzleFlash(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientMuzzleFlashPacket {
-  const entity = MSG_ReadShort(runtime.net_message);
-  if (entity < 1 || entity >= MAX_EDICTS) {
-    throw new Error(`CL_ParseMuzzleFlash: bad entity ${entity}`);
-  }
-
-  const weapon = MSG_ReadByte(runtime.net_message);
-  const packet: ClientMuzzleFlashPacket = {
-    entity,
-    weapon,
-    silenced: (weapon & 128) !== 0
-  };
-  hooks.onMuzzleFlash?.(packet);
-  return packet;
-}
-
-/**
- * Original name: CL_ParseMuzzleFlash2
- * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Parses one monster muzzle flash event.
- *
- * Porting notes:
- * - Returns a structured packet and defers all effect spawning to hooks.
- */
-export function CL_ParseMuzzleFlash2(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientMuzzleFlash2Packet {
-  const entity = MSG_ReadShort(runtime.net_message);
-  if (entity < 1 || entity >= MAX_EDICTS) {
-    throw new Error(`CL_ParseMuzzleFlash2: bad entity ${entity}`);
-  }
-
-  const flashNumber = MSG_ReadByte(runtime.net_message);
-  const packet: ClientMuzzleFlash2Packet = {
-    entity,
-    flashNumber
-  };
-  hooks.onMuzzleFlash2?.(packet);
-  return packet;
-}
-
-/**
- * Original name: CL_ParseParticles
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the auxiliary wall-puff particle packet and forwards its exact payload.
- *
- * Porting notes:
- * - Keeps the original `pos`, `dir`, `color`, `count` read order.
- */
-export function CL_ParseParticles(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientParticleEffectPacket {
-  const packet: ClientParticleEffectPacket = {
-    kind: "particle-effect",
-    position: MSG_ReadPos(runtime.net_message),
-    directionByte: MSG_ReadByte(runtime.net_message),
-    color: MSG_ReadByte(runtime.net_message),
-    count: MSG_ReadByte(runtime.net_message)
-  };
-
-  CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), packet.color, packet.count);
-  hooks.onParticleEffect?.(packet);
-  return packet;
-}
-
-/**
- * Original name: CL_ParseTEnt
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Parses one temporary entity event payload from the server message stream.
- *
- * Porting notes:
- * - Currently covers the most common packet layouts and returns a structured packet instead of spawning effects directly.
- * - More specialized temp entities remain to be ported incrementally as `cl_tent.c` advances.
- */
-export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientTempEntityPacket {
-  const type = MSG_ReadByte(runtime.net_message);
-  const packet: ClientTempEntityPacket = { type };
-
-  switch (type) {
-    case temp_event_t.TE_BLOOD:
-    case temp_event_t.TE_GUNSHOT:
-    case temp_event_t.TE_SPARKS:
-    case temp_event_t.TE_SHOTGUN:
-    case temp_event_t.TE_SCREEN_SPARKS:
-    case temp_event_t.TE_SHIELD_SPARKS:
-    case temp_event_t.TE_BULLET_SPARKS:
-    case temp_event_t.TE_GREENBLOOD:
-    case temp_event_t.TE_HEATBEAM_SPARKS:
-    case temp_event_t.TE_HEATBEAM_STEAM:
-    case temp_event_t.TE_ELECTRIC_SPARKS: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.directionByte = MSG_ReadByte(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_RAILTRAIL: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.position2 = MSG_ReadPos(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_BLUEHYPERBLASTER: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.direction = MSG_ReadPos(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_GRENADE_EXPLOSION:
-    case temp_event_t.TE_EXPLOSION1:
-    case temp_event_t.TE_EXPLOSION1_BIG:
-    case temp_event_t.TE_EXPLOSION2:
-    case temp_event_t.TE_ROCKET_EXPLOSION:
-    case temp_event_t.TE_ROCKET_EXPLOSION_WATER:
-    case temp_event_t.TE_GRENADE_EXPLOSION_WATER:
-    case temp_event_t.TE_BFG_EXPLOSION:
-    case temp_event_t.TE_BFG_BIGEXPLOSION:
-    case temp_event_t.TE_BOSSTPORT:
-    case temp_event_t.TE_PLASMA_EXPLOSION:
-    case temp_event_t.TE_PLAIN_EXPLOSION:
-    case temp_event_t.TE_MOREBLOOD:
-    case temp_event_t.TE_CHAINFIST_SMOKE:
-    case temp_event_t.TE_TRACKER_EXPLOSION:
-    case temp_event_t.TE_TELEPORT_EFFECT:
-    case temp_event_t.TE_DBALL_GOAL:
-    case temp_event_t.TE_WIDOWSPLASH:
-    case temp_event_t.TE_EXPLOSION1_NP: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_LASER_SPARKS:
-    case temp_event_t.TE_SPLASH:
-    case temp_event_t.TE_WELDING_SPARKS:
-    case temp_event_t.TE_TUNNEL_SPARKS: {
-      packet.count = MSG_ReadByte(runtime.net_message);
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.directionByte = MSG_ReadByte(runtime.net_message);
-      packet.color = MSG_ReadByte(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_BLASTER:
-    case temp_event_t.TE_BLASTER2:
-    case temp_event_t.TE_FLECHETTE: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.directionByte = MSG_ReadByte(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_PARASITE_ATTACK:
-    case temp_event_t.TE_MEDIC_CABLE_ATTACK: {
-      assignBeamPacket(packet, "beam", CL_ParseBeam(runtime));
-      break;
-    }
-    case temp_event_t.TE_FLASHLIGHT: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.entity = MSG_ReadShort(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_BFG_LASER: {
-      assignBeamPacket(packet, "laser", CL_ParseLaser(runtime));
-      break;
-    }
-    case temp_event_t.TE_BUBBLETRAIL: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.position2 = MSG_ReadPos(runtime.net_message);
-      break;
-    }
-    case temp_event_t.TE_GRAPPLE_CABLE: {
-      assignBeamPacket(packet, "beam2", CL_ParseBeam2(runtime));
-      break;
-    }
-    case temp_event_t.TE_HEATBEAM:
-    case temp_event_t.TE_MONSTER_HEATBEAM: {
-      assignBeamPacket(packet, "player-beam", CL_ParsePlayerBeam(runtime, type));
-      break;
-    }
-    case temp_event_t.TE_STEAM: {
-      assignBeamPacket(packet, "steam", CL_ParseSteam(runtime));
-      break;
-    }
-    case temp_event_t.TE_FORCEWALL:
-    case temp_event_t.TE_DEBUGTRAIL:
-    case temp_event_t.TE_BUBBLETRAIL2: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.position2 = MSG_ReadPos(runtime.net_message);
-      if (type === temp_event_t.TE_FORCEWALL) {
-        packet.color = MSG_ReadByte(runtime.net_message);
-      }
-      break;
-    }
-    case temp_event_t.TE_LIGHTNING: {
-      assignBeamPacket(packet, "lightning", CL_ParseLightning(runtime));
-      break;
-    }
-    case temp_event_t.TE_WIDOWBEAMOUT: {
-      assignBeamPacket(packet, "widow", CL_ParseWidow(runtime));
-      break;
-    }
-    case temp_event_t.TE_NUKEBLAST: {
-      assignBeamPacket(packet, "nuke", CL_ParseNuke(runtime));
-      break;
-    }
-    default:
-      throw new Error(`CL_ParseTEnt: unsupported type ${type}`);
-  }
-
-  CL_AddTEntPacket(runtime, packet);
-  CL_ExecuteTempEntityEffects(runtime, packet);
-  hooks.onTempEntity?.(packet);
-  return packet;
-}
-
-/**
- * Original name: CL_ParseBeam
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the parasite/medic-style beam payload and returns the exact packet fields it carries.
- */
-export function CL_ParseBeam(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
-  return {
-    entity: MSG_ReadShort(runtime.net_message),
-    position: MSG_ReadPos(runtime.net_message),
-    position2: MSG_ReadPos(runtime.net_message),
-    offset: [0, 0, 0]
-  };
-}
-
-/**
- * Original name: CL_ParseBeam2
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the grapple-style beam payload, including its explicit offset.
- */
-export function CL_ParseBeam2(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
-  return {
-    entity: MSG_ReadShort(runtime.net_message),
-    position: MSG_ReadPos(runtime.net_message),
-    position2: MSG_ReadPos(runtime.net_message),
-    offset: MSG_ReadPos(runtime.net_message)
-  };
-}
-
-/**
- * Original name: CL_ParsePlayerBeam
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the player-linked beam payload used by heatbeam-style temp entities.
- */
-export function CL_ParsePlayerBeam(runtime: ClientRuntime, type: number): Partial<ClientTempEntityPacket> {
-  const entity = MSG_ReadShort(runtime.net_message);
-  const position = MSG_ReadPos(runtime.net_message);
-  const position2 = MSG_ReadPos(runtime.net_message);
-
-  let offset: [number, number, number];
-  if (type === temp_event_t.TE_HEATBEAM) {
-    offset = [2, 7, -3];
-  } else {
-    offset = [0, 0, 0];
-  }
-
-  return {
-    entity,
-    position,
-    position2,
-    offset
-  };
-}
-
-/**
- * Original name: CL_ParseLightning
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the dual-entity lightning beam payload.
- */
-export function CL_ParseLightning(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
-  return {
-    entity: MSG_ReadShort(runtime.net_message),
-    entity2: MSG_ReadShort(runtime.net_message),
-    position: MSG_ReadPos(runtime.net_message),
-    position2: MSG_ReadPos(runtime.net_message),
-    offset: [0, 0, 0]
-  };
-}
-
-/**
- * Original name: CL_ParseLaser
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the laser temp entity payload and preserves only its endpoints.
- */
-export function CL_ParseLaser(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
-  return {
-    position: MSG_ReadPos(runtime.net_message),
-    position2: MSG_ReadPos(runtime.net_message)
-  };
-}
-
-/**
- * Original name: CL_ParseSteam
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the rogue steam payload in both instant and sustain forms.
- */
-export function CL_ParseSteam(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
-  const id = MSG_ReadShort(runtime.net_message);
-  if (id === -1) {
-    return {
-      id,
-      count: MSG_ReadByte(runtime.net_message),
-      position: MSG_ReadPos(runtime.net_message),
-      directionByte: MSG_ReadByte(runtime.net_message),
-      color: MSG_ReadByte(runtime.net_message) & 0xff,
-      magnitude: MSG_ReadShort(runtime.net_message)
-    };
-  }
-
-  return {
-    id,
-    count: MSG_ReadByte(runtime.net_message),
-    position: MSG_ReadPos(runtime.net_message),
-    directionByte: MSG_ReadByte(runtime.net_message),
-    color: MSG_ReadByte(runtime.net_message) & 0xff,
-    magnitude: MSG_ReadShort(runtime.net_message),
-    durationMs: MSG_ReadLong(runtime.net_message)
-  };
-}
-
-/**
- * Original name: CL_ParseWidow
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the widow sustain-effect payload.
- */
-export function CL_ParseWidow(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
-  return {
-    id: MSG_ReadShort(runtime.net_message),
-    position: MSG_ReadPos(runtime.net_message),
-    durationMs: 2100
-  };
-}
-
-/**
- * Original name: CL_ParseNuke
- * Source: client/cl_tent.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Parses the nuke sustain-effect payload.
- */
-export function CL_ParseNuke(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
-  return {
-    id: 21000,
-    position: MSG_ReadPos(runtime.net_message),
-    durationMs: 1000
-  };
-}
-
-/**
- * Original name: N/A
- * Source: N/A (local temp-entity packet helper)
- * Category: New
- * Purpose: Merge a specialized temp-entity payload into the currently allocated packet object.
- *
- * Constraints:
- * - Must preserve the original outer `type` field while copying parsed fields by value.
- */
-function assignBeamPacket(
-  target: ClientTempEntityPacket,
-  beamKind: NonNullable<ClientTempEntityPacket["beamKind"]>,
-  source: Partial<ClientTempEntityPacket>
-): void {
-  target.beamKind = beamKind;
-  if (source.count !== undefined) {
-    target.count = source.count;
-  }
-  if (source.color !== undefined) {
-    target.color = source.color;
-  }
-  if (source.entity !== undefined) {
-    target.entity = source.entity;
-  }
-  if (source.entity2 !== undefined) {
-    target.entity2 = source.entity2;
-  }
-  if (source.id !== undefined) {
-    target.id = source.id;
-  }
-  if (source.magnitude !== undefined) {
-    target.magnitude = source.magnitude;
-  }
-  if (source.position !== undefined) {
-    target.position = source.position;
-  }
-  if (source.position2 !== undefined) {
-    target.position2 = source.position2;
-  }
-  if (source.offset !== undefined) {
-    target.offset = source.offset;
-  }
-  if (source.directionByte !== undefined) {
-    target.directionByte = source.directionByte;
-  }
-  if (source.durationMs !== undefined) {
-    target.durationMs = source.durationMs;
-  }
-}
-
-/**
  * Original name: CL_LoadClientinfo
  * Source: client/cl_parse.c
  * Category: Ported
@@ -1289,26 +605,6 @@ export function CL_ParseLayout(runtime: ClientRuntime, hooks: ClientParseHooks =
 }
 
 /**
- * Original name: CL_ParseInventory
- * Source: client/cl_inv.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Reads the current inventory item counts from the message stream.
- *
- * Porting notes:
- * - Updates the fixed inventory array in place.
- */
-export function CL_ParseInventory(runtime: ClientRuntime): number[] {
-  for (let index = 0; index < MAX_ITEMS; index += 1) {
-    runtime.cl.inventory[index] = MSG_ReadShort(runtime.net_message);
-  }
-
-  return runtime.cl.inventory;
-}
-
-/**
  * Original name: CL_ParseConfigString
  * Source: client/cl_parse.c
  * Category: Ported
@@ -1399,92 +695,6 @@ export function CL_ParseServerData(runtime: ClientRuntime, hooks: ClientParseHoo
     runtime.cl.refresh_prepped = false;
   }
   hooks.onServerData?.(levelName);
-}
-
-/**
- * Original name: CL_ParseFrame
- * Source: client/cl_ents.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Parses one frame message including areabits, player state and packet entities.
- *
- * Porting notes:
- * - Preserves validity checks and frame ring-buffer storage.
- */
-export function CL_ParseFrame(runtime: ClientRuntime, hooks: ClientParseHooks = {}): void {
-  runtime.cl.frame = createFrame();
-
-  runtime.cl.frame.serverframe = MSG_ReadLong(runtime.net_message);
-  runtime.cl.frame.deltaframe = MSG_ReadLong(runtime.net_message);
-  runtime.cl.frame.servertime = runtime.cl.frame.serverframe * 100;
-
-  if (runtime.cls.serverProtocol !== 26) {
-    runtime.cl.surpressCount = MSG_ReadByte(runtime.net_message);
-  }
-
-  let old: frame_t | null = null;
-  if (runtime.cl.frame.deltaframe <= 0) {
-    runtime.cl.frame.valid = true;
-    runtime.cls.demowaiting = false;
-  } else {
-    old = runtime.cl.frames[runtime.cl.frame.deltaframe & UPDATE_MASK];
-    if (
-      old.valid &&
-      old.serverframe === runtime.cl.frame.deltaframe &&
-      runtime.cl.parse_entities - old.parse_entities <= MAX_PARSE_ENTITIES - 128
-    ) {
-      runtime.cl.frame.valid = true;
-    }
-  }
-
-  if (runtime.cl.time > runtime.cl.frame.servertime) {
-    runtime.cl.time = runtime.cl.frame.servertime;
-  } else if (runtime.cl.time < runtime.cl.frame.servertime - 100) {
-    runtime.cl.time = runtime.cl.frame.servertime - 100;
-  }
-
-  const areaBitLength = MSG_ReadByte(runtime.net_message);
-  runtime.cl.frame.areabits.fill(0);
-  runtime.cl.frame.areabits.set(MSG_ReadData(runtime.net_message, areaBitLength));
-
-  const playerInfoCommand = MSG_ReadByte(runtime.net_message);
-  if (playerInfoCommand !== svc_ops_e.svc_playerinfo) {
-    throw new Error("CL_ParseFrame: not playerinfo");
-  }
-  CL_ParsePlayerstate(runtime, old, runtime.cl.frame);
-
-  const packetEntitiesCommand = MSG_ReadByte(runtime.net_message);
-  if (packetEntitiesCommand !== svc_ops_e.svc_packetentities) {
-    throw new Error("CL_ParseFrame: not packetentities");
-  }
-  CL_ParsePacketEntities(runtime, old, runtime.cl.frame);
-
-  runtime.cl.frames[runtime.cl.frame.serverframe & UPDATE_MASK] = cloneFrame(runtime.cl.frame);
-
-  if (runtime.cl.frame.valid) {
-    if (runtime.cls.state !== connstate_t.ca_active) {
-      runtime.cls.state = connstate_t.ca_active;
-      runtime.cl.force_refdef = true;
-      runtime.cl.predicted_origin[0] = runtime.cl.frame.playerstate.pmove.origin[0] * 0.125;
-      runtime.cl.predicted_origin[1] = runtime.cl.frame.playerstate.pmove.origin[1] * 0.125;
-      runtime.cl.predicted_origin[2] = runtime.cl.frame.playerstate.pmove.origin[2] * 0.125;
-      runtime.cl.predicted_angles = [...runtime.cl.frame.playerstate.viewangles];
-      if (runtime.cls.disable_servercount !== runtime.cl.servercount && runtime.cl.refresh_prepped) {
-        hooks.onEndLoadingPlaque?.();
-      }
-    }
-
-    runtime.cl.sound_prepped = true;
-    CL_FireEntityEvents(runtime, runtime.cl.frame, hooks.onEntityEvent);
-    CL_CheckPredictionError(runtime, {
-      incomingAcknowledged: runtime.cls.netchan.incoming_acknowledged,
-      predictMovement: true
-    });
-  }
-
-  hooks.onFrameParsed?.(cloneFrame(runtime.cl.frame));
 }
 
 /**
@@ -1645,151 +855,6 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
 export function CL_WriteStringCmd(runtime: ClientRuntime, text: string): void {
   MSG_WriteByte(runtime.cls.netchan.message, clc_ops_e.clc_stringcmd);
   MSG_WriteString(runtime.cls.netchan.message, text);
-}
-
-/**
- * Original name: CL_DeltaEntity
- * Source: client/cl_ents.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Parses one entity delta and appends it into the current frame parse ring.
- *
- * Porting notes:
- * - Preserves the original no-lerp conditions and entity ring behavior.
- */
-function CL_DeltaEntity(runtime: ClientRuntime, frame: frame_t, newnum: number, oldState: ReturnType<typeof createEntityState>, bits: number): void {
-  const entity = runtime.cl_entities[newnum];
-  const state = runtime.cl_parse_entities[runtime.cl.parse_entities & (MAX_PARSE_ENTITIES - 1)];
-  runtime.cl.parse_entities += 1;
-  frame.num_entities += 1;
-
-  CL_ParseDelta(runtime, oldState, state, newnum, bits);
-
-  if (
-    state.modelindex !== entity.current.modelindex ||
-    state.modelindex2 !== entity.current.modelindex2 ||
-    state.modelindex3 !== entity.current.modelindex3 ||
-    state.modelindex4 !== entity.current.modelindex4 ||
-    Math.abs(state.origin[0] - entity.current.origin[0]) > 512 ||
-    Math.abs(state.origin[1] - entity.current.origin[1]) > 512 ||
-    Math.abs(state.origin[2] - entity.current.origin[2]) > 512 ||
-    state.event === entity_event_t.EV_PLAYER_TELEPORT ||
-    state.event === entity_event_t.EV_OTHER_TELEPORT
-  ) {
-    entity.serverframe = -99;
-  }
-
-  if (entity.serverframe !== runtime.cl.frame.serverframe - 1) {
-    entity.trailcount = 1024;
-    copyEntityState(state, entity.prev);
-    if (state.event === entity_event_t.EV_OTHER_TELEPORT) {
-      entity.prev.origin = [...state.origin];
-      entity.lerp_origin = [...state.origin];
-    } else {
-      entity.prev.origin = [...state.old_origin];
-      entity.lerp_origin = [...state.old_origin];
-    }
-  } else {
-    copyEntityState(entity.current, entity.prev);
-  }
-
-  entity.serverframe = runtime.cl.frame.serverframe;
-  copyEntityState(state, entity.current);
-}
-
-/**
- * Original name: CL_ParsePacketEntities
- * Source: client/cl_ents.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Parses the packet entity stream for one frame.
- *
- * Porting notes:
- * - Preserves the original merge of old frame entities, removals and baselines.
- */
-function CL_ParsePacketEntities(runtime: ClientRuntime, oldframe: frame_t | null, newframe: frame_t): void {
-  newframe.parse_entities = runtime.cl.parse_entities;
-  newframe.num_entities = 0;
-
-  let oldindex = 0;
-  let oldnum = 99999;
-  let oldstate: ReturnType<typeof createEntityState> | null = null;
-
-  if (oldframe && oldframe.num_entities > 0) {
-    oldstate = runtime.cl_parse_entities[(oldframe.parse_entities + oldindex) & (MAX_PARSE_ENTITIES - 1)];
-    oldnum = oldstate.number;
-  }
-
-  while (true) {
-    const { bits, number: newnum } = CL_ParseEntityBits(runtime);
-    if (newnum >= MAX_EDICTS) {
-      throw new Error(`CL_ParsePacketEntities: bad number:${newnum}`);
-    }
-    if (runtime.net_message.readcount > runtime.net_message.cursize) {
-      throw new Error("CL_ParsePacketEntities: end of message");
-    }
-    if (newnum === 0) {
-      break;
-    }
-
-    while (oldnum < newnum && oldframe && oldstate) {
-      CL_DeltaEntity(runtime, newframe, oldnum, oldstate, 0);
-      oldindex += 1;
-      if (oldindex >= oldframe.num_entities) {
-        oldnum = 99999;
-        oldstate = null;
-      } else {
-        oldstate = runtime.cl_parse_entities[(oldframe.parse_entities + oldindex) & (MAX_PARSE_ENTITIES - 1)];
-        oldnum = oldstate.number;
-      }
-    }
-
-    if ((bits & U_REMOVE) !== 0) {
-      oldindex += 1;
-      if (!oldframe || oldindex >= oldframe.num_entities) {
-        oldnum = 99999;
-        oldstate = null;
-      } else {
-        oldstate = runtime.cl_parse_entities[(oldframe.parse_entities + oldindex) & (MAX_PARSE_ENTITIES - 1)];
-        oldnum = oldstate.number;
-      }
-      continue;
-    }
-
-    if (oldnum === newnum && oldstate) {
-      CL_DeltaEntity(runtime, newframe, newnum, oldstate, bits);
-      oldindex += 1;
-      if (!oldframe || oldindex >= oldframe.num_entities) {
-        oldnum = 99999;
-        oldstate = null;
-      } else {
-        oldstate = runtime.cl_parse_entities[(oldframe.parse_entities + oldindex) & (MAX_PARSE_ENTITIES - 1)];
-        oldnum = oldstate.number;
-      }
-      continue;
-    }
-
-    if (oldnum > newnum) {
-      CL_DeltaEntity(runtime, newframe, newnum, runtime.cl_entities[newnum].baseline, bits);
-      continue;
-    }
-  }
-
-  while (oldnum !== 99999 && oldstate) {
-    CL_DeltaEntity(runtime, newframe, oldnum, oldstate, 0);
-    oldindex += 1;
-    if (!oldframe || oldindex >= oldframe.num_entities) {
-      oldnum = 99999;
-      oldstate = null;
-    } else {
-      oldstate = runtime.cl_parse_entities[(oldframe.parse_entities + oldindex) & (MAX_PARSE_ENTITIES - 1)];
-      oldnum = oldstate.number;
-    }
-  }
 }
 
 /**
@@ -2066,83 +1131,4 @@ function parseSkyAxis(value: string): [number, number, number] {
   }
 
   return [parts[0], parts[1], parts[2]];
-}
-
-/**
- * Original name: N/A
- * Source: N/A (local copy helper)
- * Category: New
- * Purpose: Copy one entity state into another while preserving tuple fields by value.
- *
- * Constraints:
- * - Must avoid sharing mutable vector arrays between states.
- */
-function copyEntityState(source: ReturnType<typeof createEntityState>, target: ReturnType<typeof createEntityState>): void {
-  target.number = source.number;
-  target.origin = [...source.origin];
-  target.angles = [...source.angles];
-  target.old_origin = [...source.old_origin];
-  target.modelindex = source.modelindex;
-  target.modelindex2 = source.modelindex2;
-  target.modelindex3 = source.modelindex3;
-  target.modelindex4 = source.modelindex4;
-  target.frame = source.frame;
-  target.skinnum = source.skinnum;
-  target.effects = source.effects;
-  target.renderfx = source.renderfx;
-  target.solid = source.solid;
-  target.sound = source.sound;
-  target.event = source.event;
-}
-
-/**
- * Original name: N/A
- * Source: N/A (local copy helper)
- * Category: New
- * Purpose: Copy one player state into another while preserving nested arrays by value.
- *
- * Constraints:
- * - Must avoid sharing mutable arrays across frames.
- */
-function copyPlayerState(source: frame_t["playerstate"], target: frame_t["playerstate"]): void {
-  target.pmove.pm_type = source.pmove.pm_type;
-  target.pmove.origin = [...source.pmove.origin];
-  target.pmove.velocity = [...source.pmove.velocity];
-  target.pmove.pm_flags = source.pmove.pm_flags;
-  target.pmove.pm_time = source.pmove.pm_time;
-  target.pmove.gravity = source.pmove.gravity;
-  target.pmove.delta_angles = [...source.pmove.delta_angles];
-  target.viewangles = [...source.viewangles];
-  target.viewoffset = [...source.viewoffset];
-  target.kick_angles = [...source.kick_angles];
-  target.gunangles = [...source.gunangles];
-  target.gunoffset = [...source.gunoffset];
-  target.gunindex = source.gunindex;
-  target.gunframe = source.gunframe;
-  target.blend = [...source.blend];
-  target.fov = source.fov;
-  target.rdflags = source.rdflags;
-  target.stats = [...source.stats];
-}
-
-/**
- * Original name: N/A
- * Source: N/A (local frame clone helper)
- * Category: New
- * Purpose: Clone one parsed frame so frame ring-buffer storage keeps value semantics.
- *
- * Constraints:
- * - Must deep-copy mutable arrays and nested player state.
- */
-function cloneFrame(frame: frame_t): frame_t {
-  const clone = createFrame();
-  clone.valid = frame.valid;
-  clone.serverframe = frame.serverframe;
-  clone.servertime = frame.servertime;
-  clone.deltaframe = frame.deltaframe;
-  clone.areabits = new Uint8Array(frame.areabits);
-  copyPlayerState(frame.playerstate, clone.playerstate);
-  clone.num_entities = frame.num_entities;
-  clone.parse_entities = frame.parse_entities;
-  return clone;
 }

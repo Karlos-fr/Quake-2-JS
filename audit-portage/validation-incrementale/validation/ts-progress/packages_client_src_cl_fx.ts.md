@@ -1,5 +1,7 @@
 # Progress TS croise - packages/client/src/cl_fx.ts
 
+- 2026-05-28: ajout de `CL_ParseMuzzleFlash` et `CL_ParseMuzzleFlash2` comme proprietaires `client/cl_fx.c`, deplaces depuis `cl_parse.ts`; les helpers muzzle flash restent adapters locaux.
+
 - Fichier TS: `packages/client/src/cl_fx.ts`
 - Matrice TS: `audit-portage/validation-incrementale/validation/ts-matrices/packages_client_src_cl_fx.ts.md`
 - Statut: Termine

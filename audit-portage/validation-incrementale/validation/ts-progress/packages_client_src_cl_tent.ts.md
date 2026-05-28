@@ -1,5 +1,7 @@
 # Progress TS - packages/client/src/cl_tent.ts
 
+- 2026-05-28: ajout des parseurs proprietaires `client/cl_tent.c` (`CL_ParseParticles`, `CL_ParseTEnt`, parseurs beams/laser/steam/widow/nuke) deplaces depuis `cl_parse.ts`; `CL_AddTEntPacket` reste classe adapter non proprietaire.
+
 - Fichier TS: `packages/client/src/cl_tent.ts`
 - Matrice TS: `audit-portage/validation-incrementale/validation/ts-matrices/packages_client_src_cl_tent.ts.md`
 - Statut: Termine

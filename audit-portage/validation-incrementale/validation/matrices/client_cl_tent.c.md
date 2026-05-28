@@ -40,31 +40,31 @@
 | `Quake-2-master/client/cl_tent.c` | global | `time` | `packages/client/src/cl_tent.ts` | `time` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `index` | `packages/client/src/cl_tent.ts` | `index` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | function | `CL_SmokeAndFlash` | `packages/client/src/cl_tent.ts` | `CL_SmokeAndFlash` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseParticles` | `packages/client/src/cl_parse.ts` | `CL_ParseParticles` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseBeam` | `packages/client/src/cl_parse.ts` | `CL_ParseBeam` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseParticles` | `packages/client/src/cl_tent.ts` | `CL_ParseParticles` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseBeam` | `packages/client/src/cl_tent.ts` | `CL_ParseBeam` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `ent` | `packages/client/src/cl_tent.ts` | `ent` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseBeam2` | `packages/client/src/cl_parse.ts` | `CL_ParseBeam2` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseBeam2` | `packages/client/src/cl_tent.ts` | `CL_ParseBeam2` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `ent` | `packages/client/src/cl_tent.ts` | `ent` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParsePlayerBeam` | `packages/client/src/cl_parse.ts` | `CL_ParsePlayerBeam` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParsePlayerBeam` | `packages/client/src/cl_tent.ts` | `CL_ParsePlayerBeam` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `ent` | `packages/client/src/cl_tent.ts` | `ent` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseLightning` | `packages/client/src/cl_parse.ts` | `CL_ParseLightning` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseLightning` | `packages/client/src/cl_tent.ts` | `CL_ParseLightning` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseLaser` | `packages/client/src/cl_parse.ts` | `CL_ParseLaser` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseLaser` | `packages/client/src/cl_tent.ts` | `CL_ParseLaser` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseSteam` | `packages/client/src/cl_parse.ts` | `CL_ParseSteam` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseSteam` | `packages/client/src/cl_tent.ts` | `CL_ParseSteam` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `r` | `packages/client/src/cl_newfx.ts` | `r` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `cnt` | `packages/client/src/cl_tent.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `color` | `packages/client/src/cl_tent.ts` | `color` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `magnitude` | `packages/client/src/cl_newfx.ts` | `magnitude` | Non applicable | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseWidow` | `packages/client/src/cl_parse.ts` | `CL_ParseWidow` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseNuke` | `packages/client/src/cl_parse.ts` | `CL_ParseNuke` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseWidow` | `packages/client/src/cl_tent.ts` | `CL_ParseWidow` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseNuke` | `packages/client/src/cl_tent.ts` | `CL_ParseNuke` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `splash_color` | `packages/client/src/cl_fx.ts` | `mapSplashColor` | Valide | A redecouper | Deplace comme helper local de l'execution d'effets `CL_ParseTEnt`. |
 | `Quake-2-master/client/cl_tent.c` | table | `splash_color` | `packages/client/src/cl_fx.ts` | `mapSplashColor` | Valide | A redecouper | Deplace comme helper local de l'execution d'effets `CL_ParseTEnt`. |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseTEnt` | `packages/client/src/cl_parse.ts` | `CL_ParseTEnt` | Valide | A redecouper | Correction `TE_HEATBEAM_SPARKS`/`TE_HEATBEAM_STEAM`: `directionByte` converti via `DirFromByte`. |
+| `Quake-2-master/client/cl_tent.c` | function | `CL_ParseTEnt` | `packages/client/src/cl_tent.ts` | `CL_ParseTEnt` | Valide | A redecouper | Correction `TE_HEATBEAM_SPARKS`/`TE_HEATBEAM_STEAM`: `directionByte` converti via `DirFromByte`. |
 | `Quake-2-master/client/cl_tent.c` | global | `type` | `packages/client/src/cl_tent.ts` | `type` | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `cnt` | `packages/client/src/cl_tent.ts` |  | Non applicable | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `color` | `packages/client/src/cl_tent.ts` | `color` | Non applicable | A redecouper |  |

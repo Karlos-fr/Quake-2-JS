@@ -1,5 +1,7 @@
 # Progress TS - packages/client/src/cl_parse.ts
 
+- 2026-05-28: fichier recentre sur `client/cl_parse.c`. Les symboles issus de `client/cl_ents.c`, `client/cl_tent.c`, `client/cl_fx.c` et `client/cl_inv.c` sont retires de la matrice proprietaire de `cl_parse.ts`; le fichier conserve les imports/reexports publics et le dispatch `CL_ParseServerMessage`.
+
 - Fichier TS: `packages/client/src/cl_parse.ts`
 - Matrice TS: `audit-portage/validation-incrementale/validation/ts-matrices/packages_client_src_cl_parse.ts.md`
 - Lot traite: grand bloc complet de la matrice courante, depuis `ClientParseHooks` jusqu'a `cloneFrame`.

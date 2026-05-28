@@ -2,6 +2,7 @@
 
 ## Dernier lot valide
 
+- 2026-05-28: ajout des parseurs proprietaires `client/cl_ents.c` (`CL_ParseEntityBits`, `CL_ParseDelta`, `CL_ParsePlayerstate`, `CL_ParseFrame`, `CL_DeltaEntity`, `CL_ParsePacketEntities`) deplaces depuis `cl_parse.ts`.
 - 2026-05-08: fichier complet valide, 7 symboles audites: `ClientEntityEvent`, `ClientInterpolatedEntity`, `CL_FireEntityEvents`, `CL_BuildFrameEntityEventEffects`, `CL_GetFrameEntityStates`, `CL_BuildPacketEntitySnapshots`, `cloneEntityState`.
 - `CL_FireEntityEvents` et `CL_BuildPacketEntitySnapshots` sont les proprietaires TS attendus de `CL_FireEntityEvents` et `CL_AddPacketEntities` dans `Quake-2-master/client/cl_ents.c`; la matrice C/H `client_cl_ents.c.md` les marque `Valide`, donc les lignes TS sont `Couvert C/H`.
 - Les interfaces et helpers de snapshots/copie sont `Category: New` avec `Original name: N/A` et `Source declaree: N/A (...)`; ils ne masquent pas de portage proprietaire.
