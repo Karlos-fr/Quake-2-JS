@@ -184,7 +184,7 @@
 | [`packages/renderer-three/src/refresh-entity-sync.ts`](ts-matrices/packages_renderer-three_src_refresh-entity-sync.ts.md) | 45 | 0 | 45 |
 | [`packages/renderer-three/src/sky-scene-adapter.ts`](ts-matrices/packages_renderer-three_src_sky-scene-adapter.ts.md) | 12 | 0 | 12 |
 | [`packages/renderer-three/src/three-beam-sync.ts`](ts-matrices/packages_renderer-three_src_three-beam-sync.ts.md) | 14 | 0 | 14 |
-| [`packages/renderer-three/src/three-dlight-sync.ts`](ts-matrices/packages_renderer-three_src_three-dlight-sync.ts.md) | 8 | 0 | 8 |
+| [`packages/renderer-three/src/three-dlight-sync.ts`](ts-matrices/packages_renderer-three_src_three-dlight-sync.ts.md) | 7 | 0 | 7 |
 | [`packages/renderer-three/src/three-gl-draw-adapter.ts`](ts-matrices/packages_renderer-three_src_three-gl-draw-adapter.ts.md) | 18 | 0 | 18 |
 | [`packages/renderer-three/src/three-polyblend-overlay.ts`](ts-matrices/packages_renderer-three_src_three-polyblend-overlay.ts.md) | 4 | 0 | 4 |
 | [`packages/renderer-three/src/warpsin.ts`](ts-matrices/packages_renderer-three_src_warpsin.ts.md) | 1 | 0 | 1 |

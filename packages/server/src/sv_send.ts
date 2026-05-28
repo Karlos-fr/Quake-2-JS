@@ -66,6 +66,8 @@ import {
 } from "./server.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (server send context)
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_send.c` port.
  *
@@ -95,6 +97,8 @@ export interface ServerSendContext {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (server send procedure factory)
  * Category: New
  * Purpose: Build the `sv_send.c` procedure table bound to one explicit server-send context.
  *
@@ -580,6 +584,12 @@ export function createServerSendProcedures(context: ServerSendContext): ServerSe
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local printf formatter)
+ * Category: New
+ * Purpose: Format the small printf subset used by the server send procedures.
+ */
 function formatPrintf(fmt: string, args: unknown[]): string {
   if (args.length === 0) {
     return fmt;
@@ -604,6 +614,12 @@ function formatPrintf(fmt: string, args: unknown[]): string {
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local console string helper)
+ * Category: New
+ * Purpose: Mirror the high-bit masking used before echoing dedicated-server broadcasts.
+ */
 function stripHighBits(text: string): string {
   let out = "";
   const limit = Math.min(text.length, 1023);

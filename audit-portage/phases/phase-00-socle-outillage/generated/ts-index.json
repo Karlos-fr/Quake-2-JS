@@ -19426,7 +19426,6 @@
         "clearGroup",
         "createDlightRefdef",
         "createFlashblendMesh",
-        "createPointLight",
         "createThreeColor",
         "createThreeDlightSync",
         "disposeObject"
@@ -19448,7 +19447,6 @@
         "materials",
         "mesh",
         "point",
-        "pointLight",
         "positions",
         "refdef",
         "root",

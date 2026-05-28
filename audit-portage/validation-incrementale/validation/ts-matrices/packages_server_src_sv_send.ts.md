@@ -5,11 +5,11 @@
 - Fichier TS: `packages/server/src/sv_send.ts`
 - Symboles TS: 4
 - Couvert C/H: 0
-- Reste a auditer: 4
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/server/src/sv_send.ts` | interface | `ServerSendContext` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_send.ts` | function | `createServerSendProcedures` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/server/src/sv_send.ts` | function | `formatPrintf` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `packages/server/src/sv_send.ts` | function | `stripHighBits` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `packages/server/src/sv_send.ts` | interface | `ServerSendContext` | oui | `N/A` | `N/A (server send context)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_send.ts` | function | `createServerSendProcedures` | oui | `N/A` | `N/A (server send procedure factory)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_send.ts` | function | `formatPrintf` | non | `N/A` | `N/A (local printf formatter)` | New |  | Hors C/H | Valide |  |
+| `packages/server/src/sv_send.ts` | function | `stripHighBits` | non | `N/A` | `N/A (local console string helper)` | New |  | Hors C/H | Valide |  |
