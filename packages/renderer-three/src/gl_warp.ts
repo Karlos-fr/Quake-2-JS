@@ -38,7 +38,7 @@ import {
   type image_t,
   type model_t,
   type msurface_t
-} from "./gl-model.js";
+} from "./gl_model.js";
 import { r_turbsin } from "./warpsin.js";
 
 /**

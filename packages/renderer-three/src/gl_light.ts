@@ -33,7 +33,7 @@ import {
   type vec3_t
 } from "../../qcommon/src/index.js";
 import type { dlight_t, entity_t, refdef_t } from "../../client/src/ref.js";
-import { SURF_DRAWSKY, SURF_DRAWTURB, type mnode_child_t, type mnode_t, type model_t, type msurface_t } from "./gl-model.js";
+import { SURF_DRAWSKY, SURF_DRAWTURB, type mnode_child_t, type mnode_t, type model_t, type msurface_t } from "./gl_model.js";
 
 /**
  * Original name: DLIGHT_CUTOFF

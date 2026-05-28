@@ -86,7 +86,7 @@ import {
   R_RegisterModel,
   createGlModelRuntime,
   type GlModelRuntime
-} from "./gl-model-loader.js";
+} from "./gl_model.js";
 import { createRefGlBootstrap, type RefGlBootstrap, type RefGlBootstrapOptions } from "./ref-gl-bootstrap.js";
 import type { QglProcedure } from "./qgl.js";
 

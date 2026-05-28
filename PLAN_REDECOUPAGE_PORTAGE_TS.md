@@ -34,8 +34,8 @@ Controle initial :
 | `client/sound.h` | `packages/client/src/sound.ts` | Point header strict restaure | Fait |
 | `qcommon/crc.c` | `packages/qcommon/src/qcommon.ts` | Mauvais rattachement principal | Creer `packages/qcommon/src/crc.ts` |
 | `qcommon/crc.h` | `packages/qcommon/src/qcommon.ts` | Mauvais rattachement principal | Rattacher les declarations CRC a `packages/qcommon/src/crc.ts` |
-| `ref_gl/gl_model.c` | `packages/renderer-three/src/gl-model-loader.ts`, `packages/renderer-three/src/gl-model.ts` | Nom modernise, rupture avec convention `gl_*` | Renommer/rattacher en `packages/renderer-three/src/gl_model.ts` ou justifier explicitement |
-| `ref_gl/gl_model.h` | `packages/renderer-three/src/gl-model.ts` | Nom modernise, rupture avec convention `gl_*` | Renommer/rattacher en `packages/renderer-three/src/gl_model.ts` ou `gl_model_h.ts` selon decoupage retenu |
+| `ref_gl/gl_model.c` | `packages/renderer-three/src/gl_model.ts` | Point strict commun C/H | Fait |
+| `ref_gl/gl_model.h` | `packages/renderer-three/src/gl_model.ts` | Point strict commun C/H | Fait |
 
 ## Lots proposes
 
@@ -101,21 +101,17 @@ But : restaurer une convention claire pour `ref_gl/gl_model.c` et
 
 Actions :
 
-- Decider le decoupage cible :
-  - option A : `gl_model.ts` pour `gl_model.h` et `gl_model_loader.ts` pour
-    `gl_model.c`;
-  - option B : `gl_model.ts` comme point principal, avec sous-fichier
-    `gl_model_loader.ts` si le fichier devient trop gros.
-- Eviter les noms kebab-case pour le port direct du source original.
-- Garder les fichiers adapter Three.js separes (`gl-world-scene-adapter.ts`,
+- [x] Consolider `ref_gl/gl_model.c` et `ref_gl/gl_model.h` dans `packages/renderer-three/src/gl_model.ts`.
+- [x] Eviter les noms kebab-case pour le port direct du source original.
+- [x] Garder les fichiers adapter Three.js separes (`gl-world-scene-adapter.ts`,
   `sky-scene-adapter.ts`, etc.).
-- Mettre a jour les imports/exports renderer.
-- Mettre a jour `ref_gl_gl_model.c.md` et `ref_gl_gl_model.h.md`.
+- [x] Mettre a jour les imports/exports renderer.
+- [x] Mettre a jour `ref_gl_gl_model.c.md` et `ref_gl_gl_model.h.md`.
 
 Validation :
 
-- `npm run typecheck`
-- `npm run build --workspace @quake2js/web`
+- [x] `npm run typecheck`
+- [x] `npm run build --workspace @quake2js/web`
 
 ## Verification finale
 

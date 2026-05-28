@@ -45,8 +45,8 @@ import {
 } from "../../qcommon/src/index.js";
 import type { cvar_t } from "../../qcommon/src/cvar.js";
 import { API_VERSION, type dlight_t, type entity_t, type particle_t, type refdef_t, type refexport_t, type refimport_t } from "../../client/src/ref.js";
-import type { image_t, model_t, msurface_t } from "./gl-model.js";
-import { modtype_t } from "./gl-model.js";
+import type { image_t, model_t, msurface_t } from "./gl_model.js";
+import { modtype_t } from "./gl_model.js";
 import { rserr_t, type GlimpSetModeResult } from "./gl_local.js";
 import {
   GL_RENDERER_3DLABS,

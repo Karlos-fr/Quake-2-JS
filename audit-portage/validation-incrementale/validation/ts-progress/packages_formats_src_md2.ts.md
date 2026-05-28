@@ -23,4 +23,4 @@
 
 - Runtime: integre via `packages/client/src/precache.ts` pour l'enumeration defensive des skins MD2 et via les flux modele client.
 - apps/web: integre indirectement par le runtime complet et le chargement des assets/pak consommes par le jeu web.
-- renderer-three: integre via `gl-model-loader.ts`, `md2-mesh-builder.ts`, `refresh-entity-sync.ts` et `gl_mesh.ts`; `packages/formats/src/md2.ts` reste proprietaire du format binaire, pas de l'adapter renderer.
+- renderer-three: integre via `gl_model.ts`, `md2-mesh-builder.ts`, `refresh-entity-sync.ts` et `gl_mesh.ts`; `packages/formats/src/md2.ts` reste proprietaire du format binaire, pas de l'adapter renderer.

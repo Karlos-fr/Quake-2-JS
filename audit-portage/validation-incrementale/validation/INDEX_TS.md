@@ -156,8 +156,7 @@
 | [`packages/renderer-common/src/index.ts`](ts-matrices/packages_renderer-common_src_index.ts.md) | 0 | 0 | 0 |
 | [`packages/renderer-common/src/sky.ts`](ts-matrices/packages_renderer-common_src_sky.ts.md) | 3 | 0 | 3 |
 | [`packages/renderer-three/src/anormtab.ts`](ts-matrices/packages_renderer-three_src_anormtab.ts.md) | 5 | 0 | 5 |
-| [`packages/renderer-three/src/gl-model-loader.ts`](ts-matrices/packages_renderer-three_src_gl-model-loader.ts.md) | 59 | 0 | 59 |
-| [`packages/renderer-three/src/gl-model.ts`](ts-matrices/packages_renderer-three_src_gl-model.ts.md) | 38 | 0 | 38 |
+| [`packages/renderer-three/src/gl_model.ts`](ts-matrices/packages_renderer-three_src_gl_model.ts.md) | 97 | 0 | 97 |
 | [`packages/renderer-three/src/gl-world-scene-adapter.ts`](ts-matrices/packages_renderer-three_src_gl-world-scene-adapter.ts.md) | 45 | 0 | 45 |
 | [`packages/renderer-three/src/gl_draw.ts`](ts-matrices/packages_renderer-three_src_gl_draw.ts.md) | 42 | 0 | 42 |
 | [`packages/renderer-three/src/gl_image.ts`](ts-matrices/packages_renderer-three_src_gl_image.ts.md) | 97 | 0 | 97 |

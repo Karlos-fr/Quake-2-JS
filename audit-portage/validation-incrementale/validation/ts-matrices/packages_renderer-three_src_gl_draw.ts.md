@@ -16,7 +16,7 @@
 | `packages/renderer-three/src/gl_draw.ts` | value | `GL_UNSIGNED_BYTE` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
 | `packages/renderer-three/src/gl_draw.ts` | value | `GL_COLOR_INDEX8_EXT` | oui | `N/A` | `N/A (OpenGL/WebGL numeric constants)` | New |  | Valide | Valide |  |
 | `packages/renderer-three/src/gl_draw.ts` | type | `GlFilterMode` | oui | `N/A` | `N/A (renderer hook contract)` | New |  | Valide | Valide |  |
-| `packages/renderer-three/src/gl_draw.ts` | interface | `GlDrawImage` | oui | `image_t` | `Quake-2-master/ref_gl/gl_local.h` | Adapter | [`ref_gl_gl_local.h.md`](../matrices/ref_gl_gl_local.h.md) | Valide | Valide | Vue locale des champs `image_t` consommes par `gl_draw.c`; le type porteur reste `gl-model.ts`/`gl_local.ts`. |
+| `packages/renderer-three/src/gl_draw.ts` | interface | `GlDrawImage` | oui | `image_t` | `Quake-2-master/ref_gl/gl_local.h` | Adapter | [`ref_gl_gl_local.h.md`](../matrices/ref_gl_gl_local.h.md) | Valide | Valide | Vue locale des champs `image_t` consommes par `gl_draw.c`; le type porteur reste `gl_model.ts`/`gl_local.ts`. |
 | `packages/renderer-three/src/gl_draw.ts` | interface | `GlDrawQuad` | oui | `N/A` | `N/A (renderer hook contract)` | New |  | Valide | Valide |  |
 | `packages/renderer-three/src/gl_draw.ts` | interface | `GlDrawRawUpload` | oui | `N/A` | `N/A (renderer hook contract)` | New |  | Valide | Valide |  |
 | `packages/renderer-three/src/gl_draw.ts` | interface | `GlDrawHooks` | oui | `N/A` | `N/A (renderer hook contract)` | New |  | Valide | Valide |  |

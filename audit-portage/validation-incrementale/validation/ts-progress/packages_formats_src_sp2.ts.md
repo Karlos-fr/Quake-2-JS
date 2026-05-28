@@ -23,4 +23,4 @@
 
 - Runtime: integre via les flux modele/sprite du client qui produisent des references `.sp2` consommees par le renderer; le parser reste un format helper et ne remplace pas la logique runtime.
 - apps/web: integre indirectement via le chargement des assets/pak et les render sources du jeu complet.
-- renderer-three: integre via `gl-model-loader.ts`, `gl_rmain.ts` et `refresh-entity-sync.ts`; `packages/formats/src/sp2.ts` reste proprietaire du format binaire, pas de l'adapter renderer.
+- renderer-three: integre via `gl_model.ts`, `gl_rmain.ts` et `refresh-entity-sync.ts`; `packages/formats/src/sp2.ts` reste proprietaire du format binaire, pas de l'adapter renderer.

@@ -130,8 +130,8 @@
 | [Quake-2-master/ref_gl/gl_light.c](matrices/ref_gl_gl_light.c.md) | 33 | split-undocumented | packages/renderer-three/src/gl_light.ts |
 | [Quake-2-master/ref_gl/gl_local.h](matrices/ref_gl_gl_local.h.md) | 144 | split-undocumented | packages/renderer-three/src/gl_local.ts |
 | [Quake-2-master/ref_gl/gl_mesh.c](matrices/ref_gl_gl_mesh.c.md) | 25 | split-undocumented | packages/renderer-three/src/gl_mesh.ts |
-| [Quake-2-master/ref_gl/gl_model.c](matrices/ref_gl_gl_model.c.md) | 42 | wrong-name | packages/renderer-three/src/gl-model-loader.ts |
-| [Quake-2-master/ref_gl/gl_model.h](matrices/ref_gl_gl_model.h.md) | 31 | wrong-name | packages/renderer-three/src/gl-model.ts |
+| [Quake-2-master/ref_gl/gl_model.c](matrices/ref_gl_gl_model.c.md) | 52 | strict-ok | packages/renderer-three/src/gl_model.ts |
+| [Quake-2-master/ref_gl/gl_model.h](matrices/ref_gl_gl_model.h.md) | 31 | strict-ok | packages/renderer-three/src/gl_model.ts |
 | [Quake-2-master/ref_gl/gl_rmain.c](matrices/ref_gl_gl_rmain.c.md) | 60 | split-undocumented | packages/renderer-three/src/gl_rmain.ts |
 | [Quake-2-master/ref_gl/gl_rmisc.c](matrices/ref_gl_gl_rmisc.c.md) | 8 | split-undocumented | packages/renderer-three/src/gl_rmisc.ts |
 | [Quake-2-master/ref_gl/gl_rsurf.c](matrices/ref_gl_gl_rsurf.c.md) | 56 | split-undocumented | packages/renderer-three/src/gl_rsurf.ts |

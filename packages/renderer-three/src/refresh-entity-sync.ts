@@ -55,7 +55,7 @@ import {
   type GlRmainRuntime,
   type GlRmainSpriteVertex
 } from "./gl_rmain.js";
-import { createModel, modtype_t, type image_t, type model_t } from "./gl-model.js";
+import { createModel, modtype_t, type image_t, type model_t } from "./gl_model.js";
 import {
   GL_DrawAliasShadow,
   R_CullAliasModel,

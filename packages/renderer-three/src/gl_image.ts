@@ -20,7 +20,7 @@
 
 import { parsePcx, parseTga, parseWal } from "../../formats/src/index.js";
 import { ERR_DROP, ERR_FATAL, MAX_QPATH, PRINT_ALL, PRINT_DEVELOPER } from "../../qcommon/src/index.js";
-import type { image_t } from "./gl-model.js";
+import type { image_t } from "./gl_model.js";
 import { GL_SHARED_TEXTURE_PALETTE_EXT, GL_TEXTURE0_SGIS, GL_TEXTURE1_SGIS } from "./qgl.js";
 
 /**

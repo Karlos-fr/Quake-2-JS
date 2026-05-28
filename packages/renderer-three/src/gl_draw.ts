@@ -20,7 +20,7 @@
  */
 
 import { ERR_FATAL, MAX_QPATH, PRINT_ALL } from "../../qcommon/src/index.js";
-import type { image_t } from "./gl-model.js";
+import type { image_t } from "./gl_model.js";
 
 /**
  * Original name: GL_RENDERER_RENDITION

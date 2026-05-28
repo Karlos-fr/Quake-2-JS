@@ -24,7 +24,7 @@ import { MAX_QPATH } from "../../qcommon/src/index.js";
 import type { cplane_t, qboolean, vec3_t } from "../../qcommon/src/index.js";
 import type { dlight_t, entity_t, particle_t, refdef_t, refimport_t } from "../../client/src/ref.js";
 import type { GlImage } from "./gl_image.js";
-import type { glpoly_t, model_t, msurface_t, mnode_t } from "./gl-model.js";
+import type { glpoly_t, model_t, msurface_t, mnode_t } from "./gl_model.js";
 
 export {
   MAX_GLTEXTURES,

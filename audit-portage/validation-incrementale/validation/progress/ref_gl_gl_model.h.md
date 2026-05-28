@@ -8,7 +8,7 @@
 
 ## Integration verifiee
 
-- Runtime ref_gl: types consommes par `gl-model-loader.ts`, `gl_rsurf.ts`, `gl_light.ts`, `gl_warp.ts`, `gl_rmain.ts`.
+- Runtime ref_gl: types consommes par `gl_model.ts`, `gl_rsurf.ts`, `gl_light.ts`, `gl_warp.ts`, `gl_rmain.ts`.
 - apps/web: flux full-game Three renderer charge le BSP via le runtime ref_gl, sans logique parallele masquant le chargement de modeles.
 - renderer-three: consommation visible des modeles brush/sprite/alias, surfaces BSP, frames/skins, lightmaps, areabits et scene via `gl-world-scene-adapter.ts`.
 
@@ -24,6 +24,12 @@
 - `npm run verify:three-world-warp-sky`
 - `npm run verify:full-game:three-renderer`
 - `npm run typecheck`
+
+## Session 2026-05-28 - redecoupage lot 4
+
+- Checklist TS appliquee au rattachement strict de `ref_gl/gl_model.h`: entete, `Original name`, `Source declaree`, `Category`, `Export`, ownership et doublons compares pour `packages/renderer-three/src/gl_model.ts`.
+- `gl_model.ts` porte le header et le runtime `gl_model.c`; les prototypes du header qui appartiennent a l'implementation restent `Non applicable` dans cette matrice.
+- Matrice mise a jour: cible proprietaire `packages/renderer-three/src/gl_model.ts`, statut automatique `matched`, verdict Phase 03 `strict-ok`.
 
 ## Prochain lot recommande
 

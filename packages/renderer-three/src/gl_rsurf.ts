@@ -32,7 +32,7 @@ import {
 } from "../../formats/src/index.js";
 import { AngleVectors, DotProduct, MAX_LIGHTSTYLES, RF_TRANSLUCENT, VectorAdd, VectorSubtract, type vec3_t } from "../../qcommon/src/index.js";
 import { RDF_NOWORLDMODEL } from "../../qcommon/src/index.js";
-import { Mod_ClusterPVS } from "./gl-model-loader.js";
+import { Mod_ClusterPVS } from "./gl_model.js";
 import {
   createGlPoly,
   SURF_DRAWSKY,
@@ -47,7 +47,7 @@ import {
   type model_t,
   type msurface_t,
   type mtexinfo_t
-} from "./gl-model.js";
+} from "./gl_model.js";
 import type { GlRmainRuntime } from "./gl_rmain.js";
 
 /**

@@ -24,4 +24,4 @@
 
 - Runtime: integre via `packages/qcommon/src/cmodel.ts`, `packages/game/src/runtime.ts`, `packages/client/src/local-session.ts` et les flux full-game qui chargent les BSP.
 - apps/web: integre via `apps/web/src/full-game.ts`, `full-game-local-session.ts`, `main.ts` et `web-render-bootstrap.ts`.
-- renderer-three: integre indirectement; `qfiles.ts` fournit les donnees BSP brutes/parsees, tandis que le renderer consomme les resultats via `gl-model-loader.ts` et les adapters de rendu. Le renderer reste proprietaire de `ref_gl/*`, pas des declarations `qcommon/qfiles.h`.
+- renderer-three: integre indirectement; `qfiles.ts` fournit les donnees BSP brutes/parsees, tandis que le renderer consomme les resultats via `gl_model.ts` et les adapters de rendu. Le renderer reste proprietaire de `ref_gl/*`, pas des declarations `qcommon/qfiles.h`.

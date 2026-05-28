@@ -11,7 +11,7 @@
  * Dependencies:
  * - packages/filesystem
  * - packages/formats
- * - packages/renderer-three/src/gl-model-loader.ts
+ * - packages/renderer-three/src/gl_model.ts
  * - packages/renderer-three/src/gl_rsurf.ts
  * - three
  */
@@ -39,8 +39,8 @@ import {
   UnsignedByteType,
 } from "three";
 import type { BrushModelSnapshot } from "../../client/src/local-brush-models.js";
-import type { GlModelRuntime } from "./gl-model-loader.js";
-import { Mod_ForName, Mod_Init, Mod_PointInLeaf, createGlModelRuntime } from "./gl-model-loader.js";
+import type { GlModelRuntime } from "./gl_model.js";
+import { Mod_ForName, Mod_Init, Mod_PointInLeaf, createGlModelRuntime } from "./gl_model.js";
 import type { GlRsurfRuntime } from "./gl_rsurf.js";
 import {
   R_LightPoint,
@@ -93,7 +93,7 @@ import {
   setWarpViewOrigin,
   type GlWarpSkyFace
 } from "./gl_warp.js";
-import { SURF_DRAWTURB, type glpoly_t, type image_t, type model_t, type msurface_t } from "./gl-model.js";
+import { SURF_DRAWTURB, type glpoly_t, type image_t, type model_t, type msurface_t } from "./gl_model.js";
 
 const SHARED_PALETTE_PATH = "pics/colormap.pcx";
 

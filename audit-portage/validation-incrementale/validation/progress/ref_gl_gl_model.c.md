@@ -9,7 +9,7 @@
 
 ## Lot traite
 
-Validation complete du port `packages/renderer-three/src/gl-model-loader.ts` pour:
+Validation complete du port `packages/renderer-three/src/gl_model.ts` pour:
 
 - runtime model registry: `Mod_Init`, `Mod_ForName`, `Mod_Modellist_f`, `Mod_Free`, `Mod_FreeAll`, globals portes dans `GlModelRuntime`;
 - helpers vis/BSP: `Mod_PointInLeaf`, `Mod_DecompressVis`, `Mod_ClusterPVS`, `RadiusFromBounds`;
@@ -19,10 +19,16 @@ Validation complete du port `packages/renderer-three/src/gl-model-loader.ts` pou
 
 ## Decisions
 
-- `model_s` appartient a `ref_gl/gl_model.h` / `packages/renderer-three/src/gl-model.ts`; il reste hors ownership de cette matrice.
+- `model_s` appartient a `ref_gl/gl_model.h` / `packages/renderer-three/src/gl_model.ts`; il reste hors ownership de cette matrice.
 - Les lignes `bits`, `c`, `corner`, `count`, `d`, `i`, `next`, `node`, `row`, `ti`, `total`, `v`, `version` sont des variables locales C detectees comme globals par la matrice initiale.
-- Le nom TS proprietaire reste `gl-model-loader.ts` malgre le statut automatique `wrong-name`: c'est le module de loader runtime deja reference par l'index renderer et les tests `gl-model:phase*`.
+- Le nom TS proprietaire est maintenant `gl_model.ts`: il porte a la fois `ref_gl/gl_model.c` et les declarations de `ref_gl/gl_model.h`.
 - Correction de branchement faite dans `ref-gl-host.ts`: `BeginRegistration`, `RegisterModel`, `EndRegistration`, `modellist`, `Mod_Init` et `Mod_FreeAll` passent maintenant par le runtime `gl_model.c` porte par defaut.
+
+## Session 2026-05-28 - redecoupage lot 4
+
+- Checklist TS appliquee au rattachement strict de `ref_gl/gl_model.c`: entete, `Original name`, `Source declaree`, `Category`, `Export`, ownership et doublons compares pour `packages/renderer-three/src/gl_model.ts`.
+- Ancien contenu `gl-model-loader.ts` integre dans `gl_model.ts`, le meme fichier portant aussi `ref_gl/gl_model.h`.
+- Matrice mise a jour: cible proprietaire `packages/renderer-three/src/gl_model.ts`, statut automatique `matched`, verdict Phase 03 `strict-ok`.
 
 ## Tests de reference
 

@@ -404,7 +404,7 @@ export {
   RadiusFromBounds,
   createGlModelRuntime,
   createRendererVisData
-} from "./gl-model-loader.js";
+} from "./gl_model.js";
 export {
   MAX_MD2SKINS,
   SIDE_BACK,
@@ -431,7 +431,7 @@ export {
   isModelNameWithinQPath,
   isValidGlPoly,
   modtype_t
-} from "./gl-model.js";
+} from "./gl_model.js";
 
 export type { ThreeGlWorldSceneAdapter } from "./gl-world-scene-adapter.js";
 export type { GlImage, GlImageHooks, GlImageRuntime, GlImageUploadResult, GlImageUploadSource } from "./gl_image.js";
@@ -499,8 +499,8 @@ export type {
   msurface_t,
   mtexinfo_t,
   mvertex_t
-} from "./gl-model.js";
-export type { GlModelHooks, GlModelRuntime, renderer_dvis_t } from "./gl-model-loader.js";
+} from "./gl_model.js";
+export type { GlModelHooks, GlModelRuntime, renderer_dvis_t } from "./gl_model.js";
 export type { ThreeBeamSync } from "./three-beam-sync.js";
 export type { ThreeDlightSync } from "./three-dlight-sync.js";
 export type { ThreeGlDrawAdapter } from "./three-gl-draw-adapter.js";
