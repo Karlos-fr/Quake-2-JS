@@ -293,7 +293,7 @@ export {
 } from "./precache.js";
 export {
   CL_RegisterSounds
-} from "./sound.js";
+} from "./sound-registration.js";
 export {
   API_VERSION,
   ENTITY_FLAGS,
@@ -369,7 +369,7 @@ export {
   S_Update,
   createClientSoundPublicContext,
   createRawSampleBuffer
-} from "./sound-public.js";
+} from "./sound.js";
 export {
   DumpChunks,
   ResampleSfx,
@@ -440,19 +440,36 @@ export {
   getSoundNameCapacity
 } from "./snd_loc.js";
 export {
+  SCR_AddDirtyPoint,
+  SCR_BeginLoadingPlaque,
+  SCR_CenterPrint,
+  SCR_DebugGraph,
+  SCR_DirtyScreen,
+  SCR_DrawCinematic,
+  SCR_EndLoadingPlaque,
+  SCR_FinishCinematic,
+  SCR_Init,
+  SCR_PlayCinematic,
+  SCR_RunCinematic,
+  SCR_RunConsole,
+  SCR_SizeDown,
+  SCR_SizeUp,
+  SCR_StopCinematic,
+  SCR_TouchPics,
+  SCR_UpdateScreen,
+  createClientScreenState
+} from "./screen.js";
+export {
   CL_AddNetgraph,
   DrawHUDString,
   DrawHUDStringRef,
   createClientScreenContext,
-  SCR_AddDirtyPoint,
   SCR_BuildHudDrawCommands,
   SCR_DrawHudRef,
   SCR_DrawConsole,
   SCR_DrawLoading,
   SCR_DrawNet,
   SCR_DrawPause,
-  SCR_DirtyScreen,
-  SCR_DrawCinematic,
   SCR_DrawCinematicRef,
   SCR_DrawCrosshairRef,
   SCR_DrawDebugGraph,
@@ -464,25 +481,11 @@ export {
   SCR_DrawLayoutRef,
   SCR_DrawStats,
   SCR_DrawStatsRef,
-  SCR_DebugGraph,
-  SCR_FinishCinematic,
-  SCR_Init,
-  SCR_PlayCinematic,
-  SCR_RunConsole,
-  SCR_RunCinematic,
-  SCR_SizeDown,
-  SCR_SizeUp,
-  SCR_StopCinematic,
   SCR_TileClear,
   SCR_TileClearRef,
-  SCR_TouchPics,
-  SCR_UpdateScreen,
   SizeHUDString,
-  SCR_BeginLoadingPlaque,
   SCR_BuildScreenState,
-  SCR_CenterPrint,
   SCR_CheckDrawCenterString,
-  SCR_EndLoadingPlaque,
   SCR_Loading_f,
   SCR_Sky_f,
   SCR_TimeRefresh_f
@@ -861,7 +864,7 @@ export type {
 export type {
   ClientSoundPublicContext,
   ClientSoundPublicHooks
-} from "./sound-public.js";
+} from "./sound.js";
 export type {
   ClientSndMemHooks
 } from "./snd_mem.js";
@@ -885,6 +888,9 @@ export type {
   sfxcache_t,
   wavinfo_t
 } from "./snd_loc.js";
+export type {
+  client_screen_state_t
+} from "./screen.js";
 export type {
   ClientRuntime,
   client_beam_t,
@@ -921,7 +927,7 @@ export type {
 export type { ClientMainContext, ClientMainHooks } from "./cl_main.js";
 export type { ClientDownloadHooks } from "./download.js";
 export type { ClientPrecacheHooks } from "./precache.js";
-export type { ClientSoundRegistrationHooks } from "./sound.js";
+export type { ClientSoundRegistrationHooks } from "./sound-registration.js";
 export type {
   ClientCenterPrintState,
   ClientHudBounds,

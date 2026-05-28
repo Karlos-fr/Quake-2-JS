@@ -30,8 +30,8 @@ Controle initial :
 | --- | --- | --- | --- |
 | `client/cl_pred.c` | `packages/client/src/view.ts` | Fusion avec `cl_view.c`, pas de `cl_pred.ts` | Extraire la prediction dans `packages/client/src/cl_pred.ts` |
 | `client/cl_view.c` | `packages/client/src/view.ts` | Nom trop abstrait | Renommer/rattacher en `packages/client/src/cl_view.ts` |
-| `client/screen.h` | `packages/client/src/cl_scrn.ts`, `packages/client/src/client.ts` | Pas de point `screen.ts` pour le header | Creer un point de rattachement `packages/client/src/screen.ts` ou documenter `cl_scrn.ts` explicitement |
-| `client/sound.h` | `packages/client/src/sound-public.ts` | Nom modernise | Renommer/rattacher en `packages/client/src/sound.ts` ou creer `sound.ts` comme facade principale |
+| `client/screen.h` | `packages/client/src/screen.ts` | Point header cree | Fait |
+| `client/sound.h` | `packages/client/src/sound.ts` | Point header strict restaure | Fait |
 | `qcommon/crc.c` | `packages/qcommon/src/qcommon.ts` | Mauvais rattachement principal | Creer `packages/qcommon/src/crc.ts` |
 | `qcommon/crc.h` | `packages/qcommon/src/qcommon.ts` | Mauvais rattachement principal | Rattacher les declarations CRC a `packages/qcommon/src/crc.ts` |
 | `ref_gl/gl_model.c` | `packages/renderer-three/src/gl-model-loader.ts`, `packages/renderer-three/src/gl-model.ts` | Nom modernise, rupture avec convention `gl_*` | Renommer/rattacher en `packages/renderer-three/src/gl_model.ts` ou justifier explicitement |
@@ -83,21 +83,16 @@ But : donner un point de rattachement principal clair aux headers publics.
 
 Actions :
 
-- Pour `client/screen.h`, choisir entre :
-  - creer `packages/client/src/screen.ts` comme facade/header principal,
-  - ou renommer/rattacher explicitement `cl_scrn.ts` si le header est considere
-    indissociable de `cl_scrn.c`.
-- Pour `client/sound.h`, choisir entre :
-  - renommer `sound-public.ts` en `sound.ts`,
-  - ou creer `sound.ts` comme facade principale et garder les sous-fichiers
-    techniques derriere.
-- Mettre a jour tous les imports/exports.
-- Mettre a jour `client_screen.h.md` et `client_sound.h.md`.
+- [x] Creer `packages/client/src/screen.ts` comme facade/header principal.
+- [x] Renommer `sound-public.ts` en `sound.ts`.
+- [x] Deplacer l'ancien flux d'enregistrement de sons dans `sound-registration.ts`.
+- [x] Mettre a jour tous les imports/exports.
+- [x] Mettre a jour `client_screen.h.md` et `client_sound.h.md`.
 
 Validation :
 
-- `npm run typecheck`
-- `npm run build --workspace @quake2js/web`
+- [x] `npm run typecheck`
+- [x] `npm run build --workspace @quake2js/web`
 
 ### Lot 4 - Renderer gl_model
 

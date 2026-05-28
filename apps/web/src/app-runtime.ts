@@ -140,18 +140,20 @@ import {
 } from "../../../packages/client/src/menu.js";
 import { createClientQMenuContext, Menu_Center, type menuframework_s } from "../../../packages/client/src/qmenu.js";
 import {
-  SCR_Init,
   SCR_DrawCinematicRef,
   SCR_DrawLoading,
+} from "../../../packages/client/src/cl_scrn.js";
+import {
+  SCR_Init,
   SCR_EndLoadingPlaque,
   SCR_FinishCinematic,
   SCR_PlayCinematic,
   SCR_RunCinematic,
   SCR_RunConsole,
   SCR_StopCinematic
-} from "../../../packages/client/src/cl_scrn.js";
+} from "../../../packages/client/src/screen.js";
 import type { ClientHudPictureCommand } from "../../../packages/client/src/cl_scrn.js";
-import { CL_RegisterSounds } from "../../../packages/client/src/sound.js";
+import { CL_RegisterSounds } from "../../../packages/client/src/sound-registration.js";
 import type {
   ClientParseHooks,
   ClientMuzzleFlash2Packet,

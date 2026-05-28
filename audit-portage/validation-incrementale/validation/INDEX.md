@@ -30,12 +30,12 @@
 | [Quake-2-master/client/qmenu.c](matrices/client_qmenu.c.md) | 72 | A redecouper | packages/client/src/qmenu.ts |
 | [Quake-2-master/client/qmenu.h](matrices/client_qmenu.h.md) | 61 | A redecouper | packages/client/src/qmenu.ts |
 | [Quake-2-master/client/ref.h](matrices/client_ref.h.md) | 50 | A redecouper | packages/client/src/ref.ts |
-| [Quake-2-master/client/screen.h](matrices/client_screen.h.md) | 24 | A redecouper | packages/client/src/cl_scrn.ts |
+| [Quake-2-master/client/screen.h](matrices/client_screen.h.md) | 24 | strict-ok | packages/client/src/screen.ts |
 | [Quake-2-master/client/snd_dma.c](matrices/client_snd_dma.c.md) | 103 | A redecouper | packages/client/src/snd_dma.ts |
 | [Quake-2-master/client/snd_loc.h](matrices/client_snd_loc.h.md) | 77 | A redecouper | packages/client/src/snd_loc.ts |
 | [Quake-2-master/client/snd_mem.c](matrices/client_snd_mem.c.md) | 34 | A redecouper | packages/client/src/snd_mem.ts |
 | [Quake-2-master/client/snd_mix.c](matrices/client_snd_mix.c.md) | 41 | A redecouper | packages/client/src/snd_mix.ts |
-| [Quake-2-master/client/sound.h](matrices/client_sound.h.md) | 13 | A redecouper | packages/client/src/sound-public.ts |
+| [Quake-2-master/client/sound.h](matrices/client_sound.h.md) | 13 | strict-ok | packages/client/src/sound.ts |
 | [Quake-2-master/client/vid.h](matrices/client_vid.h.md) | 10 | A redecouper | packages/client/src/vid.ts |
 | [Quake-2-master/game/g_ai.c](matrices/game_g_ai.c.md) | 48 | A redecouper | packages/game/src/g_ai.ts |
 | [Quake-2-master/game/g_chase.c](matrices/game_g_chase.c.md) | 14 | A redecouper | packages/game/src/g_chase.ts |

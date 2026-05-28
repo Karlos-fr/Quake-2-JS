@@ -32,6 +32,22 @@ Tests lances:
 
 - Aucun blocage pour le lot courant.
 
+## Session 2026-05-28 - redecoupage lot 3
+
+Checklist TS appliquee au rattachement strict de `client/screen.h`:
+
+- Source C/H comparee: declarations publiques de `Quake-2-master/client/screen.h`.
+- Cible TS proprietaire verifiee: `packages/client/src/screen.ts`, cree comme point d'attache principal du header.
+- Entete verifie: `File: screen.ts`, `Source: Quake II original / client/screen.h`; fichier classe comme facade de header, sans portage proprietaire concurrent.
+- Ownership verifie: les fonctions publiques `SCR_*` du header sont reexportees depuis `cl_scrn.ts`; l'etat `client_screen_state_t` et `createClientScreenState` restent portes par le runtime `client.ts` et sont reexportes par `screen.ts`.
+- Matrice mise a jour: proprietaire TS attendu `packages/client/src/screen.ts`, statut automatique `matched`; les notes existantes conservent les details utiles sur les facades cinematic et la correction crosshair.
+- Export public mis a jour: `packages/client/src/index.ts` expose les symboles du header via `screen.ts`, tout en gardant les helpers d'implementation dans `cl_scrn.ts`.
+
+Tests lances:
+
+- `npm run typecheck`
+- `npm run build --workspace @quake2js/web`
+
 ## Session 2026-05-08 - cloture header
 
 Checklist appliquee sur le lot valide:

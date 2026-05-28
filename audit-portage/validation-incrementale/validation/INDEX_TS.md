@@ -56,12 +56,13 @@
 | [`packages/client/src/refresh.ts`](ts-matrices/packages_client_src_refresh.ts.md) | 16 | 0 | 16 |
 | [`packages/client/src/render-contracts.ts`](ts-matrices/packages_client_src_render-contracts.ts.md) | 7 | 0 | 7 |
 | [`packages/client/src/sky.ts`](ts-matrices/packages_client_src_sky.ts.md) | 1 | 0 | 1 |
+| [`packages/client/src/screen.ts`](ts-matrices/packages_client_src_screen.ts.md) | 19 | 0 | 19 |
 | [`packages/client/src/snd_dma.ts`](ts-matrices/packages_client_src_snd_dma.ts.md) | 51 | 0 | 51 |
 | [`packages/client/src/snd_loc.ts`](ts-matrices/packages_client_src_snd_loc.ts.md) | 33 | 0 | 33 |
 | [`packages/client/src/snd_mem.ts`](ts-matrices/packages_client_src_snd_mem.ts.md) | 17 | 0 | 17 |
 | [`packages/client/src/snd_mix.ts`](ts-matrices/packages_client_src_snd_mix.ts.md) | 16 | 0 | 16 |
-| [`packages/client/src/sound-public.ts`](ts-matrices/packages_client_src_sound-public.ts.md) | 17 | 0 | 17 |
-| [`packages/client/src/sound.ts`](ts-matrices/packages_client_src_sound.ts.md) | 2 | 0 | 2 |
+| [`packages/client/src/sound.ts`](ts-matrices/packages_client_src_sound.ts.md) | 17 | 0 | 17 |
+| [`packages/client/src/sound-registration.ts`](ts-matrices/packages_client_src_sound-registration.ts.md) | 2 | 0 | 2 |
 | [`packages/client/src/vid-menu.ts`](ts-matrices/packages_client_src_vid-menu.ts.md) | 9 | 0 | 9 |
 | [`packages/client/src/vid.ts`](ts-matrices/packages_client_src_vid.ts.md) | 11 | 0 | 11 |
 | [`packages/client/src/view.ts`](ts-matrices/packages_client_src_view.ts.md) | 57 | 0 | 57 |
