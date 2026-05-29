@@ -50,9 +50,7 @@ packages/
 
 Play the demo/shareware build in your browser:
 
-```text
 [https://karlos-fr.github.io/Quake-2-JS/](https://karlos-fr.github.io/Quake-2-JS/)
-```
 
 Install dependencies:
 
