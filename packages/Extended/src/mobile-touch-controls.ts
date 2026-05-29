@@ -47,6 +47,7 @@ const HOLD_KEYS: Record<HoldAction, number> = {
 };
 
 const MOVE_ACTIONS: MoveAction[] = ["forward", "back", "moveleft", "moveright"];
+const DEFAULT_LOOK_SCALE = 3.2;
 
 export function attachMobileTouchControls(options: MobileTouchControlsOptions): MobileTouchControls {
   const style = document.createElement("style");
@@ -216,7 +217,8 @@ function createLookPad(
     const dy = event.clientY - lastY;
     lastX = event.clientX;
     lastY = event.clientY;
-    options.applyLookDelta(dx * 1.7, dy * 1.7);
+    const lookScale = readLookScale();
+    options.applyLookDelta(dx * lookScale, dy * lookScale);
   };
 
   const onPointerUp = (event: PointerEvent): void => {
@@ -344,6 +346,11 @@ function shouldShowMobileControls(): boolean {
     || new URLSearchParams(window.location.search).get("touch") === "1"
     || window.matchMedia("(pointer: coarse)").matches
     || navigator.maxTouchPoints > 0;
+}
+
+function readLookScale(): number {
+  const configured = Number.parseFloat(window.localStorage.getItem("q2jsTouchLookScale") ?? "");
+  return Number.isFinite(configured) && configured > 0 ? configured : DEFAULT_LOOK_SCALE;
 }
 
 function clamp(value: number, min: number, max: number): number {
