@@ -70,6 +70,34 @@ http://localhost:5173/
 
 The game is served from the root page. There is no separate demo page or alternate full-game page.
 
+## URL Options
+
+Optional browser features can be enabled with URL query parameters:
+
+```text
+?hud=1
+```
+
+Shows a small bottom-left technical HUD with the active renderer (`WebGPU` or `WebGL`) and FPS.
+
+Example:
+
+```text
+https://karlos-fr.github.io/Quake-2-JS/?hud=1
+```
+
+The mobile touch controls can also be forced with:
+
+```text
+?touch=1
+```
+
+Options can be combined:
+
+```text
+https://karlos-fr.github.io/Quake-2-JS/?touch=1&hud=1
+```
+
 ## Game Assets
 
 The demo/shareware data pack is already included at:

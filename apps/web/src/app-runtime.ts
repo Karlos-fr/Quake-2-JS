@@ -335,6 +335,8 @@ interface WebAppPage {
   context: CanvasRenderingContext2D;
   status: HTMLElement;
   log: HTMLElement;
+  perfHud: HTMLElement;
+  perfHudEnabled: boolean;
 }
 
 interface CanvasAssetCache {
@@ -371,6 +373,7 @@ interface WebAppRuntime {
   currentCinematicIndex: number;
   mode: "cinematic" | "menu" | "loading" | "game";
   lastFrameTime: number;
+  smoothedFps: number;
   cinematicStartedAt: number;
   flushClientOutput: () => void;
   updateClientAudio: () => void;
@@ -392,6 +395,7 @@ interface WebAppRuntime {
 interface WebAppRendererState {
   mapPath: string;
   renderer: ActiveRenderer;
+  rendererLabel: string;
   renderLoop: WebAppRenderLoop;
   camera: ReturnType<typeof createCamera>;
   ref: refexport_t;
@@ -401,6 +405,7 @@ interface WebAppRendererState {
 
 interface WebAppFrontendRendererState {
   renderer: ActiveRenderer;
+  rendererLabel: string;
   glDrawAdapter: ReturnType<typeof createThreeGlDrawAdapter>;
   refGlHost: ReturnType<typeof createRefGlHost>;
   ref: refexport_t;
@@ -554,6 +559,7 @@ function createPage(root: HTMLElement): WebAppPage {
   document.body.style.margin = "0";
   document.body.style.background = "#000";
   document.body.style.overflow = "hidden";
+  const perfHudEnabled = isWebAppPerfHudEnabledFromUrl();
 
   const shell = document.createElement("main");
   shell.style.position = "fixed";
@@ -618,12 +624,27 @@ function createPage(root: HTMLElement): WebAppPage {
   log.style.display = "none";
   log.style.zIndex = "25";
 
+  const perfHud = document.createElement("div");
+  perfHud.style.position = "absolute";
+  perfHud.style.left = "8px";
+  perfHud.style.bottom = "6px";
+  perfHud.style.zIndex = "40";
+  perfHud.style.padding = "2px 4px";
+  perfHud.style.color = "rgba(230, 224, 210, 0.62)";
+  perfHud.style.background = "rgba(0, 0, 0, 0.28)";
+  perfHud.style.font = "10px Consolas, monospace";
+  perfHud.style.lineHeight = "1.2";
+  perfHud.style.letterSpacing = "0";
+  perfHud.style.pointerEvents = "none";
+  perfHud.style.display = perfHudEnabled ? "block" : "none";
+  perfHud.textContent = "Renderer: ... | FPS: --";
+
   const context = canvas.getContext("2d");
   if (!context) {
     throw new Error("Canvas 2D indisponible.");
   }
 
-  shell.append(gameViewport, frontendViewport, canvas, log);
+  shell.append(gameViewport, frontendViewport, canvas, log, perfHud);
   root.append(shell);
   canvas.focus();
 
@@ -634,8 +655,14 @@ function createPage(root: HTMLElement): WebAppPage {
     canvas,
     context,
     status,
-    log
+    log,
+    perfHud,
+    perfHudEnabled
   };
+}
+
+function isWebAppPerfHudEnabledFromUrl(): boolean {
+  return new URLSearchParams(window.location.search).get("hud") === "1";
 }
 
 /**
@@ -1857,6 +1884,7 @@ function createWebAppRuntime(filesystem: VirtualFilesystem, page: WebAppPage): W
     currentCinematicIndex: 0,
     mode: "cinematic",
     lastFrameTime: 0,
+    smoothedFps: 0,
     cinematicStartedAt: 0,
     flushClientOutput,
     updateClientAudio,
@@ -2525,8 +2553,34 @@ function frame(time: number, runtime: WebAppRuntime, page: WebAppPage): void {
     drawConsoleFrame(runtime, page);
   }
 
+  if (page.perfHudEnabled) {
+    updateWebAppPerfHud(runtime, page, delta);
+  }
   runtime.mobileControls?.update();
   requestAnimationFrame((nextTime) => frame(nextTime, runtime, page));
+}
+
+function updateWebAppPerfHud(runtime: WebAppRuntime, page: WebAppPage, deltaMilliseconds: number): void {
+  if (deltaMilliseconds > 0) {
+    const instantFps = 1000 / deltaMilliseconds;
+    runtime.smoothedFps = runtime.smoothedFps === 0
+      ? instantFps
+      : runtime.smoothedFps * 0.9 + instantFps * 0.1;
+  }
+
+  page.perfHud.textContent = `${getActiveWebAppRendererLabel(runtime, page)} | ${Math.round(runtime.smoothedFps || 0)} FPS`;
+}
+
+function getActiveWebAppRendererLabel(runtime: WebAppRuntime, page: WebAppPage): string {
+  if (page.gameViewport.style.display !== "none" && runtime.gameRenderer) {
+    return runtime.gameRenderer.rendererLabel;
+  }
+
+  if (page.frontendViewport.style.display !== "none" && runtime.frontendRenderer) {
+    return runtime.frontendRenderer.rendererLabel;
+  }
+
+  return runtime.frontendRenderer?.rendererLabel ?? runtime.gameRenderer?.rendererLabel ?? "Canvas";
 }
 
 function shouldDrawWebAppLoadingFrame(runtime: WebAppRuntime): boolean {
@@ -3187,6 +3241,7 @@ async function createWebAppFrontendRenderer(
 
   return {
     renderer: rendererBundle.renderer,
+    rendererLabel: rendererBundle.label,
     glDrawAdapter,
     refGlHost,
     ref: refGlHost.api
@@ -3324,6 +3379,7 @@ async function createWebAppThreeRenderer(
   return {
     mapPath,
     renderer: rendererBundle.renderer,
+    rendererLabel: rendererBundle.label,
     renderLoop,
     camera,
     ref: refGlHost.api,
