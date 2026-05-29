@@ -48,9 +48,7 @@ packages/
 - Node.js 20 or newer
 - npm
 
-Play the demo/shareware build in your browser:
-
-[https://karlos-fr.github.io/Quake-2-JS/](https://karlos-fr.github.io/Quake-2-JS/)
+Play the demo/shareware build in your browser: [https://karlos-fr.github.io/Quake-2-JS/](https://karlos-fr.github.io/Quake-2-JS/)
 
 Install dependencies:
 
