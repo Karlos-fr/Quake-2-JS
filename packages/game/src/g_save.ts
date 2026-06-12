@@ -1062,7 +1062,7 @@ function writeSaveFile(context: GameMainContext, filename: string, payload: unkn
     return;
   }
 
-  const result = hooks.writeFile(filename, `${JSON.stringify(payload, null, 2)}\n`);
+  const result = hooks.writeFile(filename, `${JSON.stringify(payload)}\n`);
   if (result === false) {
     context.gi.error("Couldn't open %s", filename);
   }
