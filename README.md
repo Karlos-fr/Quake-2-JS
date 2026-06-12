@@ -92,10 +92,18 @@ The mobile touch controls can also be forced with:
 ?touch=1
 ```
 
+The bundled demo/shareware assets can be forced with:
+
+```text
+?assets=demo
+```
+
+This makes the app load `apps/web/public/baseq2/pak0.pak` even in local development, where a retail `baseq2` directory may otherwise be tried first. This option is read only from the URL and is not persisted in browser storage.
+
 Options can be combined:
 
 ```text
-https://karlos-fr.github.io/Quake-2-JS/?touch=1&hud=1
+https://karlos-fr.github.io/Quake-2-JS/?touch=1&hud=1&assets=demo
 ```
 
 ## Game Assets

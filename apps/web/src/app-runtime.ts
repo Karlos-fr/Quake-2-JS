@@ -155,6 +155,7 @@ import {
   SCR_StopCinematic
 } from "../../../packages/client/src/screen.js";
 import type { ClientHudPictureCommand } from "../../../packages/client/src/cl_scrn.js";
+import type { ClientScreenHooks } from "../../../packages/client/src/cl_cin.js";
 import { CL_RegisterSounds } from "../../../packages/client/src/sound-registration.js";
 import type {
   ClientParseHooks,
@@ -288,17 +289,7 @@ import {
 const PUBLIC_BASE_URL = import.meta.env.BASE_URL;
 const LOCAL_BASEQ2_URL = "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2";
 const ROOT_BASEQ2_URL = "/baseq2";
-
-const BASEQ2_PAK_CANDIDATES = [
-  ...(import.meta.env.DEV ? [`${LOCAL_BASEQ2_URL}/pak0.pak`] : []),
-  `${PUBLIC_BASE_URL}baseq2/pak0.pak`,
-  ...(import.meta.env.DEV ? [`${ROOT_BASEQ2_URL}/pak0.pak`] : [])
-];
-
-const LOOSE_VIDEO_CANDIDATES = [
-  ...(import.meta.env.DEV ? [LOCAL_BASEQ2_URL] : []),
-  ...(import.meta.env.DEV ? [`${PUBLIC_BASE_URL}baseq2`, ROOT_BASEQ2_URL] : [])
-];
+const DEMO_BASEQ2_URL = `${PUBLIC_BASE_URL}baseq2`;
 
 const STARTUP_CINEMATICS = [
   "idlog.cin",
@@ -338,6 +329,8 @@ interface WebAppPage {
   perfHud: HTMLElement;
   perfHudEnabled: boolean;
 }
+
+type WebAppAssetMode = "auto" | "demo";
 
 interface CanvasAssetCache {
   pictures: Map<string, HTMLCanvasElement | null>;
@@ -519,8 +512,13 @@ async function bootstrap(): Promise<void> {
       activateWebAppSound(runtime, document.visibilityState === "visible");
     });
 
-    page.status.textContent = "Lancement de la boucle de demonstration...";
-    startWebAppAttractLoop(runtime, page);
+    if (getWebAppAssetMode() === "demo") {
+      page.status.textContent = "Pack demo charge.";
+      enterMainMenu(runtime, page);
+    } else {
+      page.status.textContent = "Lancement de la boucle de demonstration...";
+      startWebAppAttractLoop(runtime, page);
+    }
     requestAnimationFrame((time) => frame(time, runtime, page));
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
@@ -608,6 +606,8 @@ function createPage(root: HTMLElement): WebAppPage {
   status.style.border = "1px solid rgba(216, 210, 199, 0.22)";
   status.style.fontSize = "12px";
   status.style.zIndex = "20";
+  status.style.visibility = "hidden";
+  status.style.pointerEvents = "none";
 
   const log = document.createElement("pre");
   log.style.position = "absolute";
@@ -644,7 +644,7 @@ function createPage(root: HTMLElement): WebAppPage {
     throw new Error("Canvas 2D indisponible.");
   }
 
-  shell.append(gameViewport, frontendViewport, canvas, log, perfHud);
+  shell.append(gameViewport, frontendViewport, canvas, status, log, perfHud);
   root.append(shell);
   canvas.focus();
 
@@ -665,6 +665,33 @@ function isWebAppPerfHudEnabledFromUrl(): boolean {
   return new URLSearchParams(window.location.search).get("hud") === "1";
 }
 
+function getWebAppAssetMode(): WebAppAssetMode {
+  return new URLSearchParams(window.location.search).get("assets") === "demo" ? "demo" : "auto";
+}
+
+function buildBaseq2PakCandidates(): string[] {
+  if (getWebAppAssetMode() === "demo") {
+    return [`${DEMO_BASEQ2_URL}/pak0.pak`];
+  }
+
+  return [
+    ...(import.meta.env.DEV ? [`${LOCAL_BASEQ2_URL}/pak0.pak`] : []),
+    `${DEMO_BASEQ2_URL}/pak0.pak`,
+    ...(import.meta.env.DEV ? [`${ROOT_BASEQ2_URL}/pak0.pak`] : [])
+  ];
+}
+
+function buildLooseVideoCandidates(): string[] {
+  if (getWebAppAssetMode() === "demo") {
+    return [DEMO_BASEQ2_URL];
+  }
+
+  return [
+    ...(import.meta.env.DEV ? [LOCAL_BASEQ2_URL] : []),
+    ...(import.meta.env.DEV ? [DEMO_BASEQ2_URL, ROOT_BASEQ2_URL] : [])
+  ];
+}
+
 /**
  * Original name: N/A
  * Source: N/A (web filesystem bootstrap)
@@ -675,11 +702,11 @@ function isWebAppPerfHudEnabledFromUrl(): boolean {
  * - This is apps/web asset plumbing around the filesystem port.
  */
 async function createMountedFilesystem(): Promise<VirtualFilesystem> {
-  const pakBytes = await fetchFirstBytes(BASEQ2_PAK_CANDIDATES);
+  const pakBytes = await fetchFirstBytes(buildBaseq2PakCandidates());
   const looseVideos = new Map<string, Uint8Array>();
 
   for (const name of STARTUP_CINEMATICS) {
-    const bytes = await fetchOptionalFirstBytes(LOOSE_VIDEO_CANDIDATES.map((base) => `${base}/video/${name}`));
+    const bytes = await fetchOptionalFirstBytes(buildLooseVideoCandidates().map((base) => `${base}/video/${name}`));
     if (bytes) {
       looseVideos.set(`video/${name}`, bytes);
     }
@@ -1482,7 +1509,7 @@ function createWebAppRuntime(filesystem: VirtualFilesystem, page: WebAppPage): W
       Cbuf_AddText(cmd, text);
     },
     onPlayCinematic: (name: string) => {
-      const started = SCR_PlayCinematic(client, name, {
+      const started = tryPlayWebAppCinematic(client, name, {
         loadBinaryFile: (path) => readMountedFile(filesystem, path)?.bytes ?? null,
         onCinematicRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
           S_DMA_RawSamples(sndDma, count, sampleRate, sampleWidth, channels, samples);
@@ -1493,7 +1520,8 @@ function createWebAppRuntime(filesystem: VirtualFilesystem, page: WebAppPage): W
         },
         onCDAudioStop: () => {
           cdAudio.stop();
-        }
+        },
+        onError: (message) => printToConsole(`cinematique ignoree ${name}: ${message}`)
       });
       if (!started) {
         printToConsole(`cinematique introuvable: ${name}`);
@@ -2342,6 +2370,21 @@ function createMirroredMenuRef(canvasRef: refexport_t): WebAppMenuRef {
   return ref;
 }
 
+function tryPlayWebAppCinematic(
+  client: ClientRuntime,
+  name: string,
+  hooks: ClientScreenHooks & { onError?: (message: string) => void }
+): boolean {
+  try {
+    return SCR_PlayCinematic(client, name, hooks);
+  } catch (error) {
+    SCR_StopCinematic(client, hooks);
+    SCR_FinishCinematic(client);
+    hooks.onError?.(error instanceof Error ? error.message : `${error}`);
+    return false;
+  }
+}
+
 /**
  * Original name: N/A
  * Source: N/A (web web-app loop)
@@ -2358,7 +2401,7 @@ function startNextCinematic(runtime: WebAppRuntime, page: WebAppPage): void {
   runtime.client.cls.realtime = performance.now();
   runtime.cinematicStartedAt = runtime.client.cls.realtime;
   runtime.mode = "cinematic";
-  const started = SCR_PlayCinematic(runtime.client, name, {
+  const started = tryPlayWebAppCinematic(runtime.client, name, {
     loadBinaryFile: (path) => readMountedFile(runtime.filesystem, path)?.bytes ?? null,
     onCinematicRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
       queueWebAppRawSamples(runtime, count, sampleRate, sampleWidth, channels, samples);
@@ -2368,7 +2411,8 @@ function startNextCinematic(runtime: WebAppRuntime, page: WebAppPage): void {
     },
     onCDAudioStop: () => {
       runtime.cdAudio.stop();
-    }
+    },
+    onError: (message) => Con_Print(runtime.console.con, `cinematique ignoree ${name}: ${message}\n`, runtime.client.cls.realtime)
   });
 
   if (!started) {
@@ -2421,7 +2465,7 @@ function buildAvailableAttractLoopMedia(filesystem: VirtualFilesystem): string[]
   const media: string[] = [];
 
   for (const cinematic of STARTUP_CINEMATICS) {
-    if (readMountedFile(filesystem, `video/${cinematic}`)) {
+    if (isPlayableAttractLoopCinematic(filesystem, cinematic)) {
       media.push(cinematic);
     }
   }
@@ -2433,6 +2477,15 @@ function buildAvailableAttractLoopMedia(filesystem: VirtualFilesystem): string[]
   }
 
   return media;
+}
+
+function isPlayableAttractLoopCinematic(filesystem: VirtualFilesystem, cinematic: string): boolean {
+  const file = readMountedFile(filesystem, `video/${cinematic}`);
+  if (!file) {
+    return false;
+  }
+
+  return file.bytes.length >= 20 + 256 * 256;
 }
 
 /**
